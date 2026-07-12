@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.6.0.schema.json",
-  "title": "Sustainable Catalyst Lab Project v0.6.0",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.7.0.schema.json",
+  "title": "Sustainable Catalyst Lab Project v0.7.0",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "0.6.0"
+      "const": "0.7.0"
     },
     "id": {
       "type": "string"
@@ -175,6 +175,48 @@
       "type": "array"
     },
     "astronomyValidationRecords": {
+      "type": "array"
+    },
+    "materialsRecords": {
+      "type": "array"
+    },
+    "materialSamples": {
+      "type": "array"
+    },
+    "mechanicalRecords": {
+      "type": "array"
+    },
+    "thermalRecords": {
+      "type": "array"
+    },
+    "electricalRecords": {
+      "type": "array"
+    },
+    "magneticRecords": {
+      "type": "array"
+    },
+    "opticalRecords": {
+      "type": "array"
+    },
+    "crystallographyRecords": {
+      "type": "array"
+    },
+    "phaseRecords": {
+      "type": "array"
+    },
+    "corrosionRecords": {
+      "type": "array"
+    },
+    "polymerRecords": {
+      "type": "array"
+    },
+    "compositeRecords": {
+      "type": "array"
+    },
+    "microscopyRecords": {
+      "type": "array"
+    },
+    "materialsValidationRecords": {
       "type": "array"
     }
   },

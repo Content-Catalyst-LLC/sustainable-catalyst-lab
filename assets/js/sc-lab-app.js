@@ -98,6 +98,7 @@
       if (item.kind === 'physics-tab') setTab('[data-physics-tab]', 'physicsTab', '[data-physics-pane]', 'physicsPane', item.tab);
       if (item.kind === 'biology-tab') setTab('[data-biology-tab]', 'biologyTab', '[data-biology-pane]', 'biologyPane', item.tab);
       if (item.kind === 'astronomy-tab') setTab('[data-astronomy-tab]', 'astronomyTab', '[data-astronomy-pane]', 'astronomyPane', item.tab);
+      if (item.kind === 'materials-tab') setTab('[data-materials-tab]', 'materialsTab', '[data-materials-pane]', 'materialsPane', item.tab);
       if (item.kind === 'calculator') {
         setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
         selectCalculator(item.calculatorId);
@@ -476,7 +477,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.6.0' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.7.0' }, `${type} completed`);
       return result;
     }
 
@@ -766,6 +767,9 @@
     // Astronomy and Astrophysics Laboratory.
     Lab.AstronomyLab?.init(root, projects);
 
+    // Materials Science and Characterization Laboratory.
+    Lab.MaterialsLab?.init(root, projects);
+
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
     qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
@@ -826,6 +830,9 @@
       const astronomyCollections = ['astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords'];
       const astronomyRecords = astronomyCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
       sections.push('## Astronomy analyses', '', astronomyRecords.length ? astronomyRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No astronomy analyses recorded.', '');
+      const materialsCollections = ['materialsRecords','materialSamples','mechanicalRecords','thermalRecords','electricalRecords','magneticRecords','opticalRecords','crystallographyRecords','phaseRecords','corrosionRecords','polymerRecords','compositeRecords','microscopyRecords','materialsValidationRecords'];
+      const materialsRecords = materialsCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
+      sections.push('## Materials analyses', '', materialsRecords.length ? materialsRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No materials analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
       sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
       sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
@@ -896,7 +903,8 @@
           ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`],
           ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`],
           ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`],
-          ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`]
+          ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`],
+          ['Materials laboratory', Lab.MaterialsLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.MaterialsLab?.definitions?.length || 0} materials methods · ${Lab.MaterialsLab?.benchmarks?.length || 0} validation cases`]
         ];
         target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
         if (showToast) U.toast(root, 'System checks completed.');

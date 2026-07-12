@@ -34,14 +34,16 @@ load('assets/js/modules/physics-lab.js');
 load('assets/js/modules/physics-validation.js');
 load('assets/js/modules/biology-lab.js');
 load('assets/js/modules/astronomy-lab.js');
+load('assets/js/modules/materials-lab.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.6.0', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.7.0', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
+assert(Array.isArray(blankProject.materialsRecords) && Array.isArray(blankProject.crystallographyRecords) && Array.isArray(blankProject.materialsValidationRecords), 'Materials project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -156,6 +158,28 @@ assert(hubble.distanceMpc > 42 && hubble.distanceMpc < 43, 'Hubble distance fail
 const astroValidation = Astronomy.runBenchmarks();
 assert(astroValidation.failed === 0 && astroValidation.total >= 10, 'Astronomy benchmark validation failed');
 
+
+const Materials = context.window.SCLab.MaterialsLab;
+assert(Materials.definitions.length >= 45, 'Expected substantive materials method registry');
+const stress = Materials.tools.engineeringStress({ forceN: 1000, areaMm2: 10 });
+assert(Math.abs(stress.stressMPa - 100) < 1e-12, 'Engineering stress failed');
+const elasticMaterials = Materials.tools.elasticConstants({ youngsModulusGPa: 210, poissonRatio: 0.3 });
+assert(elasticMaterials.shearModulusGPa > 80 && elasticMaterials.shearModulusGPa < 81, 'Elastic constants failed');
+const bragg = Materials.tools.braggLaw({ wavelengthNm: 0.15406, twoThetaDeg: 60, order: 1 });
+assert(Math.abs(bragg.dSpacingAngstrom - 1.5406) < 0.001, 'Bragg law failed');
+const scherrer = Materials.run('scherrer', { wavelengthNm: 0.15406, fwhmDeg: 0.2, twoThetaDeg: 44.7, shapeFactor: 0.9 });
+assert(scherrer.crystalliteSizeNm > 35 && scherrer._validation.status === 'validated', 'Scherrer analysis failed');
+const leverMaterials = Materials.tools.leverRule({ composition: 50, alphaComposition: 20, betaComposition: 80 });
+assert(Math.abs(leverMaterials.alphaFraction - 0.5) < 1e-12, 'Lever rule failed');
+const corrosion = Materials.tools.corrosionRate({ massLossMg: 100, densityGcm3: 7.87, areaCm2: 10, timeHours: 168 });
+assert(corrosion.corrosionRateMmYr > 0.65 && corrosion.corrosionRateMmYr < 0.67, 'Corrosion rate failed');
+const composite = Materials.tools.ruleOfMixtures({ fiberFraction: 0.5, fiberModulusGPa: 100, matrixModulusGPa: 10 });
+assert(Math.abs(composite.longitudinalModulusGPa - 55) < 1e-12, 'Composite rule of mixtures failed');
+const particles = Materials.tools.particleStats({ diameters: [1,2,3,4,5] });
+assert(particles.count === 5 && particles.d50 === 3, 'Particle statistics failed');
+const materialsValidation = Materials.runBenchmarks();
+assert(materialsValidation.failed === 0 && materialsValidation.total >= 10, 'Materials benchmark validation failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
@@ -170,4 +194,4 @@ const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: '
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${validationReport.total + biologyValidation.total + astroValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${Materials.definitions.length} materials methods, ${validationReport.total + biologyValidation.total + astroValidation.total + materialsValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);

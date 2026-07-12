@@ -1,59 +1,70 @@
-# Sustainable Catalyst Lab v0.6.0
+# Sustainable Catalyst Lab v0.7.0
 
-Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.6.0 adds a first-class Biology and Computational Biology Laboratory while preserving the live scientific data, chemistry, spectrometry, physics, project, notebook, and documentation systems introduced in earlier releases.
+Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.7.0 adds a first-class **Materials Science and Characterization Laboratory** while preserving the scientific feeds, climate maps, chemistry, spectrometry, physics, biology, astronomy, project, experiment, notebook, and data-connected documentation systems introduced in earlier releases.
 
-## Major scientific modules
+## Materials Laboratory
 
-- Live Earth, natural-event, space, marine, PubMed, and arXiv signals.
-- Climate and Earth-observation maps.
-- Scientific Dataset Inspector and source registry.
-- Complete 118-element periodic table.
-- Chemistry Laboratory and reproducible Spectrometry Studio.
-- Physics Laboratory with validation, visualization, uncertainty, particle physics, electromagnetism, circuits, quantum, and nuclear tools.
-- Biology and Computational Biology Laboratory with forty methods across cellular systems, enzyme kinetics, genetics, sequence analysis, proteins, population genetics, ecology, physiology, and measurement.
-- Experiments, evidence, hypotheses, decisions, notebook records, project activity, and data-connected documentation.
+The Materials Laboratory contains eleven work areas:
 
-## Biology v0.6.0 additions
+- Mechanical behavior
+- Thermal transport and calorimetry
+- Electrical and dielectric properties
+- Magnetic behavior
+- Optical characterization
+- Crystallography and X-ray diffraction
+- Phase analysis and diffusion
+- Corrosion and electrochemistry
+- Polymers
+- Composites
+- Microscopy and image-derived measurements
+- Numerical validation
 
-- DNA/RNA composition, reverse complement, transcription, translation, ORF finding, motif search, and k-mer profiling.
-- Needleman–Wunsch global alignment and Smith–Waterman local alignment with browser-size limits.
-- Primer screening, qPCR ΔΔCt, gel migration, consensus sequences, and genetic count chi-square.
-- Protein mass, composition, hydropathy profiles, membrane-segment screening, and approximate isoelectric point.
-- Michaelis–Menten, Hill response, and simplified competitive, noncompetitive, uncompetitive, and mixed inhibition models.
-- Hardy–Weinberg frequencies, one-generation selection, drift expectations, and Jukes–Cantor distance.
-- Shannon and Simpson diversity, logistic growth, Lotka–Volterra simulation, mark–recapture, and allometric scaling.
-- Diffusion, osmosis, membrane Nernst potential, microbial growth, cardiac output, oxygen content, and dose-response tools.
-- Serial dilution, CFU estimation, deterministic bootstrap intervals, eight numerical benchmarks, validation warnings, project records, and notebook routing.
+The release includes 49 analytical methods and 10 deterministic benchmark cases. Analyses can be saved to materials-specific project collections, added to the notebook, included in generated documentation, and connected to experiments.
 
-## Astronomy and Astrophysics Laboratory
+## Representative methods
 
-Version 0.6.0 adds more than forty astronomy methods across coordinates and time, orbital mechanics, planetary systems, stellar astrophysics, photometry, spectroscopy, galaxies, cosmology, and telescope imaging. Analyses can be saved to astronomy-specific project collections, added to the notebook, included in documentation, and validated against ten deterministic reference cases.
+- Engineering and true stress–strain relations
+- Elastic-constant conversion, resilience, fracture intensity, fatigue, and creep
+- Thermal expansion, conduction, diffusivity, thermal-shock screening, and DSC integration
+- Resistivity, Hall effect, dielectric capacitance, and intrinsic carrier density
+- Curie–Weiss susceptibility, magnetic moment, hysteresis loss, and energy product
+- Optical reflectance, absorption coefficient, Tauc band-gap fitting, and optical path length
+- Bragg spacing, cubic lattice analysis, Scherrer crystallite size, and crystal density
+- Lever rule, Gibbs phase rule, Arrhenius diffusion, and diffusion length
+- Weight-loss corrosion, Faradaic penetration, and Stern–Geary current density
+- Polymerization, glass-transition blending, DSC crystallinity, viscoelastic relaxation
+- Composite rule-of-mixtures, Halpin–Tsai modulus, and density
+- Particle statistics, area fraction, grain intercept, spatial calibration, and Abbe resolution
 
-Focused shortcode: `[sc_lab_astronomy]`.
+## WordPress installation
 
-## Installation
-
-Upload `sustainable-catalyst-lab-plugin-v0.6.0.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
+Upload `sustainable-catalyst-lab-plugin-v0.7.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
 
 ```text
 [sc_lab_app]
 ```
 
-Focused interfaces remain available:
+A focused Materials Laboratory shortcode is also available:
 
 ```text
-[sc_lab_periodic_table]
-[sc_lab_stoichiometry]
-[sc_lab_spectrometry]
-[sc_lab_climate_map]
-[sc_lab_physics]
-[sc_lab_biology]
+[sc_lab_materials]
 ```
 
-## Compatibility
+## Project compatibility
 
-The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.1 are normalized in place to schema version `0.6.0`. No destructive migration is performed.
+The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.6.0 are normalized in place to schema version `0.7.0`. No destructive migration is performed.
 
-## Scientific boundaries
+## Validation
 
-The Biology Laboratory supports research planning, education, exploratory analysis, and reproducible computational workflows. Sequence screening, primer estimates, protein-property estimates, population models, physiological calculations, and biological validation states do not constitute clinical, diagnostic, biosafety, taxonomic, ecological, or regulatory certification. Results require appropriate controls, validated methods, calibrated instruments, authoritative databases, uncertainty analysis, and qualified review.
+Run:
+
+```bash
+chmod +x scripts/test_release.sh
+./scripts/test_release.sh
+```
+
+The release suite validates PHP and JavaScript syntax, WordPress template rendering, the periodic table, chemistry, spectrometry, physics, biology, astronomy, materials methods, deterministic benchmark cases, project collections, and schema migration.
+
+## Review boundary
+
+The Materials Laboratory supports research, education, screening calculations, experiment planning, and technical documentation. Results do not replace calibrated instrument methods, certified mechanical testing, qualified microscopy, assessed phase-diagram databases, standards-based corrosion testing, or professional engineering review.

@@ -57,6 +57,7 @@
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
           'astronomy' => 'Astronomy laboratory',
+          'materials' => 'Materials laboratory',
           'science-engineering' => 'Science & engineering',
         ),
         'Record' => array(
@@ -122,6 +123,9 @@
             <button type="button" data-quick-tool="stellar-astrophysics"><strong>Stellar Astrophysics</strong><span>Luminosity, blackbody, gravity, lifetime</span></button>
             <button type="button" data-quick-tool="astronomical-photometry"><strong>Astronomical Photometry</strong><span>Magnitudes, aperture counts, SNR</span></button>
             <button type="button" data-quick-tool="cosmology-tools"><strong>Cosmology</strong><span>Hubble distance and critical density</span></button>
+            <button type="button" data-quick-tool="materials-characterization"><strong>Materials Characterization</strong><span>XRD, lattice parameters, crystallite size</span></button>
+            <button type="button" data-quick-tool="mechanical-properties"><strong>Mechanical Properties</strong><span>Stress, fracture, fatigue, and creep</span></button>
+            <button type="button" data-quick-tool="materials-microscopy"><strong>Materials Microscopy</strong><span>Particle, grain, and image analysis</span></button>
             <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
             <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
             <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
@@ -493,6 +497,52 @@
           <article class="sc-lab-tool sc-lab-tool-wide">
             <h4>Astronomy observation and analysis templates</h4>
             <div class="sc-lab-template-list"><span>Variable-star light curve</span><span>Exoplanet transit</span><span>Astrometric proper motion</span><span>Spectral redshift measurement</span><span>Stellar temperature and luminosity</span><span>Galaxy rotation curve</span><span>Telescope plate-scale calibration</span><span>Photometric aperture and SNR</span><span>Orbital transfer study</span><span>Blackbody spectrum analysis</span></div>
+          </article>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel" data-lab-module="materials" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/MATERIALS</span><h3>Materials science and characterization laboratory</h3></div>
+          <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button" data-materials-experiment>Create characterization study</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-materials-run-benchmarks>Run validation suite</button></div>
+        </div>
+        <div class="sc-lab-method-note">Materials analyses preserve specimen identity, processing history, geometry, units, instrument assumptions, derived properties, validation warnings, project links, and notebook-ready records. Screening equations do not replace calibrated mechanical testing, instrument corrections, microscopy quality control, or assessed thermodynamic data.</div>
+        <div class="sc-lab-tabs sc-lab-tabs-wrap sc-lab-materials-tabs">
+          <button type="button" class="is-active" data-materials-tab="mechanical">Mechanical</button>
+          <button type="button" data-materials-tab="thermal">Thermal</button>
+          <button type="button" data-materials-tab="electrical">Electrical</button>
+          <button type="button" data-materials-tab="magnetic">Magnetic</button>
+          <button type="button" data-materials-tab="optical">Optical</button>
+          <button type="button" data-materials-tab="crystallography">Crystallography &amp; XRD</button>
+          <button type="button" data-materials-tab="phase">Phase &amp; diffusion</button>
+          <button type="button" data-materials-tab="corrosion">Corrosion</button>
+          <button type="button" data-materials-tab="polymers">Polymers</button>
+          <button type="button" data-materials-tab="composites">Composites</button>
+          <button type="button" data-materials-tab="microscopy">Microscopy</button>
+          <button type="button" data-materials-tab="validation">Validation</button>
+        </div>
+        <div data-materials-pane="mechanical"><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="mechanical"></div></div>
+        <div data-materials-pane="thermal" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="thermal"></div></div>
+        <div data-materials-pane="electrical" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="electrical"></div></div>
+        <div data-materials-pane="magnetic" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="magnetic"></div></div>
+        <div data-materials-pane="optical" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="optical"></div></div>
+        <div data-materials-pane="crystallography" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="crystallography"></div></div>
+        <div data-materials-pane="phase" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="phase"></div></div>
+        <div data-materials-pane="corrosion" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="corrosion"></div></div>
+        <div data-materials-pane="polymers" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="polymers"></div></div>
+        <div data-materials-pane="composites" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="composites"></div></div>
+        <div data-materials-pane="microscopy" hidden><div class="sc-lab-grid sc-lab-grid-2" data-materials-tool-grid="microscopy"></div></div>
+        <div data-materials-pane="validation" hidden>
+          <article class="sc-lab-tool sc-lab-tool-wide sc-lab-materials-validation-dashboard">
+            <h4>Materials numerical validation suite</h4>
+            <p>Reference cases cover mechanics, thermal transport, electrical resistivity, optical reflectance, diffraction, phase fractions, corrosion, composites, and microscopy resolution.</p>
+            <div data-materials-benchmark-table class="sc-lab-data-note">Run the validation suite to compare the materials engine with deterministic reference cases.</div>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-materials-save-benchmarks>Save validation report</button></div>
+          </article>
+          <article class="sc-lab-tool sc-lab-tool-wide">
+            <h4>Materials characterization templates</h4>
+            <div class="sc-lab-template-list"><span>Tensile stress–strain study</span><span>Fracture and fatigue screening</span><span>Thermal conductivity and diffusivity</span><span>Four-point electrical resistivity</span><span>Hall-effect carrier analysis</span><span>XRD phase and crystallite analysis</span><span>DSC transition and crystallinity study</span><span>Corrosion weight-loss exposure</span><span>Composite modulus comparison</span><span>Microscopy particle and grain statistics</span></div>
           </article>
         </div>
       </section>

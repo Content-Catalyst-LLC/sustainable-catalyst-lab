@@ -1,50 +1,37 @@
 # Changelog
 
+## 0.7.0 — Materials Science and Characterization
+
+- Added a first-class Materials Science and Characterization Laboratory with eleven working areas.
+- Added 49 browser-based analytical methods across mechanics, thermal transport, electrical behavior, magnetism, optics, crystallography, phase analysis, diffusion, corrosion, polymers, composites, and microscopy.
+- Added XRD tools for Bragg spacing, cubic lattice parameters, Scherrer crystallite size, and theoretical crystal density.
+- Added mechanical-property tools for engineering and true stress–strain, elastic constants, resilience, fracture intensity, fatigue, and creep.
+- Added thermal, dielectric, semiconductor, Hall-effect, magnetic, optical, and corrosion calculations.
+- Added polymer, composite, particle-size, grain-size, area-fraction, and microscopy calibration workflows.
+- Added method assumptions, validation states, warnings, plots where applicable, notebook routing, experiment templates, and project-specific records.
+- Added ten deterministic materials benchmark cases and saved validation reports.
+- Added `[sc_lab_materials]`, command-search entries, quick tools, status reporting, project documentation output, and materials-specific schema collections.
+- Preserved all v0.1.x–v0.6.0 projects through non-destructive normalization.
+
 ## 0.6.0 — Astronomy and Astrophysics Laboratory
 
 - Added a first-class Astronomy and Astrophysics Laboratory with ten scientific work areas.
-- Added more than forty methods spanning celestial coordinates, sidereal time, orbital mechanics, planetary systems, stellar physics, photometry, spectroscopy, galaxies, cosmology, and telescope imaging.
-- Added blackbody-spectrum, orbital-transfer, photometric-SNR, exoplanet-transit, radial-velocity, galaxy-mass, and telescope-design analyses.
-- Added ten deterministic astronomy benchmark cases and project-saved validation reports.
-- Added astronomy-specific project collections, notebook integration, documentation integration, command search, quick tools, status reporting, and focused `[sc_lab_astronomy]` shortcode.
-- Preserved all v0.1.x–v0.5.0 projects through non-destructive normalization.
+- Added 42 methods spanning celestial coordinates, orbital mechanics, planetary systems, stellar physics, photometry, spectroscopy, galaxies, cosmology, and telescope imaging.
+- Added ten deterministic astronomy benchmark cases and astronomy-specific project records.
 
-
-## 0.6.0 — Biology and Computational Biology Laboratory
+## 0.5.0 — Biology and Computational Biology Laboratory
 
 - Added a first-class Biology Laboratory with nine scientific work areas.
-- Added forty computational biology methods spanning cellular systems, enzymes, genetics, sequences, proteins, populations, ecology, physiology, and measurement.
-- Added DNA/RNA statistics, reverse complements, transcription, translation, ORF discovery, motif search, k-mer profiles, and aligned-sequence consensus.
-- Added global and local dynamic-programming sequence alignment.
-- Added primer screening, qPCR ΔΔCt, gel migration, and genetic count chi-square.
-- Added protein composition, molecular mass, hydropathy profiles, membrane-segment screening, and approximate pI.
-- Added enzyme kinetics and inhibition models.
-- Added Hardy–Weinberg, selection, drift, molecular-distance, diversity, growth, predator–prey, mark–recapture, and allometric tools.
-- Added physiology and cellular transport calculations.
-- Added serial dilution, CFU estimates, bootstrap intervals, eight biology benchmark cases, validation warnings, and saved validation reports.
-- Added biology-specific project collections, documentation integration, command search, quick tools, status reporting, and focused `[sc_lab_biology]` shortcode.
-- Preserved all v0.1.x–v0.4.1 projects through non-destructive normalization.
+- Added 40 computational biology methods and eight deterministic reference cases.
+- Added sequence, protein, genetic, population, ecological, physiological, and biology-validation records.
 
 ## 0.4.1 — Physics Validation and Visualization Patch
 
-- Added method metadata for equations, input units, output units, and assumptions.
-- Added per-run physics validation states, checks, warnings, and constants-version records.
-- Added nine deterministic benchmark cases across mechanics, electromagnetism, circuits, photon physics, nuclear decay, and particle decay.
-- Added project-saved physics validation reports and JSON export.
-- Added accessible SVG charts with grids, ticks, axis labels, legends, zero lines, and logarithmic frequency support.
-- Added baseline-versus-current plot comparison.
-- Added SVG and CSV export for generated physics series.
-- Added power-law uncertainty propagation.
-- Added uncertainty-weighted mean, chi-square, reduced chi-square, and Birge ratio.
-- Added domain warnings for finite-amplitude pendulums, ideal-gas limits, fluid-regime interpretation, waveguide cutoff, high-speed charged-particle orbits, relativistic sensitivity, detector time of flight, and other method boundaries.
-- Added `physicsValidationRecords` to the project schema.
-- Preserved all v0.1.x–v0.4.0 projects through non-destructive normalization.
+- Added method metadata, per-run validation, deterministic benchmarks, improved SVG plots, comparison/export controls, and uncertainty methods.
 
 ## 0.4.0 — Physics, Electromagnetism, and Particle Physics Laboratory
 
-- Added the first-class Physics Laboratory with ten scientific areas.
-- Added mechanics, waves, fluids, optics, electromagnetism, circuits, quantum, nuclear, particle, detector, and measurement methods.
-- Added a structured particle reference and physics-specific project collections.
+- Added the first-class Physics Laboratory with mechanics, waves, fluids, optics, electromagnetism, circuits, quantum, nuclear, particle, detector, and measurement methods.
 
 ## 0.3.0 — Chemistry Laboratory and Spectrometry Expansion
 
