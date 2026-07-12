@@ -35,15 +35,17 @@ load('assets/js/modules/physics-validation.js');
 load('assets/js/modules/biology-lab.js');
 load('assets/js/modules/astronomy-lab.js');
 load('assets/js/modules/materials-lab.js');
+load('assets/js/modules/earth-lab.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.7.0', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.8.0', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
 assert(Array.isArray(blankProject.materialsRecords) && Array.isArray(blankProject.crystallographyRecords) && Array.isArray(blankProject.materialsValidationRecords), 'Materials project collections missing');
+assert(Array.isArray(blankProject.earthRecords) && Array.isArray(blankProject.oceanRecords) && Array.isArray(blankProject.earthValidationRecords), 'Earth systems project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -180,6 +182,23 @@ assert(particles.count === 5 && particles.d50 === 3, 'Particle statistics failed
 const materialsValidation = Materials.runBenchmarks();
 assert(materialsValidation.failed === 0 && materialsValidation.total >= 10, 'Materials benchmark validation failed');
 
+const Earth = context.window.SCLab.EarthLab;
+assert(Earth.definitions.length >= 80, 'Expected substantive Earth systems method registry');
+const plate = Earth.tools.plateMotion({ rateMmYr: 50, years: 1000, bearingDeg: 90 });
+assert(Math.abs(plate.displacementM - 50) < 1e-12 && Math.abs(plate.eastM - 50) < 1e-12, 'Plate motion failed');
+const forcingEarth = Earth.tools.co2RadiativeForcing({ initialPpm: 280, finalPpm: 560 });
+assert(forcingEarth.radiativeForcingWm2 > 3.70 && forcingEarth.radiativeForcingWm2 < 3.72, 'CO2 forcing failed');
+const runoffEarth = Earth.tools.rationalRunoff({ runoffCoefficient: 0.6, rainfallIntensityMmHr: 50, areaKm2: 2 });
+assert(Math.abs(runoffEarth.peakDischargeM3S - 16.6666667) < 1e-5, 'Rational runoff failed');
+const tsunami = Earth.tools.tsunamiTravel({ distanceKm: 1000, meanDepthM: 4000 });
+assert(tsunami.travelTimeHours > 1.3 && tsunami.travelTimeHours < 1.5, 'Tsunami travel failed');
+const ndviEarth = Earth.tools.ndvi({ nir: 0.6, red: 0.2 });
+assert(Math.abs(ndviEarth.ndvi - 0.5) < 1e-12, 'NDVI failed');
+const marineDiversity = Earth.tools.shannonMarine({ counts: '1,1,1,1' });
+assert(Math.abs(marineDiversity.shannonIndex - Math.log(4)) < 1e-8, 'Marine diversity failed');
+const earthValidation = Earth.runBenchmarks();
+assert(earthValidation.failed === 0 && earthValidation.total >= 12, 'Earth systems benchmark validation failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
@@ -194,4 +213,4 @@ const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: '
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${Materials.definitions.length} materials methods, ${validationReport.total + biologyValidation.total + astroValidation.total + materialsValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${Materials.definitions.length} materials methods, ${Earth.definitions.length} Earth systems methods, ${validationReport.total + biologyValidation.total + astroValidation.total + materialsValidation.total + earthValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);

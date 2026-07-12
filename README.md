@@ -1,58 +1,53 @@
-# Sustainable Catalyst Lab v0.7.0
+# Sustainable Catalyst Lab v0.8.0
 
-Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.7.0 adds a first-class **Materials Science and Characterization Laboratory** while preserving the scientific feeds, climate maps, chemistry, spectrometry, physics, biology, astronomy, project, experiment, notebook, and data-connected documentation systems introduced in earlier releases.
+Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.8.0 adds a first-class **Earth, Climate, Ocean, and Marine Systems Laboratory** while preserving the scientific feeds, climate maps, chemistry, spectrometry, physics, biology, astronomy, materials, project, experiment, notebook, and data-connected documentation systems introduced in earlier releases.
 
-## Materials Laboratory
+## Earth Systems Laboratory
 
-The Materials Laboratory contains eleven work areas:
+The new laboratory contains ten connected work areas:
 
-- Mechanical behavior
-- Thermal transport and calorimetry
-- Electrical and dielectric properties
-- Magnetic behavior
-- Optical characterization
-- Crystallography and X-ray diffraction
-- Phase analysis and diffusion
-- Corrosion and electrochemistry
-- Polymers
-- Composites
-- Microscopy and image-derived measurements
+- Solid Earth and geophysics
+- Atmosphere and meteorology
+- Climate analysis
+- Hydrology and groundwater
+- Physical oceanography
+- Marine systems and ecology
+- Remote sensing
+- Natural and environmental hazards
+- Carbon cycle and stock accounting
 - Numerical validation
 
-The release includes 49 analytical methods and 10 deterministic benchmark cases. Analyses can be saved to materials-specific project collections, added to the notebook, included in generated documentation, and connected to experiments.
+The release includes 83 browser-based analytical methods and 12 deterministic benchmark cases. Analyses can be saved to Earth-specific project collections, added to the notebook, linked to experiments, routed into generated documentation, and used alongside existing feed, map, observation, and dataset records.
 
 ## Representative methods
 
-- Engineering and true stress–strain relations
-- Elastic-constant conversion, resilience, fracture intensity, fatigue, and creep
-- Thermal expansion, conduction, diffusivity, thermal-shock screening, and DSC integration
-- Resistivity, Hall effect, dielectric capacitance, and intrinsic carrier density
-- Curie–Weiss susceptibility, magnetic moment, hysteresis loss, and energy product
-- Optical reflectance, absorption coefficient, Tauc band-gap fitting, and optical path length
-- Bragg spacing, cubic lattice analysis, Scherrer crystallite size, and crystal density
-- Lever rule, Gibbs phase rule, Arrhenius diffusion, and diffusion length
-- Weight-loss corrosion, Faradaic penetration, and Stern–Geary current density
-- Polymerization, glass-transition blending, DSC crystallinity, viscoelastic relaxation
-- Composite rule-of-mixtures, Halpin–Tsai modulus, and density
-- Particle statistics, area fraction, grain intercept, spatial calibration, and Abbe resolution
+- Plate-motion displacement, seismic moment, moment magnitude, earthquake energy, geothermal gradient, lithostatic pressure, and Airy isostasy
+- Barometric pressure, hypsometric thickness, dry-adiabatic change, vapor pressure, relative humidity, dew point, potential temperature, wind power, CO₂ forcing, and atmospheric scale height
+- Climate anomalies, linear trends, heating and cooling degree days, forcing-based warming, planetary equilibrium temperature, carbon-budget duration, aridity, and steric sea-level change
+- Catchment water balance, rational runoff, Manning discharge, Darcy flow, aquifer storage, Horton infiltration, Gumbel return levels, sediment transport, reservoir residence, groundwater velocity, and soil-water storage
+- Seawater density screening, hydrostatic pressure, deep- and shallow-water waves, tsunami travel, mixed-layer heat, geostrophic velocity, Ekman transport, salinity mixing, and dissolved-oxygen inventory
+- Marine diversity, species-area scaling, Q10 metabolism, trophic transfer, fishery balance, primary production, benthic flux, occupancy detection, eDNA decay, and bioaccumulation
+- NDVI, NDWI, NBR, EVI, broadband albedo, brightness temperature, TOA reflectance, classification metrics, mapped area, radiometric calibration, and emissivity-corrected surface temperature
+- Hazard recurrence, landslide factor of safety, ash settling, wind-driven surge setup, coastal runup, advection-dispersion, and spill-area screening
+- Atmospheric CO₂ mass change, emissions-to-ppm conversion, ecosystem and soil carbon stocks, sequestration, methane CO₂-equivalent, and ocean carbon flux
 
 ## WordPress installation
 
-Upload `sustainable-catalyst-lab-plugin-v0.7.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
+Upload `sustainable-catalyst-lab-plugin-v0.8.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
 
 ```text
 [sc_lab_app]
 ```
 
-A focused Materials Laboratory shortcode is also available:
+A focused Earth Systems Laboratory shortcode is also available:
 
 ```text
-[sc_lab_materials]
+[sc_lab_earth_systems]
 ```
 
 ## Project compatibility
 
-The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.6.0 are normalized in place to schema version `0.7.0`. No destructive migration is performed.
+The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.7.0 are normalized in place to schema version `0.8.0`. No destructive migration is performed.
 
 ## Validation
 
@@ -63,8 +58,8 @@ chmod +x scripts/test_release.sh
 ./scripts/test_release.sh
 ```
 
-The release suite validates PHP and JavaScript syntax, WordPress template rendering, the periodic table, chemistry, spectrometry, physics, biology, astronomy, materials methods, deterministic benchmark cases, project collections, and schema migration.
+The release suite validates PHP and JavaScript syntax, WordPress template rendering, the periodic table, chemistry, spectrometry, physics, biology, astronomy, materials, Earth systems methods, deterministic benchmark cases, project collections, and schema migration.
 
 ## Review boundary
 
-The Materials Laboratory supports research, education, screening calculations, experiment planning, and technical documentation. Results do not replace calibrated instrument methods, certified mechanical testing, qualified microscopy, assessed phase-diagram databases, standards-based corrosion testing, or professional engineering review.
+The Earth Systems Laboratory supports research, education, screening calculations, experiment planning, environmental observation, and technical documentation. Results do not replace authoritative climate products, calibrated field measurements, TEOS-10 oceanographic calculations, geotechnical or coastal engineering analysis, regulatory assessments, operational forecasting, or professional scientific review.

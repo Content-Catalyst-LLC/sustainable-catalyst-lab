@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.8.0 — Earth, Climate, Ocean, and Marine Systems
+
+- Added a first-class Earth, Climate, Ocean, and Marine Systems Laboratory with ten connected work areas.
+- Added 83 browser-based analytical methods across solid Earth, atmosphere, climate, hydrology, oceanography, marine ecology, remote sensing, hazards, and carbon-cycle analysis.
+- Added geophysics methods for plate motion, seismic moment, earthquake energy, geothermal gradients, lithostatic pressure, and isostasy.
+- Added atmospheric and climate methods for moisture, parcel thermodynamics, radiative forcing, trends, degree days, equilibrium temperature, aridity, carbon budgets, and steric sea-level change.
+- Added hydrology methods for water balance, runoff, Manning flow, Darcy flow, infiltration, return levels, sediment discharge, storage, residence time, and groundwater velocity.
+- Added ocean and marine methods for waves, tsunami travel, mixed-layer heat, geostrophic and Ekman transport, salinity mixing, oxygen inventories, diversity, trophic transfer, fisheries, eDNA, and bioaccumulation.
+- Added remote-sensing methods for vegetation, water, and burn indices, thermal calibration, reflectance, albedo, classification metrics, and mapped area.
+- Added hazard and carbon-cycle screening methods with explicit validation warnings and project records.
+- Added 12 deterministic Earth systems benchmark cases and saved validation reports.
+- Added `[sc_lab_earth_systems]`, command-search entries, quick tools, status reporting, documentation output, and Earth-specific schema collections.
+- Preserved all v0.1.x-v0.7.0 projects through non-destructive normalization.
+
 ## 0.7.0 — Materials Science and Characterization
 
 - Added a first-class Materials Science and Characterization Laboratory with eleven working areas.

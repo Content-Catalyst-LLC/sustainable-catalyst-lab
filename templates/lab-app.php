@@ -58,6 +58,7 @@
           'biology' => 'Biology laboratory',
           'astronomy' => 'Astronomy laboratory',
           'materials' => 'Materials laboratory',
+          'earth-systems' => 'Earth systems laboratory',
           'science-engineering' => 'Science & engineering',
         ),
         'Record' => array(
@@ -126,6 +127,9 @@
             <button type="button" data-quick-tool="materials-characterization"><strong>Materials Characterization</strong><span>XRD, lattice parameters, crystallite size</span></button>
             <button type="button" data-quick-tool="mechanical-properties"><strong>Mechanical Properties</strong><span>Stress, fracture, fatigue, and creep</span></button>
             <button type="button" data-quick-tool="materials-microscopy"><strong>Materials Microscopy</strong><span>Particle, grain, and image analysis</span></button>
+            <button type="button" data-quick-tool="earth-climate-analysis"><strong>Earth &amp; Climate Analysis</strong><span>Atmosphere, trends, hydrology, carbon</span></button>
+            <button type="button" data-quick-tool="ocean-marine-analysis"><strong>Ocean &amp; Marine Systems</strong><span>Waves, circulation, ecology, fisheries</span></button>
+            <button type="button" data-quick-tool="remote-hazards"><strong>Remote Sensing &amp; Hazards</strong><span>Indices, classification, recurrence, runup</span></button>
             <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
             <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
             <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
@@ -543,6 +547,48 @@
           <article class="sc-lab-tool sc-lab-tool-wide">
             <h4>Materials characterization templates</h4>
             <div class="sc-lab-template-list"><span>Tensile stress–strain study</span><span>Fracture and fatigue screening</span><span>Thermal conductivity and diffusivity</span><span>Four-point electrical resistivity</span><span>Hall-effect carrier analysis</span><span>XRD phase and crystallite analysis</span><span>DSC transition and crystallinity study</span><span>Corrosion weight-loss exposure</span><span>Composite modulus comparison</span><span>Microscopy particle and grain statistics</span></div>
+          </article>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel" data-lab-module="earth-systems" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/EARTH-SYSTEMS</span><h3>Earth, climate, ocean, and marine systems laboratory</h3></div>
+          <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button" data-earth-experiment>Create Earth systems study</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-earth-run-benchmarks>Run validation suite</button></div>
+        </div>
+        <div class="sc-lab-method-note">Earth systems analyses preserve spatial and temporal scope, units, model assumptions, source context, validation warnings, project links, and notebook-ready records. Screening equations do not replace calibrated field observations, authoritative climate products, TEOS-10 ocean calculations, geotechnical assessment, hydrodynamic models, or reviewed hazard analysis.</div>
+        <div class="sc-lab-tabs sc-lab-tabs-wrap sc-lab-earth-tabs">
+          <button type="button" class="is-active" data-earth-tab="solid-earth">Solid Earth</button>
+          <button type="button" data-earth-tab="atmosphere">Atmosphere</button>
+          <button type="button" data-earth-tab="climate">Climate</button>
+          <button type="button" data-earth-tab="hydrology">Hydrology</button>
+          <button type="button" data-earth-tab="ocean">Ocean</button>
+          <button type="button" data-earth-tab="marine">Marine systems</button>
+          <button type="button" data-earth-tab="remote">Remote sensing</button>
+          <button type="button" data-earth-tab="hazards">Hazards</button>
+          <button type="button" data-earth-tab="carbon">Carbon cycle</button>
+          <button type="button" data-earth-tab="validation">Validation</button>
+        </div>
+        <div data-earth-pane="solid-earth"><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="solid-earth"></div></div>
+        <div data-earth-pane="atmosphere" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="atmosphere"></div></div>
+        <div data-earth-pane="climate" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="climate"></div></div>
+        <div data-earth-pane="hydrology" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="hydrology"></div></div>
+        <div data-earth-pane="ocean" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="ocean"></div></div>
+        <div data-earth-pane="marine" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="marine"></div></div>
+        <div data-earth-pane="remote" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="remote"></div></div>
+        <div data-earth-pane="hazards" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="hazards"></div></div>
+        <div data-earth-pane="carbon" hidden><div class="sc-lab-grid sc-lab-grid-2" data-earth-tool-grid="carbon"></div></div>
+        <div data-earth-pane="validation" hidden>
+          <article class="sc-lab-tool sc-lab-tool-wide sc-lab-earth-validation-dashboard">
+            <h4>Earth systems numerical validation suite</h4>
+            <p>Reference cases cover plate motion, seismic moment, atmospheric humidity, CO₂ forcing, catchment runoff, ocean waves, tsunami travel, marine diversity, remote-sensing indices, hazard recurrence, atmospheric carbon, and soil carbon.</p>
+            <div data-earth-benchmark-table class="sc-lab-data-note">Run the validation suite to compare the Earth systems engine with deterministic reference cases.</div>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-earth-save-benchmarks>Save validation report</button></div>
+          </article>
+          <article class="sc-lab-tool sc-lab-tool-wide">
+            <h4>Earth systems investigation templates</h4>
+            <div class="sc-lab-template-list"><span>Plate motion and seismic source study</span><span>Atmospheric profile and moisture analysis</span><span>Climate anomaly and trend assessment</span><span>Catchment water-balance study</span><span>Groundwater flow and storage</span><span>Wave, current, and mixed-layer analysis</span><span>Marine biodiversity and trophic transfer</span><span>Remote-sensing index validation</span><span>Flood, landslide, ash, and coastal-hazard screening</span><span>Carbon stock and sequestration accounting</span></div>
           </article>
         </div>
       </section>
