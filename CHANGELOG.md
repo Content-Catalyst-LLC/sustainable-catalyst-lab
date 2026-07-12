@@ -1,18 +1,44 @@
 # Changelog
 
+## 0.9.1 — Universal Visualization, Export, and Workspace Data Management
+
+- Added the shared `sc-lab-analysis/1.0` result contract for current and future calculation modules.
+- Added automatic calculation capture and a consistent export toolbar across discipline tools.
+- Added Scientific Light, Institutional, Publication, Scientific Dark, and Accessibility figure themes.
+- Added accessible SVG, high-resolution PNG, single-figure PDF, CSV, analysis JSON, and complete analysis-package ZIP exports.
+- Added project visualization records, notebook routing, and structured Decision Studio analysis packets.
+- Added the `sc-lab-scene/1.0` dimensional scene contract and Decision Studio scene handoff support.
+- Added an interactive 3D and projected 4D viewer with cube, tesseract, 4-simplex, and 16-cell reference models.
+- Added rotation in XY, XZ, XW, YZ, YW, and ZW planes, 4D-to-3D perspective projection, 3D camera rotation, animation, custom scene JSON, and export controls.
+- Added direct three- and four-field data mapping plus explicitly labeled normalized result-space glyphs for analyses without physical geometry.
+- Added workspace JSON and ZIP backup, per-project notebook and observation exports, restore-as-copy, merge, and replace modes.
+- Added selective preference, note and observation, analysis-history, active-project, project-deletion, and factory-reset scopes.
+- Added selected-record counts, typed destructive confirmation, optional pre-reset backup, and privacy-preserving reset receipts.
+- Added `visualizations`, `dimensionalScenes`, `chartExports`, and `analysisPackets` project collections while retaining the original browser-storage keys.
+- Added analysis, scene, Decision Studio packet, and updated project JSON schemas.
+- Preserved all v0.1.x–v0.9.0 projects through non-destructive normalization.
+
+## 0.9.0 — Energy and Engineering Laboratory
+
+- Added a first-class Energy and Engineering Laboratory with eleven analytical work areas and a dedicated validation workspace.
+- Added 119 browser-based methods covering energy balances, solar, wind, hydro, storage, electric power, thermal systems, fuels, hydrogen, emissions, techno-economics, and reliability.
+- Added explicit equations, unit-aware inputs, assumptions, warning states, project records, notebook actions, and generated-document integration for every Energy method.
+- Added solar geometry, plane-of-array irradiance, PV sizing, wind resource and turbine calculations, hydropower hydraulics, and pumped-storage analysis.
+- Added battery, flywheel, thermal, hydrogen, and compressed-air storage methods.
+- Added three-phase power, transformer, line-loss, voltage-drop, power-factor, fault-current, reserve-margin, peak-shaving, and grid-emissions calculations.
+- Added thermal transport, heat-exchanger, heat-pump, refrigeration, boiler, pipe-loss, and degree-day methods.
+- Added electrolyzer, fuel-cell, hydrogen-compression, combustion-air, biogas, methane-leakage, and fuel-energy methods.
+- Added lifecycle and avoided-emissions calculations, carbon payback, NPV, IRR, LCOE, LCOS, levelized hydrogen, cost of saved energy, and carbon-price breakeven.
+- Added availability, Weibull reliability, expected energy not served, exact independent-unit loss-of-load probability, N−1 checks, and distribution reliability indices.
+- Added 12 deterministic Energy and Engineering benchmark cases and saved validation reports.
+- Added `[sc_lab_energy]`, command-search entries, quick tools, system status, documentation output, and 14 Energy-specific project collections.
+- Preserved all v0.1.x–v0.8.0 projects through non-destructive normalization.
+
 ## 0.8.0 — Earth, Climate, Ocean, and Marine Systems
 
 - Added a first-class Earth, Climate, Ocean, and Marine Systems Laboratory with ten connected work areas.
-- Added 83 browser-based analytical methods across solid Earth, atmosphere, climate, hydrology, oceanography, marine ecology, remote sensing, hazards, and carbon-cycle analysis.
-- Added geophysics methods for plate motion, seismic moment, earthquake energy, geothermal gradients, lithostatic pressure, and isostasy.
-- Added atmospheric and climate methods for moisture, parcel thermodynamics, radiative forcing, trends, degree days, equilibrium temperature, aridity, carbon budgets, and steric sea-level change.
-- Added hydrology methods for water balance, runoff, Manning flow, Darcy flow, infiltration, return levels, sediment discharge, storage, residence time, and groundwater velocity.
-- Added ocean and marine methods for waves, tsunami travel, mixed-layer heat, geostrophic and Ekman transport, salinity mixing, oxygen inventories, diversity, trophic transfer, fisheries, eDNA, and bioaccumulation.
-- Added remote-sensing methods for vegetation, water, and burn indices, thermal calibration, reflectance, albedo, classification metrics, and mapped area.
-- Added hazard and carbon-cycle screening methods with explicit validation warnings and project records.
-- Added 12 deterministic Earth systems benchmark cases and saved validation reports.
-- Added `[sc_lab_earth_systems]`, command-search entries, quick tools, status reporting, documentation output, and Earth-specific schema collections.
-- Preserved all v0.1.x-v0.7.0 projects through non-destructive normalization.
+- Added 83 browser-based methods across solid Earth, atmosphere, climate, hydrology, oceanography, marine ecology, remote sensing, hazards, and carbon-cycle analysis.
+- Added 12 deterministic Earth systems benchmark cases and Earth-specific project records.
 
 ## 0.7.0 — Materials Science and Characterization
 

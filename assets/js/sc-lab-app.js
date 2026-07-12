@@ -100,6 +100,7 @@
       if (item.kind === 'astronomy-tab') setTab('[data-astronomy-tab]', 'astronomyTab', '[data-astronomy-pane]', 'astronomyPane', item.tab);
       if (item.kind === 'materials-tab') setTab('[data-materials-tab]', 'materialsTab', '[data-materials-pane]', 'materialsPane', item.tab);
       if (item.kind === 'earth-tab') setTab('[data-earth-tab]', 'earthTab', '[data-earth-pane]', 'earthPane', item.tab);
+      if (item.kind === 'energy-tab') setTab('[data-energy-tab]', 'energyTab', '[data-energy-pane]', 'energyPane', item.tab);
       if (item.kind === 'calculator') {
         setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
         selectCalculator(item.calculatorId);
@@ -233,7 +234,13 @@
         time: item.createdAt || item.recordedAt,
         meta: 'Earth systems'
       }));
-      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth]
+      const energy = project.energyRecords.slice(0, 3).map(item => ({
+        title: item.type || 'Energy and engineering analysis',
+        body: item.methodId ? `Method: ${item.methodId}` : '',
+        time: item.createdAt || item.recordedAt,
+        meta: 'Energy & engineering'
+      }));
+      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth, ...energy]
         .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
         .slice(0, 5);
       qs(root, '[data-project-work]').innerHTML = rows.length
@@ -253,7 +260,8 @@
         ['Biology', project.biologyRecords.length, 'biology'],
         ['Astronomy', project.astronomyRecords.length, 'astronomy'],
         ['Materials', project.materialsRecords.length, 'materials'],
-        ['Earth systems', project.earthRecords.length, 'earth-systems']
+        ['Earth systems', project.earthRecords.length, 'earth-systems'],
+        ['Energy & engineering', project.energyRecords.length, 'energy-engineering']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
@@ -492,7 +500,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.8.0' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.9.1' }, `${type} completed`);
       return result;
     }
 
@@ -639,7 +647,7 @@
     function renderCalculator() {
       const definition = Lab.Calculators.get(calculatorSelect.value);
       if (!definition) { calculatorForm.innerHTML = ''; return; }
-      calculatorForm.innerHTML = `<div class="sc-lab-calculator-form">
+      calculatorForm.innerHTML = `<div class="sc-lab-calculator-form" data-calculator-id="${U.esc(definition.id)}"><h4>${U.esc(definition.name)}</h4>
         ${definition.fields.map(([key, label, unit, value]) => `<label>${U.esc(label)}${unit ? ` (${U.esc(unit)})` : ''}<input data-calc-field="${U.esc(key)}" value="${U.esc(value)}"></label>`).join('')}
         <button class="sc-lab-button sc-lab-button-primary" data-calc-run>Calculate</button>
         <div class="sc-lab-calculator-result" data-calc-result>Ready.</div>
@@ -788,6 +796,18 @@
     // Earth, Climate, Ocean, and Marine Systems Laboratory.
     Lab.EarthLab?.init(root, projects);
 
+    // Energy and Engineering Laboratory.
+    Lab.EnergyLab?.init(root, projects);
+
+    // Universal visualization, export, and Decision Studio handoff.
+    Lab.Visualization?.init(root, projects, config);
+
+    // Interactive 3D and projected 4D scene visualization.
+    Lab.DimensionalVisualization?.init(root, projects);
+
+    // Workspace backup, restore, and selective reset.
+    Lab.DataManagement?.init(root, projects);
+
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
     qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
@@ -828,7 +848,8 @@
           biology: ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
           astronomy: ['astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
           materials: ['materialsRecords','materialSamples','mechanicalRecords','thermalRecords','electricalRecords','magneticRecords','opticalRecords','crystallographyRecords','phaseRecords','corrosionRecords','polymerRecords','compositeRecords','microscopyRecords','materialsValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
-          earthSystems: ['earthRecords','geoscienceRecords','atmosphericRecords','climateRecords','hydrologyRecords','oceanRecords','marineSystemRecords','remoteSensingRecords','hazardRecords','carbonCycleRecords','earthValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
+          earthSystems: ['earthRecords','geoscienceRecords','atmosphericRecords','climateRecords','hydrologyRecords','oceanRecords','marineSystemRecords','remoteSensingRecords','hazardRecords','carbonCycleRecords','earthValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
+          energyEngineering: ['energyRecords','engineeringRecords','energySystemRecords','solarRecords','windRecords','hydroRecords','storageRecords','gridRecords','thermalSystemRecords','fuelHydrogenRecords','emissionsRecords','technoEconomicRecords','reliabilityRecords','energyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
         }
       };
       return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -856,6 +877,9 @@
       const earthCollections = ['earthRecords','geoscienceRecords','atmosphericRecords','climateRecords','hydrologyRecords','oceanRecords','marineSystemRecords','remoteSensingRecords','hazardRecords','carbonCycleRecords','earthValidationRecords'];
       const earthRecords = earthCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
       sections.push('## Earth systems analyses', '', earthRecords.length ? earthRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No Earth systems analyses recorded.', '');
+      const energyCollections = ['energyRecords','engineeringRecords','energySystemRecords','solarRecords','windRecords','hydroRecords','storageRecords','gridRecords','thermalSystemRecords','fuelHydrogenRecords','emissionsRecords','technoEconomicRecords','reliabilityRecords','energyValidationRecords'];
+      const energyRecords = energyCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
+      sections.push('## Energy and engineering analyses', '', energyRecords.length ? energyRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No energy and engineering analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
       sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
       sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
@@ -928,7 +952,10 @@
           ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`],
           ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`],
           ['Materials laboratory', Lab.MaterialsLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.MaterialsLab?.definitions?.length || 0} materials methods · ${Lab.MaterialsLab?.benchmarks?.length || 0} validation cases`],
-          ['Earth systems laboratory', Lab.EarthLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EarthLab?.definitions?.length || 0} Earth systems methods · ${Lab.EarthLab?.benchmarks?.length || 0} validation cases`]
+          ['Earth systems laboratory', Lab.EarthLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EarthLab?.definitions?.length || 0} Earth systems methods · ${Lab.EarthLab?.benchmarks?.length || 0} validation cases`],
+          ['Energy and engineering laboratory', Lab.EnergyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EnergyLab?.definitions?.length || 0} energy and engineering methods · ${Lab.EnergyLab?.benchmarks?.length || 0} validation cases`],
+          ['Visualization and export engine', Lab.Visualization ? 'Ready' : 'Unavailable', 'SVG, PNG, PDF, CSV, JSON, project records, and Decision Studio packets'],
+          ['Workspace data management', Lab.DataManagement ? 'Ready' : 'Unavailable', 'Workspace backup, restore, selective clearing, and factory reset']
         ];
         target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
         if (showToast) U.toast(root, 'System checks completed.');

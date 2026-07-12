@@ -1,7 +1,7 @@
 <?php
 $root = dirname(__DIR__);
 define('ABSPATH', $root);
-define('SC_LAB_VERSION', '0.8.0');
+define('SC_LAB_VERSION', '0.9.1');
 function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 $sc_lab_initial_module = 'overview';
@@ -21,6 +21,12 @@ ok_render(strpos($html, 'Biology and computational biology laboratory') !== fals
 ok_render(strpos($html, 'Astronomy and astrophysics laboratory') !== false, 'Astronomy laboratory missing');
 ok_render(strpos($html, 'Materials science and characterization laboratory') !== false, 'Materials laboratory missing');
 ok_render(strpos($html, 'Earth, climate, ocean, and marine systems laboratory') !== false, 'Earth systems laboratory missing');
+ok_render(strpos($html, 'Energy and engineering laboratory') !== false, 'Energy and engineering laboratory missing');
+ok_render(strpos($html, 'Dimensional scene and polytope viewer') !== false, 'Dimensional viewer missing');
+ok_render(strpos($html, 'data-dim-rotation="xw"') !== false, '4D XW rotation control missing');
+ok_render(strpos($html, 'data-dim-handoff') !== false, 'Dimensional Decision Studio handoff missing');
+ok_render(substr_count($html, 'data-energy-tool-grid=') === 11, 'Expected eleven energy and engineering tool grids');
+ok_render(strpos($html, 'data-energy-benchmark-table') !== false, 'Energy benchmark table missing');
 ok_render(substr_count($html, 'data-earth-tool-grid=') === 9, 'Expected nine Earth systems tool grids');
 ok_render(strpos($html, 'data-earth-benchmark-table') !== false, 'Earth systems benchmark table missing');
 ok_render(substr_count($html, 'data-materials-tool-grid=') === 11, 'Expected eleven materials tool grids');
@@ -34,5 +40,5 @@ ok_render(substr_count($html, 'data-biology-tool-grid=') === 9, 'Expected nine b
 ok_render(strpos($html, 'data-biology-benchmark-table') !== false, 'Biology benchmark table missing');
 ok_render(substr_count($html, '<section') === substr_count($html, '</section>'), 'Section tags are unbalanced');
 ok_render(substr_count($html, '<div') === substr_count($html, '</div>'), 'Div tags are unbalanced');
-ok_render(strpos($html, 'v0.8.0') !== false, 'Rendered version is incorrect');
+ok_render(strpos($html, 'v0.9.1') !== false, 'Rendered version is incorrect');
 echo "Template render tests passed.\n";

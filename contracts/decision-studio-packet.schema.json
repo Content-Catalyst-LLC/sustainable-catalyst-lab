@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-decision-studio-packet-1.0.schema.json",
+  "title": "Sustainable Catalyst Lab Decision Studio Packet",
+  "type": "object",
+  "required": ["packetType", "schemaVersion", "origin", "analysis", "charts", "scenes", "audit"],
+  "properties": {
+    "packetType": { "const": "scientific-analysis" },
+    "schemaVersion": { "const": "1.0" },
+    "origin": { "type": "object", "required": ["application", "version"] },
+    "createdAt": { "type": "string" },
+    "project": { "type": ["object", "null"] },
+    "analysis": { "type": "object" },
+    "charts": { "type": "array" },
+    "scenes": { "type": "array" },
+    "tables": { "type": "array" },
+    "claims": { "type": "array" },
+    "assumptions": { "type": "array" },
+    "uncertainties": { "type": "array" },
+    "warnings": { "type": "array" },
+    "evidence": { "type": "array" },
+    "sources": { "type": "array" },
+    "audit": { "type": "object" }
+  },
+  "additionalProperties": true
+}

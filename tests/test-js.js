@@ -11,7 +11,8 @@ const context = {
   setTimeout,
   clearTimeout,
   Blob: function () {},
-  URL: { createObjectURL() { return ''; }, revokeObjectURL() {} }
+  URL: { createObjectURL() { return ''; }, revokeObjectURL() {} },
+  TextEncoder, TextDecoder, Uint8Array, Uint32Array, atob, btoa
 };
 context.window.window = context.window;
 context.window.localStorage = localStorage;
@@ -36,16 +37,22 @@ load('assets/js/modules/biology-lab.js');
 load('assets/js/modules/astronomy-lab.js');
 load('assets/js/modules/materials-lab.js');
 load('assets/js/modules/earth-lab.js');
+load('assets/js/modules/energy-lab.js');
+load('assets/js/modules/visualization.js');
+load('assets/js/modules/dimensional-visualization.js');
+load('assets/js/modules/data-management.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.8.0', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.9.1', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
 assert(Array.isArray(blankProject.materialsRecords) && Array.isArray(blankProject.crystallographyRecords) && Array.isArray(blankProject.materialsValidationRecords), 'Materials project collections missing');
 assert(Array.isArray(blankProject.earthRecords) && Array.isArray(blankProject.oceanRecords) && Array.isArray(blankProject.earthValidationRecords), 'Earth systems project collections missing');
+assert(Array.isArray(blankProject.energyRecords) && Array.isArray(blankProject.gridRecords) && Array.isArray(blankProject.energyValidationRecords), 'Energy project collections missing');
+assert(Array.isArray(blankProject.visualizations) && Array.isArray(blankProject.dimensionalScenes) && Array.isArray(blankProject.chartExports) && Array.isArray(blankProject.analysisPackets), 'Visualization project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -199,13 +206,95 @@ assert(Math.abs(marineDiversity.shannonIndex - Math.log(4)) < 1e-8, 'Marine dive
 const earthValidation = Earth.runBenchmarks();
 assert(earthValidation.failed === 0 && earthValidation.total >= 12, 'Earth systems benchmark validation failed');
 
+
+const Energy = context.window.SCLab.EnergyLab;
+assert(Energy.definitions.length >= 100, 'Expected substantive energy and engineering method registry');
+assert(Energy.definitions.every(def => typeof Energy.tools[def.id] === 'function'), 'Every energy definition must have an implementation');
+assert(new Set(Energy.definitions.map(def => def.id)).size === Energy.definitions.length, 'Energy method identifiers must be unique');
+const pvEnergy = Energy.tools.pvPower({ irradianceWm2: 1000, areaM2: 10, moduleEfficiency: 0.2, systemFactor: 1 });
+assert(Math.abs(pvEnergy.dcPowerKW - 2) < 1e-12, 'PV output failed');
+const windEnergy = Energy.tools.windPower({ airDensityKgM3: 1.225, sweptAreaM2: 100, windSpeedMS: 8, powerCoefficient: 0.4 });
+assert(Math.abs(windEnergy.powerKW - 12.544) < 1e-9, 'Wind output failed');
+const hydroEnergy = Energy.tools.hydroPower({ waterDensityKgM3: 1000, flowM3S: 1, headM: 10, efficiency: 1 });
+assert(Math.abs(hydroEnergy.powerW - 98066.5) < 1e-6, 'Hydropower failed');
+const storageEnergy = Energy.tools.batteryEnergy({ voltageV: 48, capacityAh: 100, usableFraction: 0.8 });
+assert(Math.abs(storageEnergy.usableEnergyKWh - 3.84) < 1e-12, 'Battery energy failed');
+const gridEnergy = Energy.tools.threePhasePower({ lineVoltageV: 400, lineCurrentA: 100, powerFactor: 1 });
+assert(Math.abs(gridEnergy.realPowerW - 69282.0323) < 0.1, 'Three-phase power failed');
+const thermalEnergy = Energy.tools.conduction({ thermalConductivityWmK: 0.04, areaM2: 100, tempHotC: 20, tempColdC: 0, thicknessM: 0.2 });
+assert(Math.abs(thermalEnergy.heatTransferW - 400) < 1e-12, 'Thermal conduction failed');
+const lcoeEnergy = Energy.tools.lcoe({ capitalCost: 0.000001, annualFixedCost: 0, variableCostPerMWh: 50, annualEnergyMWh: 100, discountRate: 0, lifetimeYears: 1 });
+assert(Math.abs(lcoeEnergy.lcoePerMWh - 50) < 1e-6, 'LCOE failed');
+const reliabilityEnergy = Energy.tools.seriesReliability({ componentReliabilities: '0.9,0.8' });
+assert(Math.abs(reliabilityEnergy.systemReliability - 0.72) < 1e-12, 'Series reliability failed');
+const energyValidation = Energy.runBenchmarks();
+assert(energyValidation.failed === 0 && energyValidation.total >= 12, 'Energy benchmark validation failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
 assert(Math.abs(Calculators.run('michaelis', { vmax: 100, substrate: 8, km: 2 }).rate - 80) < 1e-9, 'Michaelis-Menten failed');
 
+
+const Visualization = context.window.SCLab.Visualization;
+const scalarContract = Visualization.makeContract({ methodId:'test.scalar', title:'Scalar test', inputs:{x:2}, outputs:{alpha:10,beta:4}, project:blankProject });
+assert(scalarContract.schema === 'sc-lab-analysis/1.0' && scalarContract.chartSpec.type === 'bar', 'Universal scalar result contract failed');
+assert(scalarContract.audit.inputFingerprint && scalarContract.audit.outputFingerprint, 'Analysis audit fingerprints missing');
+const scalarSvg = Visualization.renderSVG(scalarContract.chartSpec, { theme:'institutional', aspect:'16:9' });
+assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.1'), 'Universal SVG renderer failed');
+assert(Visualization.csv(scalarContract).includes('metric,value') || Visualization.csv(scalarContract).includes('label,value'), 'Universal CSV export failed');
+const seriesContract = Visualization.makeContract({ methodId:'test.series', title:'Series test', outputs:{series:[{x:0,y:1},{x:1,y:3},{x:2,y:2}]} });
+assert(seriesContract.chartSpec.type === 'line' && seriesContract.chartSpec.data.length === 3, 'Series chart inference failed');
+const packet = Visualization.analysisPacket(seriesContract, Visualization.renderSVG(seriesContract.chartSpec));
+assert(packet.packetType === 'scientific-analysis' && packet.charts.length === 1 && packet.analysis.methodId === 'test.series', 'Decision Studio analysis packet failed');
+const fakeJpeg = 'data:image/jpeg;base64,' + Buffer.from([255,216,255,217]).toString('base64');
+const pdfBytes = Visualization.makeJpegPdf(fakeJpeg, 10, 10, 'PDF test');
+assert(pdfBytes.length > 400 && Buffer.from(pdfBytes).toString('latin1').startsWith('%PDF-1.4'), 'Direct PDF generator failed');
+
+
+const Dimensional = context.window.SCLab.DimensionalVisualization;
+const tesseract = Dimensional.presets.tesseract4d();
+assert(tesseract.dimensions === 4 && tesseract.vertices.length === 16 && tesseract.edges.length === 32, 'Tesseract topology failed');
+const simplex4d = Dimensional.presets.simplex4d();
+assert(simplex4d.vertices.length === 5 && simplex4d.edges.length === 10, '4-simplex topology failed');
+const cell16 = Dimensional.presets.crossPolytope4d();
+assert(cell16.vertices.length === 8 && cell16.edges.length === 24, '16-cell topology failed');
+const rotated4 = Dimensional.rotate4([1,2,3,4], {xw:90,yz:33});
+const normBefore = Math.sqrt(1+4+9+16), normAfter = Math.sqrt(rotated4.reduce((sum,v)=>sum+v*v,0));
+assert(Math.abs(normBefore-normAfter) < 1e-10, '4D rotation must preserve Euclidean norm');
+const projected = Dimensional.project4To3(Dimensional.rotate4([1,1,1,1], {xw:25,yw:-15}), 4);
+assert(projected.length === 3 && projected.every(Number.isFinite), '4D projection failed');
+const tesseractSvg = Dimensional.renderSVG(tesseract, {theme:'institutional',rotation4:{xw:25,yw:-18,zw:12},rotation3:{x:18,y:-24,z:8}});
+assert(tesseractSvg.includes('<svg') && tesseractSvg.includes('4D → 3D → 2D') && tesseractSvg.includes('16 vertices'), 'Projected 4D SVG renderer failed');
+const derivedScene = Dimensional.sceneFromContract(scalarContract, 4);
+assert(derivedScene.dimensions === 4 && derivedScene.metadata.derived === true && derivedScene.metadata.warning, 'Universal derived result-space scene failed');
+const parsedScene = Dimensional.parseScene('{"dimensions":3,"title":"Triangle","vertices":[[0,0,0],[1,0,0],[0,1,0]],"edges":[[0,1],[1,2],[2,0]]}');
+assert(parsedScene.vertices.length === 3 && parsedScene.edges.length === 3, 'Custom scene parser failed');
+const sceneContract = Dimensional.sceneContract(tesseract,tesseractSvg,blankProject,seriesContract);
+const scenePacket = Visualization.analysisPacket(sceneContract,tesseractSvg);
+assert(scenePacket.scenes.length === 1 && scenePacket.charts.length === 0 && scenePacket.scenes[0].dimensions === 4, 'Decision Studio dimensional scene handoff failed');
+const packageEntries = Visualization.analysisPackageEntries(sceneContract,tesseractSvg);
+assert(packageEntries['analysis.json'] && packageEntries['chart.svg'] && packageEntries['scene.json'] && packageEntries['decision-studio-packet.json'], 'Analysis package entries failed');
+
+const DataManagement = context.window.SCLab.DataManagement;
+const zipBytes = DataManagement.makeZip({'workspace.json':'{"ok":true}','README.md':'test'});
+const zipEntries = DataManagement.parseStoredZip(zipBytes);
+assert(new TextDecoder().decode(zipEntries['workspace.json']) === '{"ok":true}', 'Workspace ZIP round trip failed');
+const projectStore = new context.window.SCLab.Projects();
+projectStore.add('notes',{title:'Reset note',body:'remove me'},'test note');
+projectStore.add('observations',{title:'Reset observation'},'test observation');
+projectStore.add('visualizations',{title:'Saved chart'},'test chart');
+const beforeReset = DataManagement.counts(projectStore);
+assert(DataManagement.scopeRemovalCount(projectStore,'notes-observations') >= 2, 'Reset scope count failed');
+assert(beforeReset.notes >= 1 && beforeReset.observations >= 1 && beforeReset.visualizations >= 1, 'Workspace counts failed');
+const backup = DataManagement.workspace(projectStore);
+DataManagement.reset(projectStore,'notes-observations');
+assert(projectStore.get().notes.length === 0 && projectStore.get().observations.length === 0 && projectStore.get().visualizations.length >= 1, 'Selective notes and observations reset failed');
+const restored = DataManagement.restore(projectStore,backup,'replace');
+assert(restored.restored >= 1 && projectStore.get().notes.length >= 1, 'Workspace restore failed');
+
 const Workspace = context.window.SCLab.Workspace;
-assert(Workspace.modules.length >= 17, 'Expected grouped module catalog');
+assert(Workspace.modules.length >= 19, 'Expected grouped module catalog');
 assert(Workspace.quickTools.length >= 16, 'Expected quick scientific tools');
 const search = Workspace.search('stoichiometry', Calculators.definitions);
 assert(search.length && search[0].id === 'stoichiometry', 'Command search failed');
@@ -213,4 +302,4 @@ const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: '
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${Materials.definitions.length} materials methods, ${Earth.definitions.length} Earth systems methods, ${validationReport.total + biologyValidation.total + astroValidation.total + materialsValidation.total + earthValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${Materials.definitions.length} materials methods, ${Earth.definitions.length} Earth systems methods, ${Energy.definitions.length} energy methods, ${validationReport.total + biologyValidation.total + astroValidation.total + materialsValidation.total + earthValidation.total + energyValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);

@@ -230,7 +230,7 @@
     if (def.id==='ndvi' && Math.abs(result.ndvi)>1) { status='invalid'; warnings.push('NDVI must lie between −1 and 1 for finite reflectances.'); }
     if (def.id==='seawaterDensityLinear' && (result.densityKgM3<900 || result.densityKgM3>1200)) { status='invalid'; warnings.push('Computed density is outside a plausible seawater range.'); }
     if (def.id==='landslideFactorSafety' && result.factorOfSafety<1) warnings.push('Computed factor of safety is below one.');
-    result._validation={status,method:def.name,warnings,constantsVersion:'SI 2019 constants; Earth systems release 0.8.0',equation:def.equation,assumptions:def.assumptions};
+    result._validation={status,method:def.name,warnings,constantsVersion:'SI 2019 constants; Earth systems release 0.9.0',equation:def.equation,assumptions:def.assumptions};
     return result;
   }
   function run(id,input){const def=definitions.find(d=>d.id===id);if(!def||!rawTools[id])throw new Error('Unknown Earth systems method.');return validate(def,input,rawTools[id](input));}

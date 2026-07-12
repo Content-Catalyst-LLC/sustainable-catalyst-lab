@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-analysis-1.0.schema.json",
+  "title": "Sustainable Catalyst Lab Analysis Contract",
+  "type": "object",
+  "required": ["schema", "schemaVersion", "id", "methodId", "methodVersion", "title", "createdAt", "inputs", "outputs", "audit"],
+  "properties": {
+    "schema": { "const": "sc-lab-analysis/1.0" },
+    "schemaVersion": { "const": "1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "methodId": { "type": "string", "minLength": 1 },
+    "methodVersion": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "subtitle": { "type": "string" },
+    "domain": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "status": { "type": "string" },
+    "inputs": { "type": "object" },
+    "outputs": {},
+    "equation": { "type": "string" },
+    "assumptions": { "type": "array" },
+    "warnings": { "type": "array" },
+    "sources": { "type": "array" },
+    "project": { "type": ["object", "null"] },
+    "chartSpec": { "type": ["object", "null"] },
+    "sceneSpec": { "type": ["object", "null"] },
+    "svg": { "type": "string" },
+    "audit": {
+      "type": "object",
+      "required": ["application", "applicationVersion", "contractVersion", "inputFingerprint", "outputFingerprint", "generatedAt"]
+    }
+  },
+  "additionalProperties": true
+}

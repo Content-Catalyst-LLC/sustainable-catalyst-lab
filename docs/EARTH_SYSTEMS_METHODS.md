@@ -1,6 +1,6 @@
 # Earth, Climate, Ocean, and Marine Systems Methods
 
-Sustainable Catalyst Lab v0.8.0 adds 83 browser-based methods grouped into solid Earth, atmosphere, climate, hydrology, ocean, marine systems, remote sensing, hazards, and carbon-cycle work areas.
+Sustainable Catalyst Lab v0.8.0 added 83 browser-based methods grouped into solid Earth, atmosphere, climate, hydrology, ocean, marine systems, remote sensing, hazards, and carbon-cycle work areas.
 
 ## Solid Earth
 

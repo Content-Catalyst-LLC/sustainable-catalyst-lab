@@ -59,6 +59,8 @@
           'astronomy' => 'Astronomy laboratory',
           'materials' => 'Materials laboratory',
           'earth-systems' => 'Earth systems laboratory',
+          'energy-engineering' => 'Energy & engineering',
+          'visualization-studio' => 'Visualization & export',
           'science-engineering' => 'Science & engineering',
         ),
         'Record' => array(
@@ -68,6 +70,7 @@
           'documentation' => 'Documentation',
         ),
         'System' => array(
+          'workspace-data' => 'Workspace data',
           'source-registry' => 'Source registry',
           'system-status' => 'Connector status',
         ),
@@ -130,6 +133,10 @@
             <button type="button" data-quick-tool="earth-climate-analysis"><strong>Earth &amp; Climate Analysis</strong><span>Atmosphere, trends, hydrology, carbon</span></button>
             <button type="button" data-quick-tool="ocean-marine-analysis"><strong>Ocean &amp; Marine Systems</strong><span>Waves, circulation, ecology, fisheries</span></button>
             <button type="button" data-quick-tool="remote-hazards"><strong>Remote Sensing &amp; Hazards</strong><span>Indices, classification, recurrence, runup</span></button>
+            <button type="button" data-quick-tool="energy-systems"><strong>Energy Systems</strong><span>Balances, efficiency, capacity, intensity</span></button>
+            <button type="button" data-quick-tool="renewable-energy"><strong>Renewable Energy</strong><span>Solar, wind, hydro, and resource analysis</span></button>
+            <button type="button" data-quick-tool="storage-grid"><strong>Storage &amp; Grid</strong><span>Batteries, hydrogen, power systems, reliability</span></button>
+            <button type="button" data-quick-tool="energy-economics"><strong>Energy Economics</strong><span>LCOE, LCOS, NPV, emissions, reliability</span></button>
             <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
             <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
             <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
@@ -593,6 +600,113 @@
         </div>
       </section>
 
+
+      <section class="sc-lab-panel" data-lab-module="energy-engineering" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/ENERGY-ENGINEERING</span><h3>Energy and engineering laboratory</h3></div>
+          <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button" data-energy-experiment>Create energy systems study</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-energy-run-benchmarks>Run validation suite</button></div>
+        </div>
+        <div class="sc-lab-method-note">Energy and engineering analyses preserve system boundaries, units, conversion chains, efficiencies, operating conditions, emissions factors, economic assumptions, reliability assumptions, validation warnings, project links, and notebook-ready records. Screening equations do not replace detailed electrical studies, equipment certification, dispatch simulation, process design, safety engineering, utility interconnection studies, or licensed professional review.</div>
+        <div class="sc-lab-tabs sc-lab-tabs-wrap sc-lab-energy-tabs">
+          <button type="button" class="is-active" data-energy-tab="balances">Balances</button>
+          <button type="button" data-energy-tab="solar">Solar</button>
+          <button type="button" data-energy-tab="wind">Wind</button>
+          <button type="button" data-energy-tab="hydro">Hydro</button>
+          <button type="button" data-energy-tab="storage">Storage</button>
+          <button type="button" data-energy-tab="grid">Power &amp; grid</button>
+          <button type="button" data-energy-tab="thermal">Thermal systems</button>
+          <button type="button" data-energy-tab="fuels">Fuels &amp; hydrogen</button>
+          <button type="button" data-energy-tab="emissions">Emissions</button>
+          <button type="button" data-energy-tab="economics">Techno-economics</button>
+          <button type="button" data-energy-tab="reliability">Reliability</button>
+          <button type="button" data-energy-tab="validation">Validation</button>
+        </div>
+        <div data-energy-pane="balances"><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="balances"></div></div>
+        <div data-energy-pane="solar" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="solar"></div></div>
+        <div data-energy-pane="wind" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="wind"></div></div>
+        <div data-energy-pane="hydro" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="hydro"></div></div>
+        <div data-energy-pane="storage" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="storage"></div></div>
+        <div data-energy-pane="grid" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="grid"></div></div>
+        <div data-energy-pane="thermal" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="thermal"></div></div>
+        <div data-energy-pane="fuels" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="fuels"></div></div>
+        <div data-energy-pane="emissions" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="emissions"></div></div>
+        <div data-energy-pane="economics" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="economics"></div></div>
+        <div data-energy-pane="reliability" hidden><div class="sc-lab-grid sc-lab-grid-2" data-energy-tool-grid="reliability"></div></div>
+        <div data-energy-pane="validation" hidden>
+          <article class="sc-lab-tool sc-lab-tool-wide sc-lab-energy-validation-dashboard">
+            <h4>Energy and engineering numerical validation suite</h4>
+            <p>Reference cases cover energy closure, solar, wind, hydro, storage, three-phase power, thermal conduction, hydrogen production, discounted cash flow, levelized cost, component reliability, and expected energy not served.</p>
+            <div data-energy-benchmark-table class="sc-lab-data-note">Run the validation suite to compare the energy engine with deterministic reference cases.</div>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-energy-save-benchmarks>Save validation report</button></div>
+          </article>
+          <article class="sc-lab-tool sc-lab-tool-wide">
+            <h4>Energy and engineering study templates</h4>
+            <div class="sc-lab-template-list"><span>Facility energy balance and intensity</span><span>Solar resource and PV sizing</span><span>Wind resource and turbine performance</span><span>Hydropower and pumped storage</span><span>Battery autonomy and degradation</span><span>Grid losses and power-factor correction</span><span>Thermal system and heat-exchanger analysis</span><span>Hydrogen production and conversion</span><span>Lifecycle emissions and carbon payback</span><span>LCOE, LCOS, NPV, and IRR comparison</span><span>N−1 and loss-of-load reliability study</span></div>
+          </article>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel" data-lab-module="visualization-studio" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/VISUALIZATION</span><h3>Universal visualization and export studio</h3></div>
+          <span class="sc-lab-status-dot is-ready">Shared engine</span>
+        </div>
+        <div class="sc-lab-method-note">Run any Lab calculation and its structured result will be captured here. The same result contract drives the chart, SVG, PNG, PDF, CSV, JSON, project record, notebook entry, and Decision Studio analysis packet.</div>
+        <div class="sc-lab-viz-layout">
+          <aside class="sc-lab-viz-controls">
+            <label>Figure title<input type="text" data-viz-title value="Scientific analysis"></label>
+            <label>Subtitle<textarea rows="3" data-viz-subtitle placeholder="Method, scenario, or interpretation boundary"></textarea></label>
+            <label>Chart type<select data-viz-type><option value="auto">Automatic</option><option value="line">Line</option><option value="scatter">Scatter</option><option value="bar">Bar</option><option value="summary">Summary</option></select></label>
+            <label>Theme<select data-viz-theme></select></label>
+            <label>Aspect ratio<select data-viz-aspect><option value="16:9">16:9 presentation</option><option value="3:2">3:2 report</option><option value="4:3">4:3 document</option><option value="1:1">1:1 square</option></select></label>
+            <label class="sc-lab-check"><input type="checkbox" checked data-viz-grid> Show grid</label>
+            <label class="sc-lab-check"><input type="checkbox" checked data-viz-legend> Show legend</label>
+            <button type="button" class="sc-lab-button sc-lab-button-primary" data-viz-render>Render figure</button>
+          </aside>
+          <div class="sc-lab-viz-workspace">
+            <div class="sc-lab-doc-status" data-viz-status>Run any calculation to create a visualization-ready result.</div>
+            <div class="sc-lab-viz-chart" data-viz-chart><div class="sc-lab-data-note">No analysis has been captured yet.</div></div>
+            <div class="sc-lab-viz-export-grid" aria-label="Visualization export actions">
+              <button type="button" class="sc-lab-button" data-viz-export-svg>Download SVG</button>
+              <button type="button" class="sc-lab-button" data-viz-export-png>Download PNG</button>
+              <button type="button" class="sc-lab-button" data-viz-export-pdf>Download PDF</button>
+              <button type="button" class="sc-lab-button" data-viz-export-csv>Download CSV</button>
+              <button type="button" class="sc-lab-button" data-viz-export-json>Download analysis JSON</button>
+              <button type="button" class="sc-lab-button" data-viz-save>Save to project</button>
+              <button type="button" class="sc-lab-button" data-viz-notebook>Add to notebook</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-viz-handoff-studio>Send to Decision Studio</button>
+            </div>
+            <details class="sc-lab-viz-audit"><summary>Analysis and audit metadata</summary><pre data-viz-meta>{}</pre></details>
+
+            <section class="sc-lab-dimensional-studio" aria-labelledby="sc-lab-dimensional-title">
+              <div class="sc-lab-dimensional-head">
+                <div><span class="sc-lab-section-code">LAB/3D-4D</span><h4 id="sc-lab-dimensional-title">Dimensional scene and polytope viewer</h4></div>
+                <span class="sc-lab-status-dot is-ready">Interactive projection</span>
+              </div>
+              <p class="sc-lab-method-note">Render true three-coordinate scenes or four-coordinate models projected 4D → 3D → 2D. Current results use direct numeric fields when available; otherwise the viewer labels the output as a normalized result-space glyph rather than physical geometry.</p>
+              <div class="sc-lab-dimensional-layout">
+                <aside class="sc-lab-dimensional-controls">
+                  <label>Scene source<select data-dim-preset><option value="tesseract4d">4D tesseract</option><option value="simplex4d">4D simplex / 5-cell</option><option value="crossPolytope4d">4D 16-cell</option><option value="cube3d">3D cube</option><option value="current4d">Current analysis as 4D result space</option><option value="current3d">Current analysis as 3D result space</option><option value="custom">Custom scene JSON</option></select></label>
+                  <label>Theme<select data-dim-theme></select></label>
+                  <div class="sc-lab-dimensional-actions"><button type="button" class="sc-lab-button" data-dim-load-analysis>Load current analysis</button><button type="button" class="sc-lab-button" data-dim-reset>Reset view</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-dim-render>Render</button><button type="button" class="sc-lab-button" data-dim-animate>Animate</button></div>
+                  <div class="sc-lab-dimensional-toggles"><label class="sc-lab-check"><input type="checkbox" checked data-dim-show-vertices> Vertices</label><label class="sc-lab-check"><input type="checkbox" checked data-dim-show-edges> Edges</label><label class="sc-lab-check"><input type="checkbox" data-dim-show-labels> Labels</label></div>
+                  <details open><summary>3D camera rotation</summary><div class="sc-lab-slider-grid"><label>X rotation<input type="range" min="-180" max="180" step="1" value="18" data-dim-rotation="x"></label><label>Y rotation<input type="range" min="-180" max="180" step="1" value="-24" data-dim-rotation="y"></label><label>Z rotation<input type="range" min="-180" max="180" step="1" value="8" data-dim-rotation="z"></label><label>3D perspective<input type="range" min="2.2" max="14" step="0.1" value="6" data-dim-distance3></label><label>Scene scale<input type="range" min="0.45" max="1.8" step="0.05" value="1" data-dim-scale></label></div></details>
+                  <details><summary>4D plane rotation</summary><div class="sc-lab-slider-grid"><label>XY<input type="range" min="-180" max="180" step="1" value="0" data-dim-rotation="xy"></label><label>XZ<input type="range" min="-180" max="180" step="1" value="0" data-dim-rotation="xz"></label><label>XW<input type="range" min="-180" max="180" step="1" value="22" data-dim-rotation="xw"></label><label>YZ<input type="range" min="-180" max="180" step="1" value="0" data-dim-rotation="yz"></label><label>YW<input type="range" min="-180" max="180" step="1" value="-18" data-dim-rotation="yw"></label><label>ZW<input type="range" min="-180" max="180" step="1" value="14" data-dim-rotation="zw"></label><label>4D perspective<input type="range" min="1.5" max="10" step="0.1" value="4" data-dim-distance4></label></div></details>
+                  <details><summary>Custom scene specification</summary><label>Scene JSON<textarea rows="10" data-dim-custom>{"dimensions":4,"title":"Custom four-dimensional scene","vertices":[[-1,-1,-1,-1],[1,-1,-1,-1],[1,1,-1,-1],[-1,1,-1,-1]],"edges":[[0,1],[1,2],[2,3],[3,0]]}</textarea></label></details>
+                </aside>
+                <div class="sc-lab-dimensional-workspace">
+                  <div class="sc-lab-doc-status" data-dim-status>Preparing dimensional scene…</div>
+                  <div class="sc-lab-dimensional-chart" data-dim-chart></div>
+                  <div class="sc-lab-viz-export-grid" aria-label="Dimensional visualization export actions"><button type="button" class="sc-lab-button" data-dim-export-svg>Download SVG</button><button type="button" class="sc-lab-button" data-dim-export-png>Download PNG</button><button type="button" class="sc-lab-button" data-dim-export-pdf>Download PDF</button><button type="button" class="sc-lab-button" data-dim-export-json>Download scene JSON</button><button type="button" class="sc-lab-button" data-dim-export-package>Download scene package</button><button type="button" class="sc-lab-button" data-dim-save>Save scene to project</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-dim-handoff>Send scene to Decision Studio</button></div>
+                  <details class="sc-lab-viz-audit"><summary>Scene and projection metadata</summary><pre data-dim-meta>{}</pre></details>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel" data-lab-module="science-engineering" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/ANALYSIS</span><h3>Science and engineering tools</h3></div></div>
         <div class="sc-lab-tabs"><button class="is-active" data-analysis-tab="calculators">Calculators</button><button data-analysis-tab="spectrometry">Spectrometry Studio</button></div>
@@ -672,6 +786,40 @@
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/DOCS</span><h3>Data-connected documentation</h3></div></div>
         <div class="sc-lab-toolbar"><label>Document type<select data-doc-type><option value="research-report">Research report</option><option value="experiment-report">Experiment report</option><option value="scientific-brief">Scientific evidence brief</option><option value="technical-record">Technical project record</option></select></label><label>Title<input data-doc-title value="Lab project report"></label><button class="sc-lab-button sc-lab-button-primary" data-generate-doc>Generate</button></div>
         <div class="sc-lab-doc-status" data-doc-status>No document generated.</div><textarea class="sc-lab-doc-editor" rows="24" data-doc-editor></textarea><div class="sc-lab-inline-actions"><button class="sc-lab-button" data-save-doc>Save snapshot</button><button class="sc-lab-button" data-export-doc-md>Export Markdown</button><button class="sc-lab-button" data-export-doc-html>Export HTML</button></div>
+      </section>
+
+
+      <section class="sc-lab-panel" data-lab-module="workspace-data" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/DATA-MANAGEMENT</span><h3>Workspace backup, restore, and reset</h3></div>
+          <span class="sc-lab-status-dot is-ready">Local workspace</span>
+        </div>
+        <div class="sc-lab-method-note">These controls manage Sustainable Catalyst Lab data stored in this browser. Export a backup before destructive changes. Resetting local Lab data does not deactivate the WordPress plugin or remove the public Lab page.</div>
+        <div data-workspace-counts></div>
+        <div class="sc-lab-grid sc-lab-grid-2 sc-lab-workspace-management">
+          <article class="sc-lab-tool">
+            <h4>Back up the workspace</h4>
+            <p>Download every project, record, chart, analysis packet, note, observation, and compatible preference.</p>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-workspace-export-json>Export workspace JSON</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-workspace-export-zip>Export complete ZIP</button></div>
+            <p class="sc-lab-data-note">The ZIP contains workspace.json, project JSON files, notebook Markdown, observations CSV, visualization records, analysis packets, a manifest, and restore instructions.</p>
+          </article>
+          <article class="sc-lab-tool">
+            <h4>Restore a backup</h4>
+            <label>Restore mode<select data-restore-mode><option value="copy">Import projects as copies</option><option value="merge">Merge by project identifier</option><option value="replace">Replace the current workspace</option></select></label>
+            <input type="file" accept="application/json,.json,application/zip,.zip" hidden data-workspace-restore-file>
+            <button type="button" class="sc-lab-button sc-lab-button-primary" data-workspace-restore>Select backup</button>
+            <div class="sc-lab-data-note" data-restore-status>No restore file selected.</div>
+          </article>
+          <article class="sc-lab-tool sc-lab-tool-wide sc-lab-danger-zone">
+            <h4>Selective reset and factory reset</h4>
+            <label>Reset scope<select data-reset-scope><option value="preferences">Reset interface and visualization settings</option><option value="notes-observations">Clear notes and observations across all projects</option><option value="analysis-history">Clear calculation and analysis history across all projects</option><option value="active-project">Reset the active project but keep its project shell</option><option value="delete-active">Delete the active project</option><option value="factory-reset">Factory-reset the complete local Lab workspace</option></select></label>
+            <div class="sc-lab-reset-description" data-reset-description></div><div class="sc-lab-reset-scope-count" data-reset-scope-count></div>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-reset-backup>Download backup first</button><span data-reset-backup-state></span></div>
+            <label>Type <strong>RESET</strong> to confirm<input type="text" autocomplete="off" data-reset-confirm></label>
+            <button type="button" class="sc-lab-button sc-lab-button-danger" data-reset-apply disabled>Apply selected reset</button>
+            <details><summary>Last deletion receipt</summary><pre data-reset-receipt>No reset has been completed in this session.</pre></details>
+          </article>
+        </div>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="source-registry" hidden>

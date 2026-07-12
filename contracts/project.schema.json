@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.8.0.schema.json",
-  "title": "Sustainable Catalyst Lab Project v0.8.0",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.9.1.schema.json",
+  "title": "Sustainable Catalyst Lab Project v0.9.1",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "0.8.0"
+      "const": "0.9.1"
     },
     "id": {
       "type": "string"
@@ -250,6 +250,60 @@
       "type": "array"
     },
     "earthValidationRecords": {
+      "type": "array"
+    },
+    "energyRecords": {
+      "type": "array"
+    },
+    "engineeringRecords": {
+      "type": "array"
+    },
+    "energySystemRecords": {
+      "type": "array"
+    },
+    "solarRecords": {
+      "type": "array"
+    },
+    "windRecords": {
+      "type": "array"
+    },
+    "hydroRecords": {
+      "type": "array"
+    },
+    "storageRecords": {
+      "type": "array"
+    },
+    "gridRecords": {
+      "type": "array"
+    },
+    "thermalSystemRecords": {
+      "type": "array"
+    },
+    "fuelHydrogenRecords": {
+      "type": "array"
+    },
+    "emissionsRecords": {
+      "type": "array"
+    },
+    "technoEconomicRecords": {
+      "type": "array"
+    },
+    "reliabilityRecords": {
+      "type": "array"
+    },
+    "energyValidationRecords": {
+      "type": "array"
+    },
+    "visualizations": {
+      "type": "array"
+    },
+    "dimensionalScenes": {
+      "type": "array"
+    },
+    "chartExports": {
+      "type": "array"
+    },
+    "analysisPackets": {
       "type": "array"
     }
   },

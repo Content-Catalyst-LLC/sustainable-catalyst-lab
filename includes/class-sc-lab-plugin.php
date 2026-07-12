@@ -30,6 +30,9 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_astronomy', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_visualization', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_workspace_data', array($this, 'shortcode_focus'));
     }
 
     public function enqueue_assets() {
@@ -38,7 +41,7 @@ final class SC_Lab_Plugin {
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','workspace');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','visualization','dimensional-visualization','data-management','workspace');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
@@ -84,6 +87,9 @@ final class SC_Lab_Plugin {
             'sc_lab_astronomy' => 'astronomy',
             'sc_lab_materials' => 'materials',
             'sc_lab_earth_systems' => 'earth-systems',
+            'sc_lab_energy' => 'energy-engineering',
+            'sc_lab_visualization' => 'visualization-studio',
+            'sc_lab_workspace_data' => 'workspace-data',
         );
         $module = isset($map[$tag]) ? $map[$tag] : 'overview';
         return $this->render_app($module, 'default');
