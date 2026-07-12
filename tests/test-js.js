@@ -32,12 +32,14 @@ load('assets/js/modules/datasets.js');
 load('assets/js/modules/observations.js');
 load('assets/js/modules/physics-lab.js');
 load('assets/js/modules/physics-validation.js');
+load('assets/js/modules/biology-lab.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.4.1', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.5.0', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
+assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -108,18 +110,42 @@ assert(Math.abs(propagated.value - 12) < 1e-12 && propagated.standardUncertainty
 const weighted = Physics.tools.weightedMean({ measurements:[{value:9.8,uncertainty:0.1},{value:10,uncertainty:0.2}] });
 assert(weighted.weightedMean > 9.83 && weighted.weightedMean < 9.85 && weighted.reducedChiSquare > 0, 'Weighted mean failed');
 
+
+const Biology = context.window.SCLab.BiologyLab;
+assert(Biology.definitions.length >= 40, 'Expected substantive biology method registry');
+const seqStats = Biology.tools.sequenceStats({ sequence: 'GCGCATAT' });
+assert(Math.abs(seqStats.gcPercent - 50) < 1e-12 && seqStats.length === 8, 'DNA sequence statistics failed');
+const translated = Biology.tools.translate({ sequence: 'ATGGGCTAA', frame: 0, stopAtStop: 'yes' });
+assert(translated.protein === 'MG*', `Translation failed: ${translated.protein}`);
+const alignment = Biology.tools.globalAlignment({ sequenceA: 'GATTACA', sequenceB: 'GCATGCU', match: 1, mismatch: -1, gap: -2 });
+assert(alignment.alignmentLength >= 7 && Number.isFinite(alignment.score), 'Global alignment failed');
+const local = Biology.tools.localAlignment({ sequenceA: 'TGTTACGG', sequenceB: 'GGTTGACTA', match: 2, mismatch: -1, gap: -2 });
+assert(local.score > 0 && local.identityPercent > 0, 'Local alignment failed');
+const enzyme = Biology.tools.michaelisMenten({ vmax: 100, substrate: 8, km: 2 });
+assert(Math.abs(enzyme.rate - 80) < 1e-12, 'Michaelis-Menten failed');
+const qpcr = Biology.tools.qpcr({ targetSampleCt: 22, targetReferenceCt: 18, controlSampleCt: 25, controlReferenceCt: 18, efficiency: 2 });
+assert(Math.abs(qpcr.relativeExpression - 8) < 1e-12, 'qPCR relative expression failed');
+const diversity = Biology.tools.shannonDiversity({ counts: '1,1,1,1' });
+assert(Math.abs(diversity.shannonIndex - Math.log(4)) < 1e-12, 'Shannon diversity failed');
+const ecology = Biology.tools.logisticGrowth({ initial: 50, carryingCapacity: 1000, growthRate: 0.4, time: 20 });
+assert(ecology.population > 900 && ecology.series.length === 101, 'Logistic growth failed');
+const protein = Biology.tools.proteinStats({ sequence: 'MKWVTFISLLFLFSSAYSRGVFRR' });
+assert(protein.length === 24 && protein.molecularWeightDa > 2000, 'Protein properties failed');
+const biologyValidation = Biology.runBenchmarks();
+assert(biologyValidation.failed === 0 && biologyValidation.total >= 8, 'Biology benchmark validation failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
 assert(Math.abs(Calculators.run('michaelis', { vmax: 100, substrate: 8, km: 2 }).rate - 80) < 1e-9, 'Michaelis-Menten failed');
 
 const Workspace = context.window.SCLab.Workspace;
-assert(Workspace.modules.length >= 16, 'Expected grouped module catalog');
-assert(Workspace.quickTools.length >= 12, 'Expected quick scientific tools');
+assert(Workspace.modules.length >= 17, 'Expected grouped module catalog');
+assert(Workspace.quickTools.length >= 16, 'Expected quick scientific tools');
 const search = Workspace.search('stoichiometry', Calculators.definitions);
 assert(search.length && search[0].id === 'stoichiometry', 'Command search failed');
 const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: 'NASA' }], hypotheses: [], calculations: [1], experiments: [1, 2], decisions: [], documents: [] });
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${validationReport.total} validation benchmarks, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${validationReport.total + biologyValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);

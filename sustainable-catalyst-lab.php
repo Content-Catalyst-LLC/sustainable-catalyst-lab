@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, energy, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.4.1
+ * Version: 0.5.0
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
  * Text Domain: sustainable-catalyst-lab
@@ -11,7 +11,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.4.1');
+define('SC_LAB_VERSION', '0.5.0');
 define('SC_LAB_FILE', __FILE__);
 define('SC_LAB_DIR', plugin_dir_path(__FILE__));
 define('SC_LAB_URL', plugin_dir_url(__FILE__));

@@ -96,6 +96,7 @@
       if (item.kind === 'chem-tab') setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', item.tab);
       if (item.kind === 'analysis-tab') setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', item.tab);
       if (item.kind === 'physics-tab') setTab('[data-physics-tab]', 'physicsTab', '[data-physics-pane]', 'physicsPane', item.tab);
+      if (item.kind === 'biology-tab') setTab('[data-biology-tab]', 'biologyTab', '[data-biology-pane]', 'biologyPane', item.tab);
       if (item.kind === 'calculator') {
         setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
         selectCalculator(item.calculatorId);
@@ -205,7 +206,13 @@
         time: item.createdAt,
         meta: 'Calculation'
       }));
-      const rows = [...experiments, ...calculations]
+      const biology = project.biologyRecords.slice(0, 3).map(item => ({
+        title: item.type || 'Biology analysis',
+        body: item.methodId ? `Method: ${item.methodId}` : '',
+        time: item.createdAt || item.recordedAt,
+        meta: 'Biology'
+      }));
+      const rows = [...experiments, ...calculations, ...biology]
         .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
         .slice(0, 5);
       qs(root, '[data-project-work]').innerHTML = rows.length
@@ -221,7 +228,8 @@
         ['Calculations', project.calculations.length, 'science-engineering'],
         ['Notes', project.notes.length, 'notebook'],
         ['Decisions', project.decisions.length, 'evidence-decisions'],
-        ['Documents', project.documents.length, 'documentation']
+        ['Documents', project.documents.length, 'documentation'],
+        ['Biology', project.biologyRecords.length, 'biology']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
@@ -460,7 +468,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.4.1' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.5.0' }, `${type} completed`);
       return result;
     }
 
@@ -744,6 +752,9 @@
     // Physics Laboratory.
     Lab.PhysicsLab?.init(root, projects);
 
+    // Biology and Computational Biology Laboratory.
+    Lab.BiologyLab?.init(root, projects);
+
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
     qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
@@ -780,7 +791,8 @@
           notes: project.notes.length,
           calculations: project.calculations.length,
           maps: project.maps.length,
-          physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
+          physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
+          biology: ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
         }
       };
       return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -796,6 +808,9 @@
       const physicsCollections = ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'];
       const physicsRecords = physicsCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
       sections.push('## Physics analyses', '', physicsRecords.length ? physicsRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No physics analyses recorded.', '');
+      const biologyCollections = ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'];
+      const biologyRecords = biologyCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
+      sections.push('## Biology analyses', '', biologyRecords.length ? biologyRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No biology analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
       sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
       sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
@@ -864,7 +879,8 @@
           ['Browser project storage', 'Ready', `${projects.items.length} local project${projects.items.length === 1 ? '' : 's'}`],
           ['Periodic table', Lab.Periodic?.getElements?.().length === 118 ? 'Ready' : 'Loading', `${Lab.Periodic?.getElements?.().length || 0} element records`],
           ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`],
-          ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`]
+          ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`],
+          ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`]
         ];
         target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
         if (showToast) U.toast(root, 'System checks completed.');

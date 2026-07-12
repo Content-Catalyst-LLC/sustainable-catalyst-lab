@@ -1,32 +1,33 @@
-# Sustainable Catalyst Lab v0.4.1
+# Sustainable Catalyst Lab v0.5.0
 
-Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.4.1 strengthens the Physics Laboratory with explicit method metadata, domain validation, numerical benchmark cases, improved plots, comparison baselines, uncertainty propagation, and reproducible validation records.
+Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.5.0 adds a first-class Biology and Computational Biology Laboratory while preserving the live scientific data, chemistry, spectrometry, physics, project, notebook, and documentation systems introduced in earlier releases.
 
 ## Major scientific modules
 
-- Live scientific signals from Earth, natural-event, space, marine, PubMed, and arXiv sources.
-- Climate and Earth-observation map workspace.
+- Live Earth, natural-event, space, marine, PubMed, and arXiv signals.
+- Climate and Earth-observation maps.
 - Scientific Dataset Inspector and source registry.
 - Complete 118-element periodic table.
-- Chemistry Laboratory with composition, reactions, solutions, acid–base, thermochemistry, electrochemistry, kinetics, and calibration.
-- Spectrometry Studio with raw-data preservation, baseline correction, smoothing, normalization, derivatives, conversions, peak characterization, calibration, plotting, and export.
-- Physics Laboratory covering mechanics, waves, thermodynamics, fluids, optics, electromagnetism, circuits, quantum physics, nuclear physics, particle physics, detectors, and measurement.
+- Chemistry Laboratory and reproducible Spectrometry Studio.
+- Physics Laboratory with validation, visualization, uncertainty, particle physics, electromagnetism, circuits, quantum, and nuclear tools.
+- Biology and Computational Biology Laboratory with forty methods across cellular systems, enzyme kinetics, genetics, sequence analysis, proteins, population genetics, ecology, physiology, and measurement.
 - Experiments, evidence, hypotheses, decisions, notebook records, project activity, and data-connected documentation.
 
-## Physics v0.4.1 additions
+## Biology v0.5.0 additions
 
-- Method registry with equations, SI/natural-unit declarations, assumptions, and output descriptions.
-- Per-run validation states: `VALIDATED`, `WARNING`, and `INVALID`.
-- Physical-domain checks for trajectory angles, pendulum amplitude, ideal-gas limits, relativistic speeds, detector time of flight, waveguide cutoff, quantum numbers, binding energy, and other method boundaries.
-- Nine deterministic benchmark cases spanning mechanics, electromagnetism, circuits, photon physics, nuclear decay, and particle decay.
-- Improved accessible SVG plots with grid lines, axes, zero lines, logarithmic frequency support, legends, baseline comparison, SVG export, and CSV export.
-- Power-law uncertainty propagation.
-- Uncertainty-weighted mean, chi-square, reduced chi-square, and Birge ratio.
-- Project collection for validation reports.
+- DNA/RNA composition, reverse complement, transcription, translation, ORF finding, motif search, and k-mer profiling.
+- Needleman–Wunsch global alignment and Smith–Waterman local alignment with browser-size limits.
+- Primer screening, qPCR ΔΔCt, gel migration, consensus sequences, and genetic count chi-square.
+- Protein mass, composition, hydropathy profiles, membrane-segment screening, and approximate isoelectric point.
+- Michaelis–Menten, Hill response, and simplified competitive, noncompetitive, uncompetitive, and mixed inhibition models.
+- Hardy–Weinberg frequencies, one-generation selection, drift expectations, and Jukes–Cantor distance.
+- Shannon and Simpson diversity, logistic growth, Lotka–Volterra simulation, mark–recapture, and allometric scaling.
+- Diffusion, osmosis, membrane Nernst potential, microbial growth, cardiac output, oxygen content, and dose-response tools.
+- Serial dilution, CFU estimation, deterministic bootstrap intervals, eight numerical benchmarks, validation warnings, project records, and notebook routing.
 
 ## Installation
 
-Upload `sustainable-catalyst-lab-plugin-v0.4.1.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
+Upload `sustainable-catalyst-lab-plugin-v0.5.0.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
 
 ```text
 [sc_lab_app]
@@ -40,12 +41,13 @@ Focused interfaces remain available:
 [sc_lab_spectrometry]
 [sc_lab_climate_map]
 [sc_lab_physics]
+[sc_lab_biology]
 ```
 
 ## Compatibility
 
-The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.0 are normalized in place to schema version `0.4.1`. No destructive migration is performed.
+The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.1 are normalized in place to schema version `0.5.0`. No destructive migration is performed.
 
 ## Scientific boundaries
 
-Validation in this release tests numerical implementation and stated model constraints. It does not certify experimental apparatus, engineering safety, radiation practice, high-voltage systems, RF exposure, regulatory compliance, or fitness for safety-critical use. Results require review against accepted methods, calibrated instruments, uncertainty budgets, source data, and qualified professional judgment where applicable.
+The Biology Laboratory supports research planning, education, exploratory analysis, and reproducible computational workflows. Sequence screening, primer estimates, protein-property estimates, population models, physiological calculations, and biological validation states do not constitute clinical, diagnostic, biosafety, taxonomic, ecological, or regulatory certification. Results require appropriate controls, validated methods, calibrated instruments, authoritative databases, uncertainty analysis, and qualified review.

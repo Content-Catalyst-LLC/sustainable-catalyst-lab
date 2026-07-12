@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0 — Biology and Computational Biology Laboratory
+
+- Added a first-class Biology Laboratory with nine scientific work areas.
+- Added forty computational biology methods spanning cellular systems, enzymes, genetics, sequences, proteins, populations, ecology, physiology, and measurement.
+- Added DNA/RNA statistics, reverse complements, transcription, translation, ORF discovery, motif search, k-mer profiles, and aligned-sequence consensus.
+- Added global and local dynamic-programming sequence alignment.
+- Added primer screening, qPCR ΔΔCt, gel migration, and genetic count chi-square.
+- Added protein composition, molecular mass, hydropathy profiles, membrane-segment screening, and approximate pI.
+- Added enzyme kinetics and inhibition models.
+- Added Hardy–Weinberg, selection, drift, molecular-distance, diversity, growth, predator–prey, mark–recapture, and allometric tools.
+- Added physiology and cellular transport calculations.
+- Added serial dilution, CFU estimates, bootstrap intervals, eight biology benchmark cases, validation warnings, and saved validation reports.
+- Added biology-specific project collections, documentation integration, command search, quick tools, status reporting, and focused `[sc_lab_biology]` shortcode.
+- Preserved all v0.1.x–v0.4.1 projects through non-destructive normalization.
+
 ## 0.4.1 — Physics Validation and Visualization Patch
 
 - Added method metadata for equations, input units, output units, and assumptions.
