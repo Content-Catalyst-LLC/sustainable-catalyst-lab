@@ -1,0 +1,237 @@
+{
+  "schema": "sc-lab-method/1.0",
+  "schemaVersion": "1.0",
+  "version": "0.9.3",
+  "assumptions": [
+    "Inputs use the displayed units.",
+    "The implementation follows the explicit portable expression contract.",
+    "Validate domain-specific assumptions before professional use."
+  ],
+  "languages": [
+    "python",
+    "r",
+    "julia",
+    "javascript",
+    "typescript",
+    "sql",
+    "c",
+    "cpp",
+    "fortran",
+    "rust",
+    "go",
+    "haskell"
+  ],
+  "id": "projectile",
+  "domain": "Mechanics",
+  "name": "Projectile motion",
+  "equation": "y = h + v_y t - 1/2 gt²",
+  "constants": {
+    "g": 9.80665
+  },
+  "inputs": [
+    {
+      "id": "speed",
+      "label": "Launch speed",
+      "unit": "m s^-1",
+      "default": 20,
+      "type": "number",
+      "validation": {
+        "min": 0,
+        "exclusive": true
+      }
+    },
+    {
+      "id": "angleDeg",
+      "label": "Launch angle",
+      "unit": "deg",
+      "default": 45,
+      "type": "number",
+      "validation": null
+    },
+    {
+      "id": "height",
+      "label": "Initial height",
+      "unit": "m",
+      "default": 0,
+      "type": "number",
+      "validation": null
+    }
+  ],
+  "derived": [
+    {
+      "id": "angleRad",
+      "label": "Angle",
+      "unit": "rad",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "var": "angleDeg"
+          },
+          {
+            "op": "div",
+            "args": [
+              {
+                "constant": "pi"
+              },
+              {
+                "number": 180
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "velocityY",
+      "label": "Vertical velocity",
+      "unit": "m s^-1",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "var": "speed"
+          },
+          {
+            "fn": "sin",
+            "args": [
+              {
+                "var": "angleRad"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "flightTimeS",
+      "label": "Flight time",
+      "unit": "s",
+      "expression": {
+        "op": "div",
+        "args": [
+          {
+            "op": "add",
+            "args": [
+              {
+                "var": "velocityY"
+              },
+              {
+                "fn": "sqrt",
+                "args": [
+                  {
+                    "op": "add",
+                    "args": [
+                      {
+                        "op": "pow",
+                        "args": [
+                          {
+                            "var": "velocityY"
+                          },
+                          {
+                            "number": 2
+                          }
+                        ]
+                      },
+                      {
+                        "op": "mul",
+                        "args": [
+                          {
+                            "number": 2
+                          },
+                          {
+                            "constant": "g"
+                          },
+                          {
+                            "var": "height"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "constant": "g"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "rangeM",
+      "label": "Range",
+      "unit": "m",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "var": "speed"
+          },
+          {
+            "fn": "cos",
+            "args": [
+              {
+                "var": "angleRad"
+              }
+            ]
+          },
+          {
+            "var": "flightTimeS"
+          }
+        ]
+      }
+    },
+    {
+      "id": "maxHeightM",
+      "label": "Maximum height",
+      "unit": "m",
+      "expression": {
+        "op": "add",
+        "args": [
+          {
+            "var": "height"
+          },
+          {
+            "op": "div",
+            "args": [
+              {
+                "op": "pow",
+                "args": [
+                  {
+                    "var": "velocityY"
+                  },
+                  {
+                    "number": 2
+                  }
+                ]
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "number": 2
+                  },
+                  {
+                    "constant": "g"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "flightTimeS",
+      "label": "Flight time",
+      "unit": "s",
+      "expression": {
+        "var": "flightTimeS"
+      }
+    }
+  ]
+}

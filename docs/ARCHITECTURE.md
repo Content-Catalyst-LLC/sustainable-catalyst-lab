@@ -1,6 +1,6 @@
-# Lab v0.9.1 Architecture
+# Lab v0.9.3 Architecture
 
-WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.9.1 introduces shared result, visualization, dimensional-scene, export, handoff, backup, restore, and reset infrastructure.
+WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.9.3 adds portable method contracts, multi-language source generation, code artifacts, parity records, and stable WordPress installation identity on top of the shared result, visualization, dimensional-scene, export, handoff, backup, restore, and reset infrastructure.
 
 ## Browser modules
 
@@ -18,6 +18,8 @@ WordPress renders the scientific interface and proxies allowlisted public source
 - `materials-lab.js`: mechanical, thermal, electrical, magnetic, optical, crystallographic, phase, corrosion, polymer, composite, microscopy, and validation methods.
 - `earth-lab.js`: solid Earth, atmosphere, climate, hydrology, ocean, marine systems, remote sensing, hazards, carbon cycle, and validation methods.
 - `energy-lab.js`: energy balances, solar, wind, hydro, storage, grid, thermal, fuels, hydrogen, emissions, economics, reliability, and validation.
+- `method-contracts.js`: portable scientific expression contracts, language-neutral evaluation, twelve source generators, notebooks, catalogs, and parity validation.
+- `code-switcher.js`: Code Studio controls, generated-source downloads, project records, and current-JavaScript comparison.
 - `visualization.js`: universal analysis contract, chart inference, SVG renderer, PNG/PDF/CSV/JSON/package export, project records, and Decision Studio packets.
 - `dimensional-visualization.js`: 3D and 4D scene contracts, polytope presets, rotations, projections, animation, custom scenes, and dimensional exports.
 - `data-management.js`: complete workspace backup, ZIP packaging, restore modes, selective resets, record counting, and deletion receipts.
@@ -67,15 +69,34 @@ Local projects and preferences
 
 ## Project record
 
-Version 0.9.1 retains every earlier collection and adds:
+Version 0.9.3 retains every earlier collection and adds or formalizes:
 
 ```text
 visualizations
 dimensionalScenes
 chartExports
 analysisPackets
+methodContracts
+codeArtifacts
+implementationComparisons
 ```
 
 The original `scLabProjectsV010` and `scLabActiveProjectV010` browser-storage keys remain unchanged. Existing projects are normalized in place when loaded, changed, imported, restored, or exported.
 
 Full Workbench, Decision Studio, and Site Intelligence applications remain separate and are reached through configured routes. Decision Studio handoff currently uses a structured downloadable packet and local handoff cache; authenticated server exchange belongs to a later integration release.
+
+## Portable code flow
+
+```text
+Method contract
+→ validate inputs and units
+→ evaluate language-neutral expression graph
+→ generate Python / R / Julia / JavaScript / TypeScript / SQL / C / C++ / Fortran / Rust / Go / Haskell
+→ compare with current JavaScript adapter when available
+→ download source, method JSON, notebook, or catalog
+→ save contract and code artifact to project
+```
+
+## WordPress update identity
+
+The installable archive always uses `sustainable-catalyst-lab/sustainable-catalyst-lab.php`. The repository and release-bundle ZIPs are intentionally not WordPress installer packages. The settings page reports duplicate plugin paths and can deactivate duplicate instances without deleting their folders.

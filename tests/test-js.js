@@ -38,6 +38,9 @@ load('assets/js/modules/astronomy-lab.js');
 load('assets/js/modules/materials-lab.js');
 load('assets/js/modules/earth-lab.js');
 load('assets/js/modules/energy-lab.js');
+load('assets/js/modules/method-contracts.js');
+context.window.SCLabConfig={compute:{enabled:true,configured:true,endpoints:{status:'/status',languages:'/languages',methods:'/methods',execute:'/execute',compare:'/compare',jobs:'/jobs'}},nonce:'test'};
+load('assets/js/modules/compute-client.js');
 load('assets/js/modules/visualization.js');
 load('assets/js/modules/dimensional-visualization.js');
 load('assets/js/modules/data-management.js');
@@ -45,7 +48,7 @@ load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.9.1', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.9.3', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
@@ -53,6 +56,7 @@ assert(Array.isArray(blankProject.materialsRecords) && Array.isArray(blankProjec
 assert(Array.isArray(blankProject.earthRecords) && Array.isArray(blankProject.oceanRecords) && Array.isArray(blankProject.earthValidationRecords), 'Earth systems project collections missing');
 assert(Array.isArray(blankProject.energyRecords) && Array.isArray(blankProject.gridRecords) && Array.isArray(blankProject.energyValidationRecords), 'Energy project collections missing');
 assert(Array.isArray(blankProject.visualizations) && Array.isArray(blankProject.dimensionalScenes) && Array.isArray(blankProject.chartExports) && Array.isArray(blankProject.analysisPackets), 'Visualization project collections missing');
+assert(Array.isArray(blankProject.methodContracts) && Array.isArray(blankProject.codeArtifacts) && Array.isArray(blankProject.implementationComparisons) && Array.isArray(blankProject.codeExecutions) && Array.isArray(blankProject.languageComparisons) && Array.isArray(blankProject.runtimeRecords) && Array.isArray(blankProject.executionJobs) && Array.isArray(blankProject.crossLanguageValidationRecords), 'Code contract project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -236,12 +240,34 @@ assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts -
 assert(Math.abs(Calculators.run('michaelis', { vmax: 100, substrate: 8, km: 2 }).rate - 80) < 1e-9, 'Michaelis-Menten failed');
 
 
+const MethodContracts = context.window.SCLab.MethodContracts;
+assert(MethodContracts.contracts.length >= 19, 'Expected portable method contract catalog');
+assert(Object.keys(MethodContracts.languages).length === 12 && MethodContracts.languages.rust, 'Expected twelve language targets including Rust');
+const portableKinetic = MethodContracts.evaluate('kinetic', { mass: 10, velocity: 5 });
+assert(Math.abs(portableKinetic.kineticEnergyJ - 125) < 1e-12 && portableKinetic.momentumKgMs === 50, 'Portable kinetic method failed');
+const portableProjectile = MethodContracts.evaluate('projectile', { speed:20, angleDeg:45, height:0 });
+assert(portableProjectile.rangeM > 40 && portableProjectile.rangeM < 42, 'Portable projectile method failed');
+for (const language of Object.keys(MethodContracts.languages)) {
+  const generated = MethodContracts.generate('kinetic', language);
+  assert(generated.includes('Kinetic energy and momentum') && generated.length > 180, `Generated ${language} source failed`);
+}
+new vm.Script(MethodContracts.generate('kinetic', 'javascript'));
+assert(MethodContracts.generate('kinetic','rust').includes('fn main()'), 'Rust source marker missing');
+assert(MethodContracts.generate('kinetic','fortran').includes('program sc_lab_method'), 'Fortran source marker missing');
+assert(MethodContracts.generate('kinetic','sql').includes('WITH inputs AS'), 'SQL source marker missing');
+const parity = MethodContracts.validateAgainstRuntime('kinetic', {mass:10,velocity:5});
+assert(parity.passed && parity.rows.every(row=>row.passed), 'Portable method parity failed');
+assert(MethodContracts.notebook('kinetic').nbformat === 4, 'Notebook generation failed');
+const ComputeClient = context.window.SCLab.ComputeClient;
+assert(ComputeClient.isConfigured() && ComputeClient.config().endpoints.execute === '/execute', 'Compute client configuration failed');
+
+
 const Visualization = context.window.SCLab.Visualization;
 const scalarContract = Visualization.makeContract({ methodId:'test.scalar', title:'Scalar test', inputs:{x:2}, outputs:{alpha:10,beta:4}, project:blankProject });
 assert(scalarContract.schema === 'sc-lab-analysis/1.0' && scalarContract.chartSpec.type === 'bar', 'Universal scalar result contract failed');
 assert(scalarContract.audit.inputFingerprint && scalarContract.audit.outputFingerprint, 'Analysis audit fingerprints missing');
 const scalarSvg = Visualization.renderSVG(scalarContract.chartSpec, { theme:'institutional', aspect:'16:9' });
-assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.1'), 'Universal SVG renderer failed');
+assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.3'), 'Universal SVG renderer failed');
 assert(Visualization.csv(scalarContract).includes('metric,value') || Visualization.csv(scalarContract).includes('label,value'), 'Universal CSV export failed');
 const seriesContract = Visualization.makeContract({ methodId:'test.series', title:'Series test', outputs:{series:[{x:0,y:1},{x:1,y:3},{x:2,y:2}]} });
 assert(seriesContract.chartSpec.type === 'line' && seriesContract.chartSpec.data.length === 3, 'Series chart inference failed');
@@ -294,7 +320,7 @@ const restored = DataManagement.restore(projectStore,backup,'replace');
 assert(restored.restored >= 1 && projectStore.get().notes.length >= 1, 'Workspace restore failed');
 
 const Workspace = context.window.SCLab.Workspace;
-assert(Workspace.modules.length >= 19, 'Expected grouped module catalog');
+assert(Workspace.modules.length >= 20, 'Expected grouped module catalog');
 assert(Workspace.quickTools.length >= 16, 'Expected quick scientific tools');
 const search = Workspace.search('stoichiometry', Calculators.definitions);
 assert(search.length && search[0].id === 'stoichiometry', 'Command search failed');

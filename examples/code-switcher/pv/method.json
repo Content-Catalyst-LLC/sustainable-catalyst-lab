@@ -1,0 +1,96 @@
+{
+  "schema": "sc-lab-method/1.0",
+  "schemaVersion": "1.0",
+  "version": "0.9.3",
+  "assumptions": [
+    "Inputs use the displayed units.",
+    "The implementation follows the explicit portable expression contract.",
+    "Validate domain-specific assumptions before professional use."
+  ],
+  "languages": [
+    "python",
+    "r",
+    "julia",
+    "javascript",
+    "typescript",
+    "sql",
+    "c",
+    "cpp",
+    "fortran",
+    "rust",
+    "go",
+    "haskell"
+  ],
+  "id": "pv",
+  "domain": "Energy",
+  "name": "Photovoltaic output",
+  "equation": "P=GAηf",
+  "inputs": [
+    {
+      "id": "irradiance",
+      "label": "Irradiance",
+      "unit": "W m^-2",
+      "default": 800,
+      "type": "number",
+      "validation": {
+        "min": 0
+      }
+    },
+    {
+      "id": "area",
+      "label": "Area",
+      "unit": "m²",
+      "default": 20,
+      "type": "number",
+      "validation": {
+        "min": 0
+      }
+    },
+    {
+      "id": "efficiency",
+      "label": "Module efficiency",
+      "unit": "fraction",
+      "default": 0.21,
+      "type": "number",
+      "validation": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "id": "systemFactor",
+      "label": "System factor",
+      "unit": "fraction",
+      "default": 0.82,
+      "type": "number",
+      "validation": {
+        "min": 0,
+        "max": 1
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "powerW",
+      "label": "Power",
+      "unit": "W",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "var": "irradiance"
+          },
+          {
+            "var": "area"
+          },
+          {
+            "var": "efficiency"
+          },
+          {
+            "var": "systemFactor"
+          }
+        ]
+      }
+    }
+  ]
+}

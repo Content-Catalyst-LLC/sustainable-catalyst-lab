@@ -1,0 +1,94 @@
+{
+  "schema": "sc-lab-method/1.0",
+  "schemaVersion": "1.0",
+  "version": "0.9.3",
+  "assumptions": [
+    "Inputs use the displayed units.",
+    "The implementation follows the explicit portable expression contract.",
+    "Validate domain-specific assumptions before professional use."
+  ],
+  "languages": [
+    "python",
+    "r",
+    "julia",
+    "javascript",
+    "typescript",
+    "sql",
+    "c",
+    "cpp",
+    "fortran",
+    "rust",
+    "go",
+    "haskell"
+  ],
+  "id": "kinetic",
+  "domain": "Mechanics",
+  "name": "Kinetic energy and momentum",
+  "equation": "KE = 1/2 mv²; p = mv",
+  "inputs": [
+    {
+      "id": "mass",
+      "label": "Mass",
+      "unit": "kg",
+      "default": 10,
+      "type": "number",
+      "validation": {
+        "min": 0,
+        "exclusive": true
+      }
+    },
+    {
+      "id": "velocity",
+      "label": "Velocity",
+      "unit": "m s^-1",
+      "default": 5,
+      "type": "number",
+      "validation": null
+    }
+  ],
+  "outputs": [
+    {
+      "id": "kineticEnergyJ",
+      "label": "Kinetic energy",
+      "unit": "J",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "number": 0.5
+          },
+          {
+            "var": "mass"
+          },
+          {
+            "op": "pow",
+            "args": [
+              {
+                "var": "velocity"
+              },
+              {
+                "number": 2
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentumKgMs",
+      "label": "Momentum",
+      "unit": "kg m s^-1",
+      "expression": {
+        "op": "mul",
+        "args": [
+          {
+            "var": "mass"
+          },
+          {
+            "var": "velocity"
+          }
+        ]
+      }
+    }
+  ]
+}

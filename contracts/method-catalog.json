@@ -1,0 +1,1275 @@
+{
+  "schema": "sc-lab-method-catalog/1.0",
+  "version": "0.9.3",
+  "generatedAt": "2026-07-12T09:37:54.445Z",
+  "languages": {
+    "python": {
+      "label": "Python",
+      "extension": "py",
+      "mode": "source"
+    },
+    "r": {
+      "label": "R",
+      "extension": "R",
+      "mode": "source"
+    },
+    "julia": {
+      "label": "Julia",
+      "extension": "jl",
+      "mode": "source"
+    },
+    "javascript": {
+      "label": "JavaScript",
+      "extension": "js",
+      "mode": "browser"
+    },
+    "typescript": {
+      "label": "TypeScript",
+      "extension": "ts",
+      "mode": "source"
+    },
+    "sql": {
+      "label": "SQL",
+      "extension": "sql",
+      "mode": "source"
+    },
+    "c": {
+      "label": "C",
+      "extension": "c",
+      "mode": "source"
+    },
+    "cpp": {
+      "label": "C++",
+      "extension": "cpp",
+      "mode": "source"
+    },
+    "fortran": {
+      "label": "Fortran",
+      "extension": "f90",
+      "mode": "source"
+    },
+    "rust": {
+      "label": "Rust",
+      "extension": "rs",
+      "mode": "source"
+    },
+    "go": {
+      "label": "Go",
+      "extension": "go",
+      "mode": "source"
+    },
+    "haskell": {
+      "label": "Haskell",
+      "extension": "hs",
+      "mode": "source"
+    }
+  },
+  "methods": [
+    {
+      "id": "kinetic",
+      "name": "Kinetic energy and momentum",
+      "domain": "Mechanics",
+      "version": "0.9.3",
+      "equation": "KE = 1/2 mv²; p = mv",
+      "inputs": [
+        {
+          "id": "mass",
+          "label": "Mass",
+          "unit": "kg",
+          "default": 10,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "velocity",
+          "label": "Velocity",
+          "unit": "m s^-1",
+          "default": 5,
+          "type": "number",
+          "validation": null
+        }
+      ],
+      "outputs": [
+        {
+          "id": "kineticEnergyJ",
+          "label": "Kinetic energy",
+          "unit": "J"
+        },
+        {
+          "id": "momentumKgMs",
+          "label": "Momentum",
+          "unit": "kg m s^-1"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "projectile",
+      "name": "Projectile motion",
+      "domain": "Mechanics",
+      "version": "0.9.3",
+      "equation": "y = h + v_y t - 1/2 gt²",
+      "inputs": [
+        {
+          "id": "speed",
+          "label": "Launch speed",
+          "unit": "m s^-1",
+          "default": 20,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "angleDeg",
+          "label": "Launch angle",
+          "unit": "deg",
+          "default": 45,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "height",
+          "label": "Initial height",
+          "unit": "m",
+          "default": 0,
+          "type": "number",
+          "validation": null
+        }
+      ],
+      "outputs": [
+        {
+          "id": "rangeM",
+          "label": "Range",
+          "unit": "m"
+        },
+        {
+          "id": "maxHeightM",
+          "label": "Maximum height",
+          "unit": "m"
+        },
+        {
+          "id": "flightTimeS",
+          "label": "Flight time",
+          "unit": "s"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "torque",
+      "name": "Torque",
+      "domain": "Mechanics",
+      "version": "0.9.3",
+      "equation": "τ = rF sin θ",
+      "inputs": [
+        {
+          "id": "radius",
+          "label": "Lever arm",
+          "unit": "m",
+          "default": 0.5,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "force",
+          "label": "Force",
+          "unit": "N",
+          "default": 100,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "angleDeg",
+          "label": "Angle",
+          "unit": "deg",
+          "default": 90,
+          "type": "number",
+          "validation": null
+        }
+      ],
+      "outputs": [
+        {
+          "id": "torqueNm",
+          "label": "Torque",
+          "unit": "N m"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "carnot",
+      "name": "Carnot efficiency",
+      "domain": "Thermodynamics",
+      "version": "0.9.3",
+      "equation": "η = 1 - Tc/Th",
+      "inputs": [
+        {
+          "id": "hot",
+          "label": "Hot reservoir",
+          "unit": "K",
+          "default": 600,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "cold",
+          "label": "Cold reservoir",
+          "unit": "K",
+          "default": 300,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "efficiency",
+          "label": "Efficiency",
+          "unit": "fraction"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "blackbody",
+      "name": "Blackbody peak and luminosity",
+      "domain": "Astronomy",
+      "version": "0.9.3",
+      "equation": "λmax=b/T; L=4πr²σT⁴",
+      "inputs": [
+        {
+          "id": "temperature",
+          "label": "Temperature",
+          "unit": "K",
+          "default": 5772,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "radius",
+          "label": "Radius",
+          "unit": "m",
+          "default": 695700000,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "peakWavelengthM",
+          "label": "Peak wavelength",
+          "unit": "m"
+        },
+        {
+          "id": "surfaceFluxWm2",
+          "label": "Surface flux",
+          "unit": "W m^-2"
+        },
+        {
+          "id": "luminosityW",
+          "label": "Luminosity",
+          "unit": "W"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "escape",
+      "name": "Escape velocity",
+      "domain": "Astronomy",
+      "version": "0.9.3",
+      "equation": "v = sqrt(2GM/r)",
+      "inputs": [
+        {
+          "id": "mass",
+          "label": "Body mass",
+          "unit": "kg",
+          "default": 5.9722e+24,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "radius",
+          "label": "Body radius",
+          "unit": "m",
+          "default": 6371000,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "escapeVelocityMs",
+          "label": "Escape velocity",
+          "unit": "m s^-1"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "reynolds",
+      "name": "Reynolds number",
+      "domain": "Fluids",
+      "version": "0.9.3",
+      "equation": "Re = ρvL/μ",
+      "inputs": [
+        {
+          "id": "density",
+          "label": "Density",
+          "unit": "kg m^-3",
+          "default": 1000,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "velocity",
+          "label": "Velocity",
+          "unit": "m s^-1",
+          "default": 1,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "length",
+          "label": "Characteristic length",
+          "unit": "m",
+          "default": 0.1,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "viscosity",
+          "label": "Dynamic viscosity",
+          "unit": "Pa s",
+          "default": 0.001,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "reynolds",
+          "label": "Reynolds number",
+          "unit": ""
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "hydrostatic",
+      "name": "Hydrostatic pressure",
+      "domain": "Fluids",
+      "version": "0.9.3",
+      "equation": "P = P0 + ρgh",
+      "inputs": [
+        {
+          "id": "density",
+          "label": "Fluid density",
+          "unit": "kg m^-3",
+          "default": 1025,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "depth",
+          "label": "Depth",
+          "unit": "m",
+          "default": 10,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "surfacePressure",
+          "label": "Surface pressure",
+          "unit": "Pa",
+          "default": 101325,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "pressurePa",
+          "label": "Pressure",
+          "unit": "Pa"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "michaelis",
+      "name": "Michaelis-Menten kinetics",
+      "domain": "Biology",
+      "version": "0.9.3",
+      "equation": "v = Vmax[S]/(Km+[S])",
+      "inputs": [
+        {
+          "id": "vmax",
+          "label": "Vmax",
+          "unit": "rate units",
+          "default": 100,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "substrate",
+          "label": "Substrate concentration",
+          "unit": "",
+          "default": 8,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "km",
+          "label": "Km",
+          "unit": "",
+          "default": 2,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "rate",
+          "label": "Reaction rate",
+          "unit": "rate units"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "growth",
+      "name": "Logistic population growth",
+      "domain": "Biology",
+      "version": "0.9.3",
+      "equation": "P(t)=K/(1+((K-P0)/P0)e^-rt)",
+      "inputs": [
+        {
+          "id": "initial",
+          "label": "Initial population",
+          "unit": "",
+          "default": 100,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "capacity",
+          "label": "Carrying capacity",
+          "unit": "",
+          "default": 1000,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "rate",
+          "label": "Growth rate",
+          "unit": "time^-1",
+          "default": 0.3,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "time",
+          "label": "Time",
+          "unit": "",
+          "default": 10,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "population",
+          "label": "Population",
+          "unit": ""
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "diffusion",
+      "name": "Fick diffusion length",
+      "domain": "Materials science",
+      "version": "0.9.3",
+      "equation": "x_rms = sqrt(2nDt)",
+      "inputs": [
+        {
+          "id": "diffusivity",
+          "label": "Diffusivity",
+          "unit": "m² s^-1",
+          "default": 1e-9,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "time",
+          "label": "Time",
+          "unit": "s",
+          "default": 3600,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "dimensions",
+          "label": "Dimensions",
+          "unit": "",
+          "default": 1,
+          "type": "number",
+          "validation": {
+            "min": 1
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "rmsDistanceM",
+          "label": "RMS distance",
+          "unit": "m"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "stress",
+      "name": "Stress, strain, and modulus",
+      "domain": "Materials science",
+      "version": "0.9.3",
+      "equation": "σ=F/A; ε=ΔL/L; E=σ/ε",
+      "inputs": [
+        {
+          "id": "force",
+          "label": "Force",
+          "unit": "N",
+          "default": 10000,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "area",
+          "label": "Area",
+          "unit": "m²",
+          "default": 0.001,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "deltaLength",
+          "label": "Extension",
+          "unit": "m",
+          "default": 0.0005,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "length",
+          "label": "Original length",
+          "unit": "m",
+          "default": 1,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "stressPa",
+          "label": "Stress",
+          "unit": "Pa"
+        },
+        {
+          "id": "strain",
+          "label": "Strain",
+          "unit": ""
+        },
+        {
+          "id": "youngsModulusPa",
+          "label": "Young modulus",
+          "unit": "Pa"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "thermal",
+      "name": "Thermal expansion",
+      "domain": "Materials science",
+      "version": "0.9.3",
+      "equation": "ΔL=αLΔT",
+      "inputs": [
+        {
+          "id": "alpha",
+          "label": "Expansion coefficient",
+          "unit": "K^-1",
+          "default": 0.000012,
+          "type": "number",
+          "validation": null
+        },
+        {
+          "id": "length",
+          "label": "Initial length",
+          "unit": "m",
+          "default": 2,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "deltaT",
+          "label": "Temperature change",
+          "unit": "K",
+          "default": 80,
+          "type": "number",
+          "validation": null
+        }
+      ],
+      "outputs": [
+        {
+          "id": "deltaLengthM",
+          "label": "Length change",
+          "unit": "m"
+        },
+        {
+          "id": "finalLengthM",
+          "label": "Final length",
+          "unit": "m"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "resistivity",
+      "name": "Electrical resistance from resistivity",
+      "domain": "Materials science",
+      "version": "0.9.3",
+      "equation": "R=ρL/A",
+      "inputs": [
+        {
+          "id": "resistivity",
+          "label": "Resistivity",
+          "unit": "ohm m",
+          "default": 1.68e-8,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "length",
+          "label": "Length",
+          "unit": "m",
+          "default": 10,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "area",
+          "label": "Area",
+          "unit": "m²",
+          "default": 0.000001,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "resistanceOhm",
+          "label": "Resistance",
+          "unit": "ohm"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "seismic",
+      "name": "Seismic travel time",
+      "domain": "Earth science",
+      "version": "0.9.3",
+      "equation": "t=d/v",
+      "inputs": [
+        {
+          "id": "distanceKm",
+          "label": "Distance",
+          "unit": "km",
+          "default": 100,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "velocityKmS",
+          "label": "Wave velocity",
+          "unit": "km s^-1",
+          "default": 6,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "travelTimeS",
+          "label": "Travel time",
+          "unit": "s"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "hydro",
+      "name": "Hydropower potential",
+      "domain": "Energy",
+      "version": "0.9.3",
+      "equation": "P=ρgQHη",
+      "inputs": [
+        {
+          "id": "density",
+          "label": "Water density",
+          "unit": "kg m^-3",
+          "default": 1000,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "flow",
+          "label": "Flow",
+          "unit": "m³ s^-1",
+          "default": 2,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "head",
+          "label": "Head",
+          "unit": "m",
+          "default": 20,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "efficiency",
+          "label": "Efficiency",
+          "unit": "fraction",
+          "default": 0.85,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "powerW",
+          "label": "Power",
+          "unit": "W"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "pv",
+      "name": "Photovoltaic output",
+      "domain": "Energy",
+      "version": "0.9.3",
+      "equation": "P=GAηf",
+      "inputs": [
+        {
+          "id": "irradiance",
+          "label": "Irradiance",
+          "unit": "W m^-2",
+          "default": 800,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "area",
+          "label": "Area",
+          "unit": "m²",
+          "default": 20,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "efficiency",
+          "label": "Module efficiency",
+          "unit": "fraction",
+          "default": 0.21,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "max": 1
+          }
+        },
+        {
+          "id": "systemFactor",
+          "label": "System factor",
+          "unit": "fraction",
+          "default": 0.82,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "powerW",
+          "label": "Power",
+          "unit": "W"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "wind",
+      "name": "Wind turbine power",
+      "domain": "Energy",
+      "version": "0.9.3",
+      "equation": "P=1/2 ρAv³Cp",
+      "inputs": [
+        {
+          "id": "density",
+          "label": "Air density",
+          "unit": "kg m^-3",
+          "default": 1.225,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "area",
+          "label": "Swept area",
+          "unit": "m²",
+          "default": 100,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "speed",
+          "label": "Wind speed",
+          "unit": "m s^-1",
+          "default": 8,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "cp",
+          "label": "Power coefficient",
+          "unit": "",
+          "default": 0.4,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "max": 0.593
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "powerW",
+          "label": "Power",
+          "unit": "W"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    },
+    {
+      "id": "battery",
+      "name": "Battery energy and runtime",
+      "domain": "Energy",
+      "version": "0.9.3",
+      "equation": "E=VAh f; t=E/P",
+      "inputs": [
+        {
+          "id": "voltage",
+          "label": "Voltage",
+          "unit": "V",
+          "default": 12,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "capacityAh",
+          "label": "Capacity",
+          "unit": "Ah",
+          "default": 100,
+          "type": "number",
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "id": "loadW",
+          "label": "Load",
+          "unit": "W",
+          "default": 250,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "exclusive": true
+          }
+        },
+        {
+          "id": "usableFraction",
+          "label": "Usable fraction",
+          "unit": "",
+          "default": 0.8,
+          "type": "number",
+          "validation": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "usableEnergyWh",
+          "label": "Usable energy",
+          "unit": "Wh"
+        },
+        {
+          "id": "runtimeHours",
+          "label": "Runtime",
+          "unit": "h"
+        }
+      ],
+      "languages": [
+        "python",
+        "r",
+        "julia",
+        "javascript",
+        "typescript",
+        "sql",
+        "c",
+        "cpp",
+        "fortran",
+        "rust",
+        "go",
+        "haskell"
+      ]
+    }
+  ]
+}

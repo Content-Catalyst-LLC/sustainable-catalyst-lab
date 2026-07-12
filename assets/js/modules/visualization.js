@@ -2,9 +2,9 @@
   'use strict';
   const Lab = w.SCLab = w.SCLab || {};
   const U = Lab.util;
-  const PREF_KEY = 'scLabVisualizationPrefsV091';
+  const PREF_KEY = 'scLabVisualizationPrefsV092';
   const HANDOFF_KEY = 'scLabDecisionStudioHandoffV1';
-  const VERSION = '0.9.1';
+  const VERSION = '0.9.3';
 
   const themes = {
     scientific: { label:'Scientific Light', bg:'#ffffff', panel:'#f6f7f8', text:'#111820', muted:'#59636d', grid:'#d9dee3', axis:'#2d363e', colors:['#c60000','#1f5c78','#5a6d2a','#805a82','#b36b16','#27746a'] },
@@ -185,13 +185,14 @@
   function assumptionsFrom(container){return [...container.querySelectorAll('details li')].map(li=>li.textContent.trim()).filter(Boolean);}
   function existingSvg(container){return container.querySelector('.sc-lab-chart svg,[data-spectrum-chart] svg,svg')?.outerHTML||'';}
 
-  function toolbarHtml(){return `<div class="sc-lab-universal-export" data-universal-export><span>VISUALIZE / EXPORT</span><button type="button" data-viz-open>Studio</button><button type="button" data-viz-scene>3D/4D</button><button type="button" data-viz-svg>SVG</button><button type="button" data-viz-png>PNG</button><button type="button" data-viz-pdf>PDF</button><button type="button" data-viz-csv>CSV</button><button type="button" data-viz-json>JSON</button><button type="button" data-viz-package>Package</button><button type="button" data-viz-handoff>Decision Studio</button></div>`;}
+  function toolbarHtml(){return `<div class="sc-lab-universal-export" data-universal-export><span>VISUALIZE / EXPORT</span><button type="button" data-viz-open>Studio</button><button type="button" data-viz-scene>3D/4D</button><button type="button" data-viz-code>Code</button><button type="button" data-viz-svg>SVG</button><button type="button" data-viz-png>PNG</button><button type="button" data-viz-pdf>PDF</button><button type="button" data-viz-csv>CSV</button><button type="button" data-viz-json>JSON</button><button type="button" data-viz-package>Package</button><button type="button" data-viz-handoff>Decision Studio</button></div>`;}
   function attachToolbar(root,projects,container,contract){
     let toolbar=container.querySelector(':scope > [data-universal-export]');if(!toolbar){container.insertAdjacentHTML('beforeend',toolbarHtml());toolbar=container.querySelector(':scope > [data-universal-export]');}
     container._scLabContract=contract;
     const current=()=>container._scLabContract;const svg=()=>renderSVG(current().chartSpec,Object.assign(loadPrefs(),{title:current().title,subtitle:current().subtitle}));
     toolbar.querySelector('[data-viz-open]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-visualization',{detail:current()}));};
     toolbar.querySelector('[data-viz-scene]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-visualization',{detail:current()}));setTimeout(()=>root.dispatchEvent(new CustomEvent('sc-lab:dimensional-contract',{detail:current()})),30);};
+    toolbar.querySelector('[data-viz-code]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-code',{detail:current()}));};
     toolbar.querySelector('[data-viz-svg]').onclick=()=>exportSvg(current(),svg());
     toolbar.querySelector('[data-viz-png]').onclick=()=>exportPng(current(),svg()).catch(e=>U.toast(root,e.message));
     toolbar.querySelector('[data-viz-pdf]').onclick=()=>exportPdf(current(),svg()).catch(e=>U.toast(root,e.message));

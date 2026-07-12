@@ -1,6 +1,6 @@
 # Universal Visualization and Export
 
-Version 0.9.1 introduces a shared analytical result contract and export engine. Individual discipline tools do not implement their own download logic. The application captures completed calculations, normalizes them into `sc-lab-analysis/1.0`, infers a chart specification, and attaches the same export toolbar.
+Version 0.9.2 introduces a shared analytical result contract and export engine. Individual discipline tools do not implement their own download logic. The application captures completed calculations, normalizes them into `sc-lab-analysis/1.0`, infers a chart specification, and attaches the same export toolbar.
 
 ## Outputs
 
@@ -14,7 +14,7 @@ Version 0.9.1 introduces a shared analytical result contract and export engine. 
 - Notebook entry
 - Decision Studio packet
 
-The PDF in v0.9.1 is a single-figure export. Structured multi-page reports remain a later Decision Studio and reporting release.
+The PDF in v0.9.2 is a single-figure export. Structured multi-page reports remain a later Decision Studio and reporting release.
 
 ## Automatic capture
 

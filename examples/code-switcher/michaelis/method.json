@@ -1,0 +1,95 @@
+{
+  "schema": "sc-lab-method/1.0",
+  "schemaVersion": "1.0",
+  "version": "0.9.3",
+  "assumptions": [
+    "Inputs use the displayed units.",
+    "The implementation follows the explicit portable expression contract.",
+    "Validate domain-specific assumptions before professional use."
+  ],
+  "languages": [
+    "python",
+    "r",
+    "julia",
+    "javascript",
+    "typescript",
+    "sql",
+    "c",
+    "cpp",
+    "fortran",
+    "rust",
+    "go",
+    "haskell"
+  ],
+  "id": "michaelis",
+  "domain": "Biology",
+  "name": "Michaelis-Menten kinetics",
+  "equation": "v = Vmax[S]/(Km+[S])",
+  "inputs": [
+    {
+      "id": "vmax",
+      "label": "Vmax",
+      "unit": "rate units",
+      "default": 100,
+      "type": "number",
+      "validation": {
+        "min": 0
+      }
+    },
+    {
+      "id": "substrate",
+      "label": "Substrate concentration",
+      "unit": "",
+      "default": 8,
+      "type": "number",
+      "validation": {
+        "min": 0
+      }
+    },
+    {
+      "id": "km",
+      "label": "Km",
+      "unit": "",
+      "default": 2,
+      "type": "number",
+      "validation": {
+        "min": 0,
+        "exclusive": true
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "rate",
+      "label": "Reaction rate",
+      "unit": "rate units",
+      "expression": {
+        "op": "div",
+        "args": [
+          {
+            "op": "mul",
+            "args": [
+              {
+                "var": "vmax"
+              },
+              {
+                "var": "substrate"
+              }
+            ]
+          },
+          {
+            "op": "add",
+            "args": [
+              {
+                "var": "km"
+              },
+              {
+                "var": "substrate"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

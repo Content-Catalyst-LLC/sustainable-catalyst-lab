@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: sustainable-catalyst-lab-compute-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: SC_LAB_COMPUTE_API_KEY
+        generateValue: true
+      - key: SC_LAB_CORS_ORIGINS
+        value: https://sustainablecatalyst.com
+      - key: SC_LAB_RATE_LIMIT_PER_MINUTE
+        value: 60
+      - key: SC_LAB_ENABLE_DOCS
+        value: "true"
+      - key: SC_LAB_QUEUE_NAME
+        value: sc-lab-compute
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: sustainable-catalyst-lab-compute-queue
+          property: connectionString
+
+  - type: worker
+    name: sustainable-catalyst-lab-language-worker
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    dockerCommand: python -m app.worker
+    envVars:
+      - key: SC_LAB_QUEUE_NAME
+        value: sc-lab-compute
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: sustainable-catalyst-lab-compute-queue
+          property: connectionString
+
+  - type: keyvalue
+    name: sustainable-catalyst-lab-compute-queue
+    plan: free
+    ipAllowList: []
+    maxmemoryPolicy: noeviction

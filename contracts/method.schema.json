@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-method-1.0.schema.json",
+  "title": "Sustainable Catalyst Lab Portable Method Contract",
+  "type": "object",
+  "required": ["schema", "schemaVersion", "id", "version", "domain", "name", "equation", "inputs", "outputs", "languages"],
+  "properties": {
+    "schema": { "const": "sc-lab-method/1.0" },
+    "schemaVersion": { "const": "1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "domain": { "type": "string" },
+    "name": { "type": "string" },
+    "equation": { "type": "string" },
+    "constants": { "type": "object" },
+    "inputs": { "type": "array" },
+    "derived": { "type": "array" },
+    "outputs": { "type": "array" },
+    "assumptions": { "type": "array" },
+    "languages": {
+      "type": "array",
+      "items": { "enum": ["python", "r", "julia", "javascript", "typescript", "sql", "c", "cpp", "fortran", "rust", "go", "haskell"] }
+    }
+  },
+  "additionalProperties": true
+}

@@ -13,6 +13,7 @@ final class SC_Lab_Plugin {
     public static function activate() {
         $defaults = SC_Lab_Admin::defaults();
         if (!get_option('sc_lab_settings')) { add_option('sc_lab_settings', $defaults); }
+        update_option('sc_lab_plugin_identity', array('slug'=>SC_LAB_PLUGIN_SLUG,'basename'=>SC_LAB_PLUGIN_BASENAME,'version'=>SC_LAB_VERSION,'activated_at'=>gmdate('c')), false);
         flush_rewrite_rules(false);
     }
 
@@ -33,6 +34,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_visualization', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_workspace_data', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_code_switcher', array($this, 'shortcode_focus'));
     }
 
     public function enqueue_assets() {
@@ -41,7 +43,7 @@ final class SC_Lab_Plugin {
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','visualization','dimensional-visualization','data-management','workspace');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','method-contracts','compute-client','code-switcher','visualization','dimensional-visualization','data-management','workspace');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
@@ -63,6 +65,20 @@ final class SC_Lab_Plugin {
             'features' => array(
                 'feeds' => !empty($settings['enable_feeds']),
                 'climateMaps' => !empty($settings['enable_climate_maps']),
+                'remoteCompute' => !empty($settings['enable_remote_compute']),
+            ),
+            'compute' => array(
+                'enabled' => !empty($settings['enable_remote_compute']),
+                'configured' => !empty($settings['compute_backend_url']),
+                'timeoutSeconds' => max(5, min(60, absint($settings['compute_timeout_seconds']))),
+                'endpoints' => array(
+                    'status' => esc_url_raw(rest_url('sc-lab/v1/compute/status')),
+                    'languages' => esc_url_raw(rest_url('sc-lab/v1/compute/languages')),
+                    'methods' => esc_url_raw(rest_url('sc-lab/v1/compute/methods')),
+                    'execute' => esc_url_raw(rest_url('sc-lab/v1/compute/execute')),
+                    'compare' => esc_url_raw(rest_url('sc-lab/v1/compute/compare')),
+                    'jobs' => esc_url_raw(rest_url('sc-lab/v1/compute/jobs')),
+                ),
             ),
             'strings' => array(
                 'networkError' => __('The scientific source could not be reached.', 'sustainable-catalyst-lab'),
@@ -90,6 +106,7 @@ final class SC_Lab_Plugin {
             'sc_lab_energy' => 'energy-engineering',
             'sc_lab_visualization' => 'visualization-studio',
             'sc_lab_workspace_data' => 'workspace-data',
+            'sc_lab_code_switcher' => 'code-studio',
         );
         $module = isset($map[$tag]) ? $map[$tag] : 'overview';
         return $this->render_app($module, 'default');

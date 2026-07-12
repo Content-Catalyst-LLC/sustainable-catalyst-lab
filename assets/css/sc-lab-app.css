@@ -1440,7 +1440,7 @@
 /* Energy and Engineering Laboratory v0.9.0 */
 .sc-lab-energy-tabs button{min-width:122px}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-tool{border-top:3px solid #314d65}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-tool h4{display:flex;align-items:center;min-height:32px}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-tool h4::before{display:inline-block;width:7px;height:7px;margin-right:8px;background:#d00000;content:""}.sc-lab-panel[data-lab-module="energy-engineering"] textarea{font-family:"SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;font-size:11px}.sc-lab-panel[data-lab-module="energy-engineering"] pre{max-height:360px;overflow:auto;font-size:10px;line-height:1.5}.sc-lab-panel[data-lab-module="energy-engineering"] [data-energy-output]:empty{display:none}.sc-lab-energy-method{margin:0 0 12px;border:1px solid #d6dde2;background:#f7f9fa}.sc-lab-energy-method summary{padding:8px 10px;color:#35414a;font-family:"SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;font-size:10px;font-weight:750;letter-spacing:.03em;cursor:pointer}.sc-lab-energy-method[open] summary{border-bottom:1px solid #d6dde2}.sc-lab-energy-method p{margin:8px 10px}.sc-lab-energy-method code{color:#263f55;background:#fff;border:1px solid #dfe4e8;padding:2px 4px;white-space:normal}.sc-lab-energy-method ul{margin:8px 10px 10px 26px;padding:0;color:#5b6770;font-size:10px}.sc-lab-energy-validation{margin:12px 0;padding:10px 12px;border:1px solid #bdc7ce;border-left:4px solid #687681;background:#f7f9fa}.sc-lab-energy-validation>div{display:flex;align-items:center;justify-content:space-between;gap:12px}.sc-lab-energy-validation strong{font-family:"SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;font-size:10px;letter-spacing:.06em}.sc-lab-energy-validation span{color:#52606a;font-size:10px;text-align:right}.sc-lab-energy-validation ul{margin:8px 0 0 18px;padding:0;color:#5a3d00;font-size:10px}.sc-lab-energy-validation.is-validated{border-left-color:#27804a;background:#f2f8f4}.sc-lab-energy-validation.is-warning{border-left-color:#b87300;background:#fff8ec}.sc-lab-energy-validation.is-invalid{border-left-color:#c00000;background:#fff2f2}.sc-lab-energy-chart:not(:empty){min-height:280px;margin-top:12px}.sc-lab-energy-chart svg{display:block;width:100%;min-height:260px;border:1px solid #d4dbe0;background:#fff}.sc-lab-energy-validation-dashboard table{width:100%;border-collapse:collapse;font-size:10px}.sc-lab-energy-validation-dashboard th,.sc-lab-energy-validation-dashboard td{padding:7px 8px;border:1px solid #d6dde2;text-align:left}.sc-lab-energy-validation-dashboard th{background:#edf1f3;font-size:9px;letter-spacing:.04em;text-transform:uppercase}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-inline-fields{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-inline-actions{flex-wrap:wrap}@media(max-width:760px){.sc-lab-energy-validation>div{align-items:flex-start;flex-direction:column}.sc-lab-energy-validation span{text-align:left}.sc-lab-energy-chart,.sc-lab-energy-chart svg{min-height:220px}.sc-lab-panel[data-lab-module="energy-engineering"] .sc-lab-button{min-height:38px}}
 
-/* v0.9.1 Universal visualization, export, and workspace data management */
+/* v0.9.2 Universal visualization, export, and workspace data management */
 .sc-lab-viz-layout{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:20px;align-items:start}
 .sc-lab-viz-controls,.sc-lab-viz-workspace{border:1px solid #d8dde1;background:#fff;padding:18px}
 .sc-lab-viz-controls{display:grid;gap:14px;position:sticky;top:16px}
@@ -1474,7 +1474,7 @@
 @media print{.sc-lab-nav,.sc-lab-topbar,.sc-lab-viz-controls,.sc-lab-viz-export-grid,.sc-lab-universal-export{display:none!important}.sc-lab-viz-chart{border:0;background:#fff}.sc-lab-viz-chart svg{max-height:none}}
 
 
-/* v0.9.1 dimensional scene and projected 4D viewer */
+/* v0.9.2 dimensional scene and projected 4D viewer */
 .sc-lab-dimensional-studio{margin-top:24px;padding-top:22px;border-top:2px solid #151b20}
 .sc-lab-dimensional-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
 .sc-lab-dimensional-head h4{margin:3px 0 0;font-size:20px;color:#111820}
@@ -1498,3 +1498,34 @@
 @media(max-width:720px){.sc-lab-dimensional-controls{grid-template-columns:1fr}.sc-lab-dimensional-actions,.sc-lab-dimensional-workspace .sc-lab-viz-export-grid{grid-template-columns:1fr}.sc-lab-dimensional-toggles,.sc-lab-slider-grid{grid-template-columns:1fr}.sc-lab-dimensional-chart{min-height:300px}}
 
 .sc-lab-reset-scope-count{margin:-4px 0 10px;font:750 11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#8f1d17}
+
+/* v0.9.2 Universal code switcher and method contracts */
+.sc-lab-code-layout{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);gap:18px;align-items:start}
+.sc-lab-code-controls,.sc-lab-code-workspace{border:1px solid #d8dde1;background:#fff;padding:16px}
+.sc-lab-code-controls{display:grid;gap:11px;position:sticky;top:16px}
+.sc-lab-code-controls>label,.sc-lab-code-fields label{display:grid;gap:5px;color:#313a42;font-size:11px;font-weight:750;letter-spacing:.025em}
+.sc-lab-code-controls select,.sc-lab-code-fields input{width:100%;border:1px solid #b8c0c7;border-radius:0;background:#fff;padding:9px 10px;color:#111820;font:inherit}
+.sc-lab-code-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px;border:1px solid #d8dde1;background:#f8f9fa}
+.sc-lab-code-fields small{font:500 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#68737c}
+.sc-lab-code-toolbar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.sc-lab-code-editor{display:block;width:100%;min-height:620px;resize:vertical;border:1px solid #18232b;border-radius:0;background:#0e151a;color:#c9f7d5;padding:16px;font:12px/1.55 "SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;tab-size:2;white-space:pre;overflow:auto}
+.sc-lab-code-workspace pre{max-height:320px;overflow:auto;font-size:10px;line-height:1.5;white-space:pre-wrap}
+.sc-lab-code-validation{margin-top:14px;border:1px solid #cfd6db;border-left:4px solid #687681;background:#f8fafb;padding:12px}
+.sc-lab-code-validation.is-passed{border-left-color:#27804a;background:#f2f8f4}.sc-lab-code-validation.is-failed{border-left-color:#b42318;background:#fff4f3}
+.sc-lab-code-validation strong{display:block;margin-bottom:8px;font:800 10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.07em}
+.sc-lab-code-validation table{width:100%;border-collapse:collapse;font-size:10px}.sc-lab-code-validation th,.sc-lab-code-validation td{padding:7px;border:1px solid #d6dde2;text-align:left}.sc-lab-code-validation th{background:#edf1f3}
+@media(max-width:1050px){.sc-lab-code-layout{grid-template-columns:1fr}.sc-lab-code-controls{position:static}.sc-lab-code-editor{min-height:500px}}
+@media(max-width:700px){.sc-lab-code-fields{grid-template-columns:1fr}.sc-lab-code-toolbar .sc-lab-button{flex:1 1 44%}.sc-lab-code-editor{min-height:420px;font-size:10px}}
+
+/* v0.9.3 Render compute dispatcher and multi-language workers */
+.sc-lab-compute-statusbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 0 16px;padding:12px 14px;border:1px solid #cbd3d9;border-left:4px solid #d00000;background:#f6f8f9}
+.sc-lab-compute-statusbar>div:first-child{display:grid;gap:3px}.sc-lab-compute-statusbar strong{font:800 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase}.sc-lab-compute-statusbar span{font-size:12px;color:#58646e}
+.sc-lab-worker-panel,.sc-lab-job-panel{margin-top:16px}.sc-lab-worker-panel .sc-lab-panel-head,.sc-lab-job-panel .sc-lab-panel-head{margin-bottom:10px}
+.sc-lab-worker-languages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.sc-lab-worker-option{display:flex;align-items:flex-start;gap:8px;padding:10px;border:1px solid #d4dbe0;background:#f8fafb;cursor:pointer}
+.sc-lab-worker-option.is-available{border-left:3px solid #27804a;background:#f3f8f5}.sc-lab-worker-option.is-unavailable{opacity:.63;cursor:not-allowed}
+.sc-lab-worker-option input{margin-top:2px}.sc-lab-worker-option span{display:grid;gap:3px;min-width:0}.sc-lab-worker-option strong{font-size:11px}.sc-lab-worker-option small{font:650 9px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;color:#68737c;overflow-wrap:anywhere}
+.sc-lab-job-panel pre{max-height:280px!important;margin:0;background:#111820;color:#d8f5df;padding:14px;border:1px solid #27333c}
+.sc-lab-status-dot:not(.is-ready)[data-code-backend-indicator]{background:#eef1f3;color:#5e6870}
+@media(max-width:1050px){.sc-lab-worker-languages{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.sc-lab-compute-statusbar{align-items:stretch;flex-direction:column}.sc-lab-compute-statusbar .sc-lab-inline-actions{display:grid;grid-template-columns:1fr}.sc-lab-worker-languages{grid-template-columns:1fr}}

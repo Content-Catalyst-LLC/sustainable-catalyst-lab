@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-execution-job-1.0.json",
+  "title": "Sustainable Catalyst Lab execution job",
+  "type": "object",
+  "required": ["jobId", "status", "queueMode"],
+  "properties": {
+    "jobId": {"type": "string"},
+    "operation": {"enum": ["execute", "compare"]},
+    "status": {"type": "string"},
+    "queueMode": {"enum": ["redis-rq", "in-memory"]},
+    "submittedAt": {"type": ["string", "null"]},
+    "startedAt": {"type": ["string", "null"]},
+    "finishedAt": {"type": ["string", "null"]},
+    "result": {"type": ["object", "null"]},
+    "error": {"type": ["object", "null"]}
+  },
+  "additionalProperties": true
+}

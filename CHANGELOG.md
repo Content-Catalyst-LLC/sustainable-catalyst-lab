@@ -1,22 +1,21 @@
 # Changelog
 
-## 0.9.1 — Universal Visualization, Export, and Workspace Data Management
+## 0.9.2 — Universal Code Switcher and Method Contracts
 
-- Added the shared `sc-lab-analysis/1.0` result contract for current and future calculation modules.
-- Added automatic calculation capture and a consistent export toolbar across discipline tools.
-- Added Scientific Light, Institutional, Publication, Scientific Dark, and Accessibility figure themes.
-- Added accessible SVG, high-resolution PNG, single-figure PDF, CSV, analysis JSON, and complete analysis-package ZIP exports.
-- Added project visualization records, notebook routing, and structured Decision Studio analysis packets.
-- Added the `sc-lab-scene/1.0` dimensional scene contract and Decision Studio scene handoff support.
-- Added an interactive 3D and projected 4D viewer with cube, tesseract, 4-simplex, and 16-cell reference models.
-- Added rotation in XY, XZ, XW, YZ, YW, and ZW planes, 4D-to-3D perspective projection, 3D camera rotation, animation, custom scene JSON, and export controls.
-- Added direct three- and four-field data mapping plus explicitly labeled normalized result-space glyphs for analyses without physical geometry.
-- Added workspace JSON and ZIP backup, per-project notebook and observation exports, restore-as-copy, merge, and replace modes.
-- Added selective preference, note and observation, analysis-history, active-project, project-deletion, and factory-reset scopes.
-- Added selected-record counts, typed destructive confirmation, optional pre-reset backup, and privacy-preserving reset receipts.
-- Added `visualizations`, `dimensionalScenes`, `chartExports`, and `analysisPackets` project collections while retaining the original browser-storage keys.
-- Added analysis, scene, Decision Studio packet, and updated project JSON schemas.
-- Preserved all v0.1.x–v0.9.0 projects through non-destructive normalization.
+- Added the `sc-lab-method/1.0` portable method-contract architecture.
+- Added Code Studio with Python, R, Julia, JavaScript, TypeScript, SQL, C, C++, Fortran, Rust, Go, and Haskell views.
+- Added nineteen portable scientific and engineering method contracts with structured inputs, units, constants, validation bounds, derived values, output expression graphs, and assumptions.
+- Added generated downloadable source, method JSON, Jupyter notebook, and method-catalog exports.
+- Added local portable-contract execution and numerical comparison with the current JavaScript calculator where an adapter exists.
+- Added `methodContracts`, `codeArtifacts`, and `implementationComparisons` project collections.
+- Added a Code action to the universal calculation toolbar and `[sc_lab_code_switcher]`.
+- Added repository examples for kinetic energy, projectile motion, Michaelis–Menten kinetics, and photovoltaic output across all twelve languages.
+- Added generated-source execution or compilation tests for Python, JavaScript, TypeScript, C, C++, Fortran, and Go, plus structural tests for R, Julia, Rust, SQL, and Haskell.
+- Stabilized the WordPress update identity at `sustainable-catalyst-lab/sustainable-catalyst-lab.php`.
+- Added the unversioned `sustainable-catalyst-lab.zip` update archive.
+- Added an administrator duplicate-installation detector and nonce-protected duplicate deactivation action.
+- Preserved the v0.9.1 visualization, 3D/4D, export, Decision Studio, backup, restore, and reset infrastructure.
+- Preserved all v0.1.x–v0.9.1 projects through non-destructive normalization.
 
 ## 0.9.0 — Energy and Engineering Laboratory
 
@@ -88,3 +87,10 @@
 ## 0.1.0 — Scientific Workspace and Project Foundation
 
 - Added the initial Lab application, scientific feeds, periodic table, chemistry foundations, calculators, experiments, notebook, and documentation.
+
+### macOS / Python 3.14 execution compatibility correction
+
+- Removed the thread-unsafe `subprocess.preexec_fn` resource limiter from native-language execution.
+- Added an optional GNU `prlimit` command wrapper on Linux workers.
+- Retained subprocess timeouts, isolated temporary directories, restricted environments, output limits, and Render container boundaries.
+- Added a regression test covering FastAPI and in-memory threaded job execution.

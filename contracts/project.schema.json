@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.9.1.schema.json",
-  "title": "Sustainable Catalyst Lab Project v0.9.1",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.9.3.schema.json",
+  "title": "Sustainable Catalyst Lab Project v0.9.3",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -12,7 +12,8 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "0.9.1"
+      "type": "string",
+      "const": "0.9.3"
     },
     "id": {
       "type": "string"
@@ -305,6 +306,57 @@
     },
     "analysisPackets": {
       "type": "array"
+    },
+    "methodContracts": {
+      "type": "array"
+    },
+    "codeArtifacts": {
+      "type": "array"
+    },
+    "implementationComparisons": {
+      "type": "array"
+    },
+    "codeExecutions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "languageComparisons": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "runtimeRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "compilerRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "executionJobs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "benchmarkRuns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "crossLanguageValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
     }
   },
   "additionalProperties": true

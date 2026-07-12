@@ -1,6 +1,6 @@
 # Workspace Data Management
 
-Version 0.9.1 adds local workspace backup, restore, selective clearing, and complete reset controls.
+Version 0.9.2 adds local workspace backup, restore, selective clearing, and complete reset controls.
 
 ## Backup
 

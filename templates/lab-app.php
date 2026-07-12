@@ -61,6 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
           'visualization-studio' => 'Visualization & export',
+          'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
         ),
         'Record' => array(
@@ -702,6 +703,59 @@
                   <details class="sc-lab-viz-audit"><summary>Scene and projection metadata</summary><pre data-dim-meta>{}</pre></details>
                 </div>
               </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+
+
+      <section class="sc-lab-panel" data-lab-module="code-studio" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/COMPUTE-DISPATCHER</span><h3>Universal code switcher and multi-language execution</h3></div>
+          <span class="sc-lab-status-dot" data-code-backend-indicator>Local mode</span>
+        </div>
+        <div class="sc-lab-method-note">Inspect equivalent source in twelve languages, run the portable contract locally, or execute curated implementations through the protected WordPress-to-Render compute proxy. The public interface never submits arbitrary source code and never receives the Render API key.</div>
+        <div class="sc-lab-compute-statusbar">
+          <div><strong data-code-backend-title>Render compute dispatcher</strong><span data-code-backend-status>Checking configuration…</span></div>
+          <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-code-backend-refresh>Refresh backend</button><button type="button" class="sc-lab-button" data-code-cancel-job disabled>Cancel active job</button></div>
+        </div>
+        <div class="sc-lab-code-layout">
+          <aside class="sc-lab-code-controls">
+            <label>Method<select data-code-method></select></label>
+            <label>Language<select data-code-language></select></label>
+            <label>Execution mode<select data-code-execution-mode><option value="local">Local portable contract</option><option value="render">Render native worker</option></select></label>
+            <label>Request mode<select data-code-request-mode><option value="direct">Direct execution</option><option value="queued">Queued worker job</option></select></label>
+            <div class="sc-lab-code-fields" data-code-fields></div>
+            <button type="button" class="sc-lab-button sc-lab-button-primary" data-code-run>Run selected engine</button>
+            <button type="button" class="sc-lab-button" data-code-validate>Compare with current JavaScript</button>
+            <button type="button" class="sc-lab-button" data-code-render>Regenerate source</button>
+            <div class="sc-lab-data-note" data-code-status></div>
+          </aside>
+          <div class="sc-lab-code-workspace">
+            <div class="sc-lab-code-toolbar">
+              <button type="button" class="sc-lab-button" data-code-copy>Copy code</button>
+              <button type="button" class="sc-lab-button" data-code-download>Download source</button>
+              <button type="button" class="sc-lab-button" data-code-contract>Download method JSON</button>
+              <button type="button" class="sc-lab-button" data-code-notebook>Download notebook</button>
+              <button type="button" class="sc-lab-button" data-code-catalog>Download catalog</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-code-save>Save to project</button>
+            </div>
+            <textarea class="sc-lab-code-editor" rows="31" spellcheck="false" data-code-source></textarea>
+            <div class="sc-lab-grid sc-lab-grid-2">
+              <article class="sc-lab-tool"><h4>Execution result</h4><pre data-code-result></pre></article>
+              <article class="sc-lab-tool"><h4>Method contract</h4><pre data-code-meta></pre></article>
+            </div>
+            <div data-code-validation></div>
+            <section class="sc-lab-tool sc-lab-tool-wide sc-lab-worker-panel">
+              <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">WORKERS/COMPARE</span><h4>Cross-language execution</h4></div><button type="button" class="sc-lab-button sc-lab-button-primary" data-code-compare-workers>Compare selected workers</button></div>
+              <p class="sc-lab-data-note">Only runtimes reported as available by the Render service are executable. Source-only languages remain viewable and downloadable.</p>
+              <div class="sc-lab-worker-languages" data-code-worker-languages></div>
+              <div data-code-worker-comparison></div>
+            </section>
+            <section class="sc-lab-tool sc-lab-tool-wide sc-lab-job-panel">
+              <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">QUEUE/JOB</span><h4>Execution job record</h4></div></div>
+              <pre data-code-job>No queued job is active.</pre>
             </section>
           </div>
         </div>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-execution-1.0.json",
+  "title": "Sustainable Catalyst Lab execution record",
+  "type": "object",
+  "required": ["schema", "methodId", "language", "status", "inputs", "outputs", "inputFingerprint", "outputFingerprint"],
+  "properties": {
+    "schema": {"const": "sc-lab-execution/1.0"},
+    "serviceVersion": {"type": "string"},
+    "methodId": {"type": "string"},
+    "methodVersion": {"type": "string"},
+    "language": {"type": "string"},
+    "runtime": {"type": "string"},
+    "runtimeVersion": {"type": ["string", "null"]},
+    "status": {"enum": ["VALIDATED", "MISMATCH", "FAILED", "UNAVAILABLE"]},
+    "inputs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "outputs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "referenceOutputs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "validation": {"type": "object"},
+    "compileTimeMs": {"type": ["number", "null"]},
+    "executionTimeMs": {"type": ["number", "null"]},
+    "inputFingerprint": {"type": "string"},
+    "outputFingerprint": {"type": "string"},
+    "sourceFingerprint": {"type": ["string", "null"]},
+    "environment": {"type": "object"},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "executedAt": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -500,7 +500,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.9.1' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.9.3' }, `${type} completed`);
       return result;
     }
 
@@ -798,6 +798,9 @@
 
     // Energy and Engineering Laboratory.
     Lab.EnergyLab?.init(root, projects);
+
+    // Universal code switcher and portable method contracts.
+    Lab.CodeSwitcher?.init(root, projects);
 
     // Universal visualization, export, and Decision Studio handoff.
     Lab.Visualization?.init(root, projects, config);

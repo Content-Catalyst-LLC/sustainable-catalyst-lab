@@ -12,24 +12,58 @@ class SC_Lab_Admin {
             'enable_climate_maps' => 1,
             'ncbi_tool' => 'sustainable_catalyst_lab',
             'ncbi_email' => get_option('admin_email'),
+            'enable_remote_compute' => 0,
+            'compute_backend_url' => '',
+            'compute_api_key' => '',
+            'compute_timeout_seconds' => 20,
+            'compute_verify_ssl' => 1,
         );
     }
 
     public function __construct() {
         add_action('admin_menu', array($this, 'menu'));
         add_action('admin_init', array($this, 'register'));
+        add_action('admin_notices', array($this, 'duplicate_notice'));
+        add_action('admin_post_sc_lab_deactivate_duplicates', array($this, 'deactivate_duplicates'));
     }
 
-    public function menu() {
-        add_options_page('Sustainable Catalyst Lab', 'Sustainable Catalyst Lab', 'manage_options', 'sc-lab-settings', array($this, 'page'));
+    public static function duplicate_plugins() {
+        if (!function_exists('get_plugins')) { require_once ABSPATH . 'wp-admin/includes/plugin.php'; }
+        $current = defined('SC_LAB_PLUGIN_BASENAME') ? SC_LAB_PLUGIN_BASENAME : plugin_basename(SC_LAB_FILE);
+        $duplicates = array();
+        foreach ((array) get_plugins() as $path => $data) {
+            if ($path === $current) { continue; }
+            $name = isset($data['Name']) ? (string) $data['Name'] : '';
+            $domain = isset($data['TextDomain']) ? (string) $data['TextDomain'] : '';
+            if ($name === 'Sustainable Catalyst Lab' || $domain === 'sustainable-catalyst-lab') { $duplicates[$path] = $data; }
+        }
+        return $duplicates;
     }
 
-    public function register() {
-        register_setting('sc_lab_settings_group', 'sc_lab_settings', array($this, 'sanitize'));
+    public function duplicate_notice() {
+        if (!current_user_can('activate_plugins')) { return; }
+        $duplicates = self::duplicate_plugins();
+        if (!$duplicates) { return; }
+        $settings_url = admin_url('options-general.php?page=sc-lab-settings#sc-lab-installation-identity');
+        echo '<div class="notice notice-warning"><p><strong>Sustainable Catalyst Lab detected duplicate installations.</strong> WordPress identifies a plugin by its folder and bootstrap filename. Keep <code>sustainable-catalyst-lab/sustainable-catalyst-lab.php</code> and deactivate the versioned copies.</p><p><a class="button button-primary" href="' . esc_url($settings_url) . '">Review duplicate Lab plugins</a></p></div>';
     }
+
+    public function deactivate_duplicates() {
+        if (!current_user_can('activate_plugins')) { wp_die(esc_html__('You are not allowed to manage plugins.', 'sustainable-catalyst-lab')); }
+        check_admin_referer('sc_lab_deactivate_duplicates');
+        $duplicates = array_keys(self::duplicate_plugins());
+        if ($duplicates) { deactivate_plugins($duplicates, true); }
+        $url = add_query_arg(array('page'=>'sc-lab-settings','sc_lab_duplicates_deactivated'=>count($duplicates)), admin_url('options-general.php'));
+        wp_safe_redirect($url . '#sc-lab-installation-identity');
+        exit;
+    }
+
+    public function menu() { add_options_page('Sustainable Catalyst Lab', 'Sustainable Catalyst Lab', 'manage_options', 'sc-lab-settings', array($this, 'page')); }
+    public function register() { register_setting('sc_lab_settings_group', 'sc_lab_settings', array($this, 'sanitize')); }
 
     public function sanitize($input) {
         $defaults = self::defaults();
+        $backend = esc_url_raw(isset($input['compute_backend_url']) ? $input['compute_backend_url'] : $defaults['compute_backend_url']);
         return array(
             'workbench_url' => esc_url_raw(isset($input['workbench_url']) ? $input['workbench_url'] : $defaults['workbench_url']),
             'decision_studio_url' => esc_url_raw(isset($input['decision_studio_url']) ? $input['decision_studio_url'] : $defaults['decision_studio_url']),
@@ -39,6 +73,11 @@ class SC_Lab_Admin {
             'enable_climate_maps' => empty($input['enable_climate_maps']) ? 0 : 1,
             'ncbi_tool' => sanitize_key(isset($input['ncbi_tool']) ? $input['ncbi_tool'] : $defaults['ncbi_tool']),
             'ncbi_email' => sanitize_email(isset($input['ncbi_email']) ? $input['ncbi_email'] : $defaults['ncbi_email']),
+            'enable_remote_compute' => empty($input['enable_remote_compute']) ? 0 : 1,
+            'compute_backend_url' => untrailingslashit($backend),
+            'compute_api_key' => sanitize_text_field(isset($input['compute_api_key']) ? $input['compute_api_key'] : $defaults['compute_api_key']),
+            'compute_timeout_seconds' => max(5, min(60, absint(isset($input['compute_timeout_seconds']) ? $input['compute_timeout_seconds'] : 20))),
+            'compute_verify_ssl' => empty($input['compute_verify_ssl']) ? 0 : 1,
         );
     }
 
@@ -47,8 +86,9 @@ class SC_Lab_Admin {
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), self::defaults());
         ?>
         <div class="wrap"><h1>Sustainable Catalyst Lab</h1>
-        <p>Configure the modular science workspace, source caching, and routes into the larger Sustainable Catalyst applications.</p>
+        <p>Configure the modular science workspace, source caching, application routes, and the optional Render compute dispatcher.</p>
         <form method="post" action="options.php"><?php settings_fields('sc_lab_settings_group'); ?>
+        <h2>Application routes and scientific sources</h2>
         <table class="form-table" role="presentation">
         <?php foreach (array('workbench_url'=>'Workbench route','decision_studio_url'=>'Decision Studio route','site_intelligence_url'=>'Site Intelligence route') as $key=>$label): ?>
         <tr><th scope="row"><label for="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></label></th><td><input class="regular-text" type="url" id="<?php echo esc_attr($key); ?>" name="sc_lab_settings[<?php echo esc_attr($key); ?>]" value="<?php echo esc_attr($settings[$key]); ?>"></td></tr>
@@ -57,7 +97,41 @@ class SC_Lab_Admin {
         <tr><th scope="row">Modules</th><td><label><input type="checkbox" name="sc_lab_settings[enable_feeds]" value="1" <?php checked($settings['enable_feeds'], 1); ?>> Scientific feeds</label><br><label><input type="checkbox" name="sc_lab_settings[enable_climate_maps]" value="1" <?php checked($settings['enable_climate_maps'], 1); ?>> Climate maps</label></td></tr>
         <tr><th scope="row"><label for="ncbi_tool">NCBI tool name</label></th><td><input class="regular-text" id="ncbi_tool" name="sc_lab_settings[ncbi_tool]" value="<?php echo esc_attr($settings['ncbi_tool']); ?>"></td></tr>
         <tr><th scope="row"><label for="ncbi_email">NCBI contact email</label></th><td><input class="regular-text" type="email" id="ncbi_email" name="sc_lab_settings[ncbi_email]" value="<?php echo esc_attr($settings['ncbi_email']); ?>"></td></tr>
-        </table><?php submit_button(); ?></form></div>
+        </table>
+
+        <h2 id="sc-lab-compute-settings">Render compute dispatcher</h2>
+        <p>The API key is stored only in WordPress and is never localized into the public browser application. Code Studio calls same-origin WordPress REST routes, which proxy allowlisted method requests to Render.</p>
+        <table class="form-table" role="presentation">
+          <tr><th scope="row">Remote execution</th><td><label><input type="checkbox" name="sc_lab_settings[enable_remote_compute]" value="1" <?php checked($settings['enable_remote_compute'], 1); ?>> Enable the curated Render compute dispatcher</label></td></tr>
+          <tr><th scope="row"><label for="compute_backend_url">Compute API URL</label></th><td><input class="regular-text" type="url" id="compute_backend_url" name="sc_lab_settings[compute_backend_url]" value="<?php echo esc_attr($settings['compute_backend_url']); ?>" placeholder="https://sustainable-catalyst-lab-compute-api.onrender.com"><p class="description">Enter the service origin only, without <code>/v1</code>.</p></td></tr>
+          <tr><th scope="row"><label for="compute_api_key">Compute API key</label></th><td><input class="regular-text" type="password" autocomplete="new-password" id="compute_api_key" name="sc_lab_settings[compute_api_key]" value="<?php echo esc_attr($settings['compute_api_key']); ?>"><p class="description">Use the same <code>SC_LAB_COMPUTE_API_KEY</code> value configured on Render.</p></td></tr>
+          <tr><th scope="row"><label for="compute_timeout_seconds">Proxy timeout</label></th><td><input type="number" min="5" max="60" id="compute_timeout_seconds" name="sc_lab_settings[compute_timeout_seconds]" value="<?php echo esc_attr($settings['compute_timeout_seconds']); ?>"> seconds</td></tr>
+          <tr><th scope="row">TLS verification</th><td><label><input type="checkbox" name="sc_lab_settings[compute_verify_ssl]" value="1" <?php checked($settings['compute_verify_ssl'], 1); ?>> Verify the Render service certificate</label></td></tr>
+        </table>
+        <?php submit_button(); ?></form>
+        <hr>
+        <section id="sc-lab-installation-identity">
+          <h2>Plugin installation identity</h2>
+          <p>Updates must use the stable archive <code>sustainable-catalyst-lab.zip</code>, containing the folder <code>sustainable-catalyst-lab/</code> and bootstrap file <code>sustainable-catalyst-lab.php</code>. Uploading the repository ZIP or a versioned folder creates a separate WordPress plugin instance.</p>
+          <table class="widefat striped" style="max-width:960px"><tbody>
+            <tr><th>Current plugin basename</th><td><code><?php echo esc_html(SC_LAB_PLUGIN_BASENAME); ?></code></td></tr>
+            <tr><th>Stable plugin slug</th><td><code><?php echo esc_html(SC_LAB_PLUGIN_SLUG); ?></code></td></tr>
+            <tr><th>Current version</th><td><code><?php echo esc_html(SC_LAB_VERSION); ?></code></td></tr>
+          </tbody></table>
+          <?php $duplicates = self::duplicate_plugins(); ?>
+          <?php if ($duplicates): ?>
+            <h3>Duplicate installations detected</h3>
+            <table class="widefat striped" style="max-width:960px"><thead><tr><th>Plugin path</th><th>Version</th><th>Status</th></tr></thead><tbody>
+            <?php foreach ($duplicates as $path => $data): ?><tr><td><code><?php echo esc_html($path); ?></code></td><td><?php echo esc_html(isset($data['Version']) ? $data['Version'] : 'unknown'); ?></td><td><?php echo is_plugin_active($path) ? 'Active' : 'Inactive'; ?></td></tr><?php endforeach; ?>
+            </tbody></table>
+            <p>This action deactivates duplicate instances but does not delete their folders or project data.</p>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+              <input type="hidden" name="action" value="sc_lab_deactivate_duplicates">
+              <?php wp_nonce_field('sc_lab_deactivate_duplicates'); ?>
+              <?php submit_button('Deactivate duplicate Lab instances', 'secondary', 'submit', false); ?>
+            </form>
+          <?php else: ?><p><strong>No duplicate Lab installations were detected.</strong></p><?php endif; ?>
+        </section></div>
         <?php
     }
 }

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-language-comparison-1.0.json",
+  "title": "Sustainable Catalyst Lab cross-language comparison",
+  "type": "object",
+  "required": ["schema", "methodId", "inputs", "executions", "passed", "comparisonFingerprint"],
+  "properties": {
+    "schema": {"const": "sc-lab-language-comparison/1.0"},
+    "serviceVersion": {"type": "string"},
+    "methodId": {"type": "string"},
+    "methodVersion": {"type": "string"},
+    "inputs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "referenceOutputs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "languagesRequested": {"type": "array", "items": {"type": "string"}},
+    "executions": {"type": "array", "items": {"type": "object"}},
+    "passed": {"type": "boolean"},
+    "successfulCount": {"type": "integer", "minimum": 0},
+    "comparedAt": {"type": "string"},
+    "comparisonFingerprint": {"type": "string"}
+  },
+  "additionalProperties": true
+}
