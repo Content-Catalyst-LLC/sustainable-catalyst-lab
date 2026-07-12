@@ -1,15 +1,15 @@
-# Scientific source registry
+# Scientific Source Registry
 
-| Connector | Use in Lab | Access model |
-|---|---|---|
-| USGS FDSN Event Web Service | Recent earthquake events and locations | Public official API |
-| NASA EONET v3 | Open natural-event records | Public official API |
-| NASA Image and Video Library | Space-telescope observations and public releases | Public official API |
-| OBIS API v3 | Marine species-occurrence records | Public scientific API |
-| NCBI E-utilities / PubMed | Natural-science literature metadata | Public official API; tool and contact configured in WordPress |
-| arXiv API | Recent physics, astronomy, materials, and engineering preprints | Public scholarly API |
-| NASA GIBS WMS | Climate and Earth-observation imagery | Public official imagery service |
+The initial Lab source layer uses official or primary scientific services:
 
-Lab preserves the source name, retrieval time, observed or publication time when available, original URL, and normalized record data when a signal is saved as evidence or cited in the notebook.
+- USGS FDSN Event Web Service for parameterized earthquake records.
+- NASA EONET v3 for curated near-real-time natural-event metadata.
+- NASA Global Imagery Browse Services for standards-based Earth imagery.
+- NASA Image and Video Library for public astronomy and mission media records.
+- Ocean Biodiversity Information System API v3 for marine occurrence records.
+- NCBI E-utilities for PubMed search and summary metadata.
+- arXiv public Atom API for physics, astronomy, materials, and engineering preprints.
 
-The NASA space module presents public observations and release records. It does not claim to expose raw telescope telemetry or calibrated mission archives.
+Each normalized record includes source, domain, observation or publication time where supplied, retrieval time, original URL, provenance, and location data where available. WordPress transient caching reduces repeated upstream requests.
+
+Source records are evidence candidates, not automatically validated conclusions. Users should inspect the original record, methods, uncertainty, revisions, and source-specific limitations before relying on a record in analysis or documentation.

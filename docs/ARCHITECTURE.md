@@ -1,20 +1,25 @@
-# v0.1.0 architecture
+# Sustainable Catalyst Lab Architecture — v0.1.1
 
-## Lab responsibilities
+## Application boundary
 
-- Scientific source discovery and normalization
-- Project orchestration
-- Evidence and hypothesis capture
-- Experiment and notebook records
-- Scientific calculation interfaces
-- Climate and Earth-observation views
-- Data-connected documentation
-- Routing into Workbench, Decision Studio, and Site Intelligence
+The WordPress plugin supplies the public Lab interface, source proxy, transient caching, project export, and routes into larger Sustainable Catalyst applications. Computation currently runs in browser modules, while external scientific records are normalized through WordPress REST endpoints.
 
-## Parent-application modules
+## Scientific workflow
 
-- **Workbench:** focused calculations, spectrometry, chemistry, experiments, and future code/instrument execution.
-- **Decision Studio:** evidence review, hypotheses, uncertainty, decisions, and future trade-off packets.
-- **Site Intelligence:** scientific feeds, place-aware evidence, climate imagery, Earth and marine observations.
+```text
+Observe → Save evidence → Form hypothesis → Calculate or experiment → Decide → Document
+```
 
-The Lab plugin does not duplicate the full parent applications. It implements focused modules around a shared Lab project record.
+The v0.1.1 interface expresses this workflow through grouped navigation, the project command bar, the signal board, and the interactive traceability map.
+
+## Project model
+
+Projects remain browser-local and use the same storage keys as v0.1.0. The model normalizes previous records into schema version 0.1.1 and preserves evidence, experiments, hypotheses, decisions, notes, calculations, documents, map states, and activity.
+
+## Application routing
+
+Lab exposes focused modules and links to the full Prototyping Workbench, Decision Studio, and Site Intelligence routes configured in WordPress settings. Feed records with coordinates can be routed to Site Intelligence with latitude, longitude, source, and record identifiers.
+
+## Future persistence
+
+A later Platform Core or FastAPI service can persist the same project contract, add authenticated collaboration, index technical files, and provide larger numerical or geospatial workloads without redesigning the browser interface.

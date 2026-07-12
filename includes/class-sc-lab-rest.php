@@ -11,7 +11,7 @@ class SC_Lab_REST {
     }
 
     public function status() {
-        return rest_ensure_response(array('ok'=>true,'version'=>SC_LAB_VERSION,'time'=>gmdate('c'),'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation')));
+        return rest_ensure_response(array('ok'=>true,'version'=>SC_LAB_VERSION,'time'=>gmdate('c'),'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity')));
     }
 
     public function sources() { return rest_ensure_response(array('sources'=>SC_Lab_Feeds::registry(),'retrievedAt'=>gmdate('c'))); }

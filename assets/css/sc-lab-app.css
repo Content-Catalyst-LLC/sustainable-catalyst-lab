@@ -1,3 +1,1397 @@
-.sc-lab-app{--red:#c40000;--ink:#182028;--muted:#66727d;--line:#d6dde2;--panel:#f5f7f8;--dark:#11171c;--ok:#14733b;--warn:#8a5b00;max-width:1500px;margin:0 auto;background:#fff;color:var(--ink);border:1px solid var(--line);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.sc-lab-app *{box-sizing:border-box}.sc-lab-app button,.sc-lab-app input,.sc-lab-app select,.sc-lab-app textarea{font:inherit}.sc-lab-topbar{display:grid;grid-template-columns:minmax(240px,.65fr) minmax(520px,1.35fr);gap:20px;align-items:center;padding:16px 18px;border-top:4px solid var(--red);border-bottom:1px solid var(--line);background:#f8fafb}.sc-lab-titleblock{display:flex;align-items:baseline;gap:10px}.sc-lab-titleblock h2{margin:0;font-size:1.55rem;line-height:1}.sc-lab-kicker,.sc-lab-version,.sc-lab-section-code{font:700 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}.sc-lab-version{color:var(--muted)}.sc-lab-project-controls{display:grid;grid-template-columns:auto minmax(190px,1fr) repeat(3,minmax(82px,98px));gap:8px;align-items:center}.sc-lab-project-controls label{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--muted)}.sc-lab-app select,.sc-lab-app input,.sc-lab-app textarea{width:100%;border:1px solid #aeb8c0;border-radius:2px;background:#fff;color:var(--ink);padding:8px 9px}.sc-lab-button{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:38px;padding:7px 11px;border:1px solid #98a3ac;border-radius:2px;background:#fff;color:var(--ink);font-size:13px;font-weight:700;cursor:pointer}.sc-lab-button:hover,.sc-lab-button:focus-visible{border-color:var(--ink);background:#eef2f4}.sc-lab-button-primary{background:var(--red);border-color:var(--red);color:#fff}.sc-lab-button-primary:hover,.sc-lab-button-primary:focus-visible{background:#9e0000;border-color:#9e0000}.sc-lab-layout{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:760px}.sc-lab-nav{padding:12px;background:#151b20;border-right:1px solid #303942}.sc-lab-nav-button{display:block;width:100%;padding:10px 11px;border:0;border-left:3px solid transparent;background:transparent;color:#c8d0d6;text-align:left;font-size:13px;cursor:pointer}.sc-lab-nav-button:hover,.sc-lab-nav-button.is-active{color:#fff;background:#212a31;border-left-color:var(--red)}.sc-lab-nav-links{display:grid;gap:6px;margin-top:18px;padding-top:14px;border-top:1px solid #35404a}.sc-lab-nav-links a{color:#aeb8c0;text-decoration:none;font-size:12px;padding:5px 10px}.sc-lab-nav-links a:hover{color:#fff}.sc-lab-main{min-width:0;padding:22px;background:#fff}.sc-lab-panel[hidden]{display:none!important}.sc-lab-panel-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px;padding-bottom:13px;border-bottom:1px solid var(--line)}.sc-lab-panel-head h3{margin:3px 0 0;font-size:1.45rem;line-height:1.2}.sc-lab-panel-head>.sc-lab-button{width:auto;min-width:110px}.sc-lab-status-dot{display:inline-flex;align-items:center;gap:6px;font:700 11px/1 ui-monospace,monospace;text-transform:uppercase;color:var(--ok)}.sc-lab-status-dot:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}.sc-lab-metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line);margin-bottom:20px}.sc-lab-metric{padding:14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.sc-lab-metric strong{display:block;font:700 22px/1.1 ui-monospace,monospace}.sc-lab-metric span{font-size:11px;text-transform:uppercase;color:var(--muted)}.sc-lab-grid{display:grid;gap:14px}.sc-lab-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sc-lab-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sc-lab-tool{padding:16px;border:1px solid var(--line);background:#fff}.sc-lab-tool h4,.sc-lab-panel h4{margin:0 0 10px;font-size:1rem}.sc-lab-tool p{margin:0 0 14px;color:var(--muted)}.sc-lab-tool>.sc-lab-button{width:auto;min-width:140px}.sc-lab-tool pre,.sc-lab-app pre{overflow:auto;min-height:54px;margin:12px 0 0;padding:10px;background:#0e1419;color:#c9f7ce;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}.sc-lab-split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.sc-lab-trace{padding:18px;border:1px solid var(--line);background:var(--panel);font:13px/1.8 ui-monospace,monospace}.sc-lab-toolbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end;margin-bottom:16px;padding:12px;border:1px solid var(--line);background:var(--panel)}.sc-lab-toolbar label,.sc-lab-tool label,.sc-lab-inline-fields label{display:grid;gap:5px;font-size:12px;font-weight:700;color:#46525c}.sc-lab-feed-status,.sc-lab-data-note,.sc-lab-doc-status{margin:10px 0;padding:9px 11px;border-left:3px solid var(--red);background:#f3f5f6;color:#4f5b65;font-size:12px}.sc-lab-feed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sc-lab-feed-card{display:flex;flex-direction:column;min-height:190px;padding:14px;border:1px solid var(--line);background:#fff}.sc-lab-feed-card img{width:100%;height:140px;object-fit:cover;margin-bottom:10px;background:#e7ecef}.sc-lab-feed-card h4{margin:0 0 7px;font-size:.96rem}.sc-lab-feed-card p{margin:0 0 10px;color:var(--muted);font-size:12px}.sc-lab-feed-meta{margin-top:auto;font:11px/1.4 ui-monospace,monospace;color:#68747e}.sc-lab-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}.sc-lab-card-actions .sc-lab-button{font-size:11px;min-height:32px}.sc-lab-map-frame{position:relative;min-height:480px;border:1px solid var(--line);background:#dfe6ea;overflow:hidden}.sc-lab-map-frame img{display:block;width:100%;height:480px;object-fit:cover}.sc-lab-map-overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,255,255,.75);font:700 13px ui-monospace,monospace}.sc-lab-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:1px solid var(--line)}.sc-lab-tabs button{padding:10px 14px;border:1px solid transparent;border-bottom:0;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}.sc-lab-tabs button.is-active{border-color:var(--line);background:#fff;color:var(--ink);box-shadow:0 2px 0 #fff}.sc-lab-periodic-wrap{overflow:auto;border:1px solid var(--line);padding:10px;background:#f8fafb}.sc-lab-periodic{display:grid;grid-template-columns:repeat(18,minmax(46px,1fr));grid-auto-rows:58px;gap:3px;min-width:940px}.sc-lab-element{position:relative;padding:4px;border:1px solid #aeb8c0;background:#fff;text-align:left;cursor:pointer}.sc-lab-element:hover,.sc-lab-element.is-selected{outline:2px solid var(--red);z-index:2}.sc-lab-element .n{font:9px ui-monospace,monospace;color:var(--muted)}.sc-lab-element .s{display:block;font-weight:800;font-size:16px}.sc-lab-element .m{font-size:8px;color:var(--muted)}.sc-lab-element-detail{margin-top:12px;padding:14px;border:1px solid var(--line);background:#fff}.sc-lab-inline-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sc-lab-inline-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.sc-lab-inline-actions .sc-lab-button{width:auto;min-width:105px}.sc-lab-chart{min-height:330px;border:1px solid var(--line);background:#fff}.sc-lab-chart svg{width:100%;height:330px}.sc-lab-calculator{max-width:820px}.sc-lab-calculator-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:16px;border:1px solid var(--line)}.sc-lab-calculator-result{grid-column:1/-1;padding:13px;background:#10161b;color:#c9f7ce;font:13px ui-monospace,monospace}.sc-lab-list{display:grid;gap:8px}.sc-lab-list-item{padding:12px;border:1px solid var(--line);background:#fff}.sc-lab-list-item header{display:flex;justify-content:space-between;gap:12px}.sc-lab-list-item h5{margin:0;font-size:.9rem}.sc-lab-list-item p{margin:6px 0 0;color:var(--muted);font-size:12px}.sc-lab-list-item time{font:10px ui-monospace,monospace;color:var(--muted)}.sc-lab-doc-editor{width:100%;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}.sc-lab-status-table{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}.sc-lab-status-row{display:grid;grid-template-columns:1fr 140px 2fr;gap:10px;padding:10px;background:#fff}.sc-lab-status-value{font:700 11px ui-monospace,monospace;text-transform:uppercase}.sc-lab-status-value.ok{color:var(--ok)}.sc-lab-status-value.warn{color:var(--warn)}.sc-lab-toast{position:fixed;right:18px;bottom:18px;z-index:10000;max-width:360px;padding:12px 15px;background:#10161b;color:#fff;border-left:4px solid var(--red);box-shadow:0 8px 24px rgba(0,0,0,.25)}
-@media(max-width:1100px){.sc-lab-topbar{grid-template-columns:1fr}.sc-lab-layout{grid-template-columns:180px minmax(0,1fr)}.sc-lab-feed-grid,.sc-lab-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.sc-lab-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.sc-lab-app{border-left:0;border-right:0}.sc-lab-project-controls{grid-template-columns:1fr 1fr}.sc-lab-project-controls label{grid-column:1/-1}.sc-lab-project-controls select{grid-column:1/-1}.sc-lab-layout{display:block}.sc-lab-nav{display:flex;overflow-x:auto;gap:2px;border-right:0;border-bottom:1px solid #303942}.sc-lab-nav-button{flex:0 0 auto;width:auto;white-space:nowrap;border-left:0;border-bottom:3px solid transparent}.sc-lab-nav-button.is-active{border-left:0;border-bottom-color:var(--red)}.sc-lab-nav-links{display:none}.sc-lab-main{padding:14px}.sc-lab-feed-grid,.sc-lab-grid-2,.sc-lab-grid-3,.sc-lab-split{grid-template-columns:1fr}.sc-lab-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.sc-lab-map-frame,.sc-lab-map-frame img{height:360px;min-height:360px}.sc-lab-inline-fields,.sc-lab-calculator-form{grid-template-columns:1fr}.sc-lab-status-row{grid-template-columns:1fr}.sc-lab-panel-head{align-items:flex-start}.sc-lab-panel-head>.sc-lab-button{width:auto}}
+/* =========================================================
+   Sustainable Catalyst Lab v0.1.1
+   Scientific Interface and Workspace Integration Patch
+   ========================================================= */
+
+.sc-lab-app {
+  --lab-red: #c40000;
+  --lab-red-dark: #980000;
+  --lab-ink: #182028;
+  --lab-slate: #4f5b65;
+  --lab-muted: #6b7680;
+  --lab-line: #d3dbe1;
+  --lab-line-dark: #aab5be;
+  --lab-panel: #f4f7f8;
+  --lab-panel-2: #edf2f4;
+  --lab-white: #ffffff;
+  --lab-dark: #11171c;
+  --lab-dark-2: #1b242b;
+  --lab-ok: #14733b;
+  --lab-warn: #8a5b00;
+  --lab-code: #c9f7ce;
+
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+  font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.sc-lab-app,
+.sc-lab-app * {
+  box-sizing: border-box;
+}
+
+.sc-lab-app button,
+.sc-lab-app input,
+.sc-lab-app select,
+.sc-lab-app textarea {
+  font: inherit;
+}
+
+.sc-lab-app button,
+.sc-lab-app a,
+.sc-lab-app input,
+.sc-lab-app select,
+.sc-lab-app textarea {
+  border-radius: 2px;
+}
+
+.sc-lab-app h2,
+.sc-lab-app h3,
+.sc-lab-app h4,
+.sc-lab-app h5,
+.sc-lab-app p {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.sc-lab-app [hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   Sticky project and command bar
+   ========================================================= */
+
+.sc-lab-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #f8fafb;
+  border-top: 4px solid var(--lab-red);
+  border-bottom: 1px solid var(--lab-line);
+  box-shadow: 0 4px 14px rgba(17, 23, 28, 0.06);
+}
+
+.sc-lab-topbar-primary {
+  display: grid;
+  grid-template-columns: auto minmax(210px, 0.55fr) minmax(580px, 1.45fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px 10px;
+}
+
+.sc-lab-nav-toggle {
+  display: none;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 10px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line-dark);
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sc-lab-titleblock {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.sc-lab-titleblock h2 {
+  margin: 0;
+  color: var(--lab-ink);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.sc-lab-kicker,
+.sc-lab-version,
+.sc-lab-section-code,
+.sc-lab-nav-heading {
+  color: var(--lab-red);
+  font: 700 10px/1.25 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.sc-lab-version {
+  color: var(--lab-muted);
+}
+
+.sc-lab-project-controls {
+  display: grid;
+  grid-template-columns: auto minmax(210px, 1fr) repeat(3, minmax(76px, 94px));
+  gap: 7px;
+  align-items: center;
+}
+
+.sc-lab-project-controls label {
+  color: var(--lab-muted);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sc-lab-commandbar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 16px;
+  background: var(--lab-panel);
+  border-top: 1px solid var(--lab-line);
+}
+
+.sc-lab-command-search {
+  position: relative;
+  min-width: 0;
+}
+
+.sc-lab-command-search input {
+  min-height: 40px;
+  padding-right: 54px !important;
+  background: var(--lab-white);
+}
+
+.sc-lab-command-search kbd {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  padding: 2px 6px;
+  color: var(--lab-muted);
+  background: var(--lab-panel);
+  border: 1px solid var(--lab-line);
+  border-bottom-color: var(--lab-line-dark);
+  font: 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  transform: translateY(-50%);
+}
+
+.sc-lab-command-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 60;
+  max-height: 390px;
+  overflow: auto;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line-dark);
+  box-shadow: 0 14px 34px rgba(17, 23, 28, 0.18);
+}
+
+.sc-lab-command-results button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 0;
+  border-bottom: 1px solid var(--lab-line);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sc-lab-command-results button:hover,
+.sc-lab-command-results button:focus-visible {
+  background: var(--lab-panel-2);
+  outline: 2px solid var(--lab-red);
+  outline-offset: -2px;
+}
+
+.sc-lab-command-results span {
+  font-weight: 750;
+}
+
+.sc-lab-command-results small {
+  color: var(--lab-muted);
+  font: 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-command-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(112px, 150px));
+  gap: 7px;
+}
+
+/* =========================================================
+   Form controls and buttons
+   ========================================================= */
+
+.sc-lab-app select,
+.sc-lab-app input,
+.sc-lab-app textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 9px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line-dark);
+}
+
+.sc-lab-app input:focus,
+.sc-lab-app select:focus,
+.sc-lab-app textarea:focus {
+  border-color: var(--lab-red);
+  outline: 2px solid rgba(196, 0, 0, 0.16);
+  outline-offset: 0;
+}
+
+.sc-lab-button {
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid #98a3ac;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sc-lab-button:hover,
+.sc-lab-button:focus-visible {
+  color: var(--lab-ink);
+  background: #e9eef1;
+  border-color: var(--lab-ink);
+}
+
+.sc-lab-button-primary {
+  color: var(--lab-white);
+  background: var(--lab-red);
+  border-color: var(--lab-red);
+}
+
+.sc-lab-button-primary:hover,
+.sc-lab-button-primary:focus-visible {
+  color: var(--lab-white);
+  background: var(--lab-red-dark);
+  border-color: var(--lab-red-dark);
+}
+
+.sc-lab-text-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  color: var(--lab-red);
+  background: transparent;
+  border: 0;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sc-lab-text-button:hover,
+.sc-lab-text-button:focus-visible {
+  color: var(--lab-ink);
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Layout and grouped navigation
+   ========================================================= */
+
+.sc-lab-layout {
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  min-height: 780px;
+}
+
+.sc-lab-nav {
+  padding: 12px 10px 22px;
+  color: #c8d0d6;
+  background: var(--lab-dark);
+  border-right: 1px solid #303942;
+}
+
+.sc-lab-nav-group + .sc-lab-nav-group {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #313b43;
+}
+
+.sc-lab-nav-heading {
+  display: block;
+  padding: 0 10px 6px;
+  color: #7f8b94;
+  font-size: 9px;
+}
+
+.sc-lab-nav-button {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  color: #c8d0d6;
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sc-lab-nav-button:hover,
+.sc-lab-nav-button.is-active {
+  color: var(--lab-white);
+  background: #212a31;
+  border-left-color: var(--lab-red);
+}
+
+.sc-lab-nav-links {
+  display: grid;
+  gap: 3px;
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid #35404a;
+}
+
+.sc-lab-nav-links a {
+  padding: 6px 10px;
+  color: #aeb8c0;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.sc-lab-nav-links a:hover,
+.sc-lab-nav-links a:focus-visible {
+  color: var(--lab-white);
+  background: #212a31;
+}
+
+.sc-lab-main {
+  min-width: 0;
+  padding: 20px;
+  background: var(--lab-white);
+}
+
+.sc-lab-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--lab-line);
+}
+
+.sc-lab-panel-head h3 {
+  margin: 3px 0 0;
+  color: var(--lab-ink);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.sc-lab-panel-head > .sc-lab-button {
+  width: auto;
+  min-width: 110px;
+}
+
+.sc-lab-status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--lab-ok);
+  font: 700 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-status-dot::before {
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+/* =========================================================
+   Overview dashboard
+   ========================================================= */
+
+.sc-lab-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-bottom: 16px;
+  border-top: 1px solid var(--lab-line);
+  border-left: 1px solid var(--lab-line);
+}
+
+.sc-lab-metric {
+  display: block;
+  width: 100%;
+  min-height: 68px;
+  padding: 11px 12px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 0;
+  border-right: 1px solid var(--lab-line);
+  border-bottom: 1px solid var(--lab-line);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sc-lab-metric:hover,
+.sc-lab-metric:focus-visible {
+  background: var(--lab-panel);
+  outline: 2px solid var(--lab-red);
+  outline-offset: -2px;
+}
+
+.sc-lab-metric strong {
+  display: block;
+  color: var(--lab-ink);
+  font: 750 21px/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-metric span {
+  color: var(--lab-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.sc-lab-dashboard-section {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-dashboard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 11px;
+}
+
+.sc-lab-dashboard-head h4 {
+  margin: 2px 0 0;
+  font-size: 0.98rem;
+}
+
+.sc-lab-dashboard-head > .sc-lab-button {
+  width: auto;
+  min-width: 112px;
+}
+
+.sc-lab-overview-signals {
+  display: grid;
+  border-top: 1px solid var(--lab-line);
+}
+
+.sc-lab-signal-row {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 54px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--lab-line);
+}
+
+.sc-lab-signal-source {
+  color: var(--lab-red);
+  font: 700 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-signal-copy {
+  min-width: 0;
+}
+
+.sc-lab-signal-copy strong,
+.sc-lab-signal-copy span {
+  display: block;
+}
+
+.sc-lab-signal-copy strong {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sc-lab-signal-copy span {
+  margin-top: 2px;
+  color: var(--lab-muted);
+  font-size: 10px;
+}
+
+.sc-lab-signal-actions {
+  display: flex;
+  gap: 9px;
+}
+
+.sc-lab-quick-tools {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--lab-line);
+  border-left: 1px solid var(--lab-line);
+}
+
+.sc-lab-quick-tools button {
+  min-height: 82px;
+  padding: 12px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 0;
+  border-right: 1px solid var(--lab-line);
+  border-bottom: 1px solid var(--lab-line);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sc-lab-quick-tools button:hover,
+.sc-lab-quick-tools button:focus-visible {
+  background: var(--lab-panel-2);
+  outline: 2px solid var(--lab-red);
+  outline-offset: -2px;
+}
+
+.sc-lab-quick-tools strong,
+.sc-lab-quick-tools span {
+  display: block;
+}
+
+.sc-lab-quick-tools strong {
+  font-size: 12px;
+}
+
+.sc-lab-quick-tools span {
+  margin-top: 4px;
+  color: var(--lab-muted);
+  font-size: 10px;
+}
+
+.sc-lab-dashboard-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sc-lab-project-work {
+  display: grid;
+  gap: 7px;
+}
+
+.sc-lab-trace-map {
+  display: grid;
+  grid-template-columns: repeat(13, auto);
+  align-items: center;
+  justify-content: stretch;
+  gap: 4px;
+}
+
+.sc-lab-trace-stage {
+  display: grid;
+  min-width: 0;
+  min-height: 64px;
+  place-content: center;
+  padding: 8px 10px;
+  color: var(--lab-ink);
+  background: var(--lab-panel);
+  border: 1px solid var(--lab-line);
+  text-align: center;
+  cursor: pointer;
+}
+
+.sc-lab-trace-stage:hover,
+.sc-lab-trace-stage:focus-visible {
+  background: var(--lab-white);
+  border-color: var(--lab-red);
+}
+
+.sc-lab-trace-stage strong {
+  font: 750 18px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-trace-stage span {
+  margin-top: 5px;
+  color: var(--lab-muted);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.sc-lab-trace-arrow {
+  color: var(--lab-red);
+  font: 750 16px/1 ui-monospace, monospace;
+  text-align: center;
+}
+
+.sc-lab-empty-state {
+  margin-top: 16px;
+  padding: 18px;
+  background: var(--lab-panel);
+  border: 1px dashed var(--lab-line-dark);
+}
+
+.sc-lab-empty-state h4,
+.sc-lab-empty-state p {
+  margin-top: 0;
+}
+
+.sc-lab-empty-state p {
+  color: var(--lab-muted);
+}
+
+.sc-lab-empty-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* =========================================================
+   Shared panels and tool forms
+   ========================================================= */
+
+.sc-lab-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.sc-lab-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sc-lab-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sc-lab-tool {
+  padding: 15px;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-tool h4,
+.sc-lab-panel h4 {
+  margin: 0 0 9px;
+  font-size: 0.96rem;
+}
+
+.sc-lab-tool p {
+  margin: 0 0 13px;
+  color: var(--lab-muted);
+}
+
+.sc-lab-tool > .sc-lab-button {
+  width: auto;
+  min-width: 136px;
+}
+
+.sc-lab-tool label,
+.sc-lab-toolbar label,
+.sc-lab-inline-fields label,
+.sc-lab-calculator-form label {
+  display: grid;
+  gap: 5px;
+  color: #46525c;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.sc-lab-toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 9px;
+  align-items: end;
+  margin-bottom: 15px;
+  padding: 11px;
+  background: var(--lab-panel);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-toolbar > .sc-lab-button {
+  min-height: 36px;
+}
+
+.sc-lab-feed-status,
+.sc-lab-data-note,
+.sc-lab-doc-status {
+  margin: 9px 0;
+  padding: 8px 10px;
+  color: #4f5b65;
+  background: #f2f5f6;
+  border-left: 3px solid var(--lab-red);
+  font-size: 11px;
+}
+
+.sc-lab-doc-status.is-stale {
+  color: #664500;
+  background: #fff8df;
+  border-left-color: #b07800;
+}
+
+.sc-lab-app pre,
+.sc-lab-tool pre {
+  min-height: 54px;
+  margin: 11px 0 0;
+  padding: 10px;
+  overflow: auto;
+  color: var(--lab-code);
+  background: #0e1419;
+  font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* =========================================================
+   Scientific feeds
+   ========================================================= */
+
+.sc-lab-feed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sc-lab-feed-card {
+  display: flex;
+  min-width: 0;
+  min-height: 250px;
+  flex-direction: column;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-feed-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: #e7ecef;
+  border-bottom: 1px solid var(--lab-line);
+}
+
+.sc-lab-feed-card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 13px;
+}
+
+.sc-lab-feed-domain {
+  margin-bottom: 6px;
+  color: var(--lab-red);
+  font: 700 9px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.sc-lab-feed-card h4 {
+  margin: 0 0 7px;
+  font-size: 0.92rem;
+}
+
+.sc-lab-feed-card p {
+  margin: 0 0 10px;
+  color: var(--lab-muted);
+  font-size: 11px;
+}
+
+.sc-lab-feed-meta {
+  margin-top: auto;
+  color: #68747e;
+  font: 10px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--lab-line);
+}
+
+.sc-lab-card-actions .sc-lab-button,
+.sc-lab-card-actions .sc-lab-text-button {
+  width: 100%;
+  min-height: 31px;
+  justify-content: center;
+  padding: 5px 7px;
+  font-size: 10px;
+}
+
+.sc-lab-card-actions .sc-lab-button-primary {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   Climate map, chemistry, calculators, spectrometry
+   ========================================================= */
+
+.sc-lab-map-frame {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+  background: #dfe6ea;
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-map-frame img {
+  display: block;
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+}
+
+.sc-lab-map-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.78);
+  font: 750 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--lab-line);
+}
+
+.sc-lab-tabs button {
+  flex: 0 0 auto;
+  padding: 9px 13px;
+  color: var(--lab-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sc-lab-tabs button.is-active {
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border-color: var(--lab-line);
+  box-shadow: 0 2px 0 var(--lab-white);
+}
+
+.sc-lab-periodic-wrap {
+  padding: 9px;
+  overflow: auto;
+  background: #f8fafb;
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-periodic {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(46px, 1fr));
+  grid-auto-rows: 58px;
+  gap: 3px;
+  min-width: 940px;
+}
+
+.sc-lab-element {
+  position: relative;
+  padding: 4px;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid #aeb8c0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sc-lab-element:hover,
+.sc-lab-element.is-selected {
+  z-index: 2;
+  outline: 2px solid var(--lab-red);
+}
+
+.sc-lab-element .n {
+  color: var(--lab-muted);
+  font: 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-element .s {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.sc-lab-element .m {
+  color: var(--lab-muted);
+  font-size: 8px;
+}
+
+.sc-lab-element-detail {
+  margin-top: 11px;
+  padding: 13px;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-inline-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.sc-lab-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.sc-lab-inline-actions .sc-lab-button {
+  width: auto;
+  min-width: 102px;
+}
+
+.sc-lab-chart {
+  min-height: 330px;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-chart svg {
+  width: 100%;
+  height: 330px;
+}
+
+.sc-lab-calculator {
+  max-width: 900px;
+}
+
+.sc-lab-calculator-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  padding: 15px;
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-calculator-result {
+  grid-column: 1 / -1;
+  padding: 12px;
+  color: var(--lab-code);
+  background: #10161b;
+  font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+}
+
+/* =========================================================
+   Lists, activity, records, status, documentation
+   ========================================================= */
+
+.sc-lab-list {
+  display: grid;
+  gap: 7px;
+}
+
+.sc-lab-list-item {
+  padding: 11px;
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-list-item header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sc-lab-list-item h5 {
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.sc-lab-list-item p {
+  margin: 6px 0 0;
+  color: var(--lab-muted);
+  font-size: 11px;
+  white-space: pre-line;
+}
+
+.sc-lab-list-item time {
+  flex: 0 0 auto;
+  color: var(--lab-muted);
+  font: 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-list-meta {
+  display: block;
+  margin-top: 6px;
+  color: var(--lab-red);
+  font: 9px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-doc-editor {
+  width: 100%;
+  font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-lab-status-table {
+  display: grid;
+  gap: 1px;
+  background: var(--lab-line);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-status-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 2fr;
+  gap: 10px;
+  padding: 10px;
+  background: var(--lab-white);
+}
+
+.sc-lab-status-value {
+  font: 750 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-status-value.ok { color: var(--lab-ok); }
+.sc-lab-status-value.warn { color: var(--lab-warn); }
+
+/* =========================================================
+   Record inspection dialog
+   ========================================================= */
+
+.sc-lab-record-dialog {
+  width: min(720px, calc(100% - 28px));
+  max-height: 88vh;
+  padding: 0;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line-dark);
+  border-radius: 2px;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.3);
+}
+
+.sc-lab-record-dialog::backdrop {
+  background: rgba(10, 15, 19, 0.72);
+}
+
+.sc-lab-record-dialog-shell {
+  margin: 0;
+}
+
+.sc-lab-record-dialog header,
+.sc-lab-record-dialog footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--lab-panel);
+}
+
+.sc-lab-record-dialog header {
+  border-top: 3px solid var(--lab-red);
+  border-bottom: 1px solid var(--lab-line);
+}
+
+.sc-lab-record-dialog header h3 {
+  margin: 3px 0 0;
+  font-size: 1.15rem;
+}
+
+.sc-lab-dialog-close {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  color: var(--lab-ink);
+  background: var(--lab-white);
+  border: 1px solid var(--lab-line-dark);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sc-lab-dialog-body {
+  padding: 18px 16px;
+  overflow: auto;
+}
+
+.sc-lab-dialog-body > p {
+  color: var(--lab-slate);
+  white-space: pre-line;
+}
+
+.sc-lab-dialog-body dl {
+  display: grid;
+  gap: 1px;
+  margin: 18px 0 0;
+  background: var(--lab-line);
+  border: 1px solid var(--lab-line);
+}
+
+.sc-lab-dialog-body dl > div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--lab-white);
+}
+
+.sc-lab-dialog-body dt {
+  color: var(--lab-muted);
+  font: 700 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.sc-lab-dialog-body dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sc-lab-record-dialog footer {
+  justify-content: flex-end;
+  border-top: 1px solid var(--lab-line);
+}
+
+.sc-lab-record-dialog footer .sc-lab-button {
+  width: auto;
+  min-width: 108px;
+}
+
+/* =========================================================
+   Toast
+   ========================================================= */
+
+.sc-lab-toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 10000;
+  max-width: 360px;
+  padding: 12px 15px;
+  color: var(--lab-white);
+  background: #10161b;
+  border-left: 4px solid var(--lab-red);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 1220px) {
+  .sc-lab-topbar-primary {
+    grid-template-columns: minmax(190px, 0.6fr) minmax(540px, 1.4fr);
+  }
+
+  .sc-lab-nav-toggle {
+    display: none;
+  }
+
+  .sc-lab-feed-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-lab-quick-tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-lab-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sc-lab-trace-map {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .sc-lab-trace-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .sc-lab-topbar-primary {
+    grid-template-columns: auto minmax(170px, 0.5fr) minmax(0, 1.5fr);
+  }
+
+  .sc-lab-nav-toggle {
+    display: inline-flex;
+  }
+
+  .sc-lab-commandbar {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-lab-command-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sc-lab-layout {
+    display: block;
+  }
+
+  .sc-lab-nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 90;
+    width: min(310px, 88vw);
+    overflow-y: auto;
+    border-right: 1px solid #303942;
+    box-shadow: 14px 0 36px rgba(0, 0, 0, 0.3);
+    transform: translateX(-105%);
+    transition: transform 160ms ease;
+  }
+
+  .sc-lab-nav.is-open {
+    transform: translateX(0);
+  }
+
+  .sc-lab-main {
+    padding: 16px;
+  }
+
+  .sc-lab-dashboard-columns,
+  .sc-lab-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sc-lab-app {
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .sc-lab-topbar {
+    position: static;
+  }
+
+  .sc-lab-topbar-primary {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .sc-lab-titleblock {
+    justify-content: flex-start;
+  }
+
+  .sc-lab-project-controls {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sc-lab-project-controls label,
+  .sc-lab-project-controls select {
+    grid-column: 1 / -1;
+  }
+
+  .sc-lab-commandbar {
+    padding: 8px 10px 10px;
+  }
+
+  .sc-lab-command-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-lab-main {
+    padding: 12px;
+  }
+
+  .sc-lab-panel-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sc-lab-panel-head > .sc-lab-button {
+    width: 100%;
+  }
+
+  .sc-lab-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-lab-signal-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .sc-lab-signal-copy strong {
+    white-space: normal;
+  }
+
+  .sc-lab-signal-actions {
+    justify-content: flex-start;
+  }
+
+  .sc-lab-quick-tools,
+  .sc-lab-empty-actions,
+  .sc-lab-feed-grid,
+  .sc-lab-grid-2,
+  .sc-lab-grid-3,
+  .sc-lab-dashboard-columns,
+  .sc-lab-inline-fields,
+  .sc-lab-calculator-form {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-lab-trace-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-lab-map-frame,
+  .sc-lab-map-frame img {
+    min-height: 350px;
+    height: 350px;
+  }
+
+  .sc-lab-status-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-lab-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-lab-card-actions .sc-lab-button-primary {
+    grid-column: auto;
+  }
+
+  .sc-lab-dialog-body dl > div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .sc-lab-record-dialog footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sc-lab-record-dialog footer .sc-lab-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-lab-app *,
+  .sc-lab-app *::before,
+  .sc-lab-app *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

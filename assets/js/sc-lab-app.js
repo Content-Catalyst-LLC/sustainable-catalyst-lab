@@ -1,61 +1,633 @@
-(function(w,d){'use strict';
-const Lab=w.SCLab,U=Lab.util;
-function qs(root,s){return root.querySelector(s)}function qsa(root,s){return [...root.querySelectorAll(s)]}
-function promptRecord(label,fields){const out={};for(const [key,title,def=''] of fields){const v=w.prompt(title,def);if(v===null)return null;out[key]=v}return out}
-function init(root){
- const projects=new Lab.Projects(),config=w.SCLabConfig||{},initial=root.dataset.initialModule||'overview';
- const select=qs(root,'[data-lab-project-select]'),file=qs(root,'[data-lab-import-file]');
- function renderSelect(){select.innerHTML='';projects.items.forEach(p=>{const o=d.createElement('option');o.value=p.id;o.textContent=p.name;o.selected=p.id===projects.activeId;select.appendChild(o)})}
- function openModule(id){qsa(root,'[data-lab-module]').forEach(p=>p.hidden=p.dataset.labModule!==id);qsa(root,'[data-lab-module-button]').forEach(b=>b.classList.toggle('is-active',b.dataset.labModuleButton===id));root.dataset.activeModule=id;if(id==='overview')renderOverview();if(id==='experiments')renderExperiments();if(id==='evidence-decisions')renderEvidence();if(id==='notebook')renderNotes();if(id==='system-status')runStatus(false)}
- qsa(root,'[data-lab-module-button]').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.labModuleButton)));qsa(root,'[data-open-module]').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.openModule)));
- qsa(root,'[data-route]').forEach(a=>{a.href=config.routes?.[a.dataset.route]||'#'});
- select.addEventListener('change',()=>projects.select(select.value));
- qs(root,'[data-lab-action="new-project"]').addEventListener('click',()=>{const name=w.prompt('Project name','New Lab Project');if(name){projects.create(name);U.toast(root,'Project created.')}});
- qs(root,'[data-lab-action="export-project"]').addEventListener('click',()=>projects.export());
- qs(root,'[data-lab-action="import-project"]').addEventListener('click',()=>file.click());file.addEventListener('change',()=>{const f=file.files[0];if(!f)return;f.text().then(t=>{projects.import(t);U.toast(root,'Project imported.')}).catch(e=>U.toast(root,e.message));file.value='' });
- projects.onChange(()=>{renderSelect();renderOverview();if(root.dataset.activeModule==='experiments')renderExperiments();if(root.dataset.activeModule==='evidence-decisions')renderEvidence();if(root.dataset.activeModule==='notebook')renderNotes();updateDocStale()});
- function renderOverview(){const p=projects.get();const counts=[['Evidence',p.evidence.length],['Experiments',p.experiments.length],['Calculations',p.calculations.length],['Notes',p.notes.length],['Decisions',p.decisions.length],['Documents',p.documents.length]];qs(root,'[data-overview-metrics]').innerHTML=counts.map(([k,v])=>`<div class="sc-lab-metric"><strong>${v}</strong><span>${k}</span></div>`).join('');qs(root,'[data-recent-activity]').innerHTML=p.activity.slice(0,8).map(a=>listHTML(a.text,'',a.at)).join('')||empty('No project activity yet.')}
- function listHTML(title,body,time){return `<article class="sc-lab-list-item"><header><h5>${U.esc(title)}</h5><time>${U.esc(U.fmt(time))}</time></header>${body?`<p>${U.esc(body)}</p>`:''}</article>`}
- function empty(text){return `<div class="sc-lab-data-note">${U.esc(text)}</div>`}
- renderSelect();
- // Feeds
- async function feedTo(source,q,limit,target,status){status&&(status.textContent='Loading scientific source…');try{const data=await Lab.Feeds.load(source,q,limit);Lab.Feeds.render(target,data.records,projects,root);status&&(status.textContent=`${data.records.length} records · ${data.cached?'cached':'live retrieval'} · ${U.fmt(data.retrievedAt)}`)}catch(e){target.innerHTML=empty(e.message);status&&(status.textContent=e.message)}}
- const feedSource=qs(root,'[data-feed-source]'),feedQ=qs(root,'[data-feed-query]'),feedLimit=qs(root,'[data-feed-limit]'),feedTarget=qs(root,'[data-feed-results]'),feedStatus=qs(root,'[data-feed-status]');
- function runFeed(){feedTo(feedSource.value,feedQ.value,Number(feedLimit.value),feedTarget,feedStatus)}qs(root,'[data-feed-run]').addEventListener('click',runFeed);qs(root,'[data-feed-refresh]').addEventListener('click',runFeed);
- qs(root,'[data-space-load]').addEventListener('click',()=>feedTo('nasa-space-telescopes',qs(root,'[data-space-query]').value,18,qs(root,'[data-space-results]')));
- qs(root,'[data-marine-load]').addEventListener('click',()=>feedTo('obis-marine',qs(root,'[data-marine-query]').value,Number(qs(root,'[data-marine-limit]').value),qs(root,'[data-marine-results]')));
- // Climate
- const date=qs(root,'[data-climate-date]');date.value=new Date(Date.now()-86400000).toISOString().slice(0,10);function renderMap(){return Lab.ClimateMap.render(qs(root,'[data-climate-image]'),qs(root,'[data-climate-layer]').value,date.value,qs(root,'[data-climate-region]').value,qs(root,'[data-climate-loading]'))}qs(root,'[data-climate-render]').addEventListener('click',renderMap);qs(root,'[data-climate-save]').addEventListener('click',()=>{const record={title:'NASA GIBS climate map',layer:qs(root,'[data-climate-layer]').value,date:date.value,bbox:qs(root,'[data-climate-region]').value,url:renderMap()};projects.add('maps',record,`Climate map saved: ${record.layer}`);U.toast(root,'Climate map state saved.')});renderMap();
- // Periodic and chemistry tabs
- const periodic=qs(root,'[data-periodic-table]'),detail=qs(root,'[data-element-detail]');Lab.Periodic.load(config.elementsUrl).then(elements=>{Lab.Stoichiometry.setElements(elements);drawElements()}).catch(e=>detail.textContent=e.message);function drawElements(){Lab.Periodic.render(periodic,detail,{query:qs(root,'[data-element-search]').value,property:qs(root,'[data-element-property]').value})}qs(root,'[data-element-search]').addEventListener('input',drawElements);qs(root,'[data-element-property]').addEventListener('change',drawElements);
- tabSet('[data-chem-tab]','chemTab','[data-chem-pane]','chemPane');tabSet('[data-analysis-tab]','analysisTab','[data-analysis-pane]','analysisPane');
- function tabSet(buttonSelector,buttonKey,paneSelector,paneKey){qsa(root,buttonSelector).forEach(b=>b.addEventListener('click',()=>{qsa(root,buttonSelector).forEach(x=>x.classList.toggle('is-active',x===b));qsa(root,paneSelector).forEach(p=>p.hidden=p.dataset[paneKey]!==b.dataset[buttonKey])}))}
- function runOut(buttonSel,outputSel,fn,activity){qs(root,buttonSel).addEventListener('click',()=>{try{const result=fn();qs(root,outputSel).textContent=JSON.stringify(result,null,2);projects.add('calculations',{type:activity,input:result.input||null,result},`${activity} calculation completed`)}catch(e){qs(root,outputSel).textContent='Error: '+e.message}})}
- runOut('[data-formula-run]','[data-formula-output]',()=>Lab.Stoichiometry.molarMass(qs(root,'[data-formula-input]').value),'Molar mass');
- runOut('[data-balance-run]','[data-balance-output]',()=>Lab.Stoichiometry.balanceEquation(qs(root,'[data-balance-input]').value),'Equation balance');
- runOut('[data-limit-run]','[data-limit-output]',()=>Lab.Stoichiometry.limitingReagent(qs(root,'[data-limit-equation]').value,JSON.parse(qs(root,'[data-limit-moles]').value)),'Limiting reagent');
- runOut('[data-yield-run]','[data-yield-output]',()=>Lab.Stoichiometry.theoreticalYield(qs(root,'[data-yield-product]').value,qs(root,'[data-yield-moles]').value),'Theoretical yield');
- runOut('[data-dilution-run]','[data-dilution-output]',()=>Lab.Stoichiometry.dilution({c1:qs(root,'[data-dilution-c1]').value,v1:qs(root,'[data-dilution-v1]').value,c2:qs(root,'[data-dilution-c2]').value,v2:qs(root,'[data-dilution-v2]').value}),'Dilution');
- // Calculators
- const domainSel=qs(root,'[data-calculator-domain]'),calcSel=qs(root,'[data-calculator-select]'),calcForm=qs(root,'[data-calculator-form]');Lab.Calculators.domains().forEach(x=>domainSel.add(new Option(x,x)));function populateCalc(){calcSel.innerHTML='';Lab.Calculators.byDomain(domainSel.value).forEach(c=>calcSel.add(new Option(c.name,c.id)));renderCalc()}function renderCalc(){const def=Lab.Calculators.get(calcSel.value);if(!def){calcForm.innerHTML='';return}calcForm.innerHTML=`<div class="sc-lab-calculator-form">${def.fields.map(([key,label,unit,value])=>`<label>${U.esc(label)}${unit?` (${U.esc(unit)})`:''}<input data-calc-field="${U.esc(key)}" value="${U.esc(value)}"></label>`).join('')}<button class="sc-lab-button sc-lab-button-primary" data-calc-run>Calculate</button><div class="sc-lab-calculator-result" data-calc-result>Ready.</div></div>`;qs(calcForm,'[data-calc-run]').addEventListener('click',()=>{try{const values={};qsa(calcForm,'[data-calc-field]').forEach(i=>values[i.dataset.calcField]=i.value);const result=def.run(values);qs(calcForm,'[data-calc-result]').textContent=JSON.stringify(result,null,2);projects.add('calculations',{type:def.name,calculatorId:def.id,inputs:values,result},`${def.name} calculation completed`)}catch(e){qs(calcForm,'[data-calc-result]').textContent='Error: '+e.message}})}domainSel.addEventListener('change',populateCalc);calcSel.addEventListener('change',renderCalc);populateCalc();
- // Spectrometry
- let spectrum=[];function spectrumRender(peaks=[]){qs(root,'[data-spectrum-chart]').innerHTML=spectrum.length?Lab.Spectrometry.svg(spectrum,peaks):''}qs(root,'[data-spectrum-load]').addEventListener('click',()=>{try{spectrum=Lab.Spectrometry.parse(qs(root,'[data-spectrum-input]').value);spectrumRender();qs(root,'[data-spectrum-output]').textContent=`Loaded ${spectrum.length} points. Area: ${Lab.Spectrometry.integrate(spectrum)}`}catch(e){qs(root,'[data-spectrum-output]').textContent=e.message}});qs(root,'[data-spectrum-baseline]').addEventListener('click',()=>{if(spectrum.length){spectrum=Lab.Spectrometry.baseline(spectrum);spectrumRender()}});qs(root,'[data-spectrum-smooth]').addEventListener('click',()=>{if(spectrum.length){spectrum=Lab.Spectrometry.smooth(spectrum,2);spectrumRender()}});qs(root,'[data-spectrum-peaks]').addEventListener('click',()=>{if(!spectrum.length)return;const peaks=Lab.Spectrometry.peaks(spectrum);spectrumRender(peaks);qs(root,'[data-spectrum-output]').textContent=JSON.stringify({points:spectrum.length,peaks,area:Lab.Spectrometry.integrate(spectrum)},null,2);projects.add('calculations',{type:'Spectrometry analysis',result:{peaks,area:Lab.Spectrometry.integrate(spectrum)}},'Spectrometry analysis completed')});qs(root,'[data-spectrum-export]').addEventListener('click',()=>spectrum.length&&U.download('spectrum-processed.csv',Lab.Spectrometry.csv(spectrum),'text/csv'));
- // Experiments/evidence/notebook
- function renderExperiments(){const p=projects.get();qs(root,'[data-experiment-list]').innerHTML=p.experiments.map(x=>listHTML(x.title,x.hypothesis||x.status,x.createdAt)).join('')||empty('No experiments recorded.')}
- qs(root,'[data-new-experiment]').addEventListener('click',()=>{const r=promptRecord('Experiment',[['title','Experiment title','New experiment'],['question','Research question',''],['hypothesis','Hypothesis',''],['method','Method',''],['status','Status','planned']]);if(r)projects.add('experiments',r,`Experiment created: ${r.title}`)});
- function renderEvidence(){const p=projects.get();qs(root,'[data-evidence-list]').innerHTML=p.evidence.map(x=>listHTML(x.title,`${x.source||''} · ${x.status||'unreviewed'}`,x.createdAt)).join('')||empty('No evidence saved.');qs(root,'[data-hypothesis-list]').innerHTML=p.hypotheses.map(x=>listHTML(x.title,x.statement,x.createdAt)).join('')||empty('No hypotheses.');qs(root,'[data-decision-list]').innerHTML=p.decisions.map(x=>listHTML(x.title,x.rationale,x.createdAt)).join('')||empty('No decisions.')}
- qs(root,'[data-new-hypothesis]').addEventListener('click',()=>{const r=promptRecord('Hypothesis',[['title','Hypothesis title','Hypothesis'],['statement','Statement',''],['status','Status','untested']]);if(r)projects.add('hypotheses',r,`Hypothesis added: ${r.title}`)});qs(root,'[data-new-decision]').addEventListener('click',()=>{const r=promptRecord('Decision',[['title','Decision title','Decision'],['rationale','Rationale',''],['uncertainty','Uncertainty or limitations','']]);if(r)projects.add('decisions',r,`Decision recorded: ${r.title}`)});
- function renderNotes(){const p=projects.get(),q=qs(root,'[data-note-filter]').value.toLowerCase();const notes=p.notes.filter(n=>!q||`${n.title} ${n.body} ${(n.tags||[]).join(' ')}`.toLowerCase().includes(q));qs(root,'[data-note-list]').innerHTML=notes.map(n=>listHTML(`${n.type||'note'} · ${n.title}`,n.body,n.createdAt)).join('')||empty('No matching notebook entries.')}
- qs(root,'[data-note-filter]').addEventListener('input',renderNotes);qs(root,'[data-new-note]').addEventListener('click',()=>{const r=promptRecord('Notebook entry',[['title','Entry title','Lab note'],['type','Entry type','observation'],['body','Entry text',''],['tagsText','Tags, comma separated','']]);if(r){r.tags=r.tagsText.split(',').map(x=>x.trim()).filter(Boolean);delete r.tagsText;projects.add('notes',r,`Notebook entry added: ${r.title}`)}});qs(root,'[data-export-notebook]').addEventListener('click',()=>{const p=projects.get(),md=`# ${p.name} — Lab Notebook\n\n`+p.notes.map(n=>`## ${n.title}\n\n- Type: ${n.type}\n- Created: ${n.createdAt}\n\n${n.body}\n`).join('\n');U.download('lab-notebook.md',md,'text/markdown')});
- // Documentation
- const editor=qs(root,'[data-doc-editor]'),docStatus=qs(root,'[data-doc-status]');function projectSnapshot(p){return{updatedAt:p.updatedAt,evidence:p.evidence,experiments:p.experiments,hypotheses:p.hypotheses,decisions:p.decisions,notes:p.notes,calculations:p.calculations,maps:p.maps}}
- function generateDoc(){const p=projects.get(),type=qs(root,'[data-doc-type]').value,title=qs(root,'[data-doc-title]').value||p.name,fp=U.fingerprint(projectSnapshot(p));const sections=[`# ${title}`,`\n**Document type:** ${type}\n**Project:** ${p.name}\n**Generated:** ${U.now()}\n**Source fingerprint:** ${fp}`,`\n## Project summary\n${p.description||'No project description recorded.'}`,`\n## Evidence\n${p.evidence.map((x,i)=>`${i+1}. **${x.title}** — ${x.source||''}\n   ${x.summary||''}`).join('\n')||'No evidence recorded.'}`,`\n## Hypotheses\n${p.hypotheses.map(x=>`- **${x.title}:** ${x.statement}`).join('\n')||'No hypotheses recorded.'}`,`\n## Calculations and analyses\n${p.calculations.map(x=>`- ${x.type} (${x.createdAt})\n\n\`\`\`json\n${JSON.stringify(x.result,null,2)}\n\`\`\``).join('\n')||'No calculations recorded.'}`,`\n## Experiments\n${p.experiments.map(x=>`### ${x.title}\n${x.question||''}\n\n**Hypothesis:** ${x.hypothesis||''}\n\n**Method:** ${x.method||''}\n`).join('\n')||'No experiments recorded.'}`,`\n## Decisions\n${p.decisions.map(x=>`- **${x.title}:** ${x.rationale||''} ${x.uncertainty?`Uncertainty: ${x.uncertainty}`:''}`).join('\n')||'No decisions recorded.'}`,`\n## Notebook record\n${p.notes.map(x=>`### ${x.title}\n${x.body}`).join('\n')||'No notebook entries.'}`,`\n## Climate and Earth observation records\n${p.maps.map(x=>`- ${x.layer} · ${x.date} · ${x.bbox}`).join('\n')||'No map states saved.'}`,`\n## Limitations and review\nGenerated output must be reviewed against source data, methods, instrument records, standards, and applicable professional requirements.`];editor.value=sections.join('\n');editor.dataset.fingerprint=fp;docStatus.textContent='Live draft generated from current project data. Source fingerprint: '+fp;docStatus.dataset.stale='false'}
- qs(root,'[data-generate-doc]').addEventListener('click',generateDoc);function updateDocStale(){if(!editor.dataset.fingerprint)return;const current=U.fingerprint(projectSnapshot(projects.get())),stale=current!==editor.dataset.fingerprint;docStatus.dataset.stale=String(stale);docStatus.textContent=stale?'Document is stale: project data changed. Regenerate before release.':'Document matches its source project fingerprint.'}
- qs(root,'[data-save-doc]').addEventListener('click',()=>{if(!editor.value.trim())return;projects.add('documents',{title:qs(root,'[data-doc-title]').value,type:qs(root,'[data-doc-type]').value,content:editor.value,fingerprint:editor.dataset.fingerprint,status:'snapshot'},'Documentation snapshot saved');U.toast(root,'Document snapshot saved.')});qs(root,'[data-export-doc-md]').addEventListener('click',()=>U.download('lab-document.md',editor.value,'text/markdown'));qs(root,'[data-export-doc-html]').addEventListener('click',()=>U.download('lab-document.html',`<!doctype html><meta charset="utf-8"><title>Lab document</title><pre style="white-space:pre-wrap;font:16px/1.6 system-ui">${U.esc(editor.value)}</pre>`,'text/html'));
- // Status
- async function runStatus(showToast=true){const target=qs(root,'[data-system-status]');const rows=[['Browser project storage','ready','Local project model available'],['Periodic table','ready','118-element dataset'],['Stoichiometry','ready','Formula parsing, balancing, limiting reagent and yield'],['Scientific calculators','ready',`${Lab.Calculators.definitions.length} tools loaded`],['NASA GIBS','ready','Client-rendered WMS contract'],['Workbench route',config.routes?.workbench?'configured':'missing',config.routes?.workbench||'Not configured'],['Decision Studio route',config.routes?.decisionStudio?'configured':'missing',config.routes?.decisionStudio||'Not configured'],['Site Intelligence route',config.routes?.siteIntelligence?'configured':'missing',config.routes?.siteIntelligence||'Not configured']];try{const status=await U.fetchJson((config.restBase||'/wp-json/sc-lab/v1/')+'status');rows.unshift(['Lab REST API',status.ok?'online':'error',`v${status.version}`])}catch(e){rows.unshift(['Lab REST API','offline',e.message])}target.innerHTML=rows.map(([name,state,note])=>`<div class="sc-lab-status-row"><strong>${U.esc(name)}</strong><span class="sc-lab-status-value ${['ready','online','configured'].includes(state)?'ok':'warn'}">${U.esc(state)}</span><span>${U.esc(note)}</span></div>`).join('');showToast&&U.toast(root,'System checks completed.')}
- qs(root,'[data-status-refresh]').addEventListener('click',()=>runStatus());
- renderOverview();openModule(initial);if(initial==='space-telescopes')qs(root,'[data-space-load]').click();if(initial==='marine-biology')qs(root,'[data-marine-load]').click();
-}
-d.addEventListener('DOMContentLoaded',()=>d.querySelectorAll('.sc-lab-app').forEach(init));
-})(window,document);
+(function (w, d) {
+  'use strict';
+
+  const Lab = w.SCLab;
+  const U = Lab.util;
+
+  function qs(root, selector) { return root.querySelector(selector); }
+  function qsa(root, selector) { return [...root.querySelectorAll(selector)]; }
+  function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
+
+  function promptRecord(fields) {
+    const record = {};
+    for (const [key, title, defaultValue = ''] of fields) {
+      const value = w.prompt(title, defaultValue);
+      if (value === null) return null;
+      record[key] = value;
+    }
+    return record;
+  }
+
+  function listHTML(title, body, time, meta = '') {
+    return `<article class="sc-lab-list-item">
+      <header><h5>${U.esc(title)}</h5><time>${U.esc(U.fmt(time))}</time></header>
+      ${body ? `<p>${U.esc(body)}</p>` : ''}
+      ${meta ? `<span class="sc-lab-list-meta">${U.esc(meta)}</span>` : ''}
+    </article>`;
+  }
+
+  function csvCell(value) {
+    const text = String(value ?? '');
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  }
+
+  function init(root) {
+    const projects = new Lab.Projects();
+    const config = w.SCLabConfig || {};
+    const initial = root.dataset.initialModule || 'overview';
+    const select = qs(root, '[data-lab-project-select]');
+    const file = qs(root, '[data-lab-import-file]');
+    const nav = qs(root, '[data-lab-nav]');
+    const navToggle = qs(root, '[data-lab-nav-toggle]');
+    const commandInput = qs(root, '[data-lab-command-input]');
+    const commandResults = qs(root, '[data-lab-command-results]');
+    let currentDocument = null;
+    let overviewLoaded = false;
+    let spectrum = [];
+
+    function renderSelect() {
+      select.innerHTML = '';
+      projects.items.forEach(project => {
+        const option = d.createElement('option');
+        option.value = project.id;
+        option.textContent = project.name;
+        option.selected = project.id === projects.activeId;
+        select.appendChild(option);
+      });
+    }
+
+    function closeMobileNav() {
+      nav.classList.remove('is-open');
+      navToggle?.setAttribute('aria-expanded', 'false');
+    }
+
+    function openModule(id, options = {}) {
+      const exists = qsa(root, '[data-lab-module]').find(panel => panel.dataset.labModule === id);
+      if (!exists) return;
+      qsa(root, '[data-lab-module]').forEach(panel => { panel.hidden = panel.dataset.labModule !== id; });
+      qsa(root, '[data-lab-module-button]').forEach(button => button.classList.toggle('is-active', button.dataset.labModuleButton === id));
+      root.dataset.activeModule = id;
+      closeMobileNav();
+
+      if (id === 'overview') renderOverview();
+      if (id === 'activity') renderActivity();
+      if (id === 'experiments') renderExperiments();
+      if (id === 'evidence-decisions') renderEvidence();
+      if (id === 'notebook') renderNotes();
+      if (id === 'system-status') runStatus(false);
+      if (options.focus) requestAnimationFrame(() => options.focus.focus());
+    }
+
+    function setTab(buttonSelector, buttonData, paneSelector, paneData, value) {
+      qsa(root, buttonSelector).forEach(button => button.classList.toggle('is-active', button.dataset[buttonData] === value));
+      qsa(root, paneSelector).forEach(pane => { pane.hidden = pane.dataset[paneData] !== value; });
+    }
+
+    function openTool(id) {
+      const item = Lab.Workspace.quickTools.find(tool => tool.id === id)
+        || { kind: 'calculator', module: 'science-engineering', calculatorId: id };
+      openModule(item.module);
+      if (item.kind === 'chem-tab') setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', item.tab);
+      if (item.kind === 'analysis-tab') setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', item.tab);
+      if (item.kind === 'calculator') {
+        setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
+        selectCalculator(item.calculatorId);
+      }
+    }
+
+    function executeCommand(item) {
+      commandInput.value = '';
+      commandResults.hidden = true;
+      if (item.kind === 'module') openModule(item.id);
+      else if (item.kind === 'calculator') openTool(item.calculatorId || item.id);
+      else openTool(item.id);
+    }
+
+    function renderCommandResults(query) {
+      const matches = Lab.Workspace.search(query, Lab.Calculators.definitions);
+      if (!query.trim() || !matches.length) {
+        commandResults.hidden = true;
+        commandResults.innerHTML = '';
+        return;
+      }
+      commandResults.innerHTML = matches.map((item, index) => `
+        <button type="button" data-command-index="${index}">
+          <span>${U.esc(item.label)}</span>
+          <small>${U.esc(item.group || item.kind || 'Lab')}</small>
+        </button>`).join('');
+      commandResults.hidden = false;
+      qsa(commandResults, '[data-command-index]').forEach(button => {
+        button.addEventListener('click', () => executeCommand(matches[Number(button.dataset.commandIndex)]));
+      });
+    }
+
+    function createExperiment(seed = {}) {
+      const record = promptRecord([
+        ['title', 'Experiment title', seed.title || 'New experiment'],
+        ['question', 'Research question', seed.question || ''],
+        ['hypothesis', 'Hypothesis', seed.hypothesis || ''],
+        ['method', 'Method or procedure', seed.method || '']
+      ]);
+      if (!record) return;
+      projects.add('experiments', { ...record, status: 'planned' }, `Experiment created: ${record.title}`);
+      U.toast(root, 'Experiment added to the project.');
+    }
+
+    function createNote(seed = {}) {
+      const record = promptRecord([
+        ['title', 'Notebook entry title', seed.title || 'Lab note'],
+        ['body', 'Observation or note', seed.body || ''],
+        ['tagsText', 'Tags, comma separated', seed.tagsText || 'observation']
+      ]);
+      if (!record) return;
+      projects.add('notes', {
+        type: seed.type || 'observation',
+        title: record.title,
+        body: record.body,
+        tags: record.tagsText.split(',').map(tag => tag.trim()).filter(Boolean)
+      }, `Notebook entry added: ${record.title}`);
+      U.toast(root, 'Notebook entry saved.');
+    }
+
+    function createObservation() {
+      const record = promptRecord([
+        ['title', 'Observation title', 'Scientific observation'],
+        ['body', 'What was observed?', ''],
+        ['conditions', 'Conditions, instrument, or context', '']
+      ]);
+      if (!record) return;
+      projects.add('notes', {
+        type: 'observation',
+        title: record.title,
+        body: `${record.body}${record.conditions ? `\n\nConditions: ${record.conditions}` : ''}`,
+        tags: ['observation']
+      }, `Observation recorded: ${record.title}`);
+      U.toast(root, 'Observation added to the notebook.');
+    }
+
+    function handleQuickAction(action) {
+      if (action === 'experiment') createExperiment();
+      if (action === 'note') createNote();
+      if (action === 'observation') createObservation();
+    }
+
+    function metricHTML(label, value, module) {
+      return `<button type="button" class="sc-lab-metric" data-open-module="${U.esc(module)}"><strong>${value}</strong><span>${U.esc(label)}</span></button>`;
+    }
+
+    function renderTrace() {
+      const target = qs(root, '[data-traceability]');
+      target.innerHTML = Lab.Workspace.traceCounts(projects.get()).map((stage, index, rows) => `
+        <button type="button" class="sc-lab-trace-stage" data-open-module="${U.esc(stage.module)}" data-trace-key="${U.esc(stage.key)}">
+          <strong>${stage.value}</strong><span>${U.esc(stage.label)}</span>
+        </button>${index < rows.length - 1 ? '<span class="sc-lab-trace-arrow" aria-hidden="true">→</span>' : ''}`
+      ).join('');
+    }
+
+    function renderProjectWork() {
+      const project = projects.get();
+      const experiments = project.experiments.slice(0, 3).map(item => ({
+        title: item.title || 'Untitled experiment',
+        body: item.question || item.method || '',
+        time: item.createdAt,
+        meta: `Experiment · ${item.status || 'planned'}`
+      }));
+      const calculations = project.calculations.slice(0, 3).map(item => ({
+        title: item.type || 'Calculation',
+        body: item.calculatorId ? `Calculator: ${item.calculatorId}` : '',
+        time: item.createdAt,
+        meta: 'Calculation'
+      }));
+      const rows = [...experiments, ...calculations]
+        .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
+        .slice(0, 5);
+      qs(root, '[data-project-work]').innerHTML = rows.length
+        ? rows.map(row => listHTML(row.title, row.body, row.time, row.meta)).join('')
+        : empty('No experiments or calculations have been recorded.');
+    }
+
+    function renderOverview() {
+      const project = projects.get();
+      const counts = [
+        ['Evidence', project.evidence.length, 'evidence-decisions'],
+        ['Experiments', project.experiments.length, 'experiments'],
+        ['Calculations', project.calculations.length, 'science-engineering'],
+        ['Notes', project.notes.length, 'notebook'],
+        ['Decisions', project.decisions.length, 'evidence-decisions'],
+        ['Documents', project.documents.length, 'documentation']
+      ];
+      qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
+      qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
+      renderProjectWork();
+      renderTrace();
+      qs(root, '[data-overview-empty]').hidden = Lab.Workspace.projectTotal(project) > 0;
+      if (!overviewLoaded && config.features?.feeds !== false) loadOverviewSignals();
+    }
+
+    async function loadOverviewSignals() {
+      const target = qs(root, '[data-overview-signals]');
+      overviewLoaded = true;
+      target.innerHTML = '<div class="sc-lab-data-note">Retrieving concise scientific signals…</div>';
+      const requests = [
+        ['usgs-earthquakes', '', 2],
+        ['nasa-eonet', '', 2],
+        ['nasa-space-telescopes', 'James Webb Hubble', 2],
+        ['obis-marine', 'Cetacea', 2],
+        ['pubmed-science', 'environmental monitoring OR materials science', 2],
+        ['arxiv-physics', 'all:physics OR all:materials', 2]
+      ];
+      const results = await Promise.allSettled(requests.map(args => Lab.Feeds.load(...args)));
+      const records = results.flatMap(result => result.status === 'fulfilled' ? (result.value.records || []) : []);
+      if (!records.length) {
+        target.innerHTML = empty('Live signals are temporarily unavailable. Open Scientific signals to query an individual source.');
+        return;
+      }
+      records.sort((a, b) => String(b.observedAt || '').localeCompare(String(a.observedAt || '')));
+      Lab.Feeds.render(target, records.slice(0, 8), projects, root, { compact: true });
+    }
+
+    function renderActivity() {
+      const filter = (qs(root, '[data-activity-filter]')?.value || '').toLowerCase();
+      const limit = Number(qs(root, '[data-activity-limit]')?.value || 50);
+      const rows = projects.get().activity
+        .filter(item => !filter || String(item.text || '').toLowerCase().includes(filter))
+        .slice(0, limit);
+      qs(root, '[data-activity-list]').innerHTML = rows.map(item => listHTML(item.text, '', item.at)).join('') || empty('No matching activity.');
+    }
+
+    function renderExperiments() {
+      const rows = projects.get().experiments;
+      qs(root, '[data-experiment-list]').innerHTML = rows.map(item => listHTML(item.title, item.question || item.method, item.createdAt, item.status || 'planned')).join('') || empty('No experiments recorded.');
+    }
+
+    function renderEvidence() {
+      const project = projects.get();
+      qs(root, '[data-evidence-list]').innerHTML = project.evidence.map(item => listHTML(item.title, item.summary, item.createdAt, `${item.source || 'Source'} · ${item.status || 'unreviewed'}`)).join('') || empty('No evidence saved.');
+      qs(root, '[data-hypothesis-list]').innerHTML = project.hypotheses.map(item => listHTML(item.title, item.statement, item.createdAt, item.status || 'proposed')).join('') || empty('No hypotheses recorded.');
+      qs(root, '[data-decision-list]').innerHTML = project.decisions.map(item => listHTML(item.title, item.rationale, item.createdAt, item.status || 'draft')).join('') || empty('No decisions recorded.');
+    }
+
+    function renderNotes() {
+      const query = (qs(root, '[data-note-filter]').value || '').toLowerCase();
+      const rows = projects.get().notes.filter(item => {
+        const text = `${item.title || ''} ${item.body || ''} ${(item.tags || []).join(' ')}`.toLowerCase();
+        return !query || text.includes(query);
+      });
+      qs(root, '[data-note-list]').innerHTML = rows.map(item => listHTML(item.title, item.body, item.createdAt, `${item.type || 'note'} · ${(item.tags || []).join(', ')}`)).join('') || empty('No notebook entries match this filter.');
+    }
+
+    function renderSelectAndViews() {
+      renderSelect();
+      renderOverview();
+      if (root.dataset.activeModule === 'activity') renderActivity();
+      if (root.dataset.activeModule === 'experiments') renderExperiments();
+      if (root.dataset.activeModule === 'evidence-decisions') renderEvidence();
+      if (root.dataset.activeModule === 'notebook') renderNotes();
+      updateDocStale();
+    }
+
+    qsa(root, '[data-lab-module-button]').forEach(button => button.addEventListener('click', () => openModule(button.dataset.labModuleButton)));
+    root.addEventListener('click', event => {
+      const moduleButton = event.target.closest('[data-open-module]');
+      if (moduleButton && root.contains(moduleButton)) openModule(moduleButton.dataset.openModule);
+      const quickTool = event.target.closest('[data-quick-tool]');
+      if (quickTool && root.contains(quickTool)) openTool(quickTool.dataset.quickTool);
+      const commandAction = event.target.closest('[data-command-action]');
+      if (commandAction && root.contains(commandAction)) handleQuickAction(commandAction.dataset.commandAction);
+    });
+
+    navToggle?.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    qsa(root, '[data-route]').forEach(link => { link.href = config.routes?.[link.dataset.route] || '#'; });
+    select.addEventListener('change', () => projects.select(select.value));
+    qs(root, '[data-lab-action="new-project"]').addEventListener('click', () => {
+      const name = w.prompt('Project name', 'New Lab Project');
+      if (name) { projects.create(name); U.toast(root, 'Project created.'); }
+    });
+    qs(root, '[data-lab-action="export-project"]').addEventListener('click', () => projects.export());
+    qs(root, '[data-lab-action="import-project"]').addEventListener('click', () => file.click());
+    file.addEventListener('change', () => {
+      const selectedFile = file.files[0];
+      if (!selectedFile) return;
+      selectedFile.text().then(text => {
+        projects.import(text);
+        U.toast(root, 'Project imported.');
+      }).catch(error => U.toast(root, error.message));
+      file.value = '';
+    });
+    projects.onChange(renderSelectAndViews);
+
+    commandInput.addEventListener('input', () => renderCommandResults(commandInput.value));
+    commandInput.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { commandResults.hidden = true; commandInput.blur(); }
+      if (event.key === 'Enter') {
+        const first = qs(commandResults, '[data-command-index="0"]');
+        if (first) { event.preventDefault(); first.click(); }
+      }
+    });
+    d.addEventListener('keydown', event => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        commandInput.focus();
+        commandInput.select();
+      }
+      if (event.key === '/' && !/input|textarea|select/i.test(d.activeElement?.tagName || '')) {
+        event.preventDefault();
+        commandInput.focus();
+      }
+    });
+    d.addEventListener('click', event => {
+      if (!root.contains(event.target) || !event.target.closest('.sc-lab-command-search')) commandResults.hidden = true;
+    });
+
+    qs(root, '[data-overview-refresh]').addEventListener('click', () => { overviewLoaded = false; loadOverviewSignals(); });
+
+    // Scientific feeds.
+    async function feedTo(source, query, limit, target, status) {
+      if (status) status.textContent = 'Loading scientific source…';
+      try {
+        const data = await Lab.Feeds.load(source, query, limit);
+        Lab.Feeds.render(target, data.records, projects, root);
+        if (status) status.textContent = `${data.records.length} records · ${data.cached ? 'cached' : 'live retrieval'} · ${U.fmt(data.retrievedAt)}`;
+      } catch (error) {
+        target.innerHTML = empty(error.message);
+        if (status) status.textContent = error.message;
+      }
+    }
+
+    const feedSource = qs(root, '[data-feed-source]');
+    const feedQuery = qs(root, '[data-feed-query]');
+    const feedLimit = qs(root, '[data-feed-limit]');
+    const feedTarget = qs(root, '[data-feed-results]');
+    const feedStatus = qs(root, '[data-feed-status]');
+    const runFeed = () => feedTo(feedSource.value, feedQuery.value, Number(feedLimit.value), feedTarget, feedStatus);
+    qs(root, '[data-feed-run]').addEventListener('click', runFeed);
+    qs(root, '[data-feed-refresh]').addEventListener('click', runFeed);
+    qs(root, '[data-space-load]').addEventListener('click', () => feedTo('nasa-space-telescopes', qs(root, '[data-space-query]').value, 18, qs(root, '[data-space-results]')));
+    qs(root, '[data-marine-load]').addEventListener('click', () => feedTo('obis-marine', qs(root, '[data-marine-query]').value, Number(qs(root, '[data-marine-limit]').value), qs(root, '[data-marine-results]')));
+
+    // Climate map.
+    const climateDate = qs(root, '[data-climate-date]');
+    climateDate.value = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    function renderMap() {
+      return Lab.ClimateMap.render(
+        qs(root, '[data-climate-image]'),
+        qs(root, '[data-climate-layer]').value,
+        climateDate.value,
+        qs(root, '[data-climate-region]').value,
+        qs(root, '[data-climate-loading]')
+      );
+    }
+    qs(root, '[data-climate-render]').addEventListener('click', renderMap);
+    qs(root, '[data-climate-save]').addEventListener('click', () => {
+      const record = {
+        title: 'NASA GIBS climate map',
+        layer: qs(root, '[data-climate-layer]').value,
+        date: climateDate.value,
+        bbox: qs(root, '[data-climate-region]').value,
+        url: renderMap()
+      };
+      projects.add('maps', record, `Climate map saved: ${record.layer}`);
+      U.toast(root, 'Climate map state saved.');
+    });
+    renderMap();
+
+    // Chemistry and tabs.
+    const periodic = qs(root, '[data-periodic-table]');
+    const elementDetail = qs(root, '[data-element-detail]');
+    Lab.Periodic.load(config.elementsUrl).then(elements => {
+      Lab.Stoichiometry.setElements(elements);
+      drawElements();
+    }).catch(error => { elementDetail.textContent = error.message; });
+    function drawElements() {
+      Lab.Periodic.render(periodic, elementDetail, {
+        query: qs(root, '[data-element-search]').value,
+        property: qs(root, '[data-element-property]').value
+      });
+    }
+    qs(root, '[data-element-search]').addEventListener('input', drawElements);
+    qs(root, '[data-element-property]').addEventListener('change', drawElements);
+    qsa(root, '[data-chem-tab]').forEach(button => button.addEventListener('click', () => setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', button.dataset.chemTab)));
+    qsa(root, '[data-analysis-tab]').forEach(button => button.addEventListener('click', () => setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', button.dataset.analysisTab)));
+
+    function runOut(buttonSelector, outputSelector, fn, activity) {
+      qs(root, buttonSelector).addEventListener('click', () => {
+        try {
+          const result = fn();
+          qs(root, outputSelector).textContent = JSON.stringify(result, null, 2);
+          projects.add('calculations', { type: activity, input: result.input || null, result }, `${activity} calculation completed`);
+        } catch (error) {
+          qs(root, outputSelector).textContent = `Error: ${error.message}`;
+        }
+      });
+    }
+    runOut('[data-formula-run]', '[data-formula-output]', () => Lab.Stoichiometry.molarMass(qs(root, '[data-formula-input]').value), 'Molar mass');
+    runOut('[data-balance-run]', '[data-balance-output]', () => Lab.Stoichiometry.balanceEquation(qs(root, '[data-balance-input]').value), 'Equation balance');
+    runOut('[data-limit-run]', '[data-limit-output]', () => Lab.Stoichiometry.limitingReagent(qs(root, '[data-limit-equation]').value, JSON.parse(qs(root, '[data-limit-moles]').value)), 'Limiting reagent');
+    runOut('[data-yield-run]', '[data-yield-output]', () => Lab.Stoichiometry.theoreticalYield(qs(root, '[data-yield-product]').value, qs(root, '[data-yield-moles]').value), 'Theoretical yield');
+    runOut('[data-dilution-run]', '[data-dilution-output]', () => Lab.Stoichiometry.dilution({
+      c1: qs(root, '[data-dilution-c1]').value,
+      v1: qs(root, '[data-dilution-v1]').value,
+      c2: qs(root, '[data-dilution-c2]').value,
+      v2: qs(root, '[data-dilution-v2]').value
+    }), 'Dilution');
+
+    // Calculator registry.
+    const domainSelect = qs(root, '[data-calculator-domain]');
+    const calculatorSelect = qs(root, '[data-calculator-select]');
+    const calculatorForm = qs(root, '[data-calculator-form]');
+    Lab.Calculators.domains().forEach(domain => domainSelect.add(new Option(domain, domain)));
+
+    function populateCalculators(preferredId) {
+      calculatorSelect.innerHTML = '';
+      Lab.Calculators.byDomain(domainSelect.value).forEach(calculator => calculatorSelect.add(new Option(calculator.name, calculator.id)));
+      if (preferredId && [...calculatorSelect.options].some(option => option.value === preferredId)) calculatorSelect.value = preferredId;
+      renderCalculator();
+    }
+
+    function renderCalculator() {
+      const definition = Lab.Calculators.get(calculatorSelect.value);
+      if (!definition) { calculatorForm.innerHTML = ''; return; }
+      calculatorForm.innerHTML = `<div class="sc-lab-calculator-form">
+        ${definition.fields.map(([key, label, unit, value]) => `<label>${U.esc(label)}${unit ? ` (${U.esc(unit)})` : ''}<input data-calc-field="${U.esc(key)}" value="${U.esc(value)}"></label>`).join('')}
+        <button class="sc-lab-button sc-lab-button-primary" data-calc-run>Calculate</button>
+        <div class="sc-lab-calculator-result" data-calc-result>Ready.</div>
+      </div>`;
+      qs(calculatorForm, '[data-calc-run]').addEventListener('click', () => {
+        try {
+          const values = {};
+          qsa(calculatorForm, '[data-calc-field]').forEach(input => { values[input.dataset.calcField] = input.value; });
+          const result = definition.run(values);
+          qs(calculatorForm, '[data-calc-result]').textContent = JSON.stringify(result, null, 2);
+          projects.add('calculations', { type: definition.name, calculatorId: definition.id, inputs: values, result }, `${definition.name} calculation completed`);
+        } catch (error) {
+          qs(calculatorForm, '[data-calc-result]').textContent = `Error: ${error.message}`;
+        }
+      });
+    }
+
+    function selectCalculator(id) {
+      const definition = Lab.Calculators.get(id);
+      if (!definition) return;
+      domainSelect.value = definition.domain;
+      populateCalculators(id);
+    }
+    domainSelect.addEventListener('change', () => populateCalculators());
+    calculatorSelect.addEventListener('change', renderCalculator);
+    populateCalculators();
+
+    // Spectrometry.
+    function renderSpectrum(peaks = []) {
+      qs(root, '[data-spectrum-chart]').innerHTML = spectrum.length ? Lab.Spectrometry.svg(spectrum, peaks) : '';
+    }
+    qs(root, '[data-spectrum-load]').addEventListener('click', () => {
+      try {
+        spectrum = Lab.Spectrometry.parse(qs(root, '[data-spectrum-input]').value);
+        renderSpectrum();
+        qs(root, '[data-spectrum-output]').textContent = `Loaded ${spectrum.length} points. Area: ${Lab.Spectrometry.integrate(spectrum)}`;
+      } catch (error) { qs(root, '[data-spectrum-output]').textContent = error.message; }
+    });
+    qs(root, '[data-spectrum-baseline]').addEventListener('click', () => { if (spectrum.length) { spectrum = Lab.Spectrometry.baseline(spectrum); renderSpectrum(); } });
+    qs(root, '[data-spectrum-smooth]').addEventListener('click', () => { if (spectrum.length) { spectrum = Lab.Spectrometry.smooth(spectrum, 2); renderSpectrum(); } });
+    qs(root, '[data-spectrum-peaks]').addEventListener('click', () => {
+      if (!spectrum.length) return;
+      const peaks = Lab.Spectrometry.peaks(spectrum);
+      renderSpectrum(peaks);
+      const result = { points: spectrum.length, area: Lab.Spectrometry.integrate(spectrum), peaks };
+      qs(root, '[data-spectrum-output]').textContent = JSON.stringify(result, null, 2);
+      projects.add('calculations', { type: 'Spectrometry analysis', result }, 'Spectrometry analysis completed');
+    });
+    qs(root, '[data-spectrum-export]').addEventListener('click', () => {
+      if (!spectrum.length) return;
+      U.download('processed-spectrum.csv', `x,y\n${spectrum.map(point => `${point.x},${point.y}`).join('\n')}`, 'text/csv');
+    });
+
+    // Project records.
+    qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
+    qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
+      const record = promptRecord([['title', 'Hypothesis title', 'Working hypothesis'], ['statement', 'Hypothesis statement', ''], ['status', 'Status', 'proposed']]);
+      if (record) projects.add('hypotheses', record, `Hypothesis added: ${record.title}`);
+    });
+    qs(root, '[data-new-decision]').addEventListener('click', () => {
+      const record = promptRecord([['title', 'Decision title', 'Project decision'], ['rationale', 'Rationale and evidence', ''], ['status', 'Status', 'draft']]);
+      if (record) projects.add('decisions', record, `Decision added: ${record.title}`);
+    });
+    qs(root, '[data-new-note]').addEventListener('click', () => createNote());
+    qs(root, '[data-note-filter]').addEventListener('input', renderNotes);
+    qs(root, '[data-export-notebook]').addEventListener('click', () => {
+      const project = projects.get();
+      const markdown = `# ${project.name} — Lab Notebook\n\n${project.notes.map(note => `## ${note.title}\n\n${note.body || ''}\n\n*${U.fmt(note.createdAt)}*`).join('\n\n')}`;
+      U.download(`${project.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-notebook.md`, markdown, 'text/markdown');
+    });
+    qs(root, '[data-activity-filter]').addEventListener('input', renderActivity);
+    qs(root, '[data-activity-limit]').addEventListener('change', renderActivity);
+    qs(root, '[data-export-activity]').addEventListener('click', () => {
+      const lines = [['timestamp', 'activity'], ...projects.get().activity.map(item => [item.at, item.text])];
+      U.download('lab-project-activity.csv', lines.map(row => row.map(csvCell).join(',')).join('\n'), 'text/csv');
+    });
+
+    // Documentation.
+    function fingerprint(project) {
+      const data = {
+        updatedAt: project.updatedAt,
+        counts: {
+          evidence: project.evidence.length,
+          experiments: project.experiments.length,
+          hypotheses: project.hypotheses.length,
+          decisions: project.decisions.length,
+          notes: project.notes.length,
+          calculations: project.calculations.length,
+          maps: project.maps.length
+        }
+      };
+      return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    }
+
+    function generateDocument(type, title) {
+      const project = projects.get();
+      const sections = [`# ${title}`, '', `Project: ${project.name}`, `Generated: ${new Date().toISOString()}`, `Document type: ${type}`, ''];
+      sections.push('## Project summary', '', project.description || 'No project description has been recorded.', '');
+      sections.push('## Evidence', '', project.evidence.length ? project.evidence.map(item => `- **${item.title}** — ${item.source || 'Source'}${item.url ? ` — ${item.url}` : ''}`).join('\n') : 'No evidence records.', '');
+      sections.push('## Hypotheses', '', project.hypotheses.length ? project.hypotheses.map(item => `- **${item.title}** — ${item.statement || ''}`).join('\n') : 'No hypotheses recorded.', '');
+      sections.push('## Calculations and analyses', '', project.calculations.length ? project.calculations.map(item => `- **${item.type || 'Calculation'}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No calculations recorded.', '');
+      sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
+      sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
+      sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
+      sections.push('## Traceability', '', 'Sources → Evidence → Hypotheses → Calculations → Experiments → Decisions → Documentation', '');
+      sections.push('## Scientific review boundary', '', 'Imported observations, calculations, models, prototype outputs, and generated documentation require review against authoritative sources, validated methods, and actual operating conditions.');
+      return sections.join('\n');
+    }
+
+    function updateDocStale() {
+      if (!currentDocument) return;
+      const stale = currentDocument.fingerprint !== fingerprint(projects.get());
+      qs(root, '[data-doc-status]').textContent = stale
+        ? 'Project data changed after generation. Regenerate or preserve this text as a released snapshot.'
+        : 'Document reflects the current project record.';
+      qs(root, '[data-doc-status]').classList.toggle('is-stale', stale);
+    }
+
+    qs(root, '[data-generate-doc]').addEventListener('click', () => {
+      const type = qs(root, '[data-doc-type]').value;
+      const title = qs(root, '[data-doc-title]').value || 'Lab project report';
+      const markdown = generateDocument(type, title);
+      currentDocument = { type, title, markdown, fingerprint: fingerprint(projects.get()), generatedAt: U.now() };
+      qs(root, '[data-doc-editor]').value = markdown;
+      updateDocStale();
+    });
+    qs(root, '[data-save-doc]').addEventListener('click', () => {
+      const markdown = qs(root, '[data-doc-editor]').value;
+      if (!markdown.trim()) return;
+      const type = qs(root, '[data-doc-type]').value;
+      const title = qs(root, '[data-doc-title]').value || 'Lab project report';
+      projects.add('documents', { type, title, markdown, fingerprint: fingerprint(projects.get()), status: 'snapshot' }, `Document snapshot saved: ${title}`);
+      currentDocument = { type, title, markdown, fingerprint: fingerprint(projects.get()), generatedAt: U.now() };
+      updateDocStale();
+      U.toast(root, 'Document snapshot saved.');
+    });
+    qs(root, '[data-export-doc-md]').addEventListener('click', () => {
+      const text = qs(root, '[data-doc-editor]').value;
+      if (text.trim()) U.download('lab-document.md', text, 'text/markdown');
+    });
+    qs(root, '[data-export-doc-html]').addEventListener('click', () => {
+      const text = qs(root, '[data-doc-editor]').value;
+      if (!text.trim()) return;
+      const html = `<!doctype html><meta charset="utf-8"><title>${U.esc(qs(root, '[data-doc-title]').value)}</title><pre>${U.esc(text)}</pre>`;
+      U.download('lab-document.html', html, 'text/html');
+    });
+
+    // System status.
+    async function runStatus(showToast = true) {
+      const target = qs(root, '[data-system-status]');
+      target.innerHTML = '<div class="sc-lab-status-row"><span>Lab REST API</span><span class="sc-lab-status-value warn">Checking</span><span>Testing WordPress route and source registry.</span></div>';
+      try {
+        const [status, sources] = await Promise.all([
+          U.fetchJson(`${config.restBase}status`),
+          U.fetchJson(`${config.restBase}sources`)
+        ]);
+        const rows = [
+          ['Lab REST API', status.ok ? 'Ready' : 'Unavailable', `Version ${status.version || 'unknown'} · ${U.fmt(status.time)}`],
+          ['Scientific source registry', sources.sources ? 'Ready' : 'Unavailable', `${Object.keys(sources.sources || {}).length} configured connectors`],
+          ['Browser project storage', 'Ready', `${projects.items.length} local project${projects.items.length === 1 ? '' : 's'}`],
+          ['Periodic table', Lab.Periodic?.getElements?.().length === 118 ? 'Ready' : 'Loading', `${Lab.Periodic?.getElements?.().length || 0} element records`],
+          ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`]
+        ];
+        target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
+        if (showToast) U.toast(root, 'System checks completed.');
+      } catch (error) {
+        target.innerHTML = `<div class="sc-lab-status-row"><span>Lab REST API</span><span class="sc-lab-status-value warn">Unavailable</span><span>${U.esc(error.message)}</span></div>`;
+      }
+    }
+    qs(root, '[data-status-refresh]').addEventListener('click', () => runStatus(true));
+
+    renderSelect();
+    openModule(initial);
+  }
+
+  d.addEventListener('DOMContentLoaded', () => {
+    d.querySelectorAll('.sc-lab-app').forEach(init);
+  });
+})(window, document);

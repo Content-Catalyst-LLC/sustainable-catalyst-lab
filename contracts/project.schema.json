@@ -1,10 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.1.0.schema.json",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.1.1.schema.json",
   "title": "Sustainable Catalyst Lab Project",
   "type": "object",
-  "required": ["id", "name", "createdAt", "updatedAt"],
+  "required": ["schemaVersion", "id", "name", "createdAt", "updatedAt"],
   "properties": {
+    "schemaVersion": {"const": "0.1.1"},
     "id": {"type": "string"},
     "name": {"type": "string", "minLength": 1},
     "description": {"type": "string"},
@@ -19,5 +20,6 @@
     "documents": {"type": "array"},
     "maps": {"type": "array"},
     "activity": {"type": "array"}
-  }
+  },
+  "additionalProperties": true
 }

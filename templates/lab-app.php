@@ -1,32 +1,81 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <div class="sc-lab-app" data-initial-module="<?php echo esc_attr($sc_lab_initial_module); ?>" data-initial-project="<?php echo esc_attr($sc_lab_initial_project); ?>">
   <header class="sc-lab-topbar">
-    <div class="sc-lab-titleblock">
-      <span class="sc-lab-kicker">Sustainable Catalyst</span>
-      <h2>Lab</h2>
-      <span class="sc-lab-version">v<?php echo esc_html(SC_LAB_VERSION); ?></span>
+    <div class="sc-lab-topbar-primary">
+      <button type="button" class="sc-lab-nav-toggle" data-lab-nav-toggle aria-expanded="false" aria-controls="sc-lab-module-nav">
+        <span aria-hidden="true">☰</span><span>Modules</span>
+      </button>
+
+      <div class="sc-lab-titleblock">
+        <span class="sc-lab-kicker">Sustainable Catalyst</span>
+        <h2>Lab</h2>
+        <span class="sc-lab-version">v<?php echo esc_html(SC_LAB_VERSION); ?></span>
+      </div>
+
+      <div class="sc-lab-project-controls">
+        <label for="sc-lab-project-select">Project</label>
+        <select id="sc-lab-project-select" data-lab-project-select></select>
+        <button type="button" class="sc-lab-button" data-lab-action="new-project">New</button>
+        <button type="button" class="sc-lab-button" data-lab-action="import-project">Import</button>
+        <button type="button" class="sc-lab-button" data-lab-action="export-project">Export</button>
+        <input type="file" accept="application/json" hidden data-lab-import-file>
+      </div>
     </div>
-    <div class="sc-lab-project-controls">
-      <label for="sc-lab-project-select">Project</label>
-      <select id="sc-lab-project-select" data-lab-project-select></select>
-      <button type="button" class="sc-lab-button" data-lab-action="new-project">New</button>
-      <button type="button" class="sc-lab-button" data-lab-action="import-project">Import</button>
-      <button type="button" class="sc-lab-button" data-lab-action="export-project">Export</button>
-      <input type="file" accept="application/json" hidden data-lab-import-file>
+
+    <div class="sc-lab-commandbar">
+      <div class="sc-lab-command-search">
+        <label class="screen-reader-text" for="sc-lab-command-input">Search Lab tools and modules</label>
+        <input id="sc-lab-command-input" type="search" placeholder="Search tools, feeds, equations, or modules…" autocomplete="off" data-lab-command-input>
+        <kbd>⌘K</kbd>
+        <div class="sc-lab-command-results" data-lab-command-results hidden></div>
+      </div>
+      <div class="sc-lab-command-actions" aria-label="Quick project actions">
+        <button type="button" class="sc-lab-button" data-command-action="observation">Add observation</button>
+        <button type="button" class="sc-lab-button" data-command-action="experiment">New experiment</button>
+        <button type="button" class="sc-lab-button sc-lab-button-primary" data-command-action="note">Notebook entry</button>
+      </div>
     </div>
   </header>
 
   <div class="sc-lab-layout">
-    <nav class="sc-lab-nav" aria-label="Lab modules">
+    <nav id="sc-lab-module-nav" class="sc-lab-nav" aria-label="Lab modules" data-lab-nav>
       <?php
-      $items = array(
-        'overview'=>'Overview','scientific-feeds'=>'Scientific feeds','climate-maps'=>'Climate maps','space-telescopes'=>'Space telescopes','marine-biology'=>'Marine biology','chemistry'=>'Chemistry','science-engineering'=>'Science & engineering','experiments'=>'Experiments','evidence-decisions'=>'Evidence & decisions','notebook'=>'Notebook','documentation'=>'Documentation','system-status'=>'System status'
+      $groups = array(
+        'Project' => array(
+          'overview' => 'Overview',
+          'activity' => 'Activity',
+        ),
+        'Observe' => array(
+          'scientific-feeds' => 'Scientific signals',
+          'climate-maps' => 'Climate maps',
+          'space-telescopes' => 'Space observations',
+          'marine-biology' => 'Marine biology',
+        ),
+        'Analyze' => array(
+          'chemistry' => 'Chemistry',
+          'science-engineering' => 'Science & engineering',
+        ),
+        'Record' => array(
+          'experiments' => 'Experiments',
+          'evidence-decisions' => 'Evidence & decisions',
+          'notebook' => 'Notebook',
+          'documentation' => 'Documentation',
+        ),
+        'System' => array(
+          'system-status' => 'Connector status',
+        ),
       );
-      foreach ($items as $key=>$label): ?>
-        <button type="button" class="sc-lab-nav-button" data-lab-module-button="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></button>
+      foreach ($groups as $group => $items): ?>
+        <div class="sc-lab-nav-group">
+          <span class="sc-lab-nav-heading"><?php echo esc_html($group); ?></span>
+          <?php foreach ($items as $key => $label): ?>
+            <button type="button" class="sc-lab-nav-button" data-lab-module-button="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></button>
+          <?php endforeach; ?>
+        </div>
       <?php endforeach; ?>
       <div class="sc-lab-nav-links">
-        <a data-route="workbench" href="#">Workbench</a>
+        <span class="sc-lab-nav-heading">Open full application</span>
+        <a data-route="workbench" href="#">Prototyping Workbench</a>
         <a data-route="decisionStudio" href="#">Decision Studio</a>
         <a data-route="siteIntelligence" href="#">Site Intelligence</a>
       </div>
@@ -34,24 +83,76 @@
 
     <main class="sc-lab-main">
       <section class="sc-lab-panel" data-lab-module="overview">
-        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/OVERVIEW</span><h3>Scientific project workspace</h3></div><span class="sc-lab-status-dot is-ready">Ready</span></div>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/OVERVIEW</span><h3>Scientific project workspace</h3></div>
+          <span class="sc-lab-status-dot is-ready">Ready</span>
+        </div>
+
         <div class="sc-lab-metrics" data-overview-metrics></div>
-        <div class="sc-lab-grid sc-lab-grid-3">
-          <article class="sc-lab-tool"><h4>Start from evidence</h4><p>Review Earth, space, marine, literature, and climate records and save them into the active project.</p><button class="sc-lab-button sc-lab-button-primary" data-open-module="scientific-feeds">Open feeds</button></article>
-          <article class="sc-lab-tool"><h4>Run scientific work</h4><p>Use chemistry, spectrometry, physics, astronomy, materials, Earth science, biology, and energy tools.</p><button class="sc-lab-button sc-lab-button-primary" data-open-module="chemistry">Open chemistry</button></article>
-          <article class="sc-lab-tool"><h4>Record and document</h4><p>Connect calculations, experiments, evidence, notes, decisions, and generated technical documents.</p><button class="sc-lab-button sc-lab-button-primary" data-open-module="documentation">Generate documentation</button></article>
+
+        <section class="sc-lab-dashboard-section">
+          <div class="sc-lab-dashboard-head">
+            <div><span class="sc-lab-section-code">LIVE/SIGNALS</span><h4>Scientific signals</h4></div>
+            <button type="button" class="sc-lab-button" data-overview-refresh>Refresh signals</button>
+          </div>
+          <div class="sc-lab-overview-signals" data-overview-signals>
+            <div class="sc-lab-data-note">Loading a concise view of Earth, space, marine, and literature signals…</div>
+          </div>
+        </section>
+
+        <section class="sc-lab-dashboard-section">
+          <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">QUICK/TOOLS</span><h4>Scientific tools</h4></div></div>
+          <div class="sc-lab-quick-tools" data-quick-tools>
+            <button type="button" data-quick-tool="periodic-table"><strong>Periodic Table</strong><span>Elements and properties</span></button>
+            <button type="button" data-quick-tool="stoichiometry"><strong>Stoichiometry</strong><span>Formulas, balance, yield</span></button>
+            <button type="button" data-quick-tool="spectrometry"><strong>Spectrometry</strong><span>Import, process, detect peaks</span></button>
+            <button type="button" data-quick-tool="photon"><strong>Photon Energy</strong><span>Wavelength, frequency, energy</span></button>
+            <button type="button" data-quick-tool="rlc"><strong>RLC Impedance</strong><span>Reactance, phase, resonance</span></button>
+            <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
+            <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
+            <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
+          </div>
+        </section>
+
+        <div class="sc-lab-dashboard-columns">
+          <section class="sc-lab-dashboard-section">
+            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/WORK</span><h4>Active scientific work</h4></div></div>
+            <div class="sc-lab-project-work" data-project-work></div>
+          </section>
+          <section class="sc-lab-dashboard-section">
+            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/ACTIVITY</span><h4>Recent activity</h4></div><button type="button" class="sc-lab-text-button" data-open-module="activity">View all</button></div>
+            <div class="sc-lab-list" data-recent-activity></div>
+          </section>
         </div>
-        <div class="sc-lab-split">
-          <section><h4>Recent activity</h4><div class="sc-lab-list" data-recent-activity></div></section>
-          <section><h4>Project traceability</h4><div class="sc-lab-trace">Sources → Evidence → Hypotheses → Calculations → Experiments → Decisions → Documentation</div></section>
+
+        <section class="sc-lab-dashboard-section">
+          <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/TRACE</span><h4>Traceability map</h4></div></div>
+          <div class="sc-lab-trace-map" data-traceability></div>
+        </section>
+
+        <div class="sc-lab-empty-state" data-overview-empty hidden>
+          <h4>Start a scientific record</h4>
+          <p>Create a first evidence record, experiment, calculation, or notebook entry. Every result remains connected to the active project.</p>
+          <div class="sc-lab-empty-actions">
+            <button type="button" class="sc-lab-button" data-open-module="scientific-feeds">Query signals</button>
+            <button type="button" class="sc-lab-button" data-command-action="experiment">Create experiment</button>
+            <button type="button" class="sc-lab-button" data-quick-tool="stoichiometry">Run calculation</button>
+            <button type="button" class="sc-lab-button sc-lab-button-primary" data-command-action="note">Add notebook entry</button>
+          </div>
         </div>
+      </section>
+
+      <section class="sc-lab-panel" data-lab-module="activity" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/ACTIVITY</span><h3>Project activity record</h3></div><button type="button" class="sc-lab-button" data-export-activity>Export CSV</button></div>
+        <div class="sc-lab-toolbar"><label>Filter<input type="search" data-activity-filter placeholder="Search project activity"></label><label>Limit<select data-activity-limit><option>25</option><option selected>50</option><option>100</option><option>200</option></select></label></div>
+        <div class="sc-lab-list sc-lab-activity-list" data-activity-list></div>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="scientific-feeds" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/FEEDS</span><h3>Scientific signal board</h3></div><button class="sc-lab-button" data-feed-refresh>Refresh</button></div>
         <div class="sc-lab-toolbar">
           <label>Source<select data-feed-source><option value="usgs-earthquakes">USGS earthquakes</option><option value="nasa-eonet">NASA EONET</option><option value="pubmed-science">PubMed</option><option value="arxiv-physics">arXiv</option><option value="nasa-space-telescopes">NASA space releases</option><option value="obis-marine">OBIS marine biology</option></select></label>
-          <label>Query<input type="search" data-feed-query placeholder="Topic or taxon"></label>
+          <label>Query<input type="search" data-feed-query placeholder="Topic, place, or taxon"></label>
           <label>Limit<input type="number" min="1" max="30" value="12" data-feed-limit></label>
           <button class="sc-lab-button sc-lab-button-primary" data-feed-run>Run query</button>
         </div>
@@ -68,7 +169,7 @@
           <button class="sc-lab-button sc-lab-button-primary" data-climate-render>Render</button>
         </div>
         <div class="sc-lab-map-frame"><img data-climate-image alt="NASA GIBS climate and Earth observation layer"><div class="sc-lab-map-overlay" data-climate-loading hidden>Loading NASA GIBS layer…</div></div>
-        <div class="sc-lab-data-note">Source: NASA Global Imagery Browse Services (GIBS). Layer availability varies by date.</div>
+        <div class="sc-lab-data-note">Source: NASA Global Imagery Browse Services. Save a map state to preserve the layer, date, region, and source URL in the active project.</div>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="space-telescopes" hidden>
@@ -144,5 +245,14 @@
       </section>
     </main>
   </div>
+
+  <dialog class="sc-lab-record-dialog" data-record-dialog>
+    <form method="dialog" class="sc-lab-record-dialog-shell">
+      <header><div><span class="sc-lab-section-code" data-dialog-source>SCIENTIFIC/RECORD</span><h3 data-dialog-title>Scientific record</h3></div><button value="cancel" class="sc-lab-dialog-close" aria-label="Close">×</button></header>
+      <div class="sc-lab-dialog-body"><p data-dialog-summary></p><dl data-dialog-meta></dl></div>
+      <footer><a class="sc-lab-button" target="_blank" rel="noopener" data-dialog-open-source>Open source</a><a class="sc-lab-button" data-dialog-site-intelligence hidden>Open in Site Intelligence</a><button value="cancel" class="sc-lab-button sc-lab-button-primary">Close</button></footer>
+    </form>
+  </dialog>
+
   <div class="sc-lab-toast" role="status" aria-live="polite" data-lab-toast hidden></div>
 </div>
