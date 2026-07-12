@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.5.0.schema.json",
-  "title": "Sustainable Catalyst Lab Project v0.5.0",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.6.0.schema.json",
+  "title": "Sustainable Catalyst Lab Project v0.6.0",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "0.5.0"
+      "const": "0.6.0"
     },
     "id": {
       "type": "string"
@@ -145,6 +145,36 @@
       "type": "array"
     },
     "biologyValidationRecords": {
+      "type": "array"
+    },
+    "astronomyRecords": {
+      "type": "array"
+    },
+    "celestialTargets": {
+      "type": "array"
+    },
+    "orbitalAnalyses": {
+      "type": "array"
+    },
+    "stellarAnalyses": {
+      "type": "array"
+    },
+    "photometryRecords": {
+      "type": "array"
+    },
+    "spectralAnalyses": {
+      "type": "array"
+    },
+    "galaxyAnalyses": {
+      "type": "array"
+    },
+    "cosmologyRecords": {
+      "type": "array"
+    },
+    "telescopeAnalyses": {
+      "type": "array"
+    },
+    "astronomyValidationRecords": {
       "type": "array"
     }
   },

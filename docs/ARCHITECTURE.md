@@ -1,4 +1,4 @@
-# Lab v0.5.0 Architecture
+# Lab v0.6.0 Architecture
 
 WordPress renders the scientific interface and proxies public source APIs through REST routes. Browser modules normalize feed records into observations and datasets, preserve provenance, and store project records locally. Specialized scientific modules expose pure numerical methods that are independently testable and connect results to the shared Lab project model.
 
@@ -37,7 +37,7 @@ Biological input or sequence
 
 ## Project record
 
-Version 0.5.0 retains all earlier collections and adds:
+Version 0.6.0 retains all earlier collections and adds:
 
 ```text
 biologyRecords

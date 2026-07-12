@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab v0.5.0
+# Sustainable Catalyst Lab v0.6.0
 
-Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.5.0 adds a first-class Biology and Computational Biology Laboratory while preserving the live scientific data, chemistry, spectrometry, physics, project, notebook, and documentation systems introduced in earlier releases.
+Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.6.0 adds a first-class Biology and Computational Biology Laboratory while preserving the live scientific data, chemistry, spectrometry, physics, project, notebook, and documentation systems introduced in earlier releases.
 
 ## Major scientific modules
 
@@ -13,7 +13,7 @@ Sustainable Catalyst Lab is a modular, substance-first scientific workspace for 
 - Biology and Computational Biology Laboratory with forty methods across cellular systems, enzyme kinetics, genetics, sequence analysis, proteins, population genetics, ecology, physiology, and measurement.
 - Experiments, evidence, hypotheses, decisions, notebook records, project activity, and data-connected documentation.
 
-## Biology v0.5.0 additions
+## Biology v0.6.0 additions
 
 - DNA/RNA composition, reverse complement, transcription, translation, ORF finding, motif search, and k-mer profiling.
 - Needleman–Wunsch global alignment and Smith–Waterman local alignment with browser-size limits.
@@ -25,9 +25,15 @@ Sustainable Catalyst Lab is a modular, substance-first scientific workspace for 
 - Diffusion, osmosis, membrane Nernst potential, microbial growth, cardiac output, oxygen content, and dose-response tools.
 - Serial dilution, CFU estimation, deterministic bootstrap intervals, eight numerical benchmarks, validation warnings, project records, and notebook routing.
 
+## Astronomy and Astrophysics Laboratory
+
+Version 0.6.0 adds more than forty astronomy methods across coordinates and time, orbital mechanics, planetary systems, stellar astrophysics, photometry, spectroscopy, galaxies, cosmology, and telescope imaging. Analyses can be saved to astronomy-specific project collections, added to the notebook, included in documentation, and validated against ten deterministic reference cases.
+
+Focused shortcode: `[sc_lab_astronomy]`.
+
 ## Installation
 
-Upload `sustainable-catalyst-lab-plugin-v0.5.0.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
+Upload `sustainable-catalyst-lab-plugin-v0.6.0.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
 
 ```text
 [sc_lab_app]
@@ -46,7 +52,7 @@ Focused interfaces remain available:
 
 ## Compatibility
 
-The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.1 are normalized in place to schema version `0.5.0`. No destructive migration is performed.
+The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.1 are normalized in place to schema version `0.6.0`. No destructive migration is performed.
 
 ## Scientific boundaries
 

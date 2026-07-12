@@ -2,7 +2,7 @@
 
 ## Scientific areas
 
-The v0.5.0 Biology Laboratory groups methods into cellular systems, enzymes, genetics, sequence analysis, proteins, population genetics, ecology, physiology, and validation.
+The v0.6.0 Biology Laboratory groups methods into cellular systems, enzymes, genetics, sequence analysis, proteins, population genetics, ecology, physiology, and validation.
 
 ## Sequence methods
 

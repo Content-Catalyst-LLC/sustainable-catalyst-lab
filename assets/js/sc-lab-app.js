@@ -97,6 +97,7 @@
       if (item.kind === 'analysis-tab') setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', item.tab);
       if (item.kind === 'physics-tab') setTab('[data-physics-tab]', 'physicsTab', '[data-physics-pane]', 'physicsPane', item.tab);
       if (item.kind === 'biology-tab') setTab('[data-biology-tab]', 'biologyTab', '[data-biology-pane]', 'biologyPane', item.tab);
+      if (item.kind === 'astronomy-tab') setTab('[data-astronomy-tab]', 'astronomyTab', '[data-astronomy-pane]', 'astronomyPane', item.tab);
       if (item.kind === 'calculator') {
         setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
         selectCalculator(item.calculatorId);
@@ -212,7 +213,13 @@
         time: item.createdAt || item.recordedAt,
         meta: 'Biology'
       }));
-      const rows = [...experiments, ...calculations, ...biology]
+      const astronomy = project.astronomyRecords.slice(0, 3).map(item => ({
+        title: item.type || 'Astronomy analysis',
+        body: item.methodId ? `Method: ${item.methodId}` : '',
+        time: item.createdAt || item.recordedAt,
+        meta: 'Astronomy'
+      }));
+      const rows = [...experiments, ...calculations, ...biology, ...astronomy]
         .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
         .slice(0, 5);
       qs(root, '[data-project-work]').innerHTML = rows.length
@@ -229,7 +236,8 @@
         ['Notes', project.notes.length, 'notebook'],
         ['Decisions', project.decisions.length, 'evidence-decisions'],
         ['Documents', project.documents.length, 'documentation'],
-        ['Biology', project.biologyRecords.length, 'biology']
+        ['Biology', project.biologyRecords.length, 'biology'],
+        ['Astronomy', project.astronomyRecords.length, 'astronomy']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
@@ -468,7 +476,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.5.0' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.6.0' }, `${type} completed`);
       return result;
     }
 
@@ -755,6 +763,9 @@
     // Biology and Computational Biology Laboratory.
     Lab.BiologyLab?.init(root, projects);
 
+    // Astronomy and Astrophysics Laboratory.
+    Lab.AstronomyLab?.init(root, projects);
+
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
     qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
@@ -792,7 +803,8 @@
           calculations: project.calculations.length,
           maps: project.maps.length,
           physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
-          biology: ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
+          biology: ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0),
+          astronomy: ['astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
         }
       };
       return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -811,6 +823,9 @@
       const biologyCollections = ['biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords'];
       const biologyRecords = biologyCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
       sections.push('## Biology analyses', '', biologyRecords.length ? biologyRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No biology analyses recorded.', '');
+      const astronomyCollections = ['astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords'];
+      const astronomyRecords = astronomyCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
+      sections.push('## Astronomy analyses', '', astronomyRecords.length ? astronomyRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || item.report || {})}`).join('\n') : 'No astronomy analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
       sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
       sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
@@ -880,7 +895,8 @@
           ['Periodic table', Lab.Periodic?.getElements?.().length === 118 ? 'Ready' : 'Loading', `${Lab.Periodic?.getElements?.().length || 0} element records`],
           ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`],
           ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`],
-          ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`]
+          ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`],
+          ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`]
         ];
         target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
         if (showToast) U.toast(root, 'System checks completed.');

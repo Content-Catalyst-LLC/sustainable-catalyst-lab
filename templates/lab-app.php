@@ -56,6 +56,7 @@
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
+          'astronomy' => 'Astronomy laboratory',
           'science-engineering' => 'Science & engineering',
         ),
         'Record' => array(
@@ -117,6 +118,10 @@
             <button type="button" data-quick-tool="circuit-bench"><strong>Circuit &amp; Signal Bench</strong><span>RLC, filters, frequency response</span></button>
             <button type="button" data-quick-tool="sequence-analysis"><strong>Sequence Analysis</strong><span>DNA, RNA, ORFs, alignments</span></button>
             <button type="button" data-quick-tool="enzyme-kinetics"><strong>Enzyme Kinetics</strong><span>Michaelis–Menten and inhibition</span></button>
+            <button type="button" data-quick-tool="orbital-mechanics-lab"><strong>Orbital Mechanics Lab</strong><span>Kepler, transfers, Hill and Roche limits</span></button>
+            <button type="button" data-quick-tool="stellar-astrophysics"><strong>Stellar Astrophysics</strong><span>Luminosity, blackbody, gravity, lifetime</span></button>
+            <button type="button" data-quick-tool="astronomical-photometry"><strong>Astronomical Photometry</strong><span>Magnitudes, aperture counts, SNR</span></button>
+            <button type="button" data-quick-tool="cosmology-tools"><strong>Cosmology</strong><span>Hubble distance and critical density</span></button>
             <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
             <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
             <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
@@ -450,6 +455,47 @@
         </div>
       </section>
 
+
+      <section class="sc-lab-panel" data-lab-module="astronomy" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/ASTRONOMY</span><h3>Astronomy and astrophysics laboratory</h3></div>
+          <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button" data-astronomy-experiment>Create observation record</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-astronomy-run-benchmarks>Run validation suite</button></div>
+        </div>
+        <div class="sc-lab-method-note">Astronomy analyses preserve celestial targets, coordinates, time systems, orbital assumptions, instrument parameters, source data, validation warnings, plots, project links, and notebook-ready records. Simplified models require comparison with authoritative ephemerides, calibrated observations, and current cosmological parameters.</div>
+        <div class="sc-lab-tabs sc-lab-tabs-wrap sc-lab-astronomy-tabs">
+          <button type="button" class="is-active" data-astronomy-tab="coordinates">Coordinates & time</button>
+          <button type="button" data-astronomy-tab="orbits">Orbital mechanics</button>
+          <button type="button" data-astronomy-tab="planetary">Planetary systems</button>
+          <button type="button" data-astronomy-tab="stellar">Stellar astrophysics</button>
+          <button type="button" data-astronomy-tab="photometry">Photometry</button>
+          <button type="button" data-astronomy-tab="spectroscopy">Spectroscopy</button>
+          <button type="button" data-astronomy-tab="galaxies">Galaxies</button>
+          <button type="button" data-astronomy-tab="cosmology">Cosmology</button>
+          <button type="button" data-astronomy-tab="telescopes">Telescopes & imaging</button>
+          <button type="button" data-astronomy-tab="validation">Validation</button>
+        </div>
+        <div data-astronomy-pane="coordinates"><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="coordinates"></div></div>
+        <div data-astronomy-pane="orbits" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="orbits"></div></div>
+        <div data-astronomy-pane="planetary" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="planetary"></div></div>
+        <div data-astronomy-pane="stellar" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="stellar"></div></div>
+        <div data-astronomy-pane="photometry" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="photometry"></div></div>
+        <div data-astronomy-pane="spectroscopy" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="spectroscopy"></div></div>
+        <div data-astronomy-pane="galaxies" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="galaxies"></div></div>
+        <div data-astronomy-pane="cosmology" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="cosmology"></div></div>
+        <div data-astronomy-pane="telescopes" hidden><div class="sc-lab-grid sc-lab-grid-2" data-astronomy-tool-grid="telescopes"></div></div>
+        <div data-astronomy-pane="validation" hidden>
+          <article class="sc-lab-tool sc-lab-tool-wide sc-lab-astronomy-validation-dashboard">
+            <h4>Astronomy numerical validation suite</h4>
+            <p>Reference cases cover coordinates, parallax, Keplerian orbits, stellar radiation, photometry, cosmology, telescope diffraction, exoplanet transits, and compact objects.</p>
+            <div data-astronomy-benchmark-table class="sc-lab-data-note">Run the validation suite to compare the astronomy engine with deterministic reference cases.</div>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-astronomy-save-benchmarks>Save validation report</button></div>
+          </article>
+          <article class="sc-lab-tool sc-lab-tool-wide">
+            <h4>Astronomy observation and analysis templates</h4>
+            <div class="sc-lab-template-list"><span>Variable-star light curve</span><span>Exoplanet transit</span><span>Astrometric proper motion</span><span>Spectral redshift measurement</span><span>Stellar temperature and luminosity</span><span>Galaxy rotation curve</span><span>Telescope plate-scale calibration</span><span>Photometric aperture and SNR</span><span>Orbital transfer study</span><span>Blackbody spectrum analysis</span></div>
+          </article>
+        </div>
+      </section>
 
       <section class="sc-lab-panel" data-lab-module="science-engineering" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/ANALYSIS</span><h3>Science and engineering tools</h3></div></div>

@@ -1,6 +1,16 @@
 # Changelog
 
-## 0.5.0 — Biology and Computational Biology Laboratory
+## 0.6.0 — Astronomy and Astrophysics Laboratory
+
+- Added a first-class Astronomy and Astrophysics Laboratory with ten scientific work areas.
+- Added more than forty methods spanning celestial coordinates, sidereal time, orbital mechanics, planetary systems, stellar physics, photometry, spectroscopy, galaxies, cosmology, and telescope imaging.
+- Added blackbody-spectrum, orbital-transfer, photometric-SNR, exoplanet-transit, radial-velocity, galaxy-mass, and telescope-design analyses.
+- Added ten deterministic astronomy benchmark cases and project-saved validation reports.
+- Added astronomy-specific project collections, notebook integration, documentation integration, command search, quick tools, status reporting, and focused `[sc_lab_astronomy]` shortcode.
+- Preserved all v0.1.x–v0.5.0 projects through non-destructive normalization.
+
+
+## 0.6.0 — Biology and Computational Biology Laboratory
 
 - Added a first-class Biology Laboratory with nine scientific work areas.
 - Added forty computational biology methods spanning cellular systems, enzymes, genetics, sequences, proteins, populations, ecology, physiology, and measurement.

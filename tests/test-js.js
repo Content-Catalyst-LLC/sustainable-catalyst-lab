@@ -33,12 +33,14 @@ load('assets/js/modules/observations.js');
 load('assets/js/modules/physics-lab.js');
 load('assets/js/modules/physics-validation.js');
 load('assets/js/modules/biology-lab.js');
+load('assets/js/modules/astronomy-lab.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.5.0', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.6.0', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
+assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
@@ -134,6 +136,26 @@ assert(protein.length === 24 && protein.molecularWeightDa > 2000, 'Protein prope
 const biologyValidation = Biology.runBenchmarks();
 assert(biologyValidation.failed === 0 && biologyValidation.total >= 8, 'Biology benchmark validation failed');
 
+
+const Astronomy = context.window.SCLab.AstronomyLab;
+assert(Astronomy.definitions.length >= 40, 'Expected substantive astronomy method registry');
+const jd = Astronomy.tools.julianDate({ isoDate: '2000-01-01T12:00:00Z' });
+assert(Math.abs(jd.julianDate - 2451545.0) < 1e-9, 'Julian date failed');
+const kep = Astronomy.tools.keplerPeriod({ semiMajorAxisAu: 1, centralMassSolar: 1 });
+assert(Math.abs(kep.periodYears - 1) < 1e-12, 'Kepler period failed');
+const parallax = Astronomy.tools.parallaxDistance({ parallaxArcsec: 0.1 });
+assert(Math.abs(parallax.distanceParsec - 10) < 1e-12, 'Parallax distance failed');
+const stellar = Astronomy.tools.stefanLuminosity({ radiusSolar: 1, tempK: 5772 });
+assert(stellar.luminositySolar > 0.99 && stellar.luminositySolar < 1.01, 'Stellar luminosity failed');
+const transit = Astronomy.tools.transitDepth({ planetRadiusJupiter: 1, starRadiusSolar: 1 });
+assert(transit.percent > 0.9 && transit.percent < 1.1, 'Transit depth failed');
+const blackbody = Astronomy.tools.blackbodySpectrum({ tempK: 5772, minNm: 100, maxNm: 2500, points: 100 });
+assert(blackbody.series.length === 100 && blackbody.peakWavelengthNm > 500 && blackbody.peakWavelengthNm < 503, 'Blackbody spectrum failed');
+const hubble = Astronomy.tools.hubbleDistance({ redshift: 0.01, h0: 70 });
+assert(hubble.distanceMpc > 42 && hubble.distanceMpc < 43, 'Hubble distance failed');
+const astroValidation = Astronomy.runBenchmarks();
+assert(astroValidation.failed === 0 && astroValidation.total >= 10, 'Astronomy benchmark validation failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
@@ -148,4 +170,4 @@ const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: '
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${validationReport.total + biologyValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Biology.definitions.length} biology methods, ${Astronomy.definitions.length} astronomy methods, ${validationReport.total + biologyValidation.total + astroValidation.total} validation benchmarks, ${Workspace.modules.length} modules.`);
