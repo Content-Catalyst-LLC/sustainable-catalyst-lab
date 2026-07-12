@@ -1,90 +1,14 @@
-(function (w) {
-  'use strict';
-
-  const Lab = w.SCLab = w.SCLab || {};
-
-  const modules = [
-    { id: 'overview', label: 'Overview', group: 'Project', keywords: ['dashboard', 'project', 'summary'] },
-    { id: 'activity', label: 'Activity', group: 'Project', keywords: ['history', 'audit', 'recent'] },
-    { id: 'scientific-feeds', label: 'Scientific signals', group: 'Observe', keywords: ['feeds', 'USGS', 'NASA', 'PubMed', 'arXiv', 'events'] },
-    { id: 'climate-maps', label: 'Climate maps', group: 'Observe', keywords: ['Earth observation', 'GIBS', 'temperature', 'precipitation', 'aerosol'] },
-    { id: 'space-telescopes', label: 'Space observations', group: 'Observe', keywords: ['JWST', 'Hubble', 'NASA', 'astronomy', 'galaxy'] },
-    { id: 'marine-biology', label: 'Marine biology', group: 'Observe', keywords: ['OBIS', 'ocean', 'species', 'biodiversity', 'taxon'] },
-    { id: 'chemistry', label: 'Chemistry', group: 'Analyze', keywords: ['periodic table', 'stoichiometry', 'molar mass', 'reaction', 'dilution'] },
-    { id: 'science-engineering', label: 'Science & engineering', group: 'Analyze', keywords: ['physics', 'biology', 'astronomy', 'materials', 'energy', 'spectrometry', 'calculator'] },
-    { id: 'experiments', label: 'Experiments', group: 'Record', keywords: ['method', 'procedure', 'result', 'test'] },
-    { id: 'evidence-decisions', label: 'Evidence & decisions', group: 'Record', keywords: ['evidence', 'hypothesis', 'decision', 'claim'] },
-    { id: 'notebook', label: 'Notebook', group: 'Record', keywords: ['note', 'observation', 'lab record'] },
-    { id: 'documentation', label: 'Documentation', group: 'Record', keywords: ['report', 'technical document', 'brief', 'export'] },
-    { id: 'system-status', label: 'Connector status', group: 'System', keywords: ['health', 'source', 'API', 'status'] }
-  ];
-
-  const quickTools = [
-    { id: 'periodic-table', label: 'Periodic Table', kind: 'chem-tab', module: 'chemistry', tab: 'periodic', keywords: ['elements', 'atomic number', 'chemistry'] },
-    { id: 'stoichiometry', label: 'Stoichiometry', kind: 'chem-tab', module: 'chemistry', tab: 'stoichiometry', keywords: ['balance equation', 'molar mass', 'yield'] },
-    { id: 'spectrometry', label: 'Spectrometry', kind: 'analysis-tab', module: 'science-engineering', tab: 'spectrometry', keywords: ['spectrum', 'peak', 'baseline', 'UV-vis', 'mass spec'] },
-    { id: 'photon', label: 'Photon Energy', kind: 'calculator', module: 'science-engineering', calculatorId: 'photon', keywords: ['wavelength', 'frequency', 'Planck'] },
-    { id: 'rlc', label: 'RLC Impedance', kind: 'calculator', module: 'science-engineering', calculatorId: 'rlc', keywords: ['electromagnetism', 'resonance', 'circuit'] },
-    { id: 'orbit', label: 'Orbital Mechanics', kind: 'calculator', module: 'science-engineering', calculatorId: 'orbit', keywords: ['astronomy', 'period', 'velocity'] },
-    { id: 'uncertainty', label: 'Uncertainty Propagation', kind: 'calculator', module: 'science-engineering', calculatorId: 'uncertainty', keywords: ['measurement', 'error', 'standard uncertainty'] },
-    { id: 'pv', label: 'Photovoltaic Output', kind: 'calculator', module: 'science-engineering', calculatorId: 'pv', keywords: ['energy', 'solar', 'power'] }
-  ];
-
-  const trace = [
-    { key: 'evidence', label: 'Sources', module: 'scientific-feeds', count: p => new Set((p.evidence || []).map(x => x.source || x.record?.source).filter(Boolean)).size },
-    { key: 'evidence', label: 'Evidence', module: 'evidence-decisions', count: p => (p.evidence || []).length },
-    { key: 'hypotheses', label: 'Hypotheses', module: 'evidence-decisions', count: p => (p.hypotheses || []).length },
-    { key: 'calculations', label: 'Calculations', module: 'science-engineering', count: p => (p.calculations || []).length },
-    { key: 'experiments', label: 'Experiments', module: 'experiments', count: p => (p.experiments || []).length },
-    { key: 'decisions', label: 'Decisions', module: 'evidence-decisions', count: p => (p.decisions || []).length },
-    { key: 'documents', label: 'Documents', module: 'documentation', count: p => (p.documents || []).length }
-  ];
-
-  function normalize(value) {
-    return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-  }
-
-  function search(query, calculatorDefinitions) {
-    const q = normalize(query);
-    if (!q) return [];
-
-    const calculatorItems = (calculatorDefinitions || []).map(def => ({
-      id: def.id,
-      label: def.name,
-      group: def.domain,
-      kind: 'calculator',
-      module: 'science-engineering',
-      calculatorId: def.id,
-      keywords: [def.domain, ...(def.fields || []).map(field => field[1])]
-    }));
-
-    return [...modules.map(x => ({ ...x, kind: 'module' })), ...quickTools, ...calculatorItems]
-      .map(item => {
-        const haystack = normalize([item.label, item.group, ...(item.keywords || [])].join(' '));
-        let score = 0;
-        if (normalize(item.label) === q) score += 100;
-        if (normalize(item.label).startsWith(q)) score += 50;
-        if (haystack.includes(q)) score += 20;
-        q.split(' ').forEach(token => { if (token && haystack.includes(token)) score += 4; });
-        return { item, score };
-      })
-      .filter(row => row.score > 0)
-      .sort((a, b) => b.score - a.score || a.item.label.localeCompare(b.item.label))
-      .slice(0, 10)
-      .map(row => row.item);
-  }
-
-  function traceCounts(project) {
-    return trace.map(stage => ({
-      ...stage,
-      value: stage.count(project || {})
-    }));
-  }
-
-  function projectTotal(project) {
-    return ['evidence', 'experiments', 'hypotheses', 'decisions', 'notes', 'calculations', 'documents', 'maps']
-      .reduce((total, key) => total + ((project && project[key]) || []).length, 0);
-  }
-
-  Lab.Workspace = { modules, quickTools, trace, search, traceCounts, projectTotal };
-})(window);
+(function(w){'use strict';const Lab=w.SCLab=w.SCLab||{};
+const modules=[
+{id:'overview',label:'Overview',group:'Project',keywords:['dashboard','project','summary']},{id:'activity',label:'Activity',group:'Project',keywords:['history','audit','recent']},
+{id:'scientific-feeds',label:'Observation board',group:'Observe',keywords:['feeds','USGS','NASA','PubMed','arXiv','events','observations']},{id:'climate-maps',label:'Climate maps',group:'Observe',keywords:['Earth observation','GIBS','temperature','precipitation','aerosol']},{id:'space-telescopes',label:'Space observations',group:'Observe',keywords:['JWST','Hubble','Chandra','NASA','astronomy']},{id:'marine-biology',label:'Marine biology',group:'Observe',keywords:['OBIS','ocean','species','biodiversity','taxon']},
+{id:'dataset-inspector',label:'Dataset inspector',group:'Analyze',keywords:['table','CSV','JSON','plot','filter','data quality']},{id:'chemistry',label:'Chemistry',group:'Analyze',keywords:['periodic table','stoichiometry','molar mass','reaction','dilution']},{id:'science-engineering',label:'Science & engineering',group:'Analyze',keywords:['physics','biology','astronomy','materials','energy','spectrometry','calculator']},
+{id:'experiments',label:'Experiments',group:'Record',keywords:['method','procedure','result','test']},{id:'evidence-decisions',label:'Evidence & decisions',group:'Record',keywords:['evidence','hypothesis','decision','claim']},{id:'notebook',label:'Notebook',group:'Record',keywords:['note','observation','lab record']},{id:'documentation',label:'Documentation',group:'Record',keywords:['report','technical document','brief','export']},
+{id:'source-registry',label:'Source registry',group:'System',keywords:['connector','license','coverage','freshness','provenance']},{id:'system-status',label:'Connector status',group:'System',keywords:['health','source','API','status']}];
+const quickTools=[{id:'periodic-table',label:'Periodic Table',kind:'chem-tab',module:'chemistry',tab:'periodic',keywords:['elements','atomic number','chemistry']},{id:'stoichiometry',label:'Stoichiometry',kind:'chem-tab',module:'chemistry',tab:'stoichiometry',keywords:['balance equation','molar mass','yield']},{id:'spectrometry',label:'Spectrometry',kind:'analysis-tab',module:'science-engineering',tab:'spectrometry',keywords:['spectrum','peak','baseline']},{id:'dataset-inspector',label:'Dataset Inspector',kind:'module',module:'dataset-inspector',keywords:['CSV','table','chart','filter']},{id:'photon',label:'Photon Energy',kind:'calculator',module:'science-engineering',calculatorId:'photon',keywords:['wavelength','frequency','Planck']},{id:'rlc',label:'RLC Impedance',kind:'calculator',module:'science-engineering',calculatorId:'rlc',keywords:['electromagnetism','resonance','circuit']},{id:'orbit',label:'Orbital Mechanics',kind:'calculator',module:'science-engineering',calculatorId:'orbit',keywords:['astronomy','period','velocity']},{id:'uncertainty',label:'Uncertainty Propagation',kind:'calculator',module:'science-engineering',calculatorId:'uncertainty',keywords:['measurement','error']},{id:'pv',label:'Photovoltaic Output',kind:'calculator',module:'science-engineering',calculatorId:'pv',keywords:['energy','solar','power']}];
+const trace=[{key:'sourceSnapshots',label:'Sources',module:'source-registry',count:p=>new Set([...(p.sourceSnapshots||[]).map(x=>x.source),...(p.evidence||[]).map(x=>x.source||x.record?.source)].filter(Boolean)).size},{key:'observations',label:'Observations',module:'scientific-feeds',count:p=>(p.observations||[]).length},{key:'evidence',label:'Evidence',module:'evidence-decisions',count:p=>(p.evidence||[]).length},{key:'hypotheses',label:'Hypotheses',module:'evidence-decisions',count:p=>(p.hypotheses||[]).length},{key:'datasets',label:'Datasets',module:'dataset-inspector',count:p=>(p.datasets||[]).length},{key:'calculations',label:'Calculations',module:'science-engineering',count:p=>(p.calculations||[]).length},{key:'experiments',label:'Experiments',module:'experiments',count:p=>(p.experiments||[]).length},{key:'decisions',label:'Decisions',module:'evidence-decisions',count:p=>(p.decisions||[]).length},{key:'documents',label:'Documents',module:'documentation',count:p=>(p.documents||[]).length}];
+const norm=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+function search(query,defs){const q=norm(query);if(!q)return[];const calc=(defs||[]).map(def=>({id:def.id,label:def.name,group:def.domain,kind:'calculator',module:'science-engineering',calculatorId:def.id,keywords:[def.domain,...(def.fields||[]).map(f=>f[1])]}));return [...modules.map(x=>({...x,kind:'module'})),...quickTools,...calc].map(item=>{const h=norm([item.label,item.group,...(item.keywords||[])].join(' '));let score=norm(item.label)===q?100:norm(item.label).startsWith(q)?50:h.includes(q)?20:0;q.split(' ').forEach(t=>{if(t&&h.includes(t))score+=4});return{item,score}}).filter(r=>r.score>0).sort((a,b)=>b.score-a.score||a.item.label.localeCompare(b.item.label)).slice(0,12).map(r=>r.item)}
+const traceCounts=p=>trace.map(s=>({...s,value:s.count(p||{})}));
+const projectTotal=p=>['evidence','experiments','hypotheses','decisions','notes','calculations','documents','maps','mapViews','datasets','savedQueries','observations','sourceSnapshots','citations'].reduce((t,k)=>t+((p&&p[k])||[]).length,0);
+Lab.Workspace={modules,quickTools,trace,search,traceCounts,projectTotal};})(window);

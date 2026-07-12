@@ -22,6 +22,8 @@ load('assets/js/modules/core.js');
 load('assets/js/modules/stoichiometry.js');
 load('assets/js/modules/spectrometry.js');
 load('assets/js/modules/calculators.js');
+load('assets/js/modules/datasets.js');
+load('assets/js/modules/observations.js');
 load('assets/js/modules/workspace.js');
 
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
@@ -50,12 +52,12 @@ assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts -
 assert(Math.abs(Calculators.run('michaelis', { vmax: 100, substrate: 8, km: 2 }).rate - 80) < 1e-9, 'Michaelis-Menten failed');
 
 const Workspace = context.window.SCLab.Workspace;
-assert(Workspace.modules.length >= 13, 'Expected grouped module catalog');
-assert(Workspace.quickTools.length >= 8, 'Expected quick scientific tools');
+assert(Workspace.modules.length >= 15, 'Expected grouped module catalog');
+assert(Workspace.quickTools.length >= 9, 'Expected quick scientific tools');
 const search = Workspace.search('stoichiometry', Calculators.definitions);
 assert(search.length && search[0].id === 'stoichiometry', 'Command search failed');
 const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: 'NASA' }], hypotheses: [], calculations: [1], experiments: [1, 2], decisions: [], documents: [] });
-assert(trace[0].value === 2 && trace[3].value === 1 && trace[4].value === 2, 'Traceability counts failed');
+assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Workspace.modules.length} modules.`);

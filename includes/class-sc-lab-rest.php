@@ -6,12 +6,23 @@ class SC_Lab_REST {
 
     public function routes() {
         register_rest_route('sc-lab/v1', '/status', array('methods'=>'GET','callback'=>array($this,'status'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/sources/status', array('methods'=>'GET','callback'=>array($this,'source_status'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/sources', array('methods'=>'GET','callback'=>array($this,'sources'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/feeds/(?P<source>[a-z0-9-]+)', array('methods'=>'GET','callback'=>array($this,'feed'),'permission_callback'=>'__return_true','args'=>array('source'=>array('sanitize_callback'=>'sanitize_key'))));
     }
 
     public function status() {
-        return rest_ensure_response(array('ok'=>true,'version'=>SC_LAB_VERSION,'time'=>gmdate('c'),'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity')));
+        return rest_ensure_response(array('ok'=>true,'version'=>SC_LAB_VERSION,'time'=>gmdate('c'),'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews')));
+    }
+
+    public function source_status() {
+        $registry = SC_Lab_Feeds::registry();
+        $rows = array();
+        foreach ($registry as $id => $meta) {
+            $health = get_transient('sc_lab_health_' . md5($id));
+            $rows[$id] = array_merge($meta, is_array($health) ? $health : array('status'=>'not_checked','lastChecked'=>null,'message'=>'Run a query to test this connector.'));
+        }
+        return rest_ensure_response(array('sources'=>$rows,'retrievedAt'=>gmdate('c')));
     }
 
     public function sources() { return rest_ensure_response(array('sources'=>SC_Lab_Feeds::registry(),'retrievedAt'=>gmdate('c'))); }
@@ -26,7 +37,8 @@ class SC_Lab_REST {
         $cached = get_transient($cache_key);
         if (false !== $cached) { return rest_ensure_response(array('source'=>$source,'cached'=>true,'records'=>$cached,'retrievedAt'=>gmdate('c'))); }
         $records = SC_Lab_Feeds::fetch($source, $params);
-        if (is_wp_error($records)) { return $records; }
+        if (is_wp_error($records)) { set_transient('sc_lab_health_' . md5($source), array('status'=>'error','lastChecked'=>gmdate('c'),'message'=>$records->get_error_message()), DAY_IN_SECONDS); return $records; }
+        set_transient('sc_lab_health_' . md5($source), array('status'=>'ready','lastChecked'=>gmdate('c'),'message'=>count($records) . ' records returned'), DAY_IN_SECONDS);
         set_transient($cache_key, $records, max(5, absint($settings['cache_minutes'])) * MINUTE_IN_SECONDS);
         return rest_ensure_response(array('source'=>$source,'cached'=>false,'records'=>$records,'retrievedAt'=>gmdate('c')));
     }

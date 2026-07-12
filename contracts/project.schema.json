@@ -1,25 +1,80 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.1.1.schema.json",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.2.0.schema.json",
   "title": "Sustainable Catalyst Lab Project",
   "type": "object",
-  "required": ["schemaVersion", "id", "name", "createdAt", "updatedAt"],
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "createdAt",
+    "updatedAt"
+  ],
   "properties": {
-    "schemaVersion": {"const": "0.1.1"},
-    "id": {"type": "string"},
-    "name": {"type": "string", "minLength": 1},
-    "description": {"type": "string"},
-    "createdAt": {"type": "string"},
-    "updatedAt": {"type": "string"},
-    "evidence": {"type": "array"},
-    "experiments": {"type": "array"},
-    "hypotheses": {"type": "array"},
-    "decisions": {"type": "array"},
-    "notes": {"type": "array"},
-    "calculations": {"type": "array"},
-    "documents": {"type": "array"},
-    "maps": {"type": "array"},
-    "activity": {"type": "array"}
+    "schemaVersion": {
+      "const": "0.2.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "experiments": {
+      "type": "array"
+    },
+    "hypotheses": {
+      "type": "array"
+    },
+    "decisions": {
+      "type": "array"
+    },
+    "notes": {
+      "type": "array"
+    },
+    "calculations": {
+      "type": "array"
+    },
+    "documents": {
+      "type": "array"
+    },
+    "maps": {
+      "type": "array"
+    },
+    "mapViews": {
+      "type": "array"
+    },
+    "datasets": {
+      "type": "array"
+    },
+    "savedQueries": {
+      "type": "array"
+    },
+    "observations": {
+      "type": "array"
+    },
+    "sourceSnapshots": {
+      "type": "array"
+    },
+    "citations": {
+      "type": "array"
+    },
+    "activity": {
+      "type": "array"
+    }
   },
   "additionalProperties": true
 }

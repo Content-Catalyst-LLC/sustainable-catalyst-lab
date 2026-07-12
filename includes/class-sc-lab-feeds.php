@@ -4,12 +4,12 @@ if (!defined('ABSPATH')) { exit; }
 class SC_Lab_Feeds {
     public static function registry() {
         return array(
-            'usgs-earthquakes' => array('label'=>'USGS Earthquakes','domain'=>'Earth science','kind'=>'event','official'=>true),
-            'nasa-eonet' => array('label'=>'NASA EONET Natural Events','domain'=>'Earth science','kind'=>'event','official'=>true),
-            'nasa-space-telescopes' => array('label'=>'NASA Space Telescope Releases','domain'=>'Astronomy','kind'=>'observation','official'=>true),
-            'obis-marine' => array('label'=>'OBIS Marine Biodiversity','domain'=>'Marine biology','kind'=>'occurrence','official'=>true),
-            'pubmed-science' => array('label'=>'PubMed Natural Science','domain'=>'Life and chemical sciences','kind'=>'literature','official'=>true),
-            'arxiv-physics' => array('label'=>'arXiv Physics and Engineering','domain'=>'Physics, materials and engineering','kind'=>'literature','official'=>true),
+            'usgs-earthquakes' => array('label'=>'USGS Earthquakes','domain'=>'Earth science','kind'=>'event','official'=>true,'coverage'=>'Global','temporal'=>'Near real time and catalog','license'=>'USGS data policy','endpoint'=>'FDSN Event Web Service','format'=>'GeoJSON'),
+            'nasa-eonet' => array('label'=>'NASA EONET Natural Events','domain'=>'Earth science','kind'=>'event','official'=>true,'coverage'=>'Global','temporal'=>'Open and historical events','license'=>'NASA data and media policy','endpoint'=>'EONET API v3','format'=>'JSON'),
+            'nasa-space-telescopes' => array('label'=>'NASA Space Telescope Releases','domain'=>'Astronomy','kind'=>'observation','official'=>true,'coverage'=>'Astronomical targets','temporal'=>'Mission release archive','license'=>'NASA media usage guidelines','endpoint'=>'NASA Image and Video Library','format'=>'JSON'),
+            'obis-marine' => array('label'=>'OBIS Marine Biodiversity','domain'=>'Marine biology','kind'=>'occurrence','official'=>true,'coverage'=>'Global oceans','temporal'=>'Provider-dependent observations','license'=>'Record-level dataset terms','endpoint'=>'OBIS API v3','format'=>'JSON'),
+            'pubmed-science' => array('label'=>'PubMed Natural Science','domain'=>'Life and chemical sciences','kind'=>'literature','official'=>true,'coverage'=>'Biomedical and life-science literature','temporal'=>'Publication index','license'=>'Citation metadata; article terms vary','endpoint'=>'NCBI E-utilities','format'=>'JSON'),
+            'arxiv-physics' => array('label'=>'arXiv Physics and Engineering','domain'=>'Physics, materials and engineering','kind'=>'literature','official'=>true,'coverage'=>'Preprints by category','temporal'=>'Submission index','license'=>'Record and manuscript terms vary','endpoint'=>'arXiv API','format'=>'Atom XML'),
         );
     }
 
@@ -27,7 +27,7 @@ class SC_Lab_Feeds {
     }
 
     private static function remote_json($url, $args = array()) {
-        $args = wp_parse_args($args, array('timeout'=>18, 'headers'=>array('Accept'=>'application/json','User-Agent'=>'SustainableCatalystLab/0.1.1')));
+        $args = wp_parse_args($args, array('timeout'=>18, 'headers'=>array('Accept'=>'application/json','User-Agent'=>'SustainableCatalystLab/0.2.0 (+https://sustainablecatalyst.com/lab/)')));
         $response = wp_safe_remote_get($url, $args);
         if (is_wp_error($response)) { return $response; }
         $code = wp_remote_retrieve_response_code($response);
@@ -47,7 +47,8 @@ class SC_Lab_Feeds {
             'observedAt' => $observed,
             'retrievedAt' => gmdate('c'),
             'url' => esc_url_raw($url),
-            'provenance' => array('source'=>$source, 'retrievedAt'=>gmdate('c')),
+            'provenance' => array('source'=>$source, 'retrievedAt'=>gmdate('c'), 'connectorVersion'=>SC_LAB_VERSION),
+            'freshness' => 'retrieved',
         ), $extra);
     }
 
@@ -60,7 +61,7 @@ class SC_Lab_Feeds {
         $items = array();
         foreach ((array) ($data['features'] ?? array()) as $feature) {
             $p = $feature['properties'] ?? array(); $coords = $feature['geometry']['coordinates'] ?? array();
-            $items[] = self::record($feature['id'] ?? wp_generate_uuid4(), 'USGS', 'Earth science', $p['title'] ?? 'Earthquake event', 'Magnitude ' . ($p['mag'] ?? 'unknown') . '; depth ' . (isset($coords[2]) ? $coords[2] . ' km' : 'unknown'), !empty($p['time']) ? gmdate('c', intval($p['time']/1000)) : null, $p['url'] ?? '', array('type'=>'earthquake','location'=>array('longitude'=>$coords[0] ?? null,'latitude'=>$coords[1] ?? null,'depthKm'=>$coords[2] ?? null),'metrics'=>array('magnitude'=>$p['mag'] ?? null)));
+            $items[] = self::record($feature['id'] ?? wp_generate_uuid4(), 'USGS', 'Earth science', $p['title'] ?? 'Earthquake event', 'Magnitude ' . ($p['mag'] ?? 'unknown') . '; depth ' . (isset($coords[2]) ? $coords[2] . ' km' : 'unknown'), !empty($p['time']) ? gmdate('c', intval($p['time']/1000)) : null, $p['url'] ?? '', array('type'=>'earthquake','license'=>'USGS data policy','location'=>array('longitude'=>$coords[0] ?? null,'latitude'=>$coords[1] ?? null,'depthKm'=>$coords[2] ?? null),'metrics'=>array('magnitude'=>$p['mag'] ?? null)));
         }
         return $items;
     }
@@ -74,7 +75,7 @@ class SC_Lab_Feeds {
         foreach ((array) ($data['events'] ?? array()) as $event) {
             $geo = !empty($event['geometry']) ? end($event['geometry']) : array(); $coords = $geo['coordinates'] ?? array();
             $cats = array_map(function($c){ return $c['title'] ?? ''; }, (array) ($event['categories'] ?? array()));
-            $items[] = self::record($event['id'] ?? wp_generate_uuid4(), 'NASA EONET', 'Earth science', $event['title'] ?? 'Natural event', implode(', ', array_filter($cats)), $geo['date'] ?? null, !empty($event['sources'][0]['url']) ? $event['sources'][0]['url'] : 'https://eonet.gsfc.nasa.gov/', array('type'=>'natural_event','location'=>array('longitude'=>$coords[0] ?? null,'latitude'=>$coords[1] ?? null),'categories'=>$cats));
+            $items[] = self::record($event['id'] ?? wp_generate_uuid4(), 'NASA EONET', 'Earth science', $event['title'] ?? 'Natural event', implode(', ', array_filter($cats)), $geo['date'] ?? null, !empty($event['sources'][0]['url']) ? $event['sources'][0]['url'] : 'https://eonet.gsfc.nasa.gov/', array('type'=>'natural_event','license'=>'NASA data and media policy','location'=>array('longitude'=>$coords[0] ?? null,'latitude'=>$coords[1] ?? null),'categories'=>$cats));
         }
         return $items;
     }
@@ -87,7 +88,7 @@ class SC_Lab_Feeds {
         $items = array();
         foreach (array_slice((array) ($data['collection']['items'] ?? array()), 0, $limit) as $item) {
             $meta = $item['data'][0] ?? array(); $links = $item['links'] ?? array();
-            $items[] = self::record($meta['nasa_id'] ?? wp_generate_uuid4(), 'NASA Image and Video Library', 'Astronomy', $meta['title'] ?? 'Space telescope release', $meta['description_508'] ?? ($meta['description'] ?? ''), $meta['date_created'] ?? null, 'https://images.nasa.gov/details/' . rawurlencode($meta['nasa_id'] ?? ''), array('type'=>'space_telescope_release','thumbnail'=>esc_url_raw($links[0]['href'] ?? ''),'keywords'=>$meta['keywords'] ?? array()));
+            $items[] = self::record($meta['nasa_id'] ?? wp_generate_uuid4(), 'NASA Image and Video Library', 'Astronomy', $meta['title'] ?? 'Space telescope release', $meta['description_508'] ?? ($meta['description'] ?? ''), $meta['date_created'] ?? null, 'https://images.nasa.gov/details/' . rawurlencode($meta['nasa_id'] ?? ''), array('type'=>'space_telescope_release','license'=>'NASA media usage guidelines','thumbnail'=>esc_url_raw($links[0]['href'] ?? ''),'keywords'=>$meta['keywords'] ?? array()));
         }
         return $items;
     }
@@ -101,7 +102,7 @@ class SC_Lab_Feeds {
         foreach (array_slice((array) $rows, 0, $limit) as $row) {
             $name = $row['scientificName'] ?? ($row['species'] ?? 'Marine occurrence');
             $place = trim(implode(', ', array_filter(array($row['locality'] ?? '', $row['country'] ?? ''))));
-            $items[] = self::record($row['id'] ?? ($row['occurrenceID'] ?? wp_generate_uuid4()), 'OBIS', 'Marine biology', $name, $place ?: 'Marine biodiversity occurrence', $row['eventDate'] ?? ($row['date_mid'] ?? null), 'https://obis.org/', array('type'=>'marine_occurrence','location'=>array('longitude'=>$row['decimalLongitude'] ?? null,'latitude'=>$row['decimalLatitude'] ?? null),'taxonomy'=>array('scientificName'=>$name,'kingdom'=>$row['kingdom'] ?? null,'phylum'=>$row['phylum'] ?? null)));
+            $items[] = self::record($row['id'] ?? ($row['occurrenceID'] ?? wp_generate_uuid4()), 'OBIS', 'Marine biology', $name, $place ?: 'Marine biodiversity occurrence', $row['eventDate'] ?? ($row['date_mid'] ?? null), 'https://obis.org/', array('type'=>'marine_occurrence','license'=>'Record-level OBIS dataset terms','location'=>array('longitude'=>$row['decimalLongitude'] ?? null,'latitude'=>$row['decimalLatitude'] ?? null,'depthM'=>$row['minimumDepthInMeters'] ?? ($row['depth'] ?? null)),'taxonomy'=>array('scientificName'=>$name,'kingdom'=>$row['kingdom'] ?? null,'phylum'=>$row['phylum'] ?? null)));
         }
         return $items;
     }
@@ -119,7 +120,7 @@ class SC_Lab_Feeds {
         $items = array();
         foreach ($ids as $id) {
             $row = $summary['result'][$id] ?? array(); $authors = array_map(function($a){ return $a['name'] ?? ''; }, (array) ($row['authors'] ?? array()));
-            $items[] = self::record($id, 'PubMed', 'Life and chemical sciences', $row['title'] ?? 'PubMed record', implode(', ', array_slice(array_filter($authors),0,4)), $row['pubdate'] ?? null, 'https://pubmed.ncbi.nlm.nih.gov/' . rawurlencode($id) . '/', array('type'=>'literature','journal'=>$row['fulljournalname'] ?? ($row['source'] ?? '')));
+            $items[] = self::record($id, 'PubMed', 'Life and chemical sciences', $row['title'] ?? 'PubMed record', implode(', ', array_slice(array_filter($authors),0,4)), $row['pubdate'] ?? null, 'https://pubmed.ncbi.nlm.nih.gov/' . rawurlencode($id) . '/', array('type'=>'literature','license'=>'Citation metadata; article terms vary','journal'=>$row['fulljournalname'] ?? ($row['source'] ?? '')));
         }
         return $items;
     }
@@ -127,7 +128,7 @@ class SC_Lab_Feeds {
     private static function arxiv($limit, $params) {
         $query = sanitize_text_field(isset($params['q']) ? $params['q'] : 'all:physics OR all:astronomy OR all:materials OR all:engineering');
         $url = add_query_arg(array('search_query'=>$query,'start'=>0,'max_results'=>$limit,'sortBy'=>'submittedDate','sortOrder'=>'descending'), 'https://export.arxiv.org/api/query');
-        $response = wp_safe_remote_get($url, array('timeout'=>18,'headers'=>array('User-Agent'=>'SustainableCatalystLab/0.1.1')));
+        $response = wp_safe_remote_get($url, array('timeout'=>18,'headers'=>array('User-Agent'=>'SustainableCatalystLab/0.2.0 (+https://sustainablecatalyst.com/lab/)')));
         if (is_wp_error($response)) { return $response; }
         $body = wp_remote_retrieve_body($response); if (!function_exists('simplexml_load_string')) { return new WP_Error('xml_unavailable','XML parser unavailable.',array('status'=>500)); }
         $xml = simplexml_load_string($body); if (!$xml) { return new WP_Error('source_parse_error','arXiv returned invalid XML.',array('status'=>502)); }
@@ -137,7 +138,7 @@ class SC_Lab_Feeds {
             $entry_atom = $entry->children('http://www.w3.org/2005/Atom');
             $id = (string) $entry_atom->id; $authors = array();
             foreach ($entry_atom->author as $author) { $authors[] = (string) $author->name; }
-            $items[] = self::record(md5($id), 'arXiv', 'Physics, materials and engineering', trim((string) $entry_atom->title), implode(', ', array_slice($authors,0,4)), (string) $entry_atom->published, $id, array('type'=>'preprint','abstract'=>trim((string) $entry_atom->summary)));
+            $items[] = self::record(md5($id), 'arXiv', 'Physics, materials and engineering', trim((string) $entry_atom->title), implode(', ', array_slice($authors,0,4)), (string) $entry_atom->published, $id, array('type'=>'preprint','license'=>'Record and manuscript terms vary','abstract'=>trim((string) $entry_atom->summary)));
         }
         return $items;
     }

@@ -33,7 +33,10 @@
       ['Retrieved', U.fmt(record.retrievedAt)],
       ['Latitude', location.latitude ?? '—'],
       ['Longitude', location.longitude ?? '—'],
-      ['Record ID', record.id || '—']
+      ['Record ID', record.id || '—'],
+      ['Record type', record.type || record.kind || '—'],
+      ['Freshness', record.freshness || 'source supplied'],
+      ['License', record.license || 'See source terms']
     ];
   }
 
@@ -74,6 +77,12 @@
     dialog.showModal();
   }
 
+  function saveObservation(record, projects, root) {
+    projects.add('observations', { title:record.title, source:record.source, domain:record.domain, observedAt:record.observedAt, retrievedAt:record.retrievedAt, location:record.location||null, record }, `Observation saved: ${record.title}`);
+    projects.add('sourceSnapshots', { source:record.source, retrievedAt:record.retrievedAt, connectorId:record.connectorId||'', recordId:record.id, provenance:record.provenance||{} }, null);
+    U.toast(root, 'Observation saved to the project.');
+  }
+
   function saveEvidence(record, projects, root) {
     projects.add('evidence', {
       title: record.title,
@@ -89,6 +98,7 @@
   }
 
   function citeNotebook(record, projects, root) {
+    projects.add('citations', { title:record.title, source:record.source, url:record.url, observedAt:record.observedAt, retrievedAt:record.retrievedAt }, null);
     projects.add('notes', {
       type: 'source-citation',
       title: record.title,
@@ -122,6 +132,17 @@
     } else {
       const image = record.thumbnail ? `<img loading="lazy" src="${U.esc(record.thumbnail)}" alt="">` : '';
       const sourceLink = record.url ? `<a class="sc-lab-text-button" href="${U.esc(record.url)}" target="_blank" rel="noopener">Open source</a>` : '';
+      const routed = (key,label) => {
+        const route = w.SCLabConfig?.routes?.[key];
+        if (!route) return '';
+        const destination = new URL(route, w.location.href);
+        destination.searchParams.set('source', record.source || 'Lab');
+        destination.searchParams.set('record', record.id || '');
+        destination.searchParams.set('title', record.title || '');
+        if (Number.isFinite(Number(record.location?.latitude))) destination.searchParams.set('lat', record.location.latitude);
+        if (Number.isFinite(Number(record.location?.longitude))) destination.searchParams.set('lon', record.location.longitude);
+        return `<a class="sc-lab-button" href="${U.esc(destination.toString())}">${U.esc(label)}</a>`;
+      };
       el.innerHTML = `
         ${image}
         <div class="sc-lab-feed-card-body">
@@ -133,15 +154,22 @@
         <div class="sc-lab-card-actions">
           <button class="sc-lab-button" data-inspect>Inspect</button>
           ${sourceLink}
+          <button class="sc-lab-button" data-save-observation>Save observation</button>
           <button class="sc-lab-button" data-save-evidence>Save evidence</button>
           <button class="sc-lab-button" data-cite-note>Notebook</button>
+          <button class="sc-lab-button" data-open-dataset>Inspect dataset</button>
+          ${routed('siteIntelligence','Site Intelligence')}
+          ${routed('decisionStudio','Decision Studio')}
+          ${routed('workbench','Workbench')}
           <button class="sc-lab-button sc-lab-button-primary" data-create-experiment>Create experiment</button>
         </div>`;
     }
 
     el.querySelector('[data-inspect]')?.addEventListener('click', () => inspectRecord(record, root));
+    el.querySelector('[data-save-observation]')?.addEventListener('click', () => saveObservation(record, projects, root));
     el.querySelector('[data-save-evidence]')?.addEventListener('click', () => saveEvidence(record, projects, root));
     el.querySelector('[data-cite-note]')?.addEventListener('click', () => citeNotebook(record, projects, root));
+    el.querySelector('[data-open-dataset]')?.addEventListener('click', () => root.dispatchEvent(new CustomEvent('sc-lab:dataset',{detail:{records:[record],title:record.title,source:record.source}})));
     el.querySelector('[data-create-experiment]')?.addEventListener('click', () => createExperiment(record, projects, root));
     return el;
   }
@@ -155,5 +183,5 @@
     records.forEach(record => target.appendChild(card(record, projects, root, options)));
   }
 
-  Lab.Feeds = { load, render, card, inspectRecord, saveEvidence, citeNotebook, createExperiment };
+  Lab.Feeds = { load, render, card, inspectRecord, saveObservation, saveEvidence, citeNotebook, createExperiment };
 })(window, document);

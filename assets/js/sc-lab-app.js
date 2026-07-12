@@ -43,6 +43,10 @@
     const commandResults = qs(root, '[data-lab-command-results]');
     let currentDocument = null;
     let overviewLoaded = false;
+    let currentDataset = null;
+    let currentFeedRecords = [];
+    let currentSpaceRecords = [];
+    let currentMarineRecords = [];
     let spectrum = [];
 
     function renderSelect() {
@@ -75,6 +79,8 @@
       if (id === 'evidence-decisions') renderEvidence();
       if (id === 'notebook') renderNotes();
       if (id === 'system-status') runStatus(false);
+      if (id === 'source-registry') loadSourceRegistry();
+      if (id === 'dataset-inspector') renderDataset();
       if (options.focus) requestAnimationFrame(() => options.focus.focus());
     }
 
@@ -284,6 +290,7 @@
       if (root.dataset.activeModule === 'evidence-decisions') renderEvidence();
       if (root.dataset.activeModule === 'notebook') renderNotes();
       updateDocStale();
+      populateDatasetSelect();
     }
 
     qsa(root, '[data-lab-module-button]').forEach(button => button.addEventListener('click', () => openModule(button.dataset.labModuleButton)));
@@ -349,13 +356,20 @@
     async function feedTo(source, query, limit, target, status) {
       if (status) status.textContent = 'Loading scientific source…';
       try {
-        const data = await Lab.Feeds.load(source, query, limit);
-        Lab.Feeds.render(target, data.records, projects, root);
-        if (status) status.textContent = `${data.records.length} records · ${data.cached ? 'cached' : 'live retrieval'} · ${U.fmt(data.retrievedAt)}`;
-      } catch (error) {
-        target.innerHTML = empty(error.message);
-        if (status) status.textContent = error.message;
-      }
+        let records = [], retrievedAt = U.now(), cached = false;
+        if (source === 'all-science') {
+          records = await Lab.Observations.loadBoard();
+        } else {
+          const data = await Lab.Feeds.load(source, query, limit);
+          records = data.records || []; retrievedAt = data.retrievedAt; cached = !!data.cached;
+        }
+        currentFeedRecords = records;
+        Lab.Feeds.render(target, records, projects, root);
+        qs(root,'[data-feed-to-dataset]').disabled = !records.length;
+        qs(root,'[data-save-query]').disabled = !records.length;
+        if (status) status.textContent = `${records.length} records · ${source==='all-science'?'multi-source board':cached?'cached':'live retrieval'} · ${U.fmt(retrievedAt)}`;
+        return records;
+      } catch (error) { target.innerHTML=empty(error.message); if(status)status.textContent=error.message; return []; }
     }
 
     const feedSource = qs(root, '[data-feed-source]');
@@ -366,13 +380,31 @@
     const runFeed = () => feedTo(feedSource.value, feedQuery.value, Number(feedLimit.value), feedTarget, feedStatus);
     qs(root, '[data-feed-run]').addEventListener('click', runFeed);
     qs(root, '[data-feed-refresh]').addEventListener('click', runFeed);
-    qs(root, '[data-space-load]').addEventListener('click', () => feedTo('nasa-space-telescopes', qs(root, '[data-space-query]').value, 18, qs(root, '[data-space-results]')));
-    qs(root, '[data-marine-load]').addEventListener('click', () => feedTo('obis-marine', qs(root, '[data-marine-query]').value, Number(qs(root, '[data-marine-limit]').value), qs(root, '[data-marine-results]')));
+    qs(root, '[data-space-load]').addEventListener('click', async () => { const telescope=qs(root,'[data-space-telescope]').value; const query=`${telescope==='all'?'':telescope+' '} ${qs(root,'[data-space-query]').value}`.trim(); currentSpaceRecords=await feedTo('nasa-space-telescopes',query,Number(qs(root,'[data-space-limit]').value),qs(root,'[data-space-results]')); qs(root,'[data-space-dataset]').disabled=!currentSpaceRecords.length; const groups={};currentSpaceRecords.forEach(r=>{const t=Lab.Observations.telescope(r);groups[t]=(groups[t]||0)+1});qs(root,'[data-space-summary]').textContent=Object.entries(groups).map(([k,v])=>`${k}: ${v}`).join(' · ')||'No observations returned.'; });
+    qs(root, '[data-marine-load]').addEventListener('click', async () => { currentMarineRecords=await feedTo('obis-marine',qs(root,'[data-marine-query]').value,Number(qs(root,'[data-marine-limit]').value),qs(root,'[data-marine-results]')); qs(root,'[data-marine-dataset]').disabled=!currentMarineRecords.length; const taxa=Lab.Observations.taxonSummary(currentMarineRecords).slice(0,6);qs(root,'[data-marine-summary]').textContent=`${currentMarineRecords.length} occurrences · `+taxa.map(([n,c])=>`${n}: ${c}`).join(' · '); renderMarineChart(); });
+
+
+    function loadDataset(dataset){ currentDataset=dataset; openModule('dataset-inspector'); renderDataset(); }
+    root.addEventListener('sc-lab:dataset',event=>loadDataset(Lab.Datasets.fromRecords(event.detail.records,{title:event.detail.title,source:event.detail.source})));
+    qs(root,'[data-feed-to-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentFeedRecords,{title:'Scientific observation board',source:feedSource.value,query:{q:feedQuery.value,limit:Number(feedLimit.value)}})));
+    qs(root,'[data-space-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentSpaceRecords,{title:'Space telescope observations',source:'NASA Image and Video Library'})));
+    qs(root,'[data-marine-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentMarineRecords,{title:'Marine biodiversity occurrences',source:'OBIS'})));
+    qs(root,'[data-save-query]').addEventListener('click',()=>{projects.add('savedQueries',{source:feedSource.value,q:feedQuery.value,limit:Number(feedLimit.value),recordCount:currentFeedRecords.length},`Scientific query saved: ${feedSource.value}`);U.toast(root,'Query saved to project.');});
+    function datasetRows(){return currentDataset?Lab.Datasets.filter(currentDataset,qs(root,'[data-dataset-filter]').value):[];}
+    function populateDatasetSelect(){const sel=qs(root,'[data-dataset-select]');const value=sel.value;sel.innerHTML='<option value="">Current working dataset</option>'+projects.get().datasets.map(x=>`<option value="${U.esc(x.id)}">${U.esc(x.title||'Dataset')}</option>`).join('');sel.value=value;}
+    function renderDataset(){populateDatasetSelect();const header=qs(root,'[data-dataset-header]'),table=qs(root,'[data-dataset-table]'),chart=qs(root,'[data-dataset-chart]');if(!currentDataset){header.textContent='No dataset loaded. Open feed results, import CSV, or select a saved project dataset.';table.innerHTML=empty('No dataset loaded.');chart.innerHTML=empty('No dataset loaded.');return;}const rows=datasetRows(),stats=Lab.Datasets.summary(currentDataset,rows);header.textContent=`${currentDataset.title} · ${currentDataset.source} · ${rows.length} filtered rows / ${currentDataset.rows.length} total`;const selects=[qs(root,'[data-dataset-x]'),qs(root,'[data-dataset-y]')];selects.forEach((sel,i)=>{const prev=sel.value;sel.innerHTML=(i===0?'<option value="">Row index</option>':'<option value="">Select numeric variable</option>')+currentDataset.columns.map(c=>`<option>${U.esc(c)}</option>`).join('');if(currentDataset.columns.includes(prev))sel.value=prev;});if(!qs(root,'[data-dataset-y]').value){const num=Object.keys(stats.numeric)[0];if(num)qs(root,'[data-dataset-y]').value=num;}qs(root,'[data-dataset-stats]').innerHTML=`<div><strong>${stats.rows}</strong><span>Rows</span></div><div><strong>${stats.columns}</strong><span>Variables</span></div><div><strong>${stats.missing}</strong><span>Missing cells</span></div><div><strong>${Object.keys(stats.numeric).length}</strong><span>Numeric variables</span></div>`;Lab.Datasets.renderTable(table,currentDataset,rows,Number(qs(root,'[data-dataset-limit]').value));Lab.Datasets.renderChart(chart,currentDataset,rows,qs(root,'[data-dataset-x]').value,qs(root,'[data-dataset-y]').value);}
+    ['[data-dataset-filter]','[data-dataset-x]','[data-dataset-y]','[data-dataset-limit]'].forEach(sel=>qs(root,sel).addEventListener(sel.includes('filter')?'input':'change',renderDataset));
+    qs(root,'[data-dataset-select]').addEventListener('change',e=>{const found=projects.get().datasets.find(x=>x.id===e.target.value);if(found){currentDataset=found;renderDataset();}});
+    qs(root,'[data-dataset-import-run]').addEventListener('click',()=>{try{const raw=qs(root,'[data-dataset-import]').value.trim();if(!raw)throw new Error('Paste CSV or JSON first.');currentDataset=raw[0]==='['?Lab.Datasets.fromRecords(JSON.parse(raw),{title:'Imported JSON dataset',source:'User import'}):Lab.Datasets.parseCSV(raw);renderDataset();}catch(error){U.toast(root,error.message);}});
+    qs(root,'[data-dataset-save]').addEventListener('click',()=>{if(!currentDataset)return U.toast(root,'Load a dataset first.');const saved=JSON.parse(JSON.stringify(currentDataset));saved.id=U.uid('datasets');projects.add('datasets',saved,`Dataset saved: ${saved.title}`);U.toast(root,'Dataset saved to project.');});
+    qs(root,'[data-dataset-export]').addEventListener('click',()=>{if(currentDataset)U.download(`${(currentDataset.title||'dataset').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.csv`,Lab.Datasets.csv(currentDataset,datasetRows()),'text/csv');});
+    function renderMarineChart(){const points=Lab.Observations.depthSeries(currentMarineRecords);const target=qs(root,'[data-marine-chart]');if(!points.length){target.innerHTML='<div class="sc-lab-data-note">No depth values were supplied by these records.</div>';return;}const max=Math.max(...points.map(p=>p.depth),1);target.innerHTML=`<svg viewBox="0 0 700 140"><line x1="35" y1="15" x2="35" y2="120" stroke="#89949d"/><line x1="35" y1="120" x2="680" y2="120" stroke="#89949d"/>${points.map((p,i)=>`<circle cx="${35+i*(640/Math.max(points.length-1,1))}" cy="${15+p.depth/max*100}" r="3" fill="#d00000"/>`).join('')}<text x="5" y="18" font-size="10">0 m</text><text x="2" y="120" font-size="10">${max.toFixed(0)} m</text></svg>`;}
 
     // Climate map.
     const climateDate = qs(root, '[data-climate-date]');
     climateDate.value = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
     function renderMap() {
+      const layer=qs(root,'[data-climate-layer]').value,bbox=qs(root,'[data-climate-region]').value;qs(root,'[data-climate-metadata]').innerHTML=`<span>Layer: ${U.esc(Lab.ClimateMap.layers[layer]?.label||layer)}</span><span>Date: ${U.esc(climateDate.value)}</span><span>Region: ${U.esc(bbox)}</span><span>Unit: ${U.esc(Lab.ClimateMap.layers[layer]?.unit||'source-defined')}</span>`;
       return Lab.ClimateMap.render(
         qs(root, '[data-climate-image]'),
         qs(root, '[data-climate-layer]').value,
@@ -382,6 +414,9 @@
       );
     }
     qs(root, '[data-climate-render]').addEventListener('click', renderMap);
+    qs(root,'[data-climate-opacity]').addEventListener('input',e=>qs(root,'[data-climate-image]').style.opacity=Number(e.target.value)/100);
+    qs(root,'[data-climate-image]').addEventListener('click',event=>{const point=Lab.ClimateMap.coordinate(event,qs(root,'[data-climate-image]'),qs(root,'[data-climate-region]').value);qs(root,'[data-climate-readout]').textContent=`Selected coordinate: ${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`;projects.add('observations',{title:'Climate map coordinate',source:'NASA GIBS',location:point,layer:qs(root,'[data-climate-layer]').value,date:climateDate.value},`Map coordinate observed: ${point.latitude.toFixed(3)}, ${point.longitude.toFixed(3)}`);});
+    qs(root,'[data-climate-export]').addEventListener('click',()=>{const record={source:'NASA GIBS',layer:qs(root,'[data-climate-layer]').value,date:climateDate.value,bbox:qs(root,'[data-climate-region]').value,url:renderMap()};U.download('lab-climate-map.json',JSON.stringify(record,null,2),'application/json');});
     qs(root, '[data-climate-save]').addEventListener('click', () => {
       const record = {
         title: 'NASA GIBS climate map',
@@ -390,7 +425,7 @@
         bbox: qs(root, '[data-climate-region]').value,
         url: renderMap()
       };
-      projects.add('maps', record, `Climate map saved: ${record.layer}`);
+      projects.add('mapViews', record, `Climate map saved: ${record.layer}`);
       U.toast(root, 'Climate map state saved.');
     });
     renderMap();
@@ -577,6 +612,7 @@
       currentDocument = { type, title, markdown, fingerprint: fingerprint(projects.get()), generatedAt: U.now() };
       qs(root, '[data-doc-editor]').value = markdown;
       updateDocStale();
+      populateDatasetSelect();
     });
     qs(root, '[data-save-doc]').addEventListener('click', () => {
       const markdown = qs(root, '[data-doc-editor]').value;
@@ -586,6 +622,7 @@
       projects.add('documents', { type, title, markdown, fingerprint: fingerprint(projects.get()), status: 'snapshot' }, `Document snapshot saved: ${title}`);
       currentDocument = { type, title, markdown, fingerprint: fingerprint(projects.get()), generatedAt: U.now() };
       updateDocStale();
+      populateDatasetSelect();
       U.toast(root, 'Document snapshot saved.');
     });
     qs(root, '[data-export-doc-md]').addEventListener('click', () => {
@@ -599,6 +636,11 @@
       U.download('lab-document.html', html, 'text/html');
     });
 
+
+    async function loadSourceRegistry(){const target=qs(root,'[data-source-registry]');target.innerHTML='<div class="sc-lab-data-note">Loading source metadata and connector health…</div>';try{const data=await U.fetchJson(`${config.restBase}sources/status`);root._sourceRows=Object.entries(data.sources||{});renderSourceRegistry();}catch(error){target.innerHTML=empty(error.message);}}
+    function renderSourceRegistry(){const q=(qs(root,'[data-source-filter]').value||'').toLowerCase();const rows=(root._sourceRows||[]).filter(([id,m])=>!q||`${id} ${m.label} ${m.domain} ${m.coverage} ${m.format}`.toLowerCase().includes(q));qs(root,'[data-source-registry]').innerHTML=rows.map(([id,m])=>`<article class="sc-lab-source-row"><div><strong>${U.esc(m.label)}</strong><span>${U.esc(id)}</span></div><div><strong>${U.esc(m.domain)}</strong><span>${U.esc(m.kind)}</span></div><div><strong>${U.esc(m.coverage||'—')}</strong><span>${U.esc(m.temporal||'—')}</span></div><div><strong>${U.esc(m.endpoint||'—')}</strong><span>${U.esc(m.format||'—')}</span></div><div><strong class="sc-lab-source-state ${U.esc(m.status||'not_checked')}">${U.esc(m.status||'not checked')}</strong><span>${U.esc(m.lastChecked?U.fmt(m.lastChecked):m.message||'Not checked')}</span></div></article>`).join('')||empty('No matching sources.');}
+    qs(root,'[data-source-refresh]').addEventListener('click',loadSourceRegistry);qs(root,'[data-source-filter]').addEventListener('input',renderSourceRegistry);
+
     // System status.
     async function runStatus(showToast = true) {
       const target = qs(root, '[data-system-status]');
@@ -606,7 +648,7 @@
       try {
         const [status, sources] = await Promise.all([
           U.fetchJson(`${config.restBase}status`),
-          U.fetchJson(`${config.restBase}sources`)
+          U.fetchJson(`${config.restBase}sources/status`)
         ]);
         const rows = [
           ['Lab REST API', status.ok ? 'Ready' : 'Unavailable', `Version ${status.version || 'unknown'} · ${U.fmt(status.time)}`],

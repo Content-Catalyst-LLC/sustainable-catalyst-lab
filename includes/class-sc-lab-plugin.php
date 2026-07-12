@@ -33,7 +33,7 @@ final class SC_Lab_Plugin {
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','spectrometry','calculators','workspace');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','spectrometry','calculators','datasets','observations','workspace');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
