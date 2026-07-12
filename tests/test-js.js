@@ -20,6 +20,7 @@ function assert(condition, message) {
 }
 load('assets/js/modules/core.js');
 load('assets/js/modules/stoichiometry.js');
+load('assets/js/modules/chemistry-lab.js');
 load('assets/js/modules/spectrometry.js');
 load('assets/js/modules/calculators.js');
 load('assets/js/modules/datasets.js');
@@ -41,10 +42,31 @@ assert(balance.coefficients.join(',') === '4,3,2', `Equation balance failed: ${b
 const limiting = S.limitingReagent('2 H2 + O2 -> 2 H2O', { H2: 3, O2: 2 });
 assert(limiting.limiting === 'H2' && Math.abs(limiting.productMoles[0].moles - 3) < 1e-9, 'Limiting reagent failed');
 
+
+const Chemistry = context.window.SCLab.ChemistryLab;
+const weak = Chemistry.weakAcid({ concentration: 0.1, ka: 1.8e-5 });
+assert(Math.abs(weak.pH - 2.875) < 0.02, 'Weak acid equilibrium failed');
+const buffer = Chemistry.buffer({ pKa: 4.76, acid: 0.1, base: 0.1 });
+assert(Math.abs(buffer.pH - 4.76) < 1e-12, 'Buffer calculation failed');
+const titration = Chemistry.titration({ analyteType: 'acid', analyteC: 0.1, analyteMl: 25, titrantC: 0.1, titrantMl: 25 });
+assert(Math.abs(titration.pH - 7) < 1e-12, 'Strong titration equivalence failed');
+const nernst = Chemistry.nernst({ eStandard: 1.1, temperatureK: 298.15, electrons: 2, reactionQuotient: 10 });
+assert(nernst.cellPotentialV < 1.1 && nernst.cellPotentialV > 1.06, 'Nernst calculation failed');
+const empirical = Chemistry.empiricalFormula([{ symbol: 'C', amount: 40 }, { symbol: 'H', amount: 6.7 }, { symbol: 'O', amount: 53.3 }]);
+assert(empirical.formula === 'CH2O', `Empirical formula failed: ${empirical.formula}`);
+const cal = Chemistry.calibration({ points: [{x:0,y:0},{x:1,y:2},{x:2,y:4}], unknownSignal: 3 });
+assert(Math.abs(cal.estimatedConcentration - 1.5) < 1e-12 && cal.rSquared > 0.999, 'Chemistry calibration failed');
+
 const Spectrometry = context.window.SCLab.Spectrometry;
 const points = Spectrometry.parse('400,0\n450,1\n500,0');
 assert(Spectrometry.peaks(points).length === 1, 'Peak detection failed');
 assert(Math.abs(Spectrometry.integrate(points) - 50) < 1e-9, 'Integration failed');
+const normalized = Spectrometry.normalize(points, 'max');
+assert(Math.abs(Math.max(...normalized.map(p => p.y)) - 1) < 1e-12, 'Spectrum normalization failed');
+const absorbance = Spectrometry.transmittanceToAbsorbance([{x:500,y:0.1}]);
+assert(Math.abs(absorbance[0].y - 1) < 1e-12, 'Transmittance conversion failed');
+const advancedPeaks = Spectrometry.peaks(Spectrometry.parse('0,0\n1,2\n2,0\n3,3\n4,0'), { minDistance: 1, minProminence: 0.5 });
+assert(advancedPeaks.length === 2 && advancedPeaks.every(p => Number.isFinite(p.fwhm)), 'Advanced peak characterization failed');
 
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');

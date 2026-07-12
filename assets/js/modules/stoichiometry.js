@@ -2,6 +2,7 @@
 const Lab=w.SCLab=w.SCLab||{};
 let massMap={};
 function setElements(elements){massMap={};elements.forEach(e=>massMap[e.symbol]=Number(e.atomicMass))}
+function atomicMass(symbol){const value=massMap[String(symbol||'').trim()];if(!Number.isFinite(value))throw new Error(`Unknown atomic mass for ${symbol}`);return value}
 function tokenizeFormula(formula){return String(formula).replace(/·/g,'.').match(/[A-Z][a-z]?|\d+(?:\.\d+)?|[()\[\]{}.]|[^\s]/g)||[]}
 function merge(target,source,mult=1){Object.entries(source).forEach(([k,v])=>target[k]=(target[k]||0)+v*mult);return target}
 function parseFormula(formula){const tokens=tokenizeFormula(formula.replace(/\s+/g,''));let i=0;
@@ -19,5 +20,5 @@ function balanceEquation(eq){const {left,right}=splitEquation(eq),all=left.conca
 function limitingReagent(eq,moles){const b=balanceEquation(eq),ratios=b.left.map((formula,i)=>({formula,coefficient:b.coefficients[i],available:Number(moles[formula]||0),extent:Number(moles[formula]||0)/b.coefficients[i]}));if(ratios.some(r=>!Number.isFinite(r.available)||r.available<0))throw new Error('Invalid reactant amount');const limiting=ratios.reduce((a,b)=>a.extent<=b.extent?a:b);return{balanced:b.balanced,limiting:limiting.formula,reactionExtent:limiting.extent,reactants:ratios,productMoles:b.right.map((formula,i)=>({formula,moles:limiting.extent*b.coefficients[b.left.length+i]}))}}
 function theoreticalYield(formula,moles){const mm=molarMass(formula);return{formula,moles:Number(moles),molarMass:mm.molarMass,massGrams:Number(moles)*mm.molarMass}}
 function dilution(values){const keys=['c1','v1','c2','v2'],missing=keys.filter(k=>!Number.isFinite(Number(values[k])));if(missing.length!==1)throw new Error('Leave exactly one field blank');const {c1,v1,c2,v2}=Object.fromEntries(keys.map(k=>[k,Number(values[k])]));let value;switch(missing[0]){case'c1':value=c2*v2/v1;break;case'v1':value=c2*v2/c1;break;case'c2':value=c1*v1/v2;break;case'v2':value=c1*v1/c2;break}return{solved:missing[0],value}}
-Lab.Stoichiometry={setElements,parseFormula,molarMass,balanceEquation,limitingReagent,theoreticalYield,dilution};
+Lab.Stoichiometry={setElements,atomicMass,parseFormula,molarMass,balanceEquation,limitingReagent,theoreticalYield,dilution};
 })(window);

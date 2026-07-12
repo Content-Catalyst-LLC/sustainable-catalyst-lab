@@ -1,7 +1,7 @@
 <?php
 $root = dirname(__DIR__);
 define('ABSPATH', $root);
-define('SC_LAB_VERSION', '0.2.0');
+define('SC_LAB_VERSION', '0.3.0');
 function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 $sc_lab_initial_module = 'overview';
@@ -18,5 +18,5 @@ ok_render(substr_count($html, 'data-record-dialog') === 1, 'Expected one record 
 ok_render(strpos($html, '>Project<') < strpos($html, '>Observe<') && strpos($html, '>Observe<') < strpos($html, '>Analyze<') && strpos($html, '>Analyze<') < strpos($html, '>Record<'), 'Navigation groups are out of order');
 ok_render(substr_count($html, '<section') === substr_count($html, '</section>'), 'Section tags are unbalanced');
 ok_render(substr_count($html, '<div') === substr_count($html, '</div>'), 'Div tags are unbalanced');
-ok_render(strpos($html, 'v0.2.0') !== false, 'Rendered version is incorrect');
+ok_render(strpos($html, 'v0.3.0') !== false, 'Rendered version is incorrect');
 echo "Template render tests passed.\n";

@@ -430,13 +430,20 @@
     });
     renderMap();
 
-    // Chemistry and tabs.
+    // Chemistry Laboratory and Spectrometry Studio.
+    let rawSpectrum = [];
+    let spectrumHistory = [];
+    let detectedPeaks = [];
+    let currentChemCalibration = null;
+    let currentSpectrumCalibration = null;
+
     const periodic = qs(root, '[data-periodic-table]');
     const elementDetail = qs(root, '[data-element-detail]');
     Lab.Periodic.load(config.elementsUrl).then(elements => {
       Lab.Stoichiometry.setElements(elements);
       drawElements();
     }).catch(error => { elementDetail.textContent = error.message; });
+
     function drawElements() {
       Lab.Periodic.render(periodic, elementDetail, {
         query: qs(root, '[data-element-search]').value,
@@ -448,27 +455,140 @@
     qsa(root, '[data-chem-tab]').forEach(button => button.addEventListener('click', () => setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', button.dataset.chemTab)));
     qsa(root, '[data-analysis-tab]').forEach(button => button.addEventListener('click', () => setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', button.dataset.analysisTab)));
 
-    function runOut(buttonSelector, outputSelector, fn, activity) {
+    qs(root, '[data-chem-new-experiment]').addEventListener('click', () => createExperiment({ title: 'Chemistry experiment', question: 'What chemical behavior or analytical result is being investigated?' }));
+    qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
+
+    function recordCalculation(type, input, result, collection = 'calculations') {
+      projects.add(collection, { type, input, result, methodVersion: '0.3.0' }, `${type} completed`);
+      return result;
+    }
+
+    function bindResult(buttonSelector, outputSelector, type, inputFn, calculationFn, collection = 'calculations') {
       qs(root, buttonSelector).addEventListener('click', () => {
+        const output = qs(root, outputSelector);
         try {
-          const result = fn();
-          qs(root, outputSelector).textContent = JSON.stringify(result, null, 2);
-          projects.add('calculations', { type: activity, input: result.input || null, result }, `${activity} calculation completed`);
-        } catch (error) {
-          qs(root, outputSelector).textContent = `Error: ${error.message}`;
-        }
+          const input = inputFn();
+          const result = calculationFn(input);
+          output.textContent = JSON.stringify(result, null, 2);
+          recordCalculation(type, input, result, collection);
+        } catch (error) { output.textContent = `Error: ${error.message}`; }
       });
     }
-    runOut('[data-formula-run]', '[data-formula-output]', () => Lab.Stoichiometry.molarMass(qs(root, '[data-formula-input]').value), 'Molar mass');
-    runOut('[data-balance-run]', '[data-balance-output]', () => Lab.Stoichiometry.balanceEquation(qs(root, '[data-balance-input]').value), 'Equation balance');
-    runOut('[data-limit-run]', '[data-limit-output]', () => Lab.Stoichiometry.limitingReagent(qs(root, '[data-limit-equation]').value, JSON.parse(qs(root, '[data-limit-moles]').value)), 'Limiting reagent');
-    runOut('[data-yield-run]', '[data-yield-output]', () => Lab.Stoichiometry.theoreticalYield(qs(root, '[data-yield-product]').value, qs(root, '[data-yield-moles]').value), 'Theoretical yield');
-    runOut('[data-dilution-run]', '[data-dilution-output]', () => Lab.Stoichiometry.dilution({
-      c1: qs(root, '[data-dilution-c1]').value,
-      v1: qs(root, '[data-dilution-v1]').value,
-      c2: qs(root, '[data-dilution-c2]').value,
-      v2: qs(root, '[data-dilution-v2]').value
-    }), 'Dilution');
+
+    bindResult('[data-formula-run]', '[data-formula-output]', 'Molar mass',
+      () => ({ formula: qs(root, '[data-formula-input]').value }),
+      input => Lab.Stoichiometry.molarMass(input.formula));
+    bindResult('[data-percent-run]', '[data-formula-output]', 'Percent composition',
+      () => ({ formula: qs(root, '[data-formula-input]').value }),
+      input => Lab.ChemistryLab.percentComposition(input.formula), 'chemicalRecords');
+    bindResult('[data-empirical-run]', '[data-empirical-output]', 'Empirical formula',
+      () => JSON.parse(qs(root, '[data-empirical-input]').value),
+      input => Lab.ChemistryLab.empiricalFormula(input), 'chemicalRecords');
+    bindResult('[data-molecular-run]', '[data-molecular-output]', 'Molecular formula',
+      () => ({ empiricalFormula: qs(root, '[data-molecular-empirical]').value, molecularMass: qs(root, '[data-molecular-mass]').value }),
+      input => Lab.ChemistryLab.molecularFormula(input), 'chemicalRecords');
+    bindResult('[data-balance-run]', '[data-balance-output]', 'Equation balance',
+      () => ({ equation: qs(root, '[data-balance-input]').value }),
+      input => Lab.Stoichiometry.balanceEquation(input.equation));
+    bindResult('[data-limit-run]', '[data-limit-output]', 'Limiting reagent',
+      () => ({ equation: qs(root, '[data-limit-equation]').value, moles: JSON.parse(qs(root, '[data-limit-moles]').value) }),
+      input => Lab.Stoichiometry.limitingReagent(input.equation, input.moles));
+    bindResult('[data-yield-run]', '[data-yield-output]', 'Theoretical yield',
+      () => ({ formula: qs(root, '[data-yield-product]').value, moles: qs(root, '[data-yield-moles]').value }),
+      input => Lab.Stoichiometry.theoreticalYield(input.formula, input.moles));
+
+    qs(root, '[data-reaction-save]').addEventListener('click', () => {
+      const output = qs(root, '[data-reaction-save-output]');
+      try {
+        const equation = qs(root, '[data-limit-equation]').value || qs(root, '[data-balance-input]').value;
+        const balanced = Lab.Stoichiometry.balanceEquation(equation);
+        const record = {
+          title: qs(root, '[data-reaction-title]').value || 'Chemical reaction',
+          equation,
+          balancedEquation: balanced.balanced,
+          coefficients: balanced.coefficients,
+          conditions: qs(root, '[data-reaction-conditions]').value,
+          status: 'planned'
+        };
+        projects.add('reactions', record, `Reaction record saved: ${record.title}`);
+        output.textContent = JSON.stringify(record, null, 2);
+        U.toast(root, 'Reaction record saved to the active project.');
+      } catch (error) { output.textContent = `Error: ${error.message}`; }
+    });
+
+    bindResult('[data-conc-run]', '[data-conc-output]', 'Solution concentration',
+      () => ({ moles: qs(root, '[data-conc-moles]').value, solutionL: qs(root, '[data-conc-volume]').value, soluteG: qs(root, '[data-conc-solute-g]').value, solventKg: qs(root, '[data-conc-solvent-kg]').value, solutionG: qs(root, '[data-conc-solution-g]').value }),
+      input => Lab.ChemistryLab.concentration(input));
+    bindResult('[data-dilution-run]', '[data-dilution-output]', 'Dilution',
+      () => ({ c1: qs(root, '[data-dilution-c1]').value, v1: qs(root, '[data-dilution-v1]').value, c2: qs(root, '[data-dilution-c2]').value, v2: qs(root, '[data-dilution-v2]').value }),
+      input => Lab.Stoichiometry.dilution(input));
+    bindResult('[data-ksp-run]', '[data-ksp-output]', 'Molar solubility',
+      () => ({ ksp: qs(root, '[data-ksp]').value, cationStoich: qs(root, '[data-ksp-cation]').value, anionStoich: qs(root, '[data-ksp-anion]').value }),
+      input => Lab.ChemistryLab.solubility(input));
+
+    bindResult('[data-strong-run]', '[data-strong-output]', 'Strong acid/base pH',
+      () => ({ type: qs(root, '[data-strong-type]').value, concentration: qs(root, '[data-strong-conc]').value, equivalents: qs(root, '[data-strong-eq]').value }),
+      input => Lab.ChemistryLab.strongAcidBase(input));
+    bindResult('[data-weak-run]', '[data-weak-output]', 'Weak acid/base equilibrium',
+      () => ({ type: qs(root, '[data-weak-type]').value, concentration: qs(root, '[data-weak-conc]').value, k: qs(root, '[data-weak-k]').value }),
+      input => input.type === 'acid' ? Lab.ChemistryLab.weakAcid({ concentration: input.concentration, ka: input.k }) : Lab.ChemistryLab.weakBase({ concentration: input.concentration, kb: input.k }));
+    bindResult('[data-buffer-run]', '[data-buffer-output]', 'Buffer pH',
+      () => ({ pKa: qs(root, '[data-buffer-pka]').value, acid: qs(root, '[data-buffer-acid]').value, base: qs(root, '[data-buffer-base]').value }),
+      input => Lab.ChemistryLab.buffer(input));
+    bindResult('[data-titration-run]', '[data-titration-output]', 'Strong acid/base titration',
+      () => ({ analyteType: qs(root, '[data-titration-type]').value, analyteC: qs(root, '[data-titration-analyte-c]').value, analyteMl: qs(root, '[data-titration-analyte-v]').value, titrantC: qs(root, '[data-titration-titrant-c]').value, titrantMl: qs(root, '[data-titration-titrant-v]').value }),
+      input => Lab.ChemistryLab.titration(input));
+
+    bindResult('[data-cal-run]', '[data-cal-output]', 'Calorimetry',
+      () => ({ massG: qs(root, '[data-cal-mass]').value, specificHeat: qs(root, '[data-cal-cp]').value, initialC: qs(root, '[data-cal-ti]').value, finalC: qs(root, '[data-cal-tf]').value }),
+      input => Lab.ChemistryLab.calorimetry(input));
+    bindResult('[data-gibbs-run]', '[data-gibbs-output]', 'Gibbs free energy',
+      () => ({ deltaHkJ: qs(root, '[data-gibbs-h]').value, deltaSJmolK: qs(root, '[data-gibbs-s]').value, temperatureK: qs(root, '[data-gibbs-t]').value }),
+      input => Lab.ChemistryLab.gibbs(input));
+    bindResult('[data-hess-run]', '[data-hess-output]', 'Hess law',
+      () => JSON.parse(qs(root, '[data-hess-input]').value),
+      input => Lab.ChemistryLab.hess(input));
+
+    bindResult('[data-nernst-run]', '[data-nernst-output]', 'Nernst cell potential',
+      () => ({ eStandard: qs(root, '[data-nernst-e]').value, temperatureK: qs(root, '[data-nernst-t]').value, electrons: qs(root, '[data-nernst-n]').value, reactionQuotient: qs(root, '[data-nernst-q]').value }),
+      input => Lab.ChemistryLab.nernst(input));
+    bindResult('[data-electrolysis-run]', '[data-electrolysis-output]', 'Electrolysis',
+      () => ({ currentA: qs(root, '[data-electrolysis-current]').value, timeS: qs(root, '[data-electrolysis-time]').value, electrons: qs(root, '[data-electrolysis-n]').value, molarMassGmol: qs(root, '[data-electrolysis-mm]').value }),
+      input => Lab.ChemistryLab.electrolysis(input));
+
+    bindResult('[data-arr-run]', '[data-arr-output]', 'Arrhenius rate constant',
+      () => ({ preExponential: qs(root, '[data-arr-a]').value, activationEnergyKJ: qs(root, '[data-arr-ea]').value, temperatureK: qs(root, '[data-arr-t]').value }),
+      input => Lab.ChemistryLab.arrhenius(input));
+    bindResult('[data-rate-run]', '[data-rate-output]', 'Integrated rate law',
+      () => ({ order: qs(root, '[data-rate-order]').value, k: qs(root, '[data-rate-k]').value, initialConcentration: qs(root, '[data-rate-a0]').value, time: qs(root, '[data-rate-time]').value }),
+      input => Lab.ChemistryLab.integratedRate(input));
+
+    function parsePairs(text) {
+      return Lab.Spectrometry.parse(text).map(point => ({ x: point.x, y: point.y }));
+    }
+    function calibrationSvg(result, xLabel = 'Concentration', yLabel = 'Signal') {
+      const points = result.points || [];
+      if (!points.length) return '';
+      const fitted = points.map(point => ({ x: point.x, y: result.slope * point.x + result.intercept }));
+      const base = Lab.Spectrometry.svg(fitted, [], { xLabel, yLabel });
+      const dots = points.map(point => `<span>${U.esc(point.x)} → ${U.esc(point.y)}</span>`).join('');
+      return `${base}<div class="sc-lab-calibration-points">${dots}</div>`;
+    }
+    qs(root, '[data-chem-cal-run]').addEventListener('click', () => {
+      const output = qs(root, '[data-chem-cal-output]');
+      try {
+        const input = { points: parsePairs(qs(root, '[data-chem-cal-points]').value), unknownSignal: qs(root, '[data-chem-cal-unknown]').value };
+        currentChemCalibration = Lab.ChemistryLab.calibration(input);
+        output.textContent = JSON.stringify(currentChemCalibration, null, 2);
+        qs(root, '[data-chem-cal-chart]').innerHTML = calibrationSvg(currentChemCalibration);
+        recordCalculation('Analytical calibration', input, currentChemCalibration, 'calibrations');
+      } catch (error) { output.textContent = `Error: ${error.message}`; }
+    });
+    qs(root, '[data-chem-cal-save]').addEventListener('click', () => {
+      if (!currentChemCalibration) return U.toast(root, 'Run the calibration first.');
+      projects.add('calibrations', { type: 'chemistry-calibration', result: currentChemCalibration, status: 'draft' }, 'Chemistry calibration record saved');
+      U.toast(root, 'Calibration record saved.');
+    });
 
     // Calculator registry.
     const domainSelect = qs(root, '[data-calculator-domain]');
@@ -498,9 +618,7 @@
           const result = definition.run(values);
           qs(calculatorForm, '[data-calc-result]').textContent = JSON.stringify(result, null, 2);
           projects.add('calculations', { type: definition.name, calculatorId: definition.id, inputs: values, result }, `${definition.name} calculation completed`);
-        } catch (error) {
-          qs(calculatorForm, '[data-calc-result]').textContent = `Error: ${error.message}`;
-        }
+        } catch (error) { qs(calculatorForm, '[data-calc-result]').textContent = `Error: ${error.message}`; }
       });
     }
 
@@ -514,31 +632,113 @@
     calculatorSelect.addEventListener('change', renderCalculator);
     populateCalculators();
 
-    // Spectrometry.
-    function renderSpectrum(peaks = []) {
-      qs(root, '[data-spectrum-chart]').innerHTML = spectrum.length ? Lab.Spectrometry.svg(spectrum, peaks) : '';
+    // Spectrometry Studio.
+    function spectrumMethod() { return qs(root, '[data-spectrum-method]').value; }
+    function spectrumSummary() {
+      if (!spectrum.length) return null;
+      const ys = spectrum.map(point => point.y);
+      return {
+        method: spectrumMethod(), sampleId: qs(root, '[data-spectrum-sample]').value,
+        points: spectrum.length, xMin: spectrum[0].x, xMax: spectrum[spectrum.length - 1].x,
+        yMin: Math.min(...ys), yMax: Math.max(...ys), area: Lab.Spectrometry.integrate(spectrum),
+        centroid: Lab.Spectrometry.centroid(spectrum), estimatedNoise: Lab.Spectrometry.estimateNoise(spectrum),
+        peaks: detectedPeaks.length, processingSteps: spectrumHistory.length
+      };
     }
+    function renderSpectrum() {
+      const options = { method: spectrumMethod() };
+      qs(root, '[data-spectrum-chart]').innerHTML = spectrum.length ? Lab.Spectrometry.svg(spectrum, detectedPeaks, options) : empty('Load a spectrum to begin.');
+      const summary = spectrumSummary();
+      qs(root, '[data-spectrum-metrics]').innerHTML = summary ? Object.entries(summary).filter(([key]) => !['method','sampleId'].includes(key)).map(([key,value]) => `<div><strong>${typeof value === 'number' ? Number(value).toPrecision(6) : U.esc(value)}</strong><span>${U.esc(key)}</span></div>`).join('') : '';
+      qs(root, '[data-spectrum-peak-table]').innerHTML = detectedPeaks.length ? `<table><thead><tr><th>Position</th><th>Intensity</th><th>Prominence</th><th>FWHM</th></tr></thead><tbody>${detectedPeaks.map(peak => `<tr><td>${U.esc(Number(peak.x).toPrecision(7))}</td><td>${U.esc(Number(peak.y).toPrecision(7))}</td><td>${U.esc(Number(peak.prominence).toPrecision(5))}</td><td>${U.esc(Number(peak.fwhm).toPrecision(5))}</td></tr>`).join('')}</tbody></table>` : empty('No characterized peaks.');
+      qs(root, '[data-spectrum-output]').textContent = JSON.stringify({ summary, processingHistory: spectrumHistory, peaks: detectedPeaks }, null, 2);
+    }
+    function applySpectrumStep(label, fn) {
+      if (!spectrum.length) return U.toast(root, 'Load a spectrum first.');
+      try {
+        spectrum = fn(spectrum);
+        spectrumHistory.push({ at: U.now(), action: label });
+        detectedPeaks = [];
+        renderSpectrum();
+      } catch (error) { U.toast(root, error.message); }
+    }
+    qs(root, '[data-spectrum-method]').addEventListener('change', renderSpectrum);
     qs(root, '[data-spectrum-load]').addEventListener('click', () => {
       try {
-        spectrum = Lab.Spectrometry.parse(qs(root, '[data-spectrum-input]').value);
+        rawSpectrum = Lab.Spectrometry.parse(qs(root, '[data-spectrum-input]').value);
+        spectrum = Lab.Spectrometry.clone(rawSpectrum);
+        spectrumHistory = [{ at: U.now(), action: 'Imported raw spectrum', points: spectrum.length }];
+        detectedPeaks = [];
         renderSpectrum();
-        qs(root, '[data-spectrum-output]').textContent = `Loaded ${spectrum.length} points. Area: ${Lab.Spectrometry.integrate(spectrum)}`;
-      } catch (error) { qs(root, '[data-spectrum-output]').textContent = error.message; }
+      } catch (error) { qs(root, '[data-spectrum-output]').textContent = `Error: ${error.message}`; }
     });
-    qs(root, '[data-spectrum-baseline]').addEventListener('click', () => { if (spectrum.length) { spectrum = Lab.Spectrometry.baseline(spectrum); renderSpectrum(); } });
-    qs(root, '[data-spectrum-smooth]').addEventListener('click', () => { if (spectrum.length) { spectrum = Lab.Spectrometry.smooth(spectrum, 2); renderSpectrum(); } });
+    qs(root, '[data-spectrum-reset]').addEventListener('click', () => {
+      if (!rawSpectrum.length) return;
+      spectrum = Lab.Spectrometry.clone(rawSpectrum); detectedPeaks = [];
+      spectrumHistory.push({ at: U.now(), action: 'Reset to raw data' }); renderSpectrum();
+    });
+    qs(root, '[data-spectrum-baseline]').addEventListener('click', () => applySpectrumStep(`Baseline: ${qs(root, '[data-spectrum-baseline-method]').value}`, points => Lab.Spectrometry.baseline(points, qs(root, '[data-spectrum-baseline-method]').value, { windowSize: qs(root, '[data-spectrum-window]').value })));
+    qs(root, '[data-spectrum-smooth]').addEventListener('click', () => applySpectrumStep(`Smoothing: ${qs(root, '[data-spectrum-smooth-method]').value}`, points => qs(root, '[data-spectrum-smooth-method]').value === 'median' ? Lab.Spectrometry.medianSmooth(points, qs(root, '[data-spectrum-radius]').value) : Lab.Spectrometry.smooth(points, qs(root, '[data-spectrum-radius]').value)));
+    qs(root, '[data-spectrum-normalize]').addEventListener('click', () => applySpectrumStep(`Normalization: ${qs(root, '[data-spectrum-normalize-mode]').value}`, points => Lab.Spectrometry.normalize(points, qs(root, '[data-spectrum-normalize-mode]').value)));
+    qs(root, '[data-spectrum-derivative]').addEventListener('click', () => applySpectrumStep('First derivative', points => Lab.Spectrometry.derivative(points, 1)));
+    qs(root, '[data-spectrum-convert]').addEventListener('click', () => {
+      const mode = qs(root, '[data-spectrum-conversion]').value;
+      if (mode === 'none') return;
+      applySpectrumStep(`Conversion: ${mode}`, points => {
+        if (mode === 't-to-a') return Lab.Spectrometry.transmittanceToAbsorbance(points, 'fraction');
+        if (mode === 'percent-to-a') return Lab.Spectrometry.transmittanceToAbsorbance(points, 'percent');
+        if (mode === 'a-to-t') return Lab.Spectrometry.absorbanceToTransmittance(points, 'fraction');
+        return Lab.Spectrometry.absorbanceToTransmittance(points, 'percent');
+      });
+    });
     qs(root, '[data-spectrum-peaks]').addEventListener('click', () => {
       if (!spectrum.length) return;
-      const peaks = Lab.Spectrometry.peaks(spectrum);
-      renderSpectrum(peaks);
-      const result = { points: spectrum.length, area: Lab.Spectrometry.integrate(spectrum), peaks };
-      qs(root, '[data-spectrum-output]').textContent = JSON.stringify(result, null, 2);
-      projects.add('calculations', { type: 'Spectrometry analysis', result }, 'Spectrometry analysis completed');
+      const thresholdRaw = qs(root, '[data-spectrum-threshold]').value;
+      detectedPeaks = Lab.Spectrometry.peaks(spectrum, {
+        threshold: thresholdRaw === '' ? undefined : Number(thresholdRaw),
+        minDistance: qs(root, '[data-spectrum-distance]').value,
+        minProminence: qs(root, '[data-spectrum-prominence]').value
+      });
+      spectrumHistory.push({ at: U.now(), action: 'Peak detection', count: detectedPeaks.length });
+      const result = spectrumSummary();
+      projects.add('calculations', { type: 'Spectrometry peak analysis', method: spectrumMethod(), result, peaks: detectedPeaks }, 'Spectrometry peak analysis completed');
+      renderSpectrum();
     });
     qs(root, '[data-spectrum-export]').addEventListener('click', () => {
       if (!spectrum.length) return;
-      U.download('processed-spectrum.csv', `x,y\n${spectrum.map(point => `${point.x},${point.y}`).join('\n')}`, 'text/csv');
+      U.download(`${(qs(root, '[data-spectrum-sample]').value || 'processed-spectrum').replace(/[^a-z0-9_-]+/gi,'-')}.csv`, Lab.Spectrometry.csv(spectrum), 'text/csv');
     });
+    qs(root, '[data-spectrum-save]').addEventListener('click', () => {
+      if (!spectrum.length) return U.toast(root, 'Load a spectrum first.');
+      const record = {
+        title: qs(root, '[data-spectrum-title]').value || 'Analytical spectrum', sampleId: qs(root, '[data-spectrum-sample]').value,
+        method: spectrumMethod(), raw: rawSpectrum, processed: spectrum, processingHistory: spectrumHistory,
+        peaks: detectedPeaks, summary: spectrumSummary(), status: 'processed'
+      };
+      projects.add('spectra', record, `Spectrum saved: ${record.title}`);
+      U.toast(root, 'Spectrum and processing history saved.');
+    });
+    qs(root, '[data-spectrum-note]').addEventListener('click', () => {
+      const summary = spectrumSummary();
+      if (!summary) return U.toast(root, 'Load a spectrum first.');
+      createNote({ title: `${qs(root, '[data-spectrum-sample]').value} spectrometry analysis`, body: JSON.stringify({ summary, peaks: detectedPeaks, processingHistory: spectrumHistory }, null, 2), tagsText: `spectrometry, ${spectrumMethod()}, analysis` });
+    });
+
+    qs(root, '[data-spectrum-cal-run]').addEventListener('click', () => {
+      const output = qs(root, '[data-spectrum-cal-output]');
+      try {
+        const points = parsePairs(qs(root, '[data-spectrum-cal-points]').value);
+        currentSpectrumCalibration = Lab.Spectrometry.calibration(points, qs(root, '[data-spectrum-cal-unknown]').value);
+        output.textContent = JSON.stringify(currentSpectrumCalibration, null, 2);
+        qs(root, '[data-spectrum-cal-chart]').innerHTML = calibrationSvg(currentSpectrumCalibration);
+      } catch (error) { output.textContent = `Error: ${error.message}`; }
+    });
+    qs(root, '[data-spectrum-cal-save]').addEventListener('click', () => {
+      if (!currentSpectrumCalibration) return U.toast(root, 'Run the calibration first.');
+      projects.add('calibrations', { type: 'spectrometry-calibration', method: spectrumMethod(), sampleId: qs(root, '[data-spectrum-sample]').value, result: currentSpectrumCalibration }, 'Spectrometry calibration saved');
+      U.toast(root, 'Spectrometry calibration saved.');
+    });
+
 
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
