@@ -2,7 +2,7 @@
   'use strict';
   const Lab = w.SCLab = w.SCLab || {};
   const U = Lab.util;
-  const VERSION = '0.9.3';
+  const VERSION = '0.9.4';
   const PREF_KEY = 'scLabDimensionalPrefsV092';
 
   const defaultTheme = {

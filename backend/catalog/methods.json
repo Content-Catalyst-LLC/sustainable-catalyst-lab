@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-execution-catalog/1.0",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "languages": {
     "python": {
       "label": "Python",
@@ -67,7 +67,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -161,7 +161,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -398,7 +398,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -506,7 +506,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -583,7 +583,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -722,7 +722,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -811,7 +811,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -911,7 +911,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1003,7 +1003,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1098,7 +1098,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1234,7 +1234,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1323,7 +1323,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1459,7 +1459,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1562,7 +1562,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1649,7 +1649,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1718,7 +1718,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1819,7 +1819,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -1915,7 +1915,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",
@@ -2021,7 +2021,7 @@
     {
       "schema": "sc-lab-method/1.0",
       "schemaVersion": "1.0",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "assumptions": [
         "Inputs use the displayed units.",
         "The implementation follows the explicit portable expression contract.",

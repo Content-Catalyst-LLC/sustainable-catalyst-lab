@@ -68,6 +68,7 @@
           'experiments' => 'Experiments',
           'evidence-decisions' => 'Evidence & decisions',
           'notebook' => 'Notebook',
+          'report-studio' => 'PDF reports',
           'documentation' => 'Documentation',
         ),
         'System' => array(
@@ -709,6 +710,43 @@
       </section>
 
 
+
+      <section class="sc-lab-panel" data-lab-module="report-studio" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/REPORTING</span><h3>PDF reports and Decision Studio handoff</h3></div>
+          <span class="sc-lab-status-dot is-ready">Auditable</span>
+        </div>
+        <div class="sc-lab-method-note">Compose a text-selectable technical report, decision brief, evidence packet, or executive summary from up to twelve Lab analyses. The report retains equations, inputs, outputs, figures, dimensional scenes, assumptions, warnings, validation, sources, code/runtime metadata, and audit fingerprints.</div>
+        <div class="sc-lab-report-layout">
+          <aside class="sc-lab-report-controls">
+            <label>Report title<input type="text" value="Sustainable Catalyst Lab analysis report" data-report-title></label>
+            <label>Subtitle<input type="text" value="Auditable calculations, figures, assumptions, validation, and provenance" data-report-subtitle></label>
+            <div class="sc-lab-grid sc-lab-grid-2">
+              <label>Report type<select data-report-type><option value="technical-report">Technical report</option><option value="decision-brief">Decision brief</option><option value="evidence-packet">Evidence packet</option><option value="executive-summary">Executive summary</option></select></label>
+              <label>Page size<select data-report-page-size><option value="LETTER">US Letter</option><option value="A4">A4</option></select></label>
+            </div>
+            <label>Executive summary<textarea rows="7" data-report-summary placeholder="Summarize the question, methods, findings, limitations, and decision relevance."></textarea></label>
+            <label class="sc-lab-check"><input type="checkbox" checked data-report-audit> Include full audit metadata</label>
+            <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-report-load-current>Load current analysis</button><button type="button" class="sc-lab-button" data-report-select-all>Select up to 12</button><button type="button" class="sc-lab-button" data-report-clear-selection>Clear</button></div>
+            <div class="sc-lab-report-analysis-list" data-report-analysis-list></div>
+            <button type="button" class="sc-lab-button sc-lab-button-primary" data-report-compose>Compose report preview</button>
+          </aside>
+          <div class="sc-lab-report-workspace">
+            <div class="sc-lab-doc-status" data-report-status>Run a calculation or select a saved visualization to begin.</div>
+            <article class="sc-lab-report-preview" data-report-preview><div class="sc-lab-data-note">No report has been composed yet.</div></article>
+            <div class="sc-lab-report-actions" aria-label="Report export and handoff actions">
+              <button type="button" class="sc-lab-button" data-report-download-pdf>Download local PDF</button>
+              <button type="button" class="sc-lab-button" data-report-download-render>Download Render PDF</button>
+              <button type="button" class="sc-lab-button" data-report-download-json>Download report JSON</button>
+              <button type="button" class="sc-lab-button" data-report-download-packet>Download handoff packet</button>
+              <button type="button" class="sc-lab-button" data-report-validate>Validate handoff</button>
+              <button type="button" class="sc-lab-button" data-report-save>Save report to project</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-report-handoff>Send to Decision Studio</button>
+            </div>
+            <details class="sc-lab-viz-audit"><summary>Report contract and audit metadata</summary><pre data-report-meta>{}</pre></details>
+          </div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel" data-lab-module="code-studio" hidden>
         <div class="sc-lab-panel-head">

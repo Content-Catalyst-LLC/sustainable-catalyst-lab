@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-method-catalog/1.0",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "generatedAt": "2026-07-12T09:37:54.445Z",
   "languages": {
     "python": {
@@ -69,7 +69,7 @@
       "id": "kinetic",
       "name": "Kinetic energy and momentum",
       "domain": "Mechanics",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "KE = 1/2 mv²; p = mv",
       "inputs": [
         {
@@ -123,7 +123,7 @@
       "id": "projectile",
       "name": "Projectile motion",
       "domain": "Mechanics",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "y = h + v_y t - 1/2 gt²",
       "inputs": [
         {
@@ -190,7 +190,7 @@
       "id": "torque",
       "name": "Torque",
       "domain": "Mechanics",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "τ = rF sin θ",
       "inputs": [
         {
@@ -246,7 +246,7 @@
       "id": "carnot",
       "name": "Carnot efficiency",
       "domain": "Thermodynamics",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "η = 1 - Tc/Th",
       "inputs": [
         {
@@ -297,7 +297,7 @@
       "id": "blackbody",
       "name": "Blackbody peak and luminosity",
       "domain": "Astronomy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "λmax=b/T; L=4πr²σT⁴",
       "inputs": [
         {
@@ -359,7 +359,7 @@
       "id": "escape",
       "name": "Escape velocity",
       "domain": "Astronomy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "v = sqrt(2GM/r)",
       "inputs": [
         {
@@ -411,7 +411,7 @@
       "id": "reynolds",
       "name": "Reynolds number",
       "domain": "Fluids",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "Re = ρvL/μ",
       "inputs": [
         {
@@ -482,7 +482,7 @@
       "id": "hydrostatic",
       "name": "Hydrostatic pressure",
       "domain": "Fluids",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "P = P0 + ρgh",
       "inputs": [
         {
@@ -542,7 +542,7 @@
       "id": "michaelis",
       "name": "Michaelis-Menten kinetics",
       "domain": "Biology",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "v = Vmax[S]/(Km+[S])",
       "inputs": [
         {
@@ -603,7 +603,7 @@
       "id": "growth",
       "name": "Logistic population growth",
       "domain": "Biology",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "P(t)=K/(1+((K-P0)/P0)e^-rt)",
       "inputs": [
         {
@@ -673,7 +673,7 @@
       "id": "diffusion",
       "name": "Fick diffusion length",
       "domain": "Materials science",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "x_rms = sqrt(2nDt)",
       "inputs": [
         {
@@ -733,7 +733,7 @@
       "id": "stress",
       "name": "Stress, strain, and modulus",
       "domain": "Materials science",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "σ=F/A; ε=ΔL/L; E=σ/ε",
       "inputs": [
         {
@@ -811,7 +811,7 @@
       "id": "thermal",
       "name": "Thermal expansion",
       "domain": "Materials science",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "ΔL=αLΔT",
       "inputs": [
         {
@@ -872,7 +872,7 @@
       "id": "resistivity",
       "name": "Electrical resistance from resistivity",
       "domain": "Materials science",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "R=ρL/A",
       "inputs": [
         {
@@ -933,7 +933,7 @@
       "id": "seismic",
       "name": "Seismic travel time",
       "domain": "Earth science",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "t=d/v",
       "inputs": [
         {
@@ -984,7 +984,7 @@
       "id": "hydro",
       "name": "Hydropower potential",
       "domain": "Energy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "P=ρgQHη",
       "inputs": [
         {
@@ -1055,7 +1055,7 @@
       "id": "pv",
       "name": "Photovoltaic output",
       "domain": "Energy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "P=GAηf",
       "inputs": [
         {
@@ -1127,7 +1127,7 @@
       "id": "wind",
       "name": "Wind turbine power",
       "domain": "Energy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "P=1/2 ρAv³Cp",
       "inputs": [
         {
@@ -1198,7 +1198,7 @@
       "id": "battery",
       "name": "Battery energy and runtime",
       "domain": "Energy",
-      "version": "0.9.3",
+      "version": "0.9.4",
       "equation": "E=VAh f; t=E/P",
       "inputs": [
         {

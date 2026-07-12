@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.9.4 - PDF Reports and Decision Studio Handoff
+
+- Added Report Studio for technical reports, decision briefs, evidence packets, and executive summaries containing one to twelve analyses.
+- Added the `sc-lab-report/1.0` and `sc-lab-report-result/1.0` contracts.
+- Added browser-native selectable-text PDF generation for immediate offline reports.
+- Added ReportLab vector PDF generation through the Render compute backend.
+- Added vector line, bar, and scatter figures, structured input/output tables, equations, assumptions, warnings, validation, sources, runtime metadata, and audit fingerprints.
+- Added protected WordPress proxy routes and FastAPI endpoints for report validation and PDF generation.
+- Advanced the Decision Studio packet to `sc-decision-studio-analysis-packet/2.0`.
+- Added report-aware handoffs containing analyses, charts, tables, dimensional scenes, evidence, uncertainties, validation, runtime metadata, and provenance.
+- Added Report Studio project selection, preview, local PDF, Render PDF, JSON export, packet export, save, validation, and handoff controls.
+- Added `reports`, `reportFigures`, `reportExports`, and `decisionStudioHandoffs` project collections.
+- Added `[sc_lab_reports]` and `[sc_lab_report_studio]` focused shortcodes.
+- Added regression tests for nested report fields, report endpoints, PDF bytes, handoff validation, project migration, and WordPress report markers.
+- Corrected nested report-table flattening discovered during rendered-PDF inspection.
+- Preserved all existing scientific engines, portable method contracts, curated multi-language execution, visualization, 3D/4D, backup, reset, and restore functionality.
+
+## 0.9.3 - Render Compute Dispatcher and Multi-Language Execution Workers
+
+- Added a FastAPI dispatcher, curated native-language workers, direct and queued execution, cancellation, runtime discovery, and cross-language comparison.
+- Added a protected WordPress REST proxy so backend credentials are never exposed to browser JavaScript.
+- Added Render Blueprint services for the compute API, RQ worker, and Key Value queue.
+- Added Python, JavaScript, TypeScript, C, C++, Fortran, Rust, and Go worker targets.
+- Added thread-safe subprocess execution and removed `preexec_fn` for macOS Python 3.14 compatibility.
+- Added compute execution, runtime, compiler, job, benchmark, and cross-language validation project records.
+
 ## 0.9.2 — Universal Code Switcher and Method Contracts
 
 - Added the `sc-lab-method/1.0` portable method-contract architecture.

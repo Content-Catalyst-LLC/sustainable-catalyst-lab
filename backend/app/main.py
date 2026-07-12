@@ -12,7 +12,8 @@ from .catalog import CatalogError, get_method, public_catalog
 from .executor import ExecutionError, compare_languages, execute_method, language_registry
 from .expressions import ContractValidationError, evaluate_contract
 from .jobs import jobs
-from .models import CompareRequest, ExecuteRequest, JobRequest, ValidateRequest
+from .models import CompareRequest, ExecuteRequest, HandoffValidateRequest, JobRequest, ReportRequest, ValidateRequest
+from .reporting import ReportValidationError, report_pdf_response, validate_handoff, validate_report
 from .security import rate_limit, require_api_key
 
 app = FastAPI(
@@ -37,8 +38,9 @@ app.add_middleware(
 async def body_and_rate_limits(request: Request, call_next: Any) -> Any:
     if request.method in {"POST", "PUT", "PATCH"}:
         length = int(request.headers.get("content-length") or 0)
-        if length > 65536:
-            return JSONResponse(status_code=413, content={"detail": "Request body exceeds 64 KiB."})
+        limit = 2_000_000 if request.url.path.startswith(("/v1/reports", "/v1/handoffs")) else 65536
+        if length > limit:
+            return JSONResponse(status_code=413, content={"detail": f"Request body exceeds {limit} bytes."})
     if request.url.path.startswith("/v1/"):
         rate_limit(request)
     return await call_next(request)
@@ -57,6 +59,12 @@ async def execution_error_handler(_: Request, exc: ExecutionError) -> JSONRespon
     }.get(exc.code, 500)
     return JSONResponse(status_code=status_code, content={"error": {"code": exc.code, "message": str(exc), "details": exc.details}})
 
+
+
+
+@app.exception_handler(ReportValidationError)
+async def report_validation_error_handler(_: Request, exc: ReportValidationError) -> JSONResponse:
+    return JSONResponse(status_code=422, content={"error": {"code": "invalid_report", "message": str(exc)}})
 
 @app.exception_handler(CatalogError)
 async def catalog_error_handler(_: Request, exc: CatalogError) -> JSONResponse:
@@ -155,3 +163,26 @@ def cancel_job(job_id: str) -> dict[str, Any]:
     if record is None:
         raise HTTPException(status_code=404, detail="Unknown execution job.")
     return record
+
+
+@app.post("/v1/reports/validate", dependencies=[Depends(require_api_key)])
+def report_validate(payload: ReportRequest) -> dict[str, Any]:
+    report = validate_report(payload.model_dump())
+    return {
+        "schema": "sc-lab-report-validation/1.0",
+        "status": "VALIDATED",
+        "reportType": report["reportType"],
+        "analysisCount": len(report["analyses"]),
+        "reportFingerprint": report["audit"]["reportFingerprint"],
+        "engine": "reportlab-vector-pdf",
+    }
+
+
+@app.post("/v1/reports/pdf", dependencies=[Depends(require_api_key)])
+def report_pdf(payload: ReportRequest) -> dict[str, Any]:
+    return report_pdf_response(payload.model_dump())
+
+
+@app.post("/v1/handoffs/decision-studio/validate", dependencies=[Depends(require_api_key)])
+def handoff_validate(payload: HandoffValidateRequest) -> dict[str, Any]:
+    return validate_handoff(payload.packet)

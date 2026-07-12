@@ -3,8 +3,8 @@
   const Lab = w.SCLab = w.SCLab || {};
   const U = Lab.util;
   const PREF_KEY = 'scLabVisualizationPrefsV092';
-  const HANDOFF_KEY = 'scLabDecisionStudioHandoffV1';
-  const VERSION = '0.9.3';
+  const HANDOFF_KEY = 'scLabDecisionStudioHandoffV2';
+  const VERSION = '0.9.4';
 
   const themes = {
     scientific: { label:'Scientific Light', bg:'#ffffff', panel:'#f6f7f8', text:'#111820', muted:'#59636d', grid:'#d9dee3', axis:'#2d363e', colors:['#c60000','#1f5c78','#5a6d2a','#805a82','#b36b16','#27746a'] },
@@ -175,7 +175,7 @@
     const tail=new TextEncoder().encode(xref+trailer);const out=new Uint8Array(size+tail.length);let pos=0;out.set(header,pos);pos+=header.length;objects.forEach((obj,i)=>{const h=new TextEncoder().encode(`${i+1} 0 obj\n`),f=new TextEncoder().encode('\nendobj\n');out.set(h,pos);pos+=h.length;out.set(obj,pos);pos+=obj.length;out.set(f,pos);pos+=f.length;});out.set(tail,pos);return out;
   }
   async function exportPdf(contract,svg,filename){const canvas=await svgToCanvas(svg,2);const data=canvas.toDataURL('image/jpeg',0.92);const pdf=makeJpegPdf(data,canvas.width,canvas.height,contract.title);downloadBinary(filename||`${slug(contract.title)}.pdf`,pdf,'application/pdf');}
-  function analysisPacket(contract,svg){return {packetType:'scientific-analysis',schemaVersion:'1.0',origin:{application:'Sustainable Catalyst Lab',version:VERSION},createdAt:U.now(),project:contract.project,analysis:contract,charts:contract.sceneSpec?[]:[{chartId:contract.chartSpec?.id||`${contract.id}-chart`,title:contract.title,chartSpec:contract.chartSpec,svg,data:contract.chartSpec?.data||[],caption:contract.subtitle||`Generated from ${contract.methodId}.`,methodId:contract.methodId,validationState:contract.status}],scenes:contract.sceneSpec?[Lab.DimensionalVisualization?.scenePacket(contract.sceneSpec,svg,contract)||{sceneSpec:contract.sceneSpec,svg}]:[],tables:[],claims:[],assumptions:contract.assumptions,uncertainties:[],warnings:contract.warnings,evidence:[],sources:contract.sources,audit:contract.audit};}
+  function analysisPacket(contract,svg){if(Lab.Reporting?.makeReport&&Lab.Reporting?.makeDecisionStudioPacket){const report=Lab.Reporting.makeReport({title:contract.title,subtitle:contract.subtitle,reportType:'technical-report',project:contract.project,analyses:[Object.assign({},contract,{svg})]});const packet=Lab.Reporting.makeDecisionStudioPacket(report);packet.packetType='scientific-analysis';return packet;}return {packetType:'scientific-analysis',schemaVersion:'2.0',origin:{application:'Sustainable Catalyst Lab',version:VERSION},createdAt:U.now(),project:contract.project,report:{title:contract.title,reportType:'technical-report'},analysis:contract,analyses:[contract],charts:contract.sceneSpec?[]:[{chartId:contract.chartSpec?.id||`${contract.id}-chart`,title:contract.title,chartSpec:contract.chartSpec,svg,data:contract.chartSpec?.data||[],caption:contract.subtitle||`Generated from ${contract.methodId}.`,methodId:contract.methodId,validationState:contract.status}],scenes:contract.sceneSpec?[Lab.DimensionalVisualization?.scenePacket(contract.sceneSpec,svg,contract)||{sceneSpec:contract.sceneSpec,svg}]:[],tables:[],claims:[],assumptions:contract.assumptions,uncertainties:[],warnings:contract.warnings,evidence:[],sources:contract.sources,codeRuntimes:[],validationRecords:contract.validation?[contract.validation]:[],audit:contract.audit};}
 
   function inputsFrom(container){const out={};container.querySelectorAll('input,select,textarea').forEach((el,i)=>{if(el.type==='file'||el.type==='button'||el.type==='submit')return;const key=Object.entries(el.dataset||{}).find(([k])=>/Field$/.test(k))?.[1]||el.name||el.id||el.closest('label')?.textContent?.trim().slice(0,80)||`input${i+1}`;out[key]=el.type==='checkbox'?el.checked:el.value;});return out;}
   function dataId(container){const pairs=Object.entries(container.dataset||{});const pair=pairs.find(([k])=>/Tool$/.test(k));return pair?pair[1]:container.dataset.calculatorId||slug(container.querySelector('h4,h3')?.textContent||'analysis');}
@@ -185,7 +185,7 @@
   function assumptionsFrom(container){return [...container.querySelectorAll('details li')].map(li=>li.textContent.trim()).filter(Boolean);}
   function existingSvg(container){return container.querySelector('.sc-lab-chart svg,[data-spectrum-chart] svg,svg')?.outerHTML||'';}
 
-  function toolbarHtml(){return `<div class="sc-lab-universal-export" data-universal-export><span>VISUALIZE / EXPORT</span><button type="button" data-viz-open>Studio</button><button type="button" data-viz-scene>3D/4D</button><button type="button" data-viz-code>Code</button><button type="button" data-viz-svg>SVG</button><button type="button" data-viz-png>PNG</button><button type="button" data-viz-pdf>PDF</button><button type="button" data-viz-csv>CSV</button><button type="button" data-viz-json>JSON</button><button type="button" data-viz-package>Package</button><button type="button" data-viz-handoff>Decision Studio</button></div>`;}
+  function toolbarHtml(){return `<div class="sc-lab-universal-export" data-universal-export><span>VISUALIZE / EXPORT</span><button type="button" data-viz-open>Studio</button><button type="button" data-viz-scene>3D/4D</button><button type="button" data-viz-code>Code</button><button type="button" data-viz-report>Report</button><button type="button" data-viz-svg>SVG</button><button type="button" data-viz-png>PNG</button><button type="button" data-viz-pdf>PDF</button><button type="button" data-viz-csv>CSV</button><button type="button" data-viz-json>JSON</button><button type="button" data-viz-package>Package</button><button type="button" data-viz-handoff>Decision Studio</button></div>`;}
   function attachToolbar(root,projects,container,contract){
     let toolbar=container.querySelector(':scope > [data-universal-export]');if(!toolbar){container.insertAdjacentHTML('beforeend',toolbarHtml());toolbar=container.querySelector(':scope > [data-universal-export]');}
     container._scLabContract=contract;
@@ -193,6 +193,7 @@
     toolbar.querySelector('[data-viz-open]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-visualization',{detail:current()}));};
     toolbar.querySelector('[data-viz-scene]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-visualization',{detail:current()}));setTimeout(()=>root.dispatchEvent(new CustomEvent('sc-lab:dimensional-contract',{detail:current()})),30);};
     toolbar.querySelector('[data-viz-code]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-code',{detail:current()}));};
+    toolbar.querySelector('[data-viz-report]').onclick=()=>{root._scLabLatestResult=current();root.dispatchEvent(new CustomEvent('sc-lab:open-report',{detail:current()}));};
     toolbar.querySelector('[data-viz-svg]').onclick=()=>exportSvg(current(),svg());
     toolbar.querySelector('[data-viz-png]').onclick=()=>exportPng(current(),svg()).catch(e=>U.toast(root,e.message));
     toolbar.querySelector('[data-viz-pdf]').onclick=()=>exportPdf(current(),svg()).catch(e=>U.toast(root,e.message));

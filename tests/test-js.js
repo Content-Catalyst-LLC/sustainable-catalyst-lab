@@ -39,23 +39,24 @@ load('assets/js/modules/materials-lab.js');
 load('assets/js/modules/earth-lab.js');
 load('assets/js/modules/energy-lab.js');
 load('assets/js/modules/method-contracts.js');
-context.window.SCLabConfig={compute:{enabled:true,configured:true,endpoints:{status:'/status',languages:'/languages',methods:'/methods',execute:'/execute',compare:'/compare',jobs:'/jobs'}},nonce:'test'};
+context.window.SCLabConfig={compute:{enabled:true,configured:true,endpoints:{status:'/status',languages:'/languages',methods:'/methods',execute:'/execute',compare:'/compare',jobs:'/jobs',reportValidate:'/reports/validate',reportPdf:'/reports/pdf',handoffValidate:'/handoffs/validate'}},nonce:'test'};
 load('assets/js/modules/compute-client.js');
 load('assets/js/modules/visualization.js');
+load('assets/js/modules/reporting.js');
 load('assets/js/modules/dimensional-visualization.js');
 load('assets/js/modules/data-management.js');
 load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.9.3', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.9.4', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
 assert(Array.isArray(blankProject.materialsRecords) && Array.isArray(blankProject.crystallographyRecords) && Array.isArray(blankProject.materialsValidationRecords), 'Materials project collections missing');
 assert(Array.isArray(blankProject.earthRecords) && Array.isArray(blankProject.oceanRecords) && Array.isArray(blankProject.earthValidationRecords), 'Earth systems project collections missing');
 assert(Array.isArray(blankProject.energyRecords) && Array.isArray(blankProject.gridRecords) && Array.isArray(blankProject.energyValidationRecords), 'Energy project collections missing');
-assert(Array.isArray(blankProject.visualizations) && Array.isArray(blankProject.dimensionalScenes) && Array.isArray(blankProject.chartExports) && Array.isArray(blankProject.analysisPackets), 'Visualization project collections missing');
+assert(Array.isArray(blankProject.visualizations) && Array.isArray(blankProject.dimensionalScenes) && Array.isArray(blankProject.chartExports) && Array.isArray(blankProject.analysisPackets) && Array.isArray(blankProject.reports) && Array.isArray(blankProject.reportFigures) && Array.isArray(blankProject.reportExports) && Array.isArray(blankProject.decisionStudioHandoffs), 'Visualization project collections missing');
 assert(Array.isArray(blankProject.methodContracts) && Array.isArray(blankProject.codeArtifacts) && Array.isArray(blankProject.implementationComparisons) && Array.isArray(blankProject.codeExecutions) && Array.isArray(blankProject.languageComparisons) && Array.isArray(blankProject.runtimeRecords) && Array.isArray(blankProject.executionJobs) && Array.isArray(blankProject.crossLanguageValidationRecords), 'Code contract project collections missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
@@ -259,7 +260,7 @@ const parity = MethodContracts.validateAgainstRuntime('kinetic', {mass:10,veloci
 assert(parity.passed && parity.rows.every(row=>row.passed), 'Portable method parity failed');
 assert(MethodContracts.notebook('kinetic').nbformat === 4, 'Notebook generation failed');
 const ComputeClient = context.window.SCLab.ComputeClient;
-assert(ComputeClient.isConfigured() && ComputeClient.config().endpoints.execute === '/execute', 'Compute client configuration failed');
+assert(ComputeClient.isConfigured() && ComputeClient.config().endpoints.execute === '/execute' && ComputeClient.config().endpoints.reportPdf === '/reports/pdf', 'Compute client configuration failed');
 
 
 const Visualization = context.window.SCLab.Visualization;
@@ -267,7 +268,7 @@ const scalarContract = Visualization.makeContract({ methodId:'test.scalar', titl
 assert(scalarContract.schema === 'sc-lab-analysis/1.0' && scalarContract.chartSpec.type === 'bar', 'Universal scalar result contract failed');
 assert(scalarContract.audit.inputFingerprint && scalarContract.audit.outputFingerprint, 'Analysis audit fingerprints missing');
 const scalarSvg = Visualization.renderSVG(scalarContract.chartSpec, { theme:'institutional', aspect:'16:9' });
-assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.3'), 'Universal SVG renderer failed');
+assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.4'), 'Universal SVG renderer failed');
 assert(Visualization.csv(scalarContract).includes('metric,value') || Visualization.csv(scalarContract).includes('label,value'), 'Universal CSV export failed');
 const seriesContract = Visualization.makeContract({ methodId:'test.series', title:'Series test', outputs:{series:[{x:0,y:1},{x:1,y:3},{x:2,y:2}]} });
 assert(seriesContract.chartSpec.type === 'line' && seriesContract.chartSpec.data.length === 3, 'Series chart inference failed');
@@ -276,6 +277,15 @@ assert(packet.packetType === 'scientific-analysis' && packet.charts.length === 1
 const fakeJpeg = 'data:image/jpeg;base64,' + Buffer.from([255,216,255,217]).toString('base64');
 const pdfBytes = Visualization.makeJpegPdf(fakeJpeg, 10, 10, 'PDF test');
 assert(pdfBytes.length > 400 && Buffer.from(pdfBytes).toString('latin1').startsWith('%PDF-1.4'), 'Direct PDF generator failed');
+
+const Reporting = context.window.SCLab.Reporting;
+const report = Reporting.makeReport({ title:'Auditable test report', subtitle:'PDF and handoff validation', executiveSummary:'Deterministic report test.', project:blankProject, analyses:[scalarContract,seriesContract] });
+assert(report.schema === 'sc-lab-report/1.0' && report.analyses.length === 2 && report.tables.length === 2, 'Report contract generation failed');
+const reportPacket = Reporting.makeDecisionStudioPacket(report);
+assert(reportPacket.packetType === 'scientific-report' && reportPacket.schemaVersion === '2.0' && reportPacket.analyses.length === 2, 'Decision Studio report packet failed');
+const reportPdf = Reporting.makePdf(report);
+assert(reportPdf.length > 1200 && Buffer.from(reportPdf).toString('latin1').startsWith('%PDF-1.4'), 'Structured local report PDF failed');
+assert(Reporting.flatten({alpha:1,nested:{beta:2}}).length === 2, 'Report table flattening failed');
 
 
 const Dimensional = context.window.SCLab.DimensionalVisualization;

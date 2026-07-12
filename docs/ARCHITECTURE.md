@@ -1,6 +1,6 @@
-# Lab v0.9.3 Architecture
+# Lab v0.9.4 Architecture
 
-WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.9.3 adds portable method contracts, multi-language source generation, code artifacts, parity records, and stable WordPress installation identity on top of the shared result, visualization, dimensional-scene, export, handoff, backup, restore, and reset infrastructure.
+WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.9.4 adds structured PDF reports, ReportLab vector output, and Decision Studio report packets on top of the portable method contracts, curated multi-language execution, shared result, visualization, dimensional-scene, export, backup, restore, and reset infrastructure.
 
 ## Browser modules
 
@@ -19,7 +19,9 @@ WordPress renders the scientific interface and proxies allowlisted public source
 - `earth-lab.js`: solid Earth, atmosphere, climate, hydrology, ocean, marine systems, remote sensing, hazards, carbon cycle, and validation methods.
 - `energy-lab.js`: energy balances, solar, wind, hydro, storage, grid, thermal, fuels, hydrogen, emissions, economics, reliability, and validation.
 - `method-contracts.js`: portable scientific expression contracts, language-neutral evaluation, twelve source generators, notebooks, catalogs, and parity validation.
-- `code-switcher.js`: Code Studio controls, generated-source downloads, project records, and current-JavaScript comparison.
+- `code-switcher.js`: Code Studio controls, generated-source downloads, local/Render execution, project records, and cross-language comparison.
+- `compute-client.js`: same-origin WordPress compute, report, job, and handoff client.
+- `reporting.js`: report contracts, browser PDF composition, Report Studio, project records, Render PDF requests, and Decision Studio packet 2.0.
 - `visualization.js`: universal analysis contract, chart inference, SVG renderer, PNG/PDF/CSV/JSON/package export, project records, and Decision Studio packets.
 - `dimensional-visualization.js`: 3D and 4D scene contracts, polytope presets, rotations, projections, animation, custom scenes, and dimensional exports.
 - `data-management.js`: complete workspace backup, ZIP packaging, restore modes, selective resets, record counting, and deletion receipts.
@@ -39,7 +41,9 @@ Calculation or analytical method
 → PNG / PDF / CSV / JSON / package export
 → optional 3D or projected 4D scene
 → project visualization and notebook records
-→ Decision Studio analysis packet
+→ sc-lab-report/1.0 report
+→ browser PDF or Render ReportLab vector PDF
+→ sc-decision-studio-analysis-packet/2.0 handoff
 ```
 
 ## Dimensional projection flow
@@ -69,7 +73,7 @@ Local projects and preferences
 
 ## Project record
 
-Version 0.9.3 retains every earlier collection and adds or formalizes:
+Version 0.9.4 retains every earlier collection and adds or formalizes:
 
 ```text
 visualizations
@@ -79,11 +83,15 @@ analysisPackets
 methodContracts
 codeArtifacts
 implementationComparisons
+reports
+reportFigures
+reportExports
+decisionStudioHandoffs
 ```
 
 The original `scLabProjectsV010` and `scLabActiveProjectV010` browser-storage keys remain unchanged. Existing projects are normalized in place when loaded, changed, imported, restored, or exported.
 
-Full Workbench, Decision Studio, and Site Intelligence applications remain separate and are reached through configured routes. Decision Studio handoff currently uses a structured downloadable packet and local handoff cache; authenticated server exchange belongs to a later integration release.
+Full Workbench, Decision Studio, and Site Intelligence applications remain separate and are reached through configured routes. Decision Studio handoff uses a structured packet, local handoff cache, configured route, and optional backend validation. Authenticated cross-application persistence remains a later integration boundary.
 
 ## Portable code flow
 

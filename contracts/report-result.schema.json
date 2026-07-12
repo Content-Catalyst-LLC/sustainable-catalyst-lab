@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-report-result-1.0.schema.json",
+  "title": "Sustainable Catalyst Lab PDF Report Result",
+  "type": "object",
+  "required": ["schema", "status", "filename", "mimeType", "byteLength", "pageCount", "reportFingerprint", "pdfFingerprint", "engine", "dataBase64"],
+  "properties": {
+    "schema": { "const": "sc-lab-report-result/1.0" },
+    "status": { "const": "VALIDATED" },
+    "filename": { "type": "string" },
+    "mimeType": { "const": "application/pdf" },
+    "byteLength": { "type": "integer", "minimum": 1 },
+    "pageCount": { "type": "integer", "minimum": 1 },
+    "reportFingerprint": { "type": "string" },
+    "pdfFingerprint": { "type": "string" },
+    "engine": { "type": "string" },
+    "dataBase64": { "type": "string" }
+  },
+  "additionalProperties": false
+}

@@ -15,6 +15,9 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/compute/methods', array('methods'=>'GET','callback'=>array($this,'compute_methods'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/execute', array('methods'=>'POST','callback'=>array($this,'compute_execute'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/compare', array('methods'=>'POST','callback'=>array($this,'compute_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/reports/validate', array('methods'=>'POST','callback'=>array($this,'compute_report_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/reports/pdf', array('methods'=>'POST','callback'=>array($this,'compute_report_pdf'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/handoffs/decision-studio/validate', array('methods'=>'POST','callback'=>array($this,'compute_handoff_validate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/jobs', array('methods'=>'POST','callback'=>array($this,'compute_jobs'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})', array(
             array('methods'=>'GET','callback'=>array($this,'compute_job_status'),'permission_callback'=>'__return_true'),
@@ -31,7 +34,7 @@ class SC_Lab_REST {
             'version'=>SC_LAB_VERSION,
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation')
         ));
     }
 
@@ -111,13 +114,56 @@ class SC_Lab_REST {
         return array('methodId'=>$method,'languages'=>$languages,'inputs'=>$inputs,'timeoutSeconds'=>max(1,min(20,absint(isset($body['timeoutSeconds'])?$body['timeoutSeconds']:8))),'includeSource'=>!empty($body['includeSource']),'absoluteTolerance'=>isset($body['absoluteTolerance'])?(float)$body['absoluteTolerance']:1e-10,'relativeTolerance'=>isset($body['relativeTolerance'])?(float)$body['relativeTolerance']:1e-9);
     }
 
-    private function proxy($path, $method='GET', $payload=null) {
+    private function clean_report_value($value, $depth = 0, &$nodes = 0) {
+        $nodes++;
+        if ($nodes > 2400 || $depth > 8) { return new WP_Error('report_too_complex','The report payload is too complex.',array('status'=>422)); }
+        if (is_null($value) || is_bool($value)) { return $value; }
+        if (is_int($value) || is_float($value)) { return is_finite((float) $value) ? $value : null; }
+        if (is_string($value)) { return substr(wp_strip_all_tags($value, true), 0, 12000); }
+        if (!is_array($value)) { return null; }
+        $clean = array();
+        foreach ($value as $key => $item) {
+            $clean_key = is_int($key) ? $key : substr(preg_replace('/[^A-Za-z0-9._-]/', '', (string) $key), 0, 96);
+            if ($clean_key === '') { continue; }
+            $clean_item = $this->clean_report_value($item, $depth + 1, $nodes);
+            if (is_wp_error($clean_item)) { return $clean_item; }
+            $clean[$clean_key] = $clean_item;
+        }
+        return $clean;
+    }
+
+    private function clean_report_payload($body) {
+        if (!is_array($body)) { return new WP_Error('invalid_report','A report JSON object is required.',array('status'=>422)); }
+        $nodes = 0;
+        $clean = $this->clean_report_value($body, 0, $nodes);
+        if (is_wp_error($clean)) { return $clean; }
+        $title = isset($clean['title']) ? sanitize_text_field($clean['title']) : '';
+        $analyses = isset($clean['analyses']) && is_array($clean['analyses']) ? array_values($clean['analyses']) : array();
+        if ($title === '' || !$analyses || count($analyses) > 12) { return new WP_Error('invalid_report','A title and one to twelve analyses are required.',array('status'=>422)); }
+        $types = array('technical-report','decision-brief','evidence-packet','executive-summary');
+        $clean['title'] = substr($title, 0, 240);
+        $clean['reportType'] = in_array(isset($clean['reportType']) ? $clean['reportType'] : '', $types, true) ? $clean['reportType'] : 'technical-report';
+        $clean['pageSize'] = (isset($clean['pageSize']) && $clean['pageSize'] === 'A4') ? 'A4' : 'LETTER';
+        $clean['analyses'] = $analyses;
+        $clean['includeAudit'] = !isset($clean['includeAudit']) || !empty($clean['includeAudit']);
+        return $clean;
+    }
+
+    private function clean_handoff_payload($body) {
+        if (!is_array($body) || !isset($body['packet']) || !is_array($body['packet'])) { return new WP_Error('invalid_handoff','A Decision Studio packet is required.',array('status'=>422)); }
+        $nodes = 0;
+        $packet = $this->clean_report_value($body['packet'], 0, $nodes);
+        if (is_wp_error($packet)) { return $packet; }
+        return array('packet'=>$packet);
+    }
+
+    private function proxy($path, $method='GET', $payload=null, $response_limit=262144) {
         $limited = $this->compute_rate_limit(); if (is_wp_error($limited)) { return $limited; }
         $settings = $this->compute_ready(); if (is_wp_error($settings)) { return $settings; }
         $url = untrailingslashit($settings['compute_backend_url']) . '/' . ltrim($path,'/');
         $headers = array('Accept'=>'application/json','Content-Type'=>'application/json');
         if (!empty($settings['compute_api_key'])) { $headers['X-SC-Lab-Key'] = $settings['compute_api_key']; }
-        $args = array('method'=>$method,'timeout'=>max(5,min(60,absint($settings['compute_timeout_seconds']))),'redirection'=>2,'sslverify'=>!empty($settings['compute_verify_ssl']),'headers'=>$headers,'limit_response_size'=>262144);
+        $args = array('method'=>$method,'timeout'=>max(5,min(60,absint($settings['compute_timeout_seconds']))),'redirection'=>2,'sslverify'=>!empty($settings['compute_verify_ssl']),'headers'=>$headers,'limit_response_size'=>max(262144,min(8388608,absint($response_limit))));
         if (null !== $payload) { $args['body'] = wp_json_encode($payload); }
         $response = wp_safe_remote_request($url,$args);
         if (is_wp_error($response)) { return new WP_Error('compute_unavailable',$response->get_error_message(),array('status'=>502)); }
@@ -135,6 +181,9 @@ class SC_Lab_REST {
     public function compute_methods() { return $this->proxy('/v1/methods'); }
     public function compute_execute(WP_REST_Request $request) { $payload=$this->clean_execute_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/execute','POST',$payload); }
     public function compute_compare(WP_REST_Request $request) { $payload=$this->clean_compare_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/compare','POST',$payload); }
+    public function compute_report_validate(WP_REST_Request $request) { $payload=$this->clean_report_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/reports/validate','POST',$payload,1048576); }
+    public function compute_report_pdf(WP_REST_Request $request) { $payload=$this->clean_report_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/reports/pdf','POST',$payload,8388608); }
+    public function compute_handoff_validate(WP_REST_Request $request) { $payload=$this->clean_handoff_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/handoffs/decision-studio/validate','POST',$payload,1048576); }
     public function compute_jobs(WP_REST_Request $request) {
         $body=$request->get_json_params(); $operation=isset($body['operation'])?sanitize_key($body['operation']):'';
         if ($operation==='execute') { $payload=$this->clean_execute_payload(isset($body['execute'])?$body['execute']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array('operation'=>'execute','execute'=>$payload)); }

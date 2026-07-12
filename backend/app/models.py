@@ -83,3 +83,20 @@ class JobRequest(StrictModel):
         if self.compare is None:
             raise ValueError("A compare payload is required for compare jobs.")
         return self.compare.model_dump()
+
+
+class ReportRequest(StrictModel):
+    reportType: Literal["technical-report", "decision-brief", "evidence-packet", "executive-summary"] = "technical-report"
+    title: str = Field(min_length=1, max_length=240)
+    subtitle: str = Field(default="", max_length=600)
+    executiveSummary: str = Field(default="", max_length=8000)
+    pageSize: Literal["LETTER", "A4"] = "LETTER"
+    project: dict[str, Any] | None = None
+    analyses: list[dict[str, Any]] = Field(min_length=1, max_length=12)
+    includeAudit: bool = True
+    createdAt: str | None = Field(default=None, max_length=80)
+    audit: dict[str, Any] = Field(default_factory=dict)
+
+
+class HandoffValidateRequest(StrictModel):
+    packet: dict[str, Any]

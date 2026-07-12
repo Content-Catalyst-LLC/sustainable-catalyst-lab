@@ -1529,3 +1529,21 @@
 .sc-lab-status-dot:not(.is-ready)[data-code-backend-indicator]{background:#eef1f3;color:#5e6870}
 @media(max-width:1050px){.sc-lab-worker-languages{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.sc-lab-compute-statusbar{align-items:stretch;flex-direction:column}.sc-lab-compute-statusbar .sc-lab-inline-actions{display:grid;grid-template-columns:1fr}.sc-lab-worker-languages{grid-template-columns:1fr}}
+
+/* v0.9.4 PDF reports and Decision Studio report handoff */
+.sc-lab-report-layout{display:grid;grid-template-columns:minmax(280px,380px) minmax(0,1fr);gap:18px;align-items:start}
+.sc-lab-report-controls,.sc-lab-report-workspace{border:1px solid #d5dce1;background:#fff;padding:16px}
+.sc-lab-report-controls{display:grid;gap:11px;position:sticky;top:16px}
+.sc-lab-report-controls>label{display:grid;gap:5px;font-size:11px;font-weight:750;letter-spacing:.025em;color:#303941}
+.sc-lab-report-controls input[type="text"],.sc-lab-report-controls select,.sc-lab-report-controls textarea{width:100%;border:1px solid #b8c0c7;border-radius:0;background:#fff;padding:9px 10px;color:#111820;font:inherit}
+.sc-lab-report-controls textarea{resize:vertical;min-height:130px;line-height:1.45}
+.sc-lab-report-analysis-list{display:grid;gap:7px;max-height:360px;overflow:auto;border:1px solid #d8dde1;background:#f8fafb;padding:8px}
+.sc-lab-report-analysis-option{display:flex!important;align-items:flex-start;gap:8px;padding:10px;border:1px solid #d5dce1;background:#fff;cursor:pointer}
+.sc-lab-report-analysis-option:has(input:checked){border-left:4px solid #c60000;background:#fffafa}
+.sc-lab-report-analysis-option input{margin-top:2px}.sc-lab-report-analysis-option span{display:grid;gap:3px;min-width:0}.sc-lab-report-analysis-option strong{font-size:11px;color:#182128}.sc-lab-report-analysis-option small{font:650 9px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;color:#68737c;overflow-wrap:anywhere}
+.sc-lab-report-preview{min-height:620px;border:1px solid #cbd2d7;background:#fbfbfa;padding:42px 46px;box-shadow:0 4px 16px rgba(20,28,34,.08);color:#1c252c}
+.sc-lab-report-preview>header{border-top:4px solid #c60000;padding-top:22px;margin-bottom:28px}.sc-lab-report-preview>header>span{font:800 10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em;color:#8f1111}.sc-lab-report-preview h4{font-size:29px;line-height:1.14;margin:8px 0 10px;color:#111820}.sc-lab-report-preview h5{font-size:15px;margin:22px 0 10px;color:#111820}.sc-lab-report-preview p{font-size:12px;line-height:1.65;color:#39444c}.sc-lab-report-preview section article{display:grid;gap:4px;padding:12px 0;border-top:1px solid #d8dde1}.sc-lab-report-preview section article strong{font-size:12px}.sc-lab-report-preview section article span{font:650 9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#68737c}.sc-lab-report-preview section article p{margin:0}.sc-lab-report-preview footer{margin-top:28px;padding-top:12px;border-top:1px solid #cbd2d7;font-size:9px;color:#68737c;overflow-wrap:anywhere}
+.sc-lab-report-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+@media(max-width:1100px){.sc-lab-report-layout{grid-template-columns:1fr}.sc-lab-report-controls{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.sc-lab-report-controls>*{min-width:0}.sc-lab-report-analysis-list,.sc-lab-report-controls>[data-report-compose]{grid-column:1/-1}.sc-lab-report-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.sc-lab-report-controls{grid-template-columns:1fr}.sc-lab-report-analysis-list,.sc-lab-report-controls>[data-report-compose]{grid-column:auto}.sc-lab-report-preview{padding:24px 20px;min-height:440px}.sc-lab-report-preview h4{font-size:22px}.sc-lab-report-actions{grid-template-columns:1fr}}
+@media print{[data-lab-module="report-studio"] .sc-lab-report-controls,[data-lab-module="report-studio"] .sc-lab-report-actions,[data-lab-module="report-studio"] .sc-lab-viz-audit{display:none!important}.sc-lab-report-layout{display:block}.sc-lab-report-workspace{border:0;padding:0}.sc-lab-report-preview{box-shadow:none;border:0;padding:0}}

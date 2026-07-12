@@ -1,7 +1,7 @@
 (function (w) {
   'use strict';
   const Lab = w.SCLab = w.SCLab || {};
-  const VERSION = '0.9.3';
+  const VERSION = '0.9.4';
   const languages = {
     python:{label:'Python',extension:'py',mode:'source'}, r:{label:'R',extension:'R',mode:'source'}, julia:{label:'Julia',extension:'jl',mode:'source'},
     javascript:{label:'JavaScript',extension:'js',mode:'browser'}, typescript:{label:'TypeScript',extension:'ts',mode:'source'}, sql:{label:'SQL',extension:'sql',mode:'source'},

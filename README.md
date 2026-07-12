@@ -1,35 +1,98 @@
-# Sustainable Catalyst Lab v0.9.2
+# Sustainable Catalyst Lab v0.9.4
 
-Sustainable Catalyst Lab is a modular scientific and engineering workspace for WordPress. Version 0.9.2 adds the **Universal Code Switcher and Portable Method Contract layer** while retaining the complete Chemistry, Physics, Biology, Astronomy, Materials, Earth Systems, Energy, observation, dataset, visualization, 3D/4D, project, notebook, export, backup, and reset systems from earlier releases.
+Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with an optional Render compute backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
 
 ## Stable WordPress plugin identity
 
-Use the unversioned WordPress archive:
+Use the WordPress installer archive named:
 
 ```text
 sustainable-catalyst-lab.zip
 ```
 
-The archive always contains exactly:
+It always contains:
 
 ```text
 sustainable-catalyst-lab/
 └── sustainable-catalyst-lab.php
 ```
 
-WordPress identifies a plugin by this folder and bootstrap-file path. Uploading a repository ZIP, a release bundle, or a versioned root directory can create a second plugin instance.
+WordPress identifies a plugin by this folder and bootstrap path. Uploading the repository ZIP or release bundle can create a second plugin instance. The administrator duplicate detector remains available under **Settings → Sustainable Catalyst Lab → Plugin installation identity**.
 
-Version 0.9.2 adds an administrator duplicate detector under:
+## PDF Report Studio
+
+The Report Studio can assemble one to twelve analyses into a structured report. Supported report types are:
 
 ```text
-Settings → Sustainable Catalyst Lab → Plugin installation identity
+Technical report
+Decision brief
+Evidence packet
+Executive summary
 ```
 
-It lists other installed copies with the same plugin name or text domain and provides a nonce-protected action that deactivates duplicate instances without deleting their folders or browser project data.
+A report can retain:
 
-## Universal Code Switcher
+- project context and report metadata
+- equations and method identifiers
+- labeled inputs and outputs with units
+- vector line, bar, and scatter figures
+- assumptions and warnings
+- validation records
+- sources and evidence references
+- code, compiler, runtime, and execution metadata
+- input, output, report, and PDF fingerprints
+- dimensional-scene references and figure records
 
-The new Code Studio supports twelve language views:
+Two coordinated PDF paths use the same report contract:
+
+1. **Local browser PDF** for immediate offline, selectable-text reports.
+2. **Render ReportLab PDF** for vector figures and larger multi-page reports.
+
+## Decision Studio handoff
+
+Version 0.9.4 advances the handoff contract to:
+
+```text
+sc-decision-studio-analysis-packet/2.0
+```
+
+A handoff can include the complete report contract, analyses, charts, tables, 3D/4D scene specifications, evidence, assumptions, uncertainties, warnings, validation, runtime metadata, and audit fingerprints. Decision Studio receives structured content rather than only a screenshot, so figures and report sections remain traceable to the originating Lab calculation.
+
+Protected routes include:
+
+```text
+POST /wp-json/sc-lab/v1/compute/reports/validate
+POST /wp-json/sc-lab/v1/compute/reports/pdf
+POST /wp-json/sc-lab/v1/compute/handoffs/decision-studio/validate
+```
+
+WordPress sanitizes report payloads and proxies them to the optional Render backend without exposing the compute API key to browser JavaScript.
+
+## Render compute and report API
+
+The FastAPI backend provides:
+
+```text
+GET    /health
+GET    /version
+GET    /v1/methods
+GET    /v1/languages
+POST   /v1/validate
+POST   /v1/execute
+POST   /v1/compare
+POST   /v1/jobs
+GET    /v1/jobs/{job_id}
+DELETE /v1/jobs/{job_id}
+POST   /v1/reports/validate
+POST   /v1/reports/pdf
+POST   /v1/handoffs/decision-studio/validate
+```
+
+Native curated-worker targets remain Python, JavaScript, TypeScript, C, C++, Fortran, Rust, and Go. R, Julia, SQL, and Haskell remain source-generation targets until dedicated workers are added.
+
+## Universal Code Studio
+
+Code Studio provides equivalent source views for:
 
 ```text
 Python
@@ -46,105 +109,65 @@ Go
 Haskell
 ```
 
-For each portable method, users can:
+Curated method contracts can be inspected, downloaded, locally evaluated where supported, executed through Render workers, and compared for numerical parity.
 
-- Change language without changing the scientific method contract
-- Inspect generated source
-- Run the portable method contract locally
-- Compare the contract result with the current JavaScript calculator
-- Download the selected source file
-- Download the method JSON contract
-- Download a Python Jupyter notebook
-- Download the complete method catalog
-- Save method contracts and source artifacts to the active Lab project
+## Universal visualization and dimensional scenes
 
-JavaScript is browser-runnable in this release. The other language implementations are source-generating, downloadable, and repository-testable; secured server execution is reserved for the v0.9.3 Render Compute Dispatcher.
+Existing shared visualization capabilities include:
 
-## Portable method contracts
+- SVG, high-resolution PNG, PDF, CSV, and JSON exports
+- complete analysis-package ZIPs
+- project visualization records
+- interactive 3D scenes
+- projected 4D cube, tesseract, 4-simplex, and 16-cell scenes
+- six independent 4D rotation planes
+- scene JSON and Decision Studio scene handoff
 
-A portable method is represented once as a language-independent expression graph:
+## Workspace data management
 
-```text
-Method identity and version
-Inputs and units
-Constants
-Validation bounds
-Derived variables
-Output expressions
-Assumptions
-Supported languages
-```
+The Lab retains:
 
-The same contract is rendered into all twelve language targets. This prevents scientific logic from drifting independently between handwritten implementations.
+- full workspace JSON and ZIP backup
+- per-project export
+- notebook Markdown and observation CSV
+- restore as copies, merge, or replace
+- selective note and observation clearing
+- analysis-history clearing
+- active-project reset or deletion
+- factory reset with typed confirmation and minimal deletion receipt
 
-Version 0.9.2 includes nineteen portable reference contracts spanning:
+## Project schema additions
 
-- Mechanics and projectile motion
-- Thermodynamics
-- Astronomy
-- Fluids
-- Biology and enzyme kinetics
-- Population growth
-- Materials and diffusion
-- Electrical resistance
-- Earth science
-- Hydropower
-- Photovoltaics
-- Wind power
-- Battery energy and runtime
-
-The repository also includes complete multi-language example folders for kinetic energy, projectile motion, Michaelis–Menten kinetics, and photovoltaic output.
-
-## Project-model additions
+Version 0.9.4 adds or formalizes:
 
 ```text
-methodContracts
-codeArtifacts
-implementationComparisons
+reports
+reportFigures
+reportExports
+decisionStudioHandoffs
 ```
 
-Existing project keys remain unchanged:
+The original browser-storage keys remain unchanged:
 
 ```text
 scLabProjectsV010
 scLabActiveProjectV010
 ```
 
-Projects from v0.1.x through v0.9.1 are normalized non-destructively to schema version `0.9.2`.
-
-## Existing universal visualization and workspace features
-
-Version 0.9.2 retains:
-
-- Universal analysis contracts
-- SVG, high-resolution PNG, PDF, CSV, and JSON exports
-- Complete analysis-package ZIPs
-- Decision Studio packets
-- Interactive 3D and projected 4D scenes
-- Cube, tesseract, 4-simplex, and 16-cell presets
-- Workspace JSON and ZIP backup
-- Selective note, observation, analysis, project, and factory reset
-- Restore-as-copy, merge, and replace modes
-
-The calculation toolbar now includes a **Code** action that routes a supported analysis directly into Code Studio.
+Projects from v0.1.x through v0.9.3 are normalized non-destructively to schema version `0.9.4`.
 
 ## Shortcodes
 
-Main application:
-
 ```text
 [sc_lab_app]
-```
-
-Focused infrastructure interfaces:
-
-```text
+[sc_lab_reports]
+[sc_lab_report_studio]
 [sc_lab_visualization]
 [sc_lab_workspace_data]
 [sc_lab_code_switcher]
 ```
 
-All existing focused discipline shortcodes remain available.
+All focused scientific-laboratory shortcodes remain available.
 
 ## Contracts
 
@@ -152,9 +175,14 @@ All existing focused discipline shortcodes remain available.
 contracts/project.schema.json
 contracts/analysis.schema.json
 contracts/scene.schema.json
+contracts/report.schema.json
+contracts/report-result.schema.json
 contracts/decision-studio-packet.schema.json
 contracts/method.schema.json
 contracts/method-catalog.json
+contracts/execution.schema.json
+contracts/language-comparison.schema.json
+contracts/execution-job.schema.json
 ```
 
 ## Validation
@@ -162,27 +190,15 @@ contracts/method-catalog.json
 Run:
 
 ```bash
-chmod +x scripts/test_release.sh
+chmod +x scripts/test_release.sh tests/test-generated-code.sh
 ./scripts/test_release.sh
 ```
 
-The release suite validates:
-
-- PHP and JavaScript syntax
-- WordPress template rendering
-- Stable plugin slug and bootstrap markers
-- Duplicate-installation detector markers
-- All inherited scientific engines and 61 deterministic discipline benchmarks
-- Nineteen portable method contracts
-- Twelve language generators including Rust
-- Portable-contract parity with current JavaScript methods
-- Python, JavaScript, TypeScript, C, C++, Fortran, and Go generated-source execution or compilation in the packaging environment
-- Source markers for R, Julia, Rust, SQL, and Haskell
-- Visualization, PDF, 3D/4D, backup, reset, restore, migration, and Decision Studio packet tests
+The release suite covers PHP and JavaScript syntax, WordPress template rendering, all inherited scientific engines and benchmarks, portable method contracts, generated code, curated compute execution, report contracts, browser PDFs, ReportLab PDFs, report endpoints, Decision Studio packet validation, project migration, visualization, 3D/4D scenes, backup, reset, and restore.
 
 ## Boundaries
 
-- Generated implementations are transparent reference code, not a claim that every discipline method already has cross-language parity.
-- v0.9.2 provides nineteen portable methods; the catalog expands incrementally as methods receive explicit expression contracts and reference tests.
-- R, Julia, Rust, SQL, and Haskell source is generated and structurally tested here, but those runtimes were unavailable in the packaging environment.
-- Arbitrary public code execution is not enabled. The future Render dispatcher will execute only curated, versioned repository methods inside restricted workers.
+- Reports preserve supplied calculations and metadata; they do not independently certify a scientific or engineering conclusion.
+- Medical, safety-critical, structural, electrical, environmental, and other regulated analyses still require appropriate professional review.
+- The compute API executes only curated, versioned methods. It does not accept arbitrary source code or shell commands.
+- Interactive browser and backend PDF generation share a report contract but can differ slightly in pagination and typography.

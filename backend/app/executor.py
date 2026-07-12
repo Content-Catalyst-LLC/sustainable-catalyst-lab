@@ -330,7 +330,7 @@ def execute_method(
     validation = compare_outputs(reference, outputs, absolute_tolerance, relative_tolerance)
     response: dict[str, Any] = {
         "schema": "sc-lab-execution/1.0",
-        "serviceVersion": "0.9.3",
+        "serviceVersion": "0.9.4",
         "methodId": method_id,
         "methodVersion": contract.get("version"),
         "language": language,
@@ -399,7 +399,7 @@ def compare_languages(
     successful = [item for item in executions if item.get("status") in {"VALIDATED", "MISMATCH"}]
     return {
         "schema": "sc-lab-language-comparison/1.0",
-        "serviceVersion": "0.9.3",
+        "serviceVersion": "0.9.4",
         "methodId": method_id,
         "methodVersion": contract.get("version"),
         "inputs": validated_inputs,

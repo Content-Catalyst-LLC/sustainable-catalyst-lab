@@ -86,7 +86,7 @@ class SC_Lab_Admin {
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), self::defaults());
         ?>
         <div class="wrap"><h1>Sustainable Catalyst Lab</h1>
-        <p>Configure the modular science workspace, source caching, application routes, and the optional Render compute dispatcher.</p>
+        <p>Configure the modular science workspace, PDF reporting and Decision Studio routes, source caching, application routes, and the optional Render compute dispatcher.</p>
         <form method="post" action="options.php"><?php settings_fields('sc_lab_settings_group'); ?>
         <h2>Application routes and scientific sources</h2>
         <table class="form-table" role="presentation">

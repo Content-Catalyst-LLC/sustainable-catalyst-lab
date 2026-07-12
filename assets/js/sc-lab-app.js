@@ -500,7 +500,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.9.3' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.9.4' }, `${type} completed`);
       return result;
     }
 
@@ -804,6 +804,9 @@
 
     // Universal visualization, export, and Decision Studio handoff.
     Lab.Visualization?.init(root, projects, config);
+
+    // Structured PDF reports and Decision Studio report handoff.
+    Lab.Reporting?.init(root, projects);
 
     // Interactive 3D and projected 4D scene visualization.
     Lab.DimensionalVisualization?.init(root, projects);

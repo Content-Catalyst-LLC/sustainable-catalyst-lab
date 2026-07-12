@@ -187,7 +187,7 @@
     function localExecution(inputs, fallbackReason = null) {
       const outputs = MC.evaluate(method.value, inputs);
       const record = {
-        schema:'sc-lab-execution/1.0', serviceVersion:'0.9.3', methodId:method.value,
+        schema:'sc-lab-execution/1.0', serviceVersion:'0.9.4', methodId:method.value,
         methodVersion:MC.byId[method.value].version, language:'javascript', runtime:'browser-portable-contract',
         status:'VALIDATED', requestedLanguage:language.value, inputs, outputs,
         inputFingerprint:U.fingerprint({ methodId:method.value, inputs }), outputFingerprint:U.fingerprint(outputs),
@@ -288,7 +288,7 @@
     panel.querySelector('[data-code-download]').addEventListener('click', () => { const contract = MC.byId[method.value], selected = MC.languages[language.value]; U.download(`${slug(contract.id)}.${selected.extension}`, source.value, 'text/plain'); });
     panel.querySelector('[data-code-contract]').addEventListener('click', () => { const contract = MC.byId[method.value]; U.download(`${slug(contract.id)}-method.json`, JSON.stringify(contract, null, 2), 'application/json'); });
     panel.querySelector('[data-code-notebook]').addEventListener('click', () => { const contract = MC.byId[method.value]; U.download(`${slug(contract.id)}.ipynb`, JSON.stringify(MC.notebook(contract.id), null, 2), 'application/x-ipynb+json'); });
-    panel.querySelector('[data-code-catalog]').addEventListener('click', () => U.download('sustainable-catalyst-lab-method-catalog-v0.9.3.json', JSON.stringify(MC.manifest(), null, 2), 'application/json'));
+    panel.querySelector('[data-code-catalog]').addEventListener('click', () => U.download('sustainable-catalyst-lab-method-catalog-v0.9.4.json', JSON.stringify(MC.manifest(), null, 2), 'application/json'));
     panel.querySelector('[data-code-save]').addEventListener('click', () => {
       const contract = MC.byId[method.value];
       projects.add('methodContracts', { type:'portable-method-contract', methodId:contract.id, contract }, `Method contract saved: ${contract.id}`);
