@@ -95,6 +95,7 @@
       openModule(item.module);
       if (item.kind === 'chem-tab') setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', item.tab);
       if (item.kind === 'analysis-tab') setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', item.tab);
+      if (item.kind === 'physics-tab') setTab('[data-physics-tab]', 'physicsTab', '[data-physics-pane]', 'physicsPane', item.tab);
       if (item.kind === 'calculator') {
         setTab('[data-analysis-tab]', 'analysisTab', '[data-analysis-pane]', 'analysisPane', 'calculators');
         selectCalculator(item.calculatorId);
@@ -459,7 +460,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.3.0' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.4.0' }, `${type} completed`);
       return result;
     }
 
@@ -740,6 +741,9 @@
     });
 
 
+    // Physics Laboratory.
+    Lab.PhysicsLab?.init(root, projects);
+
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
     qs(root, '[data-new-hypothesis]').addEventListener('click', () => {
@@ -775,7 +779,8 @@
           decisions: project.decisions.length,
           notes: project.notes.length,
           calculations: project.calculations.length,
-          maps: project.maps.length
+          maps: project.maps.length,
+          physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses'].reduce((total,key)=>total+(project[key]||[]).length,0)
         }
       };
       return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -788,6 +793,9 @@
       sections.push('## Evidence', '', project.evidence.length ? project.evidence.map(item => `- **${item.title}** — ${item.source || 'Source'}${item.url ? ` — ${item.url}` : ''}`).join('\n') : 'No evidence records.', '');
       sections.push('## Hypotheses', '', project.hypotheses.length ? project.hypotheses.map(item => `- **${item.title}** — ${item.statement || ''}`).join('\n') : 'No hypotheses recorded.', '');
       sections.push('## Calculations and analyses', '', project.calculations.length ? project.calculations.map(item => `- **${item.type || 'Calculation'}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No calculations recorded.', '');
+      const physicsCollections = ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses'];
+      const physicsRecords = physicsCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
+      sections.push('## Physics analyses', '', physicsRecords.length ? physicsRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No physics analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');
       sections.push('## Decisions', '', project.decisions.length ? project.decisions.map(item => `- **${item.title}** — ${item.rationale || ''}`).join('\n') : 'No decisions recorded.', '');
       sections.push('## Notebook record', '', project.notes.length ? project.notes.slice(0, 25).map(item => `### ${item.title}\n\n${item.body || ''}`).join('\n\n') : 'No notebook entries.', '');
@@ -855,7 +863,8 @@
           ['Scientific source registry', sources.sources ? 'Ready' : 'Unavailable', `${Object.keys(sources.sources || {}).length} configured connectors`],
           ['Browser project storage', 'Ready', `${projects.items.length} local project${projects.items.length === 1 ? '' : 's'}`],
           ['Periodic table', Lab.Periodic?.getElements?.().length === 118 ? 'Ready' : 'Loading', `${Lab.Periodic?.getElements?.().length || 0} element records`],
-          ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`]
+          ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`],
+          ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`]
         ];
         target.innerHTML = rows.map(([name, value, detail]) => `<div class="sc-lab-status-row"><span>${U.esc(name)}</span><span class="sc-lab-status-value ${value === 'Ready' ? 'ok' : 'warn'}">${U.esc(value)}</span><span>${U.esc(detail)}</span></div>`).join('');
         if (showToast) U.toast(root, 'System checks completed.');

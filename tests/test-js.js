@@ -25,6 +25,7 @@ load('assets/js/modules/spectrometry.js');
 load('assets/js/modules/calculators.js');
 load('assets/js/modules/datasets.js');
 load('assets/js/modules/observations.js');
+load('assets/js/modules/physics-lab.js');
 load('assets/js/modules/workspace.js');
 
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
@@ -68,18 +69,39 @@ assert(Math.abs(absorbance[0].y - 1) < 1e-12, 'Transmittance conversion failed')
 const advancedPeaks = Spectrometry.peaks(Spectrometry.parse('0,0\n1,2\n2,0\n3,3\n4,0'), { minDistance: 1, minProminence: 0.5 });
 assert(advancedPeaks.length === 2 && advancedPeaks.every(p => Number.isFinite(p.fwhm)), 'Advanced peak characterization failed');
 
+
+const Physics = context.window.SCLab.PhysicsLab;
+assert(Physics.particles.length >= 20, 'Expected particle reference records');
+assert(Object.keys(Physics.tools).length >= 30, 'Expected substantive physics method registry');
+const projectile = Physics.tools.projectile({ v: 20, angle: 45, y0: 0, g: 9.80665 });
+assert(projectile.range > 40 && projectile.range < 42 && projectile.series.length === 80, 'Projectile model failed');
+const field = Physics.tools.coulomb({ q1: 1e-6, q2: -2e-6, r: 0.25 });
+assert(field.interaction === 'attractive' && field.forceMagnitude > 0, 'Coulomb calculation failed');
+const rlc = Physics.tools.rlc({ R: 100, L: 0.01, C: 1e-6, frequency: 1591.549, voltage: 10 });
+assert(Math.abs(rlc.phaseDegrees) < 0.1 && Math.abs(rlc.impedanceMagnitude - 100) < 0.1, 'RLC resonance failed');
+const photonPhysics = Physics.tools.photon({ wavelengthNm: 500 });
+assert(Math.abs(photonPhysics.energyEv - 2.47968) < 0.001, 'Physics photon method failed');
+const decay = Physics.tools.decay({ halfLife: 10, time: 20, initial: 1000 });
+assert(Math.abs(decay.remaining - 250) < 1e-9, 'Nuclear decay failed');
+const invariant = Physics.tools.invariantMass({ fourVectors: [{E:60,px:30,py:0,pz:40},{E:50,px:-20,py:0,pz:-30}] });
+assert(invariant.invariantMass > 108 && invariant.invariantMass < 110, 'Invariant mass reconstruction failed');
+const twoBody = Physics.tools.twoBodyDecay({ parentMass: 125.25, mass1: 0, mass2: 0 });
+assert(Math.abs(twoBody.daughterMomentum - 62.625) < 1e-9, 'Two-body decay failed');
+const detector = Physics.tools.detector({ B:2, radius:1.2, charge:1, distance:3, time:1.2e-8, events:1250, background:400, efficiency:0.82, luminosity:100 });
+assert(detector.transverseMomentumGeVPerC > 0.7 && detector.signalEvents === 850, 'Detector analysis failed');
+
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
 assert(Math.abs(Calculators.run('photon', { wavelengthNm: 500 }).electronVolts - 2.47968) < 0.001, 'Photon calculator failed');
 assert(Math.abs(Calculators.run('michaelis', { vmax: 100, substrate: 8, km: 2 }).rate - 80) < 1e-9, 'Michaelis-Menten failed');
 
 const Workspace = context.window.SCLab.Workspace;
-assert(Workspace.modules.length >= 15, 'Expected grouped module catalog');
-assert(Workspace.quickTools.length >= 9, 'Expected quick scientific tools');
+assert(Workspace.modules.length >= 16, 'Expected grouped module catalog');
+assert(Workspace.quickTools.length >= 12, 'Expected quick scientific tools');
 const search = Workspace.search('stoichiometry', Calculators.definitions);
 assert(search.length && search[0].id === 'stoichiometry', 'Command search failed');
 const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: 'NASA' }], hypotheses: [], calculations: [1], experiments: [1, 2], decisions: [], documents: [] });
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Workspace.modules.length} modules.`);

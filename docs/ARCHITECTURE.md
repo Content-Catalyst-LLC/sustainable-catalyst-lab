@@ -1,6 +1,6 @@
-# Lab v0.3.0 Architecture
+# Lab v0.4.0 Architecture
 
-WordPress renders the scientific interface and proxies public source APIs through REST routes. Browser modules normalize feed records into observations and datasets, preserve provenance, and store project records locally.
+WordPress renders the scientific interface and proxies public source APIs through REST routes. Browser modules normalize feed records into observations and datasets, preserve provenance, and store project records locally. Specialized scientific modules expose pure numerical methods that are independently testable and connect their results to the shared Lab project model.
 
 ## Browser modules
 
@@ -11,25 +11,44 @@ WordPress renders the scientific interface and proxies public source APIs throug
 - `periodic-table.js`: element loading, filtering, property visualization, and detail records.
 - `stoichiometry.js`: formula parsing, exact balancing, molar mass, limiting reagents, yield, and dilution.
 - `chemistry-lab.js`: composition, solutions, acid–base, thermochemistry, electrochemistry, kinetics, empirical/molecular formulas, and analytical calibration.
-- `spectrometry.js`: raw x–y processing, transformations, peak characterization, method metadata, calibration, plotting, and export.
+- `spectrometry.js`: raw x–y processing, transformations, peak characterization, calibration, plotting, and export.
+- `physics-lab.js`: physics constants, particle reference, 35 pure numerical methods, plot generation, UI binding, and project-record routing.
 - `calculators.js`: general scientific and engineering calculator registry.
 - `datasets.js`: source-agnostic dataset inspection.
 - `observations.js`: telescope, marine, and observation summaries.
 - `workspace.js`: command catalog, quick tools, module search, and traceability.
-- `sc-lab-app.js`: application orchestration and project-connected actions.
+- `sc-lab-app.js`: application orchestration and shared project-connected actions.
+
+## Physics record flow
+
+```text
+Physics input
+→ unit and domain validation
+→ pure numerical method
+→ result and optional series
+→ browser visualization
+→ project collection
+→ experiment or notebook
+→ generated documentation
+```
+
+Different analysis types are stored in discipline-specific collections so documentation and later Workbench routing can distinguish field models, circuits, waveforms, particle events, detector analyses, nuclear records, and optical analyses.
 
 ## Project record
 
-Version 0.3.0 extends the project schema with:
+Version 0.4.0 adds:
 
 ```text
-chemicalRecords
-reactions
-spectra
-calibrations
-methods
+physicsRecords
+waveforms
+circuitAnalyses
+fieldModels
+particleEvents
+detectorAnalyses
+nuclearRecords
+opticalAnalyses
 ```
 
-Spectrum records can include raw data, processed data, processing history, method, sample identifier, peaks, numerical summary, and review state. Released analytical results should be exported or documented as fixed snapshots rather than silently overwritten.
+The original browser storage keys remain unchanged. Existing projects are normalized in place when loaded, changed, imported, or exported.
 
 Full Workbench, Decision Studio, and Site Intelligence applications remain separate and are reached through configured routes.

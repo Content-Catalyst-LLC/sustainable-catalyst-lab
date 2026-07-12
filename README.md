@@ -1,80 +1,61 @@
-# Sustainable Catalyst Lab v0.3.0
+# Sustainable Catalyst Lab v0.4.0
 
-A modular, substance-first scientific workspace for WordPress. Lab coordinates focused scientific capabilities from Sustainable Catalyst Workbench, Decision Studio, and Site Intelligence without embedding their full interfaces.
+A modular, substance-first scientific workspace for WordPress. Lab coordinates scientific observations, calculations, experiments, evidence, notebooks, datasets, and data-connected technical documentation while routing deeper work into Sustainable Catalyst Prototyping Workbench, Decision Studio, and Site Intelligence.
 
-## v0.3.0 focus
+## Major laboratory modules
 
-Version 0.3.0 expands the Chemistry Laboratory and Spectrometry Studio while preserving the live scientific observation, climate-map, telescope, marine, dataset, experiment, notebook, and documentation systems introduced in earlier releases.
+- Live scientific observation board with USGS, NASA EONET, NASA space releases, OBIS, PubMed, and arXiv connectors.
+- NASA GIBS climate and Earth-observation map workspace.
+- Scientific Dataset Inspector with CSV/JSON import, filtering, summaries, plots, and project export.
+- Chemistry Laboratory with the complete periodic table, composition, reactions, solutions, acid–base chemistry, thermochemistry, electrochemistry, kinetics, analytical calibration, and Spectrometry Studio.
+- Physics Laboratory with mechanics, waves, thermodynamics, fluids, optics, electromagnetism, circuits, quantum physics, nuclear physics, particle physics, detector analysis, and uncertainty.
+- Browser-local projects, observations, evidence, hypotheses, decisions, experiments, notebook entries, calculations, activity, and structured documentation.
 
-### Chemistry Laboratory
+## Physics v0.4.0
 
-- Complete interactive 118-element periodic table.
-- Formula parsing, molar mass, and percent composition.
-- Empirical- and molecular-formula derivation.
-- Exact reaction balancing.
-- Limiting-reagent, reaction-extent, product, and theoretical-yield calculations.
-- Structured reaction records with conditions and observations.
-- Molarity, molality, mass-percent, grams-per-liter, dilution, and Ksp solubility calculations.
-- Strong and weak acid/base calculations.
-- Buffer and strong acid/base titration models.
-- Calorimetry, Gibbs free energy, equilibrium constant, and Hess-law calculations.
-- Nernst cell potential and Faraday electrolysis calculations.
-- Arrhenius and integrated rate-law calculations.
-- Linear analytical calibration with R², residual standard deviation, LOD, LOQ, and unknown estimation.
+The Physics Laboratory includes 35 numerical methods and a structured 20-record particle reference. Major capabilities include:
 
-### Spectrometry Studio
-
-- UV–visible, infrared, Raman, fluorescence, mass-spectrometry, and generic x–y method profiles.
-- Raw CSV or whitespace x–y import.
-- Linear and rolling-minimum baseline correction.
-- Moving-mean and moving-median smoothing.
-- Maximum, area, and min–max normalization.
-- First-derivative transformation.
-- Absorbance/transmittance conversion.
-- Peak threshold, minimum-distance, and prominence controls.
-- Peak position, prominence, and FWHM characterization.
-- Area, centroid, noise, x/y range, and processing metrics.
-- Calibration fitting and unknown estimation.
-- Raw data, processed data, peak list, and transformation-history project records.
-- CSV export and notebook handoff.
-
-## Other included modules
-
-- Scientific Observation Board with USGS, NASA EONET, PubMed, arXiv, NASA space/telescope, and OBIS marine records.
-- NASA GIBS climate and Earth-observation map.
-- Scientific Dataset Inspector.
-- 34 general scientific and engineering calculators.
-- Browser-local projects, evidence, hypotheses, decisions, experiments, notebook entries, calculations, datasets, observations, maps, chemical records, reactions, spectra, calibrations, activity, and JSON import/export.
-- Data-connected Markdown and HTML documentation generation.
+- Uniform acceleration, projectile trajectories, pendula, springs, waves, acoustics, ideal gases, fluid flow, and Bernoulli analysis.
+- Refraction, thin lenses, diffraction, photon quantities, and optical records.
+- Coulomb interactions, multiple-charge electric fields, capacitor networks, magnetic fields, Lorentz motion, induction, electromagnetic propagation, skin depth, and waveguide cutoff.
+- Series RLC analysis, AC power, resonance sweeps, and RC filter response.
+- de Broglie wavelengths, particle-in-a-box levels, tunneling estimates, and hydrogen transitions.
+- Radioactive decay, activity, nuclear mass defect, and binding energy.
+- Relativistic kinematics, invariant-mass reconstruction, two-body decays, track momentum, time of flight, event significance, and cross-section estimates.
 
 ## Installation
 
-Upload `sustainable-catalyst-lab-plugin-v0.3.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, activate it, and place this shortcode on the Lab page:
+Upload `sustainable-catalyst-lab-plugin-v0.4.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, replace the prior version, activate it, and retain this page shortcode:
 
 ```text
 [sc_lab_app]
 ```
 
-Focused interfaces remain available:
+Focused interfaces are also available:
 
 ```text
 [sc_lab_periodic_table]
 [sc_lab_stoichiometry]
 [sc_lab_spectrometry]
 [sc_lab_climate_map]
+[sc_lab_physics]
 ```
 
 ## Project compatibility
 
-The plugin deliberately preserves the original browser-storage keys:
+The browser storage keys introduced in v0.1.0 remain unchanged. Existing projects are normalized non-destructively to schema version `0.4.0` and gain these collections:
 
 ```text
-scLabProjectsV010
-scLabActiveProjectV010
+physicsRecords
+waveforms
+circuitAnalyses
+fieldModels
+particleEvents
+detectorAnalyses
+nuclearRecords
+opticalAnalyses
 ```
-
-Existing v0.1.x and v0.2.0 projects are normalized to schema version `0.3.0` when read, changed, imported, or exported. No destructive migration is performed.
 
 ## Scientific boundaries
 
-The calculators and generated documents support research, education, preliminary analysis, and prototyping. They do not replace validated laboratory methods, instrument calibration, certified reference materials, safety review, regulatory methods, uncertainty analysis, or qualified professional judgment.
+The Lab supports research, education, exploratory analysis, and early prototyping. Numerical results, field models, circuit models, radiation calculations, detector analyses, and generated documentation require validation against authoritative sources, calibrated instruments, accepted uncertainty methods, applicable standards, and qualified professional review where appropriate.

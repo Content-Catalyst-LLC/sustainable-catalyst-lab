@@ -25,6 +25,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_stoichiometry', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_spectrometry', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_climate_map', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_physics', array($this, 'shortcode_focus'));
     }
 
     public function enqueue_assets() {
@@ -33,7 +34,7 @@ final class SC_Lab_Plugin {
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','workspace');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','workspace');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
@@ -74,6 +75,7 @@ final class SC_Lab_Plugin {
             'sc_lab_stoichiometry' => 'chemistry',
             'sc_lab_spectrometry' => 'science-engineering',
             'sc_lab_climate_map' => 'climate-maps',
+            'sc_lab_physics' => 'physics',
         );
         $module = isset($map[$tag]) ? $map[$tag] : 'overview';
         return $this->render_app($module, 'default');
