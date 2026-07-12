@@ -268,13 +268,7 @@ const scalarContract = Visualization.makeContract({ methodId:'test.scalar', titl
 assert(scalarContract.schema === 'sc-lab-analysis/1.0' && scalarContract.chartSpec.type === 'bar', 'Universal scalar result contract failed');
 assert(scalarContract.audit.inputFingerprint && scalarContract.audit.outputFingerprint, 'Analysis audit fingerprints missing');
 const scalarSvg = Visualization.renderSVG(scalarContract.chartSpec, { theme:'institutional', aspect:'16:9' });
-assert(
-  typeof scalarSvg === 'string' &&
-  scalarSvg.includes('<svg') &&
-  scalarSvg.includes('Scalar test') &&
-  scalarSvg.includes('Sustainable Catalyst Lab v0.9.5'),
-  'Universal SVG renderer failed'
-);
+assert(scalarSvg.includes('<svg') && scalarSvg.includes('Scalar test') && scalarSvg.includes('Sustainable Catalyst Lab v0.9.5'), 'Universal SVG renderer failed');
 assert(Visualization.csv(scalarContract).includes('metric,value') || Visualization.csv(scalarContract).includes('label,value'), 'Universal CSV export failed');
 const seriesContract = Visualization.makeContract({ methodId:'test.series', title:'Series test', outputs:{series:[{x:0,y:1},{x:1,y:3},{x:2,y:2}]} });
 assert(seriesContract.chartSpec.type === 'line' && seriesContract.chartSpec.data.length === 3, 'Series chart inference failed');

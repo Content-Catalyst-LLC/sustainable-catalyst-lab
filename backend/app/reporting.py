@@ -337,6 +337,16 @@ def generate_report_pdf(payload: dict[str, Any]) -> tuple[bytes, dict[str, Any]]
     if report["executiveSummary"]:
         story.append(Paragraph("Executive summary", styles["h1"]))
         story.append(Paragraph(escape(report["executiveSummary"]).replace("\n", "<br/>"), styles["body"]))
+    composition = report.get("composition")
+    if isinstance(composition, dict) and isinstance(composition.get("sections"), list):
+        enabled_sections = [section for section in composition["sections"] if isinstance(section, dict) and section.get("enabled", True)]
+        if enabled_sections:
+            story.append(Paragraph("Composed report sections", styles["h1"]))
+            for section in enabled_sections:
+                story.append(Paragraph(escape(_text(section.get("title") or section.get("type") or "Report section", 240)), styles["h2"]))
+                narrative = _text(section.get("content"), 12000)
+                if narrative:
+                    story.append(Paragraph(escape(narrative).replace("\n", "<br/>"), styles["body"]))
     story.append(Paragraph("Report scope and audit boundary", styles["h1"]))
     story.append(Paragraph("This report preserves the supplied calculations, equations, assumptions, warnings, source references, validation states, and software metadata. Generated results remain subject to the stated method domain and do not replace professional review where required.", styles["body"]))
     story.append(PageBreak())

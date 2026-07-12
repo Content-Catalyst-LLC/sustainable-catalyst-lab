@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-method-catalog/1.0",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "generatedAt": "2026-07-12T09:37:54.445Z",
   "languages": {
     "python": {
@@ -680,7 +680,7 @@
           "id": "diffusivity",
           "label": "Diffusivity",
           "unit": "m² s^-1",
-          "default": 1e-9,
+          "default": 1e-09,
           "type": "number",
           "validation": {
             "min": 0
@@ -818,7 +818,7 @@
           "id": "alpha",
           "label": "Expansion coefficient",
           "unit": "K^-1",
-          "default": 0.000012,
+          "default": 1.2e-05,
           "type": "number",
           "validation": null
         },
@@ -879,7 +879,7 @@
           "id": "resistivity",
           "label": "Resistivity",
           "unit": "ohm m",
-          "default": 1.68e-8,
+          "default": 1.68e-08,
           "type": "number",
           "validation": {
             "min": 0
@@ -899,7 +899,7 @@
           "id": "area",
           "label": "Area",
           "unit": "m²",
-          "default": 0.000001,
+          "default": 1e-06,
           "type": "number",
           "validation": {
             "min": 0,

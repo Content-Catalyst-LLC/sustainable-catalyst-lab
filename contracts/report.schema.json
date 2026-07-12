@@ -3,20 +3,75 @@
   "$id": "https://sustainablecatalyst.com/contracts/sc-lab-report-1.0.schema.json",
   "title": "Sustainable Catalyst Lab Report",
   "type": "object",
-  "required": ["schema", "schemaVersion", "reportType", "title", "analyses", "audit"],
+  "required": [
+    "schema",
+    "schemaVersion",
+    "reportType",
+    "title",
+    "analyses",
+    "audit"
+  ],
   "properties": {
-    "schema": { "const": "sc-lab-report/1.0" },
-    "schemaVersion": { "const": "1.0" },
-    "reportType": { "enum": ["technical-report", "decision-brief", "evidence-packet", "executive-summary"] },
-    "title": { "type": "string", "minLength": 1, "maxLength": 240 },
-    "subtitle": { "type": "string", "maxLength": 600 },
-    "executiveSummary": { "type": "string", "maxLength": 8000 },
-    "pageSize": { "enum": ["LETTER", "A4"] },
-    "project": { "type": ["object", "null"] },
-    "analyses": { "type": "array", "minItems": 1, "maxItems": 12 },
-    "includeAudit": { "type": "boolean" },
-    "createdAt": { "type": ["string", "null"] },
-    "audit": { "type": "object" }
+    "schema": {
+      "const": "sc-lab-report/1.0"
+    },
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "reportType": {
+      "enum": [
+        "technical-report",
+        "decision-brief",
+        "evidence-packet",
+        "executive-summary"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "subtitle": {
+      "type": "string",
+      "maxLength": 600
+    },
+    "executiveSummary": {
+      "type": "string",
+      "maxLength": 8000
+    },
+    "pageSize": {
+      "enum": [
+        "LETTER",
+        "A4"
+      ]
+    },
+    "project": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "analyses": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12
+    },
+    "includeAudit": {
+      "type": "boolean"
+    },
+    "createdAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "audit": {
+      "type": "object"
+    },
+    "composition": {
+      "$ref": "report-composition.schema.json",
+      "description": "Optional ordered report composition created by Lab v0.9.5."
+    }
   },
   "additionalProperties": true
 }

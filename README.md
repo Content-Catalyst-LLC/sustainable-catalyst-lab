@@ -202,3 +202,8 @@ The release suite covers PHP and JavaScript syntax, WordPress template rendering
 - Medical, safety-critical, structural, electrical, environmental, and other regulated analyses still require appropriate professional review.
 - The compute API executes only curated, versioned methods. It does not accept arbitrary source code or shell commands.
 - Interactive browser and backend PDF generation share a report contract but can differ slightly in pagination and typography.
+
+## v0.9.5 — Report Composer, visualization accessibility, and restore validation
+
+Lab v0.9.5 adds ordered report compositions with drafts and revision history, structural accessibility enhancements and audit records for scientific visualizations, and validation-first JSON/ZIP workspace restores with dry runs, conflict detection, safety backups, fingerprints, migration checks, and restore receipts. Existing v0.9.4 PDF and Decision Studio contracts remain compatible.
+

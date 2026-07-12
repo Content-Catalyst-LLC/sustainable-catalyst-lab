@@ -13,7 +13,7 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.9.4"
+      "const": "0.9.5"
     },
     "id": {
       "type": "string"
@@ -369,6 +369,62 @@
     },
     "decisionStudioHandoffs": {
       "type": "array"
+    },
+    "reportDrafts": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "reportRevisions": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "reportPackages": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "restorePreflights": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "restoreReceipts": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "accessibilityAudits": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "migrationValidationRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": true

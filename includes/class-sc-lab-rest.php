@@ -34,7 +34,7 @@ class SC_Lab_REST {
             'version'=>SC_LAB_VERSION,
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation')
         ));
     }
 

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/accessibility-audit.schema.json",
+  "title": "Sustainable Catalyst Lab visualization accessibility audit",
+  "type": "object",
+  "required": ["format", "applicationVersion", "id", "createdAt", "summary"],
+  "properties": {
+    "format": { "const": "sc-lab-accessibility-audit/1.0" },
+    "applicationVersion": { "type": "string" },
+    "id": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "required": ["status", "issueCount", "visualizationCount", "focusableVisualizationCount", "missingLabels", "missingDescriptions", "missingDataTables", "unlabeledControls"],
+      "properties": {
+        "status": { "enum": ["pass", "review"] },
+        "issueCount": { "type": "integer", "minimum": 0 },
+        "visualizationCount": { "type": "integer", "minimum": 0 },
+        "focusableVisualizationCount": { "type": "integer", "minimum": 0 },
+        "missingLabels": { "type": "integer", "minimum": 0 },
+        "missingDescriptions": { "type": "integer", "minimum": 0 },
+        "missingDataTables": { "type": "integer", "minimum": 0 },
+        "unlabeledControls": { "type": "integer", "minimum": 0 },
+        "reducedMotionRequested": { "type": "boolean" },
+        "forcedColorsActive": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

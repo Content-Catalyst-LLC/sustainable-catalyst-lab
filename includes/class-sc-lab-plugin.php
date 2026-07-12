@@ -37,6 +37,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_code_switcher', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_reports', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_report_studio', array($this, 'shortcode_focus'));
+  add_shortcode('sc_lab_report_composer', array($this, 'shortcode_focus'));
     }
 
     public function enqueue_assets() {
@@ -44,8 +45,9 @@ final class SC_Lab_Plugin {
         $this->assets_enqueued = true;
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
+  wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
@@ -114,6 +116,7 @@ final class SC_Lab_Plugin {
             'sc_lab_code_switcher' => 'code-studio',
             'sc_lab_reports' => 'report-studio',
             'sc_lab_report_studio' => 'report-studio',
+  'sc_lab_report_composer' => 'report-studio',
         );
         $module = isset($map[$tag]) ? $map[$tag] : 'overview';
         return $this->render_app($module, 'default');

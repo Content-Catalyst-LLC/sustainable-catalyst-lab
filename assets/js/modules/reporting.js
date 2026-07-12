@@ -2,7 +2,7 @@
   'use strict';
   const Lab = w.SCLab = w.SCLab || {};
   const U = Lab.util;
-  const VERSION = '0.9.4';
+  const VERSION = '0.9.5';
   const HANDOFF_KEY = 'scLabDecisionStudioHandoffV2';
   const REPORT_PREF_KEY = 'scLabReportPrefsV094';
 
@@ -56,8 +56,7 @@
       title:payload.title || `${project?.name || 'Sustainable Catalyst Lab'} analysis report`,
       subtitle:payload.subtitle || 'Auditable calculations, figures, assumptions, validation, and provenance',
       executiveSummary:payload.executiveSummary || '', pageSize:payload.pageSize || 'LETTER',
-      createdAt:payload.createdAt || U.now(), project, analyses,
-      sections:payload.sections || ['executive-summary','analysis','figures','tables','assumptions','warnings','sources','code-runtime','audit'],
+      createdAt:payload.createdAt || U.now(), project, analyses, composition:payload.composition || null, sections:payload.sections || ['executive-summary','analysis','figures','tables','assumptions','warnings','sources','code-runtime','audit'],
       includeAudit:payload.includeAudit !== false,
       figures:analyses.flatMap(analysis => analysis.sceneSpec ? [] : [{
         id:`${analysis.id || analysis.methodId}-figure`, title:analysis.title || analysis.methodId,
@@ -77,7 +76,7 @@
     report.audit = {
       application:'Sustainable Catalyst Lab', applicationVersion:VERSION, reportContractVersion:'1.0',
       reportFingerprint:U.fingerprint({ title:report.title, reportType:report.reportType, analyses:report.analyses.map(a => a.audit || a.id || a.methodId), createdAt:report.createdAt }),
-      analysisFingerprints:report.analyses.map(a => a.audit?.outputFingerprint || U.fingerprint(a.outputs || {})),
+      analysisFingerprints:report.analyses.map(a => a.audit?.outputFingerprint || U.fingerprint(a.outputs || {})), compositionFingerprint:report.composition?U.fingerprint(report.composition):null,
       generatedAt:report.createdAt
     };
     return report;
@@ -89,7 +88,7 @@
       packetType:'scientific-report', schemaVersion:'2.0',
       origin:{ application:'Sustainable Catalyst Lab', version:VERSION, reportSchema:report.schema },
       createdAt:U.now(), project:report.project || null,
-      report:{ id:report.id, reportType:report.reportType, title:report.title, subtitle:report.subtitle, executiveSummary:report.executiveSummary, sections:report.sections, audit:report.audit },
+      report:{ id:report.id, reportType:report.reportType, title:report.title, subtitle:report.subtitle, executiveSummary:report.executiveSummary, sections:report.sections, composition:report.composition || null, audit:report.audit },
       analysis:analyses[0] || {}, analyses,
       charts:report.figures || [], scenes:report.scenes || [], tables:report.tables || [], claims:[],
       assumptions:analyses.flatMap(a => list(a.assumptions)),
@@ -156,7 +155,7 @@
     text(report.title,23,'F2',0,28);if(report.subtitle)text(report.subtitle,11,'F1',0,15);y-=10;
     kv([['Report type',report.reportType],['Project',report.project?.name||'Unassigned'],['Generated',report.createdAt],['Analyses',report.analyses.length],['Fingerprint',report.audit?.reportFingerprint||'']]);
     if(report.executiveSummary){heading('Executive summary');text(report.executiveSummary,9.5,'F1',0,13);}
-    heading('Audit boundary');text('This report preserves supplied calculations, equations, assumptions, warnings, sources, validation states, and software metadata. Results remain bounded by the stated method domain and do not replace professional review where required.',9,'F1',0,12.5);
+    if(report.composition?.sections?.length){heading('Composed report sections');report.composition.sections.filter(section=>section&&section.enabled!==false).forEach(section=>{heading(section.title||section.type||'Report section',2);if(section.content)text(section.content,9,'F1',0,12.5);});} heading('Audit boundary');text('This report preserves supplied calculations, equations, assumptions, warnings, sources, validation states, and software metadata. Results remain bounded by the stated method domain and do not replace professional review where required.',9,'F1',0,12.5);
     report.analyses.forEach((analysis,index)=>{
       ensure(80);heading(`${index+1}. ${analysis.title||analysis.methodId}`);kv([['Method',analysis.methodId],['Version',analysis.methodVersion||''],['Domain',analysis.domain||''],['Status',analysis.status||'unreviewed'],['Created',analysis.createdAt||'']]);
       if(analysis.equation){heading('Equation or method',2);text(analysis.equation,8,'F3',4,11);}
@@ -199,7 +198,7 @@
     el.status.textContent=rows.length?`${rows.length} report-ready analyses are available.`:'No report-ready analyses are available.';
   }
   function selectedAnalyses(root) { const rows=root._scLabReportAnalyses||[];return [...root.querySelectorAll('[data-report-analysis-index]:checked')].map(input=>rows[Number(input.dataset.reportAnalysisIndex)]).filter(Boolean).slice(0,12); }
-  function buildFromForm(root,projects) { const el=reportElements(root), prefs={reportType:el.type.value,pageSize:el.pageSize.value,includeAudit:el.audit.checked};savePrefs(prefs);return makeReport({title:el.title.value.trim(),subtitle:el.subtitle.value.trim(),reportType:el.type.value,pageSize:el.pageSize.value,executiveSummary:el.summary.value.trim(),includeAudit:el.audit.checked,project:{id:projects.get().id,name:projects.get().name,schemaVersion:projects.get().schemaVersion},analyses:selectedAnalyses(root)}); }
+  function reportComposition(root) { return root._scLabReportComposition || w.SCLabV095CurrentComposition || null; } function compositionSections(root) { const composition=reportComposition(root); const sections=(composition?.sections||[]).filter(section=>section&&section.enabled!==false).map(section=>section.type); return sections.length?sections:undefined; } function buildFromForm(root,projects) { const el=reportElements(root), prefs={reportType:el.type.value,pageSize:el.pageSize.value,includeAudit:el.audit.checked};savePrefs(prefs);return makeReport({title:el.title.value.trim(),subtitle:el.subtitle.value.trim(),reportType:el.type.value,pageSize:el.pageSize.value,executiveSummary:el.summary.value.trim(),includeAudit:el.audit.checked,project:{id:projects.get().id,name:projects.get().name,schemaVersion:projects.get().schemaVersion},composition:reportComposition(root),sections:compositionSections(root),analyses:selectedAnalyses(root)}); }
   function renderPreview(root,report) { const el=reportElements(root);root._scLabCurrentReport=report;el.preview.innerHTML=`<header><span>${U.esc(report.reportType.replace(/-/g,' ').toUpperCase())}</span><h4>${U.esc(report.title)}</h4><p>${U.esc(report.subtitle)}</p></header>${report.executiveSummary?`<section><h5>Executive summary</h5><p>${U.esc(report.executiveSummary)}</p></section>`:''}<section><h5>Included analyses</h5>${report.analyses.map((a,i)=>`<article><strong>${i+1}. ${U.esc(a.title||a.methodId)}</strong><span>${U.esc(a.methodId)} · ${U.esc(a.status||'unreviewed')}</span><p>${U.esc(a.equation||'Structured calculation and audit record.')}</p></article>`).join('')}</section><footer>Report fingerprint: <code>${U.esc(report.audit.reportFingerprint)}</code></footer>`;el.meta.textContent=JSON.stringify({schema:report.schema,reportType:report.reportType,analysisCount:report.analyses.length,figureCount:report.figures.length,sceneCount:report.scenes.length,tableCount:report.tables.length,audit:report.audit},null,2);el.status.textContent=`Report prepared with ${report.analyses.length} analyses, ${report.figures.length} figures, and ${report.tables.length} tables.`;return report; }
   function compose(root,projects) { try{return renderPreview(root,buildFromForm(root,projects));}catch(error){U.toast(root,error.message);reportElements(root).status.textContent=error.message;return null;} }
   function saveReport(root,projects,report) { projects.add('reports',{type:report.reportType,title:report.title,report,audit:report.audit},`PDF report saved: ${report.title}`);(report.figures||[]).forEach(figure=>projects.add('reportFigures',{title:figure.title,figure,reportId:report.id},`Report figure saved: ${figure.title}`));U.toast(root,'Report and figures saved to the active project.'); }
@@ -208,7 +207,7 @@
   function init(root,projects) {
     const panel=root.querySelector('[data-lab-module="report-studio"]');if(!panel)return;const el=reportElements(root),prefs=loadPrefs();el.type.value=prefs.reportType;el.pageSize.value=prefs.pageSize;el.audit.checked=prefs.includeAudit!==false;
     const refresh=()=>renderAnalysisList(root,projects);refresh();
-    root.addEventListener('sc-lab:analysis',()=>setTimeout(refresh,60));
+    document.addEventListener('sc-lab-report-composition-applied',event=>{root._scLabReportComposition=event.detail?.composition||null;if(selectedAnalyses(root).length)compose(root,projects);}); root.addEventListener('sc-lab:analysis',()=>setTimeout(refresh,60));
     root.addEventListener('sc-lab:open-report',event=>{if(event.detail)root._scLabLatestResult=event.detail;root.querySelector('[data-lab-module-button="report-studio"]')?.click();setTimeout(()=>{refresh();const first=root.querySelector('[data-report-analysis-index]');if(first)first.checked=true;compose(root,projects);},30);});
     root.querySelector('[data-report-load-current]').addEventListener('click',()=>{refresh();const first=root.querySelector('[data-report-analysis-index]');if(first)first.checked=true;compose(root,projects);});
     root.querySelector('[data-report-select-all]').addEventListener('click',()=>{root.querySelectorAll('[data-report-analysis-index]').forEach((input,index)=>input.checked=index<12);compose(root,projects);});

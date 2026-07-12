@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-execution-catalog/1.0",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "languages": {
     "python": {
       "label": "Python",
@@ -609,7 +609,7 @@
       "equation": "λmax=b/T; L=4πr²σT⁴",
       "constants": {
         "wien": 0.002897771955,
-        "sigma": 5.670374419e-8
+        "sigma": 5.670374419e-08
       },
       "inputs": [
         {
@@ -1263,7 +1263,7 @@
           "id": "diffusivity",
           "label": "Diffusivity",
           "unit": "m² s^-1",
-          "default": 1e-9,
+          "default": 1e-09,
           "type": "number",
           "validation": {
             "min": 0
@@ -1488,7 +1488,7 @@
           "id": "alpha",
           "label": "Expansion coefficient",
           "unit": "K^-1",
-          "default": 0.000012,
+          "default": 1.2e-05,
           "type": "number",
           "validation": null
         },
@@ -1591,7 +1591,7 @@
           "id": "resistivity",
           "label": "Resistivity",
           "unit": "ohm m",
-          "default": 1.68e-8,
+          "default": 1.68e-08,
           "type": "number",
           "validation": {
             "min": 0
@@ -1611,7 +1611,7 @@
           "id": "area",
           "label": "Area",
           "unit": "m²",
-          "default": 0.000001,
+          "default": 1e-06,
           "type": "number",
           "validation": {
             "min": 0,

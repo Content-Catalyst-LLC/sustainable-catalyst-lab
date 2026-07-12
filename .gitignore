@@ -6,3 +6,9 @@ coverage/
 .env
 .env.*
 !.env.example
+
+# Generated Python, Node, virtual-environment, and OS artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/

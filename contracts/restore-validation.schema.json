@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/restore-validation.schema.json",
+  "title": "Sustainable Catalyst Lab restore validation",
+  "type": "object",
+  "required": [
+    "format",
+    "applicationVersion",
+    "id",
+    "createdAt",
+    "mode",
+    "status",
+    "errors",
+    "warnings",
+    "incomingFingerprint",
+    "dryRun"
+  ],
+  "properties": {
+    "format": {
+      "const": "sc-lab-restore-validation/1.0"
+    },
+    "applicationVersion": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mode": {
+      "enum": [
+        "copy",
+        "merge",
+        "replace"
+      ]
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "review",
+        "blocked"
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "incomingFingerprint": {
+      "type": "string"
+    },
+    "currentFingerprint": {
+      "type": "string"
+    },
+    "incomingCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "currentCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "dryRun": {
+      "type": "object",
+      "required": [
+        "mode",
+        "currentProjectCount",
+        "incomingProjectCount",
+        "expectedProjectCount",
+        "destructive"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "copy",
+            "merge",
+            "replace"
+          ]
+        },
+        "currentProjectCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "incomingProjectCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expectedProjectCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "destructive": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-f]{64}|fnv1a-[0-9a-f]{8})$"
+    }
+  },
+  "additionalProperties": true
+}

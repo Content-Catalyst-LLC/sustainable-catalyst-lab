@@ -86,6 +86,7 @@ class JobRequest(StrictModel):
 
 
 class ReportRequest(StrictModel):
+    model_config = ConfigDict(extra="allow")
     reportType: Literal["technical-report", "decision-brief", "evidence-packet", "executive-summary"] = "technical-report"
     title: str = Field(min_length=1, max_length=240)
     subtitle: str = Field(default="", max_length=600)

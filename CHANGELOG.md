@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.5 — 2026-07-12
+
+- Added four Report Composer templates, ordered sections, autosave, project drafts, and revision history.
+- Added visualization semantics, keyboard focus, data-table alternatives, reduced-motion support, preview modes, and accessibility audit records.
+- Added JSON/compatible-ZIP restore preflight, conflict analysis, copy/merge/replace dry runs, typed replace confirmation, automatic safety backups, fingerprints, receipts, and post-restore integrity checks.
+- Added synthetic legacy-project migration validation for v0.1.x through v0.9.4-shaped records.
+- Added report-composition, restore-validation, and accessibility-audit contracts.
+- Removed tracked Python cache files and ignored generated caches.
+
 ## 0.9.4 - PDF Reports and Decision Studio Handoff
 
 - Added Report Studio for technical reports, decision briefs, evidence packets, and executive summaries containing one to twelve analyses.
