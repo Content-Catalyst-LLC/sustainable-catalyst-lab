@@ -460,7 +460,7 @@
     qs(root, '[data-chem-notebook]').addEventListener('click', () => createNote({ title: 'Chemistry laboratory note', tagsText: 'chemistry, laboratory' }));
 
     function recordCalculation(type, input, result, collection = 'calculations') {
-      projects.add(collection, { type, input, result, methodVersion: '0.4.0' }, `${type} completed`);
+      projects.add(collection, { type, input, result, methodVersion: '0.4.1' }, `${type} completed`);
       return result;
     }
 
@@ -780,7 +780,7 @@
           notes: project.notes.length,
           calculations: project.calculations.length,
           maps: project.maps.length,
-          physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses'].reduce((total,key)=>total+(project[key]||[]).length,0)
+          physics: ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'].reduce((total,key)=>total+(project[key]||[]).length,0)
         }
       };
       return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -793,7 +793,7 @@
       sections.push('## Evidence', '', project.evidence.length ? project.evidence.map(item => `- **${item.title}** — ${item.source || 'Source'}${item.url ? ` — ${item.url}` : ''}`).join('\n') : 'No evidence records.', '');
       sections.push('## Hypotheses', '', project.hypotheses.length ? project.hypotheses.map(item => `- **${item.title}** — ${item.statement || ''}`).join('\n') : 'No hypotheses recorded.', '');
       sections.push('## Calculations and analyses', '', project.calculations.length ? project.calculations.map(item => `- **${item.type || 'Calculation'}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No calculations recorded.', '');
-      const physicsCollections = ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses'];
+      const physicsCollections = ['physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords'];
       const physicsRecords = physicsCollections.flatMap(key => (project[key] || []).map(item => ({...item, collection:key})));
       sections.push('## Physics analyses', '', physicsRecords.length ? physicsRecords.map(item => `- **${item.type || item.collection}** — ${JSON.stringify(item.result || {})}`).join('\n') : 'No physics analyses recorded.', '');
       sections.push('## Experiments', '', project.experiments.length ? project.experiments.map(item => `### ${item.title}\n\nQuestion: ${item.question || ''}\n\nHypothesis: ${item.hypothesis || ''}\n\nMethod: ${item.method || ''}\n\nStatus: ${item.status || 'planned'}`).join('\n\n') : 'No experiments recorded.', '');

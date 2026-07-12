@@ -1,7 +1,7 @@
 <?php
 $root = dirname(__DIR__);
 define('ABSPATH', $root);
-define('SC_LAB_VERSION', '0.4.0');
+define('SC_LAB_VERSION', '0.4.1');
 function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 $sc_lab_initial_module = 'overview';
@@ -17,8 +17,10 @@ ok_render(substr_count($html, 'data-lab-command-input') === 1, 'Expected one com
 ok_render(substr_count($html, 'data-record-dialog') === 1, 'Expected one record dialog');
 ok_render(strpos($html, '>Project<') < strpos($html, '>Observe<') && strpos($html, '>Observe<') < strpos($html, '>Analyze<') && strpos($html, '>Analyze<') < strpos($html, '>Record<'), 'Navigation groups are out of order');
 ok_render(strpos($html, 'Physics, electromagnetism, and particle physics laboratory') !== false, 'Physics laboratory missing');
-ok_render(substr_count($html, 'data-physics-tool=') >= 25, 'Expected substantive physics tools');
+ok_render(substr_count($html, 'data-physics-tool=') >= 27, 'Expected substantive physics tools');
+ok_render(strpos($html, 'data-physics-run-benchmarks') !== false, 'Physics validation controls missing');
+ok_render(strpos($html, 'data-physics-benchmark-table') !== false, 'Physics benchmark table missing');
 ok_render(substr_count($html, '<section') === substr_count($html, '</section>'), 'Section tags are unbalanced');
 ok_render(substr_count($html, '<div') === substr_count($html, '</div>'), 'Div tags are unbalanced');
-ok_render(strpos($html, 'v0.4.0') !== false, 'Rendered version is incorrect');
+ok_render(strpos($html, 'v0.4.1') !== false, 'Rendered version is incorrect');
 echo "Template render tests passed.\n";

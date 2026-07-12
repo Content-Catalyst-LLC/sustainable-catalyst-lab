@@ -1,37 +1,38 @@
-# Sustainable Catalyst Lab v0.4.0
+# Sustainable Catalyst Lab v0.4.1
 
-A modular, substance-first scientific workspace for WordPress. Lab coordinates scientific observations, calculations, experiments, evidence, notebooks, datasets, and data-connected technical documentation while routing deeper work into Sustainable Catalyst Prototyping Workbench, Decision Studio, and Site Intelligence.
+Sustainable Catalyst Lab is a modular, substance-first scientific workspace for WordPress. Version 0.4.1 strengthens the Physics Laboratory with explicit method metadata, domain validation, numerical benchmark cases, improved plots, comparison baselines, uncertainty propagation, and reproducible validation records.
 
-## Major laboratory modules
+## Major scientific modules
 
-- Live scientific observation board with USGS, NASA EONET, NASA space releases, OBIS, PubMed, and arXiv connectors.
-- NASA GIBS climate and Earth-observation map workspace.
-- Scientific Dataset Inspector with CSV/JSON import, filtering, summaries, plots, and project export.
-- Chemistry Laboratory with the complete periodic table, composition, reactions, solutions, acid–base chemistry, thermochemistry, electrochemistry, kinetics, analytical calibration, and Spectrometry Studio.
-- Physics Laboratory with mechanics, waves, thermodynamics, fluids, optics, electromagnetism, circuits, quantum physics, nuclear physics, particle physics, detector analysis, and uncertainty.
-- Browser-local projects, observations, evidence, hypotheses, decisions, experiments, notebook entries, calculations, activity, and structured documentation.
+- Live scientific signals from Earth, natural-event, space, marine, PubMed, and arXiv sources.
+- Climate and Earth-observation map workspace.
+- Scientific Dataset Inspector and source registry.
+- Complete 118-element periodic table.
+- Chemistry Laboratory with composition, reactions, solutions, acid–base, thermochemistry, electrochemistry, kinetics, and calibration.
+- Spectrometry Studio with raw-data preservation, baseline correction, smoothing, normalization, derivatives, conversions, peak characterization, calibration, plotting, and export.
+- Physics Laboratory covering mechanics, waves, thermodynamics, fluids, optics, electromagnetism, circuits, quantum physics, nuclear physics, particle physics, detectors, and measurement.
+- Experiments, evidence, hypotheses, decisions, notebook records, project activity, and data-connected documentation.
 
-## Physics v0.4.0
+## Physics v0.4.1 additions
 
-The Physics Laboratory includes 35 numerical methods and a structured 20-record particle reference. Major capabilities include:
-
-- Uniform acceleration, projectile trajectories, pendula, springs, waves, acoustics, ideal gases, fluid flow, and Bernoulli analysis.
-- Refraction, thin lenses, diffraction, photon quantities, and optical records.
-- Coulomb interactions, multiple-charge electric fields, capacitor networks, magnetic fields, Lorentz motion, induction, electromagnetic propagation, skin depth, and waveguide cutoff.
-- Series RLC analysis, AC power, resonance sweeps, and RC filter response.
-- de Broglie wavelengths, particle-in-a-box levels, tunneling estimates, and hydrogen transitions.
-- Radioactive decay, activity, nuclear mass defect, and binding energy.
-- Relativistic kinematics, invariant-mass reconstruction, two-body decays, track momentum, time of flight, event significance, and cross-section estimates.
+- Method registry with equations, SI/natural-unit declarations, assumptions, and output descriptions.
+- Per-run validation states: `VALIDATED`, `WARNING`, and `INVALID`.
+- Physical-domain checks for trajectory angles, pendulum amplitude, ideal-gas limits, relativistic speeds, detector time of flight, waveguide cutoff, quantum numbers, binding energy, and other method boundaries.
+- Nine deterministic benchmark cases spanning mechanics, electromagnetism, circuits, photon physics, nuclear decay, and particle decay.
+- Improved accessible SVG plots with grid lines, axes, zero lines, logarithmic frequency support, legends, baseline comparison, SVG export, and CSV export.
+- Power-law uncertainty propagation.
+- Uncertainty-weighted mean, chi-square, reduced chi-square, and Birge ratio.
+- Project collection for validation reports.
 
 ## Installation
 
-Upload `sustainable-catalyst-lab-plugin-v0.4.0.zip` through **Plugins → Add New Plugin → Upload Plugin**, replace the prior version, activate it, and retain this page shortcode:
+Upload `sustainable-catalyst-lab-plugin-v0.4.1.zip` through **Plugins → Add New → Upload Plugin**, replace the current plugin, activate it, and keep this shortcode on the Lab page:
 
 ```text
 [sc_lab_app]
 ```
 
-Focused interfaces are also available:
+Focused interfaces remain available:
 
 ```text
 [sc_lab_periodic_table]
@@ -41,21 +42,10 @@ Focused interfaces are also available:
 [sc_lab_physics]
 ```
 
-## Project compatibility
+## Compatibility
 
-The browser storage keys introduced in v0.1.0 remain unchanged. Existing projects are normalized non-destructively to schema version `0.4.0` and gain these collections:
-
-```text
-physicsRecords
-waveforms
-circuitAnalyses
-fieldModels
-particleEvents
-detectorAnalyses
-nuclearRecords
-opticalAnalyses
-```
+The original browser-storage keys remain unchanged. Projects from v0.1.x through v0.4.0 are normalized in place to schema version `0.4.1`. No destructive migration is performed.
 
 ## Scientific boundaries
 
-The Lab supports research, education, exploratory analysis, and early prototyping. Numerical results, field models, circuit models, radiation calculations, detector analyses, and generated documentation require validation against authoritative sources, calibrated instruments, accepted uncertainty methods, applicable standards, and qualified professional review where appropriate.
+Validation in this release tests numerical implementation and stated model constraints. It does not certify experimental apparatus, engineering safety, radiation practice, high-voltage systems, RF exposure, regulatory compliance, or fitness for safety-critical use. Results require review against accepted methods, calibrated instruments, uncertainty budgets, source data, and qualified professional judgment where applicable.

@@ -2,8 +2,11 @@ const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 const root = path.resolve(__dirname, '..');
+const storage = new Map();
+const localStorage = { getItem(key) { return storage.has(key) ? storage.get(key) : null; }, setItem(key, value) { storage.set(key, String(value)); }, removeItem(key) { storage.delete(key); } };
 const context = {
   window: {},
+  localStorage,
   console,
   setTimeout,
   clearTimeout,
@@ -11,6 +14,7 @@ const context = {
   URL: { createObjectURL() { return ''; }, revokeObjectURL() {} }
 };
 context.window.window = context.window;
+context.window.localStorage = localStorage;
 vm.createContext(context);
 function load(file) {
   vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), context, { filename: file });
@@ -19,6 +23,7 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 load('assets/js/modules/core.js');
+load('assets/js/modules/projects.js');
 load('assets/js/modules/stoichiometry.js');
 load('assets/js/modules/chemistry-lab.js');
 load('assets/js/modules/spectrometry.js');
@@ -26,8 +31,13 @@ load('assets/js/modules/calculators.js');
 load('assets/js/modules/datasets.js');
 load('assets/js/modules/observations.js');
 load('assets/js/modules/physics-lab.js');
+load('assets/js/modules/physics-validation.js');
 load('assets/js/modules/workspace.js');
 
+const ProjectModel = context.window.SCLab.ProjectModel;
+const blankProject = ProjectModel.blank('Validation project');
+assert(blankProject.schemaVersion === '0.4.1', 'Project schema version failed');
+assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 const elements = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/elements.json'), 'utf8'));
 assert(elements.length === 118, 'Expected 118 elements');
 
@@ -89,6 +99,14 @@ const twoBody = Physics.tools.twoBodyDecay({ parentMass: 125.25, mass1: 0, mass2
 assert(Math.abs(twoBody.daughterMomentum - 62.625) < 1e-9, 'Two-body decay failed');
 const detector = Physics.tools.detector({ B:2, radius:1.2, charge:1, distance:3, time:1.2e-8, events:1250, background:400, efficiency:0.82, luminosity:100 });
 assert(detector.transverseMomentumGeVPerC > 0.7 && detector.signalEvents === 850, 'Detector analysis failed');
+const validationReport = Physics.validation.runBenchmarks();
+assert(validationReport.failed === 0 && validationReport.total >= 9, 'Physics benchmark validation failed');
+const detectorInvalid = Physics.tools.detector({ B:2, radius:1.2, charge:1, distance:4, time:1e-9, events:100, background:10, efficiency:0.8, luminosity:50 });
+assert(detectorInvalid._validation.status === 'invalid', 'Superluminal time-of-flight should fail validation');
+const propagated = Physics.tools.powerLawUncertainty({ coefficient:1, variables:[{name:'x',value:2,uncertainty:0.1,power:2},{name:'y',value:3,uncertainty:0.2,power:1}] });
+assert(Math.abs(propagated.value - 12) < 1e-12 && propagated.standardUncertainty > 1.3 && propagated.standardUncertainty < 1.5, 'Power-law uncertainty propagation failed');
+const weighted = Physics.tools.weightedMean({ measurements:[{value:9.8,uncertainty:0.1},{value:10,uncertainty:0.2}] });
+assert(weighted.weightedMean > 9.83 && weighted.weightedMean < 9.85 && weighted.reducedChiSquare > 0, 'Weighted mean failed');
 
 const Calculators = context.window.SCLab.Calculators;
 assert(Calculators.definitions.length >= 30, 'Expected at least 30 calculators');
@@ -104,4 +122,4 @@ const trace = Workspace.traceCounts({ evidence: [{ source: 'USGS' }, { source: '
 assert(trace[0].value === 2 && trace[5].value === 1 && trace[6].value === 2, 'Traceability counts failed');
 assert(Workspace.projectTotal({ evidence: [1], experiments: [], hypotheses: [], decisions: [], notes: [1], calculations: [], documents: [], maps: [] }) === 2, 'Project total failed');
 
-const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${Workspace.modules.length} modules.`);
+const D=context.window.SCLab.Datasets;const ds=D.parseCSV('x,y\n1,2\n3,4');assert(ds.rows.length===2&&D.summary(ds).numeric.y.mean===3,'Dataset inspector failed');const O=context.window.SCLab.Observations;assert(O.telescope({title:'JWST deep field'})==='JWST','Telescope classification failed');console.log(`JS tests passed: ${elements.length} elements, ${Calculators.definitions.length} calculators, ${Object.keys(Physics.tools).length} physics methods, ${validationReport.total} validation benchmarks, ${Workspace.modules.length} modules.`);

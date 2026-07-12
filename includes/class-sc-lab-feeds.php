@@ -27,7 +27,7 @@ class SC_Lab_Feeds {
     }
 
     private static function remote_json($url, $args = array()) {
-        $args = wp_parse_args($args, array('timeout'=>18, 'headers'=>array('Accept'=>'application/json','User-Agent'=>'SustainableCatalystLab/0.4.0 (+https://sustainablecatalyst.com/lab/)')));
+        $args = wp_parse_args($args, array('timeout'=>18, 'headers'=>array('Accept'=>'application/json','User-Agent'=>'SustainableCatalystLab/0.4.1 (+https://sustainablecatalyst.com/lab/)')));
         $response = wp_safe_remote_get($url, $args);
         if (is_wp_error($response)) { return $response; }
         $code = wp_remote_retrieve_response_code($response);
@@ -128,7 +128,7 @@ class SC_Lab_Feeds {
     private static function arxiv($limit, $params) {
         $query = sanitize_text_field(isset($params['q']) ? $params['q'] : 'all:physics OR all:astronomy OR all:materials OR all:engineering');
         $url = add_query_arg(array('search_query'=>$query,'start'=>0,'max_results'=>$limit,'sortBy'=>'submittedDate','sortOrder'=>'descending'), 'https://export.arxiv.org/api/query');
-        $response = wp_safe_remote_get($url, array('timeout'=>18,'headers'=>array('User-Agent'=>'SustainableCatalystLab/0.4.0 (+https://sustainablecatalyst.com/lab/)')));
+        $response = wp_safe_remote_get($url, array('timeout'=>18,'headers'=>array('User-Agent'=>'SustainableCatalystLab/0.4.1 (+https://sustainablecatalyst.com/lab/)')));
         if (is_wp_error($response)) { return $response; }
         $body = wp_remote_retrieve_body($response); if (!function_exists('simplexml_load_string')) { return new WP_Error('xml_unavailable','XML parser unavailable.',array('status'=>500)); }
         $xml = simplexml_load_string($body); if (!$xml) { return new WP_Error('source_parse_error','arXiv returned invalid XML.',array('status'=>502)); }

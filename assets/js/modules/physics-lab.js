@@ -291,10 +291,10 @@
         optics:'opticalAnalyses',diffraction:'opticalAnalyses',photon:'opticalAnalyses',
         decay:'nuclearRecords',binding:'nuclearRecords',
         relativistic:'particleEvents',invariantMass:'particleEvents',twoBodyDecay:'particleEvents',detector:'detectorAnalyses',
-        deBroglie:'physicsRecords',particleBox:'physicsRecords',tunneling:'physicsRecords',hydrogen:'physicsRecords',uncertainty:'physicsRecords'
+        deBroglie:'physicsRecords',particleBox:'physicsRecords',tunneling:'physicsRecords',hydrogen:'physicsRecords',uncertainty:'physicsRecords',powerLawUncertainty:'physicsValidationRecords',weightedMean:'physicsValidationRecords'
       };
       const collection=map[card._lastPhysics.id]||'physicsRecords';
-      projects.add(collection,{type:card._lastPhysics.id,inputs:card._lastPhysics.input,result:compactResult(card._lastPhysics.result),assumptions:'Calculated with Lab v0.4.0 constants and stated inputs.'},`Physics analysis saved: ${card._lastPhysics.id}`);
+      projects.add(collection,{type:card._lastPhysics.id,inputs:card._lastPhysics.input,result:compactResult(card._lastPhysics.result),assumptions:'Calculated with Lab v0.4.1 constants, validation checks, and stated inputs.'},`Physics analysis saved: ${card._lastPhysics.id}`);
       U.toast(root,'Physics analysis saved to the active project.');
     }));
 
