@@ -4,6 +4,20 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+# SC_LAB_CURRENT_TYPESCRIPT_SELECTION
+NODE_TOOLS_BIN="${SC_LAB_NODE_TOOLS_BIN:-$HOME/Downloads/.sc-lab-node-tools/node_modules/.bin}"
+
+if [[ -d "$NODE_TOOLS_BIN" ]]; then
+  export PATH="$NODE_TOOLS_BIN:$PATH"
+fi
+
+if ! command -v tsc >/dev/null 2>&1; then
+  echo "FAIL: TypeScript compiler not found." >&2
+  echo "Expected Lab toolchain:" >&2
+  echo "  $NODE_TOOLS_BIN/tsc" >&2
+  exit 1
+fi
+
 # SC_LAB_CURRENT_PYTHON_SELECTION
 PYTHON_BIN="${SC_LAB_PYTHON_BIN:-}"
 
