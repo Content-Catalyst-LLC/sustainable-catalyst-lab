@@ -1,3 +1,11 @@
+## 0.21.0 — Biochemistry and Molecular Analysis
+
+- Added 48 auditable biochemical and molecular-analysis methods.
+- Added browser calculators and deterministic benchmarks.
+- Added WordPress and FastAPI methods/run endpoints.
+- Added project, notebook, visualization, and audit records.
+- Added responsive presentation and responsible-use boundaries.
+
 # Changelog
 
 ## 0.20.0

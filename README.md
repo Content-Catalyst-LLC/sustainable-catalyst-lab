@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.21.0 — Biochemistry and Molecular Analysis
+
+The current release adds 48 formula-visible biochemical and molecular-analysis methods, deterministic JavaScript/PHP/Python benchmarks, browser calculators, WordPress REST routes, FastAPI routes, project/notebook handoffs, and responsible-use boundaries.
+
 # Sustainable Catalyst Lab v0.20.0
 
 Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with an optional Render compute backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.

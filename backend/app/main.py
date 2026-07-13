@@ -233,3 +233,13 @@ app.include_router(rocket_propulsion_spaceflight_router)
 
 from .microbiology_laboratory_routes import router as microbiology_laboratory_router
 app.include_router(microbiology_laboratory_router)
+
+
+# SC_LAB_V0210_BIOCHEMISTRY_ROUTER
+from .biochemistry_molecular_analysis_routes import (
+    router as biochemistry_molecular_analysis_router,
+)
+
+app.include_router(
+    biochemistry_molecular_analysis_router
+)

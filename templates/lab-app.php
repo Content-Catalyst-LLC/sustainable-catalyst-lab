@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -1111,7 +1111,30 @@
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/STATUS</span><h3>System and connector status</h3></div><button class="sc-lab-button sc-lab-button-primary" data-status-refresh>Run checks</button></div>
         <div class="sc-lab-status-table" data-system-status></div>
       </section>
-    </main>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="biochemistry-molecular-analysis"
+    data-module-panel="biochemistry-molecular-analysis"
+    hidden
+>
+    <header class="sc-lab-module-header">
+        <p class="sc-lab-kicker">LAB/BIOCHEMISTRY</p>
+        <h3>Biochemistry and molecular analysis</h3>
+        <p>
+            Auditable calculations for biomolecule quantification,
+            proteins, enzyme kinetics, nucleic acids, molecular
+            binding, buffers, spectroscopy, separations, and
+            laboratory quality control.
+        </p>
+    </header>
+
+    <div
+        data-biochemistry-molecular-analysis-root
+    ></div>
+</section>
+
+</main>
   </div>
 
   <dialog class="sc-lab-record-dialog" data-record-dialog>

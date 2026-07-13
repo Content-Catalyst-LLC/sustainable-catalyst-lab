@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, protected Render compute dispatch, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.20.0
+ * Version: 0.21.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.20.0');
+define('SC_LAB_VERSION', '0.21.0');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -43,6 +43,8 @@ require_once SC_LAB_DIR . 'includes/class-sc-lab-feeds.php';
 require_once SC_LAB_DIR . 'includes/class-sc-lab-rest.php';
 require_once SC_LAB_DIR . 'includes/class-sc-lab-admin.php';
 require_once SC_LAB_DIR . 'includes/class-sc-lab-plugin.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biochemistry-molecular-analysis.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biochemistry-molecular-analysis-rest.php';
 
 register_activation_hook(__FILE__, array('SC_Lab_Plugin', 'activate'));
 add_action('plugins_loaded', array('SC_Lab_Plugin', 'instance'));
