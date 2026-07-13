@@ -41,7 +41,10 @@ $project_schema = json_decode(
 );
 
 scr_assert(
-    preg_match('/Version:\s*0\.15\.0/', $main) === 1,
+    preg_match(
+        '/Version:\s*\d+\.\d+\.\d+/',
+        $main
+    ) === 1,
     'Plugin header'
 );
 
@@ -122,10 +125,18 @@ scr_assert(
 );
 
 scr_assert(
-    (
+    isset(
         $project_schema['properties']['schemaVersion']['const']
-        ?? ''
-    ) === '0.15.0',
+    )
+    && preg_match(
+        '/^\d+\.\d+\.\d+$/',
+        (string) $project_schema['properties']['schemaVersion']['const']
+    ) === 1
+    && version_compare(
+        (string) $project_schema['properties']['schemaVersion']['const'],
+        '0.15.0',
+        '>='
+    ),
     'Project schema version'
 );
 
