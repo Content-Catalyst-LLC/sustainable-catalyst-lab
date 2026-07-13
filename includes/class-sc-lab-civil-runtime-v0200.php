@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class SC_Lab_Civil_Runtime_V0200 {
-    const VERSION = '0.20.0-civil-runtime.1';
+    const VERSION = '0.20.0-civil-runtime.2';
     const MODULE_HANDLE = 'sc-lab-civil-runtime-module-v0200';
     const BOOTSTRAP_HANDLE = 'sc-lab-civil-runtime-bootstrap-v0200';
 

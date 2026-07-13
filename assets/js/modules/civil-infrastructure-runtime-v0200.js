@@ -2,7 +2,7 @@
   'use strict';
 
   const Lab = window.SCLab = window.SCLab || {};
-  const VERSION = '0.20.0-civil-runtime.1';
+  const VERSION = '0.20.0-civil-runtime.2';
   const MINIMUM_MODULE_VERSION = '0.15.0';
   const selector = '[data-civil-infrastructure-root]';
 
@@ -111,7 +111,7 @@
 
     try {
       civilMounts.forEach((mount) => {
-        mount.replaceChildren();
+        mount.replaceChildren(); delete mount.dataset.scCivilRepairVersion; delete mount.dataset.scFormulaInterfaceInitialized;
         mount.dataset.scCivilRuntime = 'initializing';
       });
 
