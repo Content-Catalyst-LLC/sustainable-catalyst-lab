@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0
+
+- Added Comparative Economics and Development Systems with 48 methods and 22 deterministic benchmarks.
+- Added formula-visible material-flow, product-loop, waste, symbiosis, lifecycle, and transition analysis.
+- Added WordPress and FastAPI interfaces plus project, notebook, visualization, and validation records.
+
 ## 0.16.0
 
 - Added Circular Economy and Industrial Ecology with 48 methods and 22 deterministic benchmarks.

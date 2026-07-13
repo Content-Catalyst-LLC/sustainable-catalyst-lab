@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -749,6 +749,22 @@
   </header>
   <div data-sustainable-cities-resilience-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="comparative-economics-development-systems"
+    data-module-panel="comparative-economics-development-systems"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/COMPARATIVE-ECONOMICS-DEVELOPMENT-SYSTEMS</p>
+      <h3>Comparative economics and development systems</h3>
+      <p>Auditable calculations for national accounts, economic growth, productivity, convergence, trade, structural transformation, labor markets, poverty, inequality, human development, public finance, development finance, and resilience scenarios.</p>
+    </div>
+  </header>
+  <div data-comparative-economics-development-systems-root></div>
+</section>
+
 
 <section
     class="sc-lab-panel sc-lab-module"

@@ -4,7 +4,7 @@
   const U = Lab.util;
   const PREF_KEY = 'scLabVisualizationPrefsV092';
   const HANDOFF_KEY = 'scLabDecisionStudioHandoffV2';
-  const VERSION = '0.16.0';
+  const VERSION = '0.17.0';
 
   const themes = {
     scientific: { label:'Scientific Light', bg:'#ffffff', panel:'#f6f7f8', text:'#111820', muted:'#59636d', grid:'#d9dee3', axis:'#2d363e', colors:['#c60000','#1f5c78','#5a6d2a','#805a82','#b36b16','#27746a'] },

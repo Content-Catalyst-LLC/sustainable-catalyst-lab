@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab v0.16.0
+# Sustainable Catalyst Lab v0.17.0
 
 Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with an optional Render compute backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
 
@@ -232,5 +232,9 @@ Adds 48 auditable methods across land use and development, accessibility and mob
 Adds 48 auditable methods across urban metabolism, decarbonization, climate adaptation, infrastructure continuity, equity, social resilience, and integrated city scenarios. Also repairs the Civil and Infrastructure interface so all formulas and executable expressions render reliably.
 
 ## v0.16.0 — Circular Economy and Industrial Ecology
+
+Adds 48 auditable methods across material-flow accounting, circular products and business models, waste prevention and recovery, industrial symbiosis, lifecycle footprints, resource productivity, supply risk, and circular transition scenarios.
+
+## v0.17.0 — Comparative Economics and Development Systems
 
 Adds 48 auditable methods across material-flow accounting, circular products and business models, waste prevention and recovery, industrial symbiosis, lifecycle footprints, resource productivity, supply risk, and circular transition scenarios.

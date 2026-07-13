@@ -221,3 +221,6 @@ app.include_router(sustainable_cities_resilience_router)
 
 from .circular_economy_industrial_ecology_routes import router as circular_economy_industrial_ecology_router
 app.include_router(circular_economy_industrial_ecology_router)
+
+from .comparative_economics_development_systems_routes import router as comparative_economics_development_systems_router
+app.include_router(comparative_economics_development_systems_router)

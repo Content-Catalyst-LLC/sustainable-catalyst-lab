@@ -1,7 +1,7 @@
 <?php
 $root = dirname(__DIR__);
 define('ABSPATH', $root);
-define('SC_LAB_VERSION', '0.16.0');
+define('SC_LAB_VERSION', '0.17.0');
 function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 $sc_lab_initial_module = 'overview';
@@ -43,5 +43,5 @@ ok_render(substr_count($html, 'data-biology-tool-grid=') === 9, 'Expected nine b
 ok_render(strpos($html, 'data-biology-benchmark-table') !== false, 'Biology benchmark table missing');
 ok_render(substr_count($html, '<section') === substr_count($html, '</section>'), 'Section tags are unbalanced');
 ok_render(substr_count($html, '<div') === substr_count($html, '</div>'), 'Div tags are unbalanced');
-ok_render(strpos($html, 'v0.16.0') !== false, 'Rendered version is incorrect');
+ok_render(strpos($html, 'v0.17.0') !== false, 'Rendered version is incorrect');
 echo "Template render tests passed.\n";

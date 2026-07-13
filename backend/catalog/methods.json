@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-execution-catalog/1.0",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "languages": {
     "python": {
       "label": "Python",
