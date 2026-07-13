@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.22.1 — Bioprocess Production Activation and Interface Reliability
+
+This release adds canonical mount repair, duplicate suppression, stale-render cleanup, controlled retries, browser and REST health diagnostics, and mobile reliability while preserving the v0.22.0 48-method bioprocess engine.
+
 # Sustainable Catalyst Lab v0.22.0 — Biotechnology and Bioprocess Engineering
 
 This release adds 48 bioprocess methods, 48 reference benchmarks, batch/fed-batch/continuous simulations, CSV batch monitoring, oxygen-transfer and scale-up tools, WordPress/FastAPI routes, and v0.21.3 provenance handoffs.

@@ -1,3 +1,12 @@
+## 0.22.1 — Bioprocess Production Activation and Interface Reliability
+
+- Added unconditional bioprocess production activation.
+- Added canonical panel and root-mount repair.
+- Added duplicate-root and stale-marker cleanup.
+- Added startup, navigation, page-restoration, and MutationObserver retries.
+- Added browser, WordPress, and FastAPI health checks.
+- Added mobile and overflow reliability improvements.
+
 ## 0.22.0 — Biotechnology and Bioprocess Engineering
 
 - Added 48 deterministic bioprocess methods and benchmarks.
