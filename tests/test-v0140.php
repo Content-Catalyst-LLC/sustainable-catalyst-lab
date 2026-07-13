@@ -128,10 +128,18 @@ up_assert(
 );
 
 up_assert(
-    (
+    isset(
         $project_schema['properties']['schemaVersion']['const']
-        ?? ''
-    ) === '0.14.0',
+    )
+    && preg_match(
+        '/^\\d+\\.\\d+\\.\\d+$/',
+        (string) $project_schema['properties']['schemaVersion']['const']
+    ) === 1
+    && version_compare(
+        (string) $project_schema['properties']['schemaVersion']['const'],
+        '0.14.0',
+        '>='
+    ),
     'Project schema version'
 );
 
