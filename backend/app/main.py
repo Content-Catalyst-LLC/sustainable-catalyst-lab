@@ -224,3 +224,6 @@ app.include_router(circular_economy_industrial_ecology_router)
 
 from .comparative_economics_development_systems_routes import router as comparative_economics_development_systems_router
 app.include_router(comparative_economics_development_systems_router)
+
+from .aerospace_engineering_flight_systems_routes import router as aerospace_engineering_flight_systems_router
+app.include_router(aerospace_engineering_flight_systems_router)

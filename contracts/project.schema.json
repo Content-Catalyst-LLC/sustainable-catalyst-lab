@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.17.0",
-      "default": "0.17.0"
+      "const": "0.18.0",
+      "default": "0.18.0"
     },
     "id": {
       "type": "string"
@@ -845,6 +845,83 @@
       "default": []
     },
     "developmentScenarioRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "aerospaceEngineeringFlightAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "aerospaceFlightSystemsRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "aerospaceFlightValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "aerodynamicsRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "flightPerformanceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "flightControlsRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "propulsionEnergyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "aerospaceStructuresRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "navigationMissionRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "flightSystemsReliabilityRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "flightMissionRecords": {
       "type": "array",
       "items": {
         "type": "object"

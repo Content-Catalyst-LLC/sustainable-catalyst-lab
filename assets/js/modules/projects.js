@@ -22,14 +22,14 @@
 
   function blank(name = 'Untitled Lab Project') {
     const now = U.now();
-    const project = { schemaVersion:'0.17.0', id:U.uid('project'), name, createdAt:now, updatedAt:now, description:'' };
+    const project = { schemaVersion:'0.18.0', id:U.uid('project'), name, createdAt:now, updatedAt:now, description:'' };
     COLLECTIONS.forEach(key => { project[key] = []; });
     return project;
   }
 
   function normalize(project) {
     const base = blank(project?.name || 'Untitled Lab Project');
-    const merged = Object.assign(base, project || {}, { schemaVersion:'0.17.0' });
+    const merged = Object.assign(base, project || {}, { schemaVersion:'0.18.0' });
     COLLECTIONS.forEach(key => { if (!Array.isArray(merged[key])) merged[key] = []; });
     // Preserve legacy map records while exposing the v0.9.5 mapViews collection.
     if (!merged.mapViews.length && merged.maps.length) merged.mapViews = merged.maps.slice();
@@ -55,7 +55,7 @@
     onChange(fn){this.listeners.push(fn);} emit(){this.listeners.forEach(fn=>fn(this.get(),this.items));}
     get(id=this.activeId){return this.items.find(p=>p.id===id);} select(id){if(this.get(id)){this.activeId=id;localStorage.setItem(ACTIVE,id);this.emit();}}
     create(name){const p=blank(name||'Untitled Lab Project');this.items.unshift(p);this.activeId=p.id;this.save();return p;}
-    update(mutator,activity){const p=this.get();if(!p)return;mutator(p);p.schemaVersion='0.17.0';p.updatedAt=U.now();if(activity)p.activity.unshift({id:U.uid('activity'),at:p.updatedAt,text:activity});p.activity=p.activity.slice(0,750);this.save();}
+    update(mutator,activity){const p=this.get();if(!p)return;mutator(p);p.schemaVersion='0.18.0';p.updatedAt=U.now();if(activity)p.activity.unshift({id:U.uid('activity'),at:p.updatedAt,text:activity});p.activity=p.activity.slice(0,750);this.save();}
     save(){write(this.items);localStorage.setItem(ACTIVE,this.activeId);this.emit();}
     add(collection,record,activity){if(!COLLECTIONS.includes(collection))throw new Error(`Unknown project collection: ${collection}`);this.update(p=>p[collection].unshift(Object.assign({id:U.uid(collection),createdAt:U.now()},record)),activity);return this.get()[collection][0];}
     export(){const p=this.get();U.download(`${p.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}-lab-project.json`,JSON.stringify(p,null,2),'application/json');}
@@ -64,14 +64,14 @@
   Lab.Projects=Projects; Lab.ProjectModel={blank,normalize,collections:COLLECTIONS};
 })(window);
 
-// Project collection supported by v0.17.0: civilInfrastructureAnalyses
+// Project collection supported by v0.18.0: civilInfrastructureAnalyses
 
-// Project collection supported by v0.17.0: infrastructureRecords
+// Project collection supported by v0.18.0: infrastructureRecords
 
-// Project collection supported by v0.17.0: infrastructureValidationRecords
+// Project collection supported by v0.18.0: infrastructureValidationRecords
 
 
-// v0.17.0 project collections are created dynamically by the Architecture and Building Performance workspace:
+// v0.18.0 project collections are created dynamically by the Architecture and Building Performance workspace:
 // - architectureBuildingAnalyses
 // - buildingPerformanceRecords
 // - buildingPerformanceValidationRecords
@@ -81,7 +81,7 @@
 // - buildingEnergyRecords
 
 
-// v0.17.0 project collections are created dynamically by the Urban Planning and Spatial Systems workspace:
+// v0.18.0 project collections are created dynamically by the Urban Planning and Spatial Systems workspace:
 // - urbanPlanningSpatialAnalyses
 // - urbanSpatialRecords
 // - urbanPlanningValidationRecords
@@ -95,7 +95,7 @@
 // - spatialScenarioRecords
 
 
-// v0.17.0 project collections are created dynamically by Sustainable Cities and Urban Resilience:
+// v0.18.0 project collections are created dynamically by Sustainable Cities and Urban Resilience:
 // - sustainableCitiesResilienceAnalyses
 // - sustainableCityResilienceRecords
 // - sustainableCitiesValidationRecords
@@ -107,7 +107,7 @@
 // - cityScenarioRecords
 
 
-// v0.17.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
+// v0.18.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
 // - circularEconomyIndustrialEcologyAnalyses
 // - circularEconomyRecords
 // - industrialEcologyRecords
@@ -120,7 +120,7 @@
 // - circularTransitionRecords
 
 
-// v0.17.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
+// v0.18.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
 // - comparativeEconomicsDevelopmentAnalyses
 // - developmentEconomicsRecords
 // - developmentSystemsValidationRecords
@@ -132,3 +132,17 @@
 // - publicFinanceRecords
 // - developmentFinanceRecords
 // - developmentScenarioRecords
+
+
+// v0.18.0 project collections are created dynamically by Aerospace Engineering and Flight Systems:
+// - aerospaceEngineeringFlightAnalyses
+// - aerospaceFlightSystemsRecords
+// - aerospaceFlightValidationRecords
+// - aerodynamicsRecords
+// - flightPerformanceRecords
+// - flightControlsRecords
+// - propulsionEnergyRecords
+// - aerospaceStructuresRecords
+// - navigationMissionRecords
+// - flightSystemsReliabilityRecords
+// - flightMissionRecords

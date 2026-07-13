@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -764,6 +764,22 @@
   </header>
   <div data-comparative-economics-development-systems-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="aerospace-engineering-flight-systems"
+    data-module-panel="aerospace-engineering-flight-systems"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/AEROSPACE-ENGINEERING-FLIGHT-SYSTEMS</p>
+      <h3>Aerospace engineering and flight systems</h3>
+      <p>Auditable calculations for atmosphere and aerodynamics, flight mechanics, aircraft performance, stability and control, propulsion integration, structures, loads, aeroelastic screening, navigation, mission analysis, and flight-system reliability.</p>
+    </div>
+  </header>
+  <div data-aerospace-engineering-flight-systems-root></div>
+</section>
+
 
 
 <section

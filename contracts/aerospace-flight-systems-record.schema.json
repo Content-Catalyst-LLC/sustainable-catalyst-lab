@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/aerospace-flight-systems-record-v1.schema.json",
+  "title": "Sustainable Catalyst Lab Aerospace Flight Systems Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "category",
+    "title",
+    "recordedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-aerospace-flight-systems-record/1.0"
+    },
+    "version": {
+      "const": "0.18.0"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^af\\."
+    },
+    "category": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "recordedAt": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.18.0
+
+- Added Aerospace Engineering and Flight Systems with 48 methods and 26 deterministic benchmarks.
+- Added formula-visible aerodynamics, performance, stability, propulsion, structures, navigation, and flight-system analysis.
+- Added WordPress and FastAPI interfaces plus project, notebook, visualization, and validation records.
+
 ## 0.17.0
 
 - Added Comparative Economics and Development Systems with 48 methods and 22 deterministic benchmarks.
