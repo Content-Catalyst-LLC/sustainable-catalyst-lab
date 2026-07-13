@@ -299,3 +299,11 @@ from .biomedical_engineering_biosignals_routes import (
 )
 
 app.include_router(biomedical_biosignals_router)
+
+
+# SC_LAB_V0231_BIOSIGNAL_PRODUCTION_ROUTER
+from .biosignal_production_routes import (
+    router as biosignal_production_router,
+)
+
+app.include_router(biosignal_production_router)

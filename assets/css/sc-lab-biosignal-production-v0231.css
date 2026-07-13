@@ -1,0 +1,169 @@
+[data-lab-module="biomedical-engineering-biosignals"],
+[data-module-panel="biomedical-engineering-biosignals"] {
+  min-width: 0;
+}
+
+[data-biomedical-biosignals-root] {
+  min-width: 0;
+  contain: layout style;
+}
+
+[data-biomedical-biosignals-root]
+  > .sc-biosignal-shell {
+  min-width: 0;
+  width: 100%;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-tabs {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-tabs > button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-controls,
+[data-biomedical-biosignals-root]
+  .sc-biosignal-input-grid,
+[data-biomedical-biosignals-root]
+  .sc-biosignal-actions {
+  min-width: 0;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-chart-frame,
+[data-biomedical-biosignals-root]
+  .sc-biosignal-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+[data-biomedical-biosignals-root]
+  textarea,
+[data-biomedical-biosignals-root]
+  select,
+[data-biomedical-biosignals-root]
+  input {
+  max-width: 100%;
+}
+
+[data-biomedical-biosignals-root]
+  [aria-live="polite"]:empty {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-shell {
+    gap: 0.85rem;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-controls > label,
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-input-grid > label {
+    min-width: 0;
+    width: 100%;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-actions > button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-chart {
+    min-width: 620px;
+  }
+}
+
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-grid,
+[data-biomedical-biosignals-root]
+  .sc-biosignal-card,
+[data-biomedical-biosignals-root]
+  .sc-biosignal-inputs {
+  min-width: 0;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-card pre {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+[data-biomedical-biosignals-root]
+  [data-biosignal-chart] {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+[data-biomedical-biosignals-root]
+  .sc-biosignal-svg {
+  display: block;
+  max-width: none;
+}
+
+[data-biomedical-biosignals-root]
+  button,
+[data-biomedical-biosignals-root]
+  input,
+[data-biomedical-biosignals-root]
+  select,
+[data-biomedical-biosignals-root]
+  textarea {
+  box-sizing: border-box;
+}
+
+[data-biomedical-biosignals-root]
+  [hidden] {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-tabs {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-tabs > button {
+    min-height: 44px;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-card {
+    padding: 0.85rem;
+  }
+
+  [data-biomedical-biosignals-root]
+    .sc-biosignal-svg {
+    min-width: 620px;
+  }
+}

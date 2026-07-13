@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.23.1 — Biosignal Production Activation and Interface Reliability
+
+This release activates the v0.23.0 biosignal assets unconditionally on the public interface and adds canonical panel and mount repair, duplicate-root suppression, stale-marker cleanup, controlled startup retries, navigation and browser-restoration recovery, dynamic DOM observation, browser diagnostics, WordPress/FastAPI production-health routes, and mobile overflow reliability while preserving all 48 methods, 48 benchmarks, eight categories, and non-clinical boundaries.
+
 # Sustainable Catalyst Lab v0.23.0 — Biomedical Engineering and Biosignals
 
 This release adds 48 deterministic biomedical and biosignal methods, 48 reference benchmarks, ECG, PPG, respiration, EMG, EEG, acquisition, filtering, waveform analysis, signal-quality review, CSV batch execution, project/notebook handoffs, and v0.22.3 provenance integration with explicit non-clinical boundaries.

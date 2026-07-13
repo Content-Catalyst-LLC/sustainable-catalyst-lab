@@ -1,3 +1,16 @@
+## 0.23.1 — Biosignal Production Activation and Interface Reliability
+
+- Added unconditional public biosignal asset activation.
+- Added canonical panel and root recovery.
+- Added missing-mount creation and duplicate suppression.
+- Added stale render-marker and placeholder cleanup.
+- Added controlled startup and navigation retries.
+- Added page, focus, visibility, history, and mutation recovery.
+- Added browser health and explicit repair/open controls.
+- Added WordPress and FastAPI production-health routes.
+- Added mobile control, output, chart, and overflow hardening.
+- Preserved 48 methods, 48 benchmarks, eight categories, and non-clinical responsible-use boundaries.
+
 ## 0.23.0 — Biomedical Engineering and Biosignals
 
 - Added 48 biomedical and biosignal methods.
