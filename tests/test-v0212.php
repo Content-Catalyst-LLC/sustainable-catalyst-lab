@@ -30,6 +30,16 @@ $style = file_get_contents(
     . '/assets/css/'
     . 'sc-lab-biochemistry-visualization-batch-v0212.css'
 );
+$interface_php = file_get_contents(
+    $root
+    . '/includes/'
+    . 'class-sc-lab-biochemistry-visualization-batch-v0212.php'
+);
+$batch_rest_php = file_get_contents(
+    $root
+    . '/includes/'
+    . 'class-sc-lab-biochemistry-batch-rest-v0212.php'
+);
 $presets = json_decode(
     file_get_contents(
         $root
@@ -48,19 +58,27 @@ $catalog = json_decode(
 );
 
 v0212_assert(
-    preg_match(
-        '/Version:\s*0\.21\.2/',
-        $main
-    ) === 1,
-    'Plugin header'
+    strpos(
+        $runtime,
+        "const VERSION = '0.21.2';"
+    ) !== false,
+    'Visualization browser runtime version'
 );
 
 v0212_assert(
     strpos(
-        $main,
-        "define('SC_LAB_VERSION', '0.21.2')"
+        $interface_php,
+        "const VERSION = '0.21.2';"
     ) !== false,
-    'Plugin version constant'
+    'Visualization interface version'
+);
+
+v0212_assert(
+    strpos(
+        $batch_rest_php,
+        "const VERSION = '0.21.2';"
+    ) !== false,
+    'Batch REST engine version'
 );
 
 v0212_assert(

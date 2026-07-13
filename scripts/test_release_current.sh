@@ -4,6 +4,35 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+
+# SC_LAB_CURRENT_TOOLCHAIN_SELECTION
+PYTHON_BIN="${PYTHON_BIN:-${SC_LAB_PYTHON_BIN:-$HOME/Downloads/.sc-lab-v0200-venv/bin/python}}"
+SC_LAB_PYTHON_BIN="${SC_LAB_PYTHON_BIN:-$PYTHON_BIN}"
+NODE_TOOLS_BIN="${SC_LAB_NODE_TOOLS_BIN:-$HOME/Downloads/.sc-lab-node-tools/node_modules/.bin}"
+
+export PYTHON_BIN
+export SC_LAB_PYTHON_BIN
+export SC_LAB_NODE_TOOLS_BIN
+
+if [[ -d "$NODE_TOOLS_BIN" ]]; then
+  export PATH="$NODE_TOOLS_BIN:$PATH"
+fi
+
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  echo "FAIL: Lab Python interpreter not found at $PYTHON_BIN" >&2
+  exit 1
+fi
+
+if ! "$PYTHON_BIN" -m pytest --version >/dev/null 2>&1; then
+  echo "FAIL: pytest is unavailable in $PYTHON_BIN" >&2
+  exit 1
+fi
+
+if ! command -v tsc >/dev/null 2>&1; then
+  echo "FAIL: TypeScript compiler not found at $NODE_TOOLS_BIN/tsc" >&2
+  exit 1
+fi
+
 # SC_LAB_CURRENT_TYPESCRIPT_SELECTION
 NODE_TOOLS_BIN="${SC_LAB_NODE_TOOLS_BIN:-$HOME/Downloads/.sc-lab-node-tools/node_modules/.bin}"
 
