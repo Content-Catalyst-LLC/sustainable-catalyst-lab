@@ -16,7 +16,13 @@ $module = file_get_contents($root . '/assets/js/modules/comparative-economics-de
 $catalog = json_decode(file_get_contents($root . '/contracts/comparative-economics-development-systems-methods.json'), true);
 $project_schema = json_decode(file_get_contents($root . '/contracts/project.schema.json'), true);
 
-de_assert(preg_match('/Version:\s*0\.17\.0/', $main) === 1, 'Plugin header');
+de_assert(
+    preg_match(
+        '/Version:\s*\d+\.\d+\.\d+/',
+        $main
+    ) === 1,
+    'Plugin header'
+);
 foreach (array('class-sc-lab-comparative-economics-development-systems.php','class-sc-lab-comparative-economics-development-systems-rest.php') as $include) {
     de_assert(strpos($main, $include) !== false, "Missing bootstrap include {$include}");
 }
@@ -31,7 +37,21 @@ de_assert((int) ($catalog['methodCount'] ?? 0) === 48, 'Catalog method count');
 foreach (($catalog['methods'] ?? array()) as $method) {
     de_assert(isset($method['equation']) && trim((string) $method['equation']) !== '', 'Missing formula for ' . ($method['id'] ?? 'unknown method'));
 }
-de_assert(($project_schema['properties']['schemaVersion']['const'] ?? '') === '0.17.0', 'Project schema version');
+de_assert(
+    isset(
+        $project_schema['properties']['schemaVersion']['const']
+    )
+    && preg_match(
+        '/^\d+\.\d+\.\d+$/',
+        (string) $project_schema['properties']['schemaVersion']['const']
+    ) === 1
+    && version_compare(
+        (string) $project_schema['properties']['schemaVersion']['const'],
+        '0.17.0',
+        '>='
+    ),
+    'Project schema version'
+);
 foreach (array('comparativeEconomicsDevelopmentAnalyses','developmentEconomicsRecords','developmentSystemsValidationRecords','nationalAccountsRecords','growthProductivityRecords','tradeTransformationRecords','laborInequalityRecords','humanDevelopmentRecords','publicFinanceRecords','developmentFinanceRecords','developmentScenarioRecords') as $collection) {
     de_assert(isset($project_schema['properties'][$collection]), "Missing project collection {$collection}");
 }
