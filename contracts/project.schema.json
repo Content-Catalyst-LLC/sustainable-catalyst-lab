@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.12.0",
-      "default": "0.12.0"
+      "const": "0.13.0",
+      "default": "0.13.0"
     },
     "id": {
       "type": "string"
@@ -514,6 +514,55 @@
         "type": "object",
         "additionalProperties": true
       }
+    },
+    "architectureBuildingAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "buildingPerformanceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "buildingPerformanceValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "buildingEnvelopeRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "daylightRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "indoorEnvironmentalQualityRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "buildingEnergyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
     }
   },
   "additionalProperties": true

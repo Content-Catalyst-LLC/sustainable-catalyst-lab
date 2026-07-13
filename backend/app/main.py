@@ -208,3 +208,7 @@ def handoff_validate(payload: HandoffValidateRequest) -> dict[str, Any]:
 # Lab v0.10.0 curated electrical and embedded routes.
 app.include_router(electrical_router, dependencies=[Depends(require_api_key)])
 app.include_router(mechanical_router, dependencies=[Depends(require_api_key)])
+
+
+from .architecture_building_routes import router as architecture_building_router
+app.include_router(architecture_building_router)

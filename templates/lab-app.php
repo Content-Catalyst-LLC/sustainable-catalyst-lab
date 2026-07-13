@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -704,6 +704,22 @@
   </header>
   <div data-civil-infrastructure-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="architecture-building"
+    data-module-panel="architecture-building"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/ARCHITECTURE-BUILDING</p>
+      <h3>Architecture and building performance</h3>
+      <p>Auditable calculations for building geometry, envelope performance, solar and daylight systems, ventilation and indoor environmental quality, HVAC energy, water, carbon, acoustics, and passive resilience.</p>
+    </div>
+  </header>
+  <div data-architecture-building-root></div>
+</section>
+
 
 
   <section class="sc-lab-panel" data-lab-module="visualization-studio" hidden>

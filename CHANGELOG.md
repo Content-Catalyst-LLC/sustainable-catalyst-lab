@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.0
+
+- Added Architecture and Building Performance with 48 methods and 19 deterministic benchmarks.
+- Added standalone WordPress integration and REST proxy classes to reduce coupling to the central Lab plugin class.
+- Added project records for envelope, daylight, IEQ, energy, water, carbon, acoustics, and resilience.
+
 ## 0.12.0
 
 - Added Civil Engineering and Infrastructure Systems with 48 methods and 18 deterministic benchmarks.
