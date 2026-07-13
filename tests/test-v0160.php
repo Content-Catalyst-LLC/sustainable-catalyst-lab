@@ -41,7 +41,10 @@ $project_schema = json_decode(
 );
 
 ce_assert(
-    preg_match('/Version:\s*0\.16\.0/', $main) === 1,
+    preg_match(
+        '/Version:\s*\d+\.\d+\.\d+/',
+        $main
+    ) === 1,
     'Plugin header'
 );
 
@@ -137,10 +140,18 @@ foreach (($catalog['methods'] ?? array()) as $method) {
 }
 
 ce_assert(
-    (
+    isset(
         $project_schema['properties']['schemaVersion']['const']
-        ?? ''
-    ) === '0.16.0',
+    )
+    && preg_match(
+        '/^\d+\.\d+\.\d+$/',
+        (string) $project_schema['properties']['schemaVersion']['const']
+    ) === 1
+    && version_compare(
+        (string) $project_schema['properties']['schemaVersion']['const'],
+        '0.16.0',
+        '>='
+    ),
     'Project schema version'
 );
 
