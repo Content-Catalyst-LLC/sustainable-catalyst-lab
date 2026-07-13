@@ -116,7 +116,7 @@ final class SC_Lab_Plugin {
             'sc_lab_earth_systems' => 'earth-systems',
             'sc_lab_energy' => 'energy-engineering',
   'sc_lab_electrical' => 'electrical-embedded',
-  'sc_lab_mechanical_thermal' => 'mechanical-thermal',
+  'sc_lab_mechanical_thermal' => 'mechanical-thermal', 'sc_lab_civil_infrastructure' => 'civil-infrastructure',
             'sc_lab_visualization' => 'visualization-studio',
             'sc_lab_workspace_data' => 'workspace-data',
             'sc_lab_code_switcher' => 'code-studio',
