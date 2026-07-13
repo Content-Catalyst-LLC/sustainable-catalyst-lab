@@ -1,0 +1,1675 @@
+{
+  "schema": "sc-lab-circular-economy-industrial-ecology-catalog/1.0",
+  "version": "0.16.0",
+  "methodCount": 48,
+  "categories": [
+    "Material flow & resource accounting",
+    "Circular products & business models",
+    "Waste prevention & resource recovery",
+    "Industrial symbiosis & eco-industrial networks",
+    "Lifecycle & footprint accounting",
+    "Circular transition & resilience"
+  ],
+  "methods": [
+    {
+      "id": "ce.direct_material_input",
+      "category": "Material flow & resource accounting",
+      "title": "Direct material input",
+      "equation": "DMI = domestic extraction + imports",
+      "inputs": [
+        {
+          "key": "domesticExtractionTonnes",
+          "label": "Domestic extraction",
+          "unit": "tonnes/yr",
+          "default": 2400000
+        },
+        {
+          "key": "importsTonnes",
+          "label": "Material imports",
+          "unit": "tonnes/yr",
+          "default": 1100000
+        }
+      ],
+      "outputs": {
+        "directMaterialInputTonnes": {
+          "expression": "domesticExtractionTonnes+importsTonnes",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "Domestic extraction and imports use the same material scope and year."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.domestic_material_consumption",
+      "category": "Material flow & resource accounting",
+      "title": "Domestic material consumption",
+      "equation": "DMC = domestic extraction + imports − exports",
+      "inputs": [
+        {
+          "key": "domesticExtractionTonnes",
+          "label": "Domestic extraction",
+          "unit": "tonnes/yr",
+          "default": 2400000
+        },
+        {
+          "key": "importsTonnes",
+          "label": "Material imports",
+          "unit": "tonnes/yr",
+          "default": 1100000
+        },
+        {
+          "key": "exportsTonnes",
+          "label": "Material exports",
+          "unit": "tonnes/yr",
+          "default": 700000
+        }
+      ],
+      "outputs": {
+        "domesticMaterialConsumptionTonnes": {
+          "expression": "domesticExtractionTonnes+importsTonnes-exportsTonnes",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "Extraction, imports, and exports use a common accounting boundary."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.material_footprint_per_capita",
+      "category": "Material flow & resource accounting",
+      "title": "Material footprint per capita",
+      "equation": "Footprint per capita = material footprint / population",
+      "inputs": [
+        {
+          "key": "materialFootprintTonnes",
+          "label": "Consumption-based material footprint",
+          "unit": "tonnes/yr",
+          "default": 3600000
+        },
+        {
+          "key": "population",
+          "label": "Population",
+          "unit": "persons",
+          "default": 300000
+        }
+      ],
+      "outputs": {
+        "materialFootprintTonnesPerCapita": {
+          "expression": "materialFootprintTonnes/population",
+          "unit": "tonnes/(person*yr)"
+        }
+      },
+      "assumptions": [
+        "Material footprint and population use the same reference year."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.material_intensity",
+      "category": "Material flow & resource accounting",
+      "title": "Material intensity of economic output",
+      "equation": "Intensity = material use / GDP",
+      "inputs": [
+        {
+          "key": "materialUseTonnes",
+          "label": "Material use",
+          "unit": "tonnes/yr",
+          "default": 2800000
+        },
+        {
+          "key": "gdpMillionUsd",
+          "label": "Gross domestic product",
+          "unit": "million USD/yr",
+          "default": 48000
+        }
+      ],
+      "outputs": {
+        "materialIntensityTonnesPerMillionUsd": {
+          "expression": "materialUseTonnes/gdpMillionUsd",
+          "unit": "tonnes/million USD"
+        }
+      },
+      "assumptions": [
+        "GDP and material use describe the same economy and year."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.resource_productivity",
+      "category": "Material flow & resource accounting",
+      "title": "Resource productivity",
+      "equation": "Productivity = GDP / material use",
+      "inputs": [
+        {
+          "key": "gdpMillionUsd",
+          "label": "Gross domestic product",
+          "unit": "million USD/yr",
+          "default": 48000
+        },
+        {
+          "key": "materialUseTonnes",
+          "label": "Material use",
+          "unit": "tonnes/yr",
+          "default": 2800000
+        }
+      ],
+      "outputs": {
+        "resourceProductivityUsdPerTonne": {
+          "expression": "gdpMillionUsd*1000000/materialUseTonnes",
+          "unit": "USD/tonne"
+        }
+      },
+      "assumptions": [
+        "GDP and material use describe the same economy and year."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.stock_accumulation",
+      "category": "Material flow & resource accounting",
+      "title": "Net addition to material stocks",
+      "equation": "Stock addition = material inputs − material outputs",
+      "inputs": [
+        {
+          "key": "materialInputsTonnes",
+          "label": "Material inputs",
+          "unit": "tonnes/yr",
+          "default": 3500000
+        },
+        {
+          "key": "materialOutputsTonnes",
+          "label": "Material outputs",
+          "unit": "tonnes/yr",
+          "default": 2100000
+        }
+      ],
+      "outputs": {
+        "netStockAdditionTonnes": {
+          "expression": "materialInputsTonnes-materialOutputsTonnes",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "Inputs and outputs use compatible system boundaries."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.circular_material_use_rate",
+      "category": "Material flow & resource accounting",
+      "title": "Circular material use rate",
+      "equation": "Circular use = secondary material / total material use",
+      "inputs": [
+        {
+          "key": "secondaryMaterialTonnes",
+          "label": "Secondary material use",
+          "unit": "tonnes/yr",
+          "default": 620000
+        },
+        {
+          "key": "totalMaterialUseTonnes",
+          "label": "Total material use",
+          "unit": "tonnes/yr",
+          "default": 2800000
+        }
+      ],
+      "outputs": {
+        "circularMaterialUseFraction": {
+          "expression": "secondaryMaterialTonnes/totalMaterialUseTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Secondary and total material use share the same material boundary."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.mass_balance_gap",
+      "category": "Material flow & resource accounting",
+      "title": "Material-flow mass-balance gap",
+      "equation": "Gap = |inputs − outputs − stock change|",
+      "inputs": [
+        {
+          "key": "inputsTonnes",
+          "label": "Total inputs",
+          "unit": "tonnes/yr",
+          "default": 3500000
+        },
+        {
+          "key": "outputsTonnes",
+          "label": "Total outputs",
+          "unit": "tonnes/yr",
+          "default": 2100000
+        },
+        {
+          "key": "stockChangeTonnes",
+          "label": "Net stock change",
+          "unit": "tonnes/yr",
+          "default": 1380000
+        }
+      ],
+      "outputs": {
+        "massBalanceGapTonnes": {
+          "expression": "abs(inputsTonnes-outputsTonnes-stockChangeTonnes)",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "All flow and stock terms use a consistent accounting boundary."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.product_life_extension",
+      "category": "Circular products & business models",
+      "title": "Product-life extension ratio",
+      "equation": "Life extension = extended life / baseline life",
+      "inputs": [
+        {
+          "key": "extendedLifeYears",
+          "label": "Extended product life",
+          "unit": "yr",
+          "default": 12
+        },
+        {
+          "key": "baselineLifeYears",
+          "label": "Baseline product life",
+          "unit": "yr",
+          "default": 8
+        }
+      ],
+      "outputs": {
+        "lifeExtensionRatio": {
+          "expression": "extendedLifeYears/baselineLifeYears",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Baseline and extended lives use the same service and maintenance assumptions."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.asset_utilization",
+      "category": "Circular products & business models",
+      "title": "Asset utilization rate",
+      "equation": "Utilization = productive hours / available hours",
+      "inputs": [
+        {
+          "key": "productiveHours",
+          "label": "Productive use",
+          "unit": "h/yr",
+          "default": 3200
+        },
+        {
+          "key": "availableHours",
+          "label": "Available operating time",
+          "unit": "h/yr",
+          "default": 8760
+        }
+      ],
+      "outputs": {
+        "utilizationFraction": {
+          "expression": "productiveHours/availableHours",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Available time excludes declared maintenance downtime only when documented."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.repair_rate",
+      "category": "Circular products & business models",
+      "title": "Repair completion rate",
+      "equation": "Repair rate = repaired units / failed units",
+      "inputs": [
+        {
+          "key": "repairedUnits",
+          "label": "Successfully repaired units",
+          "unit": "units/yr",
+          "default": 8200
+        },
+        {
+          "key": "failedUnits",
+          "label": "Failed units presented",
+          "unit": "units/yr",
+          "default": 10000
+        }
+      ],
+      "outputs": {
+        "repairFraction": {
+          "expression": "repairedUnits/failedUnits",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Failed and repaired units use the same product population and period."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.reuse_rate",
+      "category": "Circular products & business models",
+      "title": "Product reuse rate",
+      "equation": "Reuse rate = reused units / collected units",
+      "inputs": [
+        {
+          "key": "reusedUnits",
+          "label": "Units prepared for reuse",
+          "unit": "units/yr",
+          "default": 4800
+        },
+        {
+          "key": "collectedUnits",
+          "label": "Collected units",
+          "unit": "units/yr",
+          "default": 12000
+        }
+      ],
+      "outputs": {
+        "reuseFraction": {
+          "expression": "reusedUnits/collectedUnits",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Reuse and collection counts use a common acceptance definition."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.remanufacturing_yield",
+      "category": "Circular products & business models",
+      "title": "Remanufacturing mass yield",
+      "equation": "Yield = remanufactured output mass / returned core mass",
+      "inputs": [
+        {
+          "key": "remanufacturedOutputKg",
+          "label": "Remanufactured output",
+          "unit": "kg/yr",
+          "default": 840000
+        },
+        {
+          "key": "returnedCoreKg",
+          "label": "Returned core input",
+          "unit": "kg/yr",
+          "default": 1000000
+        }
+      ],
+      "outputs": {
+        "remanufacturingYield": {
+          "expression": "remanufacturedOutputKg/returnedCoreKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Returned cores and remanufactured output use the same product scope."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.service_model_utilization_gain",
+      "category": "Circular products & business models",
+      "title": "Product-as-a-service utilization gain",
+      "equation": "Gain = new utilization / baseline utilization − 1",
+      "inputs": [
+        {
+          "key": "newUtilizationFraction",
+          "label": "Service-model utilization",
+          "unit": "1",
+          "default": 0.62
+        },
+        {
+          "key": "baselineUtilizationFraction",
+          "label": "Baseline utilization",
+          "unit": "1",
+          "default": 0.38
+        }
+      ],
+      "outputs": {
+        "utilizationGainFraction": {
+          "expression": "newUtilizationFraction/baselineUtilizationFraction-1",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Utilization is measured using the same service-output definition."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.modularity_recoverability",
+      "category": "Circular products & business models",
+      "title": "Weighted modularity and recoverability index",
+      "equation": "Index = weighted modularity + disassembly + recovery",
+      "inputs": [
+        {
+          "key": "modularityScore",
+          "label": "Modularity score",
+          "unit": "0-100",
+          "default": 78
+        },
+        {
+          "key": "modularityWeight",
+          "label": "Modularity weight",
+          "unit": "1",
+          "default": 0.35
+        },
+        {
+          "key": "disassemblyScore",
+          "label": "Disassembly score",
+          "unit": "0-100",
+          "default": 72
+        },
+        {
+          "key": "disassemblyWeight",
+          "label": "Disassembly weight",
+          "unit": "1",
+          "default": 0.3
+        },
+        {
+          "key": "recoveryScore",
+          "label": "Material recovery score",
+          "unit": "0-100",
+          "default": 82
+        },
+        {
+          "key": "recoveryWeight",
+          "label": "Recovery weight",
+          "unit": "1",
+          "default": 0.35
+        }
+      ],
+      "outputs": {
+        "recoverabilityIndex": {
+          "expression": "(modularityScore*modularityWeight+disassemblyScore*disassemblyWeight+recoveryScore*recoveryWeight)/(modularityWeight+disassemblyWeight+recoveryWeight)",
+          "unit": "0-100"
+        }
+      },
+      "assumptions": [
+        "Scores share a common scale and weights are explicit design assumptions."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.circular_revenue_share",
+      "category": "Circular products & business models",
+      "title": "Circular revenue share",
+      "equation": "Share = circular revenue / total revenue",
+      "inputs": [
+        {
+          "key": "circularRevenueUsd",
+          "label": "Circular-model revenue",
+          "unit": "USD/yr",
+          "default": 42000000
+        },
+        {
+          "key": "totalRevenueUsd",
+          "label": "Total revenue",
+          "unit": "USD/yr",
+          "default": 150000000
+        }
+      ],
+      "outputs": {
+        "circularRevenueFraction": {
+          "expression": "circularRevenueUsd/totalRevenueUsd",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Revenue categories are mutually exclusive and consistently classified."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.waste_prevention_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Waste prevention rate",
+      "equation": "Prevention = avoided waste / baseline waste",
+      "inputs": [
+        {
+          "key": "avoidedWasteTonnes",
+          "label": "Avoided waste",
+          "unit": "tonnes/yr",
+          "default": 32000
+        },
+        {
+          "key": "baselineWasteTonnes",
+          "label": "Baseline waste",
+          "unit": "tonnes/yr",
+          "default": 210000
+        }
+      ],
+      "outputs": {
+        "wastePreventionFraction": {
+          "expression": "avoidedWasteTonnes/baselineWasteTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Avoided and baseline waste use the same stream and counterfactual."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.diversion_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Waste diversion rate",
+      "equation": "Diversion = diverted material / generated waste",
+      "inputs": [
+        {
+          "key": "divertedTonnes",
+          "label": "Diverted material",
+          "unit": "tonnes/yr",
+          "default": 128000
+        },
+        {
+          "key": "generatedTonnes",
+          "label": "Generated waste",
+          "unit": "tonnes/yr",
+          "default": 210000
+        }
+      ],
+      "outputs": {
+        "diversionFraction": {
+          "expression": "divertedTonnes/generatedTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Diversion and generation use the same waste-stream scope."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.recycling_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Recycling rate",
+      "equation": "Recycling = recycled material / generated waste",
+      "inputs": [
+        {
+          "key": "recycledTonnes",
+          "label": "Recycled material",
+          "unit": "tonnes/yr",
+          "default": 82000
+        },
+        {
+          "key": "generatedTonnes",
+          "label": "Generated waste",
+          "unit": "tonnes/yr",
+          "default": 210000
+        }
+      ],
+      "outputs": {
+        "recyclingFraction": {
+          "expression": "recycledTonnes/generatedTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Recycling excludes contamination and rejects unless explicitly included."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.composting_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Organic-waste composting rate",
+      "equation": "Composting = composted organics / available organic waste",
+      "inputs": [
+        {
+          "key": "compostedTonnes",
+          "label": "Composted organics",
+          "unit": "tonnes/yr",
+          "default": 36000
+        },
+        {
+          "key": "organicWasteTonnes",
+          "label": "Available organic waste",
+          "unit": "tonnes/yr",
+          "default": 72000
+        }
+      ],
+      "outputs": {
+        "compostingFraction": {
+          "expression": "compostedTonnes/organicWasteTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Composted and available organic waste use the same contamination rules."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.landfill_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Landfill disposal rate",
+      "equation": "Landfill rate = landfilled waste / generated waste",
+      "inputs": [
+        {
+          "key": "landfilledTonnes",
+          "label": "Landfilled waste",
+          "unit": "tonnes/yr",
+          "default": 78000
+        },
+        {
+          "key": "generatedTonnes",
+          "label": "Generated waste",
+          "unit": "tonnes/yr",
+          "default": 210000
+        }
+      ],
+      "outputs": {
+        "landfillFraction": {
+          "expression": "landfilledTonnes/generatedTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Landfilled and generated waste use the same system boundary."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.mrf_recovery_efficiency",
+      "category": "Waste prevention & resource recovery",
+      "title": "Materials recovery facility efficiency",
+      "equation": "Efficiency = marketable recovered output / inbound material",
+      "inputs": [
+        {
+          "key": "marketableOutputTonnes",
+          "label": "Marketable recovered output",
+          "unit": "tonnes/yr",
+          "default": 68000
+        },
+        {
+          "key": "inboundMaterialTonnes",
+          "label": "Inbound material",
+          "unit": "tonnes/yr",
+          "default": 85000
+        }
+      ],
+      "outputs": {
+        "mrfRecoveryEfficiency": {
+          "expression": "marketableOutputTonnes/inboundMaterialTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Marketable output excludes processing residues and rejects."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.anaerobic_digestion_yield",
+      "category": "Waste prevention & resource recovery",
+      "title": "Anaerobic digestion biogas yield",
+      "equation": "Yield = biogas volume / feedstock mass",
+      "inputs": [
+        {
+          "key": "biogasM3",
+          "label": "Biogas production",
+          "unit": "m^3/yr",
+          "default": 12500000
+        },
+        {
+          "key": "feedstockTonnes",
+          "label": "Organic feedstock",
+          "unit": "tonnes/yr",
+          "default": 50000
+        }
+      ],
+      "outputs": {
+        "biogasYieldM3PerTonne": {
+          "expression": "biogasM3/feedstockTonnes",
+          "unit": "m^3/tonne"
+        }
+      },
+      "assumptions": [
+        "Biogas volume uses the stated temperature and pressure basis."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.epr_collection_rate",
+      "category": "Waste prevention & resource recovery",
+      "title": "Extended producer responsibility collection rate",
+      "equation": "Collection = collected products / products placed on market",
+      "inputs": [
+        {
+          "key": "collectedUnits",
+          "label": "Products collected",
+          "unit": "units/yr",
+          "default": 760000
+        },
+        {
+          "key": "placedOnMarketUnits",
+          "label": "Products placed on market",
+          "unit": "units/yr",
+          "default": 1000000
+        }
+      ],
+      "outputs": {
+        "eprCollectionFraction": {
+          "expression": "collectedUnits/placedOnMarketUnits",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Placed-on-market and collection data use compatible product definitions."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.byproduct_exchange_rate",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "By-product exchange rate",
+      "equation": "Exchange = by-product exchanged / by-product available",
+      "inputs": [
+        {
+          "key": "exchangedTonnes",
+          "label": "By-product exchanged",
+          "unit": "tonnes/yr",
+          "default": 180000
+        },
+        {
+          "key": "availableTonnes",
+          "label": "By-product available",
+          "unit": "tonnes/yr",
+          "default": 260000
+        }
+      ],
+      "outputs": {
+        "exchangeFraction": {
+          "expression": "exchangedTonnes/availableTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Available and exchanged by-products use the same quality threshold."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.virgin_material_displacement",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Virgin material displacement",
+      "equation": "Displacement = secondary input × substitution ratio",
+      "inputs": [
+        {
+          "key": "secondaryInputTonnes",
+          "label": "Secondary material input",
+          "unit": "tonnes/yr",
+          "default": 180000
+        },
+        {
+          "key": "substitutionRatio",
+          "label": "Virgin substitution ratio",
+          "unit": "1",
+          "default": 0.9
+        }
+      ],
+      "outputs": {
+        "virginMaterialDisplacedTonnes": {
+          "expression": "secondaryInputTonnes*substitutionRatio",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "Substitution ratio reflects functional equivalence and process yield."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.water_cascade_savings",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Industrial water-cascade savings",
+      "equation": "Savings = reused water × avoided freshwater fraction",
+      "inputs": [
+        {
+          "key": "reusedWaterM3",
+          "label": "Water cascaded between facilities",
+          "unit": "m^3/yr",
+          "default": 2400000
+        },
+        {
+          "key": "avoidedFreshwaterFraction",
+          "label": "Avoided freshwater fraction",
+          "unit": "1",
+          "default": 0.95
+        }
+      ],
+      "outputs": {
+        "freshwaterSavingsM3": {
+          "expression": "reusedWaterM3*avoidedFreshwaterFraction",
+          "unit": "m^3/yr"
+        }
+      },
+      "assumptions": [
+        "Reused water meets the receiving process quality requirement."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.heat_cascade_recovery",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Recovered industrial heat",
+      "equation": "Energy = mass flow × heat capacity × temperature drop × hours",
+      "inputs": [
+        {
+          "key": "massFlowKgS",
+          "label": "Transfer-fluid mass flow",
+          "unit": "kg/s",
+          "default": 12
+        },
+        {
+          "key": "specificHeatJkgK",
+          "label": "Specific heat capacity",
+          "unit": "J/(kg*K)",
+          "default": 4180
+        },
+        {
+          "key": "temperatureDropK",
+          "label": "Useful temperature drop",
+          "unit": "K",
+          "default": 18
+        },
+        {
+          "key": "operatingHours",
+          "label": "Annual operating hours",
+          "unit": "h/yr",
+          "default": 4200
+        }
+      ],
+      "outputs": {
+        "recoveredHeatMWh": {
+          "expression": "massFlowKgS*specificHeatJkgK*temperatureDropK*operatingHours/1000000",
+          "unit": "MWh/yr"
+        }
+      },
+      "assumptions": [
+        "Mass flow and temperature drop represent useful delivered heat."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.symbiosis_cost_savings",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Net industrial-symbiosis cost savings",
+      "equation": "Savings = virgin cost avoided + disposal cost avoided − exchange operating cost",
+      "inputs": [
+        {
+          "key": "virginCostAvoidedUsd",
+          "label": "Virgin input cost avoided",
+          "unit": "USD/yr",
+          "default": 12000000
+        },
+        {
+          "key": "disposalCostAvoidedUsd",
+          "label": "Disposal cost avoided",
+          "unit": "USD/yr",
+          "default": 4800000
+        },
+        {
+          "key": "exchangeOperatingCostUsd",
+          "label": "Exchange operating cost",
+          "unit": "USD/yr",
+          "default": 5200000
+        }
+      ],
+      "outputs": {
+        "netSymbiosisSavingsUsd": {
+          "expression": "virginCostAvoidedUsd+disposalCostAvoidedUsd-exchangeOperatingCostUsd",
+          "unit": "USD/yr"
+        }
+      },
+      "assumptions": [
+        "Costs use the same price year and exclude transfers counted twice."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.avoided_disposal_cost",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Avoided disposal cost",
+      "equation": "Avoided cost = diverted material × disposal cost",
+      "inputs": [
+        {
+          "key": "divertedTonnes",
+          "label": "Material diverted from disposal",
+          "unit": "tonnes/yr",
+          "default": 180000
+        },
+        {
+          "key": "disposalCostUsdPerTonne",
+          "label": "Disposal cost",
+          "unit": "USD/tonne",
+          "default": 72
+        }
+      ],
+      "outputs": {
+        "avoidedDisposalCostUsd": {
+          "expression": "divertedTonnes*disposalCostUsdPerTonne",
+          "unit": "USD/yr"
+        }
+      },
+      "assumptions": [
+        "Disposal cost includes the selected transport, tipping, and treatment components."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.symbiosis_network_density",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Directed symbiosis network density",
+      "equation": "Density = exchanges / [participants × (participants − 1)]",
+      "inputs": [
+        {
+          "key": "exchangeLinks",
+          "label": "Directed exchange links",
+          "unit": "links",
+          "default": 48
+        },
+        {
+          "key": "participantCount",
+          "label": "Participating facilities",
+          "unit": "facilities",
+          "default": 12
+        }
+      ],
+      "outputs": {
+        "networkDensity": {
+          "expression": "exchangeLinks/(participantCount*(participantCount-1))",
+          "unit": "0-1"
+        }
+      },
+      "assumptions": [
+        "Network is directed and excludes self-links."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.symbiosis_network_redundancy",
+      "category": "Industrial symbiosis & eco-industrial networks",
+      "title": "Critical-exchange redundancy",
+      "equation": "Redundancy = alternate exchange paths / critical exchanges",
+      "inputs": [
+        {
+          "key": "alternateExchangePaths",
+          "label": "Qualified alternate paths",
+          "unit": "paths",
+          "default": 18
+        },
+        {
+          "key": "criticalExchanges",
+          "label": "Critical exchanges",
+          "unit": "exchanges",
+          "default": 24
+        }
+      ],
+      "outputs": {
+        "networkRedundancy": {
+          "expression": "alternateExchangePaths/criticalExchanges",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Alternate paths meet the same material quality and capacity requirements."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.embodied_carbon",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Product embodied carbon",
+      "equation": "Carbon = virgin mass × virgin factor + recycled mass × recycled factor",
+      "inputs": [
+        {
+          "key": "virginMassKg",
+          "label": "Virgin material mass",
+          "unit": "kg",
+          "default": 6000
+        },
+        {
+          "key": "virginFactorKgCO2eKg",
+          "label": "Virgin emissions factor",
+          "unit": "kgCO2e/kg",
+          "default": 2.8
+        },
+        {
+          "key": "recycledMassKg",
+          "label": "Recycled material mass",
+          "unit": "kg",
+          "default": 4000
+        },
+        {
+          "key": "recycledFactorKgCO2eKg",
+          "label": "Recycled emissions factor",
+          "unit": "kgCO2e/kg",
+          "default": 0.9
+        }
+      ],
+      "outputs": {
+        "embodiedCarbonKgCO2e": {
+          "expression": "virginMassKg*virginFactorKgCO2eKg+recycledMassKg*recycledFactorKgCO2eKg",
+          "unit": "kgCO2e"
+        }
+      },
+      "assumptions": [
+        "Factors use compatible lifecycle stages and allocation methods."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.lifecycle_carbon",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Lifecycle greenhouse-gas impact",
+      "equation": "Lifecycle carbon = manufacturing + use + transport + end of life − recovery credit",
+      "inputs": [
+        {
+          "key": "manufacturingKgCO2e",
+          "label": "Manufacturing impact",
+          "unit": "kgCO2e",
+          "default": 18000
+        },
+        {
+          "key": "usePhaseKgCO2e",
+          "label": "Use-phase impact",
+          "unit": "kgCO2e",
+          "default": 42000
+        },
+        {
+          "key": "transportKgCO2e",
+          "label": "Transport impact",
+          "unit": "kgCO2e",
+          "default": 3200
+        },
+        {
+          "key": "endOfLifeKgCO2e",
+          "label": "End-of-life impact",
+          "unit": "kgCO2e",
+          "default": 1800
+        },
+        {
+          "key": "recoveryCreditKgCO2e",
+          "label": "Recovery credit",
+          "unit": "kgCO2e",
+          "default": 6500
+        }
+      ],
+      "outputs": {
+        "lifecycleCarbonKgCO2e": {
+          "expression": "manufacturingKgCO2e+usePhaseKgCO2e+transportKgCO2e+endOfLifeKgCO2e-recoveryCreditKgCO2e",
+          "unit": "kgCO2e"
+        }
+      },
+      "assumptions": [
+        "Lifecycle stages and recovery credit follow a declared allocation method."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.recycled_content_savings",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Recycled-content emissions savings",
+      "equation": "Savings = recycled mass × (virgin factor − recycled factor)",
+      "inputs": [
+        {
+          "key": "recycledMassKg",
+          "label": "Recycled material mass",
+          "unit": "kg",
+          "default": 4000
+        },
+        {
+          "key": "virginFactorKgCO2eKg",
+          "label": "Virgin emissions factor",
+          "unit": "kgCO2e/kg",
+          "default": 2.8
+        },
+        {
+          "key": "recycledFactorKgCO2eKg",
+          "label": "Recycled emissions factor",
+          "unit": "kgCO2e/kg",
+          "default": 0.9
+        }
+      ],
+      "outputs": {
+        "emissionsSavingsKgCO2e": {
+          "expression": "recycledMassKg*(virginFactorKgCO2eKg-recycledFactorKgCO2eKg)",
+          "unit": "kgCO2e"
+        }
+      },
+      "assumptions": [
+        "Virgin and recycled factors provide equivalent material functionality."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.energy_payback",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Circular intervention energy payback",
+      "equation": "Payback = embodied energy / annual energy savings",
+      "inputs": [
+        {
+          "key": "embodiedEnergyMWh",
+          "label": "Embodied intervention energy",
+          "unit": "MWh",
+          "default": 2400
+        },
+        {
+          "key": "annualEnergySavingsMWh",
+          "label": "Annual energy savings",
+          "unit": "MWh/yr",
+          "default": 620
+        }
+      ],
+      "outputs": {
+        "energyPaybackYears": {
+          "expression": "embodiedEnergyMWh/annualEnergySavingsMWh",
+          "unit": "yr"
+        }
+      },
+      "assumptions": [
+        "Annual savings remain constant and use the same primary or final energy basis."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.water_footprint",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Total water footprint",
+      "equation": "Water footprint = blue + green + grey water",
+      "inputs": [
+        {
+          "key": "blueWaterM3",
+          "label": "Blue-water footprint",
+          "unit": "m^3",
+          "default": 1800
+        },
+        {
+          "key": "greenWaterM3",
+          "label": "Green-water footprint",
+          "unit": "m^3",
+          "default": 2600
+        },
+        {
+          "key": "greyWaterM3",
+          "label": "Grey-water footprint",
+          "unit": "m^3",
+          "default": 900
+        }
+      ],
+      "outputs": {
+        "totalWaterFootprintM3": {
+          "expression": "blueWaterM3+greenWaterM3+greyWaterM3",
+          "unit": "m^3"
+        }
+      },
+      "assumptions": [
+        "Water-footprint components use a common functional unit."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.end_of_life_recovery_credit",
+      "category": "Lifecycle & footprint accounting",
+      "title": "End-of-life recovery impact credit",
+      "equation": "Credit = recovered mass × avoided impact factor",
+      "inputs": [
+        {
+          "key": "recoveredMassKg",
+          "label": "Recovered material mass",
+          "unit": "kg",
+          "default": 7200
+        },
+        {
+          "key": "avoidedImpactKgCO2eKg",
+          "label": "Avoided impact factor",
+          "unit": "kgCO2e/kg",
+          "default": 1.6
+        }
+      ],
+      "outputs": {
+        "recoveryCreditKgCO2e": {
+          "expression": "recoveredMassKg*avoidedImpactKgCO2eKg",
+          "unit": "kgCO2e"
+        }
+      },
+      "assumptions": [
+        "Credit follows the selected substitution and allocation approach."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.lifecycle_cost",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Undiscounted lifecycle cost",
+      "equation": "Cost = capital + annual operating × years + end of life − residual value",
+      "inputs": [
+        {
+          "key": "capitalCostUsd",
+          "label": "Capital cost",
+          "unit": "USD",
+          "default": 12000000
+        },
+        {
+          "key": "annualOperatingCostUsd",
+          "label": "Annual operating cost",
+          "unit": "USD/yr",
+          "default": 820000
+        },
+        {
+          "key": "years",
+          "label": "Analysis period",
+          "unit": "yr",
+          "default": 15
+        },
+        {
+          "key": "endOfLifeCostUsd",
+          "label": "End-of-life cost",
+          "unit": "USD",
+          "default": 900000
+        },
+        {
+          "key": "residualValueUsd",
+          "label": "Residual value",
+          "unit": "USD",
+          "default": 1800000
+        }
+      ],
+      "outputs": {
+        "lifecycleCostUsd": {
+          "expression": "capitalCostUsd+annualOperatingCostUsd*years+endOfLifeCostUsd-residualValueUsd",
+          "unit": "USD"
+        }
+      },
+      "assumptions": [
+        "This screening calculation is undiscounted; use NPV for time-value analysis."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.eco_efficiency",
+      "category": "Lifecycle & footprint accounting",
+      "title": "Economic eco-efficiency",
+      "equation": "Eco-efficiency = economic value / lifecycle impact",
+      "inputs": [
+        {
+          "key": "economicValueUsd",
+          "label": "Economic value generated",
+          "unit": "USD",
+          "default": 45000000
+        },
+        {
+          "key": "lifecycleImpactTonnesCO2e",
+          "label": "Lifecycle impact",
+          "unit": "tCO2e",
+          "default": 18000
+        }
+      ],
+      "outputs": {
+        "ecoEfficiencyUsdPerTonneCO2e": {
+          "expression": "economicValueUsd/lifecycleImpactTonnesCO2e",
+          "unit": "USD/tCO2e"
+        }
+      },
+      "assumptions": [
+        "Economic value and environmental impact refer to the same functional system."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.circularity_score",
+      "category": "Circular transition & resilience",
+      "title": "Weighted circularity score",
+      "equation": "Score = weighted materials + products + recovery + symbiosis",
+      "inputs": [
+        {
+          "key": "materialScore",
+          "label": "Material circularity score",
+          "unit": "0-100",
+          "default": 68
+        },
+        {
+          "key": "materialWeight",
+          "label": "Material weight",
+          "unit": "1",
+          "default": 0.3
+        },
+        {
+          "key": "productScore",
+          "label": "Product circularity score",
+          "unit": "0-100",
+          "default": 72
+        },
+        {
+          "key": "productWeight",
+          "label": "Product weight",
+          "unit": "1",
+          "default": 0.25
+        },
+        {
+          "key": "recoveryScore",
+          "label": "Recovery-system score",
+          "unit": "0-100",
+          "default": 76
+        },
+        {
+          "key": "recoveryWeight",
+          "label": "Recovery weight",
+          "unit": "1",
+          "default": 0.25
+        },
+        {
+          "key": "symbiosisScore",
+          "label": "Industrial symbiosis score",
+          "unit": "0-100",
+          "default": 64
+        },
+        {
+          "key": "symbiosisWeight",
+          "label": "Symbiosis weight",
+          "unit": "1",
+          "default": 0.2
+        }
+      ],
+      "outputs": {
+        "circularityScore": {
+          "expression": "(materialScore*materialWeight+productScore*productWeight+recoveryScore*recoveryWeight+symbiosisScore*symbiosisWeight)/(materialWeight+productWeight+recoveryWeight+symbiosisWeight)",
+          "unit": "0-100"
+        }
+      },
+      "assumptions": [
+        "Component scores use a common scale and weights are explicit governance choices."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.transition_gap",
+      "category": "Circular transition & resilience",
+      "title": "Circular transition gap",
+      "equation": "Gap = target circularity − current circularity",
+      "inputs": [
+        {
+          "key": "targetCircularityScore",
+          "label": "Target circularity score",
+          "unit": "0-100",
+          "default": 85
+        },
+        {
+          "key": "currentCircularityScore",
+          "label": "Current circularity score",
+          "unit": "0-100",
+          "default": 68
+        }
+      ],
+      "outputs": {
+        "transitionGapPoints": {
+          "expression": "targetCircularityScore-currentCircularityScore",
+          "unit": "points"
+        }
+      },
+      "assumptions": [
+        "Target and current scores use the same indicator framework."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.circular_jobs",
+      "category": "Circular transition & resilience",
+      "title": "Circular-economy job creation estimate",
+      "equation": "Jobs = investment × jobs per million",
+      "inputs": [
+        {
+          "key": "investmentMillionUsd",
+          "label": "Circular investment",
+          "unit": "million USD",
+          "default": 420
+        },
+        {
+          "key": "jobsPerMillionUsd",
+          "label": "Employment intensity",
+          "unit": "jobs/million USD",
+          "default": 7.5
+        }
+      ],
+      "outputs": {
+        "estimatedJobs": {
+          "expression": "investmentMillionUsd*jobsPerMillionUsd",
+          "unit": "jobs"
+        }
+      },
+      "assumptions": [
+        "Employment intensity is a transparent scenario assumption, not a forecast."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.import_dependency",
+      "category": "Circular transition & resilience",
+      "title": "Material import dependency",
+      "equation": "Dependency = imports / (domestic extraction + imports)",
+      "inputs": [
+        {
+          "key": "importsTonnes",
+          "label": "Material imports",
+          "unit": "tonnes/yr",
+          "default": 1100000
+        },
+        {
+          "key": "domesticExtractionTonnes",
+          "label": "Domestic extraction",
+          "unit": "tonnes/yr",
+          "default": 2400000
+        }
+      ],
+      "outputs": {
+        "importDependencyFraction": {
+          "expression": "importsTonnes/(domesticExtractionTonnes+importsTonnes)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Imports and extraction use the same material categories and year."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.critical_material_recovery",
+      "category": "Circular transition & resilience",
+      "title": "Critical-material recovery coverage",
+      "equation": "Coverage = recovered critical material / critical material demand",
+      "inputs": [
+        {
+          "key": "recoveredCriticalTonnes",
+          "label": "Recovered critical material",
+          "unit": "tonnes/yr",
+          "default": 14000
+        },
+        {
+          "key": "criticalDemandTonnes",
+          "label": "Critical material demand",
+          "unit": "tonnes/yr",
+          "default": 50000
+        }
+      ],
+      "outputs": {
+        "criticalRecoveryFraction": {
+          "expression": "recoveredCriticalTonnes/criticalDemandTonnes",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Recovered material meets the quality required by the stated demand."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.supply_risk_reduction",
+      "category": "Circular transition & resilience",
+      "title": "Circular supply-risk reduction",
+      "equation": "Reduced risk = baseline risk × recovery share × effectiveness",
+      "inputs": [
+        {
+          "key": "baselineRiskScore",
+          "label": "Baseline supply-risk score",
+          "unit": "0-100",
+          "default": 78
+        },
+        {
+          "key": "recoveryShare",
+          "label": "Circular supply share",
+          "unit": "1",
+          "default": 0.28
+        },
+        {
+          "key": "riskReductionEffectiveness",
+          "label": "Risk-reduction effectiveness",
+          "unit": "1",
+          "default": 0.65
+        }
+      ],
+      "outputs": {
+        "riskReductionPoints": {
+          "expression": "baselineRiskScore*recoveryShare*riskReductionEffectiveness",
+          "unit": "points"
+        },
+        "residualRiskScore": {
+          "expression": "baselineRiskScore*(1-recoveryShare*riskReductionEffectiveness)",
+          "unit": "0-100"
+        }
+      },
+      "assumptions": [
+        "Risk score and effectiveness are screening assumptions."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.scenario_npv",
+      "category": "Circular transition & resilience",
+      "title": "Circular transition net present value",
+      "equation": "NPV = annual net benefit annuity − initial investment",
+      "inputs": [
+        {
+          "key": "initialInvestmentUsd",
+          "label": "Initial investment",
+          "unit": "USD",
+          "default": 180000000
+        },
+        {
+          "key": "annualNetBenefitUsd",
+          "label": "Annual net benefit",
+          "unit": "USD/yr",
+          "default": 28000000
+        },
+        {
+          "key": "discountRate",
+          "label": "Real discount rate",
+          "unit": "1",
+          "default": 0.04
+        },
+        {
+          "key": "years",
+          "label": "Analysis period",
+          "unit": "yr",
+          "default": 15
+        }
+      ],
+      "outputs": {
+        "netPresentValueUsd": {
+          "expression": "annualNetBenefitUsd*(1-(1+discountRate)**(-years))/discountRate-initialInvestmentUsd",
+          "unit": "USD"
+        }
+      },
+      "assumptions": [
+        "Annual net benefit and real discount rate remain constant."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    },
+    {
+      "id": "ce.rebound_adjusted_savings",
+      "category": "Circular transition & resilience",
+      "title": "Rebound-adjusted resource savings",
+      "equation": "Adjusted savings = gross savings × (1 − rebound fraction)",
+      "inputs": [
+        {
+          "key": "grossSavingsTonnes",
+          "label": "Gross resource savings",
+          "unit": "tonnes/yr",
+          "default": 320000
+        },
+        {
+          "key": "reboundFraction",
+          "label": "Rebound fraction",
+          "unit": "1",
+          "default": 0.18
+        }
+      ],
+      "outputs": {
+        "adjustedSavingsTonnes": {
+          "expression": "grossSavingsTonnes*(1-reboundFraction)",
+          "unit": "tonnes/yr"
+        }
+      },
+      "assumptions": [
+        "Rebound fraction captures the selected behavioral and market response."
+      ],
+      "notes": [],
+      "version": "0.16.0"
+    }
+  ]
+}

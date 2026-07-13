@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -749,6 +749,22 @@
   </header>
   <div data-sustainable-cities-resilience-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="circular-economy-industrial-ecology"
+    data-module-panel="circular-economy-industrial-ecology"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/CIRCULAR-ECONOMY-INDUSTRIAL-ECOLOGY</p>
+      <h3>Circular economy and industrial ecology</h3>
+      <p>Auditable calculations for material-flow accounting, circular products, waste prevention and recovery, industrial symbiosis, lifecycle footprints, resource productivity, and circular transition scenarios.</p>
+    </div>
+  </header>
+  <div data-circular-economy-industrial-ecology-root></div>
+</section>
+
 
 
 

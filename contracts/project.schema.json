@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.15.0",
-      "default": "0.15.0"
+      "const": "0.16.0",
+      "default": "0.16.0"
     },
     "id": {
       "type": "string"
@@ -698,6 +698,76 @@
       "default": []
     },
     "cityScenarioRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "circularEconomyIndustrialEcologyAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "circularEconomyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "industrialEcologyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "circularityValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "materialFlowRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "circularProductRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "wasteRecoveryRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "industrialSymbiosisRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "lifecycleFootprintRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "circularTransitionRecords": {
       "type": "array",
       "items": {
         "type": "object"
