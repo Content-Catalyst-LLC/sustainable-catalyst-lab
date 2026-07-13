@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -734,6 +734,22 @@
   </header>
   <div data-urban-planning-spatial-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="sustainable-cities-resilience"
+    data-module-panel="sustainable-cities-resilience"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/SUSTAINABLE-CITIES-RESILIENCE</p>
+      <h3>Sustainable cities and urban resilience</h3>
+      <p>Auditable calculations for urban resource flows, climate mitigation, adaptation, critical infrastructure continuity, equity, social resilience, governance, and integrated city scenarios.</p>
+    </div>
+  </header>
+  <div data-sustainable-cities-resilience-root></div>
+</section>
+
 
 
 

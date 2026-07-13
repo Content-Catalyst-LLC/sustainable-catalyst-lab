@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.0
+
+- Added Sustainable Cities and Urban Resilience with 48 methods and 22 deterministic benchmarks.
+- Added formula-visible Sustainable Cities and Civil interfaces.
+- Repaired Civil and Infrastructure auto-initialization and asset loading across the main and focused Lab shortcodes.
+- Added 8 Civil interface-repair benchmarks and checks that all 48 civil formulas are documented.
+
 ## 0.14.0
 
 - Added Urban Planning and Spatial Systems with 48 methods and 21 deterministic benchmarks.

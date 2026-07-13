@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.14.0",
-      "default": "0.14.0"
+      "const": "0.15.0",
+      "default": "0.15.0"
     },
     "id": {
       "type": "string"
@@ -635,6 +635,69 @@
       "default": []
     },
     "spatialScenarioRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "sustainableCitiesResilienceAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "sustainableCityResilienceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "sustainableCitiesValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "urbanMetabolismRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "decarbonizationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "climateAdaptationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "infrastructureContinuityRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "socialResilienceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "cityScenarioRecords": {
       "type": "array",
       "items": {
         "type": "object"

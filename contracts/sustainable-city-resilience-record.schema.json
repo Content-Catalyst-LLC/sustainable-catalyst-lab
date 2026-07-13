@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sustainable-city-resilience-record-v1.schema.json",
+  "title": "Sustainable Catalyst Lab Sustainable City and Resilience Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "category",
+    "title",
+    "recordedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-sustainable-city-resilience-record/1.0"
+    },
+    "version": {
+      "const": "0.15.0"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^sc\\."
+    },
+    "category": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "recordedAt": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
