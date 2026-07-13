@@ -1,3 +1,12 @@
+## 0.21.1 — Biochemistry Production Activation and Interface Reliability
+
+- Activated Biochemistry assets reliably across full Lab, focused shortcode, page-builder, and cached-page paths.
+- Added late-mount observation, controlled retries, stale render recovery, and canonical panel repair.
+- Added browser diagnostics and a WordPress REST health endpoint.
+- Hardened mobile formulas, controls, and results.
+- Added a version-aware current-release validation runner.
+- Preserved all 48 v0.21.0 biochemical methods and benchmarks.
+
 ## 0.21.0 — Biochemistry and Molecular Analysis
 
 - Added 48 auditable biochemical and molecular-analysis methods.

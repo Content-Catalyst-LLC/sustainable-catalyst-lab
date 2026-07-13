@@ -24,6 +24,16 @@ $main = file_get_contents(
 $template = file_get_contents(
     $root . '/templates/lab-app.php'
 );
+$analysis_js = file_get_contents(
+    $root
+    . '/assets/js/modules/'
+    . 'biochemistry-molecular-analysis.js'
+);
+$analysis_rest = file_get_contents(
+    $root
+    . '/includes/'
+    . 'class-sc-lab-biochemistry-molecular-analysis-rest.php'
+);
 $catalog = json_decode(
     file_get_contents(
         $root
@@ -34,20 +44,25 @@ $catalog = json_decode(
 );
 
 v0210_assert(
-    preg_match(
-        '/Version:\s*0\.21\.0/',
-        $main
-    ) === 1,
-    'Plugin header version'
+    isset($catalog['version'])
+    && $catalog['version'] === '0.21.0',
+    'Biochemistry catalog version'
 );
 
 v0210_assert(
-    preg_match(
-        '/define\(\s*[\'"]SC_LAB_VERSION[\'"]'
-        . '\s*,\s*[\'"]0\.21\.0[\'"]\s*\)/',
-        $main
-    ) === 1,
-    'SC_LAB_VERSION'
+    strpos(
+        $analysis_js,
+        "const VERSION = '0.21.0';"
+    ) !== false,
+    'Biochemistry browser engine version'
+);
+
+v0210_assert(
+    strpos(
+        $analysis_rest,
+        "const VERSION = '0.21.0';"
+    ) !== false,
+    'Biochemistry PHP engine version'
 );
 
 v0210_assert(

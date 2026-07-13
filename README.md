@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.21.1 — Biochemistry Production Activation and Interface Reliability
+
+This maintenance release hardens Biochemistry asset activation, late-mount initialization, panel routing, empty-render recovery, diagnostics, health checks, mobile presentation, and version-aware release validation while preserving the validated 48-method v0.21.0 analysis catalog.
+
 # Sustainable Catalyst Lab v0.21.0 — Biochemistry and Molecular Analysis
 
 The current release adds 48 formula-visible biochemical and molecular-analysis methods, deterministic JavaScript/PHP/Python benchmarks, browser calculators, WordPress REST routes, FastAPI routes, project/notebook handoffs, and responsible-use boundaries.
