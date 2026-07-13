@@ -60,6 +60,7 @@
           'materials' => 'Materials laboratory',
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
+  'electrical-embedded' => 'Electrical & embedded',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -649,7 +650,41 @@
       </section>
 
 
-      <section class="sc-lab-panel" data-lab-module="visualization-studio" hidden>
+        <section class="sc-lab-panel" data-lab-module="electrical-embedded" hidden>
+    <div class="sc-lab-panel-head">
+      <div><span class="sc-lab-section-code">LAB/ELECTRICAL-EMBEDDED</span><h3>Electrical, electronics, and embedded systems</h3></div>
+      <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-electrical-run-benchmarks>Run validation suite</button></div>
+    </div>
+    <div class="sc-lab-electrical-boundary"><strong>Engineering boundary.</strong> These are auditable screening and education tools. Verify datasheets, tolerances, parasitics, layout, grounding, thermal limits, electrical codes, certification requirements, and physical measurements. Never connect an unverified design to mains voltage, high-energy batteries, medical equipment, vehicles, industrial machinery, or safety-critical systems.</div>
+    <div class="sc-lab-electrical-tabs" role="tablist" aria-label="Electrical laboratory work areas">
+      <button type="button" class="sc-lab-button is-active" data-electrical-tab="dc">DC circuits</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="ac">AC systems</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="analog">Analog electronics</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="digital">Digital logic</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="embedded">Embedded systems</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="power">Power & thermal</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="signals">Signals</button>
+      <button type="button" class="sc-lab-button" data-electrical-tab="devices">Devices & firmware</button>
+    </div>
+    <div data-electrical-pane="dc"><div class="sc-lab-electrical-tool-grid" data-electrical-grid="dc"></div></div>
+    <div data-electrical-pane="ac" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="ac"></div></div>
+    <div data-electrical-pane="analog" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="analog"></div></div>
+    <div data-electrical-pane="digital" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="digital"></div></div>
+    <div data-electrical-pane="embedded" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="embedded"></div></div>
+    <div data-electrical-pane="power" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="power"></div></div>
+    <div data-electrical-pane="signals" hidden><div class="sc-lab-electrical-tool-grid" data-electrical-grid="signals"></div></div>
+    <div data-electrical-pane="devices" hidden>
+      <div class="sc-lab-electrical-device-grid">
+        <article class="sc-lab-tool"><h4>Embedded device profile</h4><div class="sc-lab-inline-fields"><label><span>Profile name</span><input data-electrical-device-name value="Environmental sensor node"></label><label><span>Board</span><select data-electrical-board></select></label><label><span>Supply voltage</span><input type="number" step="any" data-electrical-device-voltage value="3.3"></label></div><div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-electrical-create-device>Create profile</button><button type="button" class="sc-lab-button" data-electrical-save-device>Save profile</button></div><pre class="sc-lab-electrical-console" data-electrical-device-output></pre></article>
+        <article class="sc-lab-tool"><h4>Logic-level interface validation</h4><div class="sc-lab-inline-fields"><label><span>Source voltage</span><input type="number" step="any" data-interface-source-voltage value="3.3"></label><label><span>Target voltage</span><input type="number" step="any" data-interface-target-voltage value="3.3"></label></div><div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-electrical-validate-interface>Validate interface</button><button type="button" class="sc-lab-button" data-electrical-save-interface>Save validation</button></div><pre class="sc-lab-electrical-console" data-electrical-interface-output></pre></article>
+        <article class="sc-lab-tool"><h4>Firmware starter artifacts</h4><label><span>Template</span><select data-electrical-firmware-template><option value="arduino-cpp">Arduino C++</option><option value="micropython">MicroPython</option><option value="rust-embedded">Rust embedded</option><option value="linux-python">Linux / Python</option></select></label><div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-electrical-save-firmware>Save firmware artifact</button></div><pre class="sc-lab-electrical-console" data-electrical-firmware-output>#include &lt;Arduino.h&gt;
+// Select a template to inspect starter source.</pre></article>
+      </div>
+    </div>
+    <article class="sc-lab-tool"><h4>Validation suite output</h4><pre class="sc-lab-electrical-console" data-electrical-benchmark-output>Run the deterministic benchmark suite to create a hardware-validation record.</pre></article>
+  </section>
+
+  <section class="sc-lab-panel" data-lab-module="visualization-studio" hidden>
         <div class="sc-lab-panel-head">
           <div><span class="sc-lab-section-code">LAB/VISUALIZATION</span><h3>Universal visualization and export studio</h3></div>
           <span class="sc-lab-status-dot is-ready">Shared engine</span>

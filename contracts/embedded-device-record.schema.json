@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/embedded-device-record.schema.json",
+  "title": "Embedded Device Profile",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "name",
+    "boardId",
+    "supplyVoltage",
+    "interfaces",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-embedded-device/1.0"
+    },
+    "version": {
+      "const": "0.10.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "boardId": {
+      "type": "string"
+    },
+    "board": {
+      "type": "object"
+    },
+    "supplyVoltage": {
+      "type": "number"
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sensors": {
+      "type": "array"
+    },
+    "actuators": {
+      "type": "array"
+    },
+    "firmwareTarget": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "audit": {
+      "type": "object"
+    },
+    "boundary": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

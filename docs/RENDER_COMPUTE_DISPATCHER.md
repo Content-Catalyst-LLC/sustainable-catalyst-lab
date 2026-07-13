@@ -1,6 +1,6 @@
 # Render Compute Dispatcher and Multi-Language Workers
 
-Sustainable Catalyst Lab v0.9.5 adds an optional compute backend for curated, versioned method contracts. It does not accept arbitrary source code.
+Sustainable Catalyst Lab v0.10.0 adds an optional compute backend for curated, versioned method contracts. It does not accept arbitrary source code.
 
 ## Trust boundary
 

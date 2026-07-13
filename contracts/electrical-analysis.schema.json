@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/electrical-analysis.schema.json",
+  "title": "Sustainable Catalyst Lab Electrical Analysis",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "inputs",
+    "outputs",
+    "validation",
+    "audit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-electrical-analysis/1.0"
+    },
+    "version": {
+      "const": "0.10.0"
+    },
+    "methodId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "methodVersion": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "equation": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "status",
+        "warnings"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "methodFingerprint",
+        "inputFingerprint",
+        "outputFingerprint"
+      ],
+      "additionalProperties": true
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

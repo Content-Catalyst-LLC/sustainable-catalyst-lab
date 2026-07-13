@@ -240,7 +240,13 @@
         time: item.createdAt || item.recordedAt,
         meta: 'Energy & engineering'
       }));
-      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth, ...energy]
+  const electrical = project.electricalRecords.slice(0, 3).map(item => ({
+  title: item.type || 'Electrical and embedded analysis',
+  body: item.methodId ? `Method: ${item.methodId}` : '',
+  time: item.createdAt || item.recordedAt,
+  meta: 'Electrical & embedded'
+  }));
+      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth, ...energy, ...electrical]
         .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
         .slice(0, 5);
       qs(root, '[data-project-work]').innerHTML = rows.length
@@ -261,7 +267,8 @@
         ['Astronomy', project.astronomyRecords.length, 'astronomy'],
         ['Materials', project.materialsRecords.length, 'materials'],
         ['Earth systems', project.earthRecords.length, 'earth-systems'],
-        ['Energy & engineering', project.energyRecords.length, 'energy-engineering']
+        ['Energy & engineering', project.energyRecords.length, 'energy-engineering'],
+  ['Electrical & embedded', project.electricalRecords.length, 'electrical-embedded']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');

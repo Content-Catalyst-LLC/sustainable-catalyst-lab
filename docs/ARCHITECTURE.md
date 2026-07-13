@@ -1,6 +1,6 @@
-# Lab v0.9.5 Architecture
+# Lab v0.10.0 Architecture
 
-WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.9.5 adds structured PDF reports, ReportLab vector output, and Decision Studio report packets on top of the portable method contracts, curated multi-language execution, shared result, visualization, dimensional-scene, export, backup, restore, and reset infrastructure.
+WordPress renders the scientific interface and proxies allowlisted public source APIs through REST routes. Browser modules normalize feed records, execute deterministic analytical methods, preserve provenance, and store projects locally. Version 0.10.0 adds structured PDF reports, ReportLab vector output, and Decision Studio report packets on top of the portable method contracts, curated multi-language execution, shared result, visualization, dimensional-scene, export, backup, restore, and reset infrastructure.
 
 ## Browser modules
 
@@ -73,7 +73,7 @@ Local projects and preferences
 
 ## Project record
 
-Version 0.9.5 retains every earlier collection and adds or formalizes:
+Version 0.10.0 retains every earlier collection and adds or formalizes:
 
 ```text
 visualizations

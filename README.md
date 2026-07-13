@@ -207,3 +207,7 @@ The release suite covers PHP and JavaScript syntax, WordPress template rendering
 
 Lab v0.9.5 adds ordered report compositions with drafts and revision history, structural accessibility enhancements and audit records for scientific visualizations, and validation-first JSON/ZIP workspace restores with dry runs, conflict detection, safety backups, fingerprints, migration checks, and restore receipts. Existing v0.9.4 PDF and Decision Studio contracts remain compatible.
 
+## v0.10.0 — Electrical, Electronics, and Embedded Systems
+
+Lab v0.10.0 adds a dedicated electrical and embedded laboratory with 45 curated browser methods, protected backend methods, circuit and interface records, device profiles, firmware artifacts, hardware-validation records, and a focused `[sc_lab_electrical]` shortcode. The release retains all v0.9.5 report, accessibility, restore, visualization, compute, and Decision Studio capabilities.
+

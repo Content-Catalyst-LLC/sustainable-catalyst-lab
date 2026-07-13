@@ -14,6 +14,7 @@ from .expressions import ContractValidationError, evaluate_contract
 from .jobs import jobs
 from .models import CompareRequest, ExecuteRequest, HandoffValidateRequest, JobRequest, ReportRequest, ValidateRequest
 from .reporting import ReportValidationError, report_pdf_response, validate_handoff, validate_report
+from .electrical_embedded import router as electrical_router
 from .security import rate_limit, require_api_key
 
 app = FastAPI(
@@ -186,3 +187,6 @@ def report_pdf(payload: ReportRequest) -> dict[str, Any]:
 @app.post("/v1/handoffs/decision-studio/validate", dependencies=[Depends(require_api_key)])
 def handoff_validate(payload: HandoffValidateRequest) -> dict[str, Any]:
     return validate_handoff(payload.packet)
+
+# Lab v0.10.0 curated electrical and embedded routes.
+app.include_router(electrical_router, dependencies=[Depends(require_api_key)])

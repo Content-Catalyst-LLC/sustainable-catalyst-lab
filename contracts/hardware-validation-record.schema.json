@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/hardware-validation-record.schema.json",
+  "title": "Hardware Validation Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "type",
+    "status",
+    "records",
+    "runAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-hardware-validation/1.0"
+    },
+    "version": {
+      "const": "0.10.0"
+    },
+    "type": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "REVIEW_REQUIRED",
+        "PASS_SCREENING"
+      ]
+    },
+    "passed": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "runAt": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.9.4.schema.json",
-  "title": "Sustainable Catalyst Lab Project v0.9.4",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-project-v0.10.0.schema.json",
+  "title": "Sustainable Catalyst Lab Project v0.10.0",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -13,7 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.9.5"
+      "const": "0.10.0",
+      "default": "0.10.0"
     },
     "id": {
       "type": "string"
@@ -419,6 +420,70 @@
       }
     },
     "migrationValidationRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "electronicsRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "embeddedRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "hardwareValidationRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "deviceProfiles": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "firmwareArtifacts": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "bomRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "schematicRecords": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "interfaceRecords": {
       "type": "array",
       "default": [],
       "items": {

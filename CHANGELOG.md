@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.0 — 2026-07-12
+
+- Added the Electrical, Electronics, and Embedded Systems Laboratory.
+- Added 45 browser-executable DC, AC, analog, digital, embedded, power, thermal, and signal methods.
+- Added embedded device profiles, firmware starter artifacts, logic-level interface validation, and hardware benchmark records.
+- Added protected `/v1/electrical/methods` and `/v1/electrical/run` FastAPI endpoints.
+- Added electrical analysis, device-profile, hardware-validation, and domain method-catalog contracts.
+- Added the `[sc_lab_electrical]` focused shortcode and project collections for circuit, electronics, embedded, firmware, BOM, schematic, interface, and validation records.
+
 ## 0.9.5 — 2026-07-12
 
 - Added four Report Composer templates, ordered sections, autosave, project drafts, and revision history.

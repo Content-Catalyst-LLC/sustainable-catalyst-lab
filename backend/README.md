@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab Compute and Report Service v0.9.5
+# Sustainable Catalyst Lab Compute and Report Service v0.10.0
 
 This FastAPI service executes only curated, versioned method contracts and generates validated scientific reports. Requests can provide an allowlisted method identifier, language identifier, numerical inputs, or a bounded structured report contract. The API does not accept arbitrary source code, shell commands, unrestricted SQL, filesystem paths, or package installation requests.
 

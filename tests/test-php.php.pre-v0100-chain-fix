@@ -2,42 +2,7 @@
 $root=dirname(__DIR__);function ok($c,$m){if(!$c){fwrite(STDERR,"FAIL: $m\n");exit(1);}}
 $required=array('sustainable-catalyst-lab.php','includes/class-sc-lab-plugin.php','includes/class-sc-lab-feeds.php','includes/class-sc-lab-rest.php','templates/lab-app.php','assets/css/sc-lab-app.css','assets/js/sc-lab-app.js','assets/js/modules/workspace.js','assets/js/modules/datasets.js','assets/js/modules/observations.js','assets/js/modules/chemistry-lab.js','assets/js/modules/physics-lab.js','assets/js/modules/physics-validation.js','assets/js/modules/biology-lab.js','assets/js/modules/astronomy-lab.js','assets/js/modules/materials-lab.js','assets/js/modules/earth-lab.js','assets/js/modules/energy-lab.js','assets/js/modules/method-contracts.js','assets/js/modules/compute-client.js','assets/js/modules/code-switcher.js','assets/js/modules/visualization.js','assets/js/modules/reporting.js','assets/js/modules/dimensional-visualization.js','assets/js/modules/data-management.js','contracts/project.schema.json','contracts/method.schema.json','contracts/method-catalog.json','contracts/analysis.schema.json','contracts/scene.schema.json','contracts/decision-studio-packet.schema.json','contracts/report.schema.json','contracts/report-result.schema.json','contracts/execution.schema.json','contracts/language-comparison.schema.json','contracts/execution-job.schema.json','backend/app/main.py','backend/app/executor.py','backend/app/reporting.py','backend/Dockerfile','render.yaml');foreach($required as $f)ok(is_file($root.'/'.$f),"Missing $f");
 $main=file_get_contents($root.'/sustainable-catalyst-lab.php');ok(strpos($main,'Version: 0.10.0')!==false,'Version marker missing');ok(strpos($main,"define('SC_LAB_VERSION', '0.10.0')")!==false,'Version constant missing');
-$plugin=file_get_contents($root.'/includes/class-sc-lab-plugin.php');
-$sc_lab_module_source = $plugin;
-
-$sc_lab_energy_position = strpos(
-    $sc_lab_module_source,
-    "'energy-lab'"
-);
-
-$sc_lab_electrical_position = strpos(
-    $sc_lab_module_source,
-    "'electrical-embedded-lab'"
-);
-
-$sc_lab_contract_position = strpos(
-    $sc_lab_module_source,
-    "'method-contracts'"
-);
-
-if (
-    $sc_lab_energy_position === false ||
-    $sc_lab_electrical_position === false ||
-    $sc_lab_contract_position === false ||
-    !(
-        $sc_lab_energy_position <
-        $sc_lab_electrical_position &&
-        $sc_lab_electrical_position <
-        $sc_lab_contract_position
-    )
-) {
-    fwrite(
-        STDERR,
-        "FAIL: Full module chain is not enqueued\n"
-    );
-    exit(1);
-}
-ok(strpos($plugin,"add_shortcode('sc_lab_biology'")!==false,'Biology focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_astronomy'")!==false,'Astronomy focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_materials'")!==false,'Materials focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_earth_systems'")!==false,'Earth systems focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_energy'")!==false,'Energy focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_visualization'")!==false,'Visualization focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_workspace_data'")!==false,'Workspace-data focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_code_switcher'")!==false,'Code-switcher focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_reports'")!==false,'Report Studio focused shortcode missing');
+$plugin=file_get_contents($root.'/includes/class-sc-lab-plugin.php');ok(strpos($plugin,"'physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace'")!==false,'Full module chain is not enqueued');ok(strpos($plugin,"add_shortcode('sc_lab_biology'")!==false,'Biology focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_astronomy'")!==false,'Astronomy focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_materials'")!==false,'Materials focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_earth_systems'")!==false,'Earth systems focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_energy'")!==false,'Energy focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_visualization'")!==false,'Visualization focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_workspace_data'")!==false,'Workspace-data focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_code_switcher'")!==false,'Code-switcher focused shortcode missing');ok(strpos($plugin,"add_shortcode('sc_lab_reports'")!==false,'Report Studio focused shortcode missing');
 ok(strpos($main,"define('SC_LAB_PLUGIN_SLUG', 'sustainable-catalyst-lab')")!==false,'Stable plugin slug missing');ok(strpos($main,'Update URI: https://sustainablecatalyst.com/lab/')!==false,'Update URI missing');ok(strpos(file_get_contents($root.'/includes/class-sc-lab-admin.php'),'duplicate_plugins')!==false,'Duplicate installation detector missing');
 $elements=json_decode(file_get_contents($root.'/assets/data/elements.json'),true);ok(is_array($elements)&&count($elements)===118,'Periodic table must contain 118 elements');
 $feeds=file_get_contents($root.'/includes/class-sc-lab-feeds.php');foreach(array('usgs-earthquakes','nasa-eonet','nasa-space-telescopes','obis-marine','pubmed-science','arxiv-physics') as $source)ok(strpos($feeds,"'$source'")!==false,"Missing source $source");

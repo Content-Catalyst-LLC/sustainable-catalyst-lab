@@ -2,7 +2,7 @@
   'use strict';
   const Lab = w.SCLab = w.SCLab || {};
   const U = Lab.util;
-  const VERSION = '0.9.5';
+  const VERSION = '0.10.0';
   const HANDOFF_KEY = 'scLabDecisionStudioHandoffV2';
   const REPORT_PREF_KEY = 'scLabReportPrefsV094';
 

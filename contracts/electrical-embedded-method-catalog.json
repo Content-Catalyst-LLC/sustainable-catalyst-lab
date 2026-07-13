@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "sc-lab-electrical-method-catalog/1.0",
+  "version": "0.10.0",
+  "title": "Electrical, Electronics, and Embedded Systems Method Catalog",
+  "curatedOnly": true,
+  "arbitrarySourceAccepted": false,
+  "methods": [
+    {
+      "id": "electrical.ohms-law",
+      "name": "Ohm's law and DC power",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.resistors-series",
+      "name": "Series resistor network",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.resistors-parallel",
+      "name": "Parallel resistor network",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.loaded-divider",
+      "name": "Loaded voltage divider",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.thevenin",
+      "name": "Th\u00e9venin equivalent",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.norton",
+      "name": "Norton equivalent",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.rc-charge",
+      "name": "RC charge and discharge",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.rl-current",
+      "name": "RL current transient",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.wheatstone",
+      "name": "Wheatstone bridge",
+      "category": "dc",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.series-rlc",
+      "name": "Series RLC impedance",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.resonance",
+      "name": "RLC resonance and Q",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.rc-lowpass",
+      "name": "RC low-pass response",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.rc-highpass",
+      "name": "RC high-pass response",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.transformer",
+      "name": "Ideal transformer and reflected load",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.ac-power-factor",
+      "name": "Single-phase AC power",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electrical.three-phase-power",
+      "name": "Balanced three-phase power",
+      "category": "ac",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.led-resistor",
+      "name": "LED series resistor",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.diode-resistor",
+      "name": "Diode current-limiting resistor",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.zener-regulator",
+      "name": "Zener shunt regulator",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.bjt-base-resistor",
+      "name": "BJT saturated-switch base resistor",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.mosfet-gate-drive",
+      "name": "MOSFET gate-drive timing",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.opamp-inverting",
+      "name": "Inverting op-amp",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.opamp-noninverting",
+      "name": "Non-inverting op-amp",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.instrumentation-amplifier",
+      "name": "Instrumentation-amplifier gain",
+      "category": "analog",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.logic-margin",
+      "name": "Digital logic noise margins",
+      "category": "digital",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.propagation-budget",
+      "name": "Logic propagation-delay budget",
+      "category": "digital",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.debounce-rc",
+      "name": "RC switch debounce",
+      "category": "digital",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "electronics.pullup-resistor",
+      "name": "Digital pull-up resistor bounds",
+      "category": "digital",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.adc-quantization",
+      "name": "ADC resolution and quantization",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.sensor-scaling",
+      "name": "Linear sensor calibration",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.pwm-average",
+      "name": "PWM average and RMS voltage",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.timer-frequency",
+      "name": "Timer compare and overflow",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.uart-baud",
+      "name": "UART baud-rate error",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.i2c-pullup",
+      "name": "I\u00b2C pull-up bounds",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.spi-throughput",
+      "name": "SPI payload throughput",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.can-bus-load",
+      "name": "CAN bus-load estimate",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "embedded.battery-runtime",
+      "name": "Battery runtime with duty cycle",
+      "category": "embedded",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "power.linear-regulator",
+      "name": "Linear-regulator dissipation",
+      "category": "power",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "power.buck-duty",
+      "name": "Ideal buck-converter duty cycle",
+      "category": "power",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "power.boost-duty",
+      "name": "Ideal boost-converter duty cycle",
+      "category": "power",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "power.capacitor-ripple",
+      "name": "Output-capacitor ripple estimate",
+      "category": "power",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "power.thermal-junction",
+      "name": "Junction-temperature estimate",
+      "category": "power",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "signals.nyquist",
+      "name": "Sampling and alias screening",
+      "category": "signals",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "signals.enob-snr",
+      "name": "ADC ENOB and SNR",
+      "category": "signals",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    },
+    {
+      "id": "signals.sensor-divider-loading",
+      "name": "Sensor divider and ADC loading",
+      "category": "signals",
+      "version": "0.10.0",
+      "execution": "browser-curated",
+      "auditBoundary": "Screening calculation; physical validation and professional review may be required."
+    }
+  ]
+}

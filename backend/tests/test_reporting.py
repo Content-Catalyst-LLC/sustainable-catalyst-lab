@@ -16,7 +16,7 @@ def analysis() -> dict:
         "schemaVersion": "1.0",
         "id": "analysis-test",
         "methodId": "kinetic",
-        "methodVersion": "0.9.5",
+        "methodVersion": "0.10.0",
         "title": "Kinetic energy reference analysis",
         "subtitle": "Deterministic mechanics calculation",
         "domain": "physics",
@@ -51,7 +51,7 @@ def report() -> dict:
         "subtitle": "PDF and Decision Studio handoff test",
         "executiveSummary": "This report verifies deterministic calculation, validation, and audit metadata.",
         "pageSize": "LETTER",
-        "project": {"id": "project-test", "name": "Test project", "schemaVersion": "0.9.5"},
+        "project": {"id": "project-test", "name": "Test project", "schemaVersion": "0.10.0"},
         "analyses": [analysis()],
         "includeAudit": True,
     }
@@ -100,7 +100,7 @@ def test_decision_studio_packet_validation() -> None:
     packet = {
         "packetType": "scientific-report",
         "schemaVersion": "2.0",
-        "origin": {"application": "Sustainable Catalyst Lab", "version": "0.9.5"},
+        "origin": {"application": "Sustainable Catalyst Lab", "version": "0.10.0"},
         "createdAt": "2026-07-12T00:00:00Z",
         "report": {"title": "Test report"},
         "analyses": [analysis()],

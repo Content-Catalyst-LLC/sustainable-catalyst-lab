@@ -8,10 +8,10 @@ def sample_payload() -> dict:
     return {
         "reportType": "technical-report",
         "title": "Composer validation report",
-        "subtitle": "Lab v0.9.5",
+        "subtitle": "Lab v0.10.0",
         "executiveSummary": "A bounded validation fixture.",
         "pageSize": "LETTER",
-        "project": {"id": "project-1", "name": "Validation project", "schemaVersion": "0.9.5"},
+        "project": {"id": "project-1", "name": "Validation project", "schemaVersion": "0.10.0"},
         "analyses": [
             {
                 "id": "analysis-1",
@@ -26,7 +26,7 @@ def sample_payload() -> dict:
         "includeAudit": True,
         "composition": {
             "format": "sc-lab-report-composition/1.0",
-            "applicationVersion": "0.9.5",
+            "applicationVersion": "0.10.0",
             "id": "composition-1",
             "templateId": "technical-report",
             "title": "Composer validation report",
