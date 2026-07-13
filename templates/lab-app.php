@@ -1132,6 +1132,10 @@
     <div
         data-biochemistry-molecular-analysis-root
     ></div>
+
+    <div
+        data-biochemistry-visualization-batch-root
+    ></div>
 </section>
 
 </main>

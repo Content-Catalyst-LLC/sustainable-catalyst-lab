@@ -243,3 +243,11 @@ from .biochemistry_molecular_analysis_routes import (
 app.include_router(
     biochemistry_molecular_analysis_router
 )
+
+
+# SC_LAB_V0212_BIOCHEMISTRY_BATCH_ROUTER
+from .biochemistry_batch_routes import (
+    router as biochemistry_batch_router,
+)
+
+app.include_router(biochemistry_batch_router)

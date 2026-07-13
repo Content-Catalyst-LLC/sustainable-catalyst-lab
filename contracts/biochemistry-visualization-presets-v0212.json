@@ -1,0 +1,227 @@
+{
+  "schema": "sc-lab-biochemistry-visualization-presets/1.0",
+  "version": "0.21.2",
+  "presets": [
+    {
+      "id": "standard-curve",
+      "title": "Standard curve and linear regression",
+      "description": "Fit signal against known concentration and calculate slope, intercept, R², and unknown concentration.",
+      "mode": "observed",
+      "xLabel": "Concentration",
+      "yLabel": "Signal",
+      "defaultData": [
+        {
+          "x": 0,
+          "y": 0.02
+        },
+        {
+          "x": 1,
+          "y": 0.51
+        },
+        {
+          "x": 2,
+          "y": 1.03
+        },
+        {
+          "x": 3,
+          "y": 1.49
+        },
+        {
+          "x": 4,
+          "y": 2.02
+        }
+      ]
+    },
+    {
+      "id": "michaelis-menten",
+      "title": "Michaelis–Menten kinetics",
+      "description": "Generate substrate–velocity curves from Vmax and Km.",
+      "mode": "generated",
+      "xLabel": "Substrate concentration",
+      "yLabel": "Initial velocity",
+      "parameters": [
+        {
+          "key": "vmax",
+          "label": "Vmax",
+          "default": 100,
+          "min": 0
+        },
+        {
+          "key": "km",
+          "label": "Km",
+          "default": 0.5,
+          "min": 1e-06
+        },
+        {
+          "key": "xMax",
+          "label": "Maximum substrate",
+          "default": 5,
+          "min": 0.001
+        }
+      ]
+    },
+    {
+      "id": "hill-response",
+      "title": "Hill binding response",
+      "description": "Generate fractional occupancy from ligand concentration, Kd, and Hill coefficient.",
+      "mode": "generated",
+      "xLabel": "Ligand concentration",
+      "yLabel": "Fractional occupancy",
+      "parameters": [
+        {
+          "key": "kd",
+          "label": "Kd",
+          "default": 1,
+          "min": 1e-06
+        },
+        {
+          "key": "hill",
+          "label": "Hill coefficient",
+          "default": 2,
+          "min": 0.01
+        },
+        {
+          "key": "xMax",
+          "label": "Maximum ligand",
+          "default": 5,
+          "min": 0.001
+        }
+      ]
+    },
+    {
+      "id": "buffer-protonation",
+      "title": "Buffer protonation profile",
+      "description": "Plot protonated and deprotonated fractions across a pH interval.",
+      "mode": "generated-multi",
+      "xLabel": "pH",
+      "yLabel": "Fraction",
+      "parameters": [
+        {
+          "key": "pKa",
+          "label": "pKa",
+          "default": 7.2
+        },
+        {
+          "key": "pHMin",
+          "label": "Minimum pH",
+          "default": 4
+        },
+        {
+          "key": "pHMax",
+          "label": "Maximum pH",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "absorbance-comparison",
+      "title": "Absorbance comparison",
+      "description": "Compare wavelength-indexed absorbance measurements.",
+      "mode": "observed",
+      "xLabel": "Wavelength (nm)",
+      "yLabel": "Absorbance",
+      "defaultData": [
+        {
+          "x": 240,
+          "y": 0.12
+        },
+        {
+          "x": 260,
+          "y": 0.81
+        },
+        {
+          "x": 280,
+          "y": 0.52
+        },
+        {
+          "x": 300,
+          "y": 0.18
+        },
+        {
+          "x": 320,
+          "y": 0.08
+        }
+      ]
+    },
+    {
+      "id": "fluorescence-comparison",
+      "title": "Fluorescence comparison",
+      "description": "Compare wavelength-indexed fluorescence intensity.",
+      "mode": "observed",
+      "xLabel": "Wavelength (nm)",
+      "yLabel": "Fluorescence intensity",
+      "defaultData": [
+        {
+          "x": 420,
+          "y": 12
+        },
+        {
+          "x": 450,
+          "y": 35
+        },
+        {
+          "x": 480,
+          "y": 72
+        },
+        {
+          "x": 510,
+          "y": 44
+        },
+        {
+          "x": 540,
+          "y": 18
+        }
+      ]
+    },
+    {
+      "id": "chromatography-trace",
+      "title": "Chromatography trace",
+      "description": "Plot retention time against detector response and inspect peak separation.",
+      "mode": "observed",
+      "xLabel": "Retention time (min)",
+      "yLabel": "Detector response",
+      "defaultData": [
+        {
+          "x": 0,
+          "y": 0.01
+        },
+        {
+          "x": 1,
+          "y": 0.03
+        },
+        {
+          "x": 2,
+          "y": 0.32
+        },
+        {
+          "x": 2.5,
+          "y": 1.12
+        },
+        {
+          "x": 3,
+          "y": 0.28
+        },
+        {
+          "x": 4,
+          "y": 0.08
+        },
+        {
+          "x": 5,
+          "y": 0.44
+        },
+        {
+          "x": 5.5,
+          "y": 0.96
+        },
+        {
+          "x": 6,
+          "y": 0.31
+        },
+        {
+          "x": 7,
+          "y": 0.04
+        }
+      ]
+    }
+  ]
+}

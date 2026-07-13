@@ -36,19 +36,19 @@ $current_suite = file_get_contents(
 );
 
 v0211_assert(
-    preg_match(
-        '/Version:\s*0\.21\.1/',
-        $main
-    ) === 1,
-    'Plugin header'
+    strpos(
+        $production,
+        "const VERSION = '0.21.1';"
+    ) !== false,
+    'Production PHP layer version'
 );
 
 v0211_assert(
     strpos(
-        $main,
-        "define('SC_LAB_VERSION', '0.21.1')"
+        $runtime,
+        "const VERSION = '0.21.1';"
     ) !== false,
-    'Plugin version constant'
+    'Production browser runtime version'
 );
 
 v0211_assert(

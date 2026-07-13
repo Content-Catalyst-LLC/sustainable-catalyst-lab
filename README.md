@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.21.2 — Biochemistry Visualization and Batch Analysis
+
+This release adds native SVG biochemical plots, standard-curve regression, kinetics and binding visualizations, CSV batch execution across all 48 methods, replicate statistics, CV review flags, row-level error isolation, exports, and WordPress/FastAPI batch routes.
+
 # Sustainable Catalyst Lab v0.21.1 — Biochemistry Production Activation and Interface Reliability
 
 This maintenance release hardens Biochemistry asset activation, late-mount initialization, panel routing, empty-render recovery, diagnostics, health checks, mobile presentation, and version-aware release validation while preserving the validated 48-method v0.21.0 analysis catalog.

@@ -1,0 +1,376 @@
+[data-biochemistry-visualization-batch-root] {
+  --sc-bvb-accent: #6f1325;
+  --sc-bvb-ink: #111827;
+  --sc-bvb-muted: #647084;
+  --sc-bvb-border: #d8dee8;
+  --sc-bvb-soft: #f5f7fa;
+  display: block;
+  min-width: 0;
+  margin-top: 1.25rem;
+  color: var(--sc-bvb-ink);
+}
+
+.sc-bvb-shell {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  border-top: 1px solid var(--sc-bvb-border);
+  padding-top: 1.25rem;
+}
+
+.sc-bvb-header,
+.sc-bvb-control-grid,
+.sc-bvb-actions,
+.sc-bvb-tabs {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.sc-bvb-header h3 {
+  margin: 0.15rem 0 0.4rem;
+}
+
+.sc-bvb-header p {
+  margin: 0;
+}
+
+.sc-bvb-kicker {
+  color: var(--sc-bvb-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sc-bvb-version {
+  border: 1px solid var(--sc-bvb-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.sc-bvb-tabs {
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--sc-bvb-border);
+}
+
+.sc-bvb-tabs button {
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--sc-bvb-muted);
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sc-bvb-tabs button.is-active {
+  border-bottom-color: var(--sc-bvb-accent);
+  color: var(--sc-bvb-accent);
+}
+
+.sc-bvb-workspace {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  border: 1px solid var(--sc-bvb-border);
+  border-radius: 12px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.sc-bvb-control-grid {
+  justify-content: flex-start;
+}
+
+.sc-bvb-control-grid > label,
+.sc-bvb-parameter-grid > label,
+.sc-bvb-observed label,
+.sc-bvb-csv-label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: min(100%, 220px);
+  flex: 1 1 220px;
+}
+
+.sc-bvb-control-grid span,
+.sc-bvb-parameter-grid span,
+.sc-bvb-observed span,
+.sc-bvb-csv-label > span {
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.sc-bvb-control-grid select,
+.sc-bvb-control-grid input,
+.sc-bvb-parameter-grid input,
+.sc-bvb-observed textarea,
+.sc-bvb-csv-label textarea {
+  width: 100%;
+  border: 1px solid var(--sc-bvb-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--sc-bvb-ink);
+  padding: 0.65rem 0.7rem;
+  font: inherit;
+}
+
+.sc-bvb-observed textarea,
+.sc-bvb-csv-label textarea {
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  line-height: 1.5;
+}
+
+.sc-bvb-parameter-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 160px), 1fr)
+  );
+  gap: 0.75rem;
+}
+
+.sc-bvb-actions {
+  justify-content: flex-start;
+}
+
+.sc-bvb-actions button {
+  border: 1px solid var(--sc-bvb-accent);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--sc-bvb-accent);
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sc-bvb-actions button.sc-bvb-primary {
+  background: var(--sc-bvb-accent);
+  color: #fff;
+}
+
+.sc-bvb-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.sc-bvb-status-line {
+  margin: 0;
+  color: var(--sc-bvb-muted);
+}
+
+.sc-bvb-chart-frame {
+  overflow-x: auto;
+  border: 1px solid var(--sc-bvb-border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.sc-bvb-chart {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.sc-bvb-grid {
+  stroke: #e8ecf2;
+  stroke-width: 1;
+}
+
+.sc-bvb-axis {
+  stroke: #3b4350;
+  stroke-width: 1.4;
+}
+
+.sc-bvb-line {
+  fill: none;
+  stroke-width: 3;
+}
+
+.sc-bvb-point {
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.sc-bvb-series-1 {
+  stroke: #6f1325;
+  fill: #6f1325;
+}
+
+.sc-bvb-series-2 {
+  stroke: #215b77;
+  fill: #215b77;
+}
+
+.sc-bvb-series-3 {
+  stroke: #566b2f;
+  fill: #566b2f;
+}
+
+.sc-bvb-tick {
+  fill: #667085;
+  font-size: 12px;
+}
+
+.sc-bvb-axis-label {
+  fill: #273244;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sc-bvb-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.65rem;
+  color: var(--sc-bvb-muted);
+  font-size: 0.84rem;
+}
+
+.sc-bvb-legend span {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.sc-bvb-legend-key {
+  display: inline-block;
+  width: 1.4rem;
+  height: 0.2rem;
+  border-radius: 999px;
+}
+
+.sc-bvb-metrics,
+.sc-bvb-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 150px), 1fr)
+  );
+  gap: 0.75rem;
+}
+
+.sc-bvb-metrics > div,
+.sc-bvb-stat-card {
+  border: 1px solid var(--sc-bvb-border);
+  border-radius: 9px;
+  background: var(--sc-bvb-soft);
+  padding: 0.75rem;
+}
+
+.sc-bvb-metrics dt,
+.sc-bvb-stat-card dt {
+  color: var(--sc-bvb-muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.sc-bvb-metrics dd,
+.sc-bvb-stat-card dd {
+  margin: 0.2rem 0 0;
+  font-weight: 750;
+}
+
+.sc-bvb-stat-card h5 {
+  margin: 0 0 0.7rem;
+}
+
+.sc-bvb-stat-card dl {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.sc-bvb-stat-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.sc-bvb-status {
+  display: inline-block;
+  margin-top: 0.75rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.sc-bvb-status-screened {
+  background: #e9f7ed;
+  color: #205d2e;
+}
+
+.sc-bvb-status-review {
+  background: #fff2d8;
+  color: #7a4a00;
+}
+
+.sc-bvb-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sc-bvb-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.sc-bvb-table th,
+.sc-bvb-table td {
+  border-bottom: 1px solid var(--sc-bvb-border);
+  padding: 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sc-bvb-table th small {
+  display: block;
+  color: var(--sc-bvb-muted);
+  font-weight: 400;
+}
+
+.sc-bvb-row-error {
+  background: #fff2f2;
+}
+
+@media (max-width: 760px) {
+  .sc-bvb-header,
+  .sc-bvb-control-grid {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sc-bvb-control-grid > label,
+  .sc-bvb-parameter-grid > label,
+  .sc-bvb-observed label,
+  .sc-bvb-csv-label {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sc-bvb-parameter-grid,
+  .sc-bvb-stat-grid,
+  .sc-bvb-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-bvb-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sc-bvb-actions button {
+    width: 100%;
+  }
+}

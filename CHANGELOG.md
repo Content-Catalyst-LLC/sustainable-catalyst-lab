@@ -1,3 +1,13 @@
+## 0.21.2 — Biochemistry Visualization and Batch Analysis
+
+- Added seven native SVG visualization profiles.
+- Added standard-curve regression and R².
+- Added CSV batch execution for all 48 methods.
+- Added mean, sample SD, CV, range, and review flags.
+- Added row-level failure isolation and CSV/JSON export.
+- Added WordPress and FastAPI batch routes.
+- Preserved the v0.21.0 analysis catalog and benchmarks.
+
 ## 0.21.1 — Biochemistry Production Activation and Interface Reliability
 
 - Activated Biochemistry assets reliably across full Lab, focused shortcode, page-builder, and cached-page paths.
