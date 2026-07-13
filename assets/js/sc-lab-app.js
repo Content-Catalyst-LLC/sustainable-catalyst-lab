@@ -811,7 +811,7 @@
     Lab.EarthLab?.init(root, projects);
 
     // Energy and Engineering Laboratory.
-    Lab.EnergyLab?.init(root, projects); // Electrical, Electronics, and Embedded Systems. Lab.ElectricalEmbedded?.init(root, projects); // Mechanical and Thermal Engineering. Lab.MechanicalThermalLab?.init(root, projects);
+    Lab.EnergyLab?.init(root, projects); // Electrical, Electronics, and Embedded Systems. Lab.ElectricalEmbedded?.init(root, projects); // Mechanical and Thermal Engineering. Lab.MechanicalThermalLab?.init(root, projects); Lab.CivilInfrastructureLab?.init(root, projects);
 
     // Universal code switcher and portable method contracts.
     Lab.CodeSwitcher?.init(root, projects);

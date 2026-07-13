@@ -1,6 +1,6 @@
 {
   "schema": "sc-lab-method-catalog/1.0",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "generatedAt": "2026-07-12T09:37:54.445Z",
   "languages": {
     "python": {

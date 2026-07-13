@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.0
+
+- Added Civil Engineering and Infrastructure Systems with 48 methods and 18 deterministic benchmarks.
+
 ## 0.11.0 — 2026-07-13
 
 - Added the Mechanical and Thermal Engineering Laboratory.

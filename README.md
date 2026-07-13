@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab v0.11.0
+# Sustainable Catalyst Lab v0.12.0
 
 Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with an optional Render compute backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
 
@@ -214,3 +214,7 @@ Lab v0.10.0 adds a dedicated electrical and embedded laboratory with 45 curated 
 ## v0.11.0 — Mechanical and Thermal Engineering
 
 Lab v0.11.0 adds 48 shared browser/Python methods for statics, strength, failure, machine design, dynamics, vibration, fluids, thermodynamics, and heat transfer. Results remain compatible with project storage, notebooks, visualization, reports, restore validation, and Decision Studio handoffs.
+
+## v0.12.0 — Civil Engineering and Infrastructure Systems
+
+Adds 48 methods spanning structures, geotechnical engineering, hydrology, transportation, water and wastewater systems, infrastructure risk, reliability, resilience, lifecycle cost, and embodied carbon.

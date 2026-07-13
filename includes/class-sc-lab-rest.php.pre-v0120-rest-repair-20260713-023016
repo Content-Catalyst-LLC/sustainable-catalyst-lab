@@ -23,29 +23,7 @@ class SC_Lab_REST {
             array('methods'=>'GET','callback'=>array($this,'compute_job_status'),'permission_callback'=>'__return_true'),
             array('methods'=>'DELETE','callback'=>array($this,'compute_job_cancel'),'permission_callback'=>'__return_true'),
         ));
-
-
-        register_rest_route(
-            'sc-lab/v1',
-            '/compute/civil/methods',
-            array(
-                'methods'             => 'GET',
-                'callback'            => array($this, 'compute_civil_methods'),
-                'permission_callback' => '__return_true',
-            )
-        );
-
-        register_rest_route(
-            'sc-lab/v1',
-            '/compute/civil/run',
-            array(
-                'methods'             => 'POST',
-                'callback'            => array($this, 'compute_civil_run'),
-                'permission_callback' => '__return_true',
-            )
-        );
-
-}
+    }
 
     private function settings() { return wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults()); }
 
@@ -214,90 +192,4 @@ class SC_Lab_REST {
     }
     public function compute_job_status(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job'])); }
     public function compute_job_cancel(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']),'DELETE'); }
-
-
-    /**
-     * Proxy the v0.12.0 civil and infrastructure method catalog.
-     *
-     * @return mixed
-     */
-    public function compute_civil_methods() {
-        if (method_exists($this, 'proxy')) {
-            return $this->proxy('/v1/civil/methods');
-        }
-
-        return new WP_Error(
-            'sc_lab_backend_proxy_unavailable',
-            'The Lab backend proxy is unavailable.',
-            array('status' => 503)
-        );
-    }
-
-    /**
-     * Proxy one v0.12.0 civil and infrastructure calculation.
-     *
-     * @param mixed $request REST request.
-     * @return mixed
-     */
-    public function compute_civil_run($request) {
-        $body = is_object($request) && method_exists($request, 'get_json_params')
-            ? $request->get_json_params()
-            : array();
-
-        if (!is_array($body)) {
-            return new WP_Error(
-                'sc_lab_invalid_payload',
-                'A JSON object is required.',
-                array('status' => 422)
-            );
-        }
-
-        $method_id = isset($body['methodId'])
-            ? sanitize_text_field((string) $body['methodId'])
-            : '';
-
-        if ($method_id === '' || strpos($method_id, 'ci.') !== 0) {
-            return new WP_Error(
-                'sc_lab_invalid_civil_method',
-                'A valid civil methodId beginning with ci. is required.',
-                array('status' => 422)
-            );
-        }
-
-        $raw_inputs = isset($body['inputs']) && is_array($body['inputs'])
-            ? $body['inputs']
-            : array();
-
-        $inputs = array();
-
-        foreach ($raw_inputs as $key => $value) {
-            if (!is_numeric($value)) {
-                return new WP_Error(
-                    'sc_lab_invalid_civil_input',
-                    'Civil and infrastructure inputs must be numeric.',
-                    array('status' => 422)
-                );
-            }
-
-            $inputs[sanitize_key((string) $key)] = (float) $value;
-        }
-
-        if (method_exists($this, 'proxy')) {
-            return $this->proxy(
-                '/v1/civil/run',
-                'POST',
-                array(
-                    'methodId' => $method_id,
-                    'inputs'   => $inputs,
-                )
-            );
-        }
-
-        return new WP_Error(
-            'sc_lab_backend_proxy_unavailable',
-            'The Lab backend proxy is unavailable.',
-            array('status' => 503)
-        );
-    }
-
 }

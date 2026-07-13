@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure',
+  'mechanical-thermal' => 'Mechanical & thermal',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -693,18 +693,6 @@
     <div class="sc-lab-electrical-boundary"><strong>Engineering boundary.</strong> These methods support transparent calculations and preliminary screening. Verify geometry, material data, load cases, fatigue, fracture, tolerances, manufacturing conditions, thermal properties, fluid properties, boundary conditions, applicable codes, and physical measurements. Safety-critical, regulated, structural, pressure, rotating-equipment, combustion, HVAC, and life-safety work requires qualified professional review.</div>
     <div data-mechanical-thermal-root></div>
   </section>
-
-<section class="sc-lab-panel" data-module-panel="civil-infrastructure" hidden>
-  <header class="sc-lab-panel-header">
-    <div>
-      <p class="sc-lab-kicker">LAB/CIVIL-INFRASTRUCTURE</p>
-      <h3>Civil engineering and infrastructure systems</h3>
-      <p>Auditable screening calculations for structures, soils, drainage, transportation, water systems, lifecycle cost, risk, reliability, resilience, and embodied carbon.</p>
-    </div>
-  </header>
-  <div data-civil-infrastructure-root></div>
-</section>
-
 
   <section class="sc-lab-panel" data-lab-module="visualization-studio" hidden>
         <div class="sc-lab-panel-head">

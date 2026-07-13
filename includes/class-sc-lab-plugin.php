@@ -33,7 +33,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
   add_shortcode('sc_lab_electrical', array($this, 'shortcode_focus'));
-  add_shortcode('sc_lab_mechanical_thermal', array($this, 'shortcode_focus'));
+  add_shortcode('sc_lab_mechanical_thermal', array($this, 'shortcode_focus')); add_shortcode('sc_lab_civil_infrastructure', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_visualization', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_workspace_data', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_code_switcher', array($this, 'shortcode_focus'));
@@ -48,10 +48,10 @@ final class SC_Lab_Plugin {
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), SC_LAB_VERSION);
   wp_enqueue_style('sc-lab-v0100', SC_LAB_URL . 'assets/css/sc-lab-v0100.css', array('sc-lab-app'), SC_LAB_VERSION);
-  wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), SC_LAB_VERSION);
+  wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), SC_LAB_VERSION); wp_enqueue_style('sc-lab-v0120', SC_LAB_URL . 'assets/css/sc-lab-v0120.css', array('sc-lab-app'), SC_LAB_VERSION);
   wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), SC_LAB_VERSION);
         $deps = array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);

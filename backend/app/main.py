@@ -16,6 +16,7 @@ from .models import CompareRequest, ExecuteRequest, HandoffValidateRequest, JobR
 from .reporting import ReportValidationError, report_pdf_response, validate_handoff, validate_report
 from .electrical_embedded import router as electrical_router
 from .mechanical_thermal import router as mechanical_router
+from .civil_infrastructure import CivilInfrastructureError, public_catalog as civil_catalog, run_method as run_civil_method
 from .security import rate_limit, require_api_key
 
 app = FastAPI(
@@ -35,6 +36,21 @@ app.add_middleware(
     allow_headers=["Content-Type", "X-SC-Lab-Key"],
 )
 
+
+@app.get("/v1/civil/methods", dependencies=[Depends(require_api_key)])
+def civil_methods() -> dict[str, Any]:
+    return civil_catalog()
+
+@app.post("/v1/civil/run", dependencies=[Depends(require_api_key)])
+def civil_run(payload: dict[str, Any]) -> dict[str, Any]:
+    method_id = str(payload.get("methodId") or "")
+    inputs = payload.get("inputs") or {}
+    if not method_id or not isinstance(inputs, dict):
+        raise HTTPException(status_code=422, detail="methodId and numerical inputs are required.")
+    try:
+        return run_civil_method(method_id, inputs)
+    except CivilInfrastructureError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 @app.middleware("http")
 async def body_and_rate_limits(request: Request, call_next: Any) -> Any:

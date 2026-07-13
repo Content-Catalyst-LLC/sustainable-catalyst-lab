@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm'),path=require('path');
+const source=fs.readFileSync(path.join(__dirname,'../assets/js/modules/civil-infrastructure-lab.js'),'utf8');
+const context={window:{SCLab:{}},globalThis:{},console,CustomEvent:function(t,i){this.type=t;this.detail=i&&i.detail;}};
+vm.createContext(context);vm.runInContext(source,context);
+const Lab=context.window.SCLab.CivilInfrastructureLab;
+if(!Lab||Lab.VERSION!=='0.12.0'||Lab.definitions.length!==48)throw new Error('Civil module metadata failed');
+const rows=Lab.runBenchmarks(),failed=rows.filter(x=>!x.passed);if(failed.length)throw new Error(JSON.stringify(failed));
+const record=Lab.run('ci.lifecycle_npv',{initialCost:1000,annualCost:0,discountRate:.05,years:10,terminalCost:0});
+if(record.outputs.netPresentCost!==1000)throw new Error('Lifecycle NPV failed');
+console.log(`Civil/infrastructure JS tests passed: ${Lab.definitions.length} methods, ${rows.length} benchmarks.`);

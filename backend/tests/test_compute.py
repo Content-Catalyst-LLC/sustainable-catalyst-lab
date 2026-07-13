@@ -17,7 +17,7 @@ client = TestClient(app)
 
 def test_catalog_contains_nineteen_curated_methods() -> None:
     catalog = public_catalog()
-    assert catalog["version"] == "0.11.0"
+    assert catalog["version"] == "0.12.0"
     assert len(catalog["methods"]) == 19
     assert get_method("kinetic")["equation"]
 
