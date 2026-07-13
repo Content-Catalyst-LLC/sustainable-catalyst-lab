@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, protected Render compute dispatch, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.18.0
+ * Version: 0.19.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.18.0');
+define('SC_LAB_VERSION', '0.19.0');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -23,6 +23,8 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-comparative-econ
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-comparative-economics-development-systems-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-aerospace-engineering-flight-systems.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-aerospace-engineering-flight-systems-rest.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-rocket-propulsion-spaceflight.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-rocket-propulsion-spaceflight-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-circular-economy-industrial-ecology.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-circular-economy-industrial-ecology-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-civil-infrastructure-interface-repair.php';

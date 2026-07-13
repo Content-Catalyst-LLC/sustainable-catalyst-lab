@@ -49,7 +49,7 @@ load('assets/js/modules/workspace.js');
 
 const ProjectModel = context.window.SCLab.ProjectModel;
 const blankProject = ProjectModel.blank('Validation project');
-assert(blankProject.schemaVersion === '0.18.0', 'Project schema version failed');
+assert(blankProject.schemaVersion === '0.19.0', 'Project schema version failed');
 assert(Array.isArray(blankProject.physicsValidationRecords), 'Physics validation collection missing');
 assert(Array.isArray(blankProject.astronomyRecords) && Array.isArray(blankProject.orbitalAnalyses) && Array.isArray(blankProject.astronomyValidationRecords), 'Astronomy project collections missing');
 assert(Array.isArray(blankProject.biologyRecords) && Array.isArray(blankProject.sequences) && Array.isArray(blankProject.biologyValidationRecords), 'Biology project collections missing');
@@ -272,7 +272,7 @@ assert(
   typeof scalarSvg === 'string' &&
   scalarSvg.includes('<svg') &&
   scalarSvg.includes('Scalar test') &&
-  scalarSvg.includes('Sustainable Catalyst Lab v0.18.0'),
+  scalarSvg.includes('Sustainable Catalyst Lab v0.19.0'),
   'Universal SVG renderer failed'
 );
 assert(Visualization.csv(scalarContract).includes('metric,value') || Visualization.csv(scalarContract).includes('label,value'), 'Universal CSV export failed');

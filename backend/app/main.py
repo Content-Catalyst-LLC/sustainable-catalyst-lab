@@ -227,3 +227,6 @@ app.include_router(comparative_economics_development_systems_router)
 
 from .aerospace_engineering_flight_systems_routes import router as aerospace_engineering_flight_systems_router
 app.include_router(aerospace_engineering_flight_systems_router)
+
+from .rocket_propulsion_spaceflight_routes import router as rocket_propulsion_spaceflight_router
+app.include_router(rocket_propulsion_spaceflight_router)

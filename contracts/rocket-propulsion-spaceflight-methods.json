@@ -1,0 +1,1779 @@
+{
+  "schema": "sc-lab-rocket-propulsion-spaceflight-catalog/1.0",
+  "version": "0.19.0",
+  "methodCount": 48,
+  "categories": [
+    "Rocket propulsion fundamentals",
+    "Nozzle flow & engine performance",
+    "Launch vehicle mass & staging",
+    "Ascent & launch dynamics",
+    "Orbital mechanics & transfers",
+    "Spacecraft & mission systems"
+  ],
+  "methods": [
+    {
+      "id": "rp.effective_exhaust_velocity",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Effective exhaust velocity",
+      "equation": "c = I_sp g₀",
+      "inputs": [
+        {
+          "key": "specificImpulseS",
+          "label": "Specific impulse",
+          "unit": "s",
+          "default": 320
+        },
+        {
+          "key": "standardGravityMps2",
+          "label": "Standard gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        }
+      ],
+      "outputs": {
+        "effectiveExhaustVelocityMps": {
+          "expression": "specificImpulseS*standardGravityMps2",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Specific impulse is referenced to standard gravity."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.specific_impulse",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Specific impulse",
+      "equation": "I_sp = F/(ṁg₀)",
+      "inputs": [
+        {
+          "key": "thrustN",
+          "label": "Thrust",
+          "unit": "N",
+          "default": 760000
+        },
+        {
+          "key": "massFlowKgS",
+          "label": "Propellant mass flow",
+          "unit": "kg/s",
+          "default": 250
+        },
+        {
+          "key": "standardGravityMps2",
+          "label": "Standard gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        }
+      ],
+      "outputs": {
+        "specificImpulseS": {
+          "expression": "thrustN/(massFlowKgS*standardGravityMps2)",
+          "unit": "s"
+        }
+      },
+      "assumptions": [
+        "Thrust and mass flow are steady and measured at the same operating point."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.momentum_thrust",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Momentum thrust",
+      "equation": "F_m = ṁV_e",
+      "inputs": [
+        {
+          "key": "massFlowKgS",
+          "label": "Propellant mass flow",
+          "unit": "kg/s",
+          "default": 250
+        },
+        {
+          "key": "exitVelocityMps",
+          "label": "Effective exit velocity",
+          "unit": "m/s",
+          "default": 3100
+        }
+      ],
+      "outputs": {
+        "momentumThrustN": {
+          "expression": "massFlowKgS*exitVelocityMps",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Pressure thrust is excluded from this component."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.mass_flow_from_thrust",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Mass flow from thrust and specific impulse",
+      "equation": "ṁ = F/(I_sp g₀)",
+      "inputs": [
+        {
+          "key": "thrustN",
+          "label": "Thrust",
+          "unit": "N",
+          "default": 760000
+        },
+        {
+          "key": "specificImpulseS",
+          "label": "Specific impulse",
+          "unit": "s",
+          "default": 310
+        },
+        {
+          "key": "standardGravityMps2",
+          "label": "Standard gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        }
+      ],
+      "outputs": {
+        "massFlowKgS": {
+          "expression": "thrustN/(specificImpulseS*standardGravityMps2)",
+          "unit": "kg/s"
+        }
+      },
+      "assumptions": [
+        "Specific impulse and thrust refer to the same operating condition."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.ideal_rocket_delta_v",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Tsiolkovsky ideal delta-v",
+      "equation": "Δv = c ln(m₀/m_f)",
+      "inputs": [
+        {
+          "key": "effectiveExhaustVelocityMps",
+          "label": "Effective exhaust velocity",
+          "unit": "m/s",
+          "default": 3200
+        },
+        {
+          "key": "initialMassKg",
+          "label": "Initial mass",
+          "unit": "kg",
+          "default": 500000
+        },
+        {
+          "key": "finalMassKg",
+          "label": "Final mass",
+          "unit": "kg",
+          "default": 150000
+        }
+      ],
+      "outputs": {
+        "idealDeltaVMps": {
+          "expression": "effectiveExhaustVelocityMps*log(initialMassKg/finalMassKg)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Ideal impulsive-equivalent rocket equation; gravity, drag, and steering losses excluded."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.required_mass_ratio",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Required ideal mass ratio",
+      "equation": "m₀/m_f = exp(Δv/c)",
+      "inputs": [
+        {
+          "key": "requiredDeltaVMps",
+          "label": "Required ideal delta-v",
+          "unit": "m/s",
+          "default": 4500
+        },
+        {
+          "key": "effectiveExhaustVelocityMps",
+          "label": "Effective exhaust velocity",
+          "unit": "m/s",
+          "default": 3200
+        }
+      ],
+      "outputs": {
+        "requiredMassRatio": {
+          "expression": "exp(requiredDeltaVMps/effectiveExhaustVelocityMps)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Constant effective exhaust velocity and ideal rocket equation."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.propellant_mass_fraction",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Propellant mass fraction",
+      "equation": "f_p = (m₀ − m_f)/m₀",
+      "inputs": [
+        {
+          "key": "initialMassKg",
+          "label": "Initial mass",
+          "unit": "kg",
+          "default": 500000
+        },
+        {
+          "key": "finalMassKg",
+          "label": "Final mass after burn",
+          "unit": "kg",
+          "default": 150000
+        }
+      ],
+      "outputs": {
+        "propellantMassFraction": {
+          "expression": "(initialMassKg-finalMassKg)/initialMassKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Mass decrease during the segment is treated as consumed propellant."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.mixture_ratio",
+      "category": "Rocket propulsion fundamentals",
+      "title": "Oxidizer-to-fuel mixture ratio",
+      "equation": "O/F = ṁ_ox/ṁ_fuel",
+      "inputs": [
+        {
+          "key": "oxidizerMassFlowKgS",
+          "label": "Oxidizer mass flow",
+          "unit": "kg/s",
+          "default": 180
+        },
+        {
+          "key": "fuelMassFlowKgS",
+          "label": "Fuel mass flow",
+          "unit": "kg/s",
+          "default": 70
+        }
+      ],
+      "outputs": {
+        "mixtureRatio": {
+          "expression": "oxidizerMassFlowKgS/fuelMassFlowKgS",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Oxidizer and fuel flows are measured over the same interval."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.nozzle_throat_area",
+      "category": "Nozzle flow & engine performance",
+      "title": "Circular nozzle throat area",
+      "equation": "A_t = πd_t²/4",
+      "inputs": [
+        {
+          "key": "throatDiameterM",
+          "label": "Throat diameter",
+          "unit": "m",
+          "default": 0.35
+        }
+      ],
+      "outputs": {
+        "throatAreaM2": {
+          "expression": "pi*throatDiameterM**2/4",
+          "unit": "m^2"
+        }
+      },
+      "assumptions": [
+        "Circular throat geometry."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.nozzle_expansion_ratio",
+      "category": "Nozzle flow & engine performance",
+      "title": "Nozzle expansion ratio",
+      "equation": "ε = A_e/A_t",
+      "inputs": [
+        {
+          "key": "exitAreaM2",
+          "label": "Nozzle exit area",
+          "unit": "m^2",
+          "default": 3.2
+        },
+        {
+          "key": "throatAreaM2",
+          "label": "Nozzle throat area",
+          "unit": "m^2",
+          "default": 0.096
+        }
+      ],
+      "outputs": {
+        "expansionRatio": {
+          "expression": "exitAreaM2/throatAreaM2",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Exit and throat areas use the same geometric convention."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.exit_mach_from_pressure_ratio",
+      "category": "Nozzle flow & engine performance",
+      "title": "Isentropic exit Mach number from pressure ratio",
+      "equation": "M_e = √{2/(γ−1)[(p_c/p_e)^((γ−1)/γ)−1]}",
+      "inputs": [
+        {
+          "key": "chamberPressurePa",
+          "label": "Chamber stagnation pressure",
+          "unit": "Pa",
+          "default": 7000000
+        },
+        {
+          "key": "exitPressurePa",
+          "label": "Exit static pressure",
+          "unit": "Pa",
+          "default": 40000
+        },
+        {
+          "key": "specificHeatRatio",
+          "label": "Specific-heat ratio",
+          "unit": "1",
+          "default": 1.22
+        }
+      ],
+      "outputs": {
+        "exitMachNumber": {
+          "expression": "sqrt(2/(specificHeatRatio-1)*((chamberPressurePa/exitPressurePa)**((specificHeatRatio-1)/specificHeatRatio)-1))",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Calorically perfect gas and isentropic expansion from chamber stagnation conditions."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.exit_temperature",
+      "category": "Nozzle flow & engine performance",
+      "title": "Isentropic nozzle exit temperature",
+      "equation": "T_e = T_c/[1 + (γ−1)M_e²/2]",
+      "inputs": [
+        {
+          "key": "chamberTemperatureK",
+          "label": "Chamber stagnation temperature",
+          "unit": "K",
+          "default": 3500
+        },
+        {
+          "key": "specificHeatRatio",
+          "label": "Specific-heat ratio",
+          "unit": "1",
+          "default": 1.22
+        },
+        {
+          "key": "exitMachNumber",
+          "label": "Exit Mach number",
+          "unit": "1",
+          "default": 3.2
+        }
+      ],
+      "outputs": {
+        "exitTemperatureK": {
+          "expression": "chamberTemperatureK/(1+(specificHeatRatio-1)*exitMachNumber**2/2)",
+          "unit": "K"
+        }
+      },
+      "assumptions": [
+        "Calorically perfect gas and isentropic nozzle flow."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.isentropic_exit_velocity",
+      "category": "Nozzle flow & engine performance",
+      "title": "Ideal isentropic exit velocity",
+      "equation": "V_e = √{2γRT_c/(γ−1)[1−(p_e/p_c)^((γ−1)/γ)]}",
+      "inputs": [
+        {
+          "key": "specificHeatRatio",
+          "label": "Specific-heat ratio",
+          "unit": "1",
+          "default": 1.22
+        },
+        {
+          "key": "specificGasConstantJkgK",
+          "label": "Specific gas constant",
+          "unit": "J/(kg*K)",
+          "default": 355
+        },
+        {
+          "key": "chamberTemperatureK",
+          "label": "Chamber stagnation temperature",
+          "unit": "K",
+          "default": 3500
+        },
+        {
+          "key": "chamberPressurePa",
+          "label": "Chamber pressure",
+          "unit": "Pa",
+          "default": 7000000
+        },
+        {
+          "key": "exitPressurePa",
+          "label": "Exit pressure",
+          "unit": "Pa",
+          "default": 40000
+        }
+      ],
+      "outputs": {
+        "idealExitVelocityMps": {
+          "expression": "sqrt(2*specificHeatRatio/(specificHeatRatio-1)*specificGasConstantJkgK*chamberTemperatureK*(1-(exitPressurePa/chamberPressurePa)**((specificHeatRatio-1)/specificHeatRatio)))",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Calorically perfect gas, adiabatic isentropic expansion, and negligible chamber velocity."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.nozzle_total_thrust",
+      "category": "Nozzle flow & engine performance",
+      "title": "Nozzle momentum and pressure thrust",
+      "equation": "F = ṁV_e + (p_e−p_a)A_e",
+      "inputs": [
+        {
+          "key": "massFlowKgS",
+          "label": "Propellant mass flow",
+          "unit": "kg/s",
+          "default": 250
+        },
+        {
+          "key": "exitVelocityMps",
+          "label": "Exit velocity",
+          "unit": "m/s",
+          "default": 3100
+        },
+        {
+          "key": "exitPressurePa",
+          "label": "Exit pressure",
+          "unit": "Pa",
+          "default": 40000
+        },
+        {
+          "key": "ambientPressurePa",
+          "label": "Ambient pressure",
+          "unit": "Pa",
+          "default": 101325
+        },
+        {
+          "key": "exitAreaM2",
+          "label": "Exit area",
+          "unit": "m^2",
+          "default": 3.2
+        }
+      ],
+      "outputs": {
+        "momentumThrustN": {
+          "expression": "massFlowKgS*exitVelocityMps",
+          "unit": "N"
+        },
+        "pressureThrustN": {
+          "expression": "(exitPressurePa-ambientPressurePa)*exitAreaM2",
+          "unit": "N"
+        },
+        "totalThrustN": {
+          "expression": "massFlowKgS*exitVelocityMps+(exitPressurePa-ambientPressurePa)*exitAreaM2",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "One-dimensional steady nozzle flow."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.thrust_coefficient",
+      "category": "Nozzle flow & engine performance",
+      "title": "Thrust coefficient",
+      "equation": "C_F = F/(p_cA_t)",
+      "inputs": [
+        {
+          "key": "thrustN",
+          "label": "Thrust",
+          "unit": "N",
+          "default": 760000
+        },
+        {
+          "key": "chamberPressurePa",
+          "label": "Chamber pressure",
+          "unit": "Pa",
+          "default": 7000000
+        },
+        {
+          "key": "throatAreaM2",
+          "label": "Throat area",
+          "unit": "m^2",
+          "default": 0.096
+        }
+      ],
+      "outputs": {
+        "thrustCoefficient": {
+          "expression": "thrustN/(chamberPressurePa*throatAreaM2)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Chamber pressure and throat area use consistent effective values."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.characteristic_velocity",
+      "category": "Nozzle flow & engine performance",
+      "title": "Characteristic velocity",
+      "equation": "c* = p_cA_t/ṁ",
+      "inputs": [
+        {
+          "key": "chamberPressurePa",
+          "label": "Chamber pressure",
+          "unit": "Pa",
+          "default": 7000000
+        },
+        {
+          "key": "throatAreaM2",
+          "label": "Throat area",
+          "unit": "m^2",
+          "default": 0.096
+        },
+        {
+          "key": "massFlowKgS",
+          "label": "Propellant mass flow",
+          "unit": "kg/s",
+          "default": 250
+        }
+      ],
+      "outputs": {
+        "characteristicVelocityMps": {
+          "expression": "chamberPressurePa*throatAreaM2/massFlowKgS",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Steady chamber pressure, choked throat, and consistent effective flow area."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.stage_mass_ratio",
+      "category": "Launch vehicle mass & staging",
+      "title": "Stage mass ratio",
+      "equation": "MR = m_initial/m_final",
+      "inputs": [
+        {
+          "key": "initialStageMassKg",
+          "label": "Initial stage mass",
+          "unit": "kg",
+          "default": 450000
+        },
+        {
+          "key": "finalStageMassKg",
+          "label": "Post-burn stage mass",
+          "unit": "kg",
+          "default": 130000
+        }
+      ],
+      "outputs": {
+        "stageMassRatio": {
+          "expression": "initialStageMassKg/finalStageMassKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Masses correspond to the same stage and burn segment."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.structural_coefficient",
+      "category": "Launch vehicle mass & staging",
+      "title": "Stage structural coefficient",
+      "equation": "ε_s = m_dry/(m_dry + m_propellant)",
+      "inputs": [
+        {
+          "key": "dryMassKg",
+          "label": "Stage dry mass",
+          "unit": "kg",
+          "default": 30000
+        },
+        {
+          "key": "propellantMassKg",
+          "label": "Usable propellant mass",
+          "unit": "kg",
+          "default": 320000
+        }
+      ],
+      "outputs": {
+        "structuralCoefficient": {
+          "expression": "dryMassKg/(dryMassKg+propellantMassKg)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Dry and propellant masses exclude payload and upper stages."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.payload_fraction",
+      "category": "Launch vehicle mass & staging",
+      "title": "Launch vehicle payload fraction",
+      "equation": "f_payload = m_payload/m_liftoff",
+      "inputs": [
+        {
+          "key": "payloadMassKg",
+          "label": "Payload mass",
+          "unit": "kg",
+          "default": 18000
+        },
+        {
+          "key": "liftoffMassKg",
+          "label": "Liftoff mass",
+          "unit": "kg",
+          "default": 550000
+        }
+      ],
+      "outputs": {
+        "payloadFraction": {
+          "expression": "payloadMassKg/liftoffMassKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Payload and liftoff mass use the same mission configuration."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.propellant_loading_fraction",
+      "category": "Launch vehicle mass & staging",
+      "title": "Propellant loading fraction",
+      "equation": "f_prop = m_propellant/m_wet",
+      "inputs": [
+        {
+          "key": "propellantMassKg",
+          "label": "Loaded propellant mass",
+          "unit": "kg",
+          "default": 390000
+        },
+        {
+          "key": "wetMassKg",
+          "label": "Stage wet mass",
+          "unit": "kg",
+          "default": 450000
+        }
+      ],
+      "outputs": {
+        "propellantLoadingFraction": {
+          "expression": "propellantMassKg/wetMassKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Wet mass includes the loaded propellant quantity."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.stage_ideal_delta_v",
+      "category": "Launch vehicle mass & staging",
+      "title": "Ideal stage delta-v",
+      "equation": "Δv_stage = I_sp g₀ ln(m_i/m_f)",
+      "inputs": [
+        {
+          "key": "specificImpulseS",
+          "label": "Stage specific impulse",
+          "unit": "s",
+          "default": 310
+        },
+        {
+          "key": "standardGravityMps2",
+          "label": "Standard gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        },
+        {
+          "key": "initialStageMassKg",
+          "label": "Initial stage mass",
+          "unit": "kg",
+          "default": 450000
+        },
+        {
+          "key": "finalStageMassKg",
+          "label": "Final stage mass",
+          "unit": "kg",
+          "default": 130000
+        }
+      ],
+      "outputs": {
+        "stageIdealDeltaVMps": {
+          "expression": "specificImpulseS*standardGravityMps2*log(initialStageMassKg/finalStageMassKg)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Ideal rocket equation with constant effective specific impulse."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.two_stage_total_delta_v",
+      "category": "Launch vehicle mass & staging",
+      "title": "Two-stage ideal delta-v",
+      "equation": "Δv_total = Δv₁ + Δv₂",
+      "inputs": [
+        {
+          "key": "stage1DeltaVMps",
+          "label": "Stage 1 ideal delta-v",
+          "unit": "m/s",
+          "default": 3800
+        },
+        {
+          "key": "stage2DeltaVMps",
+          "label": "Stage 2 ideal delta-v",
+          "unit": "m/s",
+          "default": 5200
+        }
+      ],
+      "outputs": {
+        "totalIdealDeltaVMps": {
+          "expression": "stage1DeltaVMps+stage2DeltaVMps",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Stage delta-v values use compatible ideal assumptions."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.burnout_acceleration",
+      "category": "Launch vehicle mass & staging",
+      "title": "Burnout axial acceleration",
+      "equation": "a = T/m_b − g",
+      "inputs": [
+        {
+          "key": "thrustN",
+          "label": "Thrust near burnout",
+          "unit": "N",
+          "default": 760000
+        },
+        {
+          "key": "burnoutMassKg",
+          "label": "Vehicle mass near burnout",
+          "unit": "kg",
+          "default": 60000
+        },
+        {
+          "key": "localGravityMps2",
+          "label": "Local gravity",
+          "unit": "m/s^2",
+          "default": 9.3
+        }
+      ],
+      "outputs": {
+        "netAccelerationMps2": {
+          "expression": "thrustN/burnoutMassKg-localGravityMps2",
+          "unit": "m/s^2"
+        },
+        "netAccelerationG": {
+          "expression": "(thrustN/burnoutMassKg-localGravityMps2)/9.80665",
+          "unit": "g"
+        }
+      },
+      "assumptions": [
+        "Axial thrust, vertical flight, and neglected drag for screening."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.engine_burn_duration",
+      "category": "Launch vehicle mass & staging",
+      "title": "Engine burn duration",
+      "equation": "t_burn = m_propellant/ṁ",
+      "inputs": [
+        {
+          "key": "usablePropellantMassKg",
+          "label": "Usable propellant mass",
+          "unit": "kg",
+          "default": 320000
+        },
+        {
+          "key": "massFlowKgS",
+          "label": "Total engine mass flow",
+          "unit": "kg/s",
+          "default": 2500
+        }
+      ],
+      "outputs": {
+        "burnDurationS": {
+          "expression": "usablePropellantMassKg/massFlowKgS",
+          "unit": "s"
+        }
+      },
+      "assumptions": [
+        "Constant mass flow and declared usable propellant."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.liftoff_thrust_to_weight",
+      "category": "Ascent & launch dynamics",
+      "title": "Liftoff thrust-to-weight ratio",
+      "equation": "T/W = T/(mg)",
+      "inputs": [
+        {
+          "key": "liftoffThrustN",
+          "label": "Total liftoff thrust",
+          "unit": "N",
+          "default": 7600000
+        },
+        {
+          "key": "liftoffMassKg",
+          "label": "Liftoff mass",
+          "unit": "kg",
+          "default": 550000
+        },
+        {
+          "key": "localGravityMps2",
+          "label": "Local gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        }
+      ],
+      "outputs": {
+        "thrustToWeightRatio": {
+          "expression": "liftoffThrustN/(liftoffMassKg*localGravityMps2)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "All engines operating at the stated thrust."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.initial_vertical_acceleration",
+      "category": "Ascent & launch dynamics",
+      "title": "Initial vertical acceleration",
+      "equation": "a₀ = T/m − g",
+      "inputs": [
+        {
+          "key": "liftoffThrustN",
+          "label": "Total thrust",
+          "unit": "N",
+          "default": 7600000
+        },
+        {
+          "key": "liftoffMassKg",
+          "label": "Vehicle mass",
+          "unit": "kg",
+          "default": 550000
+        },
+        {
+          "key": "localGravityMps2",
+          "label": "Local gravity",
+          "unit": "m/s^2",
+          "default": 9.80665
+        }
+      ],
+      "outputs": {
+        "initialAccelerationMps2": {
+          "expression": "liftoffThrustN/liftoffMassKg-localGravityMps2",
+          "unit": "m/s^2"
+        }
+      },
+      "assumptions": [
+        "Vertical ascent at release with drag neglected."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.ascent_dynamic_pressure",
+      "category": "Ascent & launch dynamics",
+      "title": "Ascent dynamic pressure",
+      "equation": "q = ½ρV²",
+      "inputs": [
+        {
+          "key": "atmosphericDensityKgM3",
+          "label": "Atmospheric density",
+          "unit": "kg/m^3",
+          "default": 0.41
+        },
+        {
+          "key": "vehicleSpeedMps",
+          "label": "Vehicle speed",
+          "unit": "m/s",
+          "default": 650
+        }
+      ],
+      "outputs": {
+        "dynamicPressurePa": {
+          "expression": "0.5*atmosphericDensityKgM3*vehicleSpeedMps**2",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Continuum-flow dynamic-pressure screening."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.ballistic_coefficient",
+      "category": "Ascent & launch dynamics",
+      "title": "Vehicle ballistic coefficient",
+      "equation": "β = m/(C_DA)",
+      "inputs": [
+        {
+          "key": "vehicleMassKg",
+          "label": "Vehicle mass",
+          "unit": "kg",
+          "default": 300000
+        },
+        {
+          "key": "dragCoefficient",
+          "label": "Drag coefficient",
+          "unit": "1",
+          "default": 0.35
+        },
+        {
+          "key": "referenceAreaM2",
+          "label": "Reference area",
+          "unit": "m^2",
+          "default": 10.5
+        }
+      ],
+      "outputs": {
+        "ballisticCoefficientKgM2": {
+          "expression": "vehicleMassKg/(dragCoefficient*referenceAreaM2)",
+          "unit": "kg/m^2"
+        }
+      },
+      "assumptions": [
+        "Constant reference drag coefficient and frontal area."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.ascent_drag_force",
+      "category": "Ascent & launch dynamics",
+      "title": "Ascent aerodynamic drag",
+      "equation": "D = qC_DA",
+      "inputs": [
+        {
+          "key": "dynamicPressurePa",
+          "label": "Dynamic pressure",
+          "unit": "Pa",
+          "default": 45000
+        },
+        {
+          "key": "dragCoefficient",
+          "label": "Drag coefficient",
+          "unit": "1",
+          "default": 0.35
+        },
+        {
+          "key": "referenceAreaM2",
+          "label": "Reference area",
+          "unit": "m^2",
+          "default": 10.5
+        }
+      ],
+      "outputs": {
+        "dragForceN": {
+          "expression": "dynamicPressurePa*dragCoefficient*referenceAreaM2",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Reference drag coefficient and area correspond to the stated condition."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.gravity_loss",
+      "category": "Ascent & launch dynamics",
+      "title": "Gravity loss screening",
+      "equation": "Δv_g = g_eff t sin γ",
+      "inputs": [
+        {
+          "key": "effectiveGravityMps2",
+          "label": "Effective gravity",
+          "unit": "m/s^2",
+          "default": 9.2
+        },
+        {
+          "key": "burnTimeS",
+          "label": "Ascent burn time",
+          "unit": "s",
+          "default": 150
+        },
+        {
+          "key": "flightPathAngleDeg",
+          "label": "Average flight-path angle",
+          "unit": "deg",
+          "default": 55
+        }
+      ],
+      "outputs": {
+        "gravityLossMps": {
+          "expression": "effectiveGravityMps2*burnTimeS*sin(flightPathAngleDeg*pi/180)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Constant effective gravity and average flight-path angle."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.drag_loss",
+      "category": "Ascent & launch dynamics",
+      "title": "Integrated drag-loss screening",
+      "equation": "Δv_D = D_avg t/m_avg",
+      "inputs": [
+        {
+          "key": "averageDragN",
+          "label": "Average drag force",
+          "unit": "N",
+          "default": 180000
+        },
+        {
+          "key": "lossDurationS",
+          "label": "Effective drag-loss duration",
+          "unit": "s",
+          "default": 110
+        },
+        {
+          "key": "averageMassKg",
+          "label": "Average vehicle mass",
+          "unit": "kg",
+          "default": 320000
+        }
+      ],
+      "outputs": {
+        "dragLossMps": {
+          "expression": "averageDragN*lossDurationS/averageMassKg",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Average-force and average-mass impulse approximation."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.net_ascent_delta_v",
+      "category": "Ascent & launch dynamics",
+      "title": "Net delivered ascent delta-v",
+      "equation": "Δv_net = Δv_ideal − Δv_gravity − Δv_drag − Δv_steering",
+      "inputs": [
+        {
+          "key": "idealDeltaVMps",
+          "label": "Ideal vehicle delta-v",
+          "unit": "m/s",
+          "default": 10500
+        },
+        {
+          "key": "gravityLossMps",
+          "label": "Gravity loss",
+          "unit": "m/s",
+          "default": 1450
+        },
+        {
+          "key": "dragLossMps",
+          "label": "Drag loss",
+          "unit": "m/s",
+          "default": 180
+        },
+        {
+          "key": "steeringLossMps",
+          "label": "Steering and control loss",
+          "unit": "m/s",
+          "default": 120
+        }
+      ],
+      "outputs": {
+        "netAscentDeltaVMps": {
+          "expression": "idealDeltaVMps-gravityLossMps-dragLossMps-steeringLossMps",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Loss components are estimated consistently and not double-counted."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.circular_orbit_velocity",
+      "category": "Orbital mechanics & transfers",
+      "title": "Circular-orbit velocity",
+      "equation": "v_c = √(μ/r)",
+      "inputs": [
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Central-body gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        },
+        {
+          "key": "orbitalRadiusM",
+          "label": "Orbital radius from center",
+          "unit": "m",
+          "default": 6771000
+        }
+      ],
+      "outputs": {
+        "circularVelocityMps": {
+          "expression": "sqrt(gravitationalParameterM3S2/orbitalRadiusM)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Two-body point-mass gravity and circular orbit."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.escape_velocity",
+      "category": "Orbital mechanics & transfers",
+      "title": "Local escape velocity",
+      "equation": "v_esc = √(2μ/r)",
+      "inputs": [
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Central-body gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        },
+        {
+          "key": "radiusM",
+          "label": "Distance from central-body center",
+          "unit": "m",
+          "default": 6371000
+        }
+      ],
+      "outputs": {
+        "escapeVelocityMps": {
+          "expression": "sqrt(2*gravitationalParameterM3S2/radiusM)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Two-body point-mass gravity and zero hyperbolic excess speed."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.orbital_period",
+      "category": "Orbital mechanics & transfers",
+      "title": "Keplerian orbital period",
+      "equation": "T = 2π√(a³/μ)",
+      "inputs": [
+        {
+          "key": "semiMajorAxisM",
+          "label": "Semi-major axis",
+          "unit": "m",
+          "default": 6771000
+        },
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Central-body gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        }
+      ],
+      "outputs": {
+        "orbitalPeriodS": {
+          "expression": "2*pi*sqrt(semiMajorAxisM**3/gravitationalParameterM3S2)",
+          "unit": "s"
+        }
+      },
+      "assumptions": [
+        "Two-body Keplerian orbit."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.vis_viva_velocity",
+      "category": "Orbital mechanics & transfers",
+      "title": "Vis-viva orbital speed",
+      "equation": "v = √[μ(2/r − 1/a)]",
+      "inputs": [
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Central-body gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        },
+        {
+          "key": "radiusM",
+          "label": "Current orbital radius",
+          "unit": "m",
+          "default": 7000000
+        },
+        {
+          "key": "semiMajorAxisM",
+          "label": "Orbit semi-major axis",
+          "unit": "m",
+          "default": 10000000
+        }
+      ],
+      "outputs": {
+        "orbitalSpeedMps": {
+          "expression": "sqrt(gravitationalParameterM3S2*(2/radiusM-1/semiMajorAxisM))",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Two-body Keplerian orbit."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.hohmann_departure_delta_v",
+      "category": "Orbital mechanics & transfers",
+      "title": "Hohmann transfer departure delta-v",
+      "equation": "Δv₁ = √(μ/r₁)[√(2r₂/(r₁+r₂))−1]",
+      "inputs": [
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        },
+        {
+          "key": "initialOrbitRadiusM",
+          "label": "Initial circular-orbit radius",
+          "unit": "m",
+          "default": 6771000
+        },
+        {
+          "key": "finalOrbitRadiusM",
+          "label": "Final circular-orbit radius",
+          "unit": "m",
+          "default": 42164000
+        }
+      ],
+      "outputs": {
+        "departureDeltaVMps": {
+          "expression": "sqrt(gravitationalParameterM3S2/initialOrbitRadiusM)*(sqrt(2*finalOrbitRadiusM/(initialOrbitRadiusM+finalOrbitRadiusM))-1)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Coplanar impulsive transfer between circular orbits."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.hohmann_arrival_delta_v",
+      "category": "Orbital mechanics & transfers",
+      "title": "Hohmann transfer arrival delta-v",
+      "equation": "Δv₂ = √(μ/r₂)[1−√(2r₁/(r₁+r₂))]",
+      "inputs": [
+        {
+          "key": "gravitationalParameterM3S2",
+          "label": "Gravitational parameter",
+          "unit": "m^3/s^2",
+          "default": 398600441800000
+        },
+        {
+          "key": "initialOrbitRadiusM",
+          "label": "Initial circular-orbit radius",
+          "unit": "m",
+          "default": 6771000
+        },
+        {
+          "key": "finalOrbitRadiusM",
+          "label": "Final circular-orbit radius",
+          "unit": "m",
+          "default": 42164000
+        }
+      ],
+      "outputs": {
+        "arrivalDeltaVMps": {
+          "expression": "sqrt(gravitationalParameterM3S2/finalOrbitRadiusM)*(1-sqrt(2*initialOrbitRadiusM/(initialOrbitRadiusM+finalOrbitRadiusM)))",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Coplanar impulsive transfer between circular orbits."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.hohmann_total_delta_v",
+      "category": "Orbital mechanics & transfers",
+      "title": "Total Hohmann transfer delta-v",
+      "equation": "Δv_H = |Δv₁| + |Δv₂|",
+      "inputs": [
+        {
+          "key": "departureDeltaVMps",
+          "label": "Departure burn delta-v",
+          "unit": "m/s",
+          "default": 2450
+        },
+        {
+          "key": "arrivalDeltaVMps",
+          "label": "Arrival burn delta-v",
+          "unit": "m/s",
+          "default": 1470
+        }
+      ],
+      "outputs": {
+        "totalTransferDeltaVMps": {
+          "expression": "abs(departureDeltaVMps)+abs(arrivalDeltaVMps)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Impulsive coplanar burns and no plane change."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.plane_change_delta_v",
+      "category": "Orbital mechanics & transfers",
+      "title": "Impulsive plane-change delta-v",
+      "equation": "Δv = 2v sin(Δi/2)",
+      "inputs": [
+        {
+          "key": "orbitalSpeedMps",
+          "label": "Orbital speed at maneuver",
+          "unit": "m/s",
+          "default": 7500
+        },
+        {
+          "key": "inclinationChangeDeg",
+          "label": "Plane-change angle",
+          "unit": "deg",
+          "default": 10
+        }
+      ],
+      "outputs": {
+        "planeChangeDeltaVMps": {
+          "expression": "2*orbitalSpeedMps*sin(inclinationChangeDeg*pi/360)",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Instantaneous pure plane change at constant speed magnitude."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.mission_delta_v_budget",
+      "category": "Spacecraft & mission systems",
+      "title": "Mission delta-v budget",
+      "equation": "Δv_budget = Σ maneuvers + reserve",
+      "inputs": [
+        {
+          "key": "insertionDeltaVMps",
+          "label": "Orbit insertion delta-v",
+          "unit": "m/s",
+          "default": 1800
+        },
+        {
+          "key": "transferDeltaVMps",
+          "label": "Transfer delta-v",
+          "unit": "m/s",
+          "default": 3200
+        },
+        {
+          "key": "correctionDeltaVMps",
+          "label": "Trajectory correction delta-v",
+          "unit": "m/s",
+          "default": 180
+        },
+        {
+          "key": "attitudeAndStationkeepingDeltaVMps",
+          "label": "Attitude and stationkeeping delta-v",
+          "unit": "m/s",
+          "default": 220
+        },
+        {
+          "key": "reserveDeltaVMps",
+          "label": "Contingency reserve",
+          "unit": "m/s",
+          "default": 350
+        }
+      ],
+      "outputs": {
+        "missionDeltaVBudgetMps": {
+          "expression": "insertionDeltaVMps+transferDeltaVMps+correctionDeltaVMps+attitudeAndStationkeepingDeltaVMps+reserveDeltaVMps",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Maneuver categories are mutually exclusive and consistently estimated."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.propellant_reserve_fraction",
+      "category": "Spacecraft & mission systems",
+      "title": "Propellant reserve fraction",
+      "equation": "f_reserve = m_reserve/m_loaded",
+      "inputs": [
+        {
+          "key": "reservePropellantMassKg",
+          "label": "Reserved propellant",
+          "unit": "kg",
+          "default": 180
+        },
+        {
+          "key": "loadedPropellantMassKg",
+          "label": "Loaded propellant",
+          "unit": "kg",
+          "default": 1200
+        }
+      ],
+      "outputs": {
+        "propellantReserveFraction": {
+          "expression": "reservePropellantMassKg/loadedPropellantMassKg",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Reserve and loaded propellant use the same usable-mass convention."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.solar_array_area",
+      "category": "Spacecraft & mission systems",
+      "title": "Required solar-array area",
+      "equation": "A = P/[Gηf_d f_i]",
+      "inputs": [
+        {
+          "key": "requiredElectricalPowerW",
+          "label": "Required electrical power",
+          "unit": "W",
+          "default": 4200
+        },
+        {
+          "key": "solarFluxWm2",
+          "label": "Incident solar flux",
+          "unit": "W/m^2",
+          "default": 1361
+        },
+        {
+          "key": "cellEfficiency",
+          "label": "Beginning-of-life cell efficiency",
+          "unit": "1",
+          "default": 0.3
+        },
+        {
+          "key": "degradationFactor",
+          "label": "End-of-life degradation factor",
+          "unit": "1",
+          "default": 0.82
+        },
+        {
+          "key": "incidenceFactor",
+          "label": "Average incidence factor",
+          "unit": "1",
+          "default": 0.9
+        }
+      ],
+      "outputs": {
+        "requiredSolarArrayAreaM2": {
+          "expression": "requiredElectricalPowerW/(solarFluxWm2*cellEfficiency*degradationFactor*incidenceFactor)",
+          "unit": "m^2"
+        }
+      },
+      "assumptions": [
+        "Constant representative flux, incidence, conversion efficiency, and degradation factor."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.battery_capacity",
+      "category": "Spacecraft & mission systems",
+      "title": "Required battery capacity",
+      "equation": "C_Ah = Pt/(V DOD η)",
+      "inputs": [
+        {
+          "key": "eclipsePowerW",
+          "label": "Eclipse electrical load",
+          "unit": "W",
+          "default": 2800
+        },
+        {
+          "key": "eclipseDurationH",
+          "label": "Eclipse duration",
+          "unit": "h",
+          "default": 0.62
+        },
+        {
+          "key": "busVoltageV",
+          "label": "Battery bus voltage",
+          "unit": "V",
+          "default": 100
+        },
+        {
+          "key": "allowableDepthOfDischarge",
+          "label": "Allowable depth of discharge",
+          "unit": "1",
+          "default": 0.6
+        },
+        {
+          "key": "dischargeEfficiency",
+          "label": "Discharge efficiency",
+          "unit": "1",
+          "default": 0.92
+        }
+      ],
+      "outputs": {
+        "requiredBatteryCapacityAh": {
+          "expression": "eclipsePowerW*eclipseDurationH/(busVoltageV*allowableDepthOfDischarge*dischargeEfficiency)",
+          "unit": "Ah"
+        }
+      },
+      "assumptions": [
+        "Constant eclipse load and stated usable depth of discharge."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.radiator_area",
+      "category": "Spacecraft & mission systems",
+      "title": "Radiator area for net heat rejection",
+      "equation": "A = Q/[εσ(T_r⁴−T_sink⁴)]",
+      "inputs": [
+        {
+          "key": "heatRejectionW",
+          "label": "Required heat rejection",
+          "unit": "W",
+          "default": 1800
+        },
+        {
+          "key": "emissivity",
+          "label": "Radiator emissivity",
+          "unit": "1",
+          "default": 0.85
+        },
+        {
+          "key": "stefanBoltzmannWm2K4",
+          "label": "Stefan–Boltzmann constant",
+          "unit": "W/(m^2*K^4)",
+          "default": 5.670374419e-08
+        },
+        {
+          "key": "radiatorTemperatureK",
+          "label": "Radiator temperature",
+          "unit": "K",
+          "default": 320
+        },
+        {
+          "key": "sinkTemperatureK",
+          "label": "Effective sink temperature",
+          "unit": "K",
+          "default": 3
+        }
+      ],
+      "outputs": {
+        "radiatorAreaM2": {
+          "expression": "heatRejectionW/(emissivity*stefanBoltzmannWm2K4*(radiatorTemperatureK**4-sinkTemperatureK**4))",
+          "unit": "m^2"
+        }
+      },
+      "assumptions": [
+        "Diffuse-grey radiation and negligible non-radiative heat rejection."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.radiative_equilibrium_temperature",
+      "category": "Spacecraft & mission systems",
+      "title": "Radiative equilibrium temperature",
+      "equation": "T = [P_abs/(εσA)]^(1/4)",
+      "inputs": [
+        {
+          "key": "absorbedPowerW",
+          "label": "Absorbed environmental and internal power",
+          "unit": "W",
+          "default": 1200
+        },
+        {
+          "key": "emissivity",
+          "label": "Effective emissivity",
+          "unit": "1",
+          "default": 0.82
+        },
+        {
+          "key": "stefanBoltzmannWm2K4",
+          "label": "Stefan–Boltzmann constant",
+          "unit": "W/(m^2*K^4)",
+          "default": 5.670374419e-08
+        },
+        {
+          "key": "radiatingAreaM2",
+          "label": "Effective radiating area",
+          "unit": "m^2",
+          "default": 6
+        }
+      ],
+      "outputs": {
+        "equilibriumTemperatureK": {
+          "expression": "(absorbedPowerW/(emissivity*stefanBoltzmannWm2K4*radiatingAreaM2))**0.25",
+          "unit": "K"
+        }
+      },
+      "assumptions": [
+        "Steady lumped thermal balance and diffuse-grey emission."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.free_space_path_loss",
+      "category": "Spacecraft & mission systems",
+      "title": "Free-space path loss",
+      "equation": "FSPL = 20log₁₀(4πdf/c)",
+      "inputs": [
+        {
+          "key": "distanceM",
+          "label": "Link distance",
+          "unit": "m",
+          "default": 400000
+        },
+        {
+          "key": "frequencyHz",
+          "label": "Carrier frequency",
+          "unit": "Hz",
+          "default": 2200000000
+        },
+        {
+          "key": "speedOfLightMps",
+          "label": "Speed of light",
+          "unit": "m/s",
+          "default": 299792458
+        }
+      ],
+      "outputs": {
+        "freeSpacePathLossDb": {
+          "expression": "20*log10(4*pi*distanceM*frequencyHz/speedOfLightMps)",
+          "unit": "dB"
+        }
+      },
+      "assumptions": [
+        "Far-field free-space propagation without atmospheric or pointing losses."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    },
+    {
+      "id": "rp.series_mission_reliability",
+      "category": "Spacecraft & mission systems",
+      "title": "Series mission reliability",
+      "equation": "R_mission = R_launch R_prop R_power R_thermal R_comm",
+      "inputs": [
+        {
+          "key": "launchReliability",
+          "label": "Launch phase reliability",
+          "unit": "0-1",
+          "default": 0.985
+        },
+        {
+          "key": "propulsionReliability",
+          "label": "Propulsion reliability",
+          "unit": "0-1",
+          "default": 0.99
+        },
+        {
+          "key": "powerReliability",
+          "label": "Power-system reliability",
+          "unit": "0-1",
+          "default": 0.995
+        },
+        {
+          "key": "thermalReliability",
+          "label": "Thermal-control reliability",
+          "unit": "0-1",
+          "default": 0.997
+        },
+        {
+          "key": "communicationsReliability",
+          "label": "Communications reliability",
+          "unit": "0-1",
+          "default": 0.996
+        }
+      ],
+      "outputs": {
+        "missionReliability": {
+          "expression": "launchReliability*propulsionReliability*powerReliability*thermalReliability*communicationsReliability",
+          "unit": "0-1"
+        }
+      },
+      "assumptions": [
+        "Independent phase and subsystem failures with all elements required for mission success."
+      ],
+      "notes": [],
+      "version": "0.19.0"
+    }
+  ]
+}

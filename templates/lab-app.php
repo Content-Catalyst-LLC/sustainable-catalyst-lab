@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -779,6 +779,22 @@
   </header>
   <div data-aerospace-engineering-flight-systems-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="rocket-propulsion-spaceflight"
+    data-module-panel="rocket-propulsion-spaceflight"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/ROCKET-PROPULSION-SPACEFLIGHT</p>
+      <h3>Rocket propulsion and spaceflight</h3>
+      <p>Auditable educational and preliminary-design calculations for rocket performance, nozzle flow, launch-vehicle staging, ascent dynamics, orbital mechanics, spacecraft power and thermal systems, communications, mission budgets, and reliability.</p>
+    </div>
+  </header>
+  <div data-rocket-propulsion-spaceflight-root></div>
+</section>
+
 
 
 

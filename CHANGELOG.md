@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.0
+
+- Added Rocket Propulsion and Spaceflight with 48 methods and 45 deterministic benchmarks.
+- Added formula-visible propulsion, nozzle, staging, ascent, orbital, spacecraft, and mission-system analysis.
+- Added WordPress and FastAPI interfaces plus project, notebook, visualization, and validation records.
+
 ## 0.18.0
 
 - Added Aerospace Engineering and Flight Systems with 48 methods and 26 deterministic benchmarks.
