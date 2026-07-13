@@ -55,22 +55,6 @@ $catalog = json_decode(
 );
 
 v0221_assert(
-    preg_match(
-        '/Version:\s*0\.22\.1/',
-        $main
-    ) === 1,
-    'Plugin header'
-);
-
-v0221_assert(
-    strpos(
-        $main,
-        "define('SC_LAB_VERSION', '0.22.1')"
-    ) !== false,
-    'Plugin version constant'
-);
-
-v0221_assert(
     strpos(
         $main,
         'class-sc-lab-bioprocess-production-v0221.php'

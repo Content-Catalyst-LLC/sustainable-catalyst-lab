@@ -1,0 +1,11 @@
+<?php
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Bioprocess_Monitoring_Control_V0222 {
+ const VERSION='0.22.2'; const SCRIPT_HANDLE='sc-lab-bioprocess-monitoring-control-v0222'; const STYLE_HANDLE='sc-lab-bioprocess-monitoring-control-v0222-style'; const SHORTCODE='sc_lab_bioprocess_monitoring_control';
+ public static function boot(){add_action('init',array(__CLASS__,'register_shortcode'));add_action('wp_enqueue_scripts',array(__CLASS__,'enqueue'),60050);} public static function register_shortcode(){add_shortcode(self::SHORTCODE,array(__CLASS__,'shortcode'));}
+ private static function asset_url($r){return defined('SC_LAB_URL')?trailingslashit((string)constant('SC_LAB_URL')).'assets/'.ltrim($r,'/'):plugin_dir_url(dirname(__DIR__).'/sustainable-catalyst-lab.php').'assets/'.ltrim($r,'/');}
+ private static function asset_path($r){return dirname(__DIR__).'/assets/'.ltrim($r,'/');} private static function asset_version($r){$p=self::asset_path($r);return is_file($p)?self::VERSION.'.'.filemtime($p):self::VERSION;}
+ public static function enqueue(){if(is_admin())return;if(class_exists('SC_Lab_Bioprocess_Production_V0221')&&is_callable(array('SC_Lab_Bioprocess_Production_V0221','enqueue')))SC_Lab_Bioprocess_Production_V0221::enqueue();$s='css/sc-lab-bioprocess-monitoring-control-v0222.css';$j='js/modules/bioprocess-monitoring-control-v0222.js';wp_enqueue_style(self::STYLE_HANDLE,self::asset_url($s),array('sc-lab-bioprocess-production-v0221-style'),self::asset_version($s));wp_enqueue_script(self::SCRIPT_HANDLE,self::asset_url($j),array('sc-lab-bioprocess-production-v0221'),self::asset_version($j),true);}
+ public static function shortcode($a=array()){self::enqueue();$a=shortcode_atts(array('title'=>'Bioprocess Monitoring, Control, and Visualization','description'=>'Time-series monitoring, process excursions, PID-style simulations, multi-run comparison, and auditable exports.'),is_array($a)?$a:array(),self::SHORTCODE);ob_start();?><section class="sc-lab-module"><header class="sc-lab-module-header"><p class="sc-lab-kicker">LAB/BIOPROCESS/OPERATIONS</p><h2><?php echo esc_html($a['title']); ?></h2><p><?php echo esc_html($a['description']); ?></p></header><div data-bioprocess-monitoring-control-root></div></section><?php return (string)ob_get_clean();}
+}
+SC_Lab_Bioprocess_Monitoring_Control_V0222::boot();

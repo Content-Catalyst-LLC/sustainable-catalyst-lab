@@ -1161,6 +1161,8 @@
     </header>
 
     <div data-biotechnology-bioprocess-root></div>
+
+    <div data-bioprocess-monitoring-control-root></div>
 </section>
 
 </main>

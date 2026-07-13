@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.22.2 — Bioprocess Monitoring, Control, and Visualization
+
+This release adds time-series monitoring, excursion detection, rolling statistics, PID-style control simulations, multi-run comparison, native SVG charts, CSV workflows, exports, and provenance handoffs while preserving the v0.22.0 48-method engine and v0.22.1 production layer.
+
 # Sustainable Catalyst Lab v0.22.1 — Bioprocess Production Activation and Interface Reliability
 
 This release adds canonical mount repair, duplicate suppression, stale-render cleanup, controlled retries, browser and REST health diagnostics, and mobile reliability while preserving the v0.22.0 48-method bioprocess engine.

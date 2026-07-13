@@ -1,3 +1,13 @@
+## 0.22.2 — Bioprocess Monitoring, Control, and Visualization
+
+- Added eight standard process-monitoring channels.
+- Added rolling statistics and excursion detection.
+- Added six PID-style controller simulations.
+- Added phase markers and multi-run comparison.
+- Added CSV workflows, SVG charts, and JSON exports.
+- Added WordPress and FastAPI monitoring routes.
+- Added validation and provenance handoffs.
+
 ## 0.22.1 — Bioprocess Production Activation and Interface Reliability
 
 - Added unconditional bioprocess production activation.

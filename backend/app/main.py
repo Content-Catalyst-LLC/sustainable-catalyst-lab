@@ -275,3 +275,11 @@ from .bioprocess_production_routes import (
 )
 
 app.include_router(bioprocess_production_router)
+
+
+# SC_LAB_V0222_BIOPROCESS_MONITORING_ROUTER
+from .bioprocess_monitoring_control_routes import (
+    router as bioprocess_monitoring_router,
+)
+
+app.include_router(bioprocess_monitoring_router)
