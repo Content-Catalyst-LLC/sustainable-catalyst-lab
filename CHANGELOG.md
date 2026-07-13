@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.14.0
+
+- Added Urban Planning and Spatial Systems with 48 methods and 21 deterministic benchmarks.
+- Added standalone WordPress integration and REST proxy classes.
+- Added land-use, accessibility, mobility, network, GIS, public-service, resilience, and scenario project records.
+
 ## 0.13.0
 
 - Added Architecture and Building Performance with 48 methods and 19 deterministic benchmarks.

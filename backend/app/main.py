@@ -212,3 +212,6 @@ app.include_router(mechanical_router, dependencies=[Depends(require_api_key)])
 
 from .architecture_building_routes import router as architecture_building_router
 app.include_router(architecture_building_router)
+
+from .urban_planning_spatial_routes import router as urban_planning_spatial_router
+app.include_router(urban_planning_spatial_router)

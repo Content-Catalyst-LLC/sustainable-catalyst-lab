@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.13.0",
-      "default": "0.13.0"
+      "const": "0.14.0",
+      "default": "0.14.0"
     },
     "id": {
       "type": "string"
@@ -558,6 +558,83 @@
       "default": []
     },
     "buildingEnergyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "urbanPlanningSpatialAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "urbanSpatialRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "urbanPlanningValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "landUseRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "accessibilityRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "mobilityRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "spatialNetworkRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "gisAnalysisRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "publicServiceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "urbanResilienceRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "spatialScenarioRecords": {
       "type": "array",
       "items": {
         "type": "object"

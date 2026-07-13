@@ -37,7 +37,7 @@ $project_schema = json_decode(
 );
 
 ab_assert(
-    preg_match('/Version:\s*0\.13\.0/', $main) === 1,
+    preg_match('/Version:\s*\d+\.\d+\.\d+/', $main) === 1,
     'Plugin header'
 );
 
@@ -128,10 +128,18 @@ ab_assert(
 );
 
 ab_assert(
-    (
+    isset(
         $project_schema['properties']['schemaVersion']['const']
-        ?? ''
-    ) === '0.13.0',
+    )
+    && preg_match(
+        '/^\\d+\\.\\d+\\.\\d+$/',
+        (string) $project_schema['properties']['schemaVersion']['const']
+    ) === 1
+    && version_compare(
+        (string) $project_schema['properties']['schemaVersion']['const'],
+        '0.13.0',
+        '>='
+    ),
     'Project schema version'
 );
 

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/urban-spatial-record-v1.schema.json",
+  "title": "Sustainable Catalyst Lab Urban Spatial Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "category",
+    "title",
+    "recordedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-urban-spatial-record/1.0"
+    },
+    "version": {
+      "const": "0.14.0"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^up\\."
+    },
+    "category": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "recordedAt": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

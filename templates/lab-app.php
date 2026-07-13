@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -719,6 +719,22 @@
   </header>
   <div data-architecture-building-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="urban-planning-spatial"
+    data-module-panel="urban-planning-spatial"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/URBAN-PLANNING-SPATIAL</p>
+      <h3>Urban planning and spatial systems</h3>
+      <p>Auditable calculations for land use, density, accessibility, mobility, spatial networks, GIS indicators, public services, equity, resilience, and urban scenarios.</p>
+    </div>
+  </header>
+  <div data-urban-planning-spatial-root></div>
+</section>
+
 
 
 
