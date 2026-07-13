@@ -1136,6 +1136,10 @@
     <div
         data-biochemistry-visualization-batch-root
     ></div>
+
+    <div
+        data-molecular-validation-provenance-root
+    ></div>
 </section>
 
 </main>

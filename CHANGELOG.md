@@ -1,3 +1,14 @@
+## 0.21.3 — Molecular Analysis Validation and Provenance
+
+- Added eight molecular-analysis validation protocols.
+- Added explicit acceptance thresholds and pass/fail dossiers.
+- Added precision, recovery, linearity, LOD/LOQ, blank, control, robustness, and inter-run checks.
+- Added SHA-256 payload and record fingerprints.
+- Added parent-hash provenance chains and verification.
+- Added analyst, instrument, source, and evidence metadata.
+- Added deliberate tamper-detection tests.
+- Added WordPress and FastAPI validation/provenance routes.
+
 ## 0.21.2 — Biochemistry Visualization and Batch Analysis
 
 - Added seven native SVG visualization profiles.

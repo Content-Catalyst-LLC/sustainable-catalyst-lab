@@ -251,3 +251,11 @@ from .biochemistry_batch_routes import (
 )
 
 app.include_router(biochemistry_batch_router)
+
+
+# SC_LAB_V0213_MOLECULAR_VALIDATION_ROUTER
+from .molecular_analysis_validation_routes import (
+    router as molecular_validation_router,
+)
+
+app.include_router(molecular_validation_router)

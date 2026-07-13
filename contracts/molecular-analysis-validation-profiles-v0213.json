@@ -1,0 +1,240 @@
+{
+  "schema": "sc-lab-molecular-validation-profiles/1.0",
+  "version": "0.21.3",
+  "profiles": [
+    {
+      "id": "precision-repeatability",
+      "title": "Precision and repeatability",
+      "description": "Evaluate replicate dispersion using mean, sample standard deviation, and coefficient of variation.",
+      "requiredColumns": [
+        "value"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumReplicates",
+          "label": "Minimum replicates",
+          "default": 3,
+          "min": 2,
+          "step": 1
+        },
+        {
+          "key": "maximumCvPercent",
+          "label": "Maximum CV (%)",
+          "default": 10,
+          "min": 0,
+          "step": 0.1
+        }
+      ]
+    },
+    {
+      "id": "accuracy-recovery",
+      "title": "Accuracy and recovery",
+      "description": "Compare measured values with expected values and evaluate mean recovery and absolute bias.",
+      "requiredColumns": [
+        "expected",
+        "measured"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumRecoveryPercent",
+          "label": "Minimum recovery (%)",
+          "default": 90,
+          "step": 0.1
+        },
+        {
+          "key": "maximumRecoveryPercent",
+          "label": "Maximum recovery (%)",
+          "default": 110,
+          "step": 0.1
+        },
+        {
+          "key": "maximumAbsoluteBiasPercent",
+          "label": "Maximum absolute bias (%)",
+          "default": 10,
+          "min": 0,
+          "step": 0.1
+        }
+      ]
+    },
+    {
+      "id": "calibration-linearity",
+      "title": "Calibration linearity",
+      "description": "Fit concentration against signal and evaluate slope, intercept, and coefficient of determination.",
+      "requiredColumns": [
+        "concentration",
+        "signal"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumLevels",
+          "label": "Minimum calibration levels",
+          "default": 5,
+          "min": 2,
+          "step": 1
+        },
+        {
+          "key": "minimumRSquared",
+          "label": "Minimum R²",
+          "default": 0.99,
+          "min": 0,
+          "max": 1,
+          "step": 0.0001
+        },
+        {
+          "key": "requirePositiveSlope",
+          "label": "Require positive slope",
+          "default": 1,
+          "min": 0,
+          "max": 1,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "detection-quantitation",
+      "title": "Detection and quantitation limits",
+      "description": "Estimate LOD and LOQ from blank response variation and calibration slope.",
+      "requiredColumns": [
+        "blank",
+        "slope"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumBlankReplicates",
+          "label": "Minimum blank replicates",
+          "default": 5,
+          "min": 2,
+          "step": 1
+        },
+        {
+          "key": "maximumLod",
+          "label": "Maximum acceptable LOD",
+          "default": 1,
+          "min": 0,
+          "step": 0.001
+        },
+        {
+          "key": "maximumLoq",
+          "label": "Maximum acceptable LOQ",
+          "default": 3,
+          "min": 0,
+          "step": 0.001
+        }
+      ]
+    },
+    {
+      "id": "blank-background",
+      "title": "Blank and background performance",
+      "description": "Evaluate mean and maximum blank response against acceptance limits.",
+      "requiredColumns": [
+        "value"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumBlanks",
+          "label": "Minimum blanks",
+          "default": 3,
+          "min": 1,
+          "step": 1
+        },
+        {
+          "key": "maximumMean",
+          "label": "Maximum mean blank",
+          "default": 0.05,
+          "min": 0,
+          "step": 0.001
+        },
+        {
+          "key": "maximumSingle",
+          "label": "Maximum single blank",
+          "default": 0.1,
+          "min": 0,
+          "step": 0.001
+        }
+      ]
+    },
+    {
+      "id": "control-performance",
+      "title": "Control performance",
+      "description": "Evaluate control results using target values, assigned standard deviations, z-scores, and warning/action limits.",
+      "requiredColumns": [
+        "value",
+        "target",
+        "sd"
+      ],
+      "thresholds": [
+        {
+          "key": "warningZ",
+          "label": "Warning |z|",
+          "default": 2,
+          "min": 0,
+          "step": 0.1
+        },
+        {
+          "key": "actionZ",
+          "label": "Action |z|",
+          "default": 3,
+          "min": 0,
+          "step": 0.1
+        }
+      ]
+    },
+    {
+      "id": "robustness",
+      "title": "Robustness across conditions",
+      "description": "Compare condition-group means and evaluate maximum relative difference.",
+      "requiredColumns": [
+        "condition",
+        "value"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumConditions",
+          "label": "Minimum conditions",
+          "default": 2,
+          "min": 2,
+          "step": 1
+        },
+        {
+          "key": "maximumRelativeDifferencePercent",
+          "label": "Maximum relative difference (%)",
+          "default": 10,
+          "min": 0,
+          "step": 0.1
+        }
+      ]
+    },
+    {
+      "id": "inter-run-comparability",
+      "title": "Inter-run comparability",
+      "description": "Compare run-group means, pooled dispersion, and relative bias between runs.",
+      "requiredColumns": [
+        "run",
+        "value"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumRuns",
+          "label": "Minimum runs",
+          "default": 2,
+          "min": 2,
+          "step": 1
+        },
+        {
+          "key": "maximumBiasPercent",
+          "label": "Maximum run bias (%)",
+          "default": 10,
+          "min": 0,
+          "step": 0.1
+        },
+        {
+          "key": "maximumPooledCvPercent",
+          "label": "Maximum pooled CV (%)",
+          "default": 15,
+          "min": 0,
+          "step": 0.1
+        }
+      ]
+    }
+  ]
+}

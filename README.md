@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.21.3 — Molecular Analysis Validation and Provenance
+
+This release adds eight analytical validation protocols, explicit acceptance criteria, validation dossiers, SHA-256 payload fingerprints, parent-hash provenance chains, independent ledger verification, evidence metadata, and tamper-detection tests while preserving the v0.21.0 method catalog and v0.21.2 visualization/batch layer.
+
 # Sustainable Catalyst Lab v0.21.2 — Biochemistry Visualization and Batch Analysis
 
 This release adds native SVG biochemical plots, standard-curve regression, kinetics and binding visualizations, CSV batch execution across all 48 methods, replicate statistics, CV review flags, row-level error isolation, exports, and WordPress/FastAPI batch routes.

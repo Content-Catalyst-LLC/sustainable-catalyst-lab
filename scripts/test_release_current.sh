@@ -359,4 +359,8 @@ php tests/test-v0211.php
 node tests/test-v0212.js
 php tests/test-v0212.php
 
+
+node tests/test-v0213.js
+php tests/test-v0213.php
+
 echo "Current release validation passed for v$CURRENT_VERSION."
