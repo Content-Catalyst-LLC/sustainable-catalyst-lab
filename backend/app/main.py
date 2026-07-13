@@ -291,3 +291,11 @@ from .bioprocess_validation_provenance_routes import (
 )
 
 app.include_router(bioprocess_validation_provenance_router)
+
+
+# SC_LAB_V0230_BIOMEDICAL_BIOSIGNALS_ROUTER
+from .biomedical_engineering_biosignals_routes import (
+    router as biomedical_biosignals_router,
+)
+
+app.include_router(biomedical_biosignals_router)

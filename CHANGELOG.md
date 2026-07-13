@@ -1,3 +1,16 @@
+## 0.23.0 — Biomedical Engineering and Biosignals
+
+- Added 48 biomedical and biosignal methods.
+- Added 48 deterministic cross-runtime benchmarks.
+- Added acquisition and sampling calculations.
+- Added ECG, PPG, respiration, EMG, and EEG tools.
+- Added filtering and signal-quality calculations.
+- Added waveform feature analysis and SVG plots.
+- Added CSV batch execution with row isolation.
+- Added project, notebook, and provenance handoffs.
+- Added WordPress and FastAPI routes.
+- Added explicit non-diagnostic and non-clinical responsible-use boundaries.
+
 ## 0.22.3 — Bioprocess Validation and Batch Provenance
 
 - Added eight batch-validation profiles.

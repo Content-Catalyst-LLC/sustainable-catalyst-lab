@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.23.0 — Biomedical Engineering and Biosignals
+
+This release adds 48 deterministic biomedical and biosignal methods, 48 reference benchmarks, ECG, PPG, respiration, EMG, EEG, acquisition, filtering, waveform analysis, signal-quality review, CSV batch execution, project/notebook handoffs, and v0.22.3 provenance integration with explicit non-clinical boundaries.
+
 # Sustainable Catalyst Lab v0.22.3 — Bioprocess Validation and Batch Provenance
 
 This release adds eight validation profiles, batch acceptance checks, cross-batch comparability, CPP/CQA conformance, excursion disposition, hold-time stability, release-readiness decisions, SHA-256 provenance records, linked-ledger verification, tamper detection, and dossier exports.

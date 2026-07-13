@@ -61,7 +61,8 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering',
+    'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -1165,6 +1166,30 @@
     <div data-bioprocess-monitoring-control-root></div>
 
     <div data-bioprocess-validation-provenance-root></div>
+</section>
+
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="biomedical-engineering-biosignals"
+    data-module-panel="biomedical-engineering-biosignals"
+    hidden
+>
+    <header class="sc-lab-module-header">
+        <p class="sc-lab-kicker">
+            LAB/BIOMEDICAL/BIOSIGNALS
+        </p>
+        <h3>
+            Biomedical engineering and biosignals
+        </h3>
+        <p>
+            Non-clinical calculations and waveform analysis for
+            acquisition design, ECG, PPG, respiration, EMG, EEG,
+            filtering, and signal-quality review.
+        </p>
+    </header>
+
+    <div data-biomedical-biosignals-root></div>
 </section>
 
 </main>
