@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -794,6 +794,22 @@
   </header>
   <div data-rocket-propulsion-spaceflight-root></div>
 </section>
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="microbiology-laboratory"
+    data-module-panel="microbiology-laboratory"
+>
+  <header class="sc-lab-panel-header">
+    <div>
+      <p class="sc-lab-kicker">LAB/MICROBIOLOGY</p>
+      <h3>Microbiology laboratory</h3>
+      <p>Auditable calculations for microbial growth, continuous culture, enumeration, microscopy, environmental microbiology, antimicrobial and disinfection screening, microbial ecology, and laboratory quality control.</p>
+    </div>
+  </header>
+  <div data-microbiology-laboratory-root></div>
+</section>
+
 
 
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.0
+
+- Added Microbiology Laboratory with 48 methods and 48 deterministic benchmarks.
+- Added formula-visible growth, culture, enumeration, environmental, antimicrobial, ecology, and laboratory quality-control analysis.
+- Added WordPress and FastAPI interfaces plus project, notebook, visualization, and validation records.
+
 ## 0.19.0
 
 - Added Rocket Propulsion and Spaceflight with 48 methods and 45 deterministic benchmarks.

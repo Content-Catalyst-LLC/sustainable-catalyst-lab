@@ -13,8 +13,8 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "0.19.0",
-      "default": "0.19.0"
+      "const": "0.20.0",
+      "default": "0.20.0"
     },
     "id": {
       "type": "string"
@@ -999,6 +999,83 @@
       "default": []
     },
     "missionDeltaVRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbiologyAnalyses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbiologyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbiologyValidationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbialGrowthRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "cultureKineticsRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "enumerationMicroscopyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "environmentalMicrobiologyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "antimicrobialScreeningRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbialEcologyRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbiologyAssayRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    },
+    "microbiologyQcRecords": {
       "type": "array",
       "items": {
         "type": "object"

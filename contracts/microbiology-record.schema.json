@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/microbiology-record-v1.schema.json",
+  "title": "Sustainable Catalyst Lab Microbiology Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "category",
+    "title",
+    "recordedAt",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-microbiology-record/1.0"
+    },
+    "version": {
+      "const": "0.20.0"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^mb\\."
+    },
+    "category": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "recordedAt": {
+      "type": "string"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

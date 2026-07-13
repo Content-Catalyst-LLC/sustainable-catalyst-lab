@@ -1,0 +1,1689 @@
+{
+  "schema": "sc-lab-microbiology-laboratory-catalog/1.0",
+  "version": "0.20.0",
+  "methodCount": 48,
+  "categories": [
+    "Microbial growth & population dynamics",
+    "Culture systems & bioreactor kinetics",
+    "Enumeration, microscopy & assay quantification",
+    "Environmental & food microbiology",
+    "Antimicrobial & disinfection screening",
+    "Microbial ecology & laboratory quality control"
+  ],
+  "methods": [
+    {
+      "id": "mb.exponential_growth",
+      "category": "Microbial growth & population dynamics",
+      "title": "Exponential microbial growth",
+      "equation": "N_t = N_0 e^(μt)",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "cells or CFU",
+          "default": 100000
+        },
+        {
+          "key": "specificGrowthRatePerHour",
+          "label": "Specific growth rate",
+          "unit": "1/h",
+          "default": 0.65
+        },
+        {
+          "key": "timeHours",
+          "label": "Growth time",
+          "unit": "h",
+          "default": 6
+        }
+      ],
+      "outputs": {
+        "finalPopulation": {
+          "expression": "initialPopulation*exp(specificGrowthRatePerHour*timeHours)",
+          "unit": "cells or CFU"
+        }
+      },
+      "assumptions": [
+        "Constant specific growth rate and no resource limitation during the interval."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.specific_growth_rate",
+      "category": "Microbial growth & population dynamics",
+      "title": "Observed specific growth rate",
+      "equation": "μ = ln(N_t/N_0)/t",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "cells or CFU",
+          "default": 100000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final population",
+          "unit": "cells or CFU",
+          "default": 5000000
+        },
+        {
+          "key": "timeHours",
+          "label": "Elapsed time",
+          "unit": "h",
+          "default": 6
+        }
+      ],
+      "outputs": {
+        "specificGrowthRatePerHour": {
+          "expression": "log(finalPopulation/initialPopulation)/timeHours",
+          "unit": "1/h"
+        }
+      },
+      "assumptions": [
+        "Population estimates describe the same viable or total-cell basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.generation_time",
+      "category": "Microbial growth & population dynamics",
+      "title": "Generation time",
+      "equation": "g = ln(2)/μ",
+      "inputs": [
+        {
+          "key": "specificGrowthRatePerHour",
+          "label": "Specific growth rate",
+          "unit": "1/h",
+          "default": 0.65
+        }
+      ],
+      "outputs": {
+        "generationTimeHours": {
+          "expression": "log(2)/specificGrowthRatePerHour",
+          "unit": "h"
+        }
+      },
+      "assumptions": [
+        "Positive constant specific growth rate."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.number_of_generations",
+      "category": "Microbial growth & population dynamics",
+      "title": "Number of generations",
+      "equation": "n = log₂(N_t/N_0)",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "cells or CFU",
+          "default": 100000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final population",
+          "unit": "cells or CFU",
+          "default": 12800000
+        }
+      ],
+      "outputs": {
+        "generationCount": {
+          "expression": "log(finalPopulation/initialPopulation)/log(2)",
+          "unit": "generations"
+        }
+      },
+      "assumptions": [
+        "Binary fission equivalent and compatible population measurements."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.logistic_growth",
+      "category": "Microbial growth & population dynamics",
+      "title": "Logistic growth",
+      "equation": "N_t = K/[1 + ((K−N_0)/N_0)e^(−rt)]",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "cells or CFU",
+          "default": 100000
+        },
+        {
+          "key": "carryingCapacity",
+          "label": "Carrying capacity",
+          "unit": "cells or CFU",
+          "default": 1000000000
+        },
+        {
+          "key": "intrinsicGrowthRatePerHour",
+          "label": "Intrinsic growth rate",
+          "unit": "1/h",
+          "default": 0.8
+        },
+        {
+          "key": "timeHours",
+          "label": "Elapsed time",
+          "unit": "h",
+          "default": 12
+        }
+      ],
+      "outputs": {
+        "finalPopulation": {
+          "expression": "carryingCapacity/(1+((carryingCapacity-initialPopulation)/initialPopulation)*exp(-intrinsicGrowthRatePerHour*timeHours))",
+          "unit": "cells or CFU"
+        }
+      },
+      "assumptions": [
+        "Fixed carrying capacity and homogeneous population."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.first_order_death",
+      "category": "Microbial growth & population dynamics",
+      "title": "First-order microbial inactivation",
+      "equation": "N_t = N_0 e^(−kt)",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial viable population",
+          "unit": "CFU",
+          "default": 1000000
+        },
+        {
+          "key": "inactivationRatePerHour",
+          "label": "Inactivation rate",
+          "unit": "1/h",
+          "default": 0.9
+        },
+        {
+          "key": "timeHours",
+          "label": "Exposure time",
+          "unit": "h",
+          "default": 3
+        }
+      ],
+      "outputs": {
+        "survivingPopulation": {
+          "expression": "initialPopulation*exp(-inactivationRatePerHour*timeHours)",
+          "unit": "CFU"
+        }
+      },
+      "assumptions": [
+        "Single first-order inactivation population."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.population_fold_change",
+      "category": "Microbial growth & population dynamics",
+      "title": "Population fold change",
+      "equation": "Fold change = N_t/N_0",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "cells or CFU",
+          "default": 100000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final population",
+          "unit": "cells or CFU",
+          "default": 800000
+        }
+      ],
+      "outputs": {
+        "populationFoldChange": {
+          "expression": "finalPopulation/initialPopulation",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Initial and final measurements use the same method and units."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.carrying_capacity_utilization",
+      "category": "Microbial growth & population dynamics",
+      "title": "Carrying-capacity utilization",
+      "equation": "Utilization = N/K",
+      "inputs": [
+        {
+          "key": "observedPopulation",
+          "label": "Observed population",
+          "unit": "cells or CFU",
+          "default": 800000000
+        },
+        {
+          "key": "carryingCapacity",
+          "label": "Carrying capacity",
+          "unit": "cells or CFU",
+          "default": 1000000000
+        }
+      ],
+      "outputs": {
+        "carryingCapacityFraction": {
+          "expression": "observedPopulation/carryingCapacity",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Observed population and carrying capacity use the same basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.chemostat_dilution_rate",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Chemostat dilution rate",
+      "equation": "D = F/V",
+      "inputs": [
+        {
+          "key": "flowRateLPerHour",
+          "label": "Feed flow rate",
+          "unit": "L/h",
+          "default": 2.5
+        },
+        {
+          "key": "reactorVolumeL",
+          "label": "Working volume",
+          "unit": "L",
+          "default": 10
+        }
+      ],
+      "outputs": {
+        "dilutionRatePerHour": {
+          "expression": "flowRateLPerHour/reactorVolumeL",
+          "unit": "1/h"
+        }
+      },
+      "assumptions": [
+        "Constant volume and equal inlet/outlet flow."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.chemostat_residence_time",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Hydraulic residence time",
+      "equation": "τ = V/F = 1/D",
+      "inputs": [
+        {
+          "key": "reactorVolumeL",
+          "label": "Working volume",
+          "unit": "L",
+          "default": 10
+        },
+        {
+          "key": "flowRateLPerHour",
+          "label": "Flow rate",
+          "unit": "L/h",
+          "default": 2.5
+        }
+      ],
+      "outputs": {
+        "residenceTimeHours": {
+          "expression": "reactorVolumeL/flowRateLPerHour",
+          "unit": "h"
+        }
+      },
+      "assumptions": [
+        "Constant working volume and flow."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.monod_growth_rate",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Monod specific growth rate",
+      "equation": "μ = μ_max S/(K_s + S)",
+      "inputs": [
+        {
+          "key": "maximumGrowthRatePerHour",
+          "label": "Maximum specific growth rate",
+          "unit": "1/h",
+          "default": 0.9
+        },
+        {
+          "key": "substrateConcentrationMgL",
+          "label": "Limiting substrate",
+          "unit": "mg/L",
+          "default": 40
+        },
+        {
+          "key": "halfSaturationMgL",
+          "label": "Half-saturation constant",
+          "unit": "mg/L",
+          "default": 10
+        }
+      ],
+      "outputs": {
+        "specificGrowthRatePerHour": {
+          "expression": "maximumGrowthRatePerHour*substrateConcentrationMgL/(halfSaturationMgL+substrateConcentrationMgL)",
+          "unit": "1/h"
+        }
+      },
+      "assumptions": [
+        "Single limiting substrate and Monod kinetics."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.chemostat_steady_substrate",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Chemostat steady-state substrate",
+      "equation": "S* = K_sD/(μ_max−D)",
+      "inputs": [
+        {
+          "key": "halfSaturationMgL",
+          "label": "Half-saturation constant",
+          "unit": "mg/L",
+          "default": 10
+        },
+        {
+          "key": "dilutionRatePerHour",
+          "label": "Dilution rate",
+          "unit": "1/h",
+          "default": 0.25
+        },
+        {
+          "key": "maximumGrowthRatePerHour",
+          "label": "Maximum specific growth rate",
+          "unit": "1/h",
+          "default": 0.9
+        }
+      ],
+      "outputs": {
+        "steadyStateSubstrateMgL": {
+          "expression": "halfSaturationMgL*dilutionRatePerHour/(maximumGrowthRatePerHour-dilutionRatePerHour)",
+          "unit": "mg/L"
+        }
+      },
+      "assumptions": [
+        "Steady-state Monod chemostat with dilution rate below maximum growth rate."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.washout_margin",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Chemostat washout margin",
+      "equation": "Margin = μ_max − D",
+      "inputs": [
+        {
+          "key": "maximumGrowthRatePerHour",
+          "label": "Maximum specific growth rate",
+          "unit": "1/h",
+          "default": 0.9
+        },
+        {
+          "key": "dilutionRatePerHour",
+          "label": "Dilution rate",
+          "unit": "1/h",
+          "default": 0.25
+        }
+      ],
+      "outputs": {
+        "washoutMarginPerHour": {
+          "expression": "maximumGrowthRatePerHour-dilutionRatePerHour",
+          "unit": "1/h"
+        }
+      },
+      "assumptions": [
+        "Positive margin indicates the nominal dilution rate is below maximum growth."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.biomass_productivity",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Volumetric biomass productivity",
+      "equation": "P_X = D X",
+      "inputs": [
+        {
+          "key": "dilutionRatePerHour",
+          "label": "Dilution rate",
+          "unit": "1/h",
+          "default": 0.25
+        },
+        {
+          "key": "biomassConcentrationGL",
+          "label": "Biomass concentration",
+          "unit": "g/L",
+          "default": 4.2
+        }
+      ],
+      "outputs": {
+        "biomassProductivityGLH": {
+          "expression": "dilutionRatePerHour*biomassConcentrationGL",
+          "unit": "g/(L*h)"
+        }
+      },
+      "assumptions": [
+        "Steady continuous culture and representative biomass concentration."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.biomass_yield_on_substrate",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Biomass yield on substrate",
+      "equation": "Y_X/S = ΔX/ΔS",
+      "inputs": [
+        {
+          "key": "biomassProducedG",
+          "label": "Biomass produced",
+          "unit": "g",
+          "default": 42
+        },
+        {
+          "key": "substrateConsumedG",
+          "label": "Substrate consumed",
+          "unit": "g",
+          "default": 70
+        }
+      ],
+      "outputs": {
+        "biomassYieldGPerG": {
+          "expression": "biomassProducedG/substrateConsumedG",
+          "unit": "g/g"
+        }
+      },
+      "assumptions": [
+        "Biomass and substrate balances use the same interval and dry-mass basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.oxygen_uptake_rate",
+      "category": "Culture systems & bioreactor kinetics",
+      "title": "Volumetric oxygen uptake rate",
+      "equation": "OUR = q_O2 X",
+      "inputs": [
+        {
+          "key": "specificOxygenUptakeMgGHour",
+          "label": "Specific oxygen uptake",
+          "unit": "mg O2/(g*h)",
+          "default": 85
+        },
+        {
+          "key": "biomassConcentrationGL",
+          "label": "Biomass concentration",
+          "unit": "g/L",
+          "default": 4.2
+        }
+      ],
+      "outputs": {
+        "oxygenUptakeRateMgLHour": {
+          "expression": "specificOxygenUptakeMgGHour*biomassConcentrationGL",
+          "unit": "mg O2/(L*h)"
+        }
+      },
+      "assumptions": [
+        "Representative specific uptake and biomass concentration."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.cfu_per_ml",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Colony-forming units per milliliter",
+      "equation": "CFU/mL = colonies/(volume plated × dilution)",
+      "inputs": [
+        {
+          "key": "colonyCount",
+          "label": "Counted colonies",
+          "unit": "colonies",
+          "default": 126
+        },
+        {
+          "key": "platedVolumeMl",
+          "label": "Plated volume",
+          "unit": "mL",
+          "default": 0.1
+        },
+        {
+          "key": "sampleDilution",
+          "label": "Sample fraction plated",
+          "unit": "1",
+          "default": 0.0001
+        }
+      ],
+      "outputs": {
+        "cfuPerMl": {
+          "expression": "colonyCount/(platedVolumeMl*sampleDilution)",
+          "unit": "CFU/mL"
+        }
+      },
+      "assumptions": [
+        "Counted colonies arise from the stated dilution and plated volume."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.pfu_per_ml",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Plaque-forming units per milliliter",
+      "equation": "PFU/mL = plaques/(volume plated × dilution)",
+      "inputs": [
+        {
+          "key": "plaqueCount",
+          "label": "Counted plaques",
+          "unit": "plaques",
+          "default": 84
+        },
+        {
+          "key": "platedVolumeMl",
+          "label": "Plated volume",
+          "unit": "mL",
+          "default": 0.1
+        },
+        {
+          "key": "sampleDilution",
+          "label": "Sample fraction plated",
+          "unit": "1",
+          "default": 1e-05
+        }
+      ],
+      "outputs": {
+        "pfuPerMl": {
+          "expression": "plaqueCount/(platedVolumeMl*sampleDilution)",
+          "unit": "PFU/mL"
+        }
+      },
+      "assumptions": [
+        "Plaques arise from the stated dilution and plated volume."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.serial_dilution_factor",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Cumulative serial dilution",
+      "equation": "Dilution = d₁d₂d₃d₄",
+      "inputs": [
+        {
+          "key": "dilutionStep1",
+          "label": "Dilution step 1",
+          "unit": "1",
+          "default": 0.1
+        },
+        {
+          "key": "dilutionStep2",
+          "label": "Dilution step 2",
+          "unit": "1",
+          "default": 0.1
+        },
+        {
+          "key": "dilutionStep3",
+          "label": "Dilution step 3",
+          "unit": "1",
+          "default": 0.1
+        },
+        {
+          "key": "dilutionStep4",
+          "label": "Dilution step 4",
+          "unit": "1",
+          "default": 0.1
+        }
+      ],
+      "outputs": {
+        "cumulativeDilution": {
+          "expression": "dilutionStep1*dilutionStep2*dilutionStep3*dilutionStep4",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Each step is expressed as sample volume divided by total diluted volume."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.hemocytometer_concentration",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Hemocytometer cell concentration",
+      "equation": "Cells/mL = average count × chamber factor × dilution factor",
+      "inputs": [
+        {
+          "key": "averageCellCount",
+          "label": "Average cells per counted square",
+          "unit": "cells",
+          "default": 72
+        },
+        {
+          "key": "chamberFactorPerMl",
+          "label": "Chamber conversion factor",
+          "unit": "1/mL",
+          "default": 10000
+        },
+        {
+          "key": "dilutionFactor",
+          "label": "Reciprocal sample dilution",
+          "unit": "1",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "cellsPerMl": {
+          "expression": "averageCellCount*chamberFactorPerMl*dilutionFactor",
+          "unit": "cells/mL"
+        }
+      },
+      "assumptions": [
+        "Counting geometry and chamber factor match the selected grid."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.viable_fraction",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Viable-cell fraction",
+      "equation": "Viability = viable cells/total cells",
+      "inputs": [
+        {
+          "key": "viableCellCount",
+          "label": "Viable cells",
+          "unit": "cells",
+          "default": 880
+        },
+        {
+          "key": "totalCellCount",
+          "label": "Total cells",
+          "unit": "cells",
+          "default": 1000
+        }
+      ],
+      "outputs": {
+        "viableFraction": {
+          "expression": "viableCellCount/totalCellCount",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Viable and total counts use the same field or population."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.od_calibrated_biomass",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Optical-density biomass calibration",
+      "equation": "X = slope × OD + intercept",
+      "inputs": [
+        {
+          "key": "opticalDensity",
+          "label": "Optical density",
+          "unit": "AU",
+          "default": 0.85
+        },
+        {
+          "key": "calibrationSlopeGLPerAu",
+          "label": "Calibration slope",
+          "unit": "g/L per AU",
+          "default": 0.42
+        },
+        {
+          "key": "calibrationInterceptGL",
+          "label": "Calibration intercept",
+          "unit": "g/L",
+          "default": 0.02
+        }
+      ],
+      "outputs": {
+        "biomassConcentrationGL": {
+          "expression": "calibrationSlopeGLPerAu*opticalDensity+calibrationInterceptGL",
+          "unit": "g/L"
+        }
+      },
+      "assumptions": [
+        "Linear calibration is valid over the stated OD range."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.assay_recovery",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Microbial assay recovery",
+      "equation": "Recovery = measured amount/spiked amount",
+      "inputs": [
+        {
+          "key": "measuredAmount",
+          "label": "Measured recovered amount",
+          "unit": "cells, CFU, or copies",
+          "default": 820000
+        },
+        {
+          "key": "spikedAmount",
+          "label": "Known spike amount",
+          "unit": "cells, CFU, or copies",
+          "default": 1000000
+        }
+      ],
+      "outputs": {
+        "recoveryFraction": {
+          "expression": "measuredAmount/spikedAmount",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Measured and spiked quantities use the same assay basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.z_prime_factor",
+      "category": "Enumeration, microscopy & assay quantification",
+      "title": "Assay Z-prime factor",
+      "equation": "Z' = 1 − 3(σ_p + σ_n)/|μ_p − μ_n|",
+      "inputs": [
+        {
+          "key": "positiveMean",
+          "label": "Positive-control mean",
+          "unit": "signal",
+          "default": 1.0
+        },
+        {
+          "key": "negativeMean",
+          "label": "Negative-control mean",
+          "unit": "signal",
+          "default": 0.1
+        },
+        {
+          "key": "positiveSd",
+          "label": "Positive-control standard deviation",
+          "unit": "signal",
+          "default": 0.04
+        },
+        {
+          "key": "negativeSd",
+          "label": "Negative-control standard deviation",
+          "unit": "signal",
+          "default": 0.03
+        }
+      ],
+      "outputs": {
+        "zPrimeFactor": {
+          "expression": "1-3*(positiveSd+negativeSd)/abs(positiveMean-negativeMean)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Control distributions are representative and sufficiently replicated."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.first_order_environmental_decay",
+      "category": "Environmental & food microbiology",
+      "title": "Environmental first-order microbial decay",
+      "equation": "C_t = C_0 e^(−kt)",
+      "inputs": [
+        {
+          "key": "initialConcentration",
+          "label": "Initial concentration",
+          "unit": "CFU, cells, or copies/volume",
+          "default": 1000000
+        },
+        {
+          "key": "decayRatePerDay",
+          "label": "Decay rate",
+          "unit": "1/day",
+          "default": 0.45
+        },
+        {
+          "key": "timeDays",
+          "label": "Elapsed time",
+          "unit": "day",
+          "default": 5
+        }
+      ],
+      "outputs": {
+        "finalConcentration": {
+          "expression": "initialConcentration*exp(-decayRatePerDay*timeDays)",
+          "unit": "CFU, cells, or copies/volume"
+        }
+      },
+      "assumptions": [
+        "Constant first-order decay rate."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.log_reduction",
+      "category": "Environmental & food microbiology",
+      "title": "Decimal log reduction",
+      "equation": "Log reduction = log₁₀(N_0/N_t)",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial population",
+          "unit": "CFU",
+          "default": 1000000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final population",
+          "unit": "CFU",
+          "default": 1000
+        }
+      ],
+      "outputs": {
+        "logReduction": {
+          "expression": "log10(initialPopulation/finalPopulation)",
+          "unit": "log10"
+        }
+      },
+      "assumptions": [
+        "Initial and final counts use the same enumeration basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.removal_efficiency",
+      "category": "Environmental & food microbiology",
+      "title": "Microbial removal efficiency",
+      "equation": "Removal = (C_in − C_out)/C_in",
+      "inputs": [
+        {
+          "key": "influentConcentration",
+          "label": "Influent concentration",
+          "unit": "CFU or copies/volume",
+          "default": 1000000
+        },
+        {
+          "key": "effluentConcentration",
+          "label": "Effluent concentration",
+          "unit": "CFU or copies/volume",
+          "default": 25000
+        }
+      ],
+      "outputs": {
+        "removalFraction": {
+          "expression": "(influentConcentration-effluentConcentration)/influentConcentration",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Influent and effluent measurements use the same analytical method."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.surface_loading_rate",
+      "category": "Environmental & food microbiology",
+      "title": "Microbial surface loading rate",
+      "equation": "Loading = concentration × flow/surface area",
+      "inputs": [
+        {
+          "key": "concentrationPerL",
+          "label": "Microbial concentration",
+          "unit": "CFU/L",
+          "default": 100000
+        },
+        {
+          "key": "flowRateLPerDay",
+          "label": "Volumetric flow",
+          "unit": "L/day",
+          "default": 5000
+        },
+        {
+          "key": "surfaceAreaM2",
+          "label": "Receiving surface area",
+          "unit": "m^2",
+          "default": 250
+        }
+      ],
+      "outputs": {
+        "surfaceLoadingCfuM2Day": {
+          "expression": "concentrationPerL*flowRateLPerDay/surfaceAreaM2",
+          "unit": "CFU/(m^2*day)"
+        }
+      },
+      "assumptions": [
+        "Uniform loading over the stated surface area."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.biofilm_surface_density",
+      "category": "Environmental & food microbiology",
+      "title": "Biofilm biomass surface density",
+      "equation": "Surface density = dry biomass/surface area",
+      "inputs": [
+        {
+          "key": "dryBiomassMg",
+          "label": "Dry biofilm biomass",
+          "unit": "mg",
+          "default": 420
+        },
+        {
+          "key": "surfaceAreaCm2",
+          "label": "Colonized surface area",
+          "unit": "cm^2",
+          "default": 120
+        }
+      ],
+      "outputs": {
+        "biofilmSurfaceDensityMgCm2": {
+          "expression": "dryBiomassMg/surfaceAreaCm2",
+          "unit": "mg/cm^2"
+        }
+      },
+      "assumptions": [
+        "Dry biomass and area describe the same sampled region."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.biochemical_oxygen_demand_rate",
+      "category": "Environmental & food microbiology",
+      "title": "Volumetric oxygen demand rate",
+      "equation": "Rate = oxygen consumed/(volume × time)",
+      "inputs": [
+        {
+          "key": "oxygenConsumedMg",
+          "label": "Oxygen consumed",
+          "unit": "mg",
+          "default": 240
+        },
+        {
+          "key": "sampleVolumeL",
+          "label": "Sample volume",
+          "unit": "L",
+          "default": 2
+        },
+        {
+          "key": "incubationTimeHours",
+          "label": "Incubation time",
+          "unit": "h",
+          "default": 6
+        }
+      ],
+      "outputs": {
+        "oxygenDemandMgLHour": {
+          "expression": "oxygenConsumedMg/(sampleVolumeL*incubationTimeHours)",
+          "unit": "mg/(L*h)"
+        }
+      },
+      "assumptions": [
+        "Oxygen loss is attributed to the measured biological process."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.temperature_adjusted_rate",
+      "category": "Environmental & food microbiology",
+      "title": "Q10 temperature-adjusted microbial rate",
+      "equation": "k_T = k_ref Q10^((T−T_ref)/10)",
+      "inputs": [
+        {
+          "key": "referenceRate",
+          "label": "Reference process rate",
+          "unit": "rate units",
+          "default": 1
+        },
+        {
+          "key": "q10Factor",
+          "label": "Q10 factor",
+          "unit": "1",
+          "default": 2
+        },
+        {
+          "key": "temperatureC",
+          "label": "Operating temperature",
+          "unit": "degC",
+          "default": 30
+        },
+        {
+          "key": "referenceTemperatureC",
+          "label": "Reference temperature",
+          "unit": "degC",
+          "default": 20
+        }
+      ],
+      "outputs": {
+        "adjustedRate": {
+          "expression": "referenceRate*q10Factor**((temperatureC-referenceTemperatureC)/10)",
+          "unit": "rate units"
+        }
+      },
+      "assumptions": [
+        "Q10 approximation is valid over the selected temperature range."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.relative_source_contribution",
+      "category": "Environmental & food microbiology",
+      "title": "Relative microbial source contribution",
+      "equation": "Contribution = source marker copies/total marker copies",
+      "inputs": [
+        {
+          "key": "sourceMarkerCopies",
+          "label": "Source-associated marker copies",
+          "unit": "copies",
+          "default": 240000
+        },
+        {
+          "key": "totalMarkerCopies",
+          "label": "Total marker copies",
+          "unit": "copies",
+          "default": 1000000
+        }
+      ],
+      "outputs": {
+        "sourceContributionFraction": {
+          "expression": "sourceMarkerCopies/totalMarkerCopies",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Marker recovery and amplification efficiency are comparable."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.mic_fold_change",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "MIC fold change",
+      "equation": "Fold change = MIC_test/MIC_reference",
+      "inputs": [
+        {
+          "key": "testMicMgL",
+          "label": "Test MIC",
+          "unit": "mg/L",
+          "default": 8
+        },
+        {
+          "key": "referenceMicMgL",
+          "label": "Reference MIC",
+          "unit": "mg/L",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "micFoldChange": {
+          "expression": "testMicMgL/referenceMicMgL",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "MIC values use the same organism, medium, endpoint, and protocol."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.fic_index",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Fractional inhibitory concentration index",
+      "equation": "FICI = MIC_A,comb/MIC_A + MIC_B,comb/MIC_B",
+      "inputs": [
+        {
+          "key": "micACombination",
+          "label": "MIC of agent A in combination",
+          "unit": "mg/L",
+          "default": 1
+        },
+        {
+          "key": "micAAlone",
+          "label": "MIC of agent A alone",
+          "unit": "mg/L",
+          "default": 4
+        },
+        {
+          "key": "micBCombination",
+          "label": "MIC of agent B in combination",
+          "unit": "mg/L",
+          "default": 2
+        },
+        {
+          "key": "micBAlone",
+          "label": "MIC of agent B alone",
+          "unit": "mg/L",
+          "default": 8
+        }
+      ],
+      "outputs": {
+        "fractionalInhibitoryConcentrationIndex": {
+          "expression": "micACombination/micAAlone+micBCombination/micBAlone",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Screening interpretation depends on the chosen protocol and threshold convention."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.time_kill_log_change",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Time-kill log change",
+      "equation": "Δlog₁₀ = log₁₀(N_t) − log₁₀(N_0)",
+      "inputs": [
+        {
+          "key": "initialPopulation",
+          "label": "Initial viable count",
+          "unit": "CFU/mL",
+          "default": 1000000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final viable count",
+          "unit": "CFU/mL",
+          "default": 1000
+        }
+      ],
+      "outputs": {
+        "log10Change": {
+          "expression": "log10(finalPopulation)-log10(initialPopulation)",
+          "unit": "log10"
+        }
+      },
+      "assumptions": [
+        "Counts use the same plating and detection basis."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.decimal_reduction_time",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Decimal reduction time",
+      "equation": "D = t/log₁₀(N_0/N_t)",
+      "inputs": [
+        {
+          "key": "exposureTimeMinutes",
+          "label": "Exposure time",
+          "unit": "min",
+          "default": 12
+        },
+        {
+          "key": "initialPopulation",
+          "label": "Initial viable population",
+          "unit": "CFU",
+          "default": 1000000
+        },
+        {
+          "key": "finalPopulation",
+          "label": "Final viable population",
+          "unit": "CFU",
+          "default": 1000
+        }
+      ],
+      "outputs": {
+        "decimalReductionTimeMinutes": {
+          "expression": "exposureTimeMinutes/log10(initialPopulation/finalPopulation)",
+          "unit": "min/log10 reduction"
+        }
+      },
+      "assumptions": [
+        "Log-linear survivor curve over the interval."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.z_value",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Thermal resistance z-value",
+      "equation": "z = (T₂−T₁)/log₁₀(D₁/D₂)",
+      "inputs": [
+        {
+          "key": "temperature1C",
+          "label": "Temperature 1",
+          "unit": "degC",
+          "default": 60
+        },
+        {
+          "key": "temperature2C",
+          "label": "Temperature 2",
+          "unit": "degC",
+          "default": 70
+        },
+        {
+          "key": "dValue1Min",
+          "label": "D-value at temperature 1",
+          "unit": "min",
+          "default": 10
+        },
+        {
+          "key": "dValue2Min",
+          "label": "D-value at temperature 2",
+          "unit": "min",
+          "default": 1
+        }
+      ],
+      "outputs": {
+        "zValueC": {
+          "expression": "(temperature2C-temperature1C)/log10(dValue1Min/dValue2Min)",
+          "unit": "degC"
+        }
+      },
+      "assumptions": [
+        "Log-linear relationship between D-value and temperature over the interval."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.ct_value",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Disinfectant concentration-time value",
+      "equation": "CT = concentration × contact time",
+      "inputs": [
+        {
+          "key": "disinfectantConcentrationMgL",
+          "label": "Disinfectant concentration",
+          "unit": "mg/L",
+          "default": 2
+        },
+        {
+          "key": "contactTimeMinutes",
+          "label": "Contact time",
+          "unit": "min",
+          "default": 30
+        }
+      ],
+      "outputs": {
+        "ctMgMinL": {
+          "expression": "disinfectantConcentrationMgL*contactTimeMinutes",
+          "unit": "mg*min/L"
+        }
+      },
+      "assumptions": [
+        "Constant concentration during the stated contact time."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.disinfectant_decay",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "First-order disinfectant decay",
+      "equation": "C_t = C_0 e^(−kt)",
+      "inputs": [
+        {
+          "key": "initialConcentrationMgL",
+          "label": "Initial disinfectant concentration",
+          "unit": "mg/L",
+          "default": 2
+        },
+        {
+          "key": "decayRatePerHour",
+          "label": "Decay rate",
+          "unit": "1/h",
+          "default": 0.25
+        },
+        {
+          "key": "timeHours",
+          "label": "Elapsed time",
+          "unit": "h",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "finalConcentrationMgL": {
+          "expression": "initialConcentrationMgL*exp(-decayRatePerHour*timeHours)",
+          "unit": "mg/L"
+        }
+      },
+      "assumptions": [
+        "Single first-order decay constant."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.inhibition_zone_normalized",
+      "category": "Antimicrobial & disinfection screening",
+      "title": "Normalized inhibition-zone ratio",
+      "equation": "Ratio = test zone/reference zone",
+      "inputs": [
+        {
+          "key": "testZoneDiameterMm",
+          "label": "Test inhibition-zone diameter",
+          "unit": "mm",
+          "default": 24
+        },
+        {
+          "key": "referenceZoneDiameterMm",
+          "label": "Reference zone diameter",
+          "unit": "mm",
+          "default": 20
+        }
+      ],
+      "outputs": {
+        "normalizedZoneRatio": {
+          "expression": "testZoneDiameterMm/referenceZoneDiameterMm",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Zone diameters use the same assay conditions and reading convention."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.relative_abundance",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Taxon relative abundance",
+      "equation": "Relative abundance = taxon reads/total reads",
+      "inputs": [
+        {
+          "key": "taxonReadCount",
+          "label": "Taxon reads",
+          "unit": "reads",
+          "default": 24000
+        },
+        {
+          "key": "totalReadCount",
+          "label": "Total quality-filtered reads",
+          "unit": "reads",
+          "default": 120000
+        }
+      ],
+      "outputs": {
+        "relativeAbundanceFraction": {
+          "expression": "taxonReadCount/totalReadCount",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Read counts have passed the same filtering and assignment process."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.shannon_diversity",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Four-taxon Shannon diversity",
+      "equation": "H' = −Σp_i ln p_i",
+      "inputs": [
+        {
+          "key": "proportion1",
+          "label": "Taxon proportion 1",
+          "unit": "1",
+          "default": 0.4
+        },
+        {
+          "key": "proportion2",
+          "label": "Taxon proportion 2",
+          "unit": "1",
+          "default": 0.3
+        },
+        {
+          "key": "proportion3",
+          "label": "Taxon proportion 3",
+          "unit": "1",
+          "default": 0.2
+        },
+        {
+          "key": "proportion4",
+          "label": "Taxon proportion 4",
+          "unit": "1",
+          "default": 0.1
+        }
+      ],
+      "outputs": {
+        "shannonDiversity": {
+          "expression": "-(proportion1*log(proportion1)+proportion2*log(proportion2)+proportion3*log(proportion3)+proportion4*log(proportion4))",
+          "unit": "nats"
+        }
+      },
+      "assumptions": [
+        "Proportions are positive and sum to one."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.simpson_diversity",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Four-taxon Simpson diversity",
+      "equation": "1−D = 1−Σp_i²",
+      "inputs": [
+        {
+          "key": "proportion1",
+          "label": "Taxon proportion 1",
+          "unit": "1",
+          "default": 0.4
+        },
+        {
+          "key": "proportion2",
+          "label": "Taxon proportion 2",
+          "unit": "1",
+          "default": 0.3
+        },
+        {
+          "key": "proportion3",
+          "label": "Taxon proportion 3",
+          "unit": "1",
+          "default": 0.2
+        },
+        {
+          "key": "proportion4",
+          "label": "Taxon proportion 4",
+          "unit": "1",
+          "default": 0.1
+        }
+      ],
+      "outputs": {
+        "simpsonDiversity": {
+          "expression": "1-(proportion1**2+proportion2**2+proportion3**2+proportion4**2)",
+          "unit": "0-1"
+        }
+      },
+      "assumptions": [
+        "Proportions sum to one."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.bray_curtis_dissimilarity",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Two-taxon Bray–Curtis dissimilarity",
+      "equation": "BC = Σ|x_i−y_i|/Σ(x_i+y_i)",
+      "inputs": [
+        {
+          "key": "sampleA1",
+          "label": "Sample A taxon 1 abundance",
+          "unit": "count",
+          "default": 40
+        },
+        {
+          "key": "sampleA2",
+          "label": "Sample A taxon 2 abundance",
+          "unit": "count",
+          "default": 60
+        },
+        {
+          "key": "sampleB1",
+          "label": "Sample B taxon 1 abundance",
+          "unit": "count",
+          "default": 70
+        },
+        {
+          "key": "sampleB2",
+          "label": "Sample B taxon 2 abundance",
+          "unit": "count",
+          "default": 30
+        }
+      ],
+      "outputs": {
+        "brayCurtisDissimilarity": {
+          "expression": "(abs(sampleA1-sampleB1)+abs(sampleA2-sampleB2))/(sampleA1+sampleB1+sampleA2+sampleB2)",
+          "unit": "0-1"
+        }
+      },
+      "assumptions": [
+        "Nonnegative comparable abundance counts."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.qpcr_efficiency",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "qPCR amplification efficiency",
+      "equation": "Efficiency = 10^(−1/slope) − 1",
+      "inputs": [
+        {
+          "key": "standardCurveSlope",
+          "label": "Standard-curve slope",
+          "unit": "Ct/log10 concentration",
+          "default": -3.32
+        }
+      ],
+      "outputs": {
+        "qpcrEfficiencyFraction": {
+          "expression": "10**(-1/standardCurveSlope)-1",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Linear standard curve over the tested range."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.dna_concentration_a260",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Nucleic-acid concentration from A260",
+      "equation": "Concentration = A260 × factor × dilution",
+      "inputs": [
+        {
+          "key": "absorbanceA260",
+          "label": "Absorbance at 260 nm",
+          "unit": "AU",
+          "default": 0.24
+        },
+        {
+          "key": "conversionFactorUgMlPerAu",
+          "label": "Conversion factor",
+          "unit": "ug/mL per AU",
+          "default": 50
+        },
+        {
+          "key": "dilutionFactor",
+          "label": "Reciprocal dilution factor",
+          "unit": "1",
+          "default": 10
+        }
+      ],
+      "outputs": {
+        "dnaConcentrationUgMl": {
+          "expression": "absorbanceA260*conversionFactorUgMlPerAu*dilutionFactor",
+          "unit": "ug/mL"
+        }
+      },
+      "assumptions": [
+        "Appropriate conversion factor and path-length correction."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.replicate_coefficient_variation",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Replicate coefficient of variation",
+      "equation": "CV = standard deviation/mean",
+      "inputs": [
+        {
+          "key": "replicateMean",
+          "label": "Replicate mean",
+          "unit": "signal or concentration",
+          "default": 100
+        },
+        {
+          "key": "replicateStandardDeviation",
+          "label": "Replicate standard deviation",
+          "unit": "same units",
+          "default": 6
+        }
+      ],
+      "outputs": {
+        "coefficientOfVariation": {
+          "expression": "replicateStandardDeviation/replicateMean",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Mean and standard deviation are calculated from the same replicate set."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    },
+    {
+      "id": "mb.contamination_rate",
+      "category": "Microbial ecology & laboratory quality control",
+      "title": "Laboratory contamination rate",
+      "equation": "Rate = contaminated controls/total controls",
+      "inputs": [
+        {
+          "key": "contaminatedControlCount",
+          "label": "Contaminated negative controls",
+          "unit": "controls",
+          "default": 3
+        },
+        {
+          "key": "totalControlCount",
+          "label": "Total negative controls",
+          "unit": "controls",
+          "default": 120
+        }
+      ],
+      "outputs": {
+        "contaminationFraction": {
+          "expression": "contaminatedControlCount/totalControlCount",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Controls use a consistent contamination decision rule."
+      ],
+      "notes": [],
+      "version": "0.20.0"
+    }
+  ]
+}

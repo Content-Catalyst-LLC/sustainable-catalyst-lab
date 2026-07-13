@@ -230,3 +230,6 @@ app.include_router(aerospace_engineering_flight_systems_router)
 
 from .rocket_propulsion_spaceflight_routes import router as rocket_propulsion_spaceflight_router
 app.include_router(rocket_propulsion_spaceflight_router)
+
+from .microbiology_laboratory_routes import router as microbiology_laboratory_router
+app.include_router(microbiology_laboratory_router)

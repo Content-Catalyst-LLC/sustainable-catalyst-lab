@@ -68,6 +68,12 @@ node tests/test-v0190.js
 php tests/test-v0190.php
 PYTHONPATH="$PWD/backend${PYTHONPATH:+:$PYTHONPATH}" "${PYTHON_BIN:-python3}" -m pytest backend/tests/test_rocket_propulsion_spaceflight.py -q
 
+
+echo "Running Lab v0.20.0 microbiology laboratory validation..."
+node tests/test-v0200.js
+php tests/test-v0200.php
+PYTHONPATH="$PWD/backend${PYTHONPATH:+:$PYTHONPATH}" "${PYTHON_BIN:-python3}" -m pytest backend/tests/test_microbiology_laboratory.py -q
+
 echo "Release tests passed."
 
 # Lab v0.19.1 report-composer, accessibility, migration, and restore checks.
