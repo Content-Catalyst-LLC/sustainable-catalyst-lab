@@ -1,0 +1,1899 @@
+{
+  "schema": "sc-lab-mechanical-thermal-catalog/1.0",
+  "version": "0.11.0",
+  "methodCount": 48,
+  "methods": [
+    {
+      "id": "mt.vector_resultant",
+      "category": "Statics",
+      "title": "Vector resultant",
+      "equation": "R = sqrt(Fx^2 + Fy^2 + Fz^2)",
+      "inputs": [
+        {
+          "key": "fx",
+          "label": "Force x",
+          "unit": "N",
+          "default": 300
+        },
+        {
+          "key": "fy",
+          "label": "Force y",
+          "unit": "N",
+          "default": 400
+        },
+        {
+          "key": "fz",
+          "label": "Force z",
+          "unit": "N",
+          "default": 0
+        }
+      ],
+      "outputs": {
+        "resultantN": {
+          "expression": "hypot(fx,fy,fz)",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Cartesian components share one coordinate frame."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.moment",
+      "category": "Statics",
+      "title": "Force moment",
+      "equation": "M = F d",
+      "inputs": [
+        {
+          "key": "forceN",
+          "label": "Force",
+          "unit": "N",
+          "default": 1200
+        },
+        {
+          "key": "armM",
+          "label": "Perpendicular arm",
+          "unit": "m",
+          "default": 0.35
+        }
+      ],
+      "outputs": {
+        "momentNm": {
+          "expression": "forceN*armM",
+          "unit": "N*m"
+        }
+      },
+      "assumptions": [
+        "The arm is perpendicular to the force line of action."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.simple_beam_reactions",
+      "category": "Statics",
+      "title": "Simply supported beam reactions",
+      "equation": "RA=P(L-a)/L; RB=Pa/L",
+      "inputs": [
+        {
+          "key": "loadN",
+          "label": "Point load",
+          "unit": "N",
+          "default": 10000
+        },
+        {
+          "key": "spanM",
+          "label": "Span",
+          "unit": "m",
+          "default": 5
+        },
+        {
+          "key": "distanceM",
+          "label": "Load distance from A",
+          "unit": "m",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "reactionAN": {
+          "expression": "loadN*(spanM-distanceM)/spanM",
+          "unit": "N"
+        },
+        "reactionBN": {
+          "expression": "loadN*distanceM/spanM",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "One point load; pin at A and roller at B."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.axial_stress",
+      "category": "Strength",
+      "title": "Axial normal stress",
+      "equation": "sigma = F/A",
+      "inputs": [
+        {
+          "key": "forceN",
+          "label": "Axial force",
+          "unit": "N",
+          "default": 50000
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 0.001
+        }
+      ],
+      "outputs": {
+        "stressPa": {
+          "expression": "forceN/areaM2",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Uniform uniaxial stress."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.axial_strain",
+      "category": "Strength",
+      "title": "Axial strain",
+      "equation": "epsilon = dL/L",
+      "inputs": [
+        {
+          "key": "extensionM",
+          "label": "Length change",
+          "unit": "m",
+          "default": 0.001
+        },
+        {
+          "key": "lengthM",
+          "label": "Original length",
+          "unit": "m",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "strain": {
+          "expression": "extensionM/lengthM",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Small strain."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.hooke_stress",
+      "category": "Strength",
+      "title": "Linear elastic stress",
+      "equation": "sigma = E epsilon",
+      "inputs": [
+        {
+          "key": "modulusPa",
+          "label": "Young modulus",
+          "unit": "Pa",
+          "default": 200000000000.0
+        },
+        {
+          "key": "strain",
+          "label": "Strain",
+          "unit": "1",
+          "default": 0.001
+        }
+      ],
+      "outputs": {
+        "stressPa": {
+          "expression": "modulusPa*strain",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Linear elastic range."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.thermal_expansion",
+      "category": "Strength",
+      "title": "Linear thermal expansion",
+      "equation": "dL = alpha L dT",
+      "inputs": [
+        {
+          "key": "alphaPerK",
+          "label": "Expansion coefficient",
+          "unit": "1/K",
+          "default": 1.2e-05
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 3
+        },
+        {
+          "key": "deltaTK",
+          "label": "Temperature change",
+          "unit": "K",
+          "default": 60
+        }
+      ],
+      "outputs": {
+        "extensionM": {
+          "expression": "alphaPerK*lengthM*deltaTK",
+          "unit": "m"
+        },
+        "finalLengthM": {
+          "expression": "lengthM+alphaPerK*lengthM*deltaTK",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Constant coefficient."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.torsion_solid_shaft",
+      "category": "Strength",
+      "title": "Solid circular shaft torsion",
+      "equation": "tau=16T/(pi d^3); theta=32TL/(pi Gd^4)",
+      "inputs": [
+        {
+          "key": "torqueNm",
+          "label": "Torque",
+          "unit": "N*m",
+          "default": 2500
+        },
+        {
+          "key": "diameterM",
+          "label": "Diameter",
+          "unit": "m",
+          "default": 0.06
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 1.2
+        },
+        {
+          "key": "shearModulusPa",
+          "label": "Shear modulus",
+          "unit": "Pa",
+          "default": 80000000000.0
+        }
+      ],
+      "outputs": {
+        "maxShearPa": {
+          "expression": "16*torqueNm/(pi*diameterM**3)",
+          "unit": "Pa"
+        },
+        "twistRad": {
+          "expression": "32*torqueNm*lengthM/(pi*shearModulusPa*diameterM**4)",
+          "unit": "rad"
+        }
+      },
+      "assumptions": [
+        "Solid shaft; elastic Saint-Venant torsion."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.bending_stress",
+      "category": "Strength",
+      "title": "Elastic bending stress",
+      "equation": "sigma = Mc/I",
+      "inputs": [
+        {
+          "key": "momentNm",
+          "label": "Bending moment",
+          "unit": "N*m",
+          "default": 12000
+        },
+        {
+          "key": "distanceM",
+          "label": "Neutral-axis distance",
+          "unit": "m",
+          "default": 0.08
+        },
+        {
+          "key": "inertiaM4",
+          "label": "Second moment",
+          "unit": "m^4",
+          "default": 8e-06
+        }
+      ],
+      "outputs": {
+        "stressPa": {
+          "expression": "momentNm*distanceM/inertiaM4",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Euler-Bernoulli bending."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.simply_supported_center_deflection",
+      "category": "Strength",
+      "title": "Simply supported center-load deflection",
+      "equation": "delta=PL^3/(48EI)",
+      "inputs": [
+        {
+          "key": "loadN",
+          "label": "Center load",
+          "unit": "N",
+          "default": 5000
+        },
+        {
+          "key": "spanM",
+          "label": "Span",
+          "unit": "m",
+          "default": 4
+        },
+        {
+          "key": "modulusPa",
+          "label": "Young modulus",
+          "unit": "Pa",
+          "default": 200000000000.0
+        },
+        {
+          "key": "inertiaM4",
+          "label": "Second moment",
+          "unit": "m^4",
+          "default": 9e-06
+        }
+      ],
+      "outputs": {
+        "deflectionM": {
+          "expression": "loadN*spanM**3/(48*modulusPa*inertiaM4)",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Prismatic beam; small deflection."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.cantilever_end_deflection",
+      "category": "Strength",
+      "title": "Cantilever end-load deflection",
+      "equation": "delta=PL^3/(3EI)",
+      "inputs": [
+        {
+          "key": "loadN",
+          "label": "End load",
+          "unit": "N",
+          "default": 1000
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 2
+        },
+        {
+          "key": "modulusPa",
+          "label": "Young modulus",
+          "unit": "Pa",
+          "default": 200000000000.0
+        },
+        {
+          "key": "inertiaM4",
+          "label": "Second moment",
+          "unit": "m^4",
+          "default": 5e-06
+        }
+      ],
+      "outputs": {
+        "deflectionM": {
+          "expression": "loadN*lengthM**3/(3*modulusPa*inertiaM4)",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Prismatic cantilever; small deflection."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.euler_buckling",
+      "category": "Strength",
+      "title": "Euler column buckling",
+      "equation": "Pcr=pi^2 EI/(KL)^2",
+      "inputs": [
+        {
+          "key": "modulusPa",
+          "label": "Young modulus",
+          "unit": "Pa",
+          "default": 200000000000.0
+        },
+        {
+          "key": "inertiaM4",
+          "label": "Second moment",
+          "unit": "m^4",
+          "default": 4e-06
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 3
+        },
+        {
+          "key": "kFactor",
+          "label": "Effective-length factor",
+          "unit": "1",
+          "default": 1
+        }
+      ],
+      "outputs": {
+        "criticalLoadN": {
+          "expression": "pi**2*modulusPa*inertiaM4/(kFactor*lengthM)**2",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Ideal slender elastic column."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.factor_of_safety",
+      "category": "Failure",
+      "title": "Static factor of safety",
+      "equation": "n = allowable/applied",
+      "inputs": [
+        {
+          "key": "allowablePa",
+          "label": "Allowable strength",
+          "unit": "Pa",
+          "default": 250000000.0
+        },
+        {
+          "key": "appliedPa",
+          "label": "Applied stress",
+          "unit": "Pa",
+          "default": 100000000.0
+        }
+      ],
+      "outputs": {
+        "factorOfSafety": {
+          "expression": "allowablePa/appliedPa",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Same failure measure for allowable and applied values."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.von_mises_plane_stress",
+      "category": "Failure",
+      "title": "Plane-stress von Mises",
+      "equation": "sv=sqrt(sx^2-sx sy+sy^2+3t^2)",
+      "inputs": [
+        {
+          "key": "sigmaXPa",
+          "label": "Normal stress x",
+          "unit": "Pa",
+          "default": 120000000.0
+        },
+        {
+          "key": "sigmaYPa",
+          "label": "Normal stress y",
+          "unit": "Pa",
+          "default": 40000000.0
+        },
+        {
+          "key": "tauPa",
+          "label": "Shear stress",
+          "unit": "Pa",
+          "default": 25000000.0
+        }
+      ],
+      "outputs": {
+        "vonMisesPa": {
+          "expression": "sqrt(sigmaXPa**2-sigmaXPa*sigmaYPa+sigmaYPa**2+3*tauPa**2)",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Plane-stress ductile yield screening."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.goodman_factor",
+      "category": "Failure",
+      "title": "Modified Goodman factor",
+      "equation": "n=1/(sa/Se+sm/Sut)",
+      "inputs": [
+        {
+          "key": "alternatingPa",
+          "label": "Alternating stress",
+          "unit": "Pa",
+          "default": 80000000.0
+        },
+        {
+          "key": "meanPa",
+          "label": "Mean stress",
+          "unit": "Pa",
+          "default": 60000000.0
+        },
+        {
+          "key": "endurancePa",
+          "label": "Endurance limit",
+          "unit": "Pa",
+          "default": 200000000.0
+        },
+        {
+          "key": "ultimatePa",
+          "label": "Ultimate strength",
+          "unit": "Pa",
+          "default": 500000000.0
+        }
+      ],
+      "outputs": {
+        "factorOfSafety": {
+          "expression": "1/(alternatingPa/endurancePa+meanPa/ultimatePa)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Corrected endurance limit; tensile mean stress."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.critical_crack_length",
+      "category": "Failure",
+      "title": "Critical crack length",
+      "equation": "a=(KIC/(Y sigma))^2/pi",
+      "inputs": [
+        {
+          "key": "toughnessPaSqrtM",
+          "label": "Fracture toughness",
+          "unit": "Pa*sqrt(m)",
+          "default": 50000000.0
+        },
+        {
+          "key": "geometryFactor",
+          "label": "Geometry factor",
+          "unit": "1",
+          "default": 1.12
+        },
+        {
+          "key": "stressPa",
+          "label": "Applied stress",
+          "unit": "Pa",
+          "default": 150000000.0
+        }
+      ],
+      "outputs": {
+        "criticalCrackM": {
+          "expression": "(toughnessPaSqrtM/(geometryFactor*stressPa))**2/pi",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Mode-I LEFM."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.bolted_joint_preload",
+      "category": "Design",
+      "title": "Bolt preload from torque",
+      "equation": "Fi=T/(Kd)",
+      "inputs": [
+        {
+          "key": "torqueNm",
+          "label": "Installation torque",
+          "unit": "N*m",
+          "default": 120
+        },
+        {
+          "key": "nutFactor",
+          "label": "Nut factor",
+          "unit": "1",
+          "default": 0.2
+        },
+        {
+          "key": "diameterM",
+          "label": "Nominal diameter",
+          "unit": "m",
+          "default": 0.016
+        }
+      ],
+      "outputs": {
+        "preloadN": {
+          "expression": "torqueNm/(nutFactor*diameterM)",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Nut factor represents thread and bearing friction."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.helical_spring_rate",
+      "category": "Design",
+      "title": "Helical compression spring rate",
+      "equation": "k=Gd^4/(8D^3N)",
+      "inputs": [
+        {
+          "key": "shearModulusPa",
+          "label": "Shear modulus",
+          "unit": "Pa",
+          "default": 79000000000.0
+        },
+        {
+          "key": "wireDiameterM",
+          "label": "Wire diameter",
+          "unit": "m",
+          "default": 0.008
+        },
+        {
+          "key": "meanDiameterM",
+          "label": "Mean coil diameter",
+          "unit": "m",
+          "default": 0.05
+        },
+        {
+          "key": "activeCoils",
+          "label": "Active coils",
+          "unit": "1",
+          "default": 8
+        }
+      ],
+      "outputs": {
+        "springRateNPerM": {
+          "expression": "shearModulusPa*wireDiameterM**4/(8*meanDiameterM**3*activeCoils)",
+          "unit": "N/m"
+        }
+      },
+      "assumptions": [
+        "Close-coiled round-wire spring."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.gear_ratio_torque",
+      "category": "Design",
+      "title": "Ideal gear train",
+      "equation": "i=Nout/Nin; Tout=Tin i eta",
+      "inputs": [
+        {
+          "key": "inputTeeth",
+          "label": "Input teeth",
+          "unit": "1",
+          "default": 20
+        },
+        {
+          "key": "outputTeeth",
+          "label": "Output teeth",
+          "unit": "1",
+          "default": 60
+        },
+        {
+          "key": "inputTorqueNm",
+          "label": "Input torque",
+          "unit": "N*m",
+          "default": 50
+        },
+        {
+          "key": "efficiency",
+          "label": "Efficiency",
+          "unit": "1",
+          "default": 0.95
+        }
+      ],
+      "outputs": {
+        "ratio": {
+          "expression": "outputTeeth/inputTeeth",
+          "unit": "1"
+        },
+        "outputTorqueNm": {
+          "expression": "inputTorqueNm*(outputTeeth/inputTeeth)*efficiency",
+          "unit": "N*m"
+        }
+      },
+      "assumptions": [
+        "Single gear pair."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.bearing_l10_life",
+      "category": "Design",
+      "title": "Rolling-bearing L10 life",
+      "equation": "L10=(C/P)^p 10^6 rev",
+      "inputs": [
+        {
+          "key": "dynamicRatingN",
+          "label": "Dynamic rating C",
+          "unit": "N",
+          "default": 50000
+        },
+        {
+          "key": "equivalentLoadN",
+          "label": "Equivalent load P",
+          "unit": "N",
+          "default": 10000
+        },
+        {
+          "key": "lifeExponent",
+          "label": "Exponent p",
+          "unit": "1",
+          "default": 3
+        },
+        {
+          "key": "speedRpm",
+          "label": "Speed",
+          "unit": "rpm",
+          "default": 1200
+        }
+      ],
+      "outputs": {
+        "lifeRevolutions": {
+          "expression": "(dynamicRatingN/equivalentLoadN)**lifeExponent*1e6",
+          "unit": "rev"
+        },
+        "lifeHours": {
+          "expression": "(dynamicRatingN/equivalentLoadN)**lifeExponent*1e6/(60*speedRpm)",
+          "unit": "h"
+        }
+      },
+      "assumptions": [
+        "Constant load and speed."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.constant_acceleration",
+      "category": "Dynamics",
+      "title": "Constant-acceleration motion",
+      "equation": "v=u+at; s=ut+0.5at^2",
+      "inputs": [
+        {
+          "key": "initialVelocityMps",
+          "label": "Initial velocity",
+          "unit": "m/s",
+          "default": 5
+        },
+        {
+          "key": "accelerationMps2",
+          "label": "Acceleration",
+          "unit": "m/s^2",
+          "default": 2
+        },
+        {
+          "key": "timeS",
+          "label": "Time",
+          "unit": "s",
+          "default": 10
+        }
+      ],
+      "outputs": {
+        "finalVelocityMps": {
+          "expression": "initialVelocityMps+accelerationMps2*timeS",
+          "unit": "m/s"
+        },
+        "displacementM": {
+          "expression": "initialVelocityMps*timeS+0.5*accelerationMps2*timeS**2",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Constant acceleration."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.kinetic_energy",
+      "category": "Dynamics",
+      "title": "Translational kinetic energy",
+      "equation": "E=0.5mv^2",
+      "inputs": [
+        {
+          "key": "massKg",
+          "label": "Mass",
+          "unit": "kg",
+          "default": 100
+        },
+        {
+          "key": "velocityMps",
+          "label": "Velocity",
+          "unit": "m/s",
+          "default": 12
+        }
+      ],
+      "outputs": {
+        "energyJ": {
+          "expression": "0.5*massKg*velocityMps**2",
+          "unit": "J"
+        }
+      },
+      "assumptions": [
+        "Rigid-body translation."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.rotational_energy",
+      "category": "Dynamics",
+      "title": "Rotational kinetic energy",
+      "equation": "E=0.5I omega^2",
+      "inputs": [
+        {
+          "key": "inertiaKgM2",
+          "label": "Mass moment of inertia",
+          "unit": "kg*m^2",
+          "default": 4
+        },
+        {
+          "key": "omegaRadS",
+          "label": "Angular speed",
+          "unit": "rad/s",
+          "default": 30
+        }
+      ],
+      "outputs": {
+        "energyJ": {
+          "expression": "0.5*inertiaKgM2*omegaRadS**2",
+          "unit": "J"
+        }
+      },
+      "assumptions": [
+        "Fixed-axis rotation."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.shaft_power",
+      "category": "Dynamics",
+      "title": "Rotating shaft power",
+      "equation": "P=T omega",
+      "inputs": [
+        {
+          "key": "torqueNm",
+          "label": "Torque",
+          "unit": "N*m",
+          "default": 300
+        },
+        {
+          "key": "speedRpm",
+          "label": "Speed",
+          "unit": "rpm",
+          "default": 1800
+        }
+      ],
+      "outputs": {
+        "omegaRadS": {
+          "expression": "speedRpm*2*pi/60",
+          "unit": "rad/s"
+        },
+        "powerW": {
+          "expression": "torqueNm*speedRpm*2*pi/60",
+          "unit": "W"
+        }
+      },
+      "assumptions": [
+        "Steady torque and speed."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.mass_spring_frequency",
+      "category": "Vibration",
+      "title": "Undamped natural frequency",
+      "equation": "fn=sqrt(k/m)/(2pi)",
+      "inputs": [
+        {
+          "key": "stiffnessNPerM",
+          "label": "Stiffness",
+          "unit": "N/m",
+          "default": 20000
+        },
+        {
+          "key": "massKg",
+          "label": "Mass",
+          "unit": "kg",
+          "default": 50
+        }
+      ],
+      "outputs": {
+        "omegaRadS": {
+          "expression": "sqrt(stiffnessNPerM/massKg)",
+          "unit": "rad/s"
+        },
+        "frequencyHz": {
+          "expression": "sqrt(stiffnessNPerM/massKg)/(2*pi)",
+          "unit": "Hz"
+        }
+      },
+      "assumptions": [
+        "Single degree of freedom."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.damping_ratio",
+      "category": "Vibration",
+      "title": "Viscous damping ratio",
+      "equation": "zeta=c/(2sqrt(km))",
+      "inputs": [
+        {
+          "key": "dampingNsM",
+          "label": "Damping coefficient",
+          "unit": "N*s/m",
+          "default": 300
+        },
+        {
+          "key": "stiffnessNPerM",
+          "label": "Stiffness",
+          "unit": "N/m",
+          "default": 20000
+        },
+        {
+          "key": "massKg",
+          "label": "Mass",
+          "unit": "kg",
+          "default": 50
+        }
+      ],
+      "outputs": {
+        "dampingRatio": {
+          "expression": "dampingNsM/(2*sqrt(stiffnessNPerM*massKg))",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Linear viscous damping."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.damped_frequency",
+      "category": "Vibration",
+      "title": "Damped natural frequency",
+      "equation": "fd=fn sqrt(1-zeta^2)",
+      "inputs": [
+        {
+          "key": "naturalHz",
+          "label": "Undamped frequency",
+          "unit": "Hz",
+          "default": 5
+        },
+        {
+          "key": "dampingRatio",
+          "label": "Damping ratio",
+          "unit": "1",
+          "default": 0.1
+        }
+      ],
+      "outputs": {
+        "dampedHz": {
+          "expression": "naturalHz*sqrt(1-dampingRatio**2)",
+          "unit": "Hz"
+        }
+      },
+      "assumptions": [
+        "Underdamped response."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.rotating_imbalance",
+      "category": "Vibration",
+      "title": "Rotating imbalance force",
+      "equation": "F=me omega^2",
+      "inputs": [
+        {
+          "key": "imbalanceMassKg",
+          "label": "Imbalance mass",
+          "unit": "kg",
+          "default": 0.2
+        },
+        {
+          "key": "eccentricityM",
+          "label": "Eccentricity",
+          "unit": "m",
+          "default": 0.01
+        },
+        {
+          "key": "speedRpm",
+          "label": "Speed",
+          "unit": "rpm",
+          "default": 1800
+        }
+      ],
+      "outputs": {
+        "forceN": {
+          "expression": "imbalanceMassKg*eccentricityM*(speedRpm*2*pi/60)**2",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Point imbalance."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.continuity",
+      "category": "Fluids",
+      "title": "Incompressible continuity",
+      "equation": "Q=A1v1=A2v2",
+      "inputs": [
+        {
+          "key": "area1M2",
+          "label": "Area 1",
+          "unit": "m^2",
+          "default": 0.05
+        },
+        {
+          "key": "velocity1Mps",
+          "label": "Velocity 1",
+          "unit": "m/s",
+          "default": 2
+        },
+        {
+          "key": "area2M2",
+          "label": "Area 2",
+          "unit": "m^2",
+          "default": 0.02
+        }
+      ],
+      "outputs": {
+        "flowM3S": {
+          "expression": "area1M2*velocity1Mps",
+          "unit": "m^3/s"
+        },
+        "velocity2Mps": {
+          "expression": "area1M2*velocity1Mps/area2M2",
+          "unit": "m/s"
+        }
+      },
+      "assumptions": [
+        "Steady incompressible flow."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.bernoulli_pressure",
+      "category": "Fluids",
+      "title": "Bernoulli pressure change",
+      "equation": "P2=P1+rho g(z1-z2)+0.5rho(v1^2-v2^2)",
+      "inputs": [
+        {
+          "key": "pressure1Pa",
+          "label": "Pressure 1",
+          "unit": "Pa",
+          "default": 200000
+        },
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 1000
+        },
+        {
+          "key": "velocity1Mps",
+          "label": "Velocity 1",
+          "unit": "m/s",
+          "default": 2
+        },
+        {
+          "key": "velocity2Mps",
+          "label": "Velocity 2",
+          "unit": "m/s",
+          "default": 5
+        },
+        {
+          "key": "elevation1M",
+          "label": "Elevation 1",
+          "unit": "m",
+          "default": 3
+        },
+        {
+          "key": "elevation2M",
+          "label": "Elevation 2",
+          "unit": "m",
+          "default": 1
+        }
+      ],
+      "outputs": {
+        "pressure2Pa": {
+          "expression": "pressure1Pa+densityKgM3*g*(elevation1M-elevation2M)+0.5*densityKgM3*(velocity1Mps**2-velocity2Mps**2)",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Inviscid steady flow without shaft work."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.reynolds",
+      "category": "Fluids",
+      "title": "Reynolds number",
+      "equation": "Re=rho vD/mu",
+      "inputs": [
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 998
+        },
+        {
+          "key": "velocityMps",
+          "label": "Velocity",
+          "unit": "m/s",
+          "default": 1.5
+        },
+        {
+          "key": "diameterM",
+          "label": "Hydraulic diameter",
+          "unit": "m",
+          "default": 0.05
+        },
+        {
+          "key": "viscosityPaS",
+          "label": "Dynamic viscosity",
+          "unit": "Pa*s",
+          "default": 0.001
+        }
+      ],
+      "outputs": {
+        "reynolds": {
+          "expression": "densityKgM3*velocityMps*diameterM/viscosityPaS",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Representative bulk properties."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.darcy_pressure_drop",
+      "category": "Fluids",
+      "title": "Darcy-Weisbach pressure drop",
+      "equation": "dP=f(L/D)rho v^2/2",
+      "inputs": [
+        {
+          "key": "frictionFactor",
+          "label": "Darcy friction factor",
+          "unit": "1",
+          "default": 0.02
+        },
+        {
+          "key": "lengthM",
+          "label": "Pipe length",
+          "unit": "m",
+          "default": 100
+        },
+        {
+          "key": "diameterM",
+          "label": "Diameter",
+          "unit": "m",
+          "default": 0.1
+        },
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 998
+        },
+        {
+          "key": "velocityMps",
+          "label": "Velocity",
+          "unit": "m/s",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "pressureDropPa": {
+          "expression": "frictionFactor*(lengthM/diameterM)*densityKgM3*velocityMps**2/2",
+          "unit": "Pa"
+        },
+        "headLossM": {
+          "expression": "frictionFactor*(lengthM/diameterM)*velocityMps**2/(2*g)",
+          "unit": "m"
+        }
+      },
+      "assumptions": [
+        "Specified Darcy factor."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.hagen_poiseuille",
+      "category": "Fluids",
+      "title": "Laminar pipe flow",
+      "equation": "Q=pi dP D^4/(128 mu L)",
+      "inputs": [
+        {
+          "key": "pressureDropPa",
+          "label": "Pressure drop",
+          "unit": "Pa",
+          "default": 50000
+        },
+        {
+          "key": "diameterM",
+          "label": "Diameter",
+          "unit": "m",
+          "default": 0.01
+        },
+        {
+          "key": "viscosityPaS",
+          "label": "Dynamic viscosity",
+          "unit": "Pa*s",
+          "default": 0.1
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 2
+        }
+      ],
+      "outputs": {
+        "flowM3S": {
+          "expression": "pi*pressureDropPa*diameterM**4/(128*viscosityPaS*lengthM)",
+          "unit": "m^3/s"
+        }
+      },
+      "assumptions": [
+        "Fully developed laminar circular-pipe flow."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.pump_power",
+      "category": "Fluids",
+      "title": "Pump input power",
+      "equation": "Pin=rho g QH/eta",
+      "inputs": [
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 1000
+        },
+        {
+          "key": "flowM3S",
+          "label": "Flow rate",
+          "unit": "m^3/s",
+          "default": 0.03
+        },
+        {
+          "key": "headM",
+          "label": "Head",
+          "unit": "m",
+          "default": 25
+        },
+        {
+          "key": "efficiency",
+          "label": "Efficiency",
+          "unit": "1",
+          "default": 0.75
+        }
+      ],
+      "outputs": {
+        "hydraulicPowerW": {
+          "expression": "densityKgM3*g*flowM3S*headM",
+          "unit": "W"
+        },
+        "inputPowerW": {
+          "expression": "densityKgM3*g*flowM3S*headM/efficiency",
+          "unit": "W"
+        }
+      },
+      "assumptions": [
+        "Steady flow and overall efficiency."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.drag_force",
+      "category": "Fluids",
+      "title": "Drag force",
+      "equation": "Fd=0.5rho v^2 Cd A",
+      "inputs": [
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 1.225
+        },
+        {
+          "key": "velocityMps",
+          "label": "Velocity",
+          "unit": "m/s",
+          "default": 30
+        },
+        {
+          "key": "dragCoefficient",
+          "label": "Drag coefficient",
+          "unit": "1",
+          "default": 0.7
+        },
+        {
+          "key": "areaM2",
+          "label": "Reference area",
+          "unit": "m^2",
+          "default": 2.2
+        }
+      ],
+      "outputs": {
+        "dragN": {
+          "expression": "0.5*densityKgM3*velocityMps**2*dragCoefficient*areaM2",
+          "unit": "N"
+        }
+      },
+      "assumptions": [
+        "Constant reference area and coefficient."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.orifice_flow",
+      "category": "Fluids",
+      "title": "Orifice discharge",
+      "equation": "Q=Cd A sqrt(2gH)",
+      "inputs": [
+        {
+          "key": "dischargeCoefficient",
+          "label": "Discharge coefficient",
+          "unit": "1",
+          "default": 0.62
+        },
+        {
+          "key": "areaM2",
+          "label": "Orifice area",
+          "unit": "m^2",
+          "default": 0.002
+        },
+        {
+          "key": "headM",
+          "label": "Head",
+          "unit": "m",
+          "default": 4
+        }
+      ],
+      "outputs": {
+        "flowM3S": {
+          "expression": "dischargeCoefficient*areaM2*sqrt(2*g*headM)",
+          "unit": "m^3/s"
+        }
+      },
+      "assumptions": [
+        "Free incompressible discharge."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.ideal_gas_pressure",
+      "category": "Thermodynamics",
+      "title": "Ideal-gas pressure",
+      "equation": "P=mRT/V",
+      "inputs": [
+        {
+          "key": "massKg",
+          "label": "Mass",
+          "unit": "kg",
+          "default": 2
+        },
+        {
+          "key": "gasConstantJkgK",
+          "label": "Specific gas constant",
+          "unit": "J/(kg*K)",
+          "default": 287.05
+        },
+        {
+          "key": "temperatureK",
+          "label": "Temperature",
+          "unit": "K",
+          "default": 350
+        },
+        {
+          "key": "volumeM3",
+          "label": "Volume",
+          "unit": "m^3",
+          "default": 1
+        }
+      ],
+      "outputs": {
+        "pressurePa": {
+          "expression": "massKg*gasConstantJkgK*temperatureK/volumeM3",
+          "unit": "Pa"
+        }
+      },
+      "assumptions": [
+        "Ideal gas; absolute temperature."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.closed_system_first_law",
+      "category": "Thermodynamics",
+      "title": "Closed-system first law",
+      "equation": "dU=Q-W",
+      "inputs": [
+        {
+          "key": "heatInJ",
+          "label": "Heat into system",
+          "unit": "J",
+          "default": 50000
+        },
+        {
+          "key": "workOutJ",
+          "label": "Work by system",
+          "unit": "J",
+          "default": 12000
+        }
+      ],
+      "outputs": {
+        "internalEnergyChangeJ": {
+          "expression": "heatInJ-workOutJ",
+          "unit": "J"
+        }
+      },
+      "assumptions": [
+        "Heat in and work out are positive."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.isentropic_temperature",
+      "category": "Thermodynamics",
+      "title": "Ideal-gas isentropic temperature",
+      "equation": "T2=T1(P2/P1)^((gamma-1)/gamma)",
+      "inputs": [
+        {
+          "key": "temperature1K",
+          "label": "Initial temperature",
+          "unit": "K",
+          "default": 300
+        },
+        {
+          "key": "pressure1Pa",
+          "label": "Initial pressure",
+          "unit": "Pa",
+          "default": 100000
+        },
+        {
+          "key": "pressure2Pa",
+          "label": "Final pressure",
+          "unit": "Pa",
+          "default": 500000
+        },
+        {
+          "key": "gamma",
+          "label": "Heat-capacity ratio",
+          "unit": "1",
+          "default": 1.4
+        }
+      ],
+      "outputs": {
+        "temperature2K": {
+          "expression": "temperature1K*(pressure2Pa/pressure1Pa)**((gamma-1)/gamma)",
+          "unit": "K"
+        }
+      },
+      "assumptions": [
+        "Ideal gas; constant heat capacities."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.carnot_efficiency",
+      "category": "Thermodynamics",
+      "title": "Carnot efficiency",
+      "equation": "eta=1-Tc/Th",
+      "inputs": [
+        {
+          "key": "hotK",
+          "label": "Hot reservoir",
+          "unit": "K",
+          "default": 800
+        },
+        {
+          "key": "coldK",
+          "label": "Cold reservoir",
+          "unit": "K",
+          "default": 300
+        }
+      ],
+      "outputs": {
+        "efficiency": {
+          "expression": "1-coldK/hotK",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Reversible cycle."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.otto_efficiency",
+      "category": "Thermodynamics",
+      "title": "Air-standard Otto efficiency",
+      "equation": "eta=1-1/r^(gamma-1)",
+      "inputs": [
+        {
+          "key": "compressionRatio",
+          "label": "Compression ratio",
+          "unit": "1",
+          "default": 10
+        },
+        {
+          "key": "gamma",
+          "label": "Heat-capacity ratio",
+          "unit": "1",
+          "default": 1.4
+        }
+      ],
+      "outputs": {
+        "efficiency": {
+          "expression": "1-1/compressionRatio**(gamma-1)",
+          "unit": "1"
+        }
+      },
+      "assumptions": [
+        "Cold-air-standard ideal cycle."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.refrigeration_cop",
+      "category": "Thermodynamics",
+      "title": "Refrigerator coefficient of performance",
+      "equation": "COP=QL/W",
+      "inputs": [
+        {
+          "key": "coolingW",
+          "label": "Cooling rate",
+          "unit": "W",
+          "default": 5000
+        },
+        {
+          "key": "inputPowerW",
+          "label": "Input power",
+          "unit": "W",
+          "default": 1500
+        }
+      ],
+      "outputs": {
+        "cop": {
+          "expression": "coolingW/inputPowerW",
+          "unit": "1"
+        },
+        "rejectedHeatW": {
+          "expression": "coolingW+inputPowerW",
+          "unit": "W"
+        }
+      },
+      "assumptions": [
+        "Steady cyclic device."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.plane_wall_conduction",
+      "category": "Heat transfer",
+      "title": "Plane-wall conduction",
+      "equation": "Q=kA dT/L",
+      "inputs": [
+        {
+          "key": "conductivityWmK",
+          "label": "Conductivity",
+          "unit": "W/(m*K)",
+          "default": 0.8
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 10
+        },
+        {
+          "key": "deltaTK",
+          "label": "Temperature difference",
+          "unit": "K",
+          "default": 25
+        },
+        {
+          "key": "thicknessM",
+          "label": "Thickness",
+          "unit": "m",
+          "default": 0.2
+        }
+      ],
+      "outputs": {
+        "heatRateW": {
+          "expression": "conductivityWmK*areaM2*deltaTK/thicknessM",
+          "unit": "W"
+        },
+        "resistanceKPerW": {
+          "expression": "thicknessM/(conductivityWmK*areaM2)",
+          "unit": "K/W"
+        }
+      },
+      "assumptions": [
+        "One-dimensional steady conduction."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.cylinder_conduction",
+      "category": "Heat transfer",
+      "title": "Cylindrical-wall conduction",
+      "equation": "Q=2pi kL dT/ln(r2/r1)",
+      "inputs": [
+        {
+          "key": "conductivityWmK",
+          "label": "Conductivity",
+          "unit": "W/(m*K)",
+          "default": 15
+        },
+        {
+          "key": "lengthM",
+          "label": "Length",
+          "unit": "m",
+          "default": 2
+        },
+        {
+          "key": "innerRadiusM",
+          "label": "Inner radius",
+          "unit": "m",
+          "default": 0.03
+        },
+        {
+          "key": "outerRadiusM",
+          "label": "Outer radius",
+          "unit": "m",
+          "default": 0.05
+        },
+        {
+          "key": "deltaTK",
+          "label": "Temperature difference",
+          "unit": "K",
+          "default": 80
+        }
+      ],
+      "outputs": {
+        "heatRateW": {
+          "expression": "2*pi*conductivityWmK*lengthM*deltaTK/log(outerRadiusM/innerRadiusM)",
+          "unit": "W"
+        },
+        "resistanceKPerW": {
+          "expression": "log(outerRadiusM/innerRadiusM)/(2*pi*conductivityWmK*lengthM)",
+          "unit": "K/W"
+        }
+      },
+      "assumptions": [
+        "Steady radial conduction."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.convection",
+      "category": "Heat transfer",
+      "title": "Convective heat transfer",
+      "equation": "Q=hA dT",
+      "inputs": [
+        {
+          "key": "coefficientWm2K",
+          "label": "Convection coefficient",
+          "unit": "W/(m^2*K)",
+          "default": 40
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 3
+        },
+        {
+          "key": "deltaTK",
+          "label": "Temperature difference",
+          "unit": "K",
+          "default": 30
+        }
+      ],
+      "outputs": {
+        "heatRateW": {
+          "expression": "coefficientWm2K*areaM2*deltaTK",
+          "unit": "W"
+        },
+        "resistanceKPerW": {
+          "expression": "1/(coefficientWm2K*areaM2)",
+          "unit": "K/W"
+        }
+      },
+      "assumptions": [
+        "Uniform surface and bulk temperatures."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.radiation",
+      "category": "Heat transfer",
+      "title": "Net thermal radiation",
+      "equation": "Q=epsilon sigma A(Ts^4-Tsur^4)",
+      "inputs": [
+        {
+          "key": "emissivity",
+          "label": "Emissivity",
+          "unit": "1",
+          "default": 0.85
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 2
+        },
+        {
+          "key": "surfaceK",
+          "label": "Surface temperature",
+          "unit": "K",
+          "default": 500
+        },
+        {
+          "key": "surroundingsK",
+          "label": "Surroundings temperature",
+          "unit": "K",
+          "default": 300
+        }
+      ],
+      "outputs": {
+        "heatRateW": {
+          "expression": "emissivity*sigma*areaM2*(surfaceK**4-surroundingsK**4)",
+          "unit": "W"
+        }
+      },
+      "assumptions": [
+        "Gray diffuse surface."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.lmtd",
+      "category": "Heat transfer",
+      "title": "Log-mean temperature difference",
+      "equation": "LMTD=(dT1-dT2)/ln(dT1/dT2)",
+      "inputs": [
+        {
+          "key": "deltaT1K",
+          "label": "Terminal difference 1",
+          "unit": "K",
+          "default": 80
+        },
+        {
+          "key": "deltaT2K",
+          "label": "Terminal difference 2",
+          "unit": "K",
+          "default": 30
+        },
+        {
+          "key": "overallWm2K",
+          "label": "Overall U",
+          "unit": "W/(m^2*K)",
+          "default": 250
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 12
+        },
+        {
+          "key": "correctionFactor",
+          "label": "Correction factor",
+          "unit": "1",
+          "default": 1
+        }
+      ],
+      "outputs": {
+        "lmtdK": {
+          "expression": "lmtd(deltaT1K,deltaT2K)",
+          "unit": "K"
+        },
+        "heatRateW": {
+          "expression": "overallWm2K*areaM2*correctionFactor*lmtd(deltaT1K,deltaT2K)",
+          "unit": "W"
+        }
+      },
+      "assumptions": [
+        "Terminal differences retain the same sign."
+      ],
+      "version": "0.11.0"
+    },
+    {
+      "id": "mt.lumped_cooling",
+      "category": "Heat transfer",
+      "title": "Lumped-capacitance transient",
+      "equation": "T=Tinf+(Ti-Tinf)exp[-hAt/(rho V c)]",
+      "inputs": [
+        {
+          "key": "initialK",
+          "label": "Initial temperature",
+          "unit": "K",
+          "default": 450
+        },
+        {
+          "key": "ambientK",
+          "label": "Ambient temperature",
+          "unit": "K",
+          "default": 300
+        },
+        {
+          "key": "coefficientWm2K",
+          "label": "Convection coefficient",
+          "unit": "W/(m^2*K)",
+          "default": 25
+        },
+        {
+          "key": "areaM2",
+          "label": "Area",
+          "unit": "m^2",
+          "default": 0.5
+        },
+        {
+          "key": "timeS",
+          "label": "Time",
+          "unit": "s",
+          "default": 600
+        },
+        {
+          "key": "densityKgM3",
+          "label": "Density",
+          "unit": "kg/m^3",
+          "default": 7800
+        },
+        {
+          "key": "volumeM3",
+          "label": "Volume",
+          "unit": "m^3",
+          "default": 0.002
+        },
+        {
+          "key": "specificHeatJkgK",
+          "label": "Specific heat",
+          "unit": "J/(kg*K)",
+          "default": 500
+        }
+      ],
+      "outputs": {
+        "timeConstantS": {
+          "expression": "densityKgM3*volumeM3*specificHeatJkgK/(coefficientWm2K*areaM2)",
+          "unit": "s"
+        },
+        "temperatureK": {
+          "expression": "ambientK+(initialK-ambientK)*exp(-timeS/(densityKgM3*volumeM3*specificHeatJkgK/(coefficientWm2K*areaM2)))",
+          "unit": "K"
+        }
+      },
+      "assumptions": [
+        "Biot number is sufficiently small."
+      ],
+      "version": "0.11.0"
+    }
+  ]
+}

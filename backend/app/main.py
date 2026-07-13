@@ -15,6 +15,7 @@ from .jobs import jobs
 from .models import CompareRequest, ExecuteRequest, HandoffValidateRequest, JobRequest, ReportRequest, ValidateRequest
 from .reporting import ReportValidationError, report_pdf_response, validate_handoff, validate_report
 from .electrical_embedded import router as electrical_router
+from .mechanical_thermal import router as mechanical_router
 from .security import rate_limit, require_api_key
 
 app = FastAPI(
@@ -190,3 +191,4 @@ def handoff_validate(payload: HandoffValidateRequest) -> dict[str, Any]:
 
 # Lab v0.10.0 curated electrical and embedded routes.
 app.include_router(electrical_router, dependencies=[Depends(require_api_key)])
+app.include_router(mechanical_router, dependencies=[Depends(require_api_key)])

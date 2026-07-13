@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/mechanical-thermal-analysis-v1.schema.json",
+  "title": "Sustainable Catalyst Lab Mechanical and Thermal Analysis",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "methodId",
+    "category",
+    "title",
+    "inputs",
+    "outputs",
+    "validation",
+    "audit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-mechanical-thermal-analysis/1.0"
+    },
+    "version": {
+      "const": "0.11.0"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^mt\\."
+    },
+    "category": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "validation": {
+      "type": "object"
+    },
+    "audit": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

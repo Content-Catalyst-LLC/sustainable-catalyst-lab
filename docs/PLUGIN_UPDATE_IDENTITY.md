@@ -16,8 +16,8 @@ sustainable-catalyst-lab.zip
 
 Do not upload these through the WordPress plugin installer:
 
-- `sustainable-catalyst-lab-v0.10.0-repo.zip`
-- `sustainable-catalyst-lab-v0.10.0-release-bundle.zip`
+- `sustainable-catalyst-lab-v0.11.0-repo.zip`
+- `sustainable-catalyst-lab-v0.11.0-release-bundle.zip`
 - A manually renamed directory containing a version suffix
 
 Those packages are for GitHub or offline release storage, not direct WordPress installation.

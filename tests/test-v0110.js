@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),path=require('path');
+const source=fs.readFileSync(path.join(__dirname,'../assets/js/modules/mechanical-thermal-lab.js'),'utf8');
+const context={window:{SCLab:{}},globalThis:{},console,CustomEvent:function(t,i){this.type=t;this.detail=i&&i.detail;}};
+vm.createContext(context);vm.runInContext(source,context);
+const Lab=context.window.SCLab.MechanicalThermalLab;
+if(!Lab)throw new Error('MechanicalThermalLab export missing');
+if(Lab.VERSION!=='0.11.0')throw new Error('Version mismatch');
+if(Lab.definitions.length!==48)throw new Error(`Expected 48 methods, found ${Lab.definitions.length}`);
+const rows=Lab.runBenchmarks(),failed=rows.filter(x=>!x.passed);
+if(failed.length)throw new Error(JSON.stringify(failed));
+const p=Lab.run('mt.shaft_power',{torqueNm:100,speedRpm:60}).outputs.powerW;
+if(Math.abs(p-200*Math.PI)>1e-8)throw new Error('Shaft power failed');
+console.log(`Mechanical/thermal JS tests passed: ${Lab.definitions.length} methods, ${rows.length} benchmarks.`);

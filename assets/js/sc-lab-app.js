@@ -246,7 +246,13 @@
   time: item.createdAt || item.recordedAt,
   meta: 'Electrical & embedded'
   }));
-      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth, ...energy, ...electrical]
+  const mechanical = project.mechanicalThermalAnalyses.slice(0, 3).map(item => ({
+  title: item.title || item.type || 'Mechanical and thermal analysis',
+  body: item.methodId ? `Method: ${item.methodId}` : '',
+  time: item.createdAt || item.recordedAt || item.audit?.createdAt,
+  meta: 'Mechanical & thermal'
+  }));
+      const rows = [...experiments, ...calculations, ...biology, ...astronomy, ...materials, ...earth, ...energy, ...electrical, ...mechanical]
         .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
         .slice(0, 5);
       qs(root, '[data-project-work]').innerHTML = rows.length
@@ -268,7 +274,8 @@
         ['Materials', project.materialsRecords.length, 'materials'],
         ['Earth systems', project.earthRecords.length, 'earth-systems'],
         ['Energy & engineering', project.energyRecords.length, 'energy-engineering'],
-  ['Electrical & embedded', project.electricalRecords.length, 'electrical-embedded']
+  ['Electrical & embedded', project.electricalRecords.length, 'electrical-embedded'],
+  ['Mechanical & thermal', project.mechanicalThermalAnalyses.length, 'mechanical-thermal']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
@@ -804,7 +811,7 @@
     Lab.EarthLab?.init(root, projects);
 
     // Energy and Engineering Laboratory.
-    Lab.EnergyLab?.init(root, projects);
+    Lab.EnergyLab?.init(root, projects); // Electrical, Electronics, and Embedded Systems. Lab.ElectricalEmbedded?.init(root, projects); // Mechanical and Thermal Engineering. Lab.MechanicalThermalLab?.init(root, projects);
 
     // Universal code switcher and portable method contracts.
     Lab.CodeSwitcher?.init(root, projects);
@@ -966,7 +973,7 @@
           ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`],
           ['Materials laboratory', Lab.MaterialsLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.MaterialsLab?.definitions?.length || 0} materials methods · ${Lab.MaterialsLab?.benchmarks?.length || 0} validation cases`],
           ['Earth systems laboratory', Lab.EarthLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EarthLab?.definitions?.length || 0} Earth systems methods · ${Lab.EarthLab?.benchmarks?.length || 0} validation cases`],
-          ['Energy and engineering laboratory', Lab.EnergyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EnergyLab?.definitions?.length || 0} energy and engineering methods · ${Lab.EnergyLab?.benchmarks?.length || 0} validation cases`],
+          ['Energy and engineering laboratory', Lab.EnergyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.EnergyLab?.definitions?.length || 0} energy and engineering methods · ${Lab.EnergyLab?.benchmarks?.length || 0} validation cases`], ['Mechanical and thermal engineering laboratory', Lab.MechanicalThermalLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.MechanicalThermalLab?.definitions?.length || 0} mechanical and thermal methods · ${Lab.MechanicalThermalLab?.benchmarks?.length || 0} validation cases`],
           ['Visualization and export engine', Lab.Visualization ? 'Ready' : 'Unavailable', 'SVG, PNG, PDF, CSV, JSON, project records, and Decision Studio packets'],
           ['Workspace data management', Lab.DataManagement ? 'Ready' : 'Unavailable', 'Workspace backup, restore, selective clearing, and factory reset']
         ];

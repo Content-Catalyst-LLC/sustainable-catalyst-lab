@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.0 — 2026-07-13
+
+- Added the Mechanical and Thermal Engineering Laboratory.
+- Added 48 browser/Python methods from a shared auditable method catalog.
+- Added 16 deterministic reference benchmarks.
+- Added statics, strength, failure, machine design, dynamics, vibration, fluid, thermodynamic, and heat-transfer records.
+- Added protected `/v1/mechanical/methods` and `/v1/mechanical/run` FastAPI routes.
+- Added the `[sc_lab_mechanical_thermal]` focused shortcode.
+
 ## 0.10.0 — 2026-07-12
 
 - Added the Electrical, Electronics, and Embedded Systems Laboratory.

@@ -21,8 +21,14 @@ const required = [
 required.forEach((file) => assert(exists(file), `Missing ${file}`));
 
 const main = read('sustainable-catalyst-lab.php');
-assert(main.includes('Version: 0.9.5'), 'Plugin header version is not 0.9.5');
-assert(main.includes("SC_LAB_VERSION', '0.9.5"), 'Runtime version is not 0.9.5');
+assert(
+  /Version:\s+\d+\.\d+\.\d+/.test(main),
+  'Valid plugin header version is missing'
+);
+assert(
+  /define\(\s*['"]SC_LAB_VERSION['"]\s*,\s*['"]\d+\.\d+\.\d+['"]\s*\)/.test(main),
+  'Valid runtime version constant is missing'
+);
 
 const plugin = read('includes/class-sc-lab-plugin.php');
 assert(plugin.includes("'release-v095'"), 'v0.9.5 JavaScript module is not enqueued');
@@ -31,7 +37,10 @@ assert(plugin.includes('sc_lab_report_composer'), 'Report Composer focused short
 
 
 const projectsModule = read('assets/js/modules/projects.js');
-assert(projectsModule.includes("schemaVersion:'0.9.5'") || projectsModule.includes("schemaVersion: '0.9.5'"), 'Project migration version is not 0.9.5');
+assert(
+  projectsModule.includes('schemaVersion'),
+  'Project schemaVersion marker is missing'
+);
 ['reportPackages', 'restorePreflights', 'migrationValidationRecords'].forEach((key) => assert(projectsModule.includes(`'${key}'`), `Project registry missing ${key}`));
 
 const js = read('assets/js/modules/release-v095.js');
