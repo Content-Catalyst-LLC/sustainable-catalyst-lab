@@ -651,7 +651,7 @@
       </section>
 
 
-        <section class="sc-lab-panel" data-lab-module="electrical-embedded" hidden>
+        <section class="sc-lab-panel" data-lab-module="electrical-embedded" hidden data-module-panel="electrical-embedded">
     <div class="sc-lab-panel-head">
       <div><span class="sc-lab-section-code">LAB/ELECTRICAL-EMBEDDED</span><h3>Electrical, electronics, and embedded systems</h3></div>
       <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-electrical-run-benchmarks>Run validation suite</button></div>
@@ -683,9 +683,11 @@
       </div>
     </div>
     <article class="sc-lab-tool"><h4>Validation suite output</h4><pre class="sc-lab-electrical-console" data-electrical-benchmark-output>Run the deterministic benchmark suite to create a hardware-validation record.</pre></article>
-  </section>
 
-    <section class="sc-lab-panel" data-lab-module="mechanical-thermal" hidden>
+  <div data-electrical-embedded-root></div>
+</section>
+
+    <section class="sc-lab-panel" data-lab-module="mechanical-thermal" hidden data-module-panel="mechanical-thermal">
     <div class="sc-lab-panel-head">
       <div><span class="sc-lab-section-code">LAB/MECHANICAL-THERMAL</span><h3>Mechanical and thermal engineering</h3></div>
       <div class="sc-lab-panel-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mt-bench>Run validation suite</button></div>
@@ -694,7 +696,7 @@
     <div data-mechanical-thermal-root></div>
   </section>
 
-<section class="sc-lab-panel" data-module-panel="civil-infrastructure" hidden>
+<section class="sc-lab-panel" data-module-panel="civil-infrastructure" hidden data-lab-module="civil-infrastructure">
   <header class="sc-lab-panel-header">
     <div>
       <p class="sc-lab-kicker">LAB/CIVIL-INFRASTRUCTURE</p>

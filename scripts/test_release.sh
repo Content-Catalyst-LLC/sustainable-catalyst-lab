@@ -90,3 +90,7 @@ node "$REPO_ROOT_V0110/tests/test-v0110.js"
 php "$REPO_ROOT_V0110/tests/test-v0110.php"
 PYTHONPATH="$REPO_ROOT_V0110/backend${PYTHONPATH:+:$PYTHONPATH}" "${PYTHON_BIN:-python3}" -m pytest "$REPO_ROOT_V0110/backend/tests/test_mechanical_thermal.py" -q
 
+
+echo "Running v0.20.0 engineering-interface repair validation..."
+php tests/test-engineering-interface-v0200.php
+node --check assets/js/modules/engineering-interface-repair-v0200.js
