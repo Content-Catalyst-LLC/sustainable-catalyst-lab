@@ -696,7 +696,7 @@
     <div data-mechanical-thermal-root></div>
   </section>
 
-<section class="sc-lab-panel" data-module-panel="civil-infrastructure" hidden data-lab-module="civil-infrastructure">
+<section class="sc-lab-panel sc-lab-module" data-module-panel="civil-infrastructure" hidden data-lab-module="civil-infrastructure">
   <header class="sc-lab-panel-header">
     <div>
       <p class="sc-lab-kicker">LAB/CIVIL-INFRASTRUCTURE</p>
