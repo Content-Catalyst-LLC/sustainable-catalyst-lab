@@ -61,7 +61,7 @@
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -1140,6 +1140,27 @@
     <div
         data-molecular-validation-provenance-root
     ></div>
+</section>
+
+
+<section
+    class="sc-lab-panel sc-lab-module"
+    data-lab-module="biotechnology-bioprocess-engineering"
+    data-module-panel="biotechnology-bioprocess-engineering"
+    hidden
+>
+    <header class="sc-lab-module-header">
+        <p class="sc-lab-kicker">LAB/BIOTECHNOLOGY/BIOPROCESS</p>
+        <h3>Biotechnology and bioprocess engineering</h3>
+        <p>
+            Auditable calculations and process simulations for cell
+            growth, reactor balances, feed strategy, continuous
+            culture, oxygen transfer, mixing, scale-up, production,
+            and downstream recovery.
+        </p>
+    </header>
+
+    <div data-biotechnology-bioprocess-root></div>
 </section>
 
 </main>

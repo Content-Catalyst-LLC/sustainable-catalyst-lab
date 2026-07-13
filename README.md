@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.22.0 — Biotechnology and Bioprocess Engineering
+
+This release adds 48 bioprocess methods, 48 reference benchmarks, batch/fed-batch/continuous simulations, CSV batch monitoring, oxygen-transfer and scale-up tools, WordPress/FastAPI routes, and v0.21.3 provenance handoffs.
+
 # Sustainable Catalyst Lab v0.21.3 — Molecular Analysis Validation and Provenance
 
 This release adds eight analytical validation protocols, explicit acceptance criteria, validation dossiers, SHA-256 payload fingerprints, parent-hash provenance chains, independent ledger verification, evidence metadata, and tamper-detection tests while preserving the v0.21.0 method catalog and v0.21.2 visualization/batch layer.

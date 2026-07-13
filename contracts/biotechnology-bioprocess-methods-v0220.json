@@ -1,0 +1,2245 @@
+{
+  "schema": "sc-lab-biotechnology-bioprocess-methods/1.0",
+  "version": "0.22.0",
+  "methodCount": 48,
+  "benchmarkCount": 48,
+  "categories": [
+    "Batch balances",
+    "Cell growth and culture",
+    "Continuous culture",
+    "Fed-batch operation",
+    "Heat and mixing",
+    "Oxygen and gas transfer",
+    "Production and downstream",
+    "Scale-up and geometry"
+  ],
+  "methods": [
+    {
+      "id": "bp.exponential_biomass",
+      "category": "Cell growth and culture",
+      "title": "Exponential biomass growth",
+      "operation": "exponential_biomass",
+      "formula": "X = X0·e^(μt)",
+      "description": "Ideal exponential-growth estimate.",
+      "inputs": [
+        {
+          "key": "x0",
+          "label": "Initial biomass",
+          "default": 1,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "mu",
+          "label": "Specific growth rate",
+          "default": 0.35,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Time",
+          "default": 8,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Biomass concentration",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.specific_growth_rate",
+      "category": "Cell growth and culture",
+      "title": "Specific growth rate from two observations",
+      "operation": "specific_growth_rate",
+      "formula": "μ = ln(X2/X1)/(t2−t1)",
+      "description": "Estimate growth rate from two biomass observations.",
+      "inputs": [
+        {
+          "key": "x1",
+          "label": "Initial biomass",
+          "default": 1,
+          "unit": "g/L",
+          "min": 1e-12
+        },
+        {
+          "key": "x2",
+          "label": "Final biomass",
+          "default": 8,
+          "unit": "g/L",
+          "min": 1e-12
+        },
+        {
+          "key": "t1",
+          "label": "Initial time",
+          "default": 0,
+          "unit": "h",
+          "min": 0
+        },
+        {
+          "key": "t2",
+          "label": "Final time",
+          "default": 6,
+          "unit": "h",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Specific growth rate",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.doubling_time",
+      "category": "Cell growth and culture",
+      "title": "Doubling time",
+      "operation": "doubling_time",
+      "formula": "td = ln(2)/μ",
+      "description": "Time required for biomass to double under ideal exponential growth.",
+      "inputs": [
+        {
+          "key": "mu",
+          "label": "Specific growth rate",
+          "default": 0.35,
+          "unit": "1/h",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Doubling time",
+          "unit": "h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.monod_growth_rate",
+      "category": "Cell growth and culture",
+      "title": "Monod growth rate",
+      "operation": "monod_growth_rate",
+      "formula": "μ = μmax·S/(Ks+S)",
+      "description": "Substrate-limited specific growth rate.",
+      "inputs": [
+        {
+          "key": "mu_max",
+          "label": "Maximum growth rate",
+          "default": 0.6,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "substrate",
+          "label": "Limiting substrate",
+          "default": 2,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "ks",
+          "label": "Half-saturation constant",
+          "default": 0.5,
+          "unit": "g/L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Specific growth rate",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.logistic_biomass",
+      "category": "Cell growth and culture",
+      "title": "Logistic biomass growth",
+      "operation": "logistic_biomass",
+      "formula": "X = K/[1+((K−X0)/X0)e^(−μt)]",
+      "description": "Growth estimate with a finite carrying capacity.",
+      "inputs": [
+        {
+          "key": "x0",
+          "label": "Initial biomass",
+          "default": 0.5,
+          "unit": "g/L",
+          "min": 1e-12
+        },
+        {
+          "key": "carrying_capacity",
+          "label": "Carrying capacity",
+          "default": 20,
+          "unit": "g/L",
+          "min": 1e-12
+        },
+        {
+          "key": "mu",
+          "label": "Growth coefficient",
+          "default": 0.45,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Time",
+          "default": 10,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Biomass concentration",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.viable_cell_density",
+      "category": "Cell growth and culture",
+      "title": "Viable cell density",
+      "operation": "viable_cell_density",
+      "formula": "VCD = total cells·viability/100",
+      "description": "Convert total cell density and viability into viable cell density.",
+      "inputs": [
+        {
+          "key": "total_cells",
+          "label": "Total cell density",
+          "default": 12,
+          "unit": "10^6 cells/mL",
+          "min": 0
+        },
+        {
+          "key": "viability_percent",
+          "label": "Viability",
+          "default": 92,
+          "unit": "%",
+          "min": 0,
+          "max": 100
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Viable cell density",
+          "unit": "10^6 cells/mL"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.substrate_consumed",
+      "category": "Batch balances",
+      "title": "Substrate consumed",
+      "operation": "substrate_consumed",
+      "formula": "ΔS = S0−Sf",
+      "description": "Net substrate depletion during a batch.",
+      "inputs": [
+        {
+          "key": "initial_substrate",
+          "label": "Initial substrate",
+          "default": 40,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "final_substrate",
+          "label": "Final substrate",
+          "default": 5,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Substrate consumed",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.biomass_yield",
+      "category": "Batch balances",
+      "title": "Biomass yield on substrate",
+      "operation": "biomass_yield",
+      "formula": "Yx/s = ΔX/ΔS",
+      "description": "Observed biomass yield on consumed substrate.",
+      "inputs": [
+        {
+          "key": "biomass_increase",
+          "label": "Biomass increase",
+          "default": 12,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "substrate_consumed",
+          "label": "Substrate consumed",
+          "default": 30,
+          "unit": "g/L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Biomass yield",
+          "unit": "g/g"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.product_yield",
+      "category": "Batch balances",
+      "title": "Product yield on substrate",
+      "operation": "product_yield",
+      "formula": "Yp/s = ΔP/ΔS",
+      "description": "Observed product yield on consumed substrate.",
+      "inputs": [
+        {
+          "key": "product_formed",
+          "label": "Product formed",
+          "default": 8,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "substrate_consumed",
+          "label": "Substrate consumed",
+          "default": 30,
+          "unit": "g/L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Product yield",
+          "unit": "g/g"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.batch_productivity",
+      "category": "Batch balances",
+      "title": "Batch volumetric productivity",
+      "operation": "batch_productivity",
+      "formula": "Qp = P/t",
+      "description": "Average product formation per reactor volume and time.",
+      "inputs": [
+        {
+          "key": "product_concentration",
+          "label": "Product concentration",
+          "default": 18,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "batch_time",
+          "label": "Batch duration",
+          "default": 36,
+          "unit": "h",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Volumetric productivity",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.maintenance_substrate",
+      "category": "Batch balances",
+      "title": "Maintenance substrate requirement",
+      "operation": "maintenance_substrate",
+      "formula": "Sm = ms·X·t",
+      "description": "Substrate requirement associated with cellular maintenance.",
+      "inputs": [
+        {
+          "key": "maintenance_coefficient",
+          "label": "Maintenance coefficient",
+          "default": 0.02,
+          "unit": "g/g/h",
+          "min": 0
+        },
+        {
+          "key": "biomass",
+          "label": "Average biomass",
+          "default": 8,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Duration",
+          "default": 24,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Maintenance substrate",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.carbon_recovery",
+      "category": "Batch balances",
+      "title": "Carbon balance recovery",
+      "operation": "carbon_recovery",
+      "formula": "recovery = Cout/Cin·100",
+      "description": "Fraction of input carbon accounted for in measured outputs.",
+      "inputs": [
+        {
+          "key": "carbon_outputs",
+          "label": "Measured output carbon",
+          "default": 92,
+          "unit": "mol C",
+          "min": 0
+        },
+        {
+          "key": "carbon_inputs",
+          "label": "Input carbon",
+          "default": 100,
+          "unit": "mol C",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Carbon recovery",
+          "unit": "%"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.feed_volume",
+      "category": "Fed-batch operation",
+      "title": "Constant-feed volume",
+      "operation": "feed_volume",
+      "formula": "Vfeed = F·t",
+      "description": "Cumulative volume delivered at a constant feed rate.",
+      "inputs": [
+        {
+          "key": "feed_rate",
+          "label": "Feed rate",
+          "default": 0.2,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Feed time",
+          "default": 20,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Feed volume",
+          "unit": "L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.fed_batch_final_volume",
+      "category": "Fed-batch operation",
+      "title": "Fed-batch final volume",
+      "operation": "fed_batch_final_volume",
+      "formula": "Vf = V0+F·t",
+      "description": "Ideal final volume without sampling or evaporation.",
+      "inputs": [
+        {
+          "key": "initial_volume",
+          "label": "Initial volume",
+          "default": 5,
+          "unit": "L",
+          "min": 0
+        },
+        {
+          "key": "feed_rate",
+          "label": "Feed rate",
+          "default": 0.2,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Feed time",
+          "default": 20,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Final volume",
+          "unit": "L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.substrate_mass_fed",
+      "category": "Fed-batch operation",
+      "title": "Substrate mass fed",
+      "operation": "substrate_mass_fed",
+      "formula": "mS = F·Cf·t",
+      "description": "Cumulative substrate mass delivered.",
+      "inputs": [
+        {
+          "key": "feed_rate",
+          "label": "Feed rate",
+          "default": 0.2,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "feed_concentration",
+          "label": "Feed substrate concentration",
+          "default": 500,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Feed time",
+          "default": 20,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Substrate mass fed",
+          "unit": "g"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.exponential_feed_rate",
+      "category": "Fed-batch operation",
+      "title": "Exponential feed rate",
+      "operation": "exponential_feed_rate",
+      "formula": "F = F0·e^(μset·t)",
+      "description": "Exponential feed profile for a target growth-rate strategy.",
+      "inputs": [
+        {
+          "key": "initial_feed_rate",
+          "label": "Initial feed rate",
+          "default": 0.05,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "mu_set",
+          "label": "Target growth rate",
+          "default": 0.2,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Elapsed time",
+          "default": 10,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Feed rate",
+          "unit": "L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.apparent_dilution_rate",
+      "category": "Fed-batch operation",
+      "title": "Apparent dilution rate",
+      "operation": "apparent_dilution_rate",
+      "formula": "Dapp = F/V",
+      "description": "Instantaneous feed-to-volume ratio.",
+      "inputs": [
+        {
+          "key": "feed_rate",
+          "label": "Feed rate",
+          "default": 0.2,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "reactor_volume",
+          "label": "Reactor volume",
+          "default": 8,
+          "unit": "L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Apparent dilution rate",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.fed_batch_substrate_balance",
+      "category": "Fed-batch operation",
+      "title": "Fed-batch substrate balance",
+      "operation": "fed_batch_substrate_balance",
+      "formula": "mS,f = mS,0+mS,fed−mS,consumed",
+      "description": "Ideal cumulative substrate inventory.",
+      "inputs": [
+        {
+          "key": "initial_substrate_mass",
+          "label": "Initial substrate mass",
+          "default": 150,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "substrate_fed",
+          "label": "Substrate fed",
+          "default": 2000,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "substrate_consumed",
+          "label": "Substrate consumed",
+          "default": 1900,
+          "unit": "g",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Final substrate mass",
+          "unit": "g"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.dilution_rate",
+      "category": "Continuous culture",
+      "title": "Dilution rate",
+      "operation": "dilution_rate",
+      "formula": "D = F/V",
+      "description": "Continuous-flow dilution rate.",
+      "inputs": [
+        {
+          "key": "flow_rate",
+          "label": "Flow rate",
+          "default": 1.5,
+          "unit": "L/h",
+          "min": 0
+        },
+        {
+          "key": "reactor_volume",
+          "label": "Reactor volume",
+          "default": 10,
+          "unit": "L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Dilution rate",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.residence_time",
+      "category": "Continuous culture",
+      "title": "Hydraulic residence time",
+      "operation": "residence_time",
+      "formula": "τ = V/F",
+      "description": "Average hydraulic residence time.",
+      "inputs": [
+        {
+          "key": "reactor_volume",
+          "label": "Reactor volume",
+          "default": 10,
+          "unit": "L",
+          "min": 0
+        },
+        {
+          "key": "flow_rate",
+          "label": "Flow rate",
+          "default": 1.5,
+          "unit": "L/h",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Residence time",
+          "unit": "h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.chemostat_biomass",
+      "category": "Continuous culture",
+      "title": "Chemostat biomass from substrate balance",
+      "operation": "chemostat_biomass",
+      "formula": "X = Yx/s·(Sf−S)",
+      "description": "Ideal biomass concentration from substrate conversion.",
+      "inputs": [
+        {
+          "key": "yield_coefficient",
+          "label": "Biomass yield",
+          "default": 0.5,
+          "unit": "g/g",
+          "min": 0
+        },
+        {
+          "key": "feed_substrate",
+          "label": "Feed substrate",
+          "default": 20,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "residual_substrate",
+          "label": "Residual substrate",
+          "default": 2,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Steady-state biomass",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.washout_margin",
+      "category": "Continuous culture",
+      "title": "Washout margin",
+      "operation": "washout_margin",
+      "formula": "margin = μmax−D",
+      "description": "Difference between maximum growth and operating dilution rate.",
+      "inputs": [
+        {
+          "key": "mu_max",
+          "label": "Maximum growth rate",
+          "default": 0.5,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "dilution_rate",
+          "label": "Dilution rate",
+          "default": 0.2,
+          "unit": "1/h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Washout margin",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.continuous_productivity",
+      "category": "Continuous culture",
+      "title": "Continuous volumetric productivity",
+      "operation": "continuous_productivity",
+      "formula": "Qp = D·P",
+      "description": "Steady-state product outflow per reactor volume.",
+      "inputs": [
+        {
+          "key": "dilution_rate",
+          "label": "Dilution rate",
+          "default": 0.2,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "product_concentration",
+          "label": "Product concentration",
+          "default": 12,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Volumetric productivity",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.critical_dilution_monod",
+      "category": "Continuous culture",
+      "title": "Monod critical dilution rate",
+      "operation": "critical_dilution_monod",
+      "formula": "Dcrit = μmax·Sf/(Ks+Sf)",
+      "description": "Approximate washout threshold at feed substrate concentration.",
+      "inputs": [
+        {
+          "key": "mu_max",
+          "label": "Maximum growth rate",
+          "default": 0.5,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "feed_substrate",
+          "label": "Feed substrate",
+          "default": 20,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "ks",
+          "label": "Half-saturation constant",
+          "default": 0.5,
+          "unit": "g/L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Critical dilution rate",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.oxygen_transfer_rate",
+      "category": "Oxygen and gas transfer",
+      "title": "Oxygen transfer rate",
+      "operation": "oxygen_transfer_rate",
+      "formula": "OTR = kLa·(C*−CL)",
+      "description": "Gas-to-liquid oxygen transfer capacity.",
+      "inputs": [
+        {
+          "key": "kla",
+          "label": "Volumetric mass-transfer coefficient",
+          "default": 120,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "saturation_concentration",
+          "label": "Saturation oxygen concentration",
+          "default": 0.008,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "liquid_concentration",
+          "label": "Liquid oxygen concentration",
+          "default": 0.003,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Oxygen transfer rate",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.oxygen_uptake_rate",
+      "category": "Oxygen and gas transfer",
+      "title": "Oxygen uptake rate",
+      "operation": "oxygen_uptake_rate",
+      "formula": "OUR = qO2·X",
+      "description": "Cellular oxygen demand per reactor volume.",
+      "inputs": [
+        {
+          "key": "specific_oxygen_uptake",
+          "label": "Specific oxygen uptake",
+          "default": 0.12,
+          "unit": "g/g/h",
+          "min": 0
+        },
+        {
+          "key": "biomass",
+          "label": "Biomass concentration",
+          "default": 8,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Oxygen uptake rate",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.kla_from_otr",
+      "category": "Oxygen and gas transfer",
+      "title": "kLa from measured OTR",
+      "operation": "kla_from_otr",
+      "formula": "kLa = OTR/(C*−CL)",
+      "description": "Back-calculate mass-transfer coefficient.",
+      "inputs": [
+        {
+          "key": "otr",
+          "label": "Oxygen transfer rate",
+          "default": 0.6,
+          "unit": "g/L/h",
+          "min": 0
+        },
+        {
+          "key": "saturation_concentration",
+          "label": "Saturation oxygen concentration",
+          "default": 0.008,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "liquid_concentration",
+          "label": "Liquid oxygen concentration",
+          "default": 0.003,
+          "unit": "g/L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "kLa",
+          "unit": "1/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.oxygen_balance_margin",
+      "category": "Oxygen and gas transfer",
+      "title": "Oxygen balance margin",
+      "operation": "oxygen_balance_margin",
+      "formula": "margin = OTR−OUR",
+      "description": "Positive values indicate transfer capacity above demand.",
+      "inputs": [
+        {
+          "key": "otr",
+          "label": "Oxygen transfer rate",
+          "default": 1.2,
+          "unit": "g/L/h",
+          "min": 0
+        },
+        {
+          "key": "our",
+          "label": "Oxygen uptake rate",
+          "default": 0.9,
+          "unit": "g/L/h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Oxygen margin",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.aeration_vvm",
+      "category": "Oxygen and gas transfer",
+      "title": "Aeration rate in vvm",
+      "operation": "aeration_vvm",
+      "formula": "vvm = Qgas/V",
+      "description": "Gas volume supplied per liquid volume per minute.",
+      "inputs": [
+        {
+          "key": "gas_flow",
+          "label": "Gas flow",
+          "default": 5,
+          "unit": "L/min",
+          "min": 0
+        },
+        {
+          "key": "reactor_volume",
+          "label": "Reactor volume",
+          "default": 10,
+          "unit": "L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Aeration rate",
+          "unit": "vvm"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.gas_molar_flow",
+      "category": "Oxygen and gas transfer",
+      "title": "Ideal-gas molar flow",
+      "operation": "gas_molar_flow",
+      "formula": "ṅ = Q·P/(R·T)",
+      "description": "Ideal-gas conversion from volumetric to molar flow.",
+      "inputs": [
+        {
+          "key": "volumetric_flow",
+          "label": "Gas volumetric flow",
+          "default": 10,
+          "unit": "L/min",
+          "min": 0
+        },
+        {
+          "key": "pressure",
+          "label": "Absolute pressure",
+          "default": 1,
+          "unit": "atm",
+          "min": 0
+        },
+        {
+          "key": "temperature",
+          "label": "Absolute temperature",
+          "default": 298.15,
+          "unit": "K",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Molar flow",
+          "unit": "mol/min"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.metabolic_heat",
+      "category": "Heat and mixing",
+      "title": "Metabolic heat generation",
+      "operation": "metabolic_heat",
+      "formula": "Q = qheat·rX",
+      "description": "Heat released from biomass formation.",
+      "inputs": [
+        {
+          "key": "heat_per_biomass",
+          "label": "Heat per biomass formed",
+          "default": 15,
+          "unit": "kJ/g",
+          "min": 0
+        },
+        {
+          "key": "biomass_rate",
+          "label": "Biomass formation rate",
+          "default": 0.8,
+          "unit": "g/h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Heat generation",
+          "unit": "kJ/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.cooling_water_flow",
+      "category": "Heat and mixing",
+      "title": "Cooling-water flow requirement",
+      "operation": "cooling_water_flow",
+      "formula": "ṁ = Q/(Cp·ΔT)",
+      "description": "Cooling flow needed for a specified duty and temperature rise.",
+      "inputs": [
+        {
+          "key": "heat_duty",
+          "label": "Heat duty",
+          "default": 5000,
+          "unit": "kJ/h",
+          "min": 0
+        },
+        {
+          "key": "heat_capacity",
+          "label": "Water heat capacity",
+          "default": 4.186,
+          "unit": "kJ/kg/K",
+          "min": 1e-12
+        },
+        {
+          "key": "temperature_rise",
+          "label": "Cooling-water temperature rise",
+          "default": 8,
+          "unit": "K",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Cooling-water flow",
+          "unit": "kg/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.impeller_tip_speed",
+      "category": "Heat and mixing",
+      "title": "Impeller tip speed",
+      "operation": "impeller_tip_speed",
+      "formula": "utip = π·D·N/60",
+      "description": "Peripheral impeller velocity.",
+      "inputs": [
+        {
+          "key": "impeller_diameter",
+          "label": "Impeller diameter",
+          "default": 0.3,
+          "unit": "m",
+          "min": 0
+        },
+        {
+          "key": "rotation_speed",
+          "label": "Agitator speed",
+          "default": 400,
+          "unit": "rpm",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Tip speed",
+          "unit": "m/s"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.power_per_volume",
+      "category": "Heat and mixing",
+      "title": "Power per unit volume",
+      "operation": "power_per_volume",
+      "formula": "P/V = P/V",
+      "description": "Mechanical power normalized by liquid volume.",
+      "inputs": [
+        {
+          "key": "power",
+          "label": "Agitator power",
+          "default": 2.5,
+          "unit": "kW",
+          "min": 0
+        },
+        {
+          "key": "volume",
+          "label": "Liquid volume",
+          "default": 5,
+          "unit": "m3",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Power density",
+          "unit": "kW/m3"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.reynolds_mixing",
+      "category": "Heat and mixing",
+      "title": "Impeller Reynolds number",
+      "operation": "reynolds_mixing",
+      "formula": "Re = ρ·N·D²/μ",
+      "description": "Mixing-regime estimate.",
+      "inputs": [
+        {
+          "key": "density",
+          "label": "Fluid density",
+          "default": 1000,
+          "unit": "kg/m3",
+          "min": 0
+        },
+        {
+          "key": "rotation_speed",
+          "label": "Rotation speed",
+          "default": 6.667,
+          "unit": "1/s",
+          "min": 0
+        },
+        {
+          "key": "impeller_diameter",
+          "label": "Impeller diameter",
+          "default": 0.3,
+          "unit": "m",
+          "min": 0
+        },
+        {
+          "key": "dynamic_viscosity",
+          "label": "Dynamic viscosity",
+          "default": 0.001,
+          "unit": "Pa·s",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Reynolds number",
+          "unit": "dimensionless"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.mixing_time_correlation",
+      "category": "Heat and mixing",
+      "title": "Mixing-time correlation",
+      "operation": "mixing_time_correlation",
+      "formula": "tm = C·(V/P)^n",
+      "description": "Empirical mixing-time estimate.",
+      "inputs": [
+        {
+          "key": "coefficient",
+          "label": "Correlation coefficient",
+          "default": 5,
+          "unit": "",
+          "min": 0
+        },
+        {
+          "key": "volume",
+          "label": "Liquid volume",
+          "default": 5,
+          "unit": "m3",
+          "min": 0
+        },
+        {
+          "key": "power",
+          "label": "Agitator power",
+          "default": 2.5,
+          "unit": "kW",
+          "min": 1e-12
+        },
+        {
+          "key": "exponent",
+          "label": "Correlation exponent",
+          "default": 0.33,
+          "unit": "",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Mixing time",
+          "unit": "min"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.geometric_scale_factor",
+      "category": "Scale-up and geometry",
+      "title": "Volumetric scale factor",
+      "operation": "geometric_scale_factor",
+      "formula": "SFV = V2/V1",
+      "description": "Ratio of target to base working volume.",
+      "inputs": [
+        {
+          "key": "base_volume",
+          "label": "Base volume",
+          "default": 5,
+          "unit": "L",
+          "min": 1e-12
+        },
+        {
+          "key": "target_volume",
+          "label": "Target volume",
+          "default": 5000,
+          "unit": "L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Volume scale factor",
+          "unit": "dimensionless"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.linear_scale_factor",
+      "category": "Scale-up and geometry",
+      "title": "Linear geometric scale factor",
+      "operation": "linear_scale_factor",
+      "formula": "SFL = (V2/V1)^(1/3)",
+      "description": "Geometric linear scaling factor.",
+      "inputs": [
+        {
+          "key": "base_volume",
+          "label": "Base volume",
+          "default": 5,
+          "unit": "L",
+          "min": 1e-12
+        },
+        {
+          "key": "target_volume",
+          "label": "Target volume",
+          "default": 5000,
+          "unit": "L",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Linear scale factor",
+          "unit": "dimensionless"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.constant_tip_speed_rpm",
+      "category": "Scale-up and geometry",
+      "title": "Agitator speed at constant tip speed",
+      "operation": "constant_tip_speed_rpm",
+      "formula": "N2 = N1·D1/D2",
+      "description": "Agitator speed that preserves tip speed.",
+      "inputs": [
+        {
+          "key": "base_rpm",
+          "label": "Base agitator speed",
+          "default": 400,
+          "unit": "rpm",
+          "min": 0
+        },
+        {
+          "key": "base_diameter",
+          "label": "Base impeller diameter",
+          "default": 0.3,
+          "unit": "m",
+          "min": 0
+        },
+        {
+          "key": "target_diameter",
+          "label": "Target impeller diameter",
+          "default": 1.5,
+          "unit": "m",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Target agitator speed",
+          "unit": "rpm"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.constant_power_volume",
+      "category": "Scale-up and geometry",
+      "title": "Power at constant P/V",
+      "operation": "constant_power_volume",
+      "formula": "P2 = P1·V2/V1",
+      "description": "Power required to preserve power density.",
+      "inputs": [
+        {
+          "key": "base_power",
+          "label": "Base power",
+          "default": 2.5,
+          "unit": "kW",
+          "min": 0
+        },
+        {
+          "key": "base_volume",
+          "label": "Base volume",
+          "default": 5,
+          "unit": "m3",
+          "min": 1e-12
+        },
+        {
+          "key": "target_volume",
+          "label": "Target volume",
+          "default": 50,
+          "unit": "m3",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Target power",
+          "unit": "kW"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.cylinder_area_volume",
+      "category": "Scale-up and geometry",
+      "title": "Cylindrical vessel area-to-volume ratio",
+      "operation": "cylinder_area_volume",
+      "formula": "A/V = [πDh+2π(D/2)²]/[π(D/2)²h]",
+      "description": "Ideal closed-cylinder area-to-volume ratio.",
+      "inputs": [
+        {
+          "key": "diameter",
+          "label": "Vessel diameter",
+          "default": 2,
+          "unit": "m",
+          "min": 1e-12
+        },
+        {
+          "key": "height",
+          "label": "Straight-side height",
+          "default": 4,
+          "unit": "m",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Area-to-volume ratio",
+          "unit": "1/m"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.superficial_gas_velocity",
+      "category": "Scale-up and geometry",
+      "title": "Superficial gas velocity",
+      "operation": "superficial_gas_velocity",
+      "formula": "ug = Qgas/A",
+      "description": "Gas volumetric flow normalized by vessel cross-section.",
+      "inputs": [
+        {
+          "key": "gas_flow",
+          "label": "Gas flow",
+          "default": 0.02,
+          "unit": "m3/s",
+          "min": 0
+        },
+        {
+          "key": "cross_section_area",
+          "label": "Vessel cross-sectional area",
+          "default": 3.14,
+          "unit": "m2",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Superficial gas velocity",
+          "unit": "m/s"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.luedeking_piret_product",
+      "category": "Production and downstream",
+      "title": "Luedeking–Piret product formation",
+      "operation": "luedeking_piret_product",
+      "formula": "P = (αμ+β)·X·t",
+      "description": "Combined growth-associated and non-growth-associated product formation.",
+      "inputs": [
+        {
+          "key": "alpha",
+          "label": "Growth-associated coefficient",
+          "default": 0.8,
+          "unit": "g/g",
+          "min": 0
+        },
+        {
+          "key": "mu",
+          "label": "Specific growth rate",
+          "default": 0.25,
+          "unit": "1/h",
+          "min": 0
+        },
+        {
+          "key": "beta",
+          "label": "Non-growth coefficient",
+          "default": 0.02,
+          "unit": "g/g/h",
+          "min": 0
+        },
+        {
+          "key": "biomass",
+          "label": "Biomass concentration",
+          "default": 10,
+          "unit": "g/L",
+          "min": 0
+        },
+        {
+          "key": "time",
+          "label": "Duration",
+          "default": 12,
+          "unit": "h",
+          "min": 0
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Product formed",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.specific_productivity",
+      "category": "Production and downstream",
+      "title": "Specific productivity",
+      "operation": "specific_productivity",
+      "formula": "qp = rP/X",
+      "description": "Product formation rate normalized by biomass.",
+      "inputs": [
+        {
+          "key": "product_rate",
+          "label": "Volumetric product rate",
+          "default": 2.4,
+          "unit": "g/L/h",
+          "min": 0
+        },
+        {
+          "key": "biomass",
+          "label": "Biomass concentration",
+          "default": 8,
+          "unit": "g/L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Specific productivity",
+          "unit": "g/g/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.harvest_titer",
+      "category": "Production and downstream",
+      "title": "Harvest titer",
+      "operation": "harvest_titer",
+      "formula": "titer = mP/V",
+      "description": "Product concentration at harvest.",
+      "inputs": [
+        {
+          "key": "product_mass",
+          "label": "Product mass",
+          "default": 1200,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "harvest_volume",
+          "label": "Harvest volume",
+          "default": 100,
+          "unit": "L",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Harvest titer",
+          "unit": "g/L"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.downstream_recovery",
+      "category": "Production and downstream",
+      "title": "Downstream recovery",
+      "operation": "downstream_recovery",
+      "formula": "recovery = mrecovered/mfeed·100",
+      "description": "Product mass recovery through downstream processing.",
+      "inputs": [
+        {
+          "key": "recovered_mass",
+          "label": "Recovered product",
+          "default": 850,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "feed_mass",
+          "label": "Product entering downstream",
+          "default": 1000,
+          "unit": "g",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Recovery",
+          "unit": "%"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.volumetric_productivity",
+      "category": "Production and downstream",
+      "title": "Overall volumetric productivity",
+      "operation": "volumetric_productivity",
+      "formula": "Q = mP/(V·t)",
+      "description": "Overall product mass per reactor volume and process time.",
+      "inputs": [
+        {
+          "key": "product_mass",
+          "label": "Product mass",
+          "default": 1200,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "reactor_volume",
+          "label": "Reactor volume",
+          "default": 100,
+          "unit": "L",
+          "min": 1e-12
+        },
+        {
+          "key": "process_time",
+          "label": "Process duration",
+          "default": 48,
+          "unit": "h",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Volumetric productivity",
+          "unit": "g/L/h"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    },
+    {
+      "id": "bp.overall_process_yield",
+      "category": "Production and downstream",
+      "title": "Overall process yield",
+      "operation": "overall_process_yield",
+      "formula": "yield = mfinal/mtheoretical·100",
+      "description": "Final product relative to theoretical maximum.",
+      "inputs": [
+        {
+          "key": "final_product_mass",
+          "label": "Final product mass",
+          "default": 780,
+          "unit": "g",
+          "min": 0
+        },
+        {
+          "key": "theoretical_product_mass",
+          "label": "Theoretical product mass",
+          "default": 1000,
+          "unit": "g",
+          "min": 1e-12
+        }
+      ],
+      "outputs": {
+        "result": {
+          "label": "Overall process yield",
+          "unit": "%"
+        }
+      },
+      "responsibleUse": "Engineering estimate for research, education, and process planning; verify against controlled procedures and qualified review."
+    }
+  ],
+  "benchmarks": [
+    {
+      "methodId": "bp.exponential_biomass",
+      "inputs": {
+        "x0": 1,
+        "mu": 0.35,
+        "time": 8
+      },
+      "expected": {
+        "result": 16.444646771097048
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.specific_growth_rate",
+      "inputs": {
+        "x1": 1,
+        "x2": 8,
+        "t1": 0,
+        "t2": 6
+      },
+      "expected": {
+        "result": 0.34657359027997264
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.doubling_time",
+      "inputs": {
+        "mu": 0.35
+      },
+      "expected": {
+        "result": 1.9804205158855581
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.monod_growth_rate",
+      "inputs": {
+        "mu_max": 0.6,
+        "substrate": 2,
+        "ks": 0.5
+      },
+      "expected": {
+        "result": 0.48
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.logistic_biomass",
+      "inputs": {
+        "x0": 0.5,
+        "carrying_capacity": 20,
+        "mu": 0.45,
+        "time": 10
+      },
+      "expected": {
+        "result": 13.954291246926482
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.viable_cell_density",
+      "inputs": {
+        "total_cells": 12,
+        "viability_percent": 92
+      },
+      "expected": {
+        "result": 11.04
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.substrate_consumed",
+      "inputs": {
+        "initial_substrate": 40,
+        "final_substrate": 5
+      },
+      "expected": {
+        "result": 35
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.biomass_yield",
+      "inputs": {
+        "biomass_increase": 12,
+        "substrate_consumed": 30
+      },
+      "expected": {
+        "result": 0.4
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.product_yield",
+      "inputs": {
+        "product_formed": 8,
+        "substrate_consumed": 30
+      },
+      "expected": {
+        "result": 0.26666666666666666
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.batch_productivity",
+      "inputs": {
+        "product_concentration": 18,
+        "batch_time": 36
+      },
+      "expected": {
+        "result": 0.5
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.maintenance_substrate",
+      "inputs": {
+        "maintenance_coefficient": 0.02,
+        "biomass": 8,
+        "time": 24
+      },
+      "expected": {
+        "result": 3.84
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.carbon_recovery",
+      "inputs": {
+        "carbon_outputs": 92,
+        "carbon_inputs": 100
+      },
+      "expected": {
+        "result": 92.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.feed_volume",
+      "inputs": {
+        "feed_rate": 0.2,
+        "time": 20
+      },
+      "expected": {
+        "result": 4.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.fed_batch_final_volume",
+      "inputs": {
+        "initial_volume": 5,
+        "feed_rate": 0.2,
+        "time": 20
+      },
+      "expected": {
+        "result": 9.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.substrate_mass_fed",
+      "inputs": {
+        "feed_rate": 0.2,
+        "feed_concentration": 500,
+        "time": 20
+      },
+      "expected": {
+        "result": 2000.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.exponential_feed_rate",
+      "inputs": {
+        "initial_feed_rate": 0.05,
+        "mu_set": 0.2,
+        "time": 10
+      },
+      "expected": {
+        "result": 0.36945280494653254
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.apparent_dilution_rate",
+      "inputs": {
+        "feed_rate": 0.2,
+        "reactor_volume": 8
+      },
+      "expected": {
+        "result": 0.025
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.fed_batch_substrate_balance",
+      "inputs": {
+        "initial_substrate_mass": 150,
+        "substrate_fed": 2000,
+        "substrate_consumed": 1900
+      },
+      "expected": {
+        "result": 250
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.dilution_rate",
+      "inputs": {
+        "flow_rate": 1.5,
+        "reactor_volume": 10
+      },
+      "expected": {
+        "result": 0.15
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.residence_time",
+      "inputs": {
+        "reactor_volume": 10,
+        "flow_rate": 1.5
+      },
+      "expected": {
+        "result": 6.666666666666667
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.chemostat_biomass",
+      "inputs": {
+        "yield_coefficient": 0.5,
+        "feed_substrate": 20,
+        "residual_substrate": 2
+      },
+      "expected": {
+        "result": 9.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.washout_margin",
+      "inputs": {
+        "mu_max": 0.5,
+        "dilution_rate": 0.2
+      },
+      "expected": {
+        "result": 0.3
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.continuous_productivity",
+      "inputs": {
+        "dilution_rate": 0.2,
+        "product_concentration": 12
+      },
+      "expected": {
+        "result": 2.4000000000000004
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.critical_dilution_monod",
+      "inputs": {
+        "mu_max": 0.5,
+        "feed_substrate": 20,
+        "ks": 0.5
+      },
+      "expected": {
+        "result": 0.4878048780487805
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.oxygen_transfer_rate",
+      "inputs": {
+        "kla": 120,
+        "saturation_concentration": 0.008,
+        "liquid_concentration": 0.003
+      },
+      "expected": {
+        "result": 0.6
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.oxygen_uptake_rate",
+      "inputs": {
+        "specific_oxygen_uptake": 0.12,
+        "biomass": 8
+      },
+      "expected": {
+        "result": 0.96
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.kla_from_otr",
+      "inputs": {
+        "otr": 0.6,
+        "saturation_concentration": 0.008,
+        "liquid_concentration": 0.003
+      },
+      "expected": {
+        "result": 120.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.oxygen_balance_margin",
+      "inputs": {
+        "otr": 1.2,
+        "our": 0.9
+      },
+      "expected": {
+        "result": 0.29999999999999993
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.aeration_vvm",
+      "inputs": {
+        "gas_flow": 5,
+        "reactor_volume": 10
+      },
+      "expected": {
+        "result": 0.5
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.gas_molar_flow",
+      "inputs": {
+        "volumetric_flow": 10,
+        "pressure": 1,
+        "temperature": 298.15
+      },
+      "expected": {
+        "result": 0.4087422687498361
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.metabolic_heat",
+      "inputs": {
+        "heat_per_biomass": 15,
+        "biomass_rate": 0.8
+      },
+      "expected": {
+        "result": 12.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.cooling_water_flow",
+      "inputs": {
+        "heat_duty": 5000,
+        "heat_capacity": 4.186,
+        "temperature_rise": 8
+      },
+      "expected": {
+        "result": 149.30721452460583
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.impeller_tip_speed",
+      "inputs": {
+        "impeller_diameter": 0.3,
+        "rotation_speed": 400
+      },
+      "expected": {
+        "result": 6.283185307179585
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.power_per_volume",
+      "inputs": {
+        "power": 2.5,
+        "volume": 5
+      },
+      "expected": {
+        "result": 0.5
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.reynolds_mixing",
+      "inputs": {
+        "density": 1000,
+        "rotation_speed": 6.667,
+        "impeller_diameter": 0.3,
+        "dynamic_viscosity": 0.001
+      },
+      "expected": {
+        "result": 600030.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.mixing_time_correlation",
+      "inputs": {
+        "coefficient": 5,
+        "volume": 5,
+        "power": 2.5,
+        "exponent": 0.33
+      },
+      "expected": {
+        "result": 6.285066872609142
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.geometric_scale_factor",
+      "inputs": {
+        "base_volume": 5,
+        "target_volume": 5000
+      },
+      "expected": {
+        "result": 1000.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.linear_scale_factor",
+      "inputs": {
+        "base_volume": 5,
+        "target_volume": 5000
+      },
+      "expected": {
+        "result": 9.999999999999998
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.constant_tip_speed_rpm",
+      "inputs": {
+        "base_rpm": 400,
+        "base_diameter": 0.3,
+        "target_diameter": 1.5
+      },
+      "expected": {
+        "result": 80.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.constant_power_volume",
+      "inputs": {
+        "base_power": 2.5,
+        "base_volume": 5,
+        "target_volume": 50
+      },
+      "expected": {
+        "result": 25.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.cylinder_area_volume",
+      "inputs": {
+        "diameter": 2,
+        "height": 4
+      },
+      "expected": {
+        "result": 2.5
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.superficial_gas_velocity",
+      "inputs": {
+        "gas_flow": 0.02,
+        "cross_section_area": 3.14
+      },
+      "expected": {
+        "result": 0.006369426751592356
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.luedeking_piret_product",
+      "inputs": {
+        "alpha": 0.8,
+        "mu": 0.25,
+        "beta": 0.02,
+        "biomass": 10,
+        "time": 12
+      },
+      "expected": {
+        "result": 26.400000000000002
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.specific_productivity",
+      "inputs": {
+        "product_rate": 2.4,
+        "biomass": 8
+      },
+      "expected": {
+        "result": 0.3
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.harvest_titer",
+      "inputs": {
+        "product_mass": 1200,
+        "harvest_volume": 100
+      },
+      "expected": {
+        "result": 12.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.downstream_recovery",
+      "inputs": {
+        "recovered_mass": 850,
+        "feed_mass": 1000
+      },
+      "expected": {
+        "result": 85.0
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.volumetric_productivity",
+      "inputs": {
+        "product_mass": 1200,
+        "reactor_volume": 100,
+        "process_time": 48
+      },
+      "expected": {
+        "result": 0.25
+      },
+      "tolerance": 1e-09
+    },
+    {
+      "methodId": "bp.overall_process_yield",
+      "inputs": {
+        "final_product_mass": 780,
+        "theoretical_product_mass": 1000
+      },
+      "expected": {
+        "result": 78.0
+      },
+      "tolerance": 1e-09
+    }
+  ]
+}

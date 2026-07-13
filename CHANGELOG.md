@@ -1,3 +1,11 @@
+## 0.22.0 — Biotechnology and Bioprocess Engineering
+
+- Added 48 deterministic bioprocess methods and benchmarks.
+- Added batch, fed-batch, and continuous simulations.
+- Added oxygen transfer, mixing, heat, and scale-up calculations.
+- Added CSV batch monitoring and provenance handoffs.
+- Added WordPress and FastAPI bioprocess routes.
+
 ## 0.21.3 — Molecular Analysis Validation and Provenance
 
 - Added eight molecular-analysis validation protocols.

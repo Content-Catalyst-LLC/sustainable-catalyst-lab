@@ -259,3 +259,11 @@ from .molecular_analysis_validation_routes import (
 )
 
 app.include_router(molecular_validation_router)
+
+
+# SC_LAB_V0220_BIOTECHNOLOGY_BIOPROCESS_ROUTER
+from .biotechnology_bioprocess_routes import (
+    router as biotechnology_bioprocess_router,
+)
+
+app.include_router(biotechnology_bioprocess_router)
