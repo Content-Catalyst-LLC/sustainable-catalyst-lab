@@ -1,0 +1,199 @@
+[data-bioprocess-validation-provenance-root] {
+  min-width: 0;
+  margin-top: 1.25rem;
+}
+
+.sc-bpv-shell {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: 1px solid rgba(89, 28, 44, 0.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 247, 247, 0.98)
+    );
+  box-shadow: 0 18px 45px rgba(31, 17, 22, 0.08);
+}
+
+.sc-bpv-header {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.sc-bpv-header h3,
+.sc-bpv-card h4,
+.sc-bpv-header p {
+  margin: 0;
+}
+
+.sc-bpv-kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #641f35;
+}
+
+.sc-bpv-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sc-bpv-status span {
+  padding: 0.42rem 0.65rem;
+  border: 1px solid rgba(100, 31, 53, 0.22);
+  border-radius: 999px;
+  background: #fff;
+  color: #4b1728;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sc-bpv-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(280px, 0.75fr);
+  gap: 1rem;
+}
+
+.sc-bpv-card {
+  display: grid;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(32, 32, 32, 0.12);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.sc-bpv-card label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  color: #222;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.sc-bpv-card select,
+.sc-bpv-card input,
+.sc-bpv-card textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.72rem 0.78rem;
+  border: 1px solid rgba(20, 20, 20, 0.2);
+  border-radius: 10px;
+  background: #fff;
+  color: #161616;
+  font: inherit;
+}
+
+.sc-bpv-card textarea,
+.sc-bpv-card pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-bpv-card textarea {
+  min-height: 230px;
+  resize: vertical;
+}
+
+.sc-bpv-fields {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.sc-bpv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.sc-bpv-actions button,
+.sc-bpv-output-header button {
+  min-height: 42px;
+  padding: 0.66rem 0.85rem;
+  border: 1px solid #641f35;
+  border-radius: 10px;
+  background: #641f35;
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sc-bpv-actions button:hover,
+.sc-bpv-output-header button:hover {
+  background: #441323;
+}
+
+.sc-bpv-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sc-bpv-card pre {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 260px;
+  max-height: 560px;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 12px;
+  background: #080b0a;
+  color: #74f59a;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.sc-bpv-boundary {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-left: 4px solid #641f35;
+  background: rgba(100, 31, 53, 0.06);
+  color: #3a2c31;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 860px) {
+  .sc-bpv-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sc-bpv-shell {
+    padding: 0.85rem;
+    border-radius: 14px;
+  }
+
+  .sc-bpv-actions,
+  .sc-bpv-output-header {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sc-bpv-actions button,
+  .sc-bpv-output-header button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .sc-bpv-card textarea {
+    min-height: 260px;
+  }
+}

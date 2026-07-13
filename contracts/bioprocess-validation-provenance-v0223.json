@@ -1,0 +1,263 @@
+{
+  "schema": "sc-lab-bioprocess-validation-provenance-contract/1.0",
+  "version": "0.22.3",
+  "title": "Bioprocess Validation and Batch Provenance",
+  "profiles": [
+    {
+      "id": "batch-record-completeness",
+      "label": "Batch record completeness",
+      "description": "Checks required batch metadata and evidence coverage before disposition.",
+      "requiredColumns": [
+        "batchId",
+        "lotId",
+        "startedAt",
+        "endedAt",
+        "operator",
+        "materialLot",
+        "evidenceLinks"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumMissingFields",
+          "label": "Maximum missing required fields",
+          "default": 0
+        },
+        {
+          "key": "minimumEvidenceLinks",
+          "label": "Minimum evidence links per batch",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "cpp-conformance",
+      "label": "Critical process parameter conformance",
+      "description": "Evaluates CPP observations against batch-specific warning and action limits.",
+      "requiredColumns": [
+        "parameter",
+        "value",
+        "low",
+        "high"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumActionExcursions",
+          "label": "Maximum action-limit excursions",
+          "default": 0
+        },
+        {
+          "key": "maximumWarningPercent",
+          "label": "Maximum warning observations",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "cqa-conformance",
+      "label": "Critical quality attribute conformance",
+      "description": "Evaluates measured CQAs against acceptance ranges.",
+      "requiredColumns": [
+        "attribute",
+        "value",
+        "low",
+        "high"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumFailures",
+          "label": "Maximum failed CQA observations",
+          "default": 0
+        },
+        {
+          "key": "minimumPassPercent",
+          "label": "Minimum CQA pass rate",
+          "default": 100
+        }
+      ]
+    },
+    {
+      "id": "cross-batch-consistency",
+      "label": "Cross-batch consistency",
+      "description": "Compares yield, titer, and cycle-time variability across completed batches.",
+      "requiredColumns": [
+        "batchId",
+        "yield",
+        "titer",
+        "cycleTime"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumBatches",
+          "label": "Minimum comparable batches",
+          "default": 3
+        },
+        {
+          "key": "maximumYieldCvPercent",
+          "label": "Maximum yield CV",
+          "default": 10
+        },
+        {
+          "key": "maximumTiterCvPercent",
+          "label": "Maximum titer CV",
+          "default": 10
+        },
+        {
+          "key": "maximumCycleTimeCvPercent",
+          "label": "Maximum cycle-time CV",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "id": "monitoring-control-performance",
+      "label": "Monitoring and control performance",
+      "description": "Reviews action excursions, warnings, final error, and control effort.",
+      "requiredColumns": [
+        "runId",
+        "actionCount",
+        "warningCount",
+        "finalError",
+        "integralAbsoluteError"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumActionCount",
+          "label": "Maximum action excursions",
+          "default": 0
+        },
+        {
+          "key": "maximumWarningCount",
+          "label": "Maximum warnings",
+          "default": 5
+        },
+        {
+          "key": "maximumAbsoluteFinalError",
+          "label": "Maximum absolute final error",
+          "default": 2
+        },
+        {
+          "key": "maximumIntegralAbsoluteError",
+          "label": "Maximum integral absolute error",
+          "default": 100
+        }
+      ]
+    },
+    {
+      "id": "excursion-disposition",
+      "label": "Excursion disposition",
+      "description": "Checks that significant process excursions are investigated, documented, and closed.",
+      "requiredColumns": [
+        "eventId",
+        "severity",
+        "status",
+        "investigationId",
+        "evidenceLink"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumOpenActionExcursions",
+          "label": "Maximum open action excursions",
+          "default": 0
+        },
+        {
+          "key": "maximumUndocumentedExcursions",
+          "label": "Maximum undocumented excursions",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "hold-time-stability",
+      "label": "Hold-time stability",
+      "description": "Evaluates drift and total change during material or product holds.",
+      "requiredColumns": [
+        "time",
+        "value"
+      ],
+      "thresholds": [
+        {
+          "key": "minimumPoints",
+          "label": "Minimum hold-time observations",
+          "default": 3
+        },
+        {
+          "key": "maximumAbsoluteChangePercent",
+          "label": "Maximum absolute change",
+          "default": 5
+        },
+        {
+          "key": "maximumSlopePercentPerHour",
+          "label": "Maximum absolute slope",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "release-readiness",
+      "label": "Batch release readiness",
+      "description": "Combines critical checks, major observations, and evidence coverage into a disposition recommendation.",
+      "requiredColumns": [
+        "checkId",
+        "category",
+        "critical",
+        "status",
+        "evidence"
+      ],
+      "thresholds": [
+        {
+          "key": "maximumFailedCriticalChecks",
+          "label": "Maximum failed critical checks",
+          "default": 0
+        },
+        {
+          "key": "maximumOpenMajorChecks",
+          "label": "Maximum open major checks",
+          "default": 0
+        },
+        {
+          "key": "minimumEvidenceCoveragePercent",
+          "label": "Minimum evidence coverage",
+          "default": 100
+        }
+      ]
+    }
+  ],
+  "eventTypes": [
+    {
+      "id": "monitoring-analysis",
+      "label": "Monitoring analysis"
+    },
+    {
+      "id": "control-simulation",
+      "label": "Control simulation"
+    },
+    {
+      "id": "validation-decision",
+      "label": "Validation decision"
+    },
+    {
+      "id": "batch-disposition",
+      "label": "Batch disposition"
+    },
+    {
+      "id": "dossier-export",
+      "label": "Dossier export"
+    }
+  ],
+  "dispositions": [
+    "release",
+    "conditional-release",
+    "hold",
+    "reject",
+    "research-review"
+  ],
+  "defaults": {
+    "organization": "Sustainable Catalyst",
+    "eventType": "validation-decision",
+    "disposition": "research-review"
+  },
+  "responsibleUse": {
+    "scope": "Research, education, process development, and quality-system prototyping.",
+    "boundary": "Not a substitute for validated manufacturing systems, regulatory review, qualified personnel, or formal batch release authority."
+  }
+}

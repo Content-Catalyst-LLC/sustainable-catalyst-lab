@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.22.3 — Bioprocess Validation and Batch Provenance
+
+This release adds eight validation profiles, batch acceptance checks, cross-batch comparability, CPP/CQA conformance, excursion disposition, hold-time stability, release-readiness decisions, SHA-256 provenance records, linked-ledger verification, tamper detection, and dossier exports.
+
 # Sustainable Catalyst Lab v0.22.2 — Bioprocess Monitoring, Control, and Visualization
 
 This release adds time-series monitoring, excursion detection, rolling statistics, PID-style control simulations, multi-run comparison, native SVG charts, CSV workflows, exports, and provenance handoffs while preserving the v0.22.0 48-method engine and v0.22.1 production layer.

@@ -1163,6 +1163,8 @@
     <div data-biotechnology-bioprocess-root></div>
 
     <div data-bioprocess-monitoring-control-root></div>
+
+    <div data-bioprocess-validation-provenance-root></div>
 </section>
 
 </main>

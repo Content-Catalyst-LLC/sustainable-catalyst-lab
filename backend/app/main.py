@@ -283,3 +283,11 @@ from .bioprocess_monitoring_control_routes import (
 )
 
 app.include_router(bioprocess_monitoring_router)
+
+
+# SC_LAB_V0223_BIOPROCESS_VALIDATION_PROVENANCE_ROUTER
+from .bioprocess_validation_provenance_routes import (
+    router as bioprocess_validation_provenance_router,
+)
+
+app.include_router(bioprocess_validation_provenance_router)

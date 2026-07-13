@@ -1,3 +1,15 @@
+## 0.22.3 — Bioprocess Validation and Batch Provenance
+
+- Added eight batch-validation profiles.
+- Added CPP and CQA conformance decisions.
+- Added cross-batch consistency calculations.
+- Added control-performance and excursion review.
+- Added hold-time and release-readiness checks.
+- Added SHA-256 batch provenance records.
+- Added parent-linked ledger verification and tamper detection.
+- Added validation dossier creation and export.
+- Added WordPress and FastAPI routes.
+
 ## 0.22.2 — Bioprocess Monitoring, Control, and Visualization
 
 - Added eight standard process-monitoring channels.
