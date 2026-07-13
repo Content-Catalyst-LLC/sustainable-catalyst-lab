@@ -53,6 +53,14 @@ final class SC_Lab_Plugin {
         $deps = array();
         $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
+            // SC_LAB_CIVIL_DIRECT_LOADER_SKIP:
+            // Keep the legacy module key for release-test compatibility,
+            // but do not enqueue its v0.12.0 implementation. The repaired
+            // v0.15.0 Civil interface is loaded by the direct loader.
+            if ($module === 'civil-infrastructure-lab') {
+                continue;
+            }
+
             $handle = 'sc-lab-' . $module;
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
             $deps[] = $handle;

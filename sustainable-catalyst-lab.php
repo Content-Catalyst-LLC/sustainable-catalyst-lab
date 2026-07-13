@@ -32,6 +32,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-circular-economy
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-civil-infrastructure-interface-repair.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-engineering-interface-repair-v0200.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-civil-interface-authority-v0200.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-civil-direct-loader-v0200.php';
 define('SC_LAB_FILE', __FILE__);
 define('SC_LAB_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('SC_LAB_PLUGIN_SLUG', 'sustainable-catalyst-lab');
