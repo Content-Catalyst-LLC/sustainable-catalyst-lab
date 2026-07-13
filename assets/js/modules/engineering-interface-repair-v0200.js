@@ -19,13 +19,6 @@
       minimumVersion: null,
       force: false,
     },
-    {
-      name: 'civil-infrastructure',
-      selector: '[data-civil-infrastructure-root]',
-      resolve: () => Lab.CivilInfrastructureLab,
-      minimumVersion: '0.15.0',
-      force: true,
-    },
   ];
 
   function versionParts(version) {
