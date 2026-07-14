@@ -1,3 +1,15 @@
+## 0.25.1 — Instrumentation Production Reliability
+
+- Added unconditional v0.25.0 asset activation.
+- Added canonical instrumentation panel and root recovery.
+- Added missing-panel/root creation and duplicate suppression.
+- Added stale marker and placeholder cleanup.
+- Added startup, navigation, history, focus, visibility, connectivity, resize, orientation, hash, and mutation recovery.
+- Added browser repair/open/health/status APIs.
+- Added WordPress and FastAPI production-health routes.
+- Added mobile, output, and long-table reliability.
+- Preserved 48 methods, 48 benchmarks, eight categories, nine record types, eight connection profiles, and eight quality flags.
+
 ## 0.25.0 — Laboratory Data and Instrumentation Platform
 
 - Added 48 methods and 48 benchmarks across eight instrumentation categories.

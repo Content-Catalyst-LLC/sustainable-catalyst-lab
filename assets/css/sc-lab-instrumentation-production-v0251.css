@@ -1,0 +1,99 @@
+[data-lab-module="laboratory-data-instrumentation"],
+[data-module-panel="laboratory-data-instrumentation"] {
+  min-width: 0;
+  max-width: 100%;
+}
+
+[data-laboratory-instrumentation-root] {
+  min-width: 0;
+  max-width: 100%;
+  contain: layout style;
+}
+
+[data-laboratory-instrumentation-root] > .sc-inst-shell,
+[data-laboratory-instrumentation-root] .sc-inst-grid,
+[data-laboratory-instrumentation-root] .sc-inst-card,
+[data-laboratory-instrumentation-root] .sc-inst-inputs,
+[data-laboratory-instrumentation-root] .sc-inst-actions {
+  min-width: 0;
+  max-width: 100%;
+}
+
+[data-laboratory-instrumentation-root] input,
+[data-laboratory-instrumentation-root] select,
+[data-laboratory-instrumentation-root] textarea,
+[data-laboratory-instrumentation-root] button {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+[data-laboratory-instrumentation-root] pre,
+[data-laboratory-instrumentation-root] table,
+[data-laboratory-instrumentation-root] .sc-inst-table,
+[data-laboratory-instrumentation-root] .sc-inst-table-scroll,
+[data-laboratory-instrumentation-root] [data-inst-output] {
+  max-width: 100%;
+}
+
+[data-laboratory-instrumentation-root] pre,
+[data-laboratory-instrumentation-root] [data-inst-output] {
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+[data-laboratory-instrumentation-root] table,
+[data-laboratory-instrumentation-root] .sc-inst-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+[data-laboratory-instrumentation-root] .sc-inst-table-scroll,
+[data-laboratory-instrumentation-root] [data-inst-table-scroll] {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+[data-laboratory-instrumentation-root] [hidden] {
+  display: none !important;
+}
+
+[data-laboratory-instrumentation-root] [aria-live="polite"]:empty {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  [data-laboratory-instrumentation-root] .sc-inst-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  [data-laboratory-instrumentation-root] .sc-inst-shell {
+    gap: 0.85rem;
+    padding: 0.85rem;
+    border-radius: 14px;
+  }
+
+  [data-laboratory-instrumentation-root] .sc-inst-inputs,
+  [data-laboratory-instrumentation-root] .sc-inst-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  [data-laboratory-instrumentation-root] .sc-inst-actions > button,
+  [data-laboratory-instrumentation-root] .sc-inst-card > button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  [data-laboratory-instrumentation-root] .sc-inst-card {
+    padding: 0.85rem;
+  }
+
+  [data-laboratory-instrumentation-root] textarea {
+    min-height: 180px;
+  }
+}

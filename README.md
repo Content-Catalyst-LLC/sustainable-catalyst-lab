@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.25.1 — Instrumentation Production Reliability
+
+This release adds unconditional instrumentation asset activation, canonical panel/root recovery, duplicate suppression, stale-state cleanup, retry and mutation recovery, browser diagnostics, WordPress/FastAPI production health, and mobile/long-table hardening while preserving the complete v0.25.0 48/48/8/9/8/8 contract.
+
 # Sustainable Catalyst Lab v0.25.0 — Laboratory Data and Instrumentation Platform
 
 This release adds 48 deterministic instrumentation calculations, structured instrument/sensor/sample/run/calibration/maintenance/measurement/custody records, normalized ingestion, SHA-256 manifests, custody verification, eight connection profiles, WordPress/FastAPI routes, and local-first Arduino/Raspberry Pi preparation.

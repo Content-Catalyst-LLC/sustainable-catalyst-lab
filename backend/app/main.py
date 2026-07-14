@@ -340,3 +340,8 @@ app.include_router(genomic_validation_router)
 # SC_LAB_V0250_INSTRUMENTATION_ROUTER
 from .laboratory_data_instrumentation_routes import router as instrumentation_router
 app.include_router(instrumentation_router)
+
+
+# SC_LAB_V0251_INSTRUMENTATION_PRODUCTION_ROUTER
+from .instrumentation_production_routes import router as instrumentation_production_router
+app.include_router(instrumentation_production_router)
