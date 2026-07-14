@@ -1,6 +1,10 @@
-# Sustainable Catalyst Lab v0.25.4 — Application Startup and Runtime Stability
+# Sustainable Catalyst Lab v0.26.1 — Job Queue and Worker Reliability
 
-This release replaces the main page's all-at-once DOM startup with a single-panel lazy runtime, preserved script execution order, abortable module loads, duplicate-runtime protection, safe-start recovery, administrator-only legacy diagnostics, and explicit mount/unmount lifecycle events while preserving the complete v0.25.3 scientific and instrumentation stack.
+This release adds a SQLite-backed persistent queue, isolated Python worker processes, hard cancellation and timeouts, retry policies, duplicate-job prevention, restart recovery, worker health, queue monitoring, and same-origin WordPress job controls while preserving the v0.26.0 Python Compute Core and v0.25.5 lifecycle isolation.
+
+# Sustainable Catalyst Lab v0.26.0 — Python Compute Core Foundation
+
+Version 0.26.0 promoted FastAPI/Python into the governed compute plane with registered methods, HMAC signing, capability discovery, and reproducible provenance.
 
 # Sustainable Catalyst Lab v0.25.3 — Calibration, Validation, and Chain of Custody
 
@@ -68,7 +72,7 @@ The current release adds 48 formula-visible biochemical and molecular-analysis m
 
 # Sustainable Catalyst Lab v0.20.0
 
-Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with an optional Render compute backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
+Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with a governed Python Compute Core backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
 
 ## Stable WordPress plugin identity
 
@@ -134,7 +138,7 @@ POST /wp-json/sc-lab/v1/compute/reports/pdf
 POST /wp-json/sc-lab/v1/compute/handoffs/decision-studio/validate
 ```
 
-WordPress sanitizes report payloads and proxies them to the optional Render backend without exposing the compute API key to browser JavaScript.
+WordPress sanitizes report payloads and proxies them to the Python Compute Core backend without exposing the compute API key to browser JavaScript.
 
 ## Render compute and report API
 
@@ -318,3 +322,8 @@ Adds 48 auditable methods across rocket-propulsion fundamentals, nozzle and engi
 ## v0.20.0 — Microbiology Laboratory
 
 Adds 48 auditable methods across microbial growth, continuous culture, enumeration and microscopy, environmental microbiology, antimicrobial screening, microbial ecology, and laboratory quality control.
+
+
+## Python Compute Core Foundation
+
+v0.26.0 includes a deployable `backend/` FastAPI service, a registered scientific method catalog, HMAC request signing, provenance manifests, and WordPress gateway routes under `/wp-json/sc-lab/v1/compute/core/*`.

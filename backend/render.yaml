@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: sustainable-catalyst-lab-python-compute-core
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: SC_LAB_ENVIRONMENT
+        value: production
+      - key: SC_LAB_COMPUTE_API_KEY
+        generateValue: true
+      - key: SC_LAB_COMPUTE_SIGNING_SECRET
+        generateValue: true
+      - key: SC_LAB_LOAD_LEGACY_EXTENSIONS
+        value: "1"
+      - key: SC_LAB_JOB_DB_PATH
+        value: /app/data/sc-lab-compute-jobs.sqlite3
+      - key: SC_LAB_JOB_WORKERS
+        value: "2"
+      - key: SC_LAB_MAX_QUEUED_JOBS
+        value: "100"
+      - key: SC_LAB_DEFAULT_JOB_TIMEOUT_SECONDS
+        value: "60"
+      - key: SC_LAB_DEFAULT_JOB_ATTEMPTS
+        value: "2"

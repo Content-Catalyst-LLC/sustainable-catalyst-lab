@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/compute-queue-status-v0261.schema.json",
+  "title": "Sustainable Catalyst Compute Queue Status v0.26.1",
+  "type": "object",
+  "required": ["schema", "version", "persistent", "storage", "counts", "workerCapacity", "activeWorkers"],
+  "properties": {
+    "schema": {"const": "sc-lab-job-queue-status/1.0"},
+    "version": {"const": "0.26.1"},
+    "persistent": {"const": true},
+    "storage": {"const": "sqlite-wal"},
+    "counts": {"type": "object"},
+    "workerCapacity": {"type": "integer", "minimum": 1},
+    "activeWorkers": {"type": "integer", "minimum": 0},
+    "availableWorkers": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": true
+}

@@ -1,17 +1,9 @@
-from __future__ import annotations
-
-import os
-
-from fastapi.testclient import TestClient
-
-from app.main import app
+from app.security import make_signature, verify_signature
 
 
-def test_api_key_when_configured(monkeypatch) -> None:
-    monkeypatch.setenv("SC_LAB_COMPUTE_API_KEY", "test-secret")
-    client = TestClient(app)
-    denied = client.get("/v1/methods")
-    assert denied.status_code == 401
-    allowed = client.get("/v1/methods", headers={"X-SC-Lab-Key": "test-secret"})
-    assert allowed.status_code == 200
-    monkeypatch.delenv("SC_LAB_COMPUTE_API_KEY", raising=False)
+def test_hmac_signature_round_trip():
+    body=b'{"method":"mechanics.kinetic_energy"}'
+    signature=make_signature('secret','1700000000','POST','/v1/compute/run',body)
+    assert len(signature)==64
+    assert verify_signature('secret','1700000000','POST','/v1/compute/run',body,signature)
+    assert not verify_signature('wrong','1700000000','POST','/v1/compute/run',body,signature)

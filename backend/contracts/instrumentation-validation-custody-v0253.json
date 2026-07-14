@@ -1,0 +1,383 @@
+{
+  "schema": "sc-lab-instrumentation-validation-custody-contract/1.0",
+  "version": "0.25.3",
+  "title": "Calibration, Validation, and Chain of Custody",
+  "preservedInstrumentation": {
+    "version": "0.25.0",
+    "methodCount": 48,
+    "benchmarkCount": 48,
+    "categoryCount": 8,
+    "recordTypeCount": 9,
+    "connectionProfileCount": 8,
+    "qualityFlagCount": 8
+  },
+  "productionLayer": {
+    "version": "0.25.1"
+  },
+  "liveLayer": {
+    "version": "0.25.2",
+    "modeCount": 8,
+    "analysisMethodCount": 16,
+    "benchmarkCount": 16
+  },
+  "validationProfiles": [
+    {
+      "id": "instrument-identity",
+      "label": "Instrument identity and configuration"
+    },
+    {
+      "id": "calibration-acceptance",
+      "label": "Calibration acceptance"
+    },
+    {
+      "id": "sensor-channel-readiness",
+      "label": "Sensor and channel readiness"
+    },
+    {
+      "id": "maintenance-readiness",
+      "label": "Maintenance readiness"
+    },
+    {
+      "id": "measurement-quality",
+      "label": "Measurement quality"
+    },
+    {
+      "id": "sample-specimen-linkage",
+      "label": "Sample and specimen linkage"
+    },
+    {
+      "id": "custody-chain-integrity",
+      "label": "Chain-of-custody integrity"
+    },
+    {
+      "id": "release-readiness",
+      "label": "Laboratory release readiness"
+    }
+  ],
+  "acceptanceStates": [
+    "draft",
+    "pending-review",
+    "accepted",
+    "conditionally-accepted",
+    "hold",
+    "rejected",
+    "expired",
+    "superseded"
+  ],
+  "provenanceEventTypes": [
+    "instrument-registration",
+    "calibration",
+    "verification",
+    "maintenance",
+    "sample-transfer",
+    "measurement-ingest",
+    "validation-decision",
+    "dossier-export"
+  ],
+  "deviationTypes": [
+    "calibration-out-of-tolerance",
+    "maintenance-overdue",
+    "missing-identifier",
+    "quality-flag-excursion",
+    "custody-break",
+    "timestamp-order",
+    "reference-mismatch",
+    "review-incomplete"
+  ],
+  "analysisMethods": [
+    {
+      "id": "calibration-absolute-error",
+      "operation": "calibration_absolute_error"
+    },
+    {
+      "id": "calibration-percent-error",
+      "operation": "calibration_percent_error"
+    },
+    {
+      "id": "calibration-bias",
+      "operation": "calibration_bias"
+    },
+    {
+      "id": "calibration-rmse",
+      "operation": "calibration_rmse"
+    },
+    {
+      "id": "calibration-linearity-r2",
+      "operation": "calibration_linearity_r2"
+    },
+    {
+      "id": "repeatability-cv",
+      "operation": "repeatability_cv"
+    },
+    {
+      "id": "acceptance-window-status",
+      "operation": "acceptance_window_status"
+    },
+    {
+      "id": "calibration-due-state",
+      "operation": "calibration_due_state"
+    },
+    {
+      "id": "maintenance-due-state",
+      "operation": "maintenance_due_state"
+    },
+    {
+      "id": "measurement-completeness",
+      "operation": "measurement_completeness"
+    },
+    {
+      "id": "quality-flag-rate",
+      "operation": "quality_flag_rate"
+    },
+    {
+      "id": "custody-completeness",
+      "operation": "custody_completeness"
+    },
+    {
+      "id": "custody-sequence-status",
+      "operation": "custody_sequence_status"
+    },
+    {
+      "id": "deviation-rate",
+      "operation": "deviation_rate"
+    },
+    {
+      "id": "validation-score",
+      "operation": "validation_score"
+    },
+    {
+      "id": "validation-disposition",
+      "operation": "validation_disposition"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "benchmark-calibration-absolute-error",
+      "methodId": "calibration-absolute-error",
+      "inputs": {
+        "measured": 10.4,
+        "reference": 10.0
+      },
+      "expected": 0.40000000000000036
+    },
+    {
+      "id": "benchmark-calibration-percent-error",
+      "methodId": "calibration-percent-error",
+      "inputs": {
+        "measured": 10.4,
+        "reference": 10.0
+      },
+      "expected": 4.0000000000000036
+    },
+    {
+      "id": "benchmark-calibration-bias",
+      "methodId": "calibration-bias",
+      "inputs": {
+        "measuredValues": [
+          10.1,
+          9.9,
+          10.2
+        ],
+        "referenceValues": [
+          10,
+          10,
+          10
+        ]
+      },
+      "expected": 0.06666666666666643
+    },
+    {
+      "id": "benchmark-calibration-rmse",
+      "methodId": "calibration-rmse",
+      "inputs": {
+        "measuredValues": [
+          10.1,
+          9.9,
+          10.2
+        ],
+        "referenceValues": [
+          10,
+          10,
+          10
+        ]
+      },
+      "expected": 0.141421356237309
+    },
+    {
+      "id": "benchmark-calibration-linearity-r2",
+      "methodId": "calibration-linearity-r2",
+      "inputs": {
+        "referenceValues": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "measuredValues": [
+          0.1,
+          1.1,
+          2.1,
+          3.1
+        ]
+      },
+      "expected": 1.0
+    },
+    {
+      "id": "benchmark-repeatability-cv",
+      "methodId": "repeatability-cv",
+      "inputs": {
+        "values": [
+          9.9,
+          10.0,
+          10.1,
+          10.0
+        ]
+      },
+      "expected": 0.8164965809277231
+    },
+    {
+      "id": "benchmark-acceptance-window-status",
+      "methodId": "acceptance-window-status",
+      "inputs": {
+        "value": 10.2,
+        "target": 10,
+        "warningTolerance": 0.3,
+        "actionTolerance": 0.5
+      },
+      "expected": "accepted"
+    },
+    {
+      "id": "benchmark-calibration-due-state",
+      "methodId": "calibration-due-state",
+      "inputs": {
+        "daysSinceCalibration": 28,
+        "calibrationIntervalDays": 30,
+        "warningLeadDays": 5
+      },
+      "expected": "due-soon"
+    },
+    {
+      "id": "benchmark-maintenance-due-state",
+      "methodId": "maintenance-due-state",
+      "inputs": {
+        "daysSinceMaintenance": 95,
+        "maintenanceIntervalDays": 90,
+        "warningLeadDays": 10
+      },
+      "expected": "overdue"
+    },
+    {
+      "id": "benchmark-measurement-completeness",
+      "methodId": "measurement-completeness",
+      "inputs": {
+        "presentCount": 97,
+        "expectedCount": 100
+      },
+      "expected": 97.0
+    },
+    {
+      "id": "benchmark-quality-flag-rate",
+      "methodId": "quality-flag-rate",
+      "inputs": {
+        "flaggedCount": 4,
+        "totalCount": 100
+      },
+      "expected": 4.0
+    },
+    {
+      "id": "benchmark-custody-completeness",
+      "methodId": "custody-completeness",
+      "inputs": {
+        "completeEventCount": 9,
+        "totalEventCount": 10
+      },
+      "expected": 90.0
+    },
+    {
+      "id": "benchmark-custody-sequence-status",
+      "methodId": "custody-sequence-status",
+      "inputs": {
+        "events": [
+          {
+            "timestamp": 1,
+            "eventHash": "a",
+            "previousHash": ""
+          },
+          {
+            "timestamp": 2,
+            "eventHash": "b",
+            "previousHash": "a"
+          },
+          {
+            "timestamp": 3,
+            "eventHash": "c",
+            "previousHash": "b"
+          }
+        ]
+      },
+      "expected": {
+        "valid": true,
+        "eventCount": 3,
+        "problems": [],
+        "headHash": "c"
+      }
+    },
+    {
+      "id": "benchmark-deviation-rate",
+      "methodId": "deviation-rate",
+      "inputs": {
+        "deviationCount": 3,
+        "reviewedItemCount": 120
+      },
+      "expected": 2.5
+    },
+    {
+      "id": "benchmark-validation-score",
+      "methodId": "validation-score",
+      "inputs": {
+        "profileScores": {
+          "instrument-identity": 100,
+          "calibration-acceptance": 95,
+          "sensor-channel-readiness": 90,
+          "maintenance-readiness": 80,
+          "measurement-quality": 92,
+          "sample-specimen-linkage": 100,
+          "custody-chain-integrity": 100,
+          "release-readiness": 90
+        },
+        "weights": {
+          "instrument-identity": 1,
+          "calibration-acceptance": 2,
+          "sensor-channel-readiness": 1,
+          "maintenance-readiness": 1,
+          "measurement-quality": 2,
+          "sample-specimen-linkage": 1,
+          "custody-chain-integrity": 2,
+          "release-readiness": 2
+        }
+      },
+      "expected": 93.66666666666667
+    },
+    {
+      "id": "benchmark-validation-disposition",
+      "methodId": "validation-disposition",
+      "inputs": {
+        "score": 91,
+        "criticalFailureCount": 0,
+        "openDeviationCount": 1,
+        "expiredRecordCount": 0
+      },
+      "expected": "conditionally-accepted"
+    }
+  ],
+  "responsibleUse": {
+    "scope": "Research, education, laboratory prototyping, internal validation, and auditable sample-history workflows.",
+    "boundaries": {
+      "gmpCertification": false,
+      "clinicalReleaseAuthority": false,
+      "regulatoryApproval": false,
+      "automaticDeviceControl": false,
+      "tamperEvidence": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/compute-job-v0261.schema.json",
+  "title": "Sustainable Catalyst Compute Job v0.26.1",
+  "type": "object",
+  "required": ["schema", "jobId", "operation", "method", "status", "progress", "attempts", "maxAttempts", "createdAt", "updatedAt"],
+  "properties": {
+    "schema": {"const": "sc-lab-compute-job/1.0"},
+    "jobId": {"type": "string", "format": "uuid"},
+    "parentJobId": {"type": ["string", "null"]},
+    "operation": {"enum": ["execute", "core_run", "compare"]},
+    "method": {"type": "string", "maxLength": 128},
+    "status": {"enum": ["queued", "running", "completed", "failed", "cancelled", "timed_out", "retrying"]},
+    "progress": {"type": "number", "minimum": 0, "maximum": 100},
+    "progressMessage": {"type": "string"},
+    "attempts": {"type": "integer", "minimum": 0},
+    "maxAttempts": {"type": "integer", "minimum": 1},
+    "manualRetries": {"type": "integer", "minimum": 0},
+    "timeoutSeconds": {"type": "integer", "minimum": 1},
+    "projectId": {"type": ["string", "null"]},
+    "clientId": {"type": "string"},
+    "workerId": {"type": ["string", "null"]},
+    "workerPid": {"type": ["integer", "null"]},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "updatedAt": {"type": "string", "format": "date-time"},
+    "startedAt": {"type": ["string", "null"]},
+    "finishedAt": {"type": ["string", "null"]},
+    "lastHeartbeatAt": {"type": ["string", "null"]},
+    "result": {},
+    "error": {"type": ["object", "null"]}
+  },
+  "additionalProperties": true
+}

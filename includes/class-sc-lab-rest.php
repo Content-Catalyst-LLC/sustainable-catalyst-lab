@@ -18,11 +18,18 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/compute/reports/validate', array('methods'=>'POST','callback'=>array($this,'compute_report_validate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/reports/pdf', array('methods'=>'POST','callback'=>array($this,'compute_report_pdf'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/handoffs/decision-studio/validate', array('methods'=>'POST','callback'=>array($this,'compute_handoff_validate'),'permission_callback'=>'__return_true'));
-        register_rest_route('sc-lab/v1', '/compute/jobs', array('methods'=>'POST','callback'=>array($this,'compute_jobs'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/jobs', array(
+            array('methods'=>'GET','callback'=>array($this,'compute_jobs_list'),'permission_callback'=>'__return_true'),
+            array('methods'=>'POST','callback'=>array($this,'compute_jobs'),'permission_callback'=>'__return_true'),
+        ));
         register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})', array(
             array('methods'=>'GET','callback'=>array($this,'compute_job_status'),'permission_callback'=>'__return_true'),
             array('methods'=>'DELETE','callback'=>array($this,'compute_job_cancel'),'permission_callback'=>'__return_true'),
         ));
+        register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/cancel', array('methods'=>'POST','callback'=>array($this,'compute_job_cancel_post'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/retry', array('methods'=>'POST','callback'=>array($this,'compute_job_retry'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/queue/status', array('methods'=>'GET','callback'=>array($this,'compute_queue_status'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/workers', array('methods'=>'GET','callback'=>array($this,'compute_workers'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -56,7 +63,7 @@ class SC_Lab_REST {
             'version'=>SC_LAB_VERSION,
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring')
         ));
     }
 
@@ -93,7 +100,7 @@ class SC_Lab_REST {
 
     private function compute_ready() {
         $settings = $this->settings();
-        if (empty($settings['enable_remote_compute']) || empty($settings['compute_backend_url'])) { return new WP_Error('compute_disabled','The Render compute dispatcher is not enabled or configured.',array('status'=>503)); }
+        if (empty($settings['enable_remote_compute']) || empty($settings['compute_backend_url'])) { return new WP_Error('compute_disabled','The Python Compute Core is not enabled or configured.',array('status'=>503)); }
         return $settings;
     }
 
@@ -183,10 +190,12 @@ class SC_Lab_REST {
         $limited = $this->compute_rate_limit(); if (is_wp_error($limited)) { return $limited; }
         $settings = $this->compute_ready(); if (is_wp_error($settings)) { return $settings; }
         $url = untrailingslashit($settings['compute_backend_url']) . '/' . ltrim($path,'/');
-        $headers = array('Accept'=>'application/json','Content-Type'=>'application/json');
-        if (!empty($settings['compute_api_key'])) { $headers['X-SC-Lab-Key'] = $settings['compute_api_key']; }
+        $raw_body = null === $payload ? '' : wp_json_encode($payload);
+        $signature_path = '/' . ltrim((string) strtok($path, '?'), '/');
+        $headers = class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::signed_headers($signature_path, $method, $raw_body, $settings) : array('Accept'=>'application/json','Content-Type'=>'application/json');
+        if (!empty($settings['compute_api_key']) && empty($headers['X-SC-Lab-Key'])) { $headers['X-SC-Lab-Key'] = $settings['compute_api_key']; }
         $args = array('method'=>$method,'timeout'=>max(5,min(60,absint($settings['compute_timeout_seconds']))),'redirection'=>2,'sslverify'=>!empty($settings['compute_verify_ssl']),'headers'=>$headers,'limit_response_size'=>max(262144,min(8388608,absint($response_limit))));
-        if (null !== $payload) { $args['body'] = wp_json_encode($payload); }
+        if (null !== $payload) { $args['body'] = $raw_body; }
         $response = wp_safe_remote_request($url,$args);
         if (is_wp_error($response)) { return new WP_Error('compute_unavailable',$response->get_error_message(),array('status'=>502)); }
         $status = wp_remote_retrieve_response_code($response); $raw = wp_remote_retrieve_body($response); $decoded = json_decode($raw,true);
@@ -196,7 +205,7 @@ class SC_Lab_REST {
 
     public function compute_status() {
         $settings = $this->settings();
-        if (empty($settings['enable_remote_compute']) || empty($settings['compute_backend_url'])) { return rest_ensure_response(array('ok'=>false,'configured'=>false,'enabled'=>!empty($settings['enable_remote_compute']),'message'=>'Configure the Render compute dispatcher under Settings → Sustainable Catalyst Lab.')); }
+        if (empty($settings['enable_remote_compute']) || empty($settings['compute_backend_url'])) { return rest_ensure_response(array('ok'=>false,'configured'=>false,'enabled'=>!empty($settings['enable_remote_compute']),'message'=>'Configure the Python Compute Core under Settings → Sustainable Catalyst Lab.')); }
         return $this->proxy('/health');
     }
     public function compute_languages() { return $this->proxy('/v1/languages'); }
@@ -208,12 +217,27 @@ class SC_Lab_REST {
     public function compute_handoff_validate(WP_REST_Request $request) { $payload=$this->clean_handoff_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy('/v1/handoffs/decision-studio/validate','POST',$payload,1048576); }
     public function compute_jobs(WP_REST_Request $request) {
         $body=$request->get_json_params(); $operation=isset($body['operation'])?sanitize_key($body['operation']):'';
-        if ($operation==='execute') { $payload=$this->clean_execute_payload(isset($body['execute'])?$body['execute']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array('operation'=>'execute','execute'=>$payload)); }
-        if ($operation==='compare') { $payload=$this->clean_compare_payload(isset($body['compare'])?$body['compare']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array('operation'=>'compare','compare'=>$payload)); }
-        return new WP_Error('invalid_job','Job operation must be execute or compare.',array('status'=>422));
+        $options=array();
+        if(isset($body['idempotencyKey'])){$options['idempotencyKey']=substr(sanitize_text_field($body['idempotencyKey']),0,128);}
+        if(isset($body['timeoutSeconds'])){$options['timeoutSeconds']=max(1,min(900,absint($body['timeoutSeconds'])));}
+        if(isset($body['maxAttempts'])){$options['maxAttempts']=max(1,min(5,absint($body['maxAttempts'])));}
+        if ($operation==='execute') { $payload=$this->clean_execute_payload(isset($body['execute'])?$body['execute']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array_merge(array('operation'=>'execute','execute'=>$payload),$options)); }
+        if ($operation==='compare') { $payload=$this->clean_compare_payload(isset($body['compare'])?$body['compare']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array_merge(array('operation'=>'compare','compare'=>$payload),$options)); }
+        if ($operation==='core_run') { return SC_Lab_Python_Compute_Core_V0261::job_create($request); }
+        return new WP_Error('invalid_job','Job operation must be execute, compare, or core_run.',array('status'=>422));
+    }
+    public function compute_jobs_list(WP_REST_Request $request) {
+        $query=array('limit'=>max(1,min(200,absint($request->get_param('limit')?:50))),'offset'=>max(0,absint($request->get_param('offset')?:0)));
+        if($request->get_param('status')){$query['status']=sanitize_key($request->get_param('status'));}
+        if($request->get_param('project_id')){$query['project_id']=sanitize_text_field($request->get_param('project_id'));}
+        return $this->proxy('/v1/jobs?' . http_build_query($query,'','&'));
     }
     public function compute_job_status(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job'])); }
     public function compute_job_cancel(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']),'DELETE'); }
+    public function compute_job_cancel_post(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/cancel','POST',array()); }
+    public function compute_job_retry(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/retry','POST',array()); }
+    public function compute_queue_status() { return $this->proxy('/v1/queue/status'); }
+    public function compute_workers() { return $this->proxy('/v1/workers'); }
 
 
     /**

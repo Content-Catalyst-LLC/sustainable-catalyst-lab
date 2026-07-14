@@ -115,7 +115,7 @@
       const available = !!backend.registry?.[selected]?.available || backend.availableLanguages.includes(selected);
       const remoteRequested = executionMode.value === 'render';
       panel.querySelector('[data-code-run]').textContent = remoteRequested ? (requestMode.value === 'queued' ? 'Queue native execution' : 'Run native worker') : 'Run portable contract';
-      if (remoteRequested && !backend.ok) status.textContent = 'Render mode selected, but the compute dispatcher is unavailable. Run will use the documented local fallback.';
+      if (remoteRequested && !backend.ok) status.textContent = 'Python Core mode selected, but the compute service is unavailable. Run will use the documented local fallback.';
       else if (remoteRequested && !available) status.textContent = `${MC.languages[selected].label} source is available, but this runtime is not available on the connected worker.`;
       else if (remoteRequested) status.textContent = `${MC.byId[method.value].id} · ${MC.languages[selected].label} · native execution through the protected WordPress proxy.`;
       else status.textContent = `${MC.byId[method.value].id} · ${MC.languages[selected].label} source view · deterministic portable-contract execution in this browser.`;
@@ -168,12 +168,12 @@
         const [health, languageData] = await Promise.all([Compute.status(), Compute.languages()]);
         backend = normalizeBackendStatus(health, languageData);
         showBackend();
-        if (showToast) U.toast(root, 'Compute dispatcher status refreshed.');
+        if (showToast) U.toast(root, 'Python Compute Core status refreshed.');
       } catch (error) {
         backend = Object.assign(backend, { ok:false, configured:true, registry:{}, availableLanguages:[] });
         backendStatus.textContent = `Unavailable · ${error.message}`;
         showBackend();
-        if (showToast) U.toast(root, 'Compute dispatcher is unavailable; local fallback remains active.');
+        if (showToast) U.toast(root, 'Python Compute Core is unavailable; local fallback remains active.');
       }
       return backend;
     }
@@ -201,7 +201,7 @@
 
     async function remoteExecution(inputs) {
       const payload = { methodId:method.value, language:language.value, inputs, timeoutSeconds:Math.min(20, Number(w.SCLabConfig?.compute?.timeoutSeconds || 8)), includeSource:false };
-      if (!backend.ok) return localExecution(inputs, 'compute dispatcher unavailable');
+      if (!backend.ok) return localExecution(inputs, 'Python Compute Core unavailable');
       if (!backend.registry?.[language.value]?.available && !backend.availableLanguages.includes(language.value)) throw new Error(`${MC.languages[language.value].label} is not available on the connected worker.`);
       result.textContent = requestMode.value === 'queued' ? 'Submitting execution job…' : 'Running curated implementation…';
       if (requestMode.value === 'queued') {
@@ -212,7 +212,7 @@
         projects.add('executionJobs', queued, `Execution job queued: ${method.value} · ${language.value}`);
         const finalJob = await Compute.poll(activeJobId, { onUpdate:record => { jobOutput.textContent = JSON.stringify(record, null, 2); } });
         activeJobId = null; cancelButton.disabled = true;
-        if (String(finalJob.status).toLowerCase() !== 'finished' || !finalJob.result) throw new Error(finalJob.error?.message || `Job ended with status ${finalJob.status}.`);
+        if (!['finished','completed','succeeded'].includes(String(finalJob.status).toLowerCase()) || !finalJob.result) throw new Error(finalJob.error?.message || `Job ended with status ${finalJob.status}.`);
         lastExecution = finalJob.result;
       } else {
         lastExecution = await Compute.execute(payload);
@@ -249,7 +249,7 @@
           projects.add('executionJobs', queued, `Language comparison queued: ${method.value}`);
           const finalJob = await Compute.poll(activeJobId, { timeoutMs:240000, onUpdate:record => { jobOutput.textContent = JSON.stringify(record, null, 2); } });
           activeJobId = null; cancelButton.disabled = true;
-          if (String(finalJob.status).toLowerCase() !== 'finished' || !finalJob.result) throw new Error(finalJob.error?.message || `Job ended with status ${finalJob.status}.`);
+          if (!['finished','completed','succeeded'].includes(String(finalJob.status).toLowerCase()) || !finalJob.result) throw new Error(finalJob.error?.message || `Job ended with status ${finalJob.status}.`);
           lastComparison = finalJob.result;
         } else lastComparison = await Compute.compare(payload);
         workerComparison.innerHTML = remoteComparisonHtml(lastComparison);

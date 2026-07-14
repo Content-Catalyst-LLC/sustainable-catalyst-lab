@@ -15,7 +15,12 @@ class SC_Lab_Admin {
             'enable_remote_compute' => 0,
             'compute_backend_url' => '',
             'compute_api_key' => '',
+            'compute_client_id' => 'sustainable-catalyst-wordpress',
+            'compute_signing_secret' => '',
             'compute_timeout_seconds' => 20,
+            'compute_job_timeout_seconds' => 120,
+            'compute_job_max_attempts' => 2,
+            'compute_job_poll_ms' => 1200,
             'compute_verify_ssl' => 1,
         );
     }
@@ -75,8 +80,13 @@ class SC_Lab_Admin {
             'ncbi_email' => sanitize_email(isset($input['ncbi_email']) ? $input['ncbi_email'] : $defaults['ncbi_email']),
             'enable_remote_compute' => empty($input['enable_remote_compute']) ? 0 : 1,
             'compute_backend_url' => untrailingslashit($backend),
-            'compute_api_key' => sanitize_text_field(isset($input['compute_api_key']) ? $input['compute_api_key'] : $defaults['compute_api_key']),
+            'compute_api_key' => substr(preg_replace('/[\x00-\x1F\x7F]/', '', (string) wp_unslash(isset($input['compute_api_key']) ? $input['compute_api_key'] : $defaults['compute_api_key'])), 0, 512),
+            'compute_client_id' => sanitize_key(isset($input['compute_client_id']) ? $input['compute_client_id'] : $defaults['compute_client_id']),
+            'compute_signing_secret' => substr(preg_replace('/[\x00-\x1F\x7F]/', '', (string) wp_unslash(isset($input['compute_signing_secret']) ? $input['compute_signing_secret'] : $defaults['compute_signing_secret'])), 0, 512),
             'compute_timeout_seconds' => max(5, min(60, absint(isset($input['compute_timeout_seconds']) ? $input['compute_timeout_seconds'] : 20))),
+            'compute_job_timeout_seconds' => max(5, min(900, absint(isset($input['compute_job_timeout_seconds']) ? $input['compute_job_timeout_seconds'] : 120))),
+            'compute_job_max_attempts' => max(1, min(5, absint(isset($input['compute_job_max_attempts']) ? $input['compute_job_max_attempts'] : 2))),
+            'compute_job_poll_ms' => max(500, min(10000, absint(isset($input['compute_job_poll_ms']) ? $input['compute_job_poll_ms'] : 1200))),
             'compute_verify_ssl' => empty($input['compute_verify_ssl']) ? 0 : 1,
         );
     }
@@ -86,7 +96,7 @@ class SC_Lab_Admin {
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), self::defaults());
         ?>
         <div class="wrap"><h1>Sustainable Catalyst Lab</h1>
-        <p>Configure the modular science workspace, PDF reporting and Decision Studio routes, source caching, application routes, and the optional Render compute dispatcher.</p>
+        <p>Configure the modular science workspace, PDF reporting and Decision Studio routes, source caching, application routes, and the governed Python Compute Core.</p>
         <form method="post" action="options.php"><?php settings_fields('sc_lab_settings_group'); ?>
         <h2>Application routes and scientific sources</h2>
         <table class="form-table" role="presentation">
@@ -99,16 +109,45 @@ class SC_Lab_Admin {
         <tr><th scope="row"><label for="ncbi_email">NCBI contact email</label></th><td><input class="regular-text" type="email" id="ncbi_email" name="sc_lab_settings[ncbi_email]" value="<?php echo esc_attr($settings['ncbi_email']); ?>"></td></tr>
         </table>
 
-        <h2 id="sc-lab-compute-settings">Render compute dispatcher</h2>
-        <p>The API key is stored only in WordPress and is never localized into the public browser application. Code Studio calls same-origin WordPress REST routes, which proxy allowlisted method requests to Render.</p>
+        <h2 id="sc-lab-compute-settings">Python Compute Core</h2>
+        <p>WordPress is the control-plane gateway for the FastAPI compute service. Browser requests remain same-origin; backend credentials and the HMAC signing secret are never localized into JavaScript.</p>
         <table class="form-table" role="presentation">
-          <tr><th scope="row">Remote execution</th><td><label><input type="checkbox" name="sc_lab_settings[enable_remote_compute]" value="1" <?php checked($settings['enable_remote_compute'], 1); ?>> Enable the curated Render compute dispatcher</label></td></tr>
+          <tr><th scope="row">Remote execution</th><td><label><input type="checkbox" name="sc_lab_settings[enable_remote_compute]" value="1" <?php checked($settings['enable_remote_compute'], 1); ?>> Enable the governed Python Compute Core</label></td></tr>
           <tr><th scope="row"><label for="compute_backend_url">Compute API URL</label></th><td><input class="regular-text" type="url" id="compute_backend_url" name="sc_lab_settings[compute_backend_url]" value="<?php echo esc_attr($settings['compute_backend_url']); ?>" placeholder="https://sustainable-catalyst-lab-compute-api.onrender.com"><p class="description">Enter the service origin only, without <code>/v1</code>.</p></td></tr>
-          <tr><th scope="row"><label for="compute_api_key">Compute API key</label></th><td><input class="regular-text" type="password" autocomplete="new-password" id="compute_api_key" name="sc_lab_settings[compute_api_key]" value="<?php echo esc_attr($settings['compute_api_key']); ?>"><p class="description">Use the same <code>SC_LAB_COMPUTE_API_KEY</code> value configured on Render.</p></td></tr>
+          <tr><th scope="row"><label for="compute_api_key">Compute API key</label></th><td><input class="regular-text" type="password" autocomplete="new-password" id="compute_api_key" name="sc_lab_settings[compute_api_key]" value="<?php echo esc_attr($settings['compute_api_key']); ?>"><p class="description">Legacy migration key matching <code>SC_LAB_COMPUTE_API_KEY</code>. HMAC signing below is preferred.</p></td></tr>
+          <tr><th scope="row"><label for="compute_client_id">Compute client ID</label></th><td><input class="regular-text" id="compute_client_id" name="sc_lab_settings[compute_client_id]" value="<?php echo esc_attr($settings['compute_client_id']); ?>"><p class="description">Identifies this WordPress control plane in compute provenance.</p></td></tr>
+          <tr><th scope="row"><label for="compute_signing_secret">HMAC signing secret</label></th><td><input class="regular-text" type="password" autocomplete="new-password" id="compute_signing_secret" name="sc_lab_settings[compute_signing_secret]" value="<?php echo esc_attr($settings['compute_signing_secret']); ?>"><p class="description">Use the same <code>SC_LAB_COMPUTE_SIGNING_SECRET</code> configured on the Python backend.</p></td></tr>
           <tr><th scope="row"><label for="compute_timeout_seconds">Proxy timeout</label></th><td><input type="number" min="5" max="60" id="compute_timeout_seconds" name="sc_lab_settings[compute_timeout_seconds]" value="<?php echo esc_attr($settings['compute_timeout_seconds']); ?>"> seconds</td></tr>
+          <tr><th scope="row"><label for="compute_job_timeout_seconds">Default job timeout</label></th><td><input type="number" min="5" max="900" id="compute_job_timeout_seconds" name="sc_lab_settings[compute_job_timeout_seconds]" value="<?php echo esc_attr($settings['compute_job_timeout_seconds']); ?>"> seconds<p class="description">The isolated Python worker is terminated when this limit is exceeded.</p></td></tr>
+          <tr><th scope="row"><label for="compute_job_max_attempts">Default job attempts</label></th><td><input type="number" min="1" max="5" id="compute_job_max_attempts" name="sc_lab_settings[compute_job_max_attempts]" value="<?php echo esc_attr($settings['compute_job_max_attempts']); ?>"><p class="description">Retryable worker failures use exponential backoff up to this attempt count.</p></td></tr>
+          <tr><th scope="row"><label for="compute_job_poll_ms">Job polling interval</label></th><td><input type="number" min="500" max="10000" step="100" id="compute_job_poll_ms" name="sc_lab_settings[compute_job_poll_ms]" value="<?php echo esc_attr($settings['compute_job_poll_ms']); ?>"> milliseconds</td></tr>
           <tr><th scope="row">TLS verification</th><td><label><input type="checkbox" name="sc_lab_settings[compute_verify_ssl]" value="1" <?php checked($settings['compute_verify_ssl'], 1); ?>> Verify the Render service certificate</label></td></tr>
         </table>
         <?php submit_button(); ?></form>
+        <hr>
+        <section id="sc-lab-compute-queue-monitor">
+          <h2>Compute queue monitor</h2>
+          <p>The queue is stored in SQLite using WAL mode. Running jobs execute in isolated child processes so cancellation and time limits can terminate the worker without taking down the API.</p>
+          <?php
+          $queue_response = class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::queue_status() : new WP_Error('queue_monitor_unavailable','The v0.26.1 compute queue gateway is unavailable.');
+          $worker_response = class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::workers() : new WP_Error('worker_monitor_unavailable','The v0.26.1 worker gateway is unavailable.');
+          $queue_data = $queue_response instanceof WP_REST_Response ? $queue_response->get_data() : null;
+          $worker_data = $worker_response instanceof WP_REST_Response ? $worker_response->get_data() : null;
+          ?>
+          <?php if (is_array($queue_data) && isset($queue_data['counts'])): ?>
+            <table class="widefat striped" style="max-width:960px"><tbody>
+              <tr><th>Storage</th><td><?php echo esc_html(isset($queue_data['storage']) ? $queue_data['storage'] : 'unknown'); ?></td></tr>
+              <tr><th>Worker capacity</th><td><?php echo esc_html(isset($queue_data['workerCapacity']) ? $queue_data['workerCapacity'] : 0); ?></td></tr>
+              <tr><th>Active workers</th><td><?php echo esc_html(isset($queue_data['activeWorkers']) ? $queue_data['activeWorkers'] : 0); ?></td></tr>
+              <tr><th>Queued / retrying</th><td><?php echo esc_html((int)($queue_data['counts']['queued'] ?? 0) + (int)($queue_data['counts']['retrying'] ?? 0)); ?></td></tr>
+              <tr><th>Completed</th><td><?php echo esc_html((int)($queue_data['counts']['completed'] ?? 0)); ?></td></tr>
+              <tr><th>Failed / timed out</th><td><?php echo esc_html((int)($queue_data['counts']['failed'] ?? 0) + (int)($queue_data['counts']['timed_out'] ?? 0)); ?></td></tr>
+              <tr><th>Worker health</th><td><?php echo esc_html(is_array($worker_data) && !empty($worker_data['healthy']) ? 'Healthy' : 'Unavailable or degraded'); ?></td></tr>
+            </tbody></table>
+          <?php else: ?>
+            <div class="notice notice-info inline"><p><?php echo esc_html(is_wp_error($queue_response) ? $queue_response->get_error_message() : 'The Python Compute Core queue is not currently reachable. Save the backend settings and reload this page.'); ?></p></div>
+          <?php endif; ?>
+        </section>
         <hr>
         <section id="sc-lab-installation-identity">
           <h2>Plugin installation identity</h2>

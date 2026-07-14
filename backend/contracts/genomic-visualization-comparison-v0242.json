@@ -1,0 +1,195 @@
+{
+  "schema": "sc-lab-genomic-visualization-comparison/1.0",
+  "version": "0.24.2",
+  "modes": [
+    {
+      "id": "sequence-track",
+      "label": "Sequence track"
+    },
+    {
+      "id": "alignment-view",
+      "label": "Alignment view"
+    },
+    {
+      "id": "variant-overlay",
+      "label": "Variant overlay"
+    },
+    {
+      "id": "motif-track",
+      "label": "Motif track"
+    },
+    {
+      "id": "kmer-spectrum",
+      "label": "K-mer spectrum"
+    },
+    {
+      "id": "windowed-composition",
+      "label": "Windowed composition"
+    },
+    {
+      "id": "reference-comparison",
+      "label": "Reference comparison"
+    },
+    {
+      "id": "provenance-timeline",
+      "label": "Provenance timeline"
+    }
+  ],
+  "analysisMethods": [
+    {
+      "id": "mismatch-positions",
+      "label": "Mismatch positions"
+    },
+    {
+      "id": "windowed-gc",
+      "label": "Windowed GC"
+    },
+    {
+      "id": "motif-hits",
+      "label": "Motif hits"
+    },
+    {
+      "id": "kmer-spectrum",
+      "label": "K-mer spectrum"
+    },
+    {
+      "id": "variant-track",
+      "label": "Variant track"
+    },
+    {
+      "id": "alignment-padding",
+      "label": "Padded alignment"
+    },
+    {
+      "id": "sequence-summary",
+      "label": "Sequence summary"
+    },
+    {
+      "id": "comparison-summary",
+      "label": "Comparison summary"
+    }
+  ],
+  "responsibleUse": {
+    "scope": "Research visualization and sequence comparison.",
+    "boundary": "Not for clinical interpretation or regulated reporting."
+  },
+  "benchmarks": [
+    {
+      "id": "benchmark-mismatch",
+      "methodId": "mismatch-positions",
+      "inputs": {
+        "reference": "ACGT",
+        "query": "ACGA"
+      },
+      "expected": [
+        3
+      ]
+    },
+    {
+      "id": "benchmark-windowed-gc",
+      "methodId": "windowed-gc",
+      "inputs": {
+        "sequence": "ACGTGC",
+        "windowSize": 3,
+        "stepSize": 3
+      },
+      "expected": [
+        {
+          "start": 0,
+          "end": 3,
+          "gcPercent": 66.66666666666666
+        },
+        {
+          "start": 3,
+          "end": 6,
+          "gcPercent": 66.66666666666666
+        }
+      ]
+    },
+    {
+      "id": "benchmark-motif",
+      "methodId": "motif-hits",
+      "inputs": {
+        "sequence": "AAAA",
+        "motif": "AA"
+      },
+      "expected": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "benchmark-kmer",
+      "methodId": "kmer-spectrum",
+      "inputs": {
+        "sequence": "ATAT",
+        "k": 2
+      },
+      "expected": {
+        "AT": 2,
+        "TA": 1
+      }
+    },
+    {
+      "id": "benchmark-variant",
+      "methodId": "variant-track",
+      "inputs": {
+        "variants": [
+          {
+            "position": 2,
+            "reference": "C",
+            "alternate": "T"
+          }
+        ],
+        "sequenceLength": 10
+      },
+      "expected": [
+        {
+          "position": 2,
+          "reference": "C",
+          "alternate": "T",
+          "fraction": 0.2
+        }
+      ]
+    },
+    {
+      "id": "benchmark-padding",
+      "methodId": "alignment-padding",
+      "inputs": {
+        "reference": "ACG",
+        "query": "AC"
+      },
+      "expected": {
+        "reference": "ACG",
+        "query": "AC-"
+      }
+    },
+    {
+      "id": "benchmark-summary",
+      "methodId": "sequence-summary",
+      "inputs": {
+        "sequence": "ACGTN"
+      },
+      "expected": {
+        "length": 5,
+        "gcPercent": 50.0,
+        "ambiguousCount": 1
+      }
+    },
+    {
+      "id": "benchmark-comparison",
+      "methodId": "comparison-summary",
+      "inputs": {
+        "reference": "ACGT",
+        "query": "ACGA"
+      },
+      "expected": {
+        "referenceLength": 4,
+        "queryLength": 4,
+        "mismatchCount": 1,
+        "identityPercent": 75.0
+      }
+    }
+  ]
+}

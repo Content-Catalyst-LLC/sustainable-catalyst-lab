@@ -1,82 +1,42 @@
-# Sustainable Catalyst Lab Compute and Report Service v0.11.0
+# Sustainable Catalyst Lab Python Compute Core v0.26.1
 
-This FastAPI service executes only curated, versioned method contracts and generates validated scientific reports. Requests can provide an allowlisted method identifier, language identifier, numerical inputs, or a bounded structured report contract. The API does not accept arbitrary source code, shell commands, unrestricted SQL, filesystem paths, or package installation requests.
+This FastAPI service is the governed scientific compute plane for Sustainable Catalyst Lab. It accepts registered methods only and does not expose arbitrary `eval` or `exec` endpoints.
 
-## Endpoints
-
-```text
-GET    /health
-GET    /version
-GET    /v1/methods
-GET    /v1/languages
-POST   /v1/validate
-POST   /v1/execute
-POST   /v1/compare
-POST   /v1/jobs
-GET    /v1/jobs/{job_id}
-DELETE /v1/jobs/{job_id}
-POST   /v1/reports/validate
-POST   /v1/reports/pdf
-POST   /v1/handoffs/decision-studio/validate
-```
-
-## Report service
-
-The report service validates `sc-lab-report/1.0` payloads and generates text-selectable vector PDFs with ReportLab. It supports LETTER and A4 output and the following report types:
-
-```text
-technical-report
-decision-brief
-evidence-packet
-executive-summary
-```
-
-A report can contain one to twelve analyses. The service limits text, table rows, payload size, nesting depth, and total response size. The returned JSON includes the base64 PDF, byte length, page count, report fingerprint, PDF fingerprint, filename, and engine metadata.
-
-Decision Studio validation accepts `scientific-analysis` and `scientific-report` packets and returns a deterministic packet fingerprint plus chart, scene, table, and analysis counts.
-
-## Native worker languages
-
-```text
-Python
-JavaScript
-TypeScript
-C
-C++
-Fortran
-Rust
-Go
-```
-
-R, Julia, SQL, and Haskell remain source-generation targets until dedicated workers are added.
-
-## Local development
+## Local start
 
 ```bash
-cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-dev.txt
-PYTHONPATH=. uvicorn app.main:app --reload
+pytest
+uvicorn app.main:app --reload
 ```
 
-Without `REDIS_URL`, asynchronous jobs use a bounded in-memory thread pool. The Render Blueprint provisions a Key Value queue and a separate RQ worker.
+Open `/health`, `/docs`, `/v1/capabilities`, `/v1/queue/status`, and `/v1/workers`.
 
-## Security and audit boundary
+## Persistent queue
 
-- Curated method allowlist
-- Strict Pydantic request models
-- Numerical input validation from method contracts
-- Bounded report and handoff payloads
-- Per-IP rate limiting
-- Compile, execution, and proxy timeouts
-- Temporary isolated working directories
-- Restricted subprocess environment
-- Output-size limits
-- Thread-safe subprocess launch
-- Optional GNU `prlimit` wrapper on Linux
-- No arbitrary source or shell endpoint
-- Optional shared API key in `X-SC-Lab-Key`
-- Report, analysis, packet, input, output, and PDF fingerprints
+Version 0.26.1 stores job records in SQLite WAL mode and executes each calculation in an isolated child process. Configure the database with `SC_LAB_JOB_DB_PATH`. Place that file on host-provided persistent storage when jobs must survive host replacement or redeployment.
 
-Render container limits remain the primary production resource boundary.
+Supported states are `queued`, `running`, `completed`, `failed`, `cancelled`, `timed_out`, and `retrying`. Running jobs left behind by an interrupted API process are returned to the queue when the same database is reopened.
+
+## Authentication
+
+Production supports HMAC-SHA256 request signing with `SC_LAB_COMPUTE_SIGNING_SECRET`. Legacy API-key authentication remains available through `SC_LAB_COMPUTE_API_KEY`. When neither value is configured, the service uses open development mode and must not be exposed publicly.
+
+## Queue endpoints
+
+```text
+POST   /v1/jobs
+GET    /v1/jobs
+GET    /v1/jobs/{job_id}
+DELETE /v1/jobs/{job_id}
+POST   /v1/jobs/{job_id}/cancel
+POST   /v1/jobs/{job_id}/retry
+GET    /v1/queue/status
+GET    /v1/workers
+```
+
+## Extension preservation
+
+Recovered domain routers from prior Lab releases are discovered at startup. Import failures are isolated and reported in `/health` rather than preventing the core service from starting.

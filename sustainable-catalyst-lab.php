@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
- * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, protected Render compute dispatch, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.25.4
+ * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
+ * Version: 0.26.1
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.25.4');
+define('SC_LAB_VERSION', '0.26.1');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -77,9 +77,11 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biotechnology-bi
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-molecular-validation-provenance-v0213.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biochemistry-visualization-batch-v0212.php';
 
-require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-runtime-stability-v0254.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-module-lifecycle-v0255.php';
+SC_Lab_Module_Lifecycle_V0255::init();
 
-SC_Lab_Runtime_Stability_V0254::init();
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-python-compute-core-v0261.php';
+SC_Lab_Python_Compute_Core_V0261::init();
 
 register_activation_hook(__FILE__, array('SC_Lab_Plugin', 'activate'));
 add_action('plugins_loaded', array('SC_Lab_Plugin', 'instance'));

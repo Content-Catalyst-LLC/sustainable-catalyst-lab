@@ -1,11 +1,35 @@
-## 0.25.4 — Application Startup and Runtime Stability
+# Changelog
 
-- Render one main-application laboratory panel at a time.
-- Load selected panels through a read-only WordPress REST route.
-- Cancel superseded module requests and remove inactive panels.
-- Add duplicate-runtime, safe-start, node-budget, and panel-size guards.
-- Add explicit module mount and unmount lifecycle events.
-- Restrict the historical all-at-once mode to administrators.
+## 0.26.1 — Job Queue and Worker Reliability
+
+- Replaces the process-local thread pool with a SQLite WAL-backed persistent queue.
+- Runs calculations in isolated child processes for hard cancellation and timeout enforcement.
+- Recovers interrupted `running` jobs to the queue when the same database reopens.
+- Adds bounded retries, exponential backoff, manual retry, and structured failure records.
+- Adds idempotency-key and active-request deduplication.
+- Adds job listing, progress, queue status, and worker health endpoints.
+- Adds a WordPress queue monitor and browser client methods for list, retry, cancel, queue status, and worker health.
+- Adds deployment controls for worker count, queue capacity, retention, timeouts, and database location.
+- Preserves the v0.26.0 registered-method, HMAC, provenance, report, handoff, and legacy-router contracts.
+
+## 0.26.0 — Python Compute Core Foundation
+
+- Promotes FastAPI/Python into the governed core compute plane.
+- Adds canonical capability, method registry, method detail, and compute-run contracts.
+- Adds HMAC-SHA256 request signing between WordPress and FastAPI.
+- Adds deterministic provenance manifests with package versions and checksums.
+- Adds ten registered foundation methods across mechanics, biology, energy, statistics, numerical analysis, and simulation.
+- Preserves legacy execute, compare, report, handoff, job, and recovered domain-router compatibility.
+- Adds a deployable Docker/Render backend, automated tests, and an extension failure boundary.
+
+## 0.25.5 — Module Lifecycle and Memory Management
+
+- Isolates the public application to one laboratory per browser lifecycle.
+- Performs a complete browser teardown when switching laboratories.
+- Adds lifecycle scopes for timers, animation frames, observers, listeners, abort controllers, and custom cleanup callbacks.
+- Gates advanced module assets so inactive laboratories do not start observers or timers.
+- Adds DOM and JavaScript heap diagnostics, duplicate-runtime protection, pagehide cleanup, and safe-start recovery.
+- Makes the legacy application initializer null-safe when inactive panels are absent.
 
 ## 0.25.3 — Calibration, Validation, and Chain of Custody
 

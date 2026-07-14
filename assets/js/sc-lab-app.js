@@ -4,8 +4,19 @@
   const Lab = w.SCLab;
   const U = Lab.util;
 
-  function qs(root, selector) { return root.querySelector(selector); }
-  function qsa(root, selector) { return [...root.querySelectorAll(selector)]; }
+  const missingClassList = Object.freeze({ add() {}, remove() {}, toggle() { return false; }, contains() { return false; } });
+  const missingStyle = new Proxy({}, { get() { return ''; }, set() { return true; } });
+  const missingElement = new Proxy({
+    value: '', checked: false, disabled: false, hidden: true, files: [], children: [], options: [],
+    dataset: {}, style: missingStyle, classList: missingClassList, innerHTML: '', textContent: '',
+    addEventListener() {}, removeEventListener() {}, appendChild() {}, remove() {}, click() {}, focus() {}, select() {},
+    setAttribute() {}, removeAttribute() {}, getAttribute() { return null; }, dispatchEvent() { return false; },
+    insertAdjacentHTML() {}, contains() { return false; }, closest() { return null; }, querySelectorAll() { return []; },
+    getBoundingClientRect() { return { width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0 }; }
+  }, { get(target, property) { if (property === 'querySelector') return () => missingElement; return property in target ? target[property] : undefined; }, set(target, property, value) { target[property] = value; return true; } });
+
+  function qs(root, selector) { return root?.querySelector?.(selector) || missingElement; }
+  function qsa(root, selector) { return root?.querySelectorAll ? [...root.querySelectorAll(selector)] : []; }
   function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
 
   function promptRecord(fields) {
@@ -32,6 +43,8 @@
   }
 
   function init(root) {
+    if (!root || root.dataset.scLabAppInitialized === '1') return;
+    root.dataset.scLabAppInitialized = '1';
     const projects = new Lab.Projects();
     const config = w.SCLabConfig || {};
     const initial = root.dataset.initialModule || 'overview';

@@ -1,43 +1,54 @@
 from __future__ import annotations
 
+import hashlib
 import hmac
-import os
-import threading
 import time
-from collections import defaultdict, deque
-
 from fastapi import Header, HTTPException, Request, status
 
-
-class FixedWindowRateLimiter:
-    def __init__(self) -> None:
-        self.limit = max(5, min(600, int(os.getenv("SC_LAB_RATE_LIMIT_PER_MINUTE", "60"))))
-        self._events: dict[str, deque[float]] = defaultdict(deque)
-        self._lock = threading.Lock()
-
-    def check(self, key: str) -> None:
-        now = time.monotonic()
-        cutoff = now - 60.0
-        with self._lock:
-            events = self._events[key]
-            while events and events[0] < cutoff:
-                events.popleft()
-            if len(events) >= self.limit:
-                raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Compute rate limit exceeded.")
-            events.append(now)
+from .config import settings
 
 
-limiter = FixedWindowRateLimiter()
+def body_sha256(body: bytes) -> str:
+    return hashlib.sha256(body).hexdigest()
 
 
-def require_api_key(x_sc_lab_key: str | None = Header(default=None)) -> None:
-    expected = os.getenv("SC_LAB_COMPUTE_API_KEY", "").strip()
-    if not expected:
-        return
-    if not x_sc_lab_key or not hmac.compare_digest(x_sc_lab_key, expected):
+def canonical_message(timestamp: str, method: str, path: str, body: bytes) -> bytes:
+    return f"{timestamp}\n{method.upper()}\n{path}\n{body_sha256(body)}".encode("utf-8")
+
+
+def make_signature(secret: str, timestamp: str, method: str, path: str, body: bytes) -> str:
+    return hmac.new(secret.encode("utf-8"), canonical_message(timestamp, method, path, body), hashlib.sha256).hexdigest()
+
+
+def verify_signature(secret: str, timestamp: str, method: str, path: str, body: bytes, signature: str) -> bool:
+    expected = make_signature(secret, timestamp, method, path, body)
+    return hmac.compare_digest(expected, signature)
+
+
+async def require_compute_auth(
+    request: Request,
+    x_sc_lab_key: str | None = Header(default=None),
+    x_sc_lab_timestamp: str | None = Header(default=None),
+    x_sc_lab_signature: str | None = Header(default=None),
+    x_sc_lab_client: str | None = Header(default=None),
+) -> dict[str, str]:
+    if settings.auth_mode == "open-development":
+        return {"mode": settings.auth_mode, "client": x_sc_lab_client or "local-development"}
+
+    if settings.signing_secret:
+        if not x_sc_lab_timestamp or not x_sc_lab_signature:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Signed compute request required.")
+        try:
+            sent = int(x_sc_lab_timestamp)
+        except ValueError as exc:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid compute timestamp.") from exc
+        if abs(int(time.time()) - sent) > settings.signature_tolerance_seconds:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Expired compute signature.")
+        body = await request.body()
+        if not verify_signature(settings.signing_secret, x_sc_lab_timestamp, request.method, request.url.path, body, x_sc_lab_signature):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid compute signature.")
+        return {"mode": "hmac-sha256", "client": x_sc_lab_client or "wordpress"}
+
+    if not x_sc_lab_key or not hmac.compare_digest(x_sc_lab_key, settings.api_key):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid compute API key.")
-
-
-def rate_limit(request: Request) -> None:
-    host = request.client.host if request.client else "unknown"
-    limiter.check(host)
+    return {"mode": "api-key", "client": x_sc_lab_client or "wordpress"}

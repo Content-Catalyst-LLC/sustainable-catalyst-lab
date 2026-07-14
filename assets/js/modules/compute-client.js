@@ -4,7 +4,7 @@
 
   function config() {
     const root = w.SCLabConfig || {};
-    return Object.assign({ enabled:false, configured:false, timeoutSeconds:20, endpoints:{} }, root.compute || {});
+    return Object.assign({ enabled:false, configured:false, timeoutSeconds:20, jobTimeoutSeconds:120, jobMaxAttempts:2, jobPollMs:1200, endpoints:{} }, root.compute || {});
   }
 
   function errorMessage(body, response) {
@@ -55,11 +55,21 @@
 
   function endpoint(name) { return config().endpoints?.[name] || ''; }
   function jobUrl(jobId) { return `${endpoint('jobs').replace(/\/$/, '')}/${encodeURIComponent(jobId)}`; }
+  function withQuery(url, query = {}) {
+    const target = new URL(url, window.location.href);
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') target.searchParams.set(key, String(value));
+    });
+    return target.toString();
+  }
 
   const api = {
     config,
     isConfigured() { const c = config(); return !!(c.enabled && c.configured && endpoint('status')); },
     status() { return request(endpoint('status')); },
+    capabilities() { return request(endpoint('capabilities')); },
+    coreMethods() { return request(endpoint('coreMethods')); },
+    runCore(payload) { return request(endpoint('coreRun'), { method:'POST', body:payload, timeoutMs:125000 }); },
     languages() { return request(endpoint('languages')); },
     methods() { return request(endpoint('methods')); },
     execute(payload) { return request(endpoint('execute'), { method:'POST', body:payload }); },
@@ -67,18 +77,23 @@
     validateReport(payload) { return request(endpoint('reportValidate'), { method:'POST', body:payload, timeoutMs:65000 }); },
     reportPdf(payload) { return request(endpoint('reportPdf'), { method:'POST', body:payload, timeoutMs:65000 }); },
     validateHandoff(packet) { return request(endpoint('handoffValidate'), { method:'POST', body:{ packet }, timeoutMs:65000 }); },
-    queueExecute(payload) { return request(endpoint('jobs'), { method:'POST', body:{ operation:'execute', execute:payload } }); },
-    queueCompare(payload) { return request(endpoint('jobs'), { method:'POST', body:{ operation:'compare', compare:payload }, timeoutMs:65000 }); },
+    queueExecute(payload, options = {}) { const c=config(); return request(endpoint('jobs'), { method:'POST', body:Object.assign({ operation:'execute', execute:payload, timeoutSeconds:c.jobTimeoutSeconds, maxAttempts:c.jobMaxAttempts }, options) }); },
+    queueCompare(payload, options = {}) { const c=config(); return request(endpoint('jobs'), { method:'POST', body:Object.assign({ operation:'compare', compare:payload, timeoutSeconds:c.jobTimeoutSeconds, maxAttempts:c.jobMaxAttempts }, options), timeoutMs:65000 }); },
+    queueCore(payload, options = {}) { const c=config(); return request(endpoint('jobs'), { method:'POST', body:Object.assign({ operation:'core_run', request:payload, timeoutSeconds:c.jobTimeoutSeconds, maxAttempts:c.jobMaxAttempts }, options) }); },
+    listJobs(query = {}) { return request(withQuery(endpoint('jobs'), query)); },
     job(jobId) { return request(jobUrl(jobId)); },
-    cancel(jobId) { return request(jobUrl(jobId), { method:'DELETE' }); },
+    cancel(jobId) { return request(`${jobUrl(jobId)}/cancel`, { method:'POST', body:{} }); },
+    retry(jobId) { return request(`${jobUrl(jobId)}/retry`, { method:'POST', body:{} }); },
+    queueStatus() { return request(endpoint('queueStatus')); },
+    workers() { return request(endpoint('workers')); },
     async poll(jobId, options = {}) {
-      const interval = Math.max(500, Number(options.intervalMs || 1200));
+      const interval = Math.max(500, Number(options.intervalMs || config().jobPollMs || 1200));
       const deadline = Date.now() + Math.max(5000, Number(options.timeoutMs || 180000));
       while (Date.now() < deadline) {
         const record = await api.job(jobId);
         options.onUpdate?.(record);
         const state = String(record.status || record.state || '').toLowerCase();
-        if (['finished','completed','succeeded','failed','cancelled','canceled'].includes(state)) return record;
+        if (['finished','completed','succeeded','failed','cancelled','canceled','timed_out'].includes(state)) return record;
         await new Promise(resolve => setTimeout(resolve, interval));
       }
       const error = new Error('The execution job did not finish before the polling timeout.');

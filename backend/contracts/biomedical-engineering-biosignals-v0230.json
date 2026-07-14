@@ -1,0 +1,1861 @@
+{
+  "schema": "sc-lab-biomedical-engineering-biosignals-contract/1.0",
+  "version": "0.23.0",
+  "title": "Biomedical Engineering and Biosignals",
+  "categories": [
+    {
+      "id": "acquisition-sampling",
+      "label": "Acquisition and Sampling",
+      "description": "Sampling, duration, resolution, and quantization calculations."
+    },
+    {
+      "id": "ecg-cardiac",
+      "label": "ECG and Cardiac Intervals",
+      "description": "Rate, interval correction, axis, and heart-rate variability calculations."
+    },
+    {
+      "id": "ppg-hemodynamics",
+      "label": "PPG and Hemodynamics",
+      "description": "Pulse, perfusion, oxygenation approximation, transit, and waveform calculations."
+    },
+    {
+      "id": "respiration",
+      "label": "Respiration",
+      "description": "Breathing rate, ventilation, timing, burden, and integrated-flow calculations."
+    },
+    {
+      "id": "emg",
+      "label": "Electromyography",
+      "description": "Amplitude, activity, waveform, crossing, and shape features."
+    },
+    {
+      "id": "eeg",
+      "label": "Electroencephalography",
+      "description": "Band power, spectral ratios, centroid, entropy, dominance, and asymmetry."
+    },
+    {
+      "id": "filtering",
+      "label": "Filtering and Signal Conditioning",
+      "description": "Analog cutoff, moving-average, and exponential-smoothing parameters."
+    },
+    {
+      "id": "signal-quality",
+      "label": "Signal Quality",
+      "description": "Noise, completeness, clipping, correlation, and composite quality checks."
+    }
+  ],
+  "methods": [
+    {
+      "id": "sampling-interval-ms",
+      "label": "Sampling interval",
+      "category": "acquisition-sampling",
+      "operation": "sampling_interval_ms",
+      "inputs": [
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "ms"
+      },
+      "formula": "\u0394t = 1000 / fs",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "nyquist-frequency",
+      "label": "Nyquist frequency",
+      "category": "acquisition-sampling",
+      "operation": "nyquist_frequency",
+      "inputs": [
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "fN = fs / 2",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "sample-count",
+      "label": "Sample count",
+      "category": "acquisition-sampling",
+      "operation": "sample_count",
+      "inputs": [
+        {
+          "key": "durationSeconds",
+          "label": "Duration",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "samples"
+      },
+      "formula": "N = round(t \u00d7 fs)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "duration-from-samples",
+      "label": "Duration from samples",
+      "category": "acquisition-sampling",
+      "operation": "duration_from_samples",
+      "inputs": [
+        {
+          "key": "sampleCount",
+          "label": "Sample count",
+          "unit": "samples",
+          "type": "integer",
+          "min": 0
+        },
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "t = N / fs",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "adc-levels",
+      "label": "ADC levels",
+      "category": "acquisition-sampling",
+      "operation": "adc_levels",
+      "inputs": [
+        {
+          "key": "bits",
+          "label": "ADC resolution",
+          "unit": "bits",
+          "type": "integer",
+          "min": 1,
+          "max": 32
+        }
+      ],
+      "output": {
+        "unit": "levels"
+      },
+      "formula": "levels = 2^bits",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "quantization-step",
+      "label": "Quantization step",
+      "category": "acquisition-sampling",
+      "operation": "quantization_step",
+      "inputs": [
+        {
+          "key": "inputRange",
+          "label": "Full-scale input range",
+          "unit": "V",
+          "type": "number",
+          "min": 1e-06
+        },
+        {
+          "key": "bits",
+          "label": "ADC resolution",
+          "unit": "bits",
+          "type": "integer",
+          "min": 1,
+          "max": 32
+        }
+      ],
+      "output": {
+        "unit": "V/level"
+      },
+      "formula": "q = range / (2^bits \u2212 1)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "heart-rate-from-rr",
+      "label": "Heart rate from RR",
+      "category": "ecg-cardiac",
+      "operation": "heart_rate_from_rr",
+      "inputs": [
+        {
+          "key": "rrSeconds",
+          "label": "RR interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "bpm"
+      },
+      "formula": "HR = 60 / RR",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "rr-from-heart-rate",
+      "label": "RR interval from heart rate",
+      "category": "ecg-cardiac",
+      "operation": "rr_from_heart_rate",
+      "inputs": [
+        {
+          "key": "heartRateBpm",
+          "label": "Heart rate",
+          "unit": "bpm",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "RR = 60 / HR",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "qtc-bazett",
+      "label": "QTc using Bazett",
+      "category": "ecg-cardiac",
+      "operation": "qtc_bazett",
+      "inputs": [
+        {
+          "key": "qtSeconds",
+          "label": "QT interval",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "rrSeconds",
+          "label": "RR interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "QTc = QT / \u221aRR",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "qtc-fridericia",
+      "label": "QTc using Fridericia",
+      "category": "ecg-cardiac",
+      "operation": "qtc_fridericia",
+      "inputs": [
+        {
+          "key": "qtSeconds",
+          "label": "QT interval",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "rrSeconds",
+          "label": "RR interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "QTc = QT / RR^(1/3)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "ecg-axis-angle",
+      "label": "ECG vector angle",
+      "category": "ecg-cardiac",
+      "operation": "ecg_axis_angle",
+      "inputs": [
+        {
+          "key": "xComponent",
+          "label": "Horizontal component",
+          "unit": "mV",
+          "type": "number"
+        },
+        {
+          "key": "yComponent",
+          "label": "Vertical component",
+          "unit": "mV",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "degrees"
+      },
+      "formula": "\u03b8 = atan2(y, x)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "hrv-rmssd",
+      "label": "HRV RMSSD",
+      "category": "ecg-cardiac",
+      "operation": "hrv_rmssd",
+      "inputs": [
+        {
+          "key": "rrIntervalsMs",
+          "label": "RR intervals",
+          "unit": "ms",
+          "type": "array",
+          "minItems": 2
+        }
+      ],
+      "output": {
+        "unit": "ms"
+      },
+      "formula": "RMSSD = \u221amean(\u0394RR\u00b2)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "hrv-sdnn",
+      "label": "HRV SDNN",
+      "category": "ecg-cardiac",
+      "operation": "hrv_sdnn",
+      "inputs": [
+        {
+          "key": "rrIntervalsMs",
+          "label": "RR intervals",
+          "unit": "ms",
+          "type": "array",
+          "minItems": 2
+        }
+      ],
+      "output": {
+        "unit": "ms"
+      },
+      "formula": "SDNN = sample SD(RR)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "pulse-rate-from-interval",
+      "label": "Pulse rate from interval",
+      "category": "ppg-hemodynamics",
+      "operation": "pulse_rate_from_interval",
+      "inputs": [
+        {
+          "key": "pulseIntervalSeconds",
+          "label": "Pulse interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "bpm"
+      },
+      "formula": "PR = 60 / interval",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "perfusion-index",
+      "label": "Perfusion index",
+      "category": "ppg-hemodynamics",
+      "operation": "perfusion_index",
+      "inputs": [
+        {
+          "key": "acAmplitude",
+          "label": "AC amplitude",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "dcLevel",
+          "label": "DC level",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "PI = AC / DC \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "spo2-ratio-estimate",
+      "label": "SpO\u2082 ratio estimate",
+      "category": "ppg-hemodynamics",
+      "operation": "spo2_ratio_estimate",
+      "inputs": [
+        {
+          "key": "acRed",
+          "label": "Red AC",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "dcRed",
+          "label": "Red DC",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        },
+        {
+          "key": "acInfrared",
+          "label": "Infrared AC",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "dcInfrared",
+          "label": "Infrared DC",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "estimate = clamp(110 \u2212 25R, 0, 100)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "pulse-transit-time",
+      "label": "Pulse transit time",
+      "category": "ppg-hemodynamics",
+      "operation": "pulse_transit_time",
+      "inputs": [
+        {
+          "key": "proximalTimeSeconds",
+          "label": "Proximal event time",
+          "unit": "s",
+          "type": "number"
+        },
+        {
+          "key": "distalTimeSeconds",
+          "label": "Distal event time",
+          "unit": "s",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "PTT = tdistal \u2212 tproximal",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "pulse-wave-velocity",
+      "label": "Pulse wave velocity",
+      "category": "ppg-hemodynamics",
+      "operation": "pulse_wave_velocity",
+      "inputs": [
+        {
+          "key": "distanceMeters",
+          "label": "Path distance",
+          "unit": "m",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "transitTimeSeconds",
+          "label": "Transit time",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "m/s"
+      },
+      "formula": "PWV = distance / transit time",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "respiratory-rate",
+      "label": "Respiratory rate",
+      "category": "respiration",
+      "operation": "respiratory_rate",
+      "inputs": [
+        {
+          "key": "breathIntervalSeconds",
+          "label": "Breath interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "breaths/min"
+      },
+      "formula": "RR = 60 / interval",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "minute-ventilation",
+      "label": "Minute ventilation",
+      "category": "respiration",
+      "operation": "minute_ventilation",
+      "inputs": [
+        {
+          "key": "tidalVolumeLiters",
+          "label": "Tidal volume",
+          "unit": "L",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "respiratoryRate",
+          "label": "Respiratory rate",
+          "unit": "breaths/min",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "L/min"
+      },
+      "formula": "VE = VT \u00d7 RR",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "inspiratory-expiratory-ratio",
+      "label": "Inspiratory-to-expiratory ratio",
+      "category": "respiration",
+      "operation": "ie_ratio",
+      "inputs": [
+        {
+          "key": "inspirationSeconds",
+          "label": "Inspiratory time",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "expirationSeconds",
+          "label": "Expiratory time",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "ratio"
+      },
+      "formula": "I:E = Ti / Te",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "inspiratory-duty-cycle",
+      "label": "Inspiratory duty cycle",
+      "category": "respiration",
+      "operation": "inspiratory_duty_cycle",
+      "inputs": [
+        {
+          "key": "inspirationSeconds",
+          "label": "Inspiratory time",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "expirationSeconds",
+          "label": "Expiratory time",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "duty = Ti / (Ti + Te) \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "apnea-burden",
+      "label": "Apnea burden",
+      "category": "respiration",
+      "operation": "apnea_burden",
+      "inputs": [
+        {
+          "key": "apneaSeconds",
+          "label": "Total apnea time",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "recordingSeconds",
+          "label": "Recording duration",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "burden = apnea time / recording time \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "integrated-respiratory-volume",
+      "label": "Integrated respiratory volume",
+      "category": "respiration",
+      "operation": "integrated_respiratory_volume",
+      "inputs": [
+        {
+          "key": "meanFlowLitersPerSecond",
+          "label": "Mean flow",
+          "unit": "L/s",
+          "type": "number"
+        },
+        {
+          "key": "durationSeconds",
+          "label": "Duration",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "L"
+      },
+      "formula": "volume = mean flow \u00d7 duration",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "emg-rms",
+      "label": "EMG RMS",
+      "category": "emg",
+      "operation": "emg_rms",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "EMG samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "a.u."
+      },
+      "formula": "RMS = \u221amean(x\u00b2)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "emg-mean-absolute-value",
+      "label": "EMG mean absolute value",
+      "category": "emg",
+      "operation": "emg_mav",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "EMG samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "a.u."
+      },
+      "formula": "MAV = mean(|x|)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "integrated-emg",
+      "label": "Integrated EMG",
+      "category": "emg",
+      "operation": "integrated_emg",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "EMG samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "sampleIntervalSeconds",
+          "label": "Sample interval",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "a.u.\u00b7s"
+      },
+      "formula": "IEMG = \u03a3|x| \u00d7 \u0394t",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "emg-waveform-length",
+      "label": "EMG waveform length",
+      "category": "emg",
+      "operation": "emg_waveform_length",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "EMG samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 2
+        }
+      ],
+      "output": {
+        "unit": "a.u."
+      },
+      "formula": "WL = \u03a3|xi \u2212 xi\u22121|",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "zero-crossing-rate",
+      "label": "Zero-crossing rate",
+      "category": "emg",
+      "operation": "zero_crossing_rate",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "Signal samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 2
+        },
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "crossings/s"
+      },
+      "formula": "ZCR = crossings / (N \u2212 1) \u00d7 fs",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "peak-to-peak-amplitude",
+      "label": "Peak-to-peak amplitude",
+      "category": "emg",
+      "operation": "peak_to_peak",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "Signal samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "a.u."
+      },
+      "formula": "P2P = max(x) \u2212 min(x)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "crest-factor",
+      "label": "Crest factor",
+      "category": "emg",
+      "operation": "crest_factor",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "Signal samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "ratio"
+      },
+      "formula": "CF = max(|x|) / RMS",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "absolute-band-power",
+      "label": "Absolute band power",
+      "category": "eeg",
+      "operation": "absolute_band_power",
+      "inputs": [
+        {
+          "key": "frequenciesHz",
+          "label": "Frequency bins",
+          "unit": "Hz",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "powerValues",
+          "label": "Power values",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "lowHz",
+          "label": "Band low",
+          "unit": "Hz",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "highHz",
+          "label": "Band high",
+          "unit": "Hz",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "binWidthHz",
+          "label": "Bin width",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "a.u.\u00b7Hz"
+      },
+      "formula": "Pband = \u03a3P(f in band) \u00d7 \u0394f",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "relative-band-power",
+      "label": "Relative band power",
+      "category": "eeg",
+      "operation": "relative_band_power",
+      "inputs": [
+        {
+          "key": "bandPower",
+          "label": "Band power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "totalPower",
+          "label": "Total power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "relative power = band / total \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "alpha-beta-ratio",
+      "label": "Alpha-to-beta ratio",
+      "category": "eeg",
+      "operation": "alpha_beta_ratio",
+      "inputs": [
+        {
+          "key": "alphaPower",
+          "label": "Alpha power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "betaPower",
+          "label": "Beta power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "ratio"
+      },
+      "formula": "ratio = alpha / beta",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "theta-beta-ratio",
+      "label": "Theta-to-beta ratio",
+      "category": "eeg",
+      "operation": "theta_beta_ratio",
+      "inputs": [
+        {
+          "key": "thetaPower",
+          "label": "Theta power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "betaPower",
+          "label": "Beta power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "ratio"
+      },
+      "formula": "ratio = theta / beta",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "spectral-centroid",
+      "label": "Spectral centroid",
+      "category": "eeg",
+      "operation": "spectral_centroid",
+      "inputs": [
+        {
+          "key": "frequenciesHz",
+          "label": "Frequency bins",
+          "unit": "Hz",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "powerValues",
+          "label": "Power values",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "centroid = \u03a3(fP) / \u03a3P",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "spectral-entropy",
+      "label": "Normalized spectral entropy",
+      "category": "eeg",
+      "operation": "spectral_entropy",
+      "inputs": [
+        {
+          "key": "powerValues",
+          "label": "Power values",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 2
+        }
+      ],
+      "output": {
+        "unit": "0\u20131"
+      },
+      "formula": "H = \u2212\u03a3pi log2(pi) / log2(N)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "dominant-frequency",
+      "label": "Dominant frequency",
+      "category": "eeg",
+      "operation": "dominant_frequency",
+      "inputs": [
+        {
+          "key": "frequenciesHz",
+          "label": "Frequency bins",
+          "unit": "Hz",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "powerValues",
+          "label": "Power values",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "fd = frequency at maximum power",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "hemispheric-asymmetry",
+      "label": "Hemispheric asymmetry",
+      "category": "eeg",
+      "operation": "hemispheric_asymmetry",
+      "inputs": [
+        {
+          "key": "leftPower",
+          "label": "Left power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "rightPower",
+          "label": "Right power",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "asymmetry = (R \u2212 L) / (R + L) \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "rc-low-pass-cutoff",
+      "label": "RC low-pass cutoff",
+      "category": "filtering",
+      "operation": "rc_cutoff",
+      "inputs": [
+        {
+          "key": "resistanceOhms",
+          "label": "Resistance",
+          "unit": "\u03a9",
+          "type": "number",
+          "min": 1e-06
+        },
+        {
+          "key": "capacitanceFarads",
+          "label": "Capacitance",
+          "unit": "F",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "fc = 1 / (2\u03c0RC)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "rc-high-pass-cutoff",
+      "label": "RC high-pass cutoff",
+      "category": "filtering",
+      "operation": "rc_cutoff",
+      "inputs": [
+        {
+          "key": "resistanceOhms",
+          "label": "Resistance",
+          "unit": "\u03a9",
+          "type": "number",
+          "min": 1e-06
+        },
+        {
+          "key": "capacitanceFarads",
+          "label": "Capacitance",
+          "unit": "F",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "fc = 1 / (2\u03c0RC)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "moving-average-latest",
+      "label": "Latest moving average",
+      "category": "filtering",
+      "operation": "moving_average_latest",
+      "inputs": [
+        {
+          "key": "samples",
+          "label": "Signal samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "windowSize",
+          "label": "Window size",
+          "unit": "samples",
+          "type": "integer",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "a.u."
+      },
+      "formula": "MA = mean(last W samples)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "exponential-smoothing-alpha",
+      "label": "Exponential smoothing alpha",
+      "category": "filtering",
+      "operation": "exponential_smoothing_alpha",
+      "inputs": [
+        {
+          "key": "sampleIntervalSeconds",
+          "label": "Sample interval",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "timeConstantSeconds",
+          "label": "Time constant",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "0\u20131"
+      },
+      "formula": "\u03b1 = \u0394t / (\u03c4 + \u0394t)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "snr-db",
+      "label": "Signal-to-noise ratio",
+      "category": "signal-quality",
+      "operation": "snr_db",
+      "inputs": [
+        {
+          "key": "signalRms",
+          "label": "Signal RMS",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        },
+        {
+          "key": "noiseRms",
+          "label": "Noise RMS",
+          "unit": "a.u.",
+          "type": "number",
+          "min": 1e-06
+        }
+      ],
+      "output": {
+        "unit": "dB"
+      },
+      "formula": "SNR = 20 log10(signal/noise)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "missing-sample-percent",
+      "label": "Missing sample percentage",
+      "category": "signal-quality",
+      "operation": "missing_sample_percent",
+      "inputs": [
+        {
+          "key": "missingCount",
+          "label": "Missing samples",
+          "unit": "samples",
+          "type": "integer",
+          "min": 0
+        },
+        {
+          "key": "totalCount",
+          "label": "Total samples",
+          "unit": "samples",
+          "type": "integer",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "missing = missing / total \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "clipping-percent",
+      "label": "Clipping percentage",
+      "category": "signal-quality",
+      "operation": "clipping_percent",
+      "inputs": [
+        {
+          "key": "clippedCount",
+          "label": "Clipped samples",
+          "unit": "samples",
+          "type": "integer",
+          "min": 0
+        },
+        {
+          "key": "totalCount",
+          "label": "Total samples",
+          "unit": "samples",
+          "type": "integer",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "clipping = clipped / total \u00d7 100",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "pearson-correlation",
+      "label": "Pearson correlation",
+      "category": "signal-quality",
+      "operation": "pearson_correlation",
+      "inputs": [
+        {
+          "key": "xValues",
+          "label": "Reference samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 2
+        },
+        {
+          "key": "yValues",
+          "label": "Comparison samples",
+          "unit": "a.u.",
+          "type": "array",
+          "minItems": 2
+        }
+      ],
+      "output": {
+        "unit": "r"
+      },
+      "formula": "r = cov(x,y) / (SDx SDy)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    },
+    {
+      "id": "signal-quality-index",
+      "label": "Composite signal quality index",
+      "category": "signal-quality",
+      "operation": "signal_quality_index",
+      "inputs": [
+        {
+          "key": "snrDb",
+          "label": "SNR",
+          "unit": "dB",
+          "type": "number"
+        },
+        {
+          "key": "missingPercent",
+          "label": "Missing samples",
+          "unit": "%",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "clippingPercent",
+          "label": "Clipping",
+          "unit": "%",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "0\u2013100"
+      },
+      "formula": "SQI = clamp(50 + 2\u00b7SNR \u2212 2\u00b7missing \u2212 3\u00b7clipping, 0, 100)",
+      "responsibleUse": "Research and education only; not a diagnostic or clinical decision."
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "benchmark-sampling-interval-ms",
+      "methodId": "sampling-interval-ms",
+      "inputs": {
+        "sampleRateHz": 250
+      },
+      "expected": 4.0,
+      "tolerance": 4e-09
+    },
+    {
+      "id": "benchmark-nyquist-frequency",
+      "methodId": "nyquist-frequency",
+      "inputs": {
+        "sampleRateHz": 500
+      },
+      "expected": 250.0,
+      "tolerance": 2.5000000000000004e-07
+    },
+    {
+      "id": "benchmark-sample-count",
+      "methodId": "sample-count",
+      "inputs": {
+        "durationSeconds": 10,
+        "sampleRateHz": 250
+      },
+      "expected": 2500.0,
+      "tolerance": 2.5e-06
+    },
+    {
+      "id": "benchmark-duration-from-samples",
+      "methodId": "duration-from-samples",
+      "inputs": {
+        "sampleCount": 1250,
+        "sampleRateHz": 250
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-adc-levels",
+      "methodId": "adc-levels",
+      "inputs": {
+        "bits": 12
+      },
+      "expected": 4096.0,
+      "tolerance": 4.096e-06
+    },
+    {
+      "id": "benchmark-quantization-step",
+      "methodId": "quantization-step",
+      "inputs": {
+        "inputRange": 3.3,
+        "bits": 12
+      },
+      "expected": 0.0008058608058608059,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-heart-rate-from-rr",
+      "methodId": "heart-rate-from-rr",
+      "inputs": {
+        "rrSeconds": 0.8
+      },
+      "expected": 75.0,
+      "tolerance": 7.500000000000001e-08
+    },
+    {
+      "id": "benchmark-rr-from-heart-rate",
+      "methodId": "rr-from-heart-rate",
+      "inputs": {
+        "heartRateBpm": 75
+      },
+      "expected": 0.8,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-qtc-bazett",
+      "methodId": "qtc-bazett",
+      "inputs": {
+        "qtSeconds": 0.36,
+        "rrSeconds": 0.81
+      },
+      "expected": 0.39999999999999997,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-qtc-fridericia",
+      "methodId": "qtc-fridericia",
+      "inputs": {
+        "qtSeconds": 0.36,
+        "rrSeconds": 0.729
+      },
+      "expected": 0.39999999999999997,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-ecg-axis-angle",
+      "methodId": "ecg-axis-angle",
+      "inputs": {
+        "xComponent": 1,
+        "yComponent": 1
+      },
+      "expected": 45.0,
+      "tolerance": 4.5000000000000006e-08
+    },
+    {
+      "id": "benchmark-hrv-rmssd",
+      "methodId": "hrv-rmssd",
+      "inputs": {
+        "rrIntervalsMs": [
+          800,
+          810,
+          790,
+          805
+        ]
+      },
+      "expected": 15.545631755148024,
+      "tolerance": 1.5545631755148025e-08
+    },
+    {
+      "id": "benchmark-hrv-sdnn",
+      "methodId": "hrv-sdnn",
+      "inputs": {
+        "rrIntervalsMs": [
+          800,
+          810,
+          790,
+          805
+        ]
+      },
+      "expected": 8.539125638299666,
+      "tolerance": 8.539125638299667e-09
+    },
+    {
+      "id": "benchmark-pulse-rate-from-interval",
+      "methodId": "pulse-rate-from-interval",
+      "inputs": {
+        "pulseIntervalSeconds": 0.75
+      },
+      "expected": 80.0,
+      "tolerance": 8e-08
+    },
+    {
+      "id": "benchmark-perfusion-index",
+      "methodId": "perfusion-index",
+      "inputs": {
+        "acAmplitude": 2,
+        "dcLevel": 100
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-spo2-ratio-estimate",
+      "methodId": "spo2-ratio-estimate",
+      "inputs": {
+        "acRed": 0.5,
+        "dcRed": 10,
+        "acInfrared": 1,
+        "dcInfrared": 10
+      },
+      "expected": 97.5,
+      "tolerance": 9.75e-08
+    },
+    {
+      "id": "benchmark-pulse-transit-time",
+      "methodId": "pulse-transit-time",
+      "inputs": {
+        "proximalTimeSeconds": 1.1,
+        "distalTimeSeconds": 1.35
+      },
+      "expected": 0.25,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-pulse-wave-velocity",
+      "methodId": "pulse-wave-velocity",
+      "inputs": {
+        "distanceMeters": 0.5,
+        "transitTimeSeconds": 0.1
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-respiratory-rate",
+      "methodId": "respiratory-rate",
+      "inputs": {
+        "breathIntervalSeconds": 4
+      },
+      "expected": 15.0,
+      "tolerance": 1.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-minute-ventilation",
+      "methodId": "minute-ventilation",
+      "inputs": {
+        "tidalVolumeLiters": 0.5,
+        "respiratoryRate": 12
+      },
+      "expected": 6.0,
+      "tolerance": 6.000000000000001e-09
+    },
+    {
+      "id": "benchmark-inspiratory-expiratory-ratio",
+      "methodId": "inspiratory-expiratory-ratio",
+      "inputs": {
+        "inspirationSeconds": 2,
+        "expirationSeconds": 3
+      },
+      "expected": 0.6666666666666666,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-inspiratory-duty-cycle",
+      "methodId": "inspiratory-duty-cycle",
+      "inputs": {
+        "inspirationSeconds": 2,
+        "expirationSeconds": 3
+      },
+      "expected": 40.0,
+      "tolerance": 4e-08
+    },
+    {
+      "id": "benchmark-apnea-burden",
+      "methodId": "apnea-burden",
+      "inputs": {
+        "apneaSeconds": 60,
+        "recordingSeconds": 3600
+      },
+      "expected": 1.6666666666666667,
+      "tolerance": 1.666666666666667e-09
+    },
+    {
+      "id": "benchmark-integrated-respiratory-volume",
+      "methodId": "integrated-respiratory-volume",
+      "inputs": {
+        "meanFlowLitersPerSecond": 0.4,
+        "durationSeconds": 2
+      },
+      "expected": 0.8,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-emg-rms",
+      "methodId": "emg-rms",
+      "inputs": {
+        "samples": [
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-emg-mean-absolute-value",
+      "methodId": "emg-mean-absolute-value",
+      "inputs": {
+        "samples": [
+          1,
+          -2,
+          3,
+          -4
+        ]
+      },
+      "expected": 2.5,
+      "tolerance": 2.5e-09
+    },
+    {
+      "id": "benchmark-integrated-emg",
+      "methodId": "integrated-emg",
+      "inputs": {
+        "samples": [
+          1,
+          -2,
+          3
+        ],
+        "sampleIntervalSeconds": 0.01
+      },
+      "expected": 0.06,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-emg-waveform-length",
+      "methodId": "emg-waveform-length",
+      "inputs": {
+        "samples": [
+          1,
+          3,
+          2,
+          5
+        ]
+      },
+      "expected": 6.0,
+      "tolerance": 6.000000000000001e-09
+    },
+    {
+      "id": "benchmark-zero-crossing-rate",
+      "methodId": "zero-crossing-rate",
+      "inputs": {
+        "samples": [
+          -1,
+          1,
+          -1,
+          1
+        ],
+        "sampleRateHz": 100
+      },
+      "expected": 100.0,
+      "tolerance": 1.0000000000000001e-07
+    },
+    {
+      "id": "benchmark-peak-to-peak-amplitude",
+      "methodId": "peak-to-peak-amplitude",
+      "inputs": {
+        "samples": [
+          -2,
+          1,
+          4,
+          0
+        ]
+      },
+      "expected": 6.0,
+      "tolerance": 6.000000000000001e-09
+    },
+    {
+      "id": "benchmark-crest-factor",
+      "methodId": "crest-factor",
+      "inputs": {
+        "samples": [
+          0,
+          3,
+          4,
+          0
+        ]
+      },
+      "expected": 1.6,
+      "tolerance": 1.6000000000000003e-09
+    },
+    {
+      "id": "benchmark-absolute-band-power",
+      "methodId": "absolute-band-power",
+      "inputs": {
+        "frequenciesHz": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "powerValues": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "lowHz": 2,
+        "highHz": 3,
+        "binWidthHz": 1
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-relative-band-power",
+      "methodId": "relative-band-power",
+      "inputs": {
+        "bandPower": 25,
+        "totalPower": 100
+      },
+      "expected": 25.0,
+      "tolerance": 2.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-alpha-beta-ratio",
+      "methodId": "alpha-beta-ratio",
+      "inputs": {
+        "alphaPower": 20,
+        "betaPower": 10
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-theta-beta-ratio",
+      "methodId": "theta-beta-ratio",
+      "inputs": {
+        "thetaPower": 15,
+        "betaPower": 5
+      },
+      "expected": 3.0,
+      "tolerance": 3.0000000000000004e-09
+    },
+    {
+      "id": "benchmark-spectral-centroid",
+      "methodId": "spectral-centroid",
+      "inputs": {
+        "frequenciesHz": [
+          1,
+          2,
+          3
+        ],
+        "powerValues": [
+          1,
+          2,
+          1
+        ]
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-spectral-entropy",
+      "methodId": "spectral-entropy",
+      "inputs": {
+        "powerValues": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-dominant-frequency",
+      "methodId": "dominant-frequency",
+      "inputs": {
+        "frequenciesHz": [
+          5,
+          10,
+          15
+        ],
+        "powerValues": [
+          1,
+          4,
+          2
+        ]
+      },
+      "expected": 10.0,
+      "tolerance": 1e-08
+    },
+    {
+      "id": "benchmark-hemispheric-asymmetry",
+      "methodId": "hemispheric-asymmetry",
+      "inputs": {
+        "leftPower": 40,
+        "rightPower": 60
+      },
+      "expected": 20.0,
+      "tolerance": 2e-08
+    },
+    {
+      "id": "benchmark-rc-low-pass-cutoff",
+      "methodId": "rc-low-pass-cutoff",
+      "inputs": {
+        "resistanceOhms": 1000,
+        "capacitanceFarads": 1e-06
+      },
+      "expected": 159.15494309189535,
+      "tolerance": 1.5915494309189535e-07
+    },
+    {
+      "id": "benchmark-rc-high-pass-cutoff",
+      "methodId": "rc-high-pass-cutoff",
+      "inputs": {
+        "resistanceOhms": 10000,
+        "capacitanceFarads": 1e-06
+      },
+      "expected": 15.915494309189533,
+      "tolerance": 1.5915494309189534e-08
+    },
+    {
+      "id": "benchmark-moving-average-latest",
+      "methodId": "moving-average-latest",
+      "inputs": {
+        "samples": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "windowSize": 3
+      },
+      "expected": 4.0,
+      "tolerance": 4e-09
+    },
+    {
+      "id": "benchmark-exponential-smoothing-alpha",
+      "methodId": "exponential-smoothing-alpha",
+      "inputs": {
+        "sampleIntervalSeconds": 0.1,
+        "timeConstantSeconds": 0.9
+      },
+      "expected": 0.1,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-snr-db",
+      "methodId": "snr-db",
+      "inputs": {
+        "signalRms": 10,
+        "noiseRms": 1
+      },
+      "expected": 20.0,
+      "tolerance": 2e-08
+    },
+    {
+      "id": "benchmark-missing-sample-percent",
+      "methodId": "missing-sample-percent",
+      "inputs": {
+        "missingCount": 5,
+        "totalCount": 100
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-clipping-percent",
+      "methodId": "clipping-percent",
+      "inputs": {
+        "clippedCount": 2,
+        "totalCount": 100
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-pearson-correlation",
+      "methodId": "pearson-correlation",
+      "inputs": {
+        "xValues": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "yValues": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-signal-quality-index",
+      "methodId": "signal-quality-index",
+      "inputs": {
+        "snrDb": 20,
+        "missingPercent": 2,
+        "clippingPercent": 1
+      },
+      "expected": 83.0,
+      "tolerance": 8.3e-08
+    }
+  ],
+  "waveformAnalysis": {
+    "features": [
+      "sampleCount",
+      "durationSeconds",
+      "mean",
+      "standardDeviation",
+      "rms",
+      "minimum",
+      "maximum",
+      "peakToPeak",
+      "zeroCrossingCount",
+      "zeroCrossingRate",
+      "crestFactor"
+    ]
+  },
+  "responsibleUse": {
+    "scope": "Research, education, prototyping, and non-clinical signal analysis.",
+    "boundary": "Not for diagnosis, treatment, patient monitoring, alarm generation, or clinical decision-making."
+  }
+}

@@ -1,363 +1,381 @@
 from __future__ import annotations
 
-import os
+import base64
+import io
+from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from reportlab.lib.pagesizes import A4, letter
+from reportlab.pdfgen import canvas
 
-from . import VERSION
-from .catalog import CatalogError, get_method, public_catalog
-from .executor import ExecutionError, compare_languages, execute_method, language_registry
-from .expressions import ContractValidationError, evaluate_contract
-from .jobs import jobs
-from .models import CompareRequest, ExecuteRequest, HandoffValidateRequest, JobRequest, ReportRequest, ValidateRequest
-from .reporting import ReportValidationError, report_pdf_response, validate_handoff, validate_report
-from .electrical_embedded import router as electrical_router
-from .mechanical_thermal import router as mechanical_router
-from .civil_infrastructure import CivilInfrastructureError, public_catalog as civil_catalog, run_method as run_civil_method
-from .security import rate_limit, require_api_key
+from .compute import ComputeExecutionError, run_compute
+from .config import settings
+from .extensions import load_legacy_extensions
+from .jobs import InvalidJobStateError, PersistentJobQueue, QueueCapacityError
+from .registry import catalog, resolve
+from .schemas import ComputeRequest, ComputeResponse
+from .security import require_compute_auth
+
+
+jobs = PersistentJobQueue()
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    application.state.extensions = (
+        load_legacy_extensions(application)
+        if settings.extension_loading
+        else {"loaded": [], "failed": {}}
+    )
+    jobs.start()
+    yield
+    jobs.stop()
+
 
 app = FastAPI(
-    title="Sustainable Catalyst Lab Compute API",
-    version=VERSION,
-    description="Curated multi-language execution for versioned Sustainable Catalyst Lab method contracts.",
-    docs_url="/docs" if os.getenv("SC_LAB_ENABLE_DOCS", "true").lower() in {"1", "true", "yes"} else None,
-    redoc_url=None,
+    title=settings.service_name,
+    version=settings.version,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    lifespan=lifespan,
 )
-
-origins = [item.strip() for item in os.getenv("SC_LAB_CORS_ORIGINS", "https://sustainablecatalyst.com").split(",") if item.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[],
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE"],
-    allow_headers=["Content-Type", "X-SC-Lab-Key"],
+    allow_headers=["*"],
 )
 
 
-@app.get("/v1/civil/methods", dependencies=[Depends(require_api_key)])
-def civil_methods() -> dict[str, Any]:
-    return civil_catalog()
-
-@app.post("/v1/civil/run", dependencies=[Depends(require_api_key)])
-def civil_run(payload: dict[str, Any]) -> dict[str, Any]:
-    method_id = str(payload.get("methodId") or "")
-    inputs = payload.get("inputs") or {}
-    if not method_id or not isinstance(inputs, dict):
-        raise HTTPException(status_code=422, detail="methodId and numerical inputs are required.")
-    try:
-        return run_civil_method(method_id, inputs)
-    except CivilInfrastructureError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
-
 @app.middleware("http")
-async def body_and_rate_limits(request: Request, call_next: Any) -> Any:
+async def request_limits(request: Request, call_next):
     if request.method in {"POST", "PUT", "PATCH"}:
-        length = int(request.headers.get("content-length") or 0)
-        limit = 2_000_000 if request.url.path.startswith(("/v1/reports", "/v1/handoffs")) else 65536
-        if length > limit:
-            return JSONResponse(status_code=413, content={"detail": f"Request body exceeds {limit} bytes."})
-    if request.url.path.startswith("/v1/"):
-        rate_limit(request)
+        body = await request.body()
+        if len(body) > settings.max_request_bytes:
+            return JSONResponse(
+                status_code=413,
+                content={"detail": "Compute request exceeds the configured size limit."},
+            )
     return await call_next(request)
 
 
-@app.exception_handler(ExecutionError)
-async def execution_error_handler(_: Request, exc: ExecutionError) -> JSONResponse:
-    status_code = {
-        "invalid_input": 422,
-        "unsupported_language": 400,
-        "runtime_unavailable": 503,
-        "timeout": 408,
-        "compile_error": 500,
-        "runtime_error": 500,
-        "output_limit": 500,
-    }.get(exc.code, 500)
-    return JSONResponse(status_code=status_code, content={"error": {"code": exc.code, "message": str(exc), "details": exc.details}})
+def execute_or_http(payload: ComputeRequest, auth: dict[str, str]) -> ComputeResponse:
+    try:
+        return run_compute(payload, auth)
+    except ComputeExecutionError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
 
 
-
-
-@app.exception_handler(ReportValidationError)
-async def report_validation_error_handler(_: Request, exc: ReportValidationError) -> JSONResponse:
-    return JSONResponse(status_code=422, content={"error": {"code": "invalid_report", "message": str(exc)}})
-
-@app.exception_handler(CatalogError)
-async def catalog_error_handler(_: Request, exc: CatalogError) -> JSONResponse:
-    return JSONResponse(status_code=404, content={"error": {"code": "unknown_method", "message": str(exc)}})
-
-
-@app.get("/")
-def root() -> dict[str, Any]:
-    return {"service": "Sustainable Catalyst Lab Compute API", "version": VERSION, "health": "/health", "docs": "/docs"}
+def job_payload(source: dict[str, Any]) -> ComputeRequest:
+    return ComputeRequest(
+        method=str(source.get("methodId") or source.get("method") or ""),
+        version=source.get("version"),
+        inputs=source.get("inputs") or {},
+        parameters=source.get("parameters") or {},
+        units=source.get("units") or {},
+        project_id=source.get("project_id") or source.get("projectId"),
+        requested_outputs=source.get("requested_outputs") or source.get("requestedOutputs") or ["summary", "values"],
+        random_seed=source.get("random_seed") if source.get("random_seed") is not None else source.get("randomSeed"),
+    )
 
 
 @app.get("/health")
-def health() -> dict[str, Any]:
-    languages = language_registry()
+def health():
+    queue_state = jobs.queue_status()
     return {
         "ok": True,
-        "service": "sustainable-catalyst-lab-compute-api",
-        "version": VERSION,
-        "queueMode": jobs.mode,
-        "availableLanguages": [language for language, details in languages.items() if details["available"]],
-        "curatedExecutionOnly": True,
-        "arbitrarySourceAccepted": False,
+        "status": "ready",
+        "service": settings.service_name,
+        "version": settings.version,
+        "architecture": "python-compute-core",
+        "authMode": settings.auth_mode,
+        "methodCount": len(catalog()),
+        "extensionLoading": settings.extension_loading,
+        "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
+        "queue": {
+            "persistent": queue_state["persistent"],
+            "storage": queue_state["storage"],
+            "activeWorkers": queue_state["activeWorkers"],
+            "workerCapacity": queue_state["workerCapacity"],
+            "queued": queue_state["counts"]["queued"] + queue_state["counts"]["retrying"],
+        },
     }
 
 
 @app.get("/version")
-def version() -> dict[str, str]:
-    return {"version": VERSION, "contractSchema": "sc-lab-method/1.0", "executionSchema": "sc-lab-execution/1.0"}
+def version():
+    return {"version": settings.version, "service": settings.service_name}
 
 
-@app.get("/v1/methods", dependencies=[Depends(require_api_key)])
-def methods() -> dict[str, Any]:
-    return public_catalog()
-
-
-@app.get("/v1/languages", dependencies=[Depends(require_api_key)])
-def languages() -> dict[str, Any]:
-    return {"version": VERSION, "languages": language_registry()}
-
-
-@app.post("/v1/validate", dependencies=[Depends(require_api_key)])
-def validate(payload: ValidateRequest) -> dict[str, Any]:
-    contract = get_method(payload.methodId)
-    try:
-        inputs, outputs = evaluate_contract(contract, payload.inputs)
-    except ContractValidationError as exc:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+@app.get("/v1/capabilities", dependencies=[Depends(require_compute_auth)])
+def capabilities():
     return {
-        "schema": "sc-lab-contract-validation/1.0",
-        "methodId": payload.methodId,
-        "methodVersion": contract.get("version"),
-        "inputs": inputs,
-        "outputs": outputs,
-        "status": "VALIDATED",
+        "schema": "sc-lab-compute-capabilities/1.1",
+        "version": settings.version,
+        "executionTargets": ["python-core-cpu", "isolated-process-worker"],
+        "modes": ["synchronous", "persistent-queued"],
+        "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
+        "security": {
+            "authMode": settings.auth_mode,
+            "arbitraryCode": False,
+            "registeredMethodsOnly": True,
+            "requestLimitBytes": settings.max_request_bytes,
+            "hardWorkerTermination": True,
+        },
+        "jobs": {
+            "persistent": True,
+            "storage": "sqlite-wal",
+            "states": ["queued", "running", "completed", "failed", "cancelled", "timed_out", "retrying"],
+            "workerCount": settings.job_workers,
+            "maxQueuedJobs": settings.max_queued_jobs,
+            "defaultTimeoutSeconds": settings.default_job_timeout_seconds,
+            "maxTimeoutSeconds": settings.max_job_timeout_seconds,
+            "defaultAttempts": settings.default_job_attempts,
+            "maxAttempts": settings.max_job_attempts,
+            "deduplication": True,
+            "restartRecovery": True,
+        },
+        "provenanceSchema": "sc-lab-compute-provenance/1.0",
+        "methodCount": len(catalog()),
+        "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
     }
 
 
-@app.post("/v1/execute", dependencies=[Depends(require_api_key)])
-def execute(payload: ExecuteRequest) -> dict[str, Any]:
-    return execute_method(payload.methodId, payload.language, payload.inputs, payload.timeoutSeconds, payload.includeSource)
+@app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])
+def methods():
+    return {"schema": "sc-lab-method-registry/1.0", "version": settings.version, "methods": catalog()}
 
 
-@app.post("/v1/compare", dependencies=[Depends(require_api_key)])
-def compare(payload: CompareRequest) -> dict[str, Any]:
-    return compare_languages(
-        payload.methodId,
-        list(payload.languages),
-        payload.inputs,
-        payload.timeoutSeconds,
-        payload.includeSource,
-        payload.absoluteTolerance,
-        payload.relativeTolerance,
-    )
-
-
-@app.post("/v1/jobs", status_code=202, dependencies=[Depends(require_api_key)])
-def create_job(payload: JobRequest) -> dict[str, Any]:
+@app.get("/v1/methods/{method_id}", dependencies=[Depends(require_compute_auth)])
+def method(method_id: str):
     try:
-        selected = payload.selected_payload()
+        return resolve(method_id).public()
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.post("/v1/compute/run", response_model=ComputeResponse)
+def compute_run(payload: ComputeRequest, auth: dict[str, str] = Depends(require_compute_auth)):
+    return execute_or_http(payload, auth)
+
+
+@app.get("/v1/languages", dependencies=[Depends(require_compute_auth)])
+def languages():
+    return {
+        "languages": [
+            {"id": "python", "status": "native", "version": "3"},
+            {"id": "javascript", "status": "browser-fallback"},
+            {"id": "typescript", "status": "source-only"},
+            {"id": "r", "status": "source-only"},
+            {"id": "julia", "status": "source-only"},
+            {"id": "rust", "status": "source-only"},
+            {"id": "go", "status": "source-only"},
+            {"id": "c", "status": "source-only"},
+            {"id": "cpp", "status": "source-only"},
+            {"id": "fortran", "status": "source-only"},
+            {"id": "sql", "status": "source-only"},
+            {"id": "haskell", "status": "source-only"},
+        ]
+    }
+
+
+@app.post("/v1/validate")
+def validate(payload: ComputeRequest, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        method_record = resolve(payload.method)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {"ok": True, "method": method_record.public(), "request": payload.model_dump()}
+
+
+@app.post("/v1/execute")
+def execute_compat(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    language = str(payload.get("language") or "python").lower()
+    if language != "python":
+        raise HTTPException(
+            status_code=422,
+            detail=f"v0.26.1 executes Python natively; {language} remains a browser/source fallback.",
+        )
+    request = job_payload(payload)
+    result = execute_or_http(request, auth)
+    return {
+        "ok": True,
+        "methodId": payload.get("methodId") or request.method,
+        "language": "python",
+        "outputs": result.outputs,
+        "result": result.model_dump(mode="json", by_alias=True),
+        "provenance": result.provenance.model_dump(mode="json", by_alias=True),
+    }
+
+
+@app.post("/v1/compare")
+def compare_compat(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    languages_requested = [str(v).lower() for v in payload.get("languages") or []]
+    request = job_payload(payload)
+    result = execute_or_http(request, auth)
+    return {
+        "ok": True,
+        "methodId": payload.get("methodId"),
+        "referenceLanguage": "python",
+        "reference": result.outputs,
+        "runs": [{"language": "python", "status": "completed", "outputs": result.outputs}]
+        if "python" in languages_requested
+        else [],
+        "unsupported": [lang for lang in languages_requested if lang != "python"],
+        "provenance": result.provenance.model_dump(mode="json", by_alias=True),
+    }
+
+
+@app.post("/v1/jobs", status_code=202)
+def create_job(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    operation = str(payload.get("operation") or "core_run")
+    if operation in {"execute", "core_run"}:
+        source = payload.get("execute") or payload.get("request") or payload
+    elif operation == "compare":
+        source = payload.get("compare") or {}
+    else:
+        raise HTTPException(status_code=422, detail="Job operation must be execute, core_run, or compare.")
+
+    try:
+        request = job_payload(source)
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    idempotency_key = str(payload.get("idempotencyKey") or payload.get("idempotency_key") or "") or None
+    timeout_seconds = payload.get("timeoutSeconds") or payload.get("timeout_seconds") or source.get("timeoutSeconds")
+    max_attempts = payload.get("maxAttempts") or payload.get("max_attempts")
+    try:
+        record, deduplicated = jobs.submit(
+            operation=operation,
+            payload=request.model_dump(mode="json"),
+            auth=auth,
+            timeout_seconds=int(timeout_seconds) if timeout_seconds is not None else None,
+            max_attempts=int(max_attempts) if max_attempts is not None else None,
+            idempotency_key=idempotency_key,
+        )
+    except QueueCapacityError as exc:
+        raise HTTPException(status_code=429, detail=str(exc)) from exc
+    record["deduplicated"] = deduplicated
+    return record
+
+
+@app.get("/v1/jobs", dependencies=[Depends(require_compute_auth)])
+def list_jobs(
+    status: str | None = Query(default=None),
+    project_id: str | None = Query(default=None, max_length=128),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+):
+    try:
+        result = jobs.list(status=status, project_id=project_id, limit=limit, offset=offset)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-    return jobs.submit(payload.operation, selected)
+    return {"schema": "sc-lab-compute-job-list/1.0", **result}
 
 
-@app.get("/v1/jobs/{job_id}", dependencies=[Depends(require_api_key)])
-def job_status(job_id: str) -> dict[str, Any]:
-    record = jobs.status(job_id)
-    if record is None:
-        raise HTTPException(status_code=404, detail="Unknown execution job.")
-    return record
+@app.get("/v1/jobs/{job_id}", dependencies=[Depends(require_compute_auth)])
+def get_job(job_id: str):
+    job = jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
 
 
-@app.delete("/v1/jobs/{job_id}", dependencies=[Depends(require_api_key)])
-def cancel_job(job_id: str) -> dict[str, Any]:
-    record = jobs.cancel(job_id)
-    if record is None:
-        raise HTTPException(status_code=404, detail="Unknown execution job.")
-    return record
+@app.delete("/v1/jobs/{job_id}", dependencies=[Depends(require_compute_auth)])
+def cancel_job_delete(job_id: str):
+    job = jobs.cancel(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
 
 
-@app.post("/v1/reports/validate", dependencies=[Depends(require_api_key)])
-def report_validate(payload: ReportRequest) -> dict[str, Any]:
-    report = validate_report(payload.model_dump())
+@app.post("/v1/jobs/{job_id}/cancel", dependencies=[Depends(require_compute_auth)])
+def cancel_job(job_id: str):
+    job = jobs.cancel(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
+
+
+@app.post("/v1/jobs/{job_id}/retry", dependencies=[Depends(require_compute_auth)])
+def retry_job(job_id: str):
+    try:
+        job = jobs.retry(job_id)
+    except InvalidJobStateError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
+
+
+@app.get("/v1/workers", dependencies=[Depends(require_compute_auth)])
+def workers():
+    return jobs.workers_status()
+
+
+@app.get("/v1/queue/status", dependencies=[Depends(require_compute_auth)])
+def queue_status():
+    return jobs.queue_status()
+
+
+@app.post("/v1/reports/validate")
+def report_validate(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    errors = []
+    if not str(payload.get("title") or "").strip():
+        errors.append("title is required")
+    analyses = payload.get("analyses")
+    if not isinstance(analyses, list) or not analyses:
+        errors.append("at least one analysis is required")
+    return {"ok": not errors, "valid": not errors, "errors": errors, "schema": "sc-lab-report-validation/1.0"}
+
+
+@app.post("/v1/reports/pdf")
+def report_pdf(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    validation = report_validate(payload, auth)
+    if not validation["valid"]:
+        raise HTTPException(status_code=422, detail=validation["errors"])
+    buffer = io.BytesIO()
+    pagesize = A4 if payload.get("pageSize") == "A4" else letter
+    pdf = canvas.Canvas(buffer, pagesize=pagesize)
+    _, height = pagesize
+    pdf.setTitle(str(payload.get("title")))
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(54, height - 54, str(payload.get("title"))[:100])
+    y = height - 86
+    pdf.setFont("Helvetica", 10)
+    for index, analysis in enumerate(payload.get("analyses") or [], 1):
+        line = f"{index}. {analysis.get('title') or analysis.get('method') or 'Analysis'}"
+        pdf.drawString(54, y, line[:120])
+        y -= 16
+        if y < 54:
+            pdf.showPage()
+            y = height - 54
+            pdf.setFont("Helvetica", 10)
+    pdf.save()
+    raw = buffer.getvalue()
     return {
-        "schema": "sc-lab-report-validation/1.0",
-        "status": "VALIDATED",
-        "reportType": report["reportType"],
-        "analysisCount": len(report["analyses"]),
-        "reportFingerprint": report["audit"]["reportFingerprint"],
-        "engine": "reportlab-vector-pdf",
+        "ok": True,
+        "mimeType": "application/pdf",
+        "filename": "sustainable-catalyst-lab-report.pdf",
+        "base64": base64.b64encode(raw).decode("ascii"),
+        "sizeBytes": len(raw),
     }
 
 
-@app.post("/v1/reports/pdf", dependencies=[Depends(require_api_key)])
-def report_pdf(payload: ReportRequest) -> dict[str, Any]:
-    return report_pdf_response(payload.model_dump())
-
-
-@app.post("/v1/handoffs/decision-studio/validate", dependencies=[Depends(require_api_key)])
-def handoff_validate(payload: HandoffValidateRequest) -> dict[str, Any]:
-    return validate_handoff(payload.packet)
-
-# Lab v0.10.0 curated electrical and embedded routes.
-app.include_router(electrical_router, dependencies=[Depends(require_api_key)])
-app.include_router(mechanical_router, dependencies=[Depends(require_api_key)])
-
-
-from .architecture_building_routes import router as architecture_building_router
-app.include_router(architecture_building_router)
-
-from .urban_planning_spatial_routes import router as urban_planning_spatial_router
-app.include_router(urban_planning_spatial_router)
-
-from .sustainable_cities_resilience_routes import router as sustainable_cities_resilience_router
-app.include_router(sustainable_cities_resilience_router)
-
-from .circular_economy_industrial_ecology_routes import router as circular_economy_industrial_ecology_router
-app.include_router(circular_economy_industrial_ecology_router)
-
-from .comparative_economics_development_systems_routes import router as comparative_economics_development_systems_router
-app.include_router(comparative_economics_development_systems_router)
-
-from .aerospace_engineering_flight_systems_routes import router as aerospace_engineering_flight_systems_router
-app.include_router(aerospace_engineering_flight_systems_router)
-
-from .rocket_propulsion_spaceflight_routes import router as rocket_propulsion_spaceflight_router
-app.include_router(rocket_propulsion_spaceflight_router)
-
-from .microbiology_laboratory_routes import router as microbiology_laboratory_router
-app.include_router(microbiology_laboratory_router)
-
-
-# SC_LAB_V0210_BIOCHEMISTRY_ROUTER
-from .biochemistry_molecular_analysis_routes import (
-    router as biochemistry_molecular_analysis_router,
-)
-
-app.include_router(
-    biochemistry_molecular_analysis_router
-)
-
-
-# SC_LAB_V0212_BIOCHEMISTRY_BATCH_ROUTER
-from .biochemistry_batch_routes import (
-    router as biochemistry_batch_router,
-)
-
-app.include_router(biochemistry_batch_router)
-
-
-# SC_LAB_V0213_MOLECULAR_VALIDATION_ROUTER
-from .molecular_analysis_validation_routes import (
-    router as molecular_validation_router,
-)
-
-app.include_router(molecular_validation_router)
-
-
-# SC_LAB_V0220_BIOTECHNOLOGY_BIOPROCESS_ROUTER
-from .biotechnology_bioprocess_routes import (
-    router as biotechnology_bioprocess_router,
-)
-
-app.include_router(biotechnology_bioprocess_router)
-
-
-# SC_LAB_V0221_BIOPROCESS_PRODUCTION_ROUTER
-from .bioprocess_production_routes import (
-    router as bioprocess_production_router,
-)
-
-app.include_router(bioprocess_production_router)
-
-
-# SC_LAB_V0222_BIOPROCESS_MONITORING_ROUTER
-from .bioprocess_monitoring_control_routes import (
-    router as bioprocess_monitoring_router,
-)
-
-app.include_router(bioprocess_monitoring_router)
-
-
-# SC_LAB_V0223_BIOPROCESS_VALIDATION_PROVENANCE_ROUTER
-from .bioprocess_validation_provenance_routes import (
-    router as bioprocess_validation_provenance_router,
-)
-
-app.include_router(bioprocess_validation_provenance_router)
-
-
-# SC_LAB_V0230_BIOMEDICAL_BIOSIGNALS_ROUTER
-from .biomedical_engineering_biosignals_routes import (
-    router as biomedical_biosignals_router,
-)
-
-app.include_router(biomedical_biosignals_router)
-
-
-# SC_LAB_V0231_BIOSIGNAL_PRODUCTION_ROUTER
-from .biosignal_production_routes import (
-    router as biosignal_production_router,
-)
-
-app.include_router(biosignal_production_router)
-
-
-# SC_LAB_V0232_BIOSIGNAL_VISUALIZATION_ROUTER
-from .biosignal_visualization_routes import (
-    router as biosignal_visualization_router,
-)
-
-app.include_router(biosignal_visualization_router)
-
-
-# SC_LAB_V0240_GENOMICS_ROUTER
-from .genetics_genomics_sequence_routes import router as genomics_router
-app.include_router(genomics_router)
-
-
-# SC_LAB_V0241_GENOMICS_PRODUCTION_ROUTER
-from .genomics_production_routes import router as genomics_production_router
-app.include_router(genomics_production_router)
-
-
-# SC_LAB_V0242_GENOMIC_VISUALIZATION_ROUTER
-from .genomic_visualization_routes import router as genomic_visualization_router
-app.include_router(genomic_visualization_router)
-
-
-# SC_LAB_V0243_GENOMIC_VALIDATION_ROUTER
-from .genomic_validation_routes import router as genomic_validation_router
-app.include_router(genomic_validation_router)
-
-
-# SC_LAB_V0250_INSTRUMENTATION_ROUTER
-from .laboratory_data_instrumentation_routes import router as instrumentation_router
-app.include_router(instrumentation_router)
-
-
-# SC_LAB_V0251_INSTRUMENTATION_PRODUCTION_ROUTER
-from .instrumentation_production_routes import router as instrumentation_production_router
-app.include_router(instrumentation_production_router)
-
-
-# SC_LAB_V0252_INSTRUMENTATION_LIVE_ROUTER
-from .instrumentation_live_visualization_routes import (
-    router as instrumentation_live_router,
-)
-
-app.include_router(instrumentation_live_router)
-
-
-# SC_LAB_V0253_INSTRUMENTATION_VALIDATION_ROUTER
-from .instrumentation_validation_custody_routes import (
-    router as instrumentation_validation_router,
-)
-
-app.include_router(instrumentation_validation_router)
+@app.post("/v1/handoffs/decision-studio/validate")
+def handoff_validate(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    packet = payload.get("packet")
+    valid = isinstance(packet, dict) and bool(packet)
+    return {
+        "ok": valid,
+        "valid": valid,
+        "errors": [] if valid else ["packet must be a non-empty object"],
+        "schema": "sc-lab-decision-handoff-validation/1.0",
+    }

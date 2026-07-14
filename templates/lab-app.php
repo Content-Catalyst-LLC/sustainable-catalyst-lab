@@ -943,9 +943,9 @@
           <div><span class="sc-lab-section-code">LAB/COMPUTE-DISPATCHER</span><h3>Universal code switcher and multi-language execution</h3></div>
           <span class="sc-lab-status-dot" data-code-backend-indicator>Local mode</span>
         </div>
-        <div class="sc-lab-method-note">Inspect equivalent source in twelve languages, run the portable contract locally, or execute curated implementations through the protected WordPress-to-Render compute proxy. The public interface never submits arbitrary source code and never receives the Render API key.</div>
+        <div class="sc-lab-method-note">Inspect equivalent source in twelve languages, run the portable contract locally, or execute curated implementations through the governed WordPress-to-Python Compute Core gateway. The public interface never submits arbitrary source code and never receives the Render API key.</div>
         <div class="sc-lab-compute-statusbar">
-          <div><strong data-code-backend-title>Render compute dispatcher</strong><span data-code-backend-status>Checking configuration…</span></div>
+          <div><strong data-code-backend-title>Python Compute Core</strong><span data-code-backend-status>Checking configuration…</span></div>
           <div class="sc-lab-inline-actions"><button type="button" class="sc-lab-button" data-code-backend-refresh>Refresh backend</button><button type="button" class="sc-lab-button" data-code-cancel-job disabled>Cancel active job</button></div>
         </div>
         <div class="sc-lab-code-layout">
