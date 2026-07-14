@@ -1,0 +1,33 @@
+.sc-lab-v0262-compatible [hidden] {
+  display: none !important;
+}
+
+.sc-lab-v0262-compatible .is-active[aria-hidden="false"] {
+  display: block;
+}
+
+.sc-lab-v0262-compatible [aria-current="page"],
+.sc-lab-v0262-compatible .is-active[data-sc-lab-target],
+.sc-lab-v0262-compatible .is-active[data-panel-target],
+.sc-lab-v0262-compatible .is-active[data-module] {
+  font-weight: 700;
+}
+
+.sc-lab-v0262-runtime-error {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border: 1px solid #7b1e2b;
+  border-left-width: 5px;
+  background: #fff7f8;
+  color: #2b1115;
+  border-radius: 6px;
+}
+
+.sc-lab-v0262-runtime-error strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sc-lab-v0262-runtime-error p {
+  margin: 0;
+}

@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.26.1
+ * Version: 0.26.2
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,10 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.26.1');
+
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-sc-lab-legacy-compat-v0262.php';
+define( 'SC_LAB_VERSION', '0.26.2' );
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
