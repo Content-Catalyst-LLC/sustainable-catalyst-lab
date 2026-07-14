@@ -1,3 +1,12 @@
+## 0.25.4 — Application Startup and Runtime Stability
+
+- Render one main-application laboratory panel at a time.
+- Load selected panels through a read-only WordPress REST route.
+- Cancel superseded module requests and remove inactive panels.
+- Add duplicate-runtime, safe-start, node-budget, and panel-size guards.
+- Add explicit module mount and unmount lifecycle events.
+- Restrict the historical all-at-once mode to administrators.
+
 ## 0.25.3 — Calibration, Validation, and Chain of Custody
 
 - Added eight instrumentation validation profiles.

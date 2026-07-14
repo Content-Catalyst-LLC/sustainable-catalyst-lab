@@ -1,0 +1,125 @@
+[data-sc-lab-runtime-shell="0.25.4"] {
+  min-width: 0;
+  contain: layout style;
+}
+
+.sc-lab-runtime-bar-v0254 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(76, 11, 30, 0.22);
+  border-left: 4px solid #4c0b1e;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.sc-lab-runtime-status-v0254,
+.sc-lab-runtime-meta-v0254 {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.sc-lab-runtime-status-v0254 {
+  font-weight: 700;
+  color: #4c0b1e;
+}
+
+.sc-lab-runtime-meta-v0254 {
+  color: #5d6268;
+}
+
+.sc-lab-runtime-actions-v0254 {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.sc-lab-runtime-actions-v0254 button,
+.sc-lab-runtime-error-v0254 button {
+  min-height: 36px;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #4c0b1e;
+  border-radius: 5px;
+  background: #fff;
+  color: #4c0b1e;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sc-lab-runtime-actions-v0254 button:hover,
+.sc-lab-runtime-actions-v0254 button:focus-visible,
+.sc-lab-runtime-error-v0254 button:hover,
+.sc-lab-runtime-error-v0254 button:focus-visible {
+  background: #4c0b1e;
+  color: #fff;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.sc-lab-runtime-loading-v0254,
+.sc-lab-runtime-error-v0254,
+.sc-lab-runtime-fallback-v0254 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 220px;
+  padding: 1.5rem;
+  border: 1px solid #d8dadd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.sc-lab-runtime-error-v0254,
+.sc-lab-runtime-fallback-v0254 {
+  display: block;
+}
+
+.sc-lab-runtime-spinner-v0254 {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border: 3px solid #d8dadd;
+  border-top-color: #4c0b1e;
+  border-radius: 50%;
+  animation: sc-lab-v0254-spin 0.75s linear infinite;
+}
+
+@keyframes sc-lab-v0254-spin {
+  to { transform: rotate(360deg); }
+}
+
+[data-sc-lab-runtime-shell="0.25.4"][aria-busy="true"] [data-sc-lab-lazy-host] {
+  cursor: progress;
+}
+
+@media (max-width: 720px) {
+  .sc-lab-runtime-bar-v0254 {
+    align-items: flex-start;
+  }
+
+  .sc-lab-runtime-actions-v0254,
+  .sc-lab-runtime-actions-v0254 button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-lab-runtime-spinner-v0254 {
+    animation-duration: 1.8s;
+  }
+}
+
+[data-sc-lab-runtime-shell="0.25.4"] [data-module-panel][data-sc-lab-mounted="1"],
+[data-sc-lab-runtime-shell="0.25.4"] [data-module-panel][hidden][data-sc-lab-mounted="1"] {
+  display: block !important;
+  visibility: visible !important;
+  content-visibility: visible;
+}

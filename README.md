@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.25.4 — Application Startup and Runtime Stability
+
+This release replaces the main page's all-at-once DOM startup with a single-panel lazy runtime, preserved script execution order, abortable module loads, duplicate-runtime protection, safe-start recovery, administrator-only legacy diagnostics, and explicit mount/unmount lifecycle events while preserving the complete v0.25.3 scientific and instrumentation stack.
+
 # Sustainable Catalyst Lab v0.25.3 — Calibration, Validation, and Chain of Custody
 
 This release adds eight validation profiles, eight acceptance states, eight provenance event types, eight deviation types, 16 deterministic readiness methods and benchmarks, component-hashed validation manifests, parent-linked SHA-256 custody events, tamper verification, weighted release dispositions, and validation dossiers while preserving the complete v0.25.0-v0.25.2 stack.
