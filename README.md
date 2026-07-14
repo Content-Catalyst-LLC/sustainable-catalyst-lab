@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.25.3 — Calibration, Validation, and Chain of Custody
+
+This release adds eight validation profiles, eight acceptance states, eight provenance event types, eight deviation types, 16 deterministic readiness methods and benchmarks, component-hashed validation manifests, parent-linked SHA-256 custody events, tamper verification, weighted release dispositions, and validation dossiers while preserving the complete v0.25.0-v0.25.2 stack.
+
 # Sustainable Catalyst Lab v0.25.2 — Live Sensor and Instrument Visualization
 
 This release adds eight live visualization modes, 16 deterministic streaming and dashboard-analysis methods with 16 benchmarks, eight channel templates, eight connection states, eight event types, bounded multi-channel buffers, warning/action and gap events, pause/replay controls, CSV and JSON replay, synchronized SVG dashboards, exports, and research handoffs while preserving v0.25.0 and v0.25.1.

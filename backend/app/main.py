@@ -353,3 +353,11 @@ from .instrumentation_live_visualization_routes import (
 )
 
 app.include_router(instrumentation_live_router)
+
+
+# SC_LAB_V0253_INSTRUMENTATION_VALIDATION_ROUTER
+from .instrumentation_validation_custody_routes import (
+    router as instrumentation_validation_router,
+)
+
+app.include_router(instrumentation_validation_router)

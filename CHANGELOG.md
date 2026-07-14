@@ -1,3 +1,16 @@
+## 0.25.3 — Calibration, Validation, and Chain of Custody
+
+- Added eight instrumentation validation profiles.
+- Added eight acceptance states and eight deviation types.
+- Added 16 deterministic calibration/readiness methods.
+- Added SHA-256 component manifests.
+- Added parent-linked custody events and tamper verification.
+- Added calibration, maintenance, quality, and linkage review.
+- Added weighted validation scores and release dispositions.
+- Added exportable validation dossiers.
+- Added WordPress and FastAPI validation/custody routes.
+- Preserved explicit non-GMP and non-clinical boundaries.
+
 ## 0.25.2 — Live Sensor and Instrument Visualization
 
 - Added eight live instrumentation visualization modes.
