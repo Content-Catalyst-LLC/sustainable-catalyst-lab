@@ -1216,6 +1216,8 @@
     <p>Instrument, sensor, sample, run, calibration, maintenance, measurement, and custody records with normalized ingestion and auditable manifests.</p>
   </header>
   <div data-laboratory-instrumentation-root></div>
+
+    <div data-instrumentation-live-visualization-root></div>
 </section>
 
 </main>

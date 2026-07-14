@@ -1,0 +1,697 @@
+{
+  "schema": "sc-lab-instrumentation-live-visualization-contract/1.0",
+  "version": "0.25.2",
+  "title": "Live Sensor and Instrument Visualization",
+  "preservedEngine": {
+    "version": "0.25.0",
+    "methodCount": 48,
+    "benchmarkCount": 48,
+    "categoryCount": 8,
+    "recordTypeCount": 9,
+    "connectionProfileCount": 8,
+    "qualityFlagCount": 8
+  },
+  "productionLayer": {
+    "version": "0.25.1"
+  },
+  "modes": [
+    {
+      "id": "live-multichannel",
+      "label": "Live multi-channel dashboard"
+    },
+    {
+      "id": "buffered-trends",
+      "label": "Buffered time-series trends"
+    },
+    {
+      "id": "threshold-overlays",
+      "label": "Warning and action overlays"
+    },
+    {
+      "id": "event-timeline",
+      "label": "Event and quality timeline"
+    },
+    {
+      "id": "pause-playback",
+      "label": "Pause, playback, and replay"
+    },
+    {
+      "id": "channel-comparison",
+      "label": "Channel comparison"
+    },
+    {
+      "id": "connection-diagnostics",
+      "label": "Connection diagnostics"
+    },
+    {
+      "id": "export-handoff",
+      "label": "Export and research handoff"
+    }
+  ],
+  "analysisMethods": [
+    {
+      "id": "append-ring-buffer",
+      "operation": "append_ring_buffer"
+    },
+    {
+      "id": "trim-time-window",
+      "operation": "trim_time_window"
+    },
+    {
+      "id": "channel-summary",
+      "operation": "channel_summary"
+    },
+    {
+      "id": "latest-channel-values",
+      "operation": "latest_channel_values"
+    },
+    {
+      "id": "threshold-status",
+      "operation": "threshold_status"
+    },
+    {
+      "id": "detect-threshold-events",
+      "operation": "detect_threshold_events"
+    },
+    {
+      "id": "detect-gap-events",
+      "operation": "detect_gap_events"
+    },
+    {
+      "id": "rolling-mean-series",
+      "operation": "rolling_mean_series"
+    },
+    {
+      "id": "rolling-sd-series",
+      "operation": "rolling_sd_series"
+    },
+    {
+      "id": "exponential-smoothing-series",
+      "operation": "exponential_smoothing_series"
+    },
+    {
+      "id": "min-max-downsample",
+      "operation": "min_max_downsample"
+    },
+    {
+      "id": "align-channels",
+      "operation": "align_channels"
+    },
+    {
+      "id": "common-time-window",
+      "operation": "common_time_window"
+    },
+    {
+      "id": "event-rate",
+      "operation": "event_rate"
+    },
+    {
+      "id": "connection-uptime",
+      "operation": "connection_uptime"
+    },
+    {
+      "id": "dashboard-summary",
+      "operation": "dashboard_summary"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "benchmark-append-ring-buffer",
+      "methodId": "append-ring-buffer",
+      "inputs": {
+        "existing": [
+          {
+            "timestamp": 1,
+            "channel": "temperature",
+            "value": 20
+          }
+        ],
+        "incoming": [
+          {
+            "timestamp": 2,
+            "channel": "temperature",
+            "value": 21
+          },
+          {
+            "timestamp": 3,
+            "channel": "temperature",
+            "value": 22
+          }
+        ],
+        "maximumPoints": 2
+      },
+      "expected": [
+        {
+          "timestamp": 2.0,
+          "channel": "temperature",
+          "value": 21.0
+        },
+        {
+          "timestamp": 3.0,
+          "channel": "temperature",
+          "value": 22.0
+        }
+      ]
+    },
+    {
+      "id": "benchmark-trim-time-window",
+      "methodId": "trim-time-window",
+      "inputs": {
+        "points": [
+          {
+            "timestamp": 1,
+            "value": 1
+          },
+          {
+            "timestamp": 5,
+            "value": 2
+          },
+          {
+            "timestamp": 10,
+            "value": 3
+          }
+        ],
+        "windowStart": 4,
+        "windowEnd": 9
+      },
+      "expected": [
+        {
+          "timestamp": 5.0,
+          "value": 2.0
+        }
+      ]
+    },
+    {
+      "id": "benchmark-channel-summary",
+      "methodId": "channel-summary",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": {
+        "count": 4,
+        "mean": 2.5,
+        "standardDeviation": 1.2909944487358056,
+        "minimum": 1.0,
+        "maximum": 4.0,
+        "range": 3.0,
+        "latest": 4.0
+      }
+    },
+    {
+      "id": "benchmark-latest-channel-values",
+      "methodId": "latest-channel-values",
+      "inputs": {
+        "records": [
+          {
+            "timestamp": 1,
+            "channel": "temperature",
+            "value": 20
+          },
+          {
+            "timestamp": 2,
+            "channel": "pressure",
+            "value": 100
+          },
+          {
+            "timestamp": 3,
+            "channel": "temperature",
+            "value": 21
+          }
+        ]
+      },
+      "expected": {
+        "temperature": {
+          "timestamp": 3.0,
+          "channel": "temperature",
+          "value": 21.0
+        },
+        "pressure": {
+          "timestamp": 2.0,
+          "channel": "pressure",
+          "value": 100.0
+        }
+      }
+    },
+    {
+      "id": "benchmark-threshold-status",
+      "methodId": "threshold-status",
+      "inputs": {
+        "value": 15,
+        "warningLow": 10,
+        "warningHigh": 20,
+        "actionLow": 5,
+        "actionHigh": 25
+      },
+      "expected": "normal"
+    },
+    {
+      "id": "benchmark-detect-threshold-events",
+      "methodId": "detect-threshold-events",
+      "inputs": {
+        "records": [
+          {
+            "timestamp": 1,
+            "channel": "temperature",
+            "value": 20
+          },
+          {
+            "timestamp": 2,
+            "channel": "temperature",
+            "value": 26
+          },
+          {
+            "timestamp": 3,
+            "channel": "temperature",
+            "value": 24
+          }
+        ],
+        "thresholds": {
+          "temperature": {
+            "warningLow": 10,
+            "warningHigh": 20,
+            "actionLow": 5,
+            "actionHigh": 25
+          }
+        }
+      },
+      "expected": [
+        {
+          "type": "action",
+          "channel": "temperature",
+          "timestamp": 2.0,
+          "value": 26.0,
+          "message": "temperature entered action range."
+        },
+        {
+          "type": "warning",
+          "channel": "temperature",
+          "timestamp": 3.0,
+          "value": 24.0,
+          "message": "temperature entered warning range."
+        }
+      ]
+    },
+    {
+      "id": "benchmark-detect-gap-events",
+      "methodId": "detect-gap-events",
+      "inputs": {
+        "records": [
+          {
+            "timestamp": 1,
+            "channel": "temperature",
+            "value": 20
+          },
+          {
+            "timestamp": 2,
+            "channel": "temperature",
+            "value": 21
+          },
+          {
+            "timestamp": 8,
+            "channel": "temperature",
+            "value": 22
+          }
+        ],
+        "maximumGapSeconds": 3
+      },
+      "expected": [
+        {
+          "type": "gap",
+          "channel": "temperature",
+          "timestamp": 8.0,
+          "gapSeconds": 6.0
+        }
+      ]
+    },
+    {
+      "id": "benchmark-rolling-mean-series",
+      "methodId": "rolling-mean-series",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "windowSize": 2
+      },
+      "expected": [
+        1.0,
+        1.5,
+        2.5,
+        3.5
+      ]
+    },
+    {
+      "id": "benchmark-rolling-sd-series",
+      "methodId": "rolling-sd-series",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "windowSize": 3
+      },
+      "expected": [
+        0.0,
+        0.7071067811865476,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "benchmark-exponential-smoothing-series",
+      "methodId": "exponential-smoothing-series",
+      "inputs": {
+        "values": [
+          0,
+          10,
+          10
+        ],
+        "alpha": 0.5
+      },
+      "expected": [
+        0.0,
+        5.0,
+        7.5
+      ]
+    },
+    {
+      "id": "benchmark-min-max-downsample",
+      "methodId": "min-max-downsample",
+      "inputs": {
+        "points": [
+          {
+            "timestamp": 0,
+            "value": 1
+          },
+          {
+            "timestamp": 1,
+            "value": 3
+          },
+          {
+            "timestamp": 2,
+            "value": 2
+          },
+          {
+            "timestamp": 3,
+            "value": 7
+          },
+          {
+            "timestamp": 4,
+            "value": 4
+          },
+          {
+            "timestamp": 5,
+            "value": 6
+          }
+        ],
+        "bucketCount": 2
+      },
+      "expected": [
+        {
+          "timestamp": 0.0,
+          "value": 1.0
+        },
+        {
+          "timestamp": 1.0,
+          "value": 3.0
+        },
+        {
+          "timestamp": 3.0,
+          "value": 7.0
+        },
+        {
+          "timestamp": 4.0,
+          "value": 4.0
+        }
+      ]
+    },
+    {
+      "id": "benchmark-align-channels",
+      "methodId": "align-channels",
+      "inputs": {
+        "reference": [
+          {
+            "timestamp": 1,
+            "value": 10
+          },
+          {
+            "timestamp": 2,
+            "value": 20
+          },
+          {
+            "timestamp": 3,
+            "value": 30
+          }
+        ],
+        "comparison": [
+          {
+            "timestamp": 1.1,
+            "value": 11
+          },
+          {
+            "timestamp": 2.1,
+            "value": 21
+          },
+          {
+            "timestamp": 3.1,
+            "value": 31
+          }
+        ],
+        "toleranceSeconds": 0.2
+      },
+      "expected": [
+        {
+          "timestamp": 1.0,
+          "referenceValue": 10.0,
+          "comparisonValue": 11.0,
+          "timeDeltaSeconds": 0.10000000000000009
+        },
+        {
+          "timestamp": 2.0,
+          "referenceValue": 20.0,
+          "comparisonValue": 21.0,
+          "timeDeltaSeconds": 0.10000000000000009
+        },
+        {
+          "timestamp": 3.0,
+          "referenceValue": 30.0,
+          "comparisonValue": 31.0,
+          "timeDeltaSeconds": 0.10000000000000009
+        }
+      ]
+    },
+    {
+      "id": "benchmark-common-time-window",
+      "methodId": "common-time-window",
+      "inputs": {
+        "series": [
+          [
+            {
+              "timestamp": 1,
+              "value": 1
+            },
+            {
+              "timestamp": 5,
+              "value": 2
+            }
+          ],
+          [
+            {
+              "timestamp": 2,
+              "value": 3
+            },
+            {
+              "timestamp": 6,
+              "value": 4
+            }
+          ]
+        ]
+      },
+      "expected": {
+        "start": 2.0,
+        "end": 5.0,
+        "durationSeconds": 3.0
+      }
+    },
+    {
+      "id": "benchmark-event-rate",
+      "methodId": "event-rate",
+      "inputs": {
+        "eventCount": 12,
+        "durationSeconds": 120
+      },
+      "expected": 6.0
+    },
+    {
+      "id": "benchmark-connection-uptime",
+      "methodId": "connection-uptime",
+      "inputs": {
+        "onlineSeconds": 90,
+        "totalSeconds": 100
+      },
+      "expected": 90.0
+    },
+    {
+      "id": "benchmark-dashboard-summary",
+      "methodId": "dashboard-summary",
+      "inputs": {
+        "records": [
+          {
+            "timestamp": 1,
+            "channel": "temperature",
+            "value": 20
+          },
+          {
+            "timestamp": 2,
+            "channel": "temperature",
+            "value": 21
+          },
+          {
+            "timestamp": 2,
+            "channel": "pressure",
+            "value": 100
+          }
+        ],
+        "events": [
+          {
+            "type": "warning"
+          },
+          {
+            "type": "gap"
+          }
+        ],
+        "connectionState": "online"
+      },
+      "expected": {
+        "recordCount": 3,
+        "channelCount": 2,
+        "eventCount": 2,
+        "connectionState": "online",
+        "latest": {
+          "temperature": {
+            "timestamp": 2.0,
+            "channel": "temperature",
+            "value": 21.0
+          },
+          "pressure": {
+            "timestamp": 2.0,
+            "channel": "pressure",
+            "value": 100.0
+          }
+        },
+        "channels": {
+          "temperature": {
+            "count": 2,
+            "mean": 20.5,
+            "standardDeviation": 0.7071067811865476,
+            "minimum": 20.0,
+            "maximum": 21.0,
+            "range": 1.0,
+            "latest": 21.0
+          },
+          "pressure": {
+            "count": 1,
+            "mean": 100.0,
+            "standardDeviation": 0.0,
+            "minimum": 100.0,
+            "maximum": 100.0,
+            "range": 0.0,
+            "latest": 100.0
+          }
+        },
+        "eventTypeCounts": {
+          "gap": 1,
+          "warning": 1
+        }
+      }
+    }
+  ],
+  "channelTemplates": [
+    {
+      "id": "temperature",
+      "label": "Temperature",
+      "unit": "\u00b0C"
+    },
+    {
+      "id": "pressure",
+      "label": "Pressure",
+      "unit": "kPa"
+    },
+    {
+      "id": "humidity",
+      "label": "Humidity",
+      "unit": "%"
+    },
+    {
+      "id": "ph",
+      "label": "pH",
+      "unit": "pH"
+    },
+    {
+      "id": "conductivity",
+      "label": "Conductivity",
+      "unit": "mS/cm"
+    },
+    {
+      "id": "flow",
+      "label": "Flow",
+      "unit": "L/min"
+    },
+    {
+      "id": "voltage",
+      "label": "Voltage",
+      "unit": "V"
+    },
+    {
+      "id": "custom",
+      "label": "Custom channel",
+      "unit": "a.u."
+    }
+  ],
+  "connectionStates": [
+    "disconnected",
+    "connecting",
+    "online",
+    "paused",
+    "replaying",
+    "degraded",
+    "stale",
+    "error"
+  ],
+  "eventTypes": [
+    "warning",
+    "action",
+    "gap",
+    "connection",
+    "calibration",
+    "maintenance",
+    "annotation",
+    "quality"
+  ],
+  "bufferDefaults": {
+    "maximumPoints": 1200,
+    "maximumAgeSeconds": 900,
+    "renderPointLimit": 400,
+    "staleAfterSeconds": 30,
+    "maximumGapSeconds": 10
+  },
+  "responsibleUse": {
+    "scope": "Research, education, laboratory prototyping, replay, and non-clinical visualization.",
+    "boundaries": {
+      "automaticLocalDeviceAccess": false,
+      "clinicalMonitoring": false,
+      "alarmAuthority": false,
+      "regulatedControl": false,
+      "localFirstReplay": true
+    }
+  }
+}

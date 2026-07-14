@@ -345,3 +345,11 @@ app.include_router(instrumentation_router)
 # SC_LAB_V0251_INSTRUMENTATION_PRODUCTION_ROUTER
 from .instrumentation_production_routes import router as instrumentation_production_router
 app.include_router(instrumentation_production_router)
+
+
+# SC_LAB_V0252_INSTRUMENTATION_LIVE_ROUTER
+from .instrumentation_live_visualization_routes import (
+    router as instrumentation_live_router,
+)
+
+app.include_router(instrumentation_live_router)

@@ -1,3 +1,16 @@
+## 0.25.2 — Live Sensor and Instrument Visualization
+
+- Added eight live instrumentation visualization modes.
+- Added 16 deterministic analysis methods and benchmarks.
+- Added bounded multi-channel stream buffers.
+- Added threshold, warning, action, and gap events.
+- Added rolling statistics, smoothing, downsampling, alignment, and dashboard summaries.
+- Added pause, replay, import, and connection-state flows.
+- Added synchronized SVG dashboards and JSON/CSV/SVG exports.
+- Added project, notebook, and provenance handoffs.
+- Added WordPress and FastAPI live-analysis routes.
+- Preserved explicit local-first and non-clinical boundaries.
+
 ## 0.25.1 — Instrumentation Production Reliability
 
 - Added unconditional v0.25.0 asset activation.

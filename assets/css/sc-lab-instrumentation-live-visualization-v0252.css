@@ -1,0 +1,355 @@
+[data-instrumentation-live-visualization-root] {
+  min-width: 0;
+  margin-top: 1.25rem;
+}
+
+.sc-live-shell {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: 1px solid rgba(83, 27, 48, 0.2);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(247, 248, 249, 0.99)
+    );
+  box-shadow: 0 18px 46px rgba(30, 20, 28, 0.08);
+}
+
+.sc-live-header {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.sc-live-header h3,
+.sc-live-header p,
+.sc-live-card h4 {
+  margin: 0;
+}
+
+.sc-live-kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #5b1c35;
+}
+
+.sc-live-status-row,
+.sc-live-controls,
+.sc-live-channel-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sc-live-status-row span {
+  padding: 0.42rem 0.65rem;
+  border: 1px solid rgba(91, 28, 53, 0.2);
+  border-radius: 999px;
+  background: #fff;
+  color: #421328;
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.sc-live-status-row
+  [data-live-connection-status][data-state="online"] {
+  border-color: rgba(18, 105, 63, 0.35);
+  color: #12693f;
+}
+
+.sc-live-status-row
+  [data-live-connection-status][data-state="error"],
+.sc-live-status-row
+  [data-live-connection-status][data-state="degraded"] {
+  border-color: rgba(154, 36, 36, 0.35);
+  color: #8d2222;
+}
+
+.sc-live-controls button {
+  min-height: 42px;
+  padding: 0.66rem 0.84rem;
+  border: 1px solid #5b1c35;
+  border-radius: 10px;
+  background: #5b1c35;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sc-live-controls button:hover {
+  background: #3d1024;
+}
+
+.sc-live-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  min-width: 0;
+}
+
+.sc-live-card {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.sc-live-card-wide {
+  grid-column: 1 / -1;
+}
+
+.sc-live-card-header {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.sc-live-channel-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sc-live-card label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  color: #222;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.sc-live-card label span {
+  color: #6e646a;
+  font-size: 0.7rem;
+}
+
+.sc-live-card textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgba(20, 20, 20, 0.2);
+  border-radius: 10px;
+  background: #fff;
+  color: #151515;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  resize: vertical;
+}
+
+.sc-live-card pre {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 220px;
+  max-height: 520px;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 12px;
+  background: #070a09;
+  color: #74f59a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.77rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.sc-live-chart {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(20, 20, 20, 0.1);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      rgba(91, 28, 53, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(91, 28, 53, 0.04) 1px,
+      transparent 1px
+    ),
+    #fff;
+  background-size: 24px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sc-live-svg {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+}
+
+.sc-live-axis {
+  stroke: rgba(20, 20, 20, 0.24);
+  stroke-width: 1;
+}
+
+.sc-live-trace {
+  fill: none;
+  stroke: #5b1c35;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sc-live-trace-pressure {
+  stroke: #285f79;
+}
+
+.sc-live-trace-humidity {
+  stroke: #5c6d2a;
+}
+
+.sc-live-trace-ph {
+  stroke: #76551d;
+}
+
+.sc-live-trace-conductivity {
+  stroke: #5a3975;
+}
+
+.sc-live-trace-flow {
+  stroke: #2f6b5f;
+}
+
+.sc-live-trace-voltage {
+  stroke: #7a3e2b;
+}
+
+.sc-live-event {
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.sc-live-event-warning {
+  stroke: #b07500;
+}
+
+.sc-live-event-action {
+  stroke: #a02424;
+}
+
+.sc-live-event-gap {
+  stroke: #555;
+}
+
+.sc-live-label,
+.sc-live-range,
+.sc-live-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.sc-live-label {
+  fill: #2b2025;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sc-live-range,
+.sc-live-time {
+  fill: #6c6267;
+  font-size: 10px;
+}
+
+.sc-live-empty {
+  margin: 0;
+  padding: 2rem 1rem;
+  color: #6c6267;
+  text-align: center;
+}
+
+.sc-live-events {
+  display: grid;
+  gap: 0.45rem;
+  max-height: 300px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.sc-live-events li {
+  display: grid;
+  grid-template-columns:
+    minmax(70px, auto)
+    minmax(0, 1fr)
+    auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid rgba(20, 20, 20, 0.1);
+  border-radius: 9px;
+  font-size: 0.76rem;
+}
+
+.sc-live-controls-stack {
+  display: grid;
+}
+
+.sc-live-boundary {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-left: 4px solid #5b1c35;
+  background: rgba(91, 28, 53, 0.06);
+  color: #3b3036;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 880px) {
+  .sc-live-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-live-card-wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .sc-live-shell {
+    padding: 0.85rem;
+    border-radius: 14px;
+  }
+
+  .sc-live-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sc-live-controls button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .sc-live-channel-controls {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-live-svg {
+    min-width: 680px;
+  }
+
+  .sc-live-events li {
+    grid-template-columns: 1fr;
+  }
+}

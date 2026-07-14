@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.25.2 — Live Sensor and Instrument Visualization
+
+This release adds eight live visualization modes, 16 deterministic streaming and dashboard-analysis methods with 16 benchmarks, eight channel templates, eight connection states, eight event types, bounded multi-channel buffers, warning/action and gap events, pause/replay controls, CSV and JSON replay, synchronized SVG dashboards, exports, and research handoffs while preserving v0.25.0 and v0.25.1.
+
 # Sustainable Catalyst Lab v0.25.1 — Instrumentation Production Reliability
 
 This release adds unconditional instrumentation asset activation, canonical panel/root recovery, duplicate suppression, stale-state cleanup, retry and mutation recovery, browser diagnostics, WordPress/FastAPI production health, and mobile/long-table hardening while preserving the complete v0.25.0 48/48/8/9/8/8 contract.
