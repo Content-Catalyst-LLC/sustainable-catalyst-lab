@@ -1,3 +1,14 @@
+## 0.24.3 — Genomic Validation and Sequence Provenance
+
+- Completed the v0.24.0–v0.24.3 genomics chain.
+- Added 48 sequence-analysis methods and 48 benchmarks.
+- Added production activation and genomic visualization.
+- Added eight validation profiles and six provenance event types.
+- Added dataset manifests, reference context, pipeline records, sequence and variant fingerprints.
+- Added hash-linked ledgers, tamper detection, and reproducibility dossiers.
+- Added WordPress and FastAPI routes.
+- Preserved non-clinical and non-diagnostic boundaries.
+
 ## 0.23.2 — Biosignal Visualization, Annotation, and Comparative Analysis
 
 - Added eight biosignal visualization and comparison modes.

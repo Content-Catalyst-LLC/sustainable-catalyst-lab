@@ -315,3 +315,23 @@ from .biosignal_visualization_routes import (
 )
 
 app.include_router(biosignal_visualization_router)
+
+
+# SC_LAB_V0240_GENOMICS_ROUTER
+from .genetics_genomics_sequence_routes import router as genomics_router
+app.include_router(genomics_router)
+
+
+# SC_LAB_V0241_GENOMICS_PRODUCTION_ROUTER
+from .genomics_production_routes import router as genomics_production_router
+app.include_router(genomics_production_router)
+
+
+# SC_LAB_V0242_GENOMIC_VISUALIZATION_ROUTER
+from .genomic_visualization_routes import router as genomic_visualization_router
+app.include_router(genomic_visualization_router)
+
+
+# SC_LAB_V0243_GENOMIC_VALIDATION_ROUTER
+from .genomic_validation_routes import router as genomic_validation_router
+app.include_router(genomic_validation_router)

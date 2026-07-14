@@ -1,0 +1,10 @@
+[data-genetics-genomics-root],[data-genomic-visualization-root],[data-genomic-validation-root]{min-width:0;margin-top:1rem}
+.sc-genomics-shell{display:grid;gap:1rem;padding:clamp(1rem,2vw,1.5rem);border:1px solid rgba(82,28,53,.2);border-radius:18px;background:#fff}
+.sc-genomics-grid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:1rem}
+.sc-genomics-card{display:grid;gap:.75rem;min-width:0;padding:1rem;border:1px solid rgba(20,20,20,.12);border-radius:14px}
+.sc-genomics-card input,.sc-genomics-card select,.sc-genomics-card textarea{box-sizing:border-box;width:100%;padding:.7rem;border:1px solid rgba(20,20,20,.2);border-radius:9px}
+.sc-genomics-card pre{max-width:100%;min-height:220px;max-height:520px;overflow:auto;padding:1rem;border-radius:10px;background:#070a09;color:#74f59a;white-space:pre-wrap;overflow-wrap:anywhere}
+.sc-genomics-actions{display:flex;flex-wrap:wrap;gap:.5rem}.sc-genomics-actions button{min-height:42px;padding:.65rem .85rem;border:1px solid #5d1d37;border-radius:9px;background:#5d1d37;color:#fff;font-weight:800}
+.sc-genomics-boundary{padding:.8rem 1rem;border-left:4px solid #5d1d37;background:rgba(93,29,55,.06);font-size:.82rem}
+@media(max-width:850px){.sc-genomics-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.sc-genomics-actions{display:grid}.sc-genomics-actions button{width:100%;min-height:44px}}

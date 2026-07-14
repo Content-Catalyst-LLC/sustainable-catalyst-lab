@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.24.3 — Genomic Validation and Sequence Provenance
+
+This release completes the v0.24 genomics chain: 48 deterministic sequence methods and benchmarks, production reliability, comparative visualization, eight validation profiles, component-hashed dataset manifests, reference and pipeline context, sequence and variant provenance, tamper-aware ledgers, and reproducibility dossiers with explicit non-clinical boundaries.
+
 # Sustainable Catalyst Lab v0.23.2 — Biosignal Visualization, Annotation, and Comparative Analysis
 
 This release adds eight synchronized visualization modes, 16 deterministic comparative-analysis methods, 16 benchmarks, six annotation types, multi-channel CSV import, raw/filtered overlays, lag and alignment analysis, run comparison, SVG/CSV/JSON exports, project/notebook/provenance handoffs, and mobile chart fallback while preserving v0.23.0 and v0.23.1.

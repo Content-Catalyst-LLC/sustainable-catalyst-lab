@@ -1,0 +1,169 @@
+{
+  "schema": "sc-lab-genomic-validation-provenance/1.0",
+  "version": "0.24.3",
+  "title": "Genomic Validation and Sequence Provenance",
+  "profiles": [
+    {
+      "id": "sequence-record-integrity",
+      "label": "Sequence record integrity",
+      "required": [
+        "sequenceId",
+        "sequence",
+        "alphabet"
+      ],
+      "thresholds": {
+        "maximumInvalidRecords": 0,
+        "maximumDuplicateIds": 0
+      }
+    },
+    {
+      "id": "metadata-linkage",
+      "label": "Metadata and sequence linkage",
+      "required": [
+        "sequenceId",
+        "metadataId"
+      ],
+      "thresholds": {
+        "maximumUnmatchedMetadata": 0,
+        "maximumMissingMetadata": 0
+      }
+    },
+    {
+      "id": "reference-coordinate-context",
+      "label": "Reference and coordinate context",
+      "required": [
+        "referenceBuild",
+        "coordinateSystem",
+        "contig",
+        "position"
+      ],
+      "thresholds": {
+        "maximumMissingContext": 0,
+        "minimumPosition": 1
+      }
+    },
+    {
+      "id": "sequence-quality",
+      "label": "Sequence quality",
+      "required": [
+        "sequenceId",
+        "sequence"
+      ],
+      "thresholds": {
+        "minimumLength": 1,
+        "minimumValidBasePercent": 95,
+        "maximumAmbiguousPercent": 5
+      }
+    },
+    {
+      "id": "variant-record-integrity",
+      "label": "Variant record integrity",
+      "required": [
+        "variantId",
+        "referenceBase",
+        "alternateBase",
+        "position",
+        "readDepth",
+        "alternateDepth"
+      ],
+      "thresholds": {
+        "minimumReadDepth": 10,
+        "maximumInvalidVariants": 0
+      }
+    },
+    {
+      "id": "analysis-reproducibility",
+      "label": "Analysis reproducibility",
+      "required": [
+        "stepId",
+        "pipelineVersion",
+        "parameterHash",
+        "inputHash",
+        "outputHash",
+        "software"
+      ],
+      "thresholds": {
+        "maximumIncompleteSteps": 0
+      }
+    },
+    {
+      "id": "annotation-evidence",
+      "label": "Annotation evidence completeness",
+      "required": [
+        "annotationId",
+        "type",
+        "start",
+        "end",
+        "evidence"
+      ],
+      "thresholds": {
+        "maximumInvalidAnnotations": 0,
+        "minimumEvidenceCoveragePercent": 100
+      }
+    },
+    {
+      "id": "release-readiness",
+      "label": "Genomic release readiness",
+      "required": [
+        "checkId",
+        "critical",
+        "status",
+        "evidence"
+      ],
+      "thresholds": {
+        "maximumFailedCriticalChecks": 0,
+        "minimumEvidenceCoveragePercent": 100
+      }
+    }
+  ],
+  "eventTypes": [
+    {
+      "id": "sequence-import",
+      "label": "Sequence import"
+    },
+    {
+      "id": "reference-selection",
+      "label": "Reference selection"
+    },
+    {
+      "id": "analysis-step",
+      "label": "Analysis step"
+    },
+    {
+      "id": "variant-call",
+      "label": "Variant call"
+    },
+    {
+      "id": "validation-decision",
+      "label": "Validation decision"
+    },
+    {
+      "id": "dossier-export",
+      "label": "Dossier export"
+    }
+  ],
+  "dispositions": [
+    "release",
+    "conditional-release",
+    "hold",
+    "reject",
+    "research-review"
+  ],
+  "manifestComponents": [
+    "sequences",
+    "metadata",
+    "reference",
+    "pipeline",
+    "variants",
+    "annotations"
+  ],
+  "defaults": {
+    "organization": "Sustainable Catalyst",
+    "eventType": "validation-decision",
+    "disposition": "research-review"
+  },
+  "responsibleUse": {
+    "scope": "Research, education, pipeline prototyping, and non-clinical sequence quality review.",
+    "boundary": "Not a substitute for clinical genetics, diagnostic interpretation, regulated validation, qualified review, or patient-specific decisions."
+  }
+}

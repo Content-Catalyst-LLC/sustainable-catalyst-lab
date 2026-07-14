@@ -62,7 +62,8 @@
           'energy-engineering' => 'Energy & engineering',
   'electrical-embedded' => 'Electrical & embedded',
   'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering',
-    'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+    'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals',
+    'genetics-genomics-sequence-analysis' => 'Genetics, genomics & sequence analysis', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -1192,6 +1193,18 @@
     <div data-biomedical-biosignals-root></div>
 
     <div data-biosignal-visualization-root></div>
+</section>
+
+
+<section class="sc-lab-panel sc-lab-module" data-lab-module="genetics-genomics-sequence-analysis" data-module-panel="genetics-genomics-sequence-analysis" hidden>
+  <header class="sc-lab-module-header">
+    <p class="sc-lab-kicker">LAB/GENETICS/GENOMICS</p>
+    <h3>Genetics, genomics, and sequence analysis</h3>
+    <p>Deterministic sequence analysis, visualization, validation, dataset manifests, and tamper-aware provenance for research workflows.</p>
+  </header>
+  <div data-genetics-genomics-root></div>
+  <div data-genomic-visualization-root></div>
+  <div data-genomic-validation-root></div>
 </section>
 
 </main>

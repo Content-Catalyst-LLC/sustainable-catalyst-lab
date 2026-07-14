@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, protected Render compute dispatch, curated multi-language execution, workspace data management, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.23.2
+ * Version: 0.24.3
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.23.2');
+define('SC_LAB_VERSION', '0.24.3');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -59,6 +59,13 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biomedical-biosi
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biosignal-production-v0231.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biosignal-visualization-comparison-v0232.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biosignal-visualization-rest-v0232.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genetics-genomics-v0240.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genetics-genomics-rest-v0240.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genomics-production-v0241.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genomic-visualization-v0242.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genomic-visualization-rest-v0242.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genomic-validation-v0243.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-genomic-validation-rest-v0243.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biotechnology-bioprocess-engineering-v0220.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-molecular-validation-provenance-v0213.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-biochemistry-visualization-batch-v0212.php';

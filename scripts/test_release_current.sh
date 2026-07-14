@@ -386,4 +386,13 @@ php tests/test-v0231.php
 node tests/test-v0232.js
 php tests/test-v0232.php
 
+node tests/test-v0240.js
+php tests/test-v0240.php
+node tests/test-v0241.js
+php tests/test-v0241.php
+node tests/test-v0242.js
+php tests/test-v0242.php
+node tests/test-v0243.js
+php tests/test-v0243.php
+
 echo "Current release validation passed for v$CURRENT_VERSION."

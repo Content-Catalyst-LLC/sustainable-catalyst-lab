@@ -1,3 +1,3 @@
 """Sustainable Catalyst Lab compute service."""
 
-VERSION = "0.23.2"
+VERSION = "0.24.3"
