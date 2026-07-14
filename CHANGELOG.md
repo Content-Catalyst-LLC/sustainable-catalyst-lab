@@ -1,3 +1,12 @@
+## 0.25.0 — Laboratory Data and Instrumentation Platform
+
+- Added 48 methods and 48 benchmarks across eight instrumentation categories.
+- Added nine record types and eight connection profiles.
+- Added normalized measurement ingestion and quality flags.
+- Added SHA-256 record manifests and custody-chain verification.
+- Added WordPress and FastAPI routes, UI, examples, and mobile reliability.
+- Preserved explicit research-only and non-clinical boundaries.
+
 ## 0.24.3 — Genomic Validation and Sequence Provenance
 
 - Completed the v0.24.0–v0.24.3 genomics chain.

@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.25.0 — Laboratory Data and Instrumentation Platform
+
+This release adds 48 deterministic instrumentation calculations, structured instrument/sensor/sample/run/calibration/maintenance/measurement/custody records, normalized ingestion, SHA-256 manifests, custody verification, eight connection profiles, WordPress/FastAPI routes, and local-first Arduino/Raspberry Pi preparation.
+
 # Sustainable Catalyst Lab v0.24.3 — Genomic Validation and Sequence Provenance
 
 This release completes the v0.24 genomics chain: 48 deterministic sequence methods and benchmarks, production reliability, comparative visualization, eight validation profiles, component-hashed dataset manifests, reference and pipeline context, sequence and variant provenance, tamper-aware ledgers, and reproducibility dossiers with explicit non-clinical boundaries.

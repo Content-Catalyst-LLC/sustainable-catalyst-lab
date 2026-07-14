@@ -1,0 +1,1782 @@
+{
+  "schema": "sc-lab-laboratory-instrumentation-contract/1.0",
+  "version": "0.25.0",
+  "title": "Laboratory Data and Instrumentation Platform",
+  "categories": [
+    {
+      "id": "acquisition-design",
+      "label": "Acquisition Design",
+      "description": "Sampling, throughput, storage, and ADC calculations."
+    },
+    {
+      "id": "calibration",
+      "label": "Calibration and Verification",
+      "description": "Linear calibration, error, drift, and due-date calculations."
+    },
+    {
+      "id": "measurement-statistics",
+      "label": "Measurement Statistics",
+      "description": "Descriptive statistics and variability for laboratory measurements."
+    },
+    {
+      "id": "signal-conditioning",
+      "label": "Signal Conditioning",
+      "description": "Smoothing, interpolation, integration, and derivative calculations."
+    },
+    {
+      "id": "unit-normalization",
+      "label": "Unit Normalization",
+      "description": "Temperature, pressure, volume, and mass conversions."
+    },
+    {
+      "id": "temporal-normalization",
+      "label": "Temporal Normalization",
+      "description": "Intervals, offsets, rates, and schedule timing."
+    },
+    {
+      "id": "data-quality",
+      "label": "Data Quality",
+      "description": "Completeness, duplication, range, clipping, and composite quality."
+    },
+    {
+      "id": "operational-integrity",
+      "label": "Operational Integrity",
+      "description": "Custody, maintenance, uptime, and record completeness."
+    }
+  ],
+  "methods": [
+    {
+      "id": "sample-rate-from-interval",
+      "label": "Sample rate from interval",
+      "category": "acquisition-design",
+      "operation": "sample_rate_from_interval",
+      "inputs": [
+        {
+          "key": "intervalSeconds",
+          "label": "Sample interval",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "Hz"
+      },
+      "formula": "fs=1/dt"
+    },
+    {
+      "id": "sample-interval-ms",
+      "label": "Sample interval",
+      "category": "acquisition-design",
+      "operation": "sample_interval_ms",
+      "inputs": [
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "ms"
+      },
+      "formula": "dt=1000/fs"
+    },
+    {
+      "id": "sample-count",
+      "label": "Sample count",
+      "category": "acquisition-design",
+      "operation": "sample_count",
+      "inputs": [
+        {
+          "key": "durationSeconds",
+          "label": "Duration",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "samples"
+      },
+      "formula": "N=round(t*fs)"
+    },
+    {
+      "id": "acquisition-duration",
+      "label": "Acquisition duration",
+      "category": "acquisition-design",
+      "operation": "acquisition_duration",
+      "inputs": [
+        {
+          "key": "sampleCount",
+          "label": "Sample count",
+          "unit": "samples",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "t=N/fs"
+    },
+    {
+      "id": "data-throughput",
+      "label": "Data throughput",
+      "category": "acquisition-design",
+      "operation": "data_throughput",
+      "inputs": [
+        {
+          "key": "sampleRateHz",
+          "label": "Sample rate",
+          "unit": "Hz",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "channelCount",
+          "label": "Channels",
+          "unit": "channels",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "bytesPerSample",
+          "label": "Bytes per sample",
+          "unit": "B",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "B/s"
+      },
+      "formula": "R=fs*C*B"
+    },
+    {
+      "id": "storage-size",
+      "label": "Storage size",
+      "category": "acquisition-design",
+      "operation": "storage_size",
+      "inputs": [
+        {
+          "key": "durationSeconds",
+          "label": "Duration",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "throughputBytesPerSecond",
+          "label": "Throughput",
+          "unit": "B/s",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "MB"
+      },
+      "formula": "size=t*R/1e6"
+    },
+    {
+      "id": "adc-levels",
+      "label": "ADC levels",
+      "category": "acquisition-design",
+      "operation": "adc_levels",
+      "inputs": [
+        {
+          "key": "bits",
+          "label": "Resolution",
+          "unit": "bits",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "levels"
+      },
+      "formula": "levels=2^bits"
+    },
+    {
+      "id": "quantization-step",
+      "label": "Quantization step",
+      "category": "acquisition-design",
+      "operation": "quantization_step",
+      "inputs": [
+        {
+          "key": "inputRange",
+          "label": "Input range",
+          "unit": "V",
+          "type": "number",
+          "min": 1e-12
+        },
+        {
+          "key": "bits",
+          "label": "Resolution",
+          "unit": "bits",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "V/level"
+      },
+      "formula": "q=range/(2^bits-1)"
+    },
+    {
+      "id": "two-point-gain",
+      "label": "Two-point calibration gain",
+      "category": "calibration",
+      "operation": "two_point_gain",
+      "inputs": [
+        {
+          "key": "rawLow",
+          "label": "Raw low",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "rawHigh",
+          "label": "Raw high",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "referenceLow",
+          "label": "Reference low",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "referenceHigh",
+          "label": "Reference high",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "ratio"
+      },
+      "formula": "gain=(refH-refL)/(rawH-rawL)"
+    },
+    {
+      "id": "two-point-offset",
+      "label": "Two-point calibration offset",
+      "category": "calibration",
+      "operation": "two_point_offset",
+      "inputs": [
+        {
+          "key": "rawLow",
+          "label": "Raw low",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "referenceLow",
+          "label": "Reference low",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "gain",
+          "label": "Gain",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "offset=refL-gain*rawL"
+    },
+    {
+      "id": "apply-linear-calibration",
+      "label": "Apply linear calibration",
+      "category": "calibration",
+      "operation": "apply_calibration",
+      "inputs": [
+        {
+          "key": "rawValue",
+          "label": "Raw value",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "gain",
+          "label": "Gain",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "offset",
+          "label": "Offset",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "y=gain*x+offset"
+    },
+    {
+      "id": "inverse-linear-calibration",
+      "label": "Inverse linear calibration",
+      "category": "calibration",
+      "operation": "inverse_calibration",
+      "inputs": [
+        {
+          "key": "calibratedValue",
+          "label": "Calibrated value",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "gain",
+          "label": "Gain",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "offset",
+          "label": "Offset",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "raw units"
+      },
+      "formula": "x=(y-offset)/gain"
+    },
+    {
+      "id": "absolute-error",
+      "label": "Absolute calibration error",
+      "category": "calibration",
+      "operation": "absolute_error",
+      "inputs": [
+        {
+          "key": "measured",
+          "label": "Measured",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "reference",
+          "label": "Reference",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "abs(measured-reference)"
+    },
+    {
+      "id": "percent-error",
+      "label": "Percent calibration error",
+      "category": "calibration",
+      "operation": "percent_error",
+      "inputs": [
+        {
+          "key": "measured",
+          "label": "Measured",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "reference",
+          "label": "Reference",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "abs(measured-reference)/abs(reference)*100"
+    },
+    {
+      "id": "drift-rate",
+      "label": "Calibration drift rate",
+      "category": "calibration",
+      "operation": "drift_rate",
+      "inputs": [
+        {
+          "key": "initialValue",
+          "label": "Initial",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "finalValue",
+          "label": "Final",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "elapsedHours",
+          "label": "Elapsed time",
+          "unit": "h",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "units/h"
+      },
+      "formula": "(final-initial)/hours"
+    },
+    {
+      "id": "calibration-due-days",
+      "label": "Calibration days remaining",
+      "category": "calibration",
+      "operation": "calibration_due_days",
+      "inputs": [
+        {
+          "key": "intervalDays",
+          "label": "Calibration interval",
+          "unit": "days",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "daysSinceCalibration",
+          "label": "Days since calibration",
+          "unit": "days",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "days"
+      },
+      "formula": "interval-elapsed"
+    },
+    {
+      "id": "measurement-mean",
+      "label": "Measurement mean",
+      "category": "measurement-statistics",
+      "operation": "mean",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "mean(x)"
+    },
+    {
+      "id": "measurement-median",
+      "label": "Measurement median",
+      "category": "measurement-statistics",
+      "operation": "median",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "median(x)"
+    },
+    {
+      "id": "measurement-sd",
+      "label": "Sample standard deviation",
+      "category": "measurement-statistics",
+      "operation": "sd",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "sd(x)"
+    },
+    {
+      "id": "measurement-cv",
+      "label": "Coefficient of variation",
+      "category": "measurement-statistics",
+      "operation": "cv",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "sd/abs(mean)*100"
+    },
+    {
+      "id": "measurement-min",
+      "label": "Minimum measurement",
+      "category": "measurement-statistics",
+      "operation": "minimum",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "min(x)"
+    },
+    {
+      "id": "measurement-max",
+      "label": "Maximum measurement",
+      "category": "measurement-statistics",
+      "operation": "maximum",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "max(x)"
+    },
+    {
+      "id": "measurement-range",
+      "label": "Measurement range",
+      "category": "measurement-statistics",
+      "operation": "range",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "max-min"
+    },
+    {
+      "id": "measurement-rms",
+      "label": "Root mean square",
+      "category": "measurement-statistics",
+      "operation": "rms",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Measurements",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "sqrt(mean(x^2))"
+    },
+    {
+      "id": "moving-average-latest",
+      "label": "Latest moving average",
+      "category": "signal-conditioning",
+      "operation": "moving_average_latest",
+      "inputs": [
+        {
+          "key": "values",
+          "label": "Samples",
+          "unit": "",
+          "type": "array",
+          "minItems": 1
+        },
+        {
+          "key": "windowSize",
+          "label": "Window size",
+          "unit": "samples",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "mean(last W)"
+    },
+    {
+      "id": "exponential-smoothing-alpha",
+      "label": "Exponential smoothing alpha",
+      "category": "signal-conditioning",
+      "operation": "smoothing_alpha",
+      "inputs": [
+        {
+          "key": "sampleIntervalSeconds",
+          "label": "Sample interval",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "timeConstantSeconds",
+          "label": "Time constant",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "0-1"
+      },
+      "formula": "alpha=dt/(tau+dt)"
+    },
+    {
+      "id": "linear-interpolation",
+      "label": "Linear interpolation",
+      "category": "signal-conditioning",
+      "operation": "linear_interpolation",
+      "inputs": [
+        {
+          "key": "x0",
+          "label": "x0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y0",
+          "label": "y0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "x1",
+          "label": "x1",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y1",
+          "label": "y1",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "x",
+          "label": "x",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "y=y0+(x-x0)*(y1-y0)/(x1-x0)"
+    },
+    {
+      "id": "trapezoid-area",
+      "label": "Trapezoid area",
+      "category": "signal-conditioning",
+      "operation": "trapezoid_area",
+      "inputs": [
+        {
+          "key": "x0",
+          "label": "x0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y0",
+          "label": "y0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "x1",
+          "label": "x1",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y1",
+          "label": "y1",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "unit*x"
+      },
+      "formula": "A=(x1-x0)*(y0+y1)/2"
+    },
+    {
+      "id": "finite-difference",
+      "label": "Finite-difference derivative",
+      "category": "signal-conditioning",
+      "operation": "finite_difference",
+      "inputs": [
+        {
+          "key": "x0",
+          "label": "x0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y0",
+          "label": "y0",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "x1",
+          "label": "x1",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "y1",
+          "label": "y1",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units/x"
+      },
+      "formula": "dy/dx=(y1-y0)/(x1-x0)"
+    },
+    {
+      "id": "baseline-corrected-value",
+      "label": "Baseline-corrected value",
+      "category": "signal-conditioning",
+      "operation": "baseline_corrected",
+      "inputs": [
+        {
+          "key": "value",
+          "label": "Value",
+          "unit": "",
+          "type": "number"
+        },
+        {
+          "key": "baseline",
+          "label": "Baseline",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "units"
+      },
+      "formula": "value-baseline"
+    },
+    {
+      "id": "celsius-to-fahrenheit",
+      "label": "Celsius to Fahrenheit",
+      "category": "unit-normalization",
+      "operation": "c_to_f",
+      "inputs": [
+        {
+          "key": "celsius",
+          "label": "Celsius",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "\u00b0F"
+      },
+      "formula": "Celsius to Fahrenheit"
+    },
+    {
+      "id": "fahrenheit-to-celsius",
+      "label": "Fahrenheit to Celsius",
+      "category": "unit-normalization",
+      "operation": "f_to_c",
+      "inputs": [
+        {
+          "key": "fahrenheit",
+          "label": "Fahrenheit",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "\u00b0C"
+      },
+      "formula": "Fahrenheit to Celsius"
+    },
+    {
+      "id": "celsius-to-kelvin",
+      "label": "Celsius to Kelvin",
+      "category": "unit-normalization",
+      "operation": "c_to_k",
+      "inputs": [
+        {
+          "key": "celsius",
+          "label": "Celsius",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "K"
+      },
+      "formula": "Celsius to Kelvin"
+    },
+    {
+      "id": "kelvin-to-celsius",
+      "label": "Kelvin to Celsius",
+      "category": "unit-normalization",
+      "operation": "k_to_c",
+      "inputs": [
+        {
+          "key": "kelvin",
+          "label": "Kelvin",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "\u00b0C"
+      },
+      "formula": "Kelvin to Celsius"
+    },
+    {
+      "id": "pascal-to-kilopascal",
+      "label": "Pascal to kilopascal",
+      "category": "unit-normalization",
+      "operation": "pa_to_kpa",
+      "inputs": [
+        {
+          "key": "pascal",
+          "label": "Pressure",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "kPa"
+      },
+      "formula": "Pascal to kilopascal"
+    },
+    {
+      "id": "milliliter-to-liter",
+      "label": "Milliliter to liter",
+      "category": "unit-normalization",
+      "operation": "ml_to_l",
+      "inputs": [
+        {
+          "key": "milliliter",
+          "label": "Volume",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "L"
+      },
+      "formula": "Milliliter to liter"
+    },
+    {
+      "id": "milligram-to-gram",
+      "label": "Milligram to gram",
+      "category": "unit-normalization",
+      "operation": "mg_to_g",
+      "inputs": [
+        {
+          "key": "milligram",
+          "label": "Mass",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "g"
+      },
+      "formula": "Milligram to gram"
+    },
+    {
+      "id": "microgram-to-milligram",
+      "label": "Microgram to milligram",
+      "category": "unit-normalization",
+      "operation": "ug_to_mg",
+      "inputs": [
+        {
+          "key": "microgram",
+          "label": "Mass",
+          "unit": "",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "mg"
+      },
+      "formula": "Microgram to milligram"
+    },
+    {
+      "id": "elapsed-seconds",
+      "label": "Elapsed seconds",
+      "category": "temporal-normalization",
+      "operation": "elapsed_seconds",
+      "inputs": [
+        {
+          "key": "startEpochSeconds",
+          "label": "Start epoch",
+          "unit": "s",
+          "type": "number"
+        },
+        {
+          "key": "endEpochSeconds",
+          "label": "End epoch",
+          "unit": "s",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "end-start"
+    },
+    {
+      "id": "timezone-adjusted-epoch",
+      "label": "Timezone-adjusted epoch",
+      "category": "temporal-normalization",
+      "operation": "timezone_adjusted_epoch",
+      "inputs": [
+        {
+          "key": "epochSeconds",
+          "label": "Epoch",
+          "unit": "s",
+          "type": "number"
+        },
+        {
+          "key": "offsetMinutes",
+          "label": "Offset",
+          "unit": "min",
+          "type": "number"
+        }
+      ],
+      "output": {
+        "unit": "s"
+      },
+      "formula": "epoch+offset*60"
+    },
+    {
+      "id": "events-per-hour",
+      "label": "Events per hour",
+      "category": "temporal-normalization",
+      "operation": "events_per_hour",
+      "inputs": [
+        {
+          "key": "eventCount",
+          "label": "Events",
+          "unit": "events",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "durationSeconds",
+          "label": "Duration",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "events/h"
+      },
+      "formula": "count*3600/duration"
+    },
+    {
+      "id": "schedule-progress",
+      "label": "Schedule progress",
+      "category": "temporal-normalization",
+      "operation": "schedule_progress",
+      "inputs": [
+        {
+          "key": "elapsedSeconds",
+          "label": "Elapsed",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "plannedSeconds",
+          "label": "Planned",
+          "unit": "s",
+          "type": "number",
+          "min": 1e-12
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "elapsed/planned*100"
+    },
+    {
+      "id": "missing-percent",
+      "label": "Missing data percentage",
+      "category": "data-quality",
+      "operation": "missing_percent",
+      "inputs": [
+        {
+          "key": "missingCount",
+          "label": "Missing",
+          "unit": "samples",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "totalCount",
+          "label": "Total",
+          "unit": "samples",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "missing/total*100"
+    },
+    {
+      "id": "duplicate-percent",
+      "label": "Duplicate record percentage",
+      "category": "data-quality",
+      "operation": "duplicate_percent",
+      "inputs": [
+        {
+          "key": "duplicateCount",
+          "label": "Duplicates",
+          "unit": "records",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "totalCount",
+          "label": "Total",
+          "unit": "records",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "duplicates/total*100"
+    },
+    {
+      "id": "out-of-range-percent",
+      "label": "Out-of-range percentage",
+      "category": "data-quality",
+      "operation": "out_of_range_percent",
+      "inputs": [
+        {
+          "key": "outOfRangeCount",
+          "label": "Out of range",
+          "unit": "records",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "totalCount",
+          "label": "Total",
+          "unit": "records",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "outside/total*100"
+    },
+    {
+      "id": "data-quality-index",
+      "label": "Composite data quality index",
+      "category": "data-quality",
+      "operation": "data_quality_index",
+      "inputs": [
+        {
+          "key": "missingPercent",
+          "label": "Missing",
+          "unit": "%",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "duplicatePercent",
+          "label": "Duplicates",
+          "unit": "%",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "outOfRangePercent",
+          "label": "Out of range",
+          "unit": "%",
+          "type": "number",
+          "min": 0
+        }
+      ],
+      "output": {
+        "unit": "0-100"
+      },
+      "formula": "100-2m-1.5d-2o"
+    },
+    {
+      "id": "custody-completeness",
+      "label": "Chain-of-custody completeness",
+      "category": "operational-integrity",
+      "operation": "custody_completeness",
+      "inputs": [
+        {
+          "key": "completedSteps",
+          "label": "Completed steps",
+          "unit": "steps",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "requiredSteps",
+          "label": "Required steps",
+          "unit": "steps",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "completed/required*100"
+    },
+    {
+      "id": "uptime-percent",
+      "label": "Instrument uptime",
+      "category": "operational-integrity",
+      "operation": "uptime_percent",
+      "inputs": [
+        {
+          "key": "availableSeconds",
+          "label": "Available",
+          "unit": "s",
+          "type": "number",
+          "min": 0
+        },
+        {
+          "key": "scheduledSeconds",
+          "label": "Scheduled",
+          "unit": "s",
+          "type": "number",
+          "min": 1
+        }
+      ],
+      "output": {
+        "unit": "%"
+      },
+      "formula": "available/scheduled*100"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "benchmark-sample-rate-from-interval",
+      "methodId": "sample-rate-from-interval",
+      "inputs": {
+        "intervalSeconds": 0.004
+      },
+      "expected": 250.0,
+      "tolerance": 2.5000000000000004e-07
+    },
+    {
+      "id": "benchmark-sample-interval-ms",
+      "methodId": "sample-interval-ms",
+      "inputs": {
+        "sampleRateHz": 250
+      },
+      "expected": 4.0,
+      "tolerance": 4e-09
+    },
+    {
+      "id": "benchmark-sample-count",
+      "methodId": "sample-count",
+      "inputs": {
+        "durationSeconds": 10,
+        "sampleRateHz": 100
+      },
+      "expected": 1000,
+      "tolerance": 1.0000000000000002e-06
+    },
+    {
+      "id": "benchmark-acquisition-duration",
+      "methodId": "acquisition-duration",
+      "inputs": {
+        "sampleCount": 1000,
+        "sampleRateHz": 100
+      },
+      "expected": 10.0,
+      "tolerance": 1e-08
+    },
+    {
+      "id": "benchmark-data-throughput",
+      "methodId": "data-throughput",
+      "inputs": {
+        "sampleRateHz": 1000,
+        "channelCount": 4,
+        "bytesPerSample": 2
+      },
+      "expected": 8000.0,
+      "tolerance": 8.000000000000001e-06
+    },
+    {
+      "id": "benchmark-storage-size",
+      "methodId": "storage-size",
+      "inputs": {
+        "durationSeconds": 60,
+        "throughputBytesPerSecond": 8000
+      },
+      "expected": 0.48,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-adc-levels",
+      "methodId": "adc-levels",
+      "inputs": {
+        "bits": 12
+      },
+      "expected": 4096,
+      "tolerance": 4.096e-06
+    },
+    {
+      "id": "benchmark-quantization-step",
+      "methodId": "quantization-step",
+      "inputs": {
+        "inputRange": 3.3,
+        "bits": 12
+      },
+      "expected": 0.0008058608058608059,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-two-point-gain",
+      "methodId": "two-point-gain",
+      "inputs": {
+        "rawLow": 100,
+        "rawHigh": 900,
+        "referenceLow": 0,
+        "referenceHigh": 100
+      },
+      "expected": 0.125,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-two-point-offset",
+      "methodId": "two-point-offset",
+      "inputs": {
+        "rawLow": 100,
+        "referenceLow": 0,
+        "gain": 0.125
+      },
+      "expected": -12.5,
+      "tolerance": 1.2500000000000001e-08
+    },
+    {
+      "id": "benchmark-apply-linear-calibration",
+      "methodId": "apply-linear-calibration",
+      "inputs": {
+        "rawValue": 500,
+        "gain": 0.125,
+        "offset": -12.5
+      },
+      "expected": 50.0,
+      "tolerance": 5.0000000000000004e-08
+    },
+    {
+      "id": "benchmark-inverse-linear-calibration",
+      "methodId": "inverse-linear-calibration",
+      "inputs": {
+        "calibratedValue": 50,
+        "gain": 0.125,
+        "offset": -12.5
+      },
+      "expected": 500.0,
+      "tolerance": 5.000000000000001e-07
+    },
+    {
+      "id": "benchmark-absolute-error",
+      "methodId": "absolute-error",
+      "inputs": {
+        "measured": 99,
+        "reference": 100
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-percent-error",
+      "methodId": "percent-error",
+      "inputs": {
+        "measured": 99,
+        "reference": 100
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-drift-rate",
+      "methodId": "drift-rate",
+      "inputs": {
+        "initialValue": 10,
+        "finalValue": 10.5,
+        "elapsedHours": 5
+      },
+      "expected": 0.1,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-calibration-due-days",
+      "methodId": "calibration-due-days",
+      "inputs": {
+        "intervalDays": 90,
+        "daysSinceCalibration": 30
+      },
+      "expected": 60.0,
+      "tolerance": 6.000000000000001e-08
+    },
+    {
+      "id": "benchmark-measurement-mean",
+      "methodId": "measurement-mean",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 2.5,
+      "tolerance": 2.5e-09
+    },
+    {
+      "id": "benchmark-measurement-median",
+      "methodId": "measurement-median",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 2.5,
+      "tolerance": 2.5e-09
+    },
+    {
+      "id": "benchmark-measurement-sd",
+      "methodId": "measurement-sd",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 1.2909944487358056,
+      "tolerance": 1.2909944487358057e-09
+    },
+    {
+      "id": "benchmark-measurement-cv",
+      "methodId": "measurement-cv",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 51.63977794943222,
+      "tolerance": 5.1639777949432226e-08
+    },
+    {
+      "id": "benchmark-measurement-min",
+      "methodId": "measurement-min",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-measurement-max",
+      "methodId": "measurement-max",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 4.0,
+      "tolerance": 4e-09
+    },
+    {
+      "id": "benchmark-measurement-range",
+      "methodId": "measurement-range",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 3.0,
+      "tolerance": 3.0000000000000004e-09
+    },
+    {
+      "id": "benchmark-measurement-rms",
+      "methodId": "measurement-rms",
+      "inputs": {
+        "values": [
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      "expected": 1.0,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-moving-average-latest",
+      "methodId": "moving-average-latest",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "windowSize": 3
+      },
+      "expected": 4.0,
+      "tolerance": 4e-09
+    },
+    {
+      "id": "benchmark-exponential-smoothing-alpha",
+      "methodId": "exponential-smoothing-alpha",
+      "inputs": {
+        "sampleIntervalSeconds": 0.1,
+        "timeConstantSeconds": 0.9
+      },
+      "expected": 0.1,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-linear-interpolation",
+      "methodId": "linear-interpolation",
+      "inputs": {
+        "x0": 0,
+        "y0": 0,
+        "x1": 10,
+        "y1": 100,
+        "x": 2.5
+      },
+      "expected": 25.0,
+      "tolerance": 2.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-trapezoid-area",
+      "methodId": "trapezoid-area",
+      "inputs": {
+        "x0": 0,
+        "y0": 2,
+        "x1": 4,
+        "y1": 6
+      },
+      "expected": 16.0,
+      "tolerance": 1.6e-08
+    },
+    {
+      "id": "benchmark-finite-difference",
+      "methodId": "finite-difference",
+      "inputs": {
+        "x0": 1,
+        "y0": 3,
+        "x1": 5,
+        "y1": 11
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-baseline-corrected-value",
+      "methodId": "baseline-corrected-value",
+      "inputs": {
+        "value": 12,
+        "baseline": 2
+      },
+      "expected": 10.0,
+      "tolerance": 1e-08
+    },
+    {
+      "id": "benchmark-celsius-to-fahrenheit",
+      "methodId": "celsius-to-fahrenheit",
+      "inputs": {
+        "celsius": 25
+      },
+      "expected": 77.0,
+      "tolerance": 7.7e-08
+    },
+    {
+      "id": "benchmark-fahrenheit-to-celsius",
+      "methodId": "fahrenheit-to-celsius",
+      "inputs": {
+        "fahrenheit": 77
+      },
+      "expected": 25.0,
+      "tolerance": 2.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-celsius-to-kelvin",
+      "methodId": "celsius-to-kelvin",
+      "inputs": {
+        "celsius": 25
+      },
+      "expected": 298.15,
+      "tolerance": 2.9815e-07
+    },
+    {
+      "id": "benchmark-kelvin-to-celsius",
+      "methodId": "kelvin-to-celsius",
+      "inputs": {
+        "kelvin": 298.15
+      },
+      "expected": 25.0,
+      "tolerance": 2.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-pascal-to-kilopascal",
+      "methodId": "pascal-to-kilopascal",
+      "inputs": {
+        "pascal": 101325
+      },
+      "expected": 101.325,
+      "tolerance": 1.0132500000000002e-07
+    },
+    {
+      "id": "benchmark-milliliter-to-liter",
+      "methodId": "milliliter-to-liter",
+      "inputs": {
+        "milliliter": 750
+      },
+      "expected": 0.75,
+      "tolerance": 1e-09
+    },
+    {
+      "id": "benchmark-milligram-to-gram",
+      "methodId": "milligram-to-gram",
+      "inputs": {
+        "milligram": 2500
+      },
+      "expected": 2.5,
+      "tolerance": 2.5e-09
+    },
+    {
+      "id": "benchmark-microgram-to-milligram",
+      "methodId": "microgram-to-milligram",
+      "inputs": {
+        "microgram": 5000
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-elapsed-seconds",
+      "methodId": "elapsed-seconds",
+      "inputs": {
+        "startEpochSeconds": 1000,
+        "endEpochSeconds": 1125
+      },
+      "expected": 125.0,
+      "tolerance": 1.2500000000000002e-07
+    },
+    {
+      "id": "benchmark-timezone-adjusted-epoch",
+      "methodId": "timezone-adjusted-epoch",
+      "inputs": {
+        "epochSeconds": 1000,
+        "offsetMinutes": -300
+      },
+      "expected": -17000.0,
+      "tolerance": 1.7e-05
+    },
+    {
+      "id": "benchmark-events-per-hour",
+      "methodId": "events-per-hour",
+      "inputs": {
+        "eventCount": 20,
+        "durationSeconds": 600
+      },
+      "expected": 120.0,
+      "tolerance": 1.2000000000000002e-07
+    },
+    {
+      "id": "benchmark-schedule-progress",
+      "methodId": "schedule-progress",
+      "inputs": {
+        "elapsedSeconds": 30,
+        "plannedSeconds": 120
+      },
+      "expected": 25.0,
+      "tolerance": 2.5000000000000002e-08
+    },
+    {
+      "id": "benchmark-missing-percent",
+      "methodId": "missing-percent",
+      "inputs": {
+        "missingCount": 5,
+        "totalCount": 100
+      },
+      "expected": 5.0,
+      "tolerance": 5e-09
+    },
+    {
+      "id": "benchmark-duplicate-percent",
+      "methodId": "duplicate-percent",
+      "inputs": {
+        "duplicateCount": 2,
+        "totalCount": 100
+      },
+      "expected": 2.0,
+      "tolerance": 2e-09
+    },
+    {
+      "id": "benchmark-out-of-range-percent",
+      "methodId": "out-of-range-percent",
+      "inputs": {
+        "outOfRangeCount": 3,
+        "totalCount": 100
+      },
+      "expected": 3.0,
+      "tolerance": 3.0000000000000004e-09
+    },
+    {
+      "id": "benchmark-data-quality-index",
+      "methodId": "data-quality-index",
+      "inputs": {
+        "missingPercent": 2,
+        "duplicatePercent": 1,
+        "outOfRangePercent": 3
+      },
+      "expected": 88.5,
+      "tolerance": 8.85e-08
+    },
+    {
+      "id": "benchmark-custody-completeness",
+      "methodId": "custody-completeness",
+      "inputs": {
+        "completedSteps": 9,
+        "requiredSteps": 10
+      },
+      "expected": 90.0,
+      "tolerance": 9.000000000000001e-08
+    },
+    {
+      "id": "benchmark-uptime-percent",
+      "methodId": "uptime-percent",
+      "inputs": {
+        "availableSeconds": 3560,
+        "scheduledSeconds": 3600
+      },
+      "expected": 98.88888888888889,
+      "tolerance": 9.888888888888889e-08
+    }
+  ],
+  "recordTypes": [
+    "instrument",
+    "sensor",
+    "sample",
+    "specimen",
+    "run",
+    "calibration",
+    "maintenance",
+    "measurement",
+    "custody-event"
+  ],
+  "connectionProfiles": [
+    "serial",
+    "csv-file",
+    "json-file",
+    "manual-entry",
+    "http-push",
+    "mqtt-bridge",
+    "arduino",
+    "raspberry-pi"
+  ],
+  "qualityFlags": [
+    "valid",
+    "missing",
+    "duplicate",
+    "out-of-range",
+    "clipped",
+    "drift-suspected",
+    "calibration-due",
+    "review-required"
+  ],
+  "responsibleUse": {
+    "scope": "Research, education, laboratory prototyping, and non-clinical instrumentation workflows.",
+    "boundary": "Not a substitute for validated laboratory information systems, regulated chain-of-custody procedures, clinical devices, qualified personnel, or formal quality review."
+  }
+}

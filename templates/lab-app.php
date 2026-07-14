@@ -63,7 +63,8 @@
   'electrical-embedded' => 'Electrical & embedded',
   'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering',
     'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals',
-    'genetics-genomics-sequence-analysis' => 'Genetics, genomics & sequence analysis', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
+    'genetics-genomics-sequence-analysis' => 'Genetics, genomics & sequence analysis',
+    'laboratory-data-instrumentation' => 'Laboratory data & instrumentation', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'visualization-studio' => 'Visualization & export',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
@@ -1205,6 +1206,16 @@
   <div data-genetics-genomics-root></div>
   <div data-genomic-visualization-root></div>
   <div data-genomic-validation-root></div>
+</section>
+
+
+<section class="sc-lab-panel sc-lab-module" data-lab-module="laboratory-data-instrumentation" data-module-panel="laboratory-data-instrumentation" hidden>
+  <header class="sc-lab-module-header">
+    <p class="sc-lab-kicker">LAB/DATA/INSTRUMENTATION</p>
+    <h3>Laboratory data and instrumentation</h3>
+    <p>Instrument, sensor, sample, run, calibration, maintenance, measurement, and custody records with normalized ingestion and auditable manifests.</p>
+  </header>
+  <div data-laboratory-instrumentation-root></div>
 </section>
 
 </main>
