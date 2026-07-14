@@ -307,3 +307,11 @@ from .biosignal_production_routes import (
 )
 
 app.include_router(biosignal_production_router)
+
+
+# SC_LAB_V0232_BIOSIGNAL_VISUALIZATION_ROUTER
+from .biosignal_visualization_routes import (
+    router as biosignal_visualization_router,
+)
+
+app.include_router(biosignal_visualization_router)

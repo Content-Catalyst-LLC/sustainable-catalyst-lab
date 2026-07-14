@@ -1,0 +1,588 @@
+{
+  "schema": "sc-lab-biosignal-visualization-comparison-contract/1.0",
+  "version": "0.23.2",
+  "title": "Biosignal Visualization, Annotation, and Comparative Analysis",
+  "modes": [
+    {
+      "id": "synchronized-multichannel",
+      "label": "Synchronized multi-channel",
+      "description": "Stack and inspect multiple channels against a shared time axis."
+    },
+    {
+      "id": "raw-filtered-overlay",
+      "label": "Raw and filtered overlay",
+      "description": "Compare unprocessed and smoothed or filtered waveforms."
+    },
+    {
+      "id": "annotation-regions",
+      "label": "Annotations and regions",
+      "description": "Add event, artifact, quality, note, and interval records."
+    },
+    {
+      "id": "event-intervals",
+      "label": "Event and interval analysis",
+      "description": "Summarize event rates, durations, burden, and spacing."
+    },
+    {
+      "id": "channel-alignment",
+      "label": "Channel alignment",
+      "description": "Shift channels and inspect overlap and alignment quality."
+    },
+    {
+      "id": "lag-correlation-scan",
+      "label": "Lag and correlation scan",
+      "description": "Find the lag with the strongest absolute correlation."
+    },
+    {
+      "id": "run-overlay-comparison",
+      "label": "Run overlay comparison",
+      "description": "Compare repeated runs or research records on a common window."
+    },
+    {
+      "id": "comparative-summary",
+      "label": "Comparative summary",
+      "description": "Produce explicit similarity, error, feature, and coverage metrics."
+    }
+  ],
+  "analysisMethods": [
+    {
+      "id": "descriptive-features",
+      "label": "Descriptive waveform features",
+      "operation": "descriptive_features"
+    },
+    {
+      "id": "min-max-normalize",
+      "label": "Min-max normalization",
+      "operation": "min_max_normalize"
+    },
+    {
+      "id": "z-score-normalize",
+      "label": "Z-score normalization",
+      "operation": "z_score_normalize"
+    },
+    {
+      "id": "moving-average",
+      "label": "Moving average",
+      "operation": "moving_average"
+    },
+    {
+      "id": "linear-resample",
+      "label": "Linear resampling",
+      "operation": "linear_resample"
+    },
+    {
+      "id": "pearson-correlation",
+      "label": "Pearson correlation",
+      "operation": "pearson_correlation"
+    },
+    {
+      "id": "mean-absolute-error",
+      "label": "Mean absolute error",
+      "operation": "mean_absolute_error"
+    },
+    {
+      "id": "root-mean-square-error",
+      "label": "Root mean square error",
+      "operation": "root_mean_square_error"
+    },
+    {
+      "id": "normalized-rmse",
+      "label": "Normalized root mean square error",
+      "operation": "normalized_rmse"
+    },
+    {
+      "id": "shift-series",
+      "label": "Shift series by lag",
+      "operation": "shift_series"
+    },
+    {
+      "id": "best-lag-correlation",
+      "label": "Best lag correlation",
+      "operation": "best_lag_correlation"
+    },
+    {
+      "id": "event-rate",
+      "label": "Event rate",
+      "operation": "event_rate"
+    },
+    {
+      "id": "interval-summary",
+      "label": "Interval summary",
+      "operation": "interval_summary"
+    },
+    {
+      "id": "annotation-coverage",
+      "label": "Annotation coverage",
+      "operation": "annotation_coverage"
+    },
+    {
+      "id": "common-time-window",
+      "label": "Common time window",
+      "operation": "common_time_window"
+    },
+    {
+      "id": "compare-runs",
+      "label": "Run comparison",
+      "operation": "compare_runs"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "benchmark-descriptive-features",
+      "methodId": "descriptive-features",
+      "inputs": {
+        "samples": [
+          -1,
+          1,
+          -1,
+          1
+        ],
+        "sampleRateHz": 100
+      },
+      "expected": {
+        "sampleCount": 4,
+        "sampleRateHz": 100.0,
+        "durationSeconds": 0.03,
+        "mean": 0.0,
+        "standardDeviation": 1.1547005383792515,
+        "rms": 1.0,
+        "minimum": -1.0,
+        "maximum": 1.0,
+        "peakToPeak": 2.0,
+        "zeroCrossingCount": 3,
+        "zeroCrossingRate": 100.0,
+        "crestFactor": 1.0
+      }
+    },
+    {
+      "id": "benchmark-min-max-normalize",
+      "methodId": "min-max-normalize",
+      "inputs": {
+        "samples": [
+          2,
+          4,
+          6
+        ]
+      },
+      "expected": [
+        0.0,
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "benchmark-z-score-normalize",
+      "methodId": "z-score-normalize",
+      "inputs": {
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        -1.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "benchmark-moving-average",
+      "methodId": "moving-average",
+      "inputs": {
+        "samples": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "windowSize": 2
+      },
+      "expected": [
+        1.0,
+        1.5,
+        2.5,
+        3.5
+      ]
+    },
+    {
+      "id": "benchmark-linear-resample",
+      "methodId": "linear-resample",
+      "inputs": {
+        "samples": [
+          0,
+          1,
+          0
+        ],
+        "sourceRateHz": 2,
+        "targetRateHz": 4
+      },
+      "expected": [
+        0.0,
+        0.5,
+        1.0,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "benchmark-pearson-correlation",
+      "methodId": "pearson-correlation",
+      "inputs": {
+        "reference": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "comparison": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      "expected": 1.0
+    },
+    {
+      "id": "benchmark-mean-absolute-error",
+      "methodId": "mean-absolute-error",
+      "inputs": {
+        "reference": [
+          1,
+          2,
+          3
+        ],
+        "comparison": [
+          1,
+          4,
+          2
+        ]
+      },
+      "expected": 1.0
+    },
+    {
+      "id": "benchmark-root-mean-square-error",
+      "methodId": "root-mean-square-error",
+      "inputs": {
+        "reference": [
+          1,
+          2,
+          3
+        ],
+        "comparison": [
+          1,
+          4,
+          2
+        ]
+      },
+      "expected": 1.2909944487358056
+    },
+    {
+      "id": "benchmark-normalized-rmse",
+      "methodId": "normalized-rmse",
+      "inputs": {
+        "reference": [
+          0,
+          2,
+          4
+        ],
+        "comparison": [
+          0,
+          3,
+          3
+        ]
+      },
+      "expected": 0.2041241452319315
+    },
+    {
+      "id": "benchmark-shift-series",
+      "methodId": "shift-series",
+      "inputs": {
+        "reference": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "comparison": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "lagSamples": 1
+      },
+      "expected": {
+        "lagSamples": 1,
+        "reference": [
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "comparison": [
+          0.0,
+          1.0,
+          2.0,
+          3.0
+        ],
+        "overlapCount": 4
+      }
+    },
+    {
+      "id": "benchmark-best-lag-correlation",
+      "methodId": "best-lag-correlation",
+      "inputs": {
+        "reference": [
+          1,
+          4,
+          2,
+          5,
+          0,
+          3
+        ],
+        "comparison": [
+          4,
+          2,
+          5,
+          0,
+          3,
+          9
+        ],
+        "maxLagSamples": 2
+      },
+      "expected": {
+        "bestLagSamples": 1,
+        "bestCorrelation": 1.0,
+        "overlapCount": 5,
+        "scan": [
+          {
+            "lagSamples": -2,
+            "correlation": 0.24182541670333724,
+            "overlapCount": 4
+          },
+          {
+            "lagSamples": -1,
+            "correlation": -0.30311770301376645,
+            "overlapCount": 5
+          },
+          {
+            "lagSamples": 0,
+            "correlation": -0.2969083193112956,
+            "overlapCount": 6
+          },
+          {
+            "lagSamples": 1,
+            "correlation": 1.0,
+            "overlapCount": 5
+          },
+          {
+            "lagSamples": 2,
+            "correlation": -0.6860502374404129,
+            "overlapCount": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "benchmark-event-rate",
+      "methodId": "event-rate",
+      "inputs": {
+        "eventCount": 12,
+        "durationSeconds": 60
+      },
+      "expected": 12.0
+    },
+    {
+      "id": "benchmark-interval-summary",
+      "methodId": "interval-summary",
+      "inputs": {
+        "intervals": [
+          {
+            "startSeconds": 0,
+            "endSeconds": 2
+          },
+          {
+            "startSeconds": 4,
+            "endSeconds": 7
+          }
+        ]
+      },
+      "expected": {
+        "intervalCount": 2,
+        "totalDurationSeconds": 5.0,
+        "meanDurationSeconds": 2.5,
+        "minimumDurationSeconds": 2.0,
+        "maximumDurationSeconds": 3.0,
+        "coveredSpanSeconds": 7.0,
+        "burdenPercent": 71.42857142857143
+      }
+    },
+    {
+      "id": "benchmark-annotation-coverage",
+      "methodId": "annotation-coverage",
+      "inputs": {
+        "annotations": [
+          {
+            "type": "artifact",
+            "startSeconds": 1,
+            "endSeconds": 3
+          },
+          {
+            "type": "event",
+            "startSeconds": 2,
+            "endSeconds": 4
+          }
+        ],
+        "windowStartSeconds": 0,
+        "windowEndSeconds": 10
+      },
+      "expected": {
+        "annotationCount": 2,
+        "coveredSeconds": 3.0,
+        "coveragePercent": 30.0,
+        "typeCounts": {
+          "artifact": 1,
+          "event": 1
+        },
+        "mergedIntervals": [
+          {
+            "startSeconds": 1.0,
+            "endSeconds": 4.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "benchmark-common-time-window",
+      "methodId": "common-time-window",
+      "inputs": {
+        "runA": {
+          "startSeconds": 0,
+          "durationSeconds": 10
+        },
+        "runB": {
+          "startSeconds": 3,
+          "durationSeconds": 10
+        }
+      },
+      "expected": {
+        "startSeconds": 3.0,
+        "endSeconds": 10.0,
+        "durationSeconds": 7.0,
+        "overlap": true
+      }
+    },
+    {
+      "id": "benchmark-compare-runs",
+      "methodId": "compare-runs",
+      "inputs": {
+        "reference": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "comparison": [
+          0,
+          1.2,
+          1.8,
+          3.1
+        ],
+        "sampleRateHz": 100
+      },
+      "expected": {
+        "sampleCount": 4,
+        "sampleRateHz": 100.0,
+        "correlation": 0.9912398251570825,
+        "meanAbsoluteError": 0.125,
+        "rootMeanSquareError": 0.15,
+        "normalizedRootMeanSquareError": 0.049999999999999996,
+        "referenceFeatures": {
+          "sampleCount": 4,
+          "sampleRateHz": 100.0,
+          "durationSeconds": 0.03,
+          "mean": 1.5,
+          "standardDeviation": 1.2909944487358056,
+          "rms": 1.8708286933869707,
+          "minimum": 0.0,
+          "maximum": 3.0,
+          "peakToPeak": 3.0,
+          "zeroCrossingCount": 0,
+          "zeroCrossingRate": 0.0,
+          "crestFactor": 1.6035674514745464
+        },
+        "comparisonFeatures": {
+          "sampleCount": 4,
+          "sampleRateHz": 100.0,
+          "durationSeconds": 0.03,
+          "mean": 1.525,
+          "standardDeviation": 1.2893796958227628,
+          "rms": 1.89010581714358,
+          "minimum": 0.0,
+          "maximum": 3.1,
+          "peakToPeak": 3.1,
+          "zeroCrossingCount": 0,
+          "zeroCrossingRate": 0.0,
+          "crestFactor": 1.6401198133366264
+        }
+      }
+    }
+  ],
+  "annotationTypes": [
+    {
+      "id": "event",
+      "label": "Event"
+    },
+    {
+      "id": "artifact",
+      "label": "Artifact"
+    },
+    {
+      "id": "region",
+      "label": "Region"
+    },
+    {
+      "id": "note",
+      "label": "Note"
+    },
+    {
+      "id": "quality",
+      "label": "Quality flag"
+    },
+    {
+      "id": "intervention",
+      "label": "Intervention marker"
+    }
+  ],
+  "imports": [
+    "channel-csv",
+    "multi-channel-csv",
+    "analysis-json",
+    "annotation-json"
+  ],
+  "exports": [
+    "svg",
+    "csv",
+    "json",
+    "provenance-record",
+    "project-record",
+    "notebook-entry"
+  ],
+  "preservedEngine": {
+    "version": "0.23.0",
+    "methodCount": 48,
+    "benchmarkCount": 48,
+    "categoryCount": 8
+  },
+  "productionLayer": {
+    "version": "0.23.1"
+  },
+  "responsibleUse": {
+    "scope": "Research, education, prototyping, and non-clinical comparative signal analysis.",
+    "boundary": "Not for diagnosis, treatment, patient monitoring, alarm generation, or clinical decision-making."
+  }
+}

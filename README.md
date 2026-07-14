@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.23.2 — Biosignal Visualization, Annotation, and Comparative Analysis
+
+This release adds eight synchronized visualization modes, 16 deterministic comparative-analysis methods, 16 benchmarks, six annotation types, multi-channel CSV import, raw/filtered overlays, lag and alignment analysis, run comparison, SVG/CSV/JSON exports, project/notebook/provenance handoffs, and mobile chart fallback while preserving v0.23.0 and v0.23.1.
+
 # Sustainable Catalyst Lab v0.23.1 — Biosignal Production Activation and Interface Reliability
 
 This release activates the v0.23.0 biosignal assets unconditionally on the public interface and adds canonical panel and mount repair, duplicate-root suppression, stale-marker cleanup, controlled startup retries, navigation and browser-restoration recovery, dynamic DOM observation, browser diagnostics, WordPress/FastAPI production-health routes, and mobile overflow reliability while preserving all 48 methods, 48 benchmarks, eight categories, and non-clinical boundaries.

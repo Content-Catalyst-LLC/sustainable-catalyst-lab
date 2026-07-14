@@ -1190,6 +1190,8 @@
     </header>
 
     <div data-biomedical-biosignals-root></div>
+
+    <div data-biosignal-visualization-root></div>
 </section>
 
 </main>

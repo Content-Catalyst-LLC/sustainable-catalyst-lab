@@ -1,3 +1,15 @@
+## 0.23.2 — Biosignal Visualization, Annotation, and Comparative Analysis
+
+- Added eight biosignal visualization and comparison modes.
+- Added 16 deterministic cross-runtime analysis methods and benchmarks.
+- Added synchronized multi-channel and raw/filtered SVG plots.
+- Added event, artifact, region, note, quality, and intervention annotations.
+- Added lag scanning, alignment, correlation, MAE, RMSE, normalized RMSE, and run comparison.
+- Added multi-channel CSV import and SVG, CSV, and JSON exports.
+- Added project, notebook, and v0.22.3 provenance handoffs.
+- Added WordPress and FastAPI analysis routes.
+- Added mobile chart and control fallback.
+
 ## 0.23.1 — Biosignal Production Activation and Interface Reliability
 
 - Added unconditional public biosignal asset activation.
