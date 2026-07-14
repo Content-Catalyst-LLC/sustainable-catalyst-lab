@@ -9,7 +9,7 @@
   const missingElement = new Proxy({
     value: '', checked: false, disabled: false, hidden: true, files: [], children: [], options: [],
     dataset: {}, style: missingStyle, classList: missingClassList, innerHTML: '', textContent: '',
-    addEventListener() {}, removeEventListener() {}, appendChild() {}, remove() {}, click() {}, focus() {}, select() {},
+    addEventListener() {}, removeEventListener() {}, appendChild() {}, add() {}, remove() {}, click() {}, focus() {}, select() {},
     setAttribute() {}, removeAttribute() {}, getAttribute() { return null; }, dispatchEvent() { return false; },
     insertAdjacentHTML() {}, contains() { return false; }, closest() { return null; }, querySelectorAll() { return []; },
     getBoundingClientRect() { return { width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0 }; }
@@ -18,6 +18,11 @@
   function qs(root, selector) { return root?.querySelector?.(selector) || missingElement; }
   function qsa(root, selector) { return root?.querySelectorAll ? [...root.querySelectorAll(selector)] : []; }
   function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
+  function reportRuntimeError(scope, error, metadata = {}) {
+    if (w.SCLabRuntimeV0263?.recordError) return w.SCLabRuntimeV0263.recordError(scope, error, metadata);
+    try { console.error('[Sustainable Catalyst Lab]', scope, error, metadata); } catch (_) {}
+    return null;
+  }
 
   function promptRecord(fields) {
     const record = {};
@@ -46,6 +51,8 @@
     if (!root || root.dataset.scLabAppInitialized === '1') return;
     root.dataset.scLabAppInitialized = '1';
     const projects = new Lab.Projects();
+    root._scLabProjects = projects;
+    root.dataset.scLabRuntimeState = root.dataset.scLabRuntimeState || 'initializing';
     const config = w.SCLabConfig || {};
     const initial = root.dataset.initialModule || 'overview';
     const select = qs(root, '[data-lab-project-select]');
@@ -80,7 +87,10 @@
 
     function openModule(id, options = {}) {
       const exists = qsa(root, '[data-lab-module]').find(panel => panel.dataset.labModule === id);
-      if (!exists) return;
+      if (!exists) {
+        if (w.SCLabRuntimeV0263?.navigate) w.SCLabRuntimeV0263.navigate(id);
+        return;
+      }
       qsa(root, '[data-lab-module]').forEach(panel => { panel.hidden = panel.dataset.labModule !== id; });
       qsa(root, '[data-lab-module-button]').forEach(button => button.classList.toggle('is-active', button.dataset.labModuleButton === id));
       root.dataset.activeModule = id;
@@ -103,7 +113,7 @@
     }
 
     function openTool(id) {
-      const item = Lab.Workspace.quickTools.find(tool => tool.id === id)
+      const item = Lab.Workspace?.quickTools?.find?.(tool => tool.id === id)
         || { kind: 'calculator', module: 'science-engineering', calculatorId: id };
       openModule(item.module);
       if (item.kind === 'chem-tab') setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', item.tab);
@@ -129,7 +139,7 @@
     }
 
     function renderCommandResults(query) {
-      const matches = Lab.Workspace.search(query, Lab.Calculators.definitions);
+      const matches = Lab.Workspace?.search ? Lab.Workspace.search(query, Lab.Calculators?.definitions || []) : [];
       if (!query.trim() || !matches.length) {
         commandResults.hidden = true;
         commandResults.innerHTML = '';
@@ -662,17 +672,17 @@
     const domainSelect = qs(root, '[data-calculator-domain]');
     const calculatorSelect = qs(root, '[data-calculator-select]');
     const calculatorForm = qs(root, '[data-calculator-form]');
-    Lab.Calculators.domains().forEach(domain => domainSelect.add(new Option(domain, domain)));
+    (Lab.Calculators?.domains?.() || []).forEach(domain => domainSelect.add(new Option(domain, domain)));
 
     function populateCalculators(preferredId) {
       calculatorSelect.innerHTML = '';
-      Lab.Calculators.byDomain(domainSelect.value).forEach(calculator => calculatorSelect.add(new Option(calculator.name, calculator.id)));
+      (Lab.Calculators?.byDomain?.(domainSelect.value) || []).forEach(calculator => calculatorSelect.add(new Option(calculator.name, calculator.id)));
       if (preferredId && [...calculatorSelect.options].some(option => option.value === preferredId)) calculatorSelect.value = preferredId;
       renderCalculator();
     }
 
     function renderCalculator() {
-      const definition = Lab.Calculators.get(calculatorSelect.value);
+      const definition = Lab.Calculators?.get?.(calculatorSelect.value);
       if (!definition) { calculatorForm.innerHTML = ''; return; }
       calculatorForm.innerHTML = `<div class="sc-lab-calculator-form" data-calculator-id="${U.esc(definition.id)}"><h4>${U.esc(definition.name)}</h4>
         ${definition.fields.map(([key, label, unit, value]) => `<label>${U.esc(label)}${unit ? ` (${U.esc(unit)})` : ''}<input data-calc-field="${U.esc(key)}" value="${U.esc(value)}"></label>`).join('')}
@@ -691,7 +701,7 @@
     }
 
     function selectCalculator(id) {
-      const definition = Lab.Calculators.get(id);
+      const definition = Lab.Calculators?.get?.(id);
       if (!definition) return;
       domainSelect.value = definition.domain;
       populateCalculators(id);
@@ -808,47 +818,37 @@
     });
 
 
-    // Physics Laboratory.
-    Lab.PhysicsLab?.init(root, projects);
+    function initializeController(scope, controller, selector, ...args) {
+      if (!root.querySelector(selector)) return false;
+      if (!controller || typeof controller.init !== 'function') {
+        reportRuntimeError(scope, new Error(`Required controller is unavailable: ${scope}`), { selector });
+        return false;
+      }
+      try {
+        controller.init(root, projects, ...args);
+        root.querySelector(selector)?.setAttribute('data-sc-lab-controller-ready', '1');
+        return true;
+      } catch (error) {
+        reportRuntimeError(scope, error, { selector, activeModule: root.dataset.initialModule || initial });
+        root.querySelector(selector)?.setAttribute('data-sc-lab-controller-error', error.message || String(error));
+        return false;
+      }
+    }
 
-    // Biology and Computational Biology Laboratory.
-    Lab.BiologyLab?.init(root, projects);
-
-    // Astronomy and Astrophysics Laboratory.
-    Lab.AstronomyLab?.init(root, projects);
-
-    // Materials Science and Characterization Laboratory.
-    Lab.MaterialsLab?.init(root, projects);
-
-    // Earth, Climate, Ocean, and Marine Systems Laboratory.
-    Lab.EarthLab?.init(root, projects);
-
-    // Energy and Engineering Laboratory.
-    Lab.EnergyLab?.init(root, projects);
-
-  // Electrical, Electronics, and Embedded Systems.
-  Lab.ElectricalEmbedded?.init(root, projects);
-
-  // Mechanical and Thermal Engineering.
-  Lab.MechanicalThermalLab?.init(root, projects);
-
-  // Civil Engineering and Infrastructure Systems.
-  Lab.CivilInfrastructureLab?.init(root, projects);
-
-    // Universal code switcher and portable method contracts.
-    Lab.CodeSwitcher?.init(root, projects);
-
-    // Universal visualization, export, and Decision Studio handoff.
-    Lab.Visualization?.init(root, projects, config);
-
-    // Structured PDF reports and Decision Studio report handoff.
-    Lab.Reporting?.init(root, projects);
-
-    // Interactive 3D and projected 4D scene visualization.
-    Lab.DimensionalVisualization?.init(root, projects);
-
-    // Workspace backup, restore, and selective reset.
-    Lab.DataManagement?.init(root, projects);
+    initializeController('physics', Lab.PhysicsLab, '[data-physics-tool]');
+    initializeController('biology', Lab.BiologyLab, '[data-biology-tool-grid]');
+    initializeController('astronomy', Lab.AstronomyLab, '[data-astronomy-tool-grid]');
+    initializeController('materials', Lab.MaterialsLab, '[data-materials-tool-grid]');
+    initializeController('earth-systems', Lab.EarthLab, '[data-earth-tool-grid]');
+    initializeController('energy-engineering', Lab.EnergyLab, '[data-energy-tool-grid]');
+    initializeController('electrical-embedded', Lab.ElectricalEmbedded, '[data-electrical-grid]');
+    initializeController('mechanical-thermal', Lab.MechanicalThermalLab, '[data-mechanical-thermal-root]');
+    initializeController('civil-infrastructure', Lab.CivilInfrastructureLab, '[data-civil-infrastructure-root]');
+    initializeController('code-switcher', Lab.CodeSwitcher, '[data-lab-module="code-studio"]');
+    initializeController('visualization', Lab.Visualization, '[data-viz-chart]', config);
+    initializeController('reporting', Lab.Reporting, '[data-lab-module="report-studio"]');
+    initializeController('dimensional-visualization', Lab.DimensionalVisualization, '[data-dim-chart]');
+    initializeController('workspace-data', Lab.DataManagement, '[data-workspace-counts]');
 
     // Project records.
     qs(root, '[data-new-experiment]').addEventListener('click', () => createExperiment());
@@ -989,7 +989,7 @@
           ['Scientific source registry', sources.sources ? 'Ready' : 'Unavailable', `${Object.keys(sources.sources || {}).length} configured connectors`],
           ['Browser project storage', 'Ready', `${projects.items.length} local project${projects.items.length === 1 ? '' : 's'}`],
           ['Periodic table', Lab.Periodic?.getElements?.().length === 118 ? 'Ready' : 'Loading', `${Lab.Periodic?.getElements?.().length || 0} element records`],
-          ['Calculator registry', 'Ready', `${Lab.Calculators.definitions.length} scientific calculators`],
+          ['Calculator registry', Lab.Calculators?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.Calculators?.definitions?.length || 0} scientific calculators`],
           ['Physics laboratory', Lab.PhysicsLab?.particles?.length ? 'Ready' : 'Unavailable', `${Lab.PhysicsLab?.particles?.length || 0} particle reference records · ${Object.keys(Lab.PhysicsLab?.tools || {}).length} physics methods`],
           ['Biology laboratory', Lab.BiologyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.BiologyLab?.definitions?.length || 0} computational biology methods · ${Lab.BiologyLab?.benchmarks?.length || 0} validation cases`],
           ['Astronomy laboratory', Lab.AstronomyLab?.definitions?.length ? 'Ready' : 'Unavailable', `${Lab.AstronomyLab?.definitions?.length || 0} astronomy methods · ${Lab.AstronomyLab?.benchmarks?.length || 0} validation cases`],
@@ -1009,9 +1009,21 @@
 
     renderSelect();
     openModule(initial);
+    root.dataset.scLabAppReady = '1';
+    root.dataset.scLabRuntimeState = 'ready';
+    d.dispatchEvent(new CustomEvent('sc-lab:app-ready', { detail: { version: config.version || '0.26.3', module: initial, root } }));
   }
 
   d.addEventListener('DOMContentLoaded', () => {
-    d.querySelectorAll('.sc-lab-app').forEach(init);
+    d.querySelectorAll('.sc-lab-app').forEach(root => {
+      try {
+        init(root);
+      } catch (error) {
+        root.dataset.scLabAppFailed = '1';
+        root.dataset.scLabRuntimeState = 'failed';
+        reportRuntimeError('app-bootstrap', error, { module: root.dataset.initialModule || 'overview' });
+        d.dispatchEvent(new CustomEvent('sc-lab:app-error', { detail: { error, module: root.dataset.initialModule || 'overview', root } }));
+      }
+    });
   });
 })(window, document);

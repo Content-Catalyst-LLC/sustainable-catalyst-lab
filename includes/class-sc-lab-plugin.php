@@ -72,7 +72,8 @@ final class SC_Lab_Plugin {
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
             $deps[] = $handle;
         }
-        wp_enqueue_script('sc-lab-app', SC_LAB_URL . 'assets/js/sc-lab-app.js', $deps, SC_LAB_VERSION, true);
+        if (wp_script_is('sc-lab-runtime-v0263', 'registered') || wp_script_is('sc-lab-runtime-v0263', 'enqueued')) { $deps[] = 'sc-lab-runtime-v0263'; }
+        wp_enqueue_script('sc-lab-app', SC_LAB_URL . 'assets/js/sc-lab-app.js', array_values(array_unique($deps)), SC_LAB_VERSION . '.' . (string) filemtime(SC_LAB_DIR . 'assets/js/sc-lab-app.js'), true);
 
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults());
         wp_localize_script('sc-lab-app', 'SCLabConfig', array(

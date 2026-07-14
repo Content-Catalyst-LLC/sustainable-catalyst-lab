@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
+
+This release repairs a shared browser-runtime failure that prevented later laboratory controllers from mounting when inactive panels were removed. It adds guarded initialization, active-panel controller mounting, cache-busting, runtime diagnostics, and resilient project storage while preserving the existing Python Compute Core and queue.
+
 # Sustainable Catalyst Lab v0.26.1 — Job Queue and Worker Reliability
 
 This release adds a SQLite-backed persistent queue, isolated Python worker processes, hard cancellation and timeouts, retry policies, duplicate-job prevention, restart recovery, worker health, queue monitoring, and same-origin WordPress job controls while preserving the v0.26.0 Python Compute Core and v0.25.5 lifecycle isolation.

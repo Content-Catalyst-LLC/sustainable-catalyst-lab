@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
+
+- Fixes the missing-element select proxy so shared calculator initialization no longer stops on `HTMLSelectElement.add()`.
+- Initializes domain controllers only when their active laboratory panel exists.
+- Adds per-controller error boundaries and a v0.26.3 runtime health/diagnostics layer.
+- Adds cache-busting for the repaired application asset and resilient project storage.
+- Browser-validates Astronomy, Marine Biology, Earth Systems, Physics, Biology, and the shared calculator registry.
+
 ## 0.26.1 — Job Queue and Worker Reliability
 
 - Replaces the process-local thread pool with a SQLite WAL-backed persistent queue.

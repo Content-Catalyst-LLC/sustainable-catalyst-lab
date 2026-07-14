@@ -38,25 +38,36 @@
     return merged;
   }
 
+  const memoryStorage = new Map();
+  function storageGet(key) {
+    try { return w.localStorage?.getItem(key) ?? (memoryStorage.has(key) ? memoryStorage.get(key) : null); }
+    catch (_) { return memoryStorage.has(key) ? memoryStorage.get(key) : null; }
+  }
+  function storageSet(key, value) {
+    const text = String(value);
+    memoryStorage.set(String(key), text);
+    try { w.localStorage?.setItem(key, text); return true; }
+    catch (_) { return false; }
+  }
   function read() {
-    try { const data=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(data)?data.map(normalize):[]; }
+    try { const data=JSON.parse(storageGet(KEY)||'[]'); return Array.isArray(data)?data.map(normalize):[]; }
     catch (_) { return []; }
   }
-  function write(items){ localStorage.setItem(KEY,JSON.stringify(items)); }
+  function write(items){ storageSet(KEY,JSON.stringify(items)); }
 
   class Projects {
     constructor(){
       this.items=read();
       if(!this.items.length){this.items=[blank('Lab Project')];write(this.items);}
-      this.activeId=localStorage.getItem(ACTIVE)||this.items[0].id;
+      this.activeId=storageGet(ACTIVE)||this.items[0].id;
       if(!this.get())this.activeId=this.items[0].id;
-      localStorage.setItem(ACTIVE,this.activeId);this.listeners=[];
+      storageSet(ACTIVE,this.activeId);this.listeners=[];
     }
     onChange(fn){this.listeners.push(fn);} emit(){this.listeners.forEach(fn=>fn(this.get(),this.items));}
-    get(id=this.activeId){return this.items.find(p=>p.id===id);} select(id){if(this.get(id)){this.activeId=id;localStorage.setItem(ACTIVE,id);this.emit();}}
+    get(id=this.activeId){return this.items.find(p=>p.id===id);} select(id){if(this.get(id)){this.activeId=id;storageSet(ACTIVE,id);this.emit();}}
     create(name){const p=blank(name||'Untitled Lab Project');this.items.unshift(p);this.activeId=p.id;this.save();return p;}
     update(mutator,activity){const p=this.get();if(!p)return;mutator(p);p.schemaVersion='0.20.0';p.updatedAt=U.now();if(activity)p.activity.unshift({id:U.uid('activity'),at:p.updatedAt,text:activity});p.activity=p.activity.slice(0,750);this.save();}
-    save(){write(this.items);localStorage.setItem(ACTIVE,this.activeId);this.emit();}
+    save(){write(this.items);storageSet(ACTIVE,this.activeId);this.emit();}
     add(collection,record,activity){if(!COLLECTIONS.includes(collection))throw new Error(`Unknown project collection: ${collection}`);this.update(p=>p[collection].unshift(Object.assign({id:U.uid(collection),createdAt:U.now()},record)),activity);return this.get()[collection][0];}
     export(){const p=this.get();U.download(`${p.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}-lab-project.json`,JSON.stringify(p,null,2),'application/json');}
     import(raw){const parsed=JSON.parse(raw);if(!parsed||typeof parsed!=='object'||!parsed.name)throw new Error('Invalid project file');const p=normalize(Object.assign({},parsed,{id:U.uid('project'),updatedAt:U.now()}));this.items.unshift(p);this.activeId=p.id;this.save();return p;}
