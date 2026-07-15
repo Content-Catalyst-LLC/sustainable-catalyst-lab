@@ -1,3 +1,13 @@
+## 0.26.3.2 — Installation, Version, and Asset Integrity Patch
+
+- Verifies the canonical plugin folder, bootstrap file, and active basename.
+- Detects duplicate plugin copies and partially applied releases.
+- Adds a build manifest with a source commit, fingerprint, and critical SHA-256 hashes.
+- Adds canonical runtime health and manifest endpoints.
+- Applies content-hash cache versions without rewriting legacy asset methods.
+- Validates Marine Biology, Climate Maps, and Evidence & Decisions routes.
+- Adds rollback guidance and idempotent installer recovery.
+
 # Changelog
 
 ## 0.26.3.1 — Panel Alias and Compatibility Routing Repair

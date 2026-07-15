@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
+
+This release verifies the active WordPress plugin identity, unifies release reporting, applies SHA-256 content versions to Lab assets without rewriting legacy loader methods, detects duplicate plugin copies and partial installations, validates canonical panel routes, and publishes a machine-readable build manifest and runtime health endpoint.
+
 # Sustainable Catalyst Lab v0.26.3.1 — Panel Alias and Compatibility Routing Repair
 
 Canonical panel routing for legacy identifiers, false-positive compatibility-warning suppression, content-hash cache busting where supported, and duplicate-plugin diagnostics.

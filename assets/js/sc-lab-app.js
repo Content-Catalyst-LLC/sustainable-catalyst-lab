@@ -1013,7 +1013,7 @@
     openModule(initial);
     root.dataset.scLabAppReady = '1';
     root.dataset.scLabRuntimeState = 'ready';
-    d.dispatchEvent(new CustomEvent('sc-lab:app-ready', { detail: { version: config.version || '0.26.3.1', module: initial, root } }));
+    d.dispatchEvent(new CustomEvent('sc-lab:app-ready', { detail: { version: config.version || '0.26.3.2', module: initial, root } }));
   }
 
   d.addEventListener('DOMContentLoaded', () => {
