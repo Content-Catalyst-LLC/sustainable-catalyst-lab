@@ -1,6 +1,8 @@
-# Sustainable Catalyst Lab v0.26.3.4 — Observe and Domain Module Activation Repair
+# Sustainable Catalyst Lab
 
-This release gives Climate Maps, Marine Biology, Space & Astronomy Observations, and Microbiology explicit module controllers under the isolated single-panel runtime. It also distinguishes observation workflows from astronomy calculations, injects the active project store into Microbiology, and adds controller-level recovery diagnostics.
+**Current release: v0.26.4 — Cross-Laboratory Functional Validation**
+
+This release adds browser-driven functional validation for all 41 Lab panels, including safe primary-action and rendered-output checks for 14 priority scientific and engineering laboratories. The WordPress admin dashboard separates code failures from optional backend and external-source degradation, saves versioned reports, and exports machine-readable diagnostics.
 
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 

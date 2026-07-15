@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/functional-health-v0264.schema.json",
+  "title": "Sustainable Catalyst Lab Functional Health Report",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "generatedAt",
+    "summary",
+    "results"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-functional-health/1.0"
+    },
+    "version": {
+      "const": "0.26.4"
+    },
+    "release": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "module",
+          "status"
+        ]
+      }
+    }
+  }
+}

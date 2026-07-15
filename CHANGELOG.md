@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.26.4 — Cross-Laboratory Functional Validation
+
+- Added browser-driven validation for all 41 laboratory panels.
+- Added priority action/output checks for 14 core scientific and engineering laboratories.
+- Added a Settings → Lab Functional Health dashboard with run, stop, export, and server-health controls.
+- Added separate classifications for controller defects, calculation failures, optional backends, and unavailable scientific sources.
+- Added saved JSON health reports and a versioned report schema.
+
+
 ## 0.26.3.4 — Scientific Feed Rendering and Observe Data Reliability
 
 - Automatically runs the initial NASA and OBIS queries when their Observe panels mount.
