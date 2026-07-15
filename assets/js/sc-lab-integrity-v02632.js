@@ -9,7 +9,8 @@
   let checkedAt = null;
 
   function root() {
-    return D.querySelector('[data-sc-lab-release="0.26.3.2"]') || D.querySelector('[data-sc-lab-runtime="0.26.3.1"]');
+    const release = config.pluginVersion || W.SCLabConfig?.version || '';
+    return (release ? D.querySelector(`[data-sc-lab-release="${CSS.escape(release)}"]`) : null) || D.querySelector('[data-sc-lab-runtime="0.26.3.1"]');
   }
   function app() { return root()?.querySelector('.sc-lab-app') || D.querySelector('.sc-lab-app'); }
   function now() { return new Date().toISOString(); }
@@ -28,6 +29,7 @@
     const panel = typeof W.SCLabRuntimeV02631?.status === 'function' ? W.SCLabRuntimeV02631.status() : null;
     return {
       integrity: '0.26.3.2',
+      release: config.pluginVersion || W.SCLabConfig?.version || null,
       configuredPlugin: config.pluginVersion || null,
       appConfig: W.SCLabConfig?.version || null,
       panelRuntime: panel?.version || config.panelRuntimeVersion || null,
@@ -38,9 +40,10 @@
     const r = root();
     const a = app();
     const versions = clientVersions();
-    const clientConsistent = versions.integrity === versions.configuredPlugin && versions.integrity === versions.appConfig;
+    const clientConsistent = !!versions.release && versions.release === versions.configuredPlugin && versions.release === versions.appConfig;
     return {
       version: '0.26.3.2',
+      release: versions.release,
       mode: 'installation-version-asset-integrity',
       clientConsistent,
       versions,
@@ -89,11 +92,11 @@
     const r = root();
     const a = app();
     if (r) {
-      r.dataset.scLabRelease = '0.26.3.2';
+      r.dataset.scLabRelease = config.pluginVersion || W.SCLabConfig?.version || 'unknown';
       r.dataset.scLabIntegrityVersion = '0.26.3.2';
       r.dataset.scLabIntegrityState = 'checking';
     }
-    if (a) a.dataset.scLabReleaseVersion = '0.26.3.2';
+    if (a) a.dataset.scLabReleaseVersion = config.pluginVersion || W.SCLabConfig?.version || 'unknown';
     D.addEventListener('click', event => {
       const action = event.target.closest('[data-sc-lab-runtime-action="diagnostics"]');
       if (!action) return;

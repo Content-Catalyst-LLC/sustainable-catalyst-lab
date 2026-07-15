@@ -1,12 +1,23 @@
+## 0.26.3.3 — Observe and Domain Module Activation Repair
+
+- Adds a dedicated Observe controller for scientific feeds, Climate Maps, Space & Astronomy Observations, and Marine Biology.
+- Stops the legacy global initializer from double-binding active Observe controls.
+- Renames the Analyze route to Astronomy calculations and adds a canonical Astronomy observations route to Space observations.
+- Adds explicit Microbiology dependencies, active-project injection, fallback mounting, and visible bootstrap errors.
+- Fixes the v0.26.3 runtime error reporter typo that could throw while reporting a missing controller.
+- Adds module-level readiness markers and a v0.26.3.3 activation health endpoint.
+- Browser-validates Climate Maps, Marine Biology, Space observations, Astronomy calculations, and Microbiology calculations.
+
 ## 0.26.3.2 — Installation, Version, and Asset Integrity Patch
 
-- Verifies the canonical plugin folder, bootstrap file, and active basename.
-- Detects duplicate plugin copies and partially applied releases.
-- Adds a build manifest with a source commit, fingerprint, and critical SHA-256 hashes.
-- Adds canonical runtime health and manifest endpoints.
-- Applies content-hash cache versions without rewriting legacy asset methods.
-- Validates Marine Biology, Climate Maps, and Evidence & Decisions routes.
-- Adds rollback guidance and idempotent installer recovery.
+- Adds canonical plugin-path and bootstrap verification.
+- Adds duplicate plugin-copy and partial-install detection.
+- Adds a generated build manifest with source commit, build fingerprint, and critical SHA-256 hashes.
+- Adds canonical `/wp-json/sc-lab/v1/runtime/health` and manifest endpoints.
+- Applies SHA-256 query versions through loader filters instead of rewriting legacy asset methods.
+- Unifies public plugin, release, panel-runtime, compute-core, and asset reporting.
+- Adds route checks for Marine Biology, Climate Maps, and Evidence & Decisions.
+- Adds explicit rollback guidance and idempotent installer recovery.
 
 # Changelog
 
@@ -16,14 +27,17 @@
 - Canonicalizes query URLs, navigation controls, and application module lookups.
 - Suppresses only false compatibility warnings backed by the canonical module manifest.
 - Keeps genuine missing-panel conditions in runtime diagnostics.
-- Adds content-hash asset cache busting where supported and duplicate-plugin-folder diagnostics.
+- Adds SHA-256 asset cache busting and duplicate-plugin-folder diagnostics.
 
 ## 0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
 
 - Fixes the missing-element select proxy so shared calculator initialization no longer stops on `HTMLSelectElement.add()`.
 - Initializes domain controllers only when their active laboratory panel exists.
-- Adds per-controller error boundaries and a v0.26.3 runtime health/diagnostics layer.
-- Adds cache-busting for the repaired application asset and resilient project storage.
+- Adds per-controller error boundaries so one module cannot prevent later laboratories from mounting.
+- Adds the v0.26.3 runtime health endpoint, browser diagnostics API, and public plugin/asset version reporting.
+- Uses file modification timestamps for cache-busting core and runtime assets.
+- Adds resilient project storage with an in-memory fallback when browser storage is unavailable.
+- Preserves isolated full-page module teardown to release listeners, timers, observers, workers, and chart state.
 - Browser-validates Astronomy, Marine Biology, Earth Systems, Physics, Biology, and the shared calculator registry.
 
 ## 0.26.1 — Job Queue and Worker Reliability

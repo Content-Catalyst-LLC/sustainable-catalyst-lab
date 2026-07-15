@@ -7,6 +7,7 @@
   const defaultAliases = {
     marine: 'marine-biology', 'marine-science': 'marine-biology', 'ocean-biology': 'marine-biology',
     climate: 'climate-maps', 'climate-map': 'climate-maps',
+    'astronomy-observations': 'space-telescopes', 'space-observations': 'space-telescopes', space: 'space-telescopes',
     evidence: 'evidence-decisions', decisions: 'evidence-decisions',
     earth: 'earth-systems', energy: 'energy-engineering', electrical: 'electrical-embedded',
     mechanical: 'mechanical-thermal', civil: 'civil-infrastructure', reports: 'report-studio',
@@ -66,7 +67,7 @@
   }
   function dependencies() {
     const Lab = W.SCLab || {};
-    const names = ['util','Projects','Feeds','Calculators','PhysicsLab','BiologyLab','AstronomyLab','MaterialsLab','EarthLab','EnergyLab','ElectricalEmbedded','MechanicalThermalLab','Workspace'];
+    const names = ['util','Projects','Feeds','Calculators','PhysicsLab','BiologyLab','AstronomyLab','MaterialsLab','EarthLab','EnergyLab','ElectricalEmbedded','MechanicalThermalLab','MicrobiologyLaboratory','ObserveDomainV02633','Workspace'];
     return Object.fromEntries(names.map(name => [name, !!Lab[name]]));
   }
   function status() {
@@ -153,7 +154,7 @@
   }
   function fallbackMount() {
     const app = labRoot();
-    if (!app || app.dataset.scLabAppReady === '1') return;
+    if (!app) return;
     const Lab = W.SCLab || {};
     const projects = app._scLabProjects || (typeof Lab.Projects === 'function' ? new Lab.Projects() : null);
     const map = {
@@ -161,7 +162,8 @@
       astronomy: ['AstronomyLab', '[data-astronomy-tool-grid]'], materials: ['MaterialsLab', '[data-materials-tool-grid]'],
       'earth-systems': ['EarthLab', '[data-earth-tool-grid]'], 'energy-engineering': ['EnergyLab', '[data-energy-tool-grid]'],
       'electrical-embedded': ['ElectricalEmbedded', '[data-electrical-grid]'], 'mechanical-thermal': ['MechanicalThermalLab', '[data-mechanical-thermal-root]'],
-      'civil-infrastructure': ['CivilInfrastructureLab', '[data-civil-infrastructure-root]']
+      'civil-infrastructure': ['CivilInfrastructureLab', '[data-civil-infrastructure-root]'],
+      'microbiology-laboratory': ['MicrobiologyLaboratory', '[data-microbiology-laboratory-root]']
     };
     const entry = map[active];
     if (!entry || !projects) return;
@@ -169,6 +171,7 @@
     const controller = Lab[name];
     const target = app.querySelector(selector);
     if (!target || !controller || typeof controller.init !== 'function' || target.dataset.scLabV02631FallbackMounted === '1') return;
+    if (target.dataset.scLabControllerReady === '1' || target.dataset.scMicrobiologyInitialized) return;
     try {
       controller.init(app, projects);
       target.dataset.scLabV02631FallbackMounted = '1';
@@ -209,7 +212,7 @@
     D.addEventListener('sc-lab:app-ready', event => { if (app) app.dataset.scLabRuntimeState = 'ready'; recordEvent('app-ready', event.detail); });
     D.addEventListener('sc-lab:app-error', event => { recordError('app-bootstrap', event.detail?.error || 'Application bootstrap failed', event.detail || {}); W.setTimeout(fallbackMount, 0); });
     W.setTimeout(() => {
-      if (app?.dataset.scLabAppReady !== '1') fallbackMount();
+      fallbackMount();
       const current = status();
       if (current.nodeCount > Number(config.warningBudget || 5000)) console.warn('[Sustainable Catalyst Lab v0.26.3.1] DOM warning budget exceeded', current);
       if (current.nodeCount > Number(config.nodeBudget || 6500)) wrapper.classList.add('sc-lab-over-budget-v02631');

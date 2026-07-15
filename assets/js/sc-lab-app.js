@@ -20,7 +20,7 @@
   function canonicalModule(id) { return w.SCLabRuntimeV02631?.resolveModule?.(id) || String(id || 'overview'); }
   function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
   function reportRuntimeError(scope, error, metadata = {}) {
-    if (w.SCLabRuntimeV02631?.recordError) return w.SCLabRuntimeV0263.recordError(scope, error, metadata);
+    if (w.SCLabRuntimeV02631?.recordError) return w.SCLabRuntimeV02631.recordError(scope, error, metadata);
     try { console.error('[Sustainable Catalyst Lab]', scope, error, metadata); } catch (_) {}
     return null;
   }
@@ -56,6 +56,7 @@
     root.dataset.scLabRuntimeState = root.dataset.scLabRuntimeState || 'initializing';
     const config = w.SCLabConfig || {};
     const initial = root.dataset.initialModule || 'overview';
+    const observeOwned = !!w.SCLabObserveDomainV02633?.owns?.(initial);
     const select = qs(root, '[data-lab-project-select]');
     const file = qs(root, '[data-lab-import-file]');
     const nav = qs(root, '[data-lab-nav]');
@@ -90,7 +91,7 @@
       id = canonicalModule(id);
       const exists = qsa(root, '[data-lab-module]').find(panel => panel.dataset.labModule === id);
       if (!exists) {
-        if (w.SCLabRuntimeV02631?.navigate) w.SCLabRuntimeV0263.navigate(id);
+        if (w.SCLabRuntimeV02631?.navigate) w.SCLabRuntimeV02631.navigate(id);
         return;
       }
       qsa(root, '[data-lab-module]').forEach(panel => { panel.hidden = panel.dataset.labModule !== id; });
@@ -458,17 +459,21 @@
     const feedTarget = qs(root, '[data-feed-results]');
     const feedStatus = qs(root, '[data-feed-status]');
     const runFeed = () => feedTo(feedSource.value, feedQuery.value, Number(feedLimit.value), feedTarget, feedStatus);
-    qs(root, '[data-feed-run]').addEventListener('click', runFeed);
-    qs(root, '[data-feed-refresh]').addEventListener('click', runFeed);
-    qs(root, '[data-space-load]').addEventListener('click', async () => { const telescope=qs(root,'[data-space-telescope]').value; const query=`${telescope==='all'?'':telescope+' '} ${qs(root,'[data-space-query]').value}`.trim(); currentSpaceRecords=await feedTo('nasa-space-telescopes',query,Number(qs(root,'[data-space-limit]').value),qs(root,'[data-space-results]')); qs(root,'[data-space-dataset]').disabled=!currentSpaceRecords.length; const groups={};currentSpaceRecords.forEach(r=>{const t=Lab.Observations.telescope(r);groups[t]=(groups[t]||0)+1});qs(root,'[data-space-summary]').textContent=Object.entries(groups).map(([k,v])=>`${k}: ${v}`).join(' · ')||'No observations returned.'; });
-    qs(root, '[data-marine-load]').addEventListener('click', async () => { currentMarineRecords=await feedTo('obis-marine',qs(root,'[data-marine-query]').value,Number(qs(root,'[data-marine-limit]').value),qs(root,'[data-marine-results]')); qs(root,'[data-marine-dataset]').disabled=!currentMarineRecords.length; const taxa=Lab.Observations.taxonSummary(currentMarineRecords).slice(0,6);qs(root,'[data-marine-summary]').textContent=`${currentMarineRecords.length} occurrences · `+taxa.map(([n,c])=>`${n}: ${c}`).join(' · '); renderMarineChart(); });
+    if (!observeOwned) {
+      qs(root, '[data-feed-run]').addEventListener('click', runFeed);
+      qs(root, '[data-feed-refresh]').addEventListener('click', runFeed);
+      qs(root, '[data-space-load]').addEventListener('click', async () => { const telescope=qs(root,'[data-space-telescope]').value; const query=`${telescope==='all'?'':telescope+' '} ${qs(root,'[data-space-query]').value}`.trim(); currentSpaceRecords=await feedTo('nasa-space-telescopes',query,Number(qs(root,'[data-space-limit]').value),qs(root,'[data-space-results]')); qs(root,'[data-space-dataset]').disabled=!currentSpaceRecords.length; const groups={};currentSpaceRecords.forEach(r=>{const t=Lab.Observations.telescope(r);groups[t]=(groups[t]||0)+1});qs(root,'[data-space-summary]').textContent=Object.entries(groups).map(([k,v])=>`${k}: ${v}`).join(' · ')||'No observations returned.'; });
+      qs(root, '[data-marine-load]').addEventListener('click', async () => { currentMarineRecords=await feedTo('obis-marine',qs(root,'[data-marine-query]').value,Number(qs(root,'[data-marine-limit]').value),qs(root,'[data-marine-results]')); qs(root,'[data-marine-dataset]').disabled=!currentMarineRecords.length; const taxa=Lab.Observations.taxonSummary(currentMarineRecords).slice(0,6);qs(root,'[data-marine-summary]').textContent=`${currentMarineRecords.length} occurrences · `+taxa.map(([n,c])=>`${n}: ${c}`).join(' · '); renderMarineChart(); });
+    }
 
 
     function loadDataset(dataset){ currentDataset=dataset; openModule('dataset-inspector'); renderDataset(); }
     root.addEventListener('sc-lab:dataset',event=>loadDataset(Lab.Datasets.fromRecords(event.detail.records,{title:event.detail.title,source:event.detail.source})));
-    qs(root,'[data-feed-to-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentFeedRecords,{title:'Scientific observation board',source:feedSource.value,query:{q:feedQuery.value,limit:Number(feedLimit.value)}})));
-    qs(root,'[data-space-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentSpaceRecords,{title:'Space telescope observations',source:'NASA Image and Video Library'})));
-    qs(root,'[data-marine-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentMarineRecords,{title:'Marine biodiversity occurrences',source:'OBIS'})));
+    if (!observeOwned) {
+      qs(root,'[data-feed-to-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentFeedRecords,{title:'Scientific observation board',source:feedSource.value,query:{q:feedQuery.value,limit:Number(feedLimit.value)}})));
+      qs(root,'[data-space-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentSpaceRecords,{title:'Space telescope observations',source:'NASA Image and Video Library'})));
+      qs(root,'[data-marine-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentMarineRecords,{title:'Marine biodiversity occurrences',source:'OBIS'})));
+    }
     qs(root,'[data-save-query]').addEventListener('click',()=>{projects.add('savedQueries',{source:feedSource.value,q:feedQuery.value,limit:Number(feedLimit.value),recordCount:currentFeedRecords.length},`Scientific query saved: ${feedSource.value}`);U.toast(root,'Query saved to project.');});
     function datasetRows(){return currentDataset?Lab.Datasets.filter(currentDataset,qs(root,'[data-dataset-filter]').value):[];}
     function populateDatasetSelect(){const sel=qs(root,'[data-dataset-select]');const value=sel.value;sel.innerHTML='<option value="">Current working dataset</option>'+projects.get().datasets.map(x=>`<option value="${U.esc(x.id)}">${U.esc(x.title||'Dataset')}</option>`).join('');sel.value=value;}
@@ -493,22 +498,24 @@
         qs(root, '[data-climate-loading]')
       );
     }
-    qs(root, '[data-climate-render]').addEventListener('click', renderMap);
-    qs(root,'[data-climate-opacity]').addEventListener('input',e=>qs(root,'[data-climate-image]').style.opacity=Number(e.target.value)/100);
-    qs(root,'[data-climate-image]').addEventListener('click',event=>{const point=Lab.ClimateMap.coordinate(event,qs(root,'[data-climate-image]'),qs(root,'[data-climate-region]').value);qs(root,'[data-climate-readout]').textContent=`Selected coordinate: ${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`;projects.add('observations',{title:'Climate map coordinate',source:'NASA GIBS',location:point,layer:qs(root,'[data-climate-layer]').value,date:climateDate.value},`Map coordinate observed: ${point.latitude.toFixed(3)}, ${point.longitude.toFixed(3)}`);});
-    qs(root,'[data-climate-export]').addEventListener('click',()=>{const record={source:'NASA GIBS',layer:qs(root,'[data-climate-layer]').value,date:climateDate.value,bbox:qs(root,'[data-climate-region]').value,url:renderMap()};U.download('lab-climate-map.json',JSON.stringify(record,null,2),'application/json');});
-    qs(root, '[data-climate-save]').addEventListener('click', () => {
-      const record = {
-        title: 'NASA GIBS climate map',
-        layer: qs(root, '[data-climate-layer]').value,
-        date: climateDate.value,
-        bbox: qs(root, '[data-climate-region]').value,
-        url: renderMap()
-      };
-      projects.add('mapViews', record, `Climate map saved: ${record.layer}`);
-      U.toast(root, 'Climate map state saved.');
-    });
-    renderMap();
+    if (!observeOwned) {
+      qs(root, '[data-climate-render]').addEventListener('click', renderMap);
+      qs(root,'[data-climate-opacity]').addEventListener('input',e=>qs(root,'[data-climate-image]').style.opacity=Number(e.target.value)/100);
+      qs(root,'[data-climate-image]').addEventListener('click',event=>{const point=Lab.ClimateMap.coordinate(event,qs(root,'[data-climate-image]'),qs(root,'[data-climate-region]').value);qs(root,'[data-climate-readout]').textContent=`Selected coordinate: ${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`;projects.add('observations',{title:'Climate map coordinate',source:'NASA GIBS',location:point,layer:qs(root,'[data-climate-layer]').value,date:climateDate.value},`Map coordinate observed: ${point.latitude.toFixed(3)}, ${point.longitude.toFixed(3)}`);});
+      qs(root,'[data-climate-export]').addEventListener('click',()=>{const record={source:'NASA GIBS',layer:qs(root,'[data-climate-layer]').value,date:climateDate.value,bbox:qs(root,'[data-climate-region]').value,url:renderMap()};U.download('lab-climate-map.json',JSON.stringify(record,null,2),'application/json');});
+      qs(root, '[data-climate-save]').addEventListener('click', () => {
+        const record = {
+          title: 'NASA GIBS climate map',
+          layer: qs(root, '[data-climate-layer]').value,
+          date: climateDate.value,
+          bbox: qs(root, '[data-climate-region]').value,
+          url: renderMap()
+        };
+        projects.add('mapViews', record, `Climate map saved: ${record.layer}`);
+        U.toast(root, 'Climate map state saved.');
+      });
+      renderMap();
+    }
 
     // Chemistry Laboratory and Spectrometry Studio.
     let rawSpectrum = [];

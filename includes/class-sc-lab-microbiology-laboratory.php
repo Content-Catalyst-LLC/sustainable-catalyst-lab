@@ -53,8 +53,8 @@ final class SC_Lab_Microbiology_Laboratory_Integration {
         wp_enqueue_script(
             'sc-lab-microbiology-laboratory',
             $base_url . 'js/modules/microbiology-laboratory.js',
-            array(),
-            self::VERSION,
+            array('sc-lab-core', 'sc-lab-projects', 'sc-lab-runtime-v02631'),
+            SC_LAB_VERSION . '.' . substr(hash_file('sha256', dirname(__DIR__) . '/assets/js/modules/microbiology-laboratory.js'), 0, 12),
             true
         );
     }

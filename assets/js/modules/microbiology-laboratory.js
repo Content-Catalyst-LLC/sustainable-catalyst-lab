@@ -483,7 +483,7 @@ function init(root = document, projects = Lab.Projects) {
             recordedAt: new Date().toISOString(),
             fingerprint: record.audit.fingerprint,
           },
-          `Aerospace flight-systems record added: ${record.title}`
+          `Microbiology record added: ${record.title}`
         );
 
         status.textContent = 'Saved to the active project.';
@@ -561,7 +561,7 @@ function init(root = document, projects = Lab.Projects) {
               total: rows.length,
               results: rows,
             },
-            `Development-systems validation: ${passed}/${rows.length}`
+            `Microbiology validation: ${passed}/${rows.length}`
           );
         }
       }
@@ -571,8 +571,41 @@ function init(root = document, projects = Lab.Projects) {
   });
 }
 
+function activeProjectStore() {
+  const app = document.querySelector('.sc-lab-app');
+  if (app && app._scLabProjects && typeof app._scLabProjects.add === 'function') {
+    return app._scLabProjects;
+  }
+  if (Lab.Projects && typeof Lab.Projects.add === 'function') {
+    return Lab.Projects;
+  }
+  if (typeof Lab.Projects === 'function') {
+    try {
+      const store = new Lab.Projects();
+      if (app) app._scLabProjects = store;
+      return store;
+    } catch (error) {
+      console.error('[Sustainable Catalyst Lab Microbiology]', error);
+    }
+  }
+  return null;
+}
+
 function autoInit() {
-  init(document, Lab.Projects);
+  try {
+    init(document, activeProjectStore());
+    document.querySelectorAll('[data-microbiology-laboratory-root]').forEach((mount) => {
+      mount.dataset.scLabControllerReady = '1';
+    });
+  } catch (error) {
+    document.querySelectorAll('[data-microbiology-laboratory-root]').forEach((mount) => {
+      mount.innerHTML = `<div class="sc-lab-data-note">Microbiology controller error: ${escapeHtml(error.message || error)}</div>`;
+      mount.dataset.scLabControllerError = String(error.message || error);
+    });
+    if (global.SCLabRuntimeV02631?.recordError) {
+      global.SCLabRuntimeV02631.recordError('microbiology-bootstrap', error);
+    }
+  }
 }
 
 if (typeof document !== 'undefined') {

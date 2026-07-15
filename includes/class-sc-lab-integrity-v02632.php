@@ -79,7 +79,8 @@ final class SC_Lab_Integrity_V02632 {
         if ($tag !== 'sc_lab_app' || is_admin()) { return $output; }
         $manifest = self::manifest();
         $summary = array(
-            'releaseVersion' => self::VERSION,
+            'releaseVersion' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
+            'integrityVersion' => self::VERSION,
             'pluginVersion' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
             'panelRuntimeVersion' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
             'buildFingerprint' => isset($manifest['buildFingerprint']) ? $manifest['buildFingerprint'] : null,
@@ -87,7 +88,7 @@ final class SC_Lab_Integrity_V02632 {
         );
         $json = wp_json_encode($summary, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $json = str_replace('</', '<\\/', (string) $json);
-        $output = preg_replace('/(<div\s+id=("|\')sc-lab-v02631-root\2\b)/i', '$1 data-sc-lab-release="' . esc_attr(self::VERSION) . '" data-sc-lab-integrity-version="' . esc_attr(self::VERSION) . '"', (string) $output, 1);
+        $output = preg_replace('/(<div\s+id=("|\')sc-lab-v02631-root\2\b)/i', '$1 data-sc-lab-release="' . esc_attr(defined('SC_LAB_VERSION') ? SC_LAB_VERSION : self::VERSION) . '" data-sc-lab-integrity-version="' . esc_attr(self::VERSION) . '"', (string) $output, 1);
         $output = str_replace('Panel routing repair active', 'Lab integrity layer active', $output);
         return '<script type="application/json" data-sc-lab-release-summary>' . $json . '</script>' . $output;
     }
@@ -147,7 +148,7 @@ final class SC_Lab_Integrity_V02632 {
         $modules = self::template_modules();
         $aliases = class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::alias_map() : array();
         $checks = array();
-        foreach (array('marine' => 'marine-biology', 'climate' => 'climate-maps', 'evidence' => 'evidence-decisions') as $alias => $canonical) {
+        foreach (array('marine' => 'marine-biology', 'climate' => 'climate-maps', 'evidence' => 'evidence-decisions', 'astronomy-observations' => 'space-telescopes') as $alias => $canonical) {
             $resolved = isset($aliases[$alias]) ? sanitize_key((string) $aliases[$alias]) : $alias;
             $checks[$alias] = array(
                 'expected' => $canonical,
@@ -193,7 +194,8 @@ final class SC_Lab_Integrity_V02632 {
         $verification = self::verify_manifest();
         $candidates = self::plugin_candidates();
         $versions = array(
-            'release' => self::VERSION,
+            'release' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
+            'integrityRuntime' => self::VERSION,
             'pluginConstant' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
             'pluginHeader' => defined('SC_LAB_FILE') ? self::plugin_header_version(SC_LAB_FILE) : null,
             'panelRuntime' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
@@ -263,7 +265,8 @@ final class SC_Lab_Integrity_V02632 {
         $manifest = self::manifest();
         return rest_ensure_response(array(
             'ok' => !empty($manifest),
-            'releaseVersion' => self::VERSION,
+            'releaseVersion' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
+            'integrityRuntimeVersion' => self::VERSION,
             'manifest' => $manifest,
             'verification' => self::verify_manifest(),
         ));

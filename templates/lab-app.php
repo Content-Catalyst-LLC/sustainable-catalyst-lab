@@ -48,7 +48,7 @@
         'Observe' => array(
           'scientific-feeds' => 'Observation board',
           'climate-maps' => 'Climate maps',
-          'space-telescopes' => 'Space observations',
+          'astronomy-observations' => 'Space & astronomy observations',
           'marine-biology' => 'Marine biology',
         ),
         'Analyze' => array(
@@ -56,7 +56,7 @@
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
-          'astronomy' => 'Astronomy laboratory',
+          'astronomy' => 'Astronomy calculations',
           'materials' => 'Materials laboratory',
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',

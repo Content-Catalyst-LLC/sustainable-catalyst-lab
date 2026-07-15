@@ -1,14 +1,18 @@
+# Sustainable Catalyst Lab v0.26.3.3 — Observe and Domain Module Activation Repair
+
+This release gives Climate Maps, Marine Biology, Space & Astronomy Observations, and Microbiology explicit module controllers under the isolated single-panel runtime. It also distinguishes observation workflows from astronomy calculations, injects the active project store into Microbiology, and adds controller-level recovery diagnostics.
+
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 
-This release verifies the active WordPress plugin identity, unifies release reporting, applies SHA-256 content versions to Lab assets without rewriting legacy loader methods, detects duplicate plugin copies and partial installations, validates canonical panel routes, and publishes a machine-readable build manifest and runtime health endpoint.
+This release verifies the active WordPress plugin identity, unifies public release reporting, applies SHA-256 content versions to Lab assets without rewriting legacy loader methods, detects duplicate plugin copies and partial installations, validates canonical panel routes, and publishes a machine-readable build manifest and runtime health endpoint.
 
 # Sustainable Catalyst Lab v0.26.3.1 — Panel Alias and Compatibility Routing Repair
 
-Canonical panel routing for legacy identifiers, false-positive compatibility-warning suppression, content-hash cache busting where supported, and duplicate-plugin diagnostics.
+Canonical panel routing for legacy identifiers, false-positive compatibility-warning suppression, content-hash cache busting, and duplicate-plugin diagnostics.
 
 # Sustainable Catalyst Lab v0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
 
-This release repairs a shared browser-runtime failure that prevented later laboratory controllers from mounting when inactive panels were removed. It adds guarded initialization, active-panel controller mounting, cache-busting, runtime diagnostics, and resilient project storage while preserving the existing Python Compute Core and queue.
+This release repairs a shared browser-runtime failure that prevented later laboratory controllers from mounting when the single-panel lifecycle removed inactive markup. It adds guarded initialization, active-panel controller mounting, file-hash cache busting, runtime diagnostics, and resilient project storage while preserving the v0.26.1 Python Compute Core and persistent queue.
 
 # Sustainable Catalyst Lab v0.26.1 — Job Queue and Worker Reliability
 
