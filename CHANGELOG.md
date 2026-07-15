@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.27.1 — Numerical Validation and Benchmark Library
+
+- Added a dedicated Numerical Validation Library under Analyze and the `[sc_lab_numerical_validation]` focused shortcode.
+- Added fourteen governed known-answer benchmarks spanning root finding, quadrature, interpolation, ODE integration, eigen analysis, bounded and linear optimization, FFT recovery, Monte Carlo propagation, bootstrap stability, sensitivity analysis, parameter sweeps, linear systems, and sampled integration.
+- Added exact, tolerance, residual, sequence, monotonicity, deterministic-seed, named-derivative, and unit-aware acceptance rules.
+- Added convergence diagnostics for root-finding and ODE fixtures with tolerance-level error and runtime reporting.
+- Added independent browser-reference comparisons for supported fixtures and retained Python Compute Core provenance for every result.
+- Added benchmark catalog, selected-run, full-suite, convergence, health, report export, and WordPress proxy endpoints.
+- Preserved all 23 registered backend methods, the persistent queue, v0.27.0 Numerical Methods Studio, and v0.26.6 production-recovery protections.
+
 ## 0.27.0 — Scientific Computing and Numerical Methods
 
 - Added a dedicated Numerical Methods Studio under Analyze and the `[sc_lab_numerical_methods]` focused shortcode.
@@ -498,3 +508,10 @@
 - Added an optional GNU `prlimit` command wrapper on Linux workers.
 - Retained subprocess timeouts, isolated temporary directories, restricted environments, output limits, and Render container boundaries.
 - Added a regression test covering FastAPI and in-memory threaded job execution.
+
+## 0.27.1 — Numerical Validation and Benchmark Library
+
+- Added fourteen known-answer numerical benchmarks.
+- Added benchmark, suite, and convergence endpoints to Python Compute Core.
+- Added the Numerical Validation Library panel and shortcode.
+- Added analytic/browser references, tolerance controls, unit assertions, residual checks, and exportable reports.

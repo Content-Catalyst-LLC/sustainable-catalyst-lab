@@ -1,0 +1,829 @@
+{
+  "benchmarkCount": 14,
+  "benchmarks": [
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-10,
+          "expected": 1.4142135623730951,
+          "operation": "close",
+          "path": "root",
+          "relativeTolerance": 1e-10,
+          "unit": "dimensionless"
+        },
+        {
+          "expected": 1e-10,
+          "operation": "absolute_below",
+          "path": "functionValue"
+        },
+        {
+          "expected": true,
+          "operation": "equal",
+          "path": "converged"
+        }
+      ],
+      "browserReference": true,
+      "convergence": {
+        "expectedTrend": "non-increasing-error",
+        "metricPath": "root",
+        "parameterSets": [
+          {
+            "absoluteTolerance": 0.0001,
+            "relativeTolerance": 0.0001
+          },
+          {
+            "absoluteTolerance": 1e-08,
+            "relativeTolerance": 1e-08
+          },
+          {
+            "absoluteTolerance": 1e-12,
+            "relativeTolerance": 1e-12
+          }
+        ],
+        "reference": 1.4142135623730951
+      },
+      "description": "Known-answer root benchmark for a sign-changing polynomial bracket.",
+      "domain": "root-finding",
+      "id": "root.sqrt2.brentq",
+      "inputs": {
+        "bracket": [
+          0,
+          2
+        ],
+        "coefficients": [
+          1,
+          0,
+          -2
+        ]
+      },
+      "method": "numerics.root_scalar_polynomial",
+      "parameters": {
+        "absoluteTolerance": 1e-12,
+        "maxIterations": 200,
+        "relativeTolerance": 1e-12
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "convergence",
+        "browser-reference"
+      ],
+      "title": "Brent root of x\u00b2 \u2212 2",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-10,
+          "expected": 12.0,
+          "operation": "close",
+          "path": "integral",
+          "relativeTolerance": 1e-10,
+          "unit": "integral units"
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 12.0,
+          "operation": "close",
+          "path": "polynomialExactIntegral",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "expected": 1e-10,
+          "operation": "less_equal",
+          "path": "absoluteDifference"
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "Adaptive integration is checked against the analytic antiderivative.",
+      "domain": "integration",
+      "id": "quadrature.polynomial.exact",
+      "inputs": {
+        "coefficients": [
+          3,
+          0,
+          2
+        ],
+        "lower": 0,
+        "upper": 2
+      },
+      "method": "numerics.adaptive_quadrature_polynomial",
+      "parameters": {
+        "absoluteTolerance": 1e-12,
+        "relativeTolerance": 1e-12
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "analytic",
+        "browser-reference"
+      ],
+      "title": "Exact polynomial quadrature",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": [
+            1.0,
+            3.0
+          ],
+          "operation": "sequence_close",
+          "path": "values",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "expected": false,
+          "operation": "equal",
+          "path": "extrapolated"
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "A straight-line dataset must interpolate to exact midpoint values.",
+      "domain": "interpolation",
+      "id": "interpolation.linear.reference",
+      "inputs": {
+        "query": [
+          0.5,
+          1.5
+        ],
+        "x": [
+          0,
+          1,
+          2
+        ],
+        "y": [
+          0,
+          2,
+          4
+        ]
+      },
+      "method": "numerics.interpolation",
+      "parameters": {
+        "extrapolate": false,
+        "kind": "linear"
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "browser-reference"
+      ],
+      "title": "Linear interpolation reference points",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 2e-07,
+          "expected": 5.43656365691809,
+          "operation": "close",
+          "path": "finalValue",
+          "relativeTolerance": 2e-07,
+          "unit": "state units"
+        },
+        {
+          "expected": true,
+          "operation": "equal",
+          "path": "success"
+        }
+      ],
+      "browserReference": true,
+      "convergence": {
+        "expectedTrend": "non-increasing-error",
+        "metricPath": "finalValue",
+        "parameterSets": [
+          {
+            "absoluteTolerance": 1e-06,
+            "rate": 0.25,
+            "relativeTolerance": 0.001
+          },
+          {
+            "absoluteTolerance": 1e-09,
+            "rate": 0.25,
+            "relativeTolerance": 1e-06
+          },
+          {
+            "absoluteTolerance": 1e-12,
+            "rate": 0.25,
+            "relativeTolerance": 1e-09
+          }
+        ],
+        "reference": 5.43656365691809
+      },
+      "description": "RK45 output is checked against y(t)=2e^(0.25t) at t=4.",
+      "domain": "differential-equations",
+      "id": "ode.exponential.analytic",
+      "inputs": {
+        "endTime": 4,
+        "initialValue": 2,
+        "model": "exponential",
+        "points": 81,
+        "startTime": 0
+      },
+      "method": "numerics.ode_first_order",
+      "parameters": {
+        "absoluteTolerance": 1e-11,
+        "rate": 0.25,
+        "relativeTolerance": 1e-09
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "convergence",
+        "browser-reference"
+      ],
+      "title": "Exponential ODE analytic solution",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": [
+            1.0,
+            3.0
+          ],
+          "operation": "sorted_sequence_close",
+          "path": "eigenvalues",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "expected": 1e-10,
+          "operation": "max_below",
+          "path": "residualNorms"
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 4.0,
+          "operation": "close",
+          "path": "trace",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 3.0,
+          "operation": "close",
+          "path": "determinant",
+          "relativeTolerance": 1e-12
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "A symmetric matrix with analytic eigenvalues 1 and 3 validates eigenpairs and residuals.",
+      "domain": "linear-algebra",
+      "id": "eigen.symmetric.2x2",
+      "inputs": {
+        "matrix": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      "method": "numerics.eigen_analysis",
+      "parameters": {
+        "symmetricTolerance": 1e-12
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "residual",
+        "browser-reference"
+      ],
+      "title": "Symmetric 2\u00d72 eigen benchmark",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-06,
+          "expected": 2.0,
+          "operation": "close",
+          "path": "x",
+          "relativeTolerance": 1e-08
+        },
+        {
+          "absoluteTolerance": 1e-08,
+          "expected": 3.0,
+          "operation": "close",
+          "path": "minimum",
+          "relativeTolerance": 1e-08
+        },
+        {
+          "expected": true,
+          "operation": "equal",
+          "path": "success"
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "The registered quadratic x\u00b2\u22124x+7 has an exact minimum of 3 at x=2.",
+      "domain": "optimization",
+      "id": "optimization.quadratic.minimum",
+      "inputs": {
+        "coefficients": [
+          1,
+          -4,
+          7
+        ],
+        "lower": -10,
+        "objective": "quadratic",
+        "upper": 10
+      },
+      "method": "optimization.scalar_bounded",
+      "parameters": {
+        "absoluteTolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "browser-reference"
+      ],
+      "title": "Quadratic bounded minimum",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-08,
+          "expected": -29.333333333333332,
+          "operation": "close",
+          "path": "objectiveMinimum",
+          "relativeTolerance": 1e-08
+        },
+        {
+          "absoluteTolerance": 1e-08,
+          "expected": [
+            6.666666666666667,
+            4.666666666666667
+          ],
+          "operation": "sequence_close",
+          "path": "solution",
+          "relativeTolerance": 1e-08
+        },
+        {
+          "expected": true,
+          "operation": "equal",
+          "path": "success"
+        }
+      ],
+      "browserReference": false,
+      "convergence": null,
+      "description": "A bounded two-variable model validates HiGHS objective and decision values.",
+      "domain": "optimization",
+      "id": "optimization.linear.reference",
+      "inputs": {
+        "bounds": [
+          [
+            0,
+            null
+          ],
+          [
+            0,
+            null
+          ]
+        ],
+        "inequalityMatrix": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "inequalityVector": [
+          18,
+          16
+        ],
+        "objective": [
+          -3,
+          -2
+        ]
+      },
+      "method": "optimization.linear_program",
+      "parameters": {},
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "constraint-residual"
+      ],
+      "title": "Two-variable linear program",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 4.0,
+          "operation": "close",
+          "path": "peakFrequencyHz",
+          "relativeTolerance": 1e-12,
+          "unit": "Hz"
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 1.0,
+          "operation": "close",
+          "path": "peakAmplitude",
+          "relativeTolerance": 1e-12
+        }
+      ],
+      "browserReference": false,
+      "convergence": null,
+      "description": "A periodic unit-amplitude signal validates frequency-bin and amplitude recovery.",
+      "domain": "signal-processing",
+      "id": "fft.single-tone.4hz",
+      "inputs": {
+        "sampleRate": 16,
+        "values": [
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1
+        ]
+      },
+      "method": "signal.fft_spectrum",
+      "parameters": {
+        "detrend": "none",
+        "window": "rectangular"
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "spectral"
+      ],
+      "title": "Single-tone FFT at 4 Hz",
+      "units": {
+        "sampleRate": "Hz"
+      }
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 0.05,
+          "expected": 18.0,
+          "operation": "close",
+          "path": "mean",
+          "relativeTolerance": 0.005
+        },
+        {
+          "absoluteTolerance": 0.05,
+          "expected": 4.123105625617661,
+          "operation": "close",
+          "path": "standardDeviation",
+          "relativeTolerance": 0.02
+        },
+        {
+          "expected": 50000,
+          "operation": "equal",
+          "path": "samples"
+        }
+      ],
+      "browserReference": false,
+      "convergence": null,
+      "description": "A fixed-seed normal input validates reproducibility and statistical agreement.",
+      "domain": "uncertainty-analysis",
+      "id": "monte-carlo.linear.seeded",
+      "inputs": {
+        "distributions": [
+          {
+            "distribution": "normal",
+            "mean": 10,
+            "name": "x",
+            "stdDev": 2
+          },
+          {
+            "distribution": "normal",
+            "mean": 5,
+            "name": "y",
+            "stdDev": 1
+          }
+        ],
+        "model": "linear",
+        "samples": 50000
+      },
+      "method": "uncertainty.monte_carlo_propagation",
+      "parameters": {
+        "coefficients": [
+          2,
+          -1
+        ],
+        "confidence": 0.95,
+        "intercept": 3
+      },
+      "randomSeed": 27101,
+      "tags": [
+        "seeded",
+        "statistical",
+        "reproducibility"
+      ],
+      "title": "Seeded linear uncertainty propagation",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 7.0,
+          "operation": "close",
+          "path": "sampleMean",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "expected": 1e-12,
+          "operation": "absolute_below",
+          "path": "bootstrapStandardError"
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": [
+            7.0,
+            7.0
+          ],
+          "operation": "sequence_close",
+          "path": "confidenceInterval",
+          "relativeTolerance": 1e-12
+        }
+      ],
+      "browserReference": false,
+      "convergence": null,
+      "description": "A constant sample must produce a zero-width confidence interval and zero standard error.",
+      "domain": "uncertainty-analysis",
+      "id": "bootstrap.constant.zero-variance",
+      "inputs": {
+        "resamples": 1000,
+        "values": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "method": "uncertainty.bootstrap_mean_interval",
+      "parameters": {
+        "confidence": 0.95
+      },
+      "randomSeed": 27102,
+      "tags": [
+        "seeded",
+        "known-answer",
+        "stability"
+      ],
+      "title": "Bootstrap constant-sample interval",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-08,
+          "expected": 2000.0,
+          "operation": "close",
+          "path": "baselineOutput",
+          "relativeTolerance": 1e-08
+        },
+        {
+          "absoluteTolerance": 0.0002,
+          "expected": {
+            "area": 200.0,
+            "efficiency": 10000.0,
+            "irradiance": 2.0
+          },
+          "operation": "named_derivatives_close",
+          "path": "sensitivities",
+          "relativeTolerance": 2e-05
+        }
+      ],
+      "browserReference": false,
+      "convergence": null,
+      "description": "Finite differences are checked against analytic product derivatives.",
+      "domain": "sensitivity-analysis",
+      "id": "sensitivity.product.analytic",
+      "inputs": {
+        "baseline": {
+          "area": 10,
+          "efficiency": 0.2,
+          "irradiance": 1000
+        },
+        "model": "product"
+      },
+      "method": "sensitivity.local_finite_difference",
+      "parameters": {
+        "absoluteStep": 1e-09,
+        "relativeStep": 1e-05
+      },
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "derivative"
+      ],
+      "title": "Product-model analytic sensitivities",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-10,
+          "expected": 800.0,
+          "operation": "close",
+          "path": "minimumOutput",
+          "relativeTolerance": 1e-10,
+          "unit": "W"
+        },
+        {
+          "absoluteTolerance": 1e-10,
+          "expected": 2000.0,
+          "operation": "close",
+          "path": "maximumOutput",
+          "relativeTolerance": 1e-10,
+          "unit": "W"
+        },
+        {
+          "expected": true,
+          "operation": "equal",
+          "path": "monotonicIncreasing"
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "A deterministic efficiency sweep validates exact endpoints and monotonic response.",
+      "domain": "parameter-sweeps",
+      "id": "sweep.photovoltaic.monotonic",
+      "inputs": {
+        "fixed": {
+          "area": 10,
+          "irradiance": 1000,
+          "systemFactor": 0.8
+        },
+        "model": "photovoltaic_output",
+        "parameter": "efficiency",
+        "values": [
+          0.1,
+          0.15,
+          0.2,
+          0.25
+        ]
+      },
+      "method": "simulation.parameter_sweep",
+      "parameters": {},
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "monotonic",
+        "browser-reference"
+      ],
+      "title": "Photovoltaic efficiency sweep",
+      "units": {
+        "maximumOutput": "W",
+        "minimumOutput": "W"
+      }
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": [
+            0.0,
+            2.5
+          ],
+          "operation": "sequence_close",
+          "path": "solution",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "expected": 1e-12,
+          "operation": "less_equal",
+          "path": "residualNorm"
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "A known 2\u00d72 system validates solution and residual diagnostics.",
+      "domain": "linear-algebra",
+      "id": "linear-system.reference.2x2",
+      "inputs": {
+        "matrix": [
+          [
+            3,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "vector": [
+          5,
+          5
+        ]
+      },
+      "method": "numerics.linear_system",
+      "parameters": {},
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "residual",
+        "browser-reference"
+      ],
+      "title": "Two-equation linear system",
+      "units": {}
+    },
+    {
+      "assertions": [
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 0.3333333333333333,
+          "operation": "close",
+          "path": "simpson",
+          "relativeTolerance": 1e-12
+        },
+        {
+          "absoluteTolerance": 1e-12,
+          "expected": 0.34375,
+          "operation": "close",
+          "path": "trapezoid",
+          "relativeTolerance": 1e-12
+        }
+      ],
+      "browserReference": true,
+      "convergence": null,
+      "description": "Simpson integration of a quadratic on uniform points must reproduce 1/3.",
+      "domain": "integration",
+      "id": "sampled-integration.parabola",
+      "inputs": {
+        "x": [
+          0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "y": [
+          0,
+          0.0625,
+          0.25,
+          0.5625,
+          1.0
+        ]
+      },
+      "method": "numerics.sampled_integration",
+      "parameters": {},
+      "randomSeed": null,
+      "tags": [
+        "known-answer",
+        "browser-reference"
+      ],
+      "title": "Sampled parabola integration",
+      "units": {}
+    }
+  ],
+  "schema": "sc-lab-numerical-benchmark-catalog/1.0",
+  "validation": {
+    "browserReferenceBenchmarks": 9,
+    "convergenceDiagnostics": true,
+    "knownAnswerFixtures": true,
+    "pythonReference": "SciPy/NumPy compute core",
+    "toleranceControls": true,
+    "unitAssertions": true
+  },
+  "version": "0.27.1"
+}

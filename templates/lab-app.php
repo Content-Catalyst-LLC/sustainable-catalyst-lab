@@ -54,6 +54,7 @@
         'Analyze' => array(
           'dataset-inspector' => 'Dataset inspector',
           'numerical-methods' => 'Numerical Methods Studio',
+          'numerical-validation' => 'Numerical Validation Library',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
@@ -267,6 +268,50 @@
             <details><summary>Raw compute response</summary><pre data-numerical-raw>No response.</pre></details>
           </section>
         </div>
+      </section>
+
+      <section class="sc-lab-panel sc-lab-benchmark-v0271" data-lab-module="numerical-validation" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/VALIDATION</span><h3>Numerical Validation and Benchmark Library</h3></div>
+          <span class="sc-lab-status-dot is-ready">Known-answer fixtures</span>
+        </div>
+        <div class="sc-lab-method-note">Validate governed Python numerical methods against analytic solutions, reference fixtures, tolerance rules, unit assertions, residual checks, deterministic seeds, and convergence series. Browser references are independent lightweight checks and do not replace the Python benchmark result.</div>
+        <div data-benchmark-status role="status" aria-live="polite" data-tone="loading">Loading the benchmark library…</div>
+        <div class="sc-benchmark-layout">
+          <section class="sc-benchmark-card" aria-labelledby="sc-benchmark-current-title">
+            <h4 id="sc-benchmark-current-title" data-benchmark-title>Numerical benchmark</h4>
+            <p><code data-benchmark-id>Catalog loading</code></p>
+            <p data-benchmark-description>Choose a known-answer fixture.</p>
+            <p><strong>Tags:</strong> <span data-benchmark-tags>—</span></p>
+            <label>Benchmark<select data-benchmark-select></select></label>
+            <h5>Acceptance assertions</h5>
+            <ul data-benchmark-assertions><li>Assertions will appear here.</li></ul>
+            <div class="sc-benchmark-actions">
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-benchmark-run>Run selected benchmark</button>
+              <button type="button" class="sc-lab-button" data-benchmark-convergence disabled>Run convergence series</button>
+              <button type="button" class="sc-lab-button" data-benchmark-run-all>Run all benchmarks</button>
+              <button type="button" class="sc-lab-button" data-benchmark-export disabled>Export report JSON</button>
+            </div>
+            <details><summary>Independent browser reference</summary><pre data-benchmark-browser-reference>No reference loaded.</pre></details>
+          </section>
+          <section class="sc-benchmark-card" aria-labelledby="sc-benchmark-result-title">
+            <h4 id="sc-benchmark-result-title">Validation result</h4>
+            <div data-benchmark-summary><strong>No benchmark has run.</strong></div>
+            <div class="sc-benchmark-table-wrap"><table><thead><tr><th>Status</th><th>Output</th><th>Rule</th><th>Expected</th><th>Actual</th><th>Unit</th></tr></thead><tbody data-benchmark-assertion-results><tr><td colspan="6">No assertion results.</td></tr></tbody></table></div>
+            <details open><summary>Python output</summary><pre data-benchmark-python-output>No output.</pre></details>
+            <details><summary>Execution provenance</summary><pre data-benchmark-provenance>No provenance.</pre></details>
+          </section>
+        </div>
+        <section class="sc-benchmark-card">
+          <h4>Full benchmark suite</h4>
+          <p data-benchmark-suite-summary>No suite has run.</p>
+          <div class="sc-benchmark-table-wrap"><table><thead><tr><th>Status</th><th>Benchmark</th><th>Method</th><th>Runtime</th><th>Error</th></tr></thead><tbody data-benchmark-suite-results><tr><td colspan="5">No suite results.</td></tr></tbody></table></div>
+        </section>
+        <section class="sc-benchmark-card">
+          <h4>Convergence diagnostics</h4>
+          <p data-benchmark-convergence-summary>Select a benchmark with a convergence series.</p>
+          <div class="sc-benchmark-table-wrap"><table><thead><tr><th>Level</th><th>Parameters</th><th>Actual</th><th>Absolute error</th><th>Runtime</th></tr></thead><tbody data-benchmark-convergence-results><tr><td colspan="5">No convergence series.</td></tr></tbody></table></div>
+        </section>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="chemistry" hidden>

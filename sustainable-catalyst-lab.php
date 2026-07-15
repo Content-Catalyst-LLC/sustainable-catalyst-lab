@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
- * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing and numerical methods, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.27.0
+ * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing, numerical methods, numerical validation and benchmark libraries, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, and data-connected documentation.
+ * Version: 0.27.1
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.27.0');
+define('SC_LAB_VERSION', '0.27.1');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -100,6 +100,9 @@ SC_Lab_Production_Stability_V0266::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-numerical-methods-v0270.php';
 SC_Lab_Numerical_Methods_V0270::init();
+
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-numerical-validation-v0271.php';
+SC_Lab_Numerical_Validation_V0271::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-python-compute-core-v0261.php';
 SC_Lab_Python_Compute_Core_V0261::init();

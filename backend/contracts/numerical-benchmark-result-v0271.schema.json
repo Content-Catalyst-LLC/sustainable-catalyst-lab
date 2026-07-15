@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/numerical-benchmark-result-v0271.schema.json",
+  "title": "Sustainable Catalyst Lab Numerical Benchmark Result v0.27.1",
+  "type": "object",
+  "required": ["schema", "benchmark", "passed", "assertions", "outputs"],
+  "properties": {
+    "schema": {"const": "sc-lab-numerical-benchmark-result/1.0"},
+    "benchmark": {"type": "object", "required": ["id", "method", "assertions"]},
+    "passed": {"type": "boolean"},
+    "assertions": {"type": "array", "items": {"type": "object", "required": ["path", "operation", "passed"]}},
+    "outputs": {"type": "object"},
+    "computeValidation": {"type": "object"},
+    "provenance": {"type": "object"},
+    "benchmarkRuntimeMs": {"type": "number", "minimum": 0}
+  },
+  "additionalProperties": true
+}

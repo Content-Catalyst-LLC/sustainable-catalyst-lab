@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab Python Compute Core v0.27.0
+# Sustainable Catalyst Lab Python Compute Core v0.27.1
 
-The v0.27.0 service is the governed numerical-compute plane for Sustainable Catalyst Lab. It preserves the persistent SQLite job queue and isolated worker processes from v0.26.1 while adding twelve registered scientific numerical methods.
+The v0.27.1 service is the governed numerical-compute and validation plane for Sustainable Catalyst Lab. It preserves the 23-method registry, persistent SQLite job queue, isolated worker processes, and v0.27.0 numerical methods while adding fourteen registered known-answer benchmarks, tolerance assertions, convergence diagnostics, and reproducible validation reports.
 
 ## Numerical capabilities
 
@@ -29,7 +29,7 @@ Open `/health`, `/docs`, `/v1/capabilities`, `/v1/queue/status`, and `/v1/worker
 
 ## Persistent queue
 
-Version 0.27.0 stores job records in SQLite WAL mode and executes each calculation in an isolated child process. Configure the database with `SC_LAB_JOB_DB_PATH`. Place that file on host-provided persistent storage when jobs must survive host replacement or redeployment.
+Version 0.27.1 stores job records in SQLite WAL mode and executes each calculation in an isolated child process. Configure the database with `SC_LAB_JOB_DB_PATH`. Place that file on host-provided persistent storage when jobs must survive host replacement or redeployment.
 
 Supported states are `queued`, `running`, `completed`, `failed`, `cancelled`, `timed_out`, and `retrying`. Running jobs left behind by an interrupted API process are returned to the queue when the same database is reopened.
 
@@ -53,3 +53,7 @@ GET    /v1/workers
 ## Extension preservation
 
 Recovered domain routers from prior Lab releases are discovered at startup. Import failures are isolated and reported in `/health` rather than preventing the core service from starting.
+
+## v0.27.1 benchmark API
+
+The compute service includes fourteen registered known-answer benchmarks. Use `/v1/benchmarks`, `/v1/benchmarks/run`, `/v1/benchmarks/run-suite`, and `/v1/benchmarks/convergence` with the same HMAC or API-key authentication used by compute requests.

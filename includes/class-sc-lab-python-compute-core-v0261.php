@@ -27,6 +27,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/retry', array('methods'=>'POST','callback'=>array(__CLASS__,'job_retry'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/workers', array('methods'=>'GET','callback'=>array(__CLASS__,'workers'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/queue/status', array('methods'=>'GET','callback'=>array(__CLASS__,'queue_status'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/benchmarks', array('methods'=>'GET','callback'=>array(__CLASS__,'benchmarks'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/benchmarks/(?P<benchmark>[A-Za-z0-9._-]{1,128})', array('methods'=>'GET','callback'=>array(__CLASS__,'benchmark'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/benchmarks/run', array('methods'=>'POST','callback'=>array(__CLASS__,'benchmark_run'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/benchmarks/run-suite', array('methods'=>'POST','callback'=>array(__CLASS__,'benchmark_suite'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/benchmarks/convergence', array('methods'=>'POST','callback'=>array(__CLASS__,'benchmark_convergence'),'permission_callback'=>'__return_true'));
     }
 
     private static function settings() {
@@ -148,5 +153,33 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function job_retry(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/retry','POST',array()); }
     public static function workers() { return self::proxy('/v1/workers'); }
     public static function queue_status() { return self::proxy('/v1/queue/status'); }
+    public static function benchmarks() { return self::proxy('/v1/benchmarks'); }
+    public static function benchmark(WP_REST_Request $request) {
+        $id = preg_replace('/[^A-Za-z0-9._-]/', '', (string)$request['benchmark']);
+        return self::proxy('/v1/benchmarks/' . rawurlencode($id));
+    }
+    private static function benchmark_payload(WP_REST_Request $request, $suite = false) {
+        $body = $request->get_json_params();
+        $body = is_array($body) ? $body : array();
+        if ($suite) {
+            $ids = isset($body['benchmarkIds']) && is_array($body['benchmarkIds']) ? array_slice($body['benchmarkIds'], 0, 100) : array();
+            return array('benchmarkIds'=>array_values(array_filter(array_map(function($id){ return preg_replace('/[^A-Za-z0-9._-]/','',(string)$id); }, $ids))));
+        }
+        $id = isset($body['benchmarkId']) ? preg_replace('/[^A-Za-z0-9._-]/','',(string)$body['benchmarkId']) : '';
+        if ($id === '') { return new WP_Error('invalid_benchmark','A benchmarkId is required.',array('status'=>422)); }
+        return array('benchmarkId'=>$id);
+    }
+    public static function benchmark_run(WP_REST_Request $request) {
+        $payload=self::benchmark_payload($request); if(is_wp_error($payload)){return $payload;}
+        return self::proxy('/v1/benchmarks/run','POST',$payload,8388608);
+    }
+    public static function benchmark_suite(WP_REST_Request $request) {
+        $payload=self::benchmark_payload($request,true); if(is_wp_error($payload)){return $payload;}
+        return self::proxy('/v1/benchmarks/run-suite','POST',$payload,8388608);
+    }
+    public static function benchmark_convergence(WP_REST_Request $request) {
+        $payload=self::benchmark_payload($request); if(is_wp_error($payload)){return $payload;}
+        return self::proxy('/v1/benchmarks/convergence','POST',$payload,8388608);
+    }
 
 }

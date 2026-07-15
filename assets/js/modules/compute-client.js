@@ -86,6 +86,11 @@
     retry(jobId) { return request(`${jobUrl(jobId)}/retry`, { method:'POST', body:{} }); },
     queueStatus() { return request(endpoint('queueStatus')); },
     workers() { return request(endpoint('workers')); },
+    benchmarks() { return request(endpoint('benchmarks')); },
+    benchmark(benchmarkId) { return request(`${endpoint('benchmarks').replace(/\/$/, '')}/${encodeURIComponent(benchmarkId)}`); },
+    runBenchmark(benchmarkId) { return request(endpoint('benchmarkRun'), { method:'POST', body:{ benchmarkId }, timeoutMs:125000 }); },
+    runBenchmarkSuite(benchmarkIds = []) { return request(endpoint('benchmarkSuite'), { method:'POST', body:{ benchmarkIds }, timeoutMs:125000 }); },
+    runBenchmarkConvergence(benchmarkId) { return request(endpoint('benchmarkConvergence'), { method:'POST', body:{ benchmarkId }, timeoutMs:125000 }); },
     async poll(jobId, options = {}) {
       const interval = Math.max(500, Number(options.intervalMs || config().jobPollMs || 1200));
       const deadline = Date.now() + Math.max(5000, Number(options.timeoutMs || 180000));

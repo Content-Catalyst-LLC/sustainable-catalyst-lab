@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 from reportlab.lib.pagesizes import A4, letter
 from reportlab.pdfgen import canvas
 
+from .benchmarks import catalog as benchmark_catalog, resolve as resolve_benchmark, run_benchmark, run_convergence, run_suite
 from .compute import ComputeExecutionError, run_compute
 from .config import settings
 from .extensions import load_legacy_extensions
@@ -94,6 +95,7 @@ def health():
         "architecture": "python-compute-core",
         "authMode": settings.auth_mode,
         "methodCount": len(catalog()),
+        "benchmarkCount": len(benchmark_catalog()),
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -119,7 +121,8 @@ def capabilities():
         "executionTargets": ["python-core-cpu", "isolated-process-worker"],
         "modes": ["synchronous", "persistent-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
-        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True},
+        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True},
+        "benchmarks": {"count": len(benchmark_catalog()), "crossImplementation": ["python-core", "analytic-reference", "browser-reference"], "toleranceControls": True, "unitAssertions": True},
         "security": {
             "authMode": settings.auth_mode,
             "arbitraryCode": False,
@@ -157,6 +160,58 @@ def method(method_id: str):
         return resolve(method_id).public()
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.get("/v1/benchmarks", dependencies=[Depends(require_compute_auth)])
+def benchmarks():
+    return {"schema": "sc-lab-numerical-benchmark-catalog/1.0", "version": settings.version, "benchmarkCount": len(benchmark_catalog()), "benchmarks": benchmark_catalog()}
+
+
+@app.get("/v1/benchmarks/{benchmark_id}", dependencies=[Depends(require_compute_auth)])
+def benchmark(benchmark_id: str):
+    try:
+        return resolve_benchmark(benchmark_id).public()
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.post("/v1/benchmarks/run")
+def benchmark_run(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    benchmark_id = str(payload.get("benchmarkId") or payload.get("benchmark_id") or "")
+    if not benchmark_id:
+        raise HTTPException(status_code=422, detail="benchmarkId is required.")
+    try:
+        return run_benchmark(benchmark_id, lambda request: run_compute(request, auth))
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ComputeExecutionError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.post("/v1/benchmarks/run-suite")
+def benchmark_suite(payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    benchmark_ids = None
+    if isinstance(payload, dict) and isinstance(payload.get("benchmarkIds"), list):
+        benchmark_ids = [str(value) for value in payload["benchmarkIds"][:100]]
+    try:
+        return run_suite(lambda request: run_compute(request, auth), benchmark_ids)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.post("/v1/benchmarks/convergence")
+def benchmark_convergence(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    benchmark_id = str(payload.get("benchmarkId") or payload.get("benchmark_id") or "")
+    if not benchmark_id:
+        raise HTTPException(status_code=422, detail="benchmarkId is required.")
+    try:
+        return run_convergence(benchmark_id, lambda request: run_compute(request, auth))
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ComputeExecutionError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
 
 
 @app.post("/v1/compute/run", response_model=ComputeResponse)

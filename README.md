@@ -1,20 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.27.0 — Scientific Computing and Numerical Methods**
+**Current release: v0.27.1 — Numerical Validation and Benchmark Library**
 
-This release adds a governed Python numerical-computing layer and a dedicated Numerical Methods Studio with registered root finding, adaptive integration, interpolation, ODE solving, eigen analysis, optimization, FFT analysis, Monte Carlo uncertainty propagation, bootstrap intervals, sensitivity analysis, and parameter sweeps. Lightweight methods run immediately; heavier methods use the persistent v0.26.1 queue and retain reproducibility provenance. Public arbitrary-code execution remains disabled.
+This release adds a governed numerical-validation layer on top of the v0.27.0 Python Compute Core. Fourteen known-answer benchmarks verify root finding, quadrature, interpolation, ODE integration, eigen analysis, optimization, FFT analysis, uncertainty methods, sensitivity analysis, parameter sweeps, linear systems, and sampled integration. The new Numerical Validation Library exposes tolerances, residuals, convergence behavior, browser references, Python provenance, full-suite reporting, and JSON export without enabling arbitrary Python execution.
 
-## v0.27.0 highlights
+## v0.27.1 highlights
 
-- 12 registered, schema-constrained numerical methods
-- Numerical Methods Studio under Analyze
-- Automatic immediate or queued execution
-- Seeded stochastic methods and reproducible result hashes
-- Accessible line-series plots, structured output, raw response, and provenance views
-- Save-to-project and JSON export workflows
-- Numerical catalog and health REST endpoints
-- Focused `[sc_lab_numerical_methods]` shortcode
-- Full preservation of v0.26.6 Safe Start, recovery, accessibility, feed, and functional-validation protections
+- 14 registered known-answer numerical benchmarks
+- Numerical Validation Library under Analyze
+- Absolute and relative tolerance assertions
+- Residual, sequence, monotonicity, deterministic-seed, derivative, and unit checks
+- Root-finding and ODE convergence diagnostics
+- Independent browser references for supported cases
+- Full-suite execution, report export, and provenance inspection
+- Focused `[sc_lab_numerical_validation]` shortcode
+- Preservation of the v0.27.0 Numerical Methods Studio and v0.26.6 recovery architecture
 
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 
@@ -362,3 +362,7 @@ v0.26.0 includes a deployable `backend/` FastAPI service, a registered scientifi
 ## v0.26.3.4 Scientific Feed Rendering and Observe Data Reliability
 
 Marine Biology and Space Observations now auto-load, expose connector health, fall back from the WordPress proxy to browser-direct official APIs, and always render an explicit loading, empty, or error state.
+
+## Numerical validation
+
+Use **Analyze → Numerical Validation Library** or `[sc_lab_numerical_validation]` to run the v0.27.1 known-answer benchmark suite against the configured Python Compute Core.
