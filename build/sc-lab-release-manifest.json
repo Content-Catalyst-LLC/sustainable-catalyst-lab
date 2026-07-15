@@ -1,0 +1,83 @@
+{
+  "assetVersionStrategy": "sha256-content-query",
+  "buildFingerprint": "31ca86603a4b76e62f575956e4502eda58a4d759e540bba4316cd2db1c5a8c25",
+  "criticalFiles": {
+    "assets/js/modules/astronomy-lab.js": "8199a552555c0ed24c8c0c8e819d9862706a316e9680d5459dac0cc3ef3b7ee1",
+    "assets/js/modules/calculators.js": "0de6c1d0a4edf7439f9532fe84cce2c8c6072bb5aa9c0aa9dcbe7a14ddfc9d0a",
+    "assets/js/modules/earth-lab.js": "b45309c6d6231df8e743478ae283d2f85f3e8b5aa72369fbfa03ed64bbe1b3d2",
+    "assets/js/sc-lab-app.js": "9933893e291e89f3e0d248d0cc6997ae5a736754f614a01323620d67d08d2c65",
+    "assets/js/sc-lab-integrity-v02632.js": "7b2ac02659311faa930a19ef9c5ed9a88fa4a8984ef6a6d15d893234bbd591d7",
+    "assets/js/sc-lab-runtime-v02631.js": "f61df229e8bdbdf071883c1a8f23ffbbee7f98b44ac808e56ddd5371d9c8b2ca",
+    "includes/class-sc-lab-integrity-v02632.php": "968e513087e7400b0f6eb5ef9a8f457d95747d89416ef71af2985501880b20b9",
+    "includes/class-sc-lab-plugin.php": "21be9ebcc5ac5ba5cea03cf9e9cc7bc9fd4a9b041f276e34f521e940886baa4f",
+    "includes/class-sc-lab-runtime-repair-v02631.php": "02d723ccce88d07c19248d2538c7b2603730ad09aa6ae202fe28fedbe06b235b",
+    "sustainable-catalyst-lab.php": "2fd523e41389f2bbc54e1f3358990d077ea723e95d712f9fc7cb2e4fafaf2758",
+    "templates/lab-app.php": "2af5c66e9a95b6a1677e7705d848ca15c42645660cc3d379b76d8eebdc77d93a"
+  },
+  "generatedAt": "2026-07-15T02:02:14Z",
+  "integrityRuntimeVersion": "0.26.3.2",
+  "moduleCount": 41,
+  "modules": [
+    "activity",
+    "aerospace-engineering-flight-systems",
+    "architecture-building",
+    "astronomy",
+    "biochemistry-molecular-analysis",
+    "biology",
+    "biomedical-engineering-biosignals",
+    "biotechnology-bioprocess-engineering",
+    "chemistry",
+    "circular-economy-industrial-ecology",
+    "civil-infrastructure",
+    "climate-maps",
+    "code-studio",
+    "comparative-economics-development-systems",
+    "dataset-inspector",
+    "documentation",
+    "earth-systems",
+    "electrical-embedded",
+    "energy-engineering",
+    "evidence-decisions",
+    "experiments",
+    "genetics-genomics-sequence-analysis",
+    "laboratory-data-instrumentation",
+    "marine-biology",
+    "materials",
+    "mechanical-thermal",
+    "microbiology-laboratory",
+    "notebook",
+    "overview",
+    "physics",
+    "report-studio",
+    "rocket-propulsion-spaceflight",
+    "science-engineering",
+    "scientific-feeds",
+    "source-registry",
+    "space-telescopes",
+    "sustainable-cities-resilience",
+    "system-status",
+    "urban-planning-spatial",
+    "visualization-studio",
+    "workspace-data"
+  ],
+  "panelRuntimeVersion": "0.26.3.1",
+  "pluginBasename": "sustainable-catalyst-lab/sustainable-catalyst-lab.php",
+  "releaseVersion": "0.26.3.2",
+  "routeAssertions": {
+    "climate": {
+      "canonical": "climate-maps",
+      "present": true
+    },
+    "evidence": {
+      "canonical": "evidence-decisions",
+      "present": true
+    },
+    "marine": {
+      "canonical": "marine-biology",
+      "present": true
+    }
+  },
+  "schema": "sc-lab-release-manifest/1.0",
+  "sourceBranch": "main",
+  "sourceCommit": "7c4ea9cbb252b77709d206091237bd673ffa4646"
+}
