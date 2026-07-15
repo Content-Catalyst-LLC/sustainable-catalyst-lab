@@ -101,6 +101,7 @@ def health():
         "benchmarkCount": len(benchmark_catalog()),
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "referenceComparison": True, "unitAwareValidation": True},
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "formats": ["svg", "png", "csv", "json"]},
+        "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -161,6 +162,7 @@ def capabilities():
         },
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "manualSolverSelection": True, "automaticRecommendations": True, "unitAwareValidation": True, "referenceMethodComparisons": True, "floatingPointReporting": True},
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "serverNormalizedSpecs": True, "accessibleDescriptions": True, "tabularFallback": True},
+        "projectWorkspace": {"version": "0.28.0", "projectContextAccepted": True, "serverBackedStorage": False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),

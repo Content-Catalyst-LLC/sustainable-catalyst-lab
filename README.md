@@ -383,3 +383,8 @@ Use **Analyze → Precision & Solver Governance** or `[sc_lab_solver_governance]
 ## v0.27.4.1 integrity scope repair
 
 The WordPress runtime verifies only files shipped in the WordPress plugin package. Backend files are tracked separately and no longer create false partial-install warnings.
+
+
+## v0.28.0 project architecture
+
+Use `[sc_lab_project_workspace]` or open **Project → Project architecture** to inspect the shared project schema, indexed records, relationships, checkpoints, import/export bundles, and migration state. Project content remains browser-local in this release.

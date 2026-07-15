@@ -43,6 +43,7 @@
       $groups = array(
         'Project' => array(
           'overview' => 'Overview',
+          'project-workspace' => 'Project architecture',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -180,6 +181,19 @@
             <button type="button" class="sc-lab-button" data-quick-tool="stoichiometry">Run calculation</button>
             <button type="button" class="sc-lab-button sc-lab-button-primary" data-command-action="note">Add notebook entry</button>
           </div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-lab-project-workspace-v0280" data-lab-module="project-workspace" data-module-panel="project-workspace" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/PROJECT-ARCHITECTURE</span><h3>Project and Workspace Data Architecture</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.28.0</span></div>
+        <div class="sc-lab-method-note">One compatibility-preserving project model now links experiments, datasets, models, calculations, notes, sources, reports, and compute jobs across every laboratory. Existing v0.20.0 browser projects migrate in place; unknown fields are retained.</div>
+        <div class="sc-ws0280-status" data-workspace-v0280-status role="status" aria-live="polite">Loading project architecture…</div>
+        <div class="sc-ws0280-metrics" data-workspace-v0280-metrics></div>
+        <div class="sc-ws0280-grid">
+          <section class="sc-ws0280-card is-wide"><div class="sc-lab-panel-head"><div><h4>Project record index</h4><span data-workspace-v0280-project-name></span></div><span data-workspace-v0280-record-count>0 records</span></div><div class="sc-ws0280-toolbar"><label>Search<input type="search" data-workspace-v0280-search placeholder="Title, type, collection, or method"></label><label>Record type<select data-workspace-v0280-type><option value="">All record types</option></select></label></div><div class="sc-ws0280-table-wrap" role="region" aria-label="Project record index" tabindex="0"><table class="sc-ws0280-table"><thead><tr><th>Record</th><th>Type</th><th>Collection</th><th>Status</th><th>Updated</th></tr></thead><tbody data-workspace-v0280-records></tbody></table></div></section>
+          <section class="sc-ws0280-card"><h4>Schema and migration</h4><div class="sc-ws0280-migration" data-workspace-v0280-migration></div><p class="sc-ws0280-note" data-workspace-v0280-storage></p><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button" data-workspace-v0280-migrate>Normalize all projects</button><button type="button" class="sc-lab-button" data-workspace-v0280-export>Export project bundle</button><button type="button" class="sc-lab-button" data-workspace-v0280-import>Import project bundle</button><input type="file" accept="application/json,.json" hidden data-workspace-v0280-file></div></section>
+          <section class="sc-ws0280-card"><h4>Project checkpoints</h4><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-workspace-v0280-checkpoint>Create checkpoint</button></div><div class="sc-ws0280-list" data-workspace-v0280-checkpoints></div></section>
+          <section class="sc-ws0280-card is-wide"><h4>Record relationships</h4><div class="sc-ws0280-relationship-fields"><label>From<select data-workspace-v0280-from><option value="">Choose a record</option></select></label><label>To<select data-workspace-v0280-to><option value="">Choose a record</option></select></label><label>Relationship<select data-workspace-v0280-relationship-type><option value="related-to">Related to</option><option value="derived-from">Derived from</option><option value="supports">Supports</option><option value="tests">Tests</option><option value="documents">Documents</option><option value="uses">Uses</option></select></label><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button" data-workspace-v0280-relationship-add>Add relationship</button></div></div><div class="sc-ws0280-list" data-workspace-v0280-relationships></div></section>
         </div>
       </section>
 

@@ -1,3 +1,6 @@
+## 0.28.0 — Project and Workspace Data Architecture
+- Shared schema 0.28.0, canonical records, migration, search, relationships, checkpoints, and project bundles.
+
 ## 0.27.4.1 — WordPress Integrity Manifest Scope Repair
 
 - Separates WordPress plugin integrity hashes from Python backend/source-bundle hashes.

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Project Workspace v0.28.0",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "schemaVersion",
+    "workspace",
+    "recordIndex",
+    "relationships",
+    "projectCheckpoints",
+    "migrationHistory"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "0.28.0"
+    },
+    "workspace": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "storageMode",
+        "autosave"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "0.28.0"
+        },
+        "storageMode": {
+          "enum": [
+            "browser-local",
+            "memory-safe-start"
+          ]
+        },
+        "autosave": {
+          "type": "boolean"
+        },
+        "serverBacked": {
+          "type": "boolean"
+        }
+      }
+    },
+    "recordIndex": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "from",
+          "to",
+          "type"
+        ]
+      }
+    },
+    "projectCheckpoints": {
+      "type": "array"
+    },
+    "migrationHistory": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Project Record v0.28.0",
+  "type": "object",
+  "required": [
+    "id",
+    "recordType",
+    "collection",
+    "title",
+    "status",
+    "createdAt",
+    "updatedAt",
+    "schemaVersion"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recordType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collection": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "0.28.0"
+    }
+  },
+  "additionalProperties": true
+}
