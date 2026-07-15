@@ -1,3 +1,10 @@
+## 0.27.4 — Scientific Visualization for Numerical Results
+
+- Added eight governed numerical visualization profiles.
+- Added accessible SVG, PNG, CSV, and JSON result exports.
+- Added uncertainty histograms, sensitivity tornado charts, parameter sweeps, spectra, convergence plots, and heatmaps.
+- Added a dedicated WordPress Scientific Visualization workspace and backend visualization API.
+
 # Changelog
 
 ## 0.27.3 — Numerical Precision and Solver Governance

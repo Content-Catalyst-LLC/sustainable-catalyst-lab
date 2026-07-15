@@ -19,6 +19,10 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/governance/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'governance_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/governance/recommend', array('methods'=>'POST','callback'=>array(__CLASS__,'governance_recommend'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/governance/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'governance_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/visualization/health', array('methods'=>'GET','callback'=>array(__CLASS__,'visualization_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/visualization/profiles', array('methods'=>'GET','callback'=>array(__CLASS__,'visualization_profiles'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/visualization/spec', array('methods'=>'POST','callback'=>array(__CLASS__,'visualization_spec'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/visualization/csv', array('methods'=>'POST','callback'=>array(__CLASS__,'visualization_csv'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -231,6 +235,12 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     }
     public static function governance_recommend(WP_REST_Request $request){$payload=self::governance_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/governance/recommend','POST',$payload,4194304);}
     public static function governance_compare(WP_REST_Request $request){$payload=self::governance_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/governance/compare','POST',$payload,8388608);}
+    public static function visualization_health(){return self::proxy('/v1/visualization/health');}
+    public static function visualization_profiles(){return self::proxy('/v1/visualization/profiles');}
+    private static function visualization_payload(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_visualization_request','A JSON visualization request is required.',array('status'=>422));}$method=isset($body['method'])?sanitize_text_field($body['method']):'';$outputs=isset($body['outputs'])&&is_array($body['outputs'])?$body['outputs']:array();$visualization=isset($body['visualization'])&&is_array($body['visualization'])?$body['visualization']:array();return array('method'=>$method,'outputs'=>$outputs,'visualization'=>$visualization);}
+    public static function visualization_spec(WP_REST_Request $request){$payload=self::visualization_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/visualization/spec','POST',$payload,8388608);}
+    public static function visualization_csv(WP_REST_Request $request){$payload=self::visualization_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/visualization/csv','POST',$payload,8388608);}
+
 
 
 }

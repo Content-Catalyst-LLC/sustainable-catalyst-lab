@@ -1,0 +1,12 @@
+<?php
+/** Sustainable Catalyst Lab v0.27.4 scientific visualization for numerical results. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Numerical_Visualization_V0274 {
+    const VERSION='0.27.4'; const CATALOG='contracts/numerical-visualization-v0274.json'; private static $initialized=false;
+    public static function init(){if(self::$initialized){return;}self::$initialized=true;add_action('rest_api_init',array(__CLASS__,'routes'));add_filter('sc_lab_module_aliases_v02631',array(__CLASS__,'aliases'));}
+    public static function aliases($aliases){$aliases=is_array($aliases)?$aliases:array();foreach(array('numerical-visualization','scientific-visualization','result-visualization','visualize-results') as $alias){$aliases[$alias]='numerical-visualization';}return $aliases;}
+    private static function catalog(){ $path=SC_LAB_DIR.self::CATALOG;$data=is_file($path)?json_decode((string)file_get_contents($path),true):array();return is_array($data)?$data:array(); }
+    public static function routes(){register_rest_route('sc-lab/v1','/numerical/v0274/profiles',array('methods'=>'GET','callback'=>array(__CLASS__,'profiles'),'permission_callback'=>'__return_true'));register_rest_route('sc-lab/v1','/numerical/v0274/health',array('methods'=>'GET','callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));}
+    public static function profiles(){ $data=self::catalog();$data['ok']=!empty($data['profiles']);$data['release']=defined('SC_LAB_VERSION')?SC_LAB_VERSION:self::VERSION;return rest_ensure_response($data); }
+    public static function health(){ $required=array('assets/js/modules/numerical-visualization-studio.js','assets/css/sc-lab-numerical-visualization-v0274.css',self::CATALOG,'contracts/scientific-visualization-result-v0274.schema.json','includes/class-sc-lab-numerical-visualization-v0274.php');$files=array();foreach($required as $rel){$path=SC_LAB_DIR.$rel;$files[$rel]=array('exists'=>is_file($path),'sha256'=>is_file($path)?hash_file('sha256',$path):null);} $ok=!in_array(false,array_map(function($row){return !empty($row['exists']);},$files),true);return rest_ensure_response(array('ok'=>$ok,'version'=>self::VERSION,'release'=>defined('SC_LAB_VERSION')?SC_LAB_VERSION:null,'architecture'=>'accessible-governed-numerical-visualization','profileCount'=>8,'formats'=>array('svg','png','csv','json'),'tabularFallback'=>true,'files'=>$files,'time'=>gmdate('c')));}
+}

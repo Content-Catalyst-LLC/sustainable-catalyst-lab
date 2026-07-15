@@ -417,9 +417,11 @@ def monte_carlo_propagation(inputs: dict[str, Any], parameters: dict[str, Any], 
     if np.std(outputs) > 0:
         for name, values in variables.items():
             correlations[name] = float(np.corrcoef(values, outputs)[0, 1]) if np.std(values) > 0 else 0.0
+    histogram_counts, histogram_edges = np.histogram(outputs, bins=max(8, min(40, int(round(math.sqrt(samples))))))
     return {
         "model": model,
         "samples": samples,
+        "histogram": {"counts": histogram_counts.astype(int).tolist(), "edges": histogram_edges.astype(float).tolist()},
         "mean": float(np.mean(outputs)),
         "standardDeviation": float(np.std(outputs, ddof=1)),
         "minimum": float(np.min(outputs)),
@@ -450,7 +452,9 @@ def bootstrap_mean_interval(inputs: dict[str, Any], parameters: dict[str, Any], 
     bootstrap = np.concatenate(means)
     tail = (1 - confidence) / 2
     lower, upper = np.quantile(bootstrap, [tail, 1 - tail])
+    histogram_counts, histogram_edges = np.histogram(bootstrap, bins=max(8, min(40, int(round(math.sqrt(resamples))))))
     return {
+        "histogram": {"counts": histogram_counts.astype(int).tolist(), "edges": histogram_edges.astype(float).tolist()},
         "sampleMean": float(np.mean(values)),
         "sampleStandardDeviation": float(np.std(values, ddof=1)),
         "bootstrapMean": float(np.mean(bootstrap)),

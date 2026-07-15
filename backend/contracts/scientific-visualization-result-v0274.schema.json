@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-scientific-visualization-v0274.schema.json",
+  "title": "Sustainable Catalyst Lab scientific visualization",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "method",
+    "visualizationType",
+    "title",
+    "description",
+    "accessibility",
+    "exports",
+    "kind"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-visualization/1.0"
+    },
+    "version": {
+      "const": "0.27.4"
+    },
+    "method": {
+      "type": "string"
+    },
+    "visualizationType": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "line",
+        "histogram",
+        "horizontal-bars",
+        "heatmap"
+      ]
+    },
+    "exports": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "svg",
+          "png",
+          "csv",
+          "json"
+        ]
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "required": [
+        "role",
+        "title",
+        "description",
+        "tabularFallback"
+      ]
+    },
+    "table": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

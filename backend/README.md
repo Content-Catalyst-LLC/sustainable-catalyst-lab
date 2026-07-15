@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab Python Compute Core v0.27.3
+# Sustainable Catalyst Lab Python Compute Core v0.27.4
 
 The v0.27.3 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves the 23-method registry, fourteen known-answer benchmarks, persistent SQLite WAL queue, checkpoints, retries, cache, and thirteen domain extensions while adding numerical precision profiles and solver governance.
 
@@ -37,3 +37,8 @@ uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
 ```
 
 The public service never evaluates arbitrary Python. Only registered methods and registered solver families are accepted.
+
+
+## Scientific visualization v0.27.4
+
+The backend exposes `/v1/visualization/health`, `/v1/visualization/profiles`, `/v1/visualization/spec`, and `/v1/visualization/csv`. These endpoints return bounded, registered visualization specifications; they do not evaluate arbitrary plotting code.

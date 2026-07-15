@@ -38,6 +38,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_numerical_validation', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_long_jobs', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_solver_governance', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_numerical_visualization', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
@@ -63,9 +64,10 @@ final class SC_Lab_Plugin {
         wp_enqueue_style('sc-lab-numerical-validation-v0271', SC_LAB_URL . 'assets/css/sc-lab-numerical-validation-v0271.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-validation-v0271.css'));
         wp_enqueue_style('sc-lab-long-jobs-v0272', SC_LAB_URL . 'assets/css/sc-lab-long-jobs-v0272.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-long-jobs-v0272.css'));
         wp_enqueue_style('sc-lab-numerical-governance-v0273', SC_LAB_URL . 'assets/css/sc-lab-numerical-governance-v0273.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-governance-v0273.css'));
+        wp_enqueue_style('sc-lab-numerical-visualization-v0274', SC_LAB_URL . 'assets/css/sc-lab-numerical-visualization-v0274.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-visualization-v0274.css'));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
             // Preserve the legacy key for compatibility tests,
@@ -140,6 +142,10 @@ final class SC_Lab_Plugin {
                     'governancePolicies' => esc_url_raw(rest_url('sc-lab/v1/compute/core/governance/policies')),
                     'governanceRecommend' => esc_url_raw(rest_url('sc-lab/v1/compute/core/governance/recommend')),
                     'governanceCompare' => esc_url_raw(rest_url('sc-lab/v1/compute/core/governance/compare')),
+                    'visualizationHealth' => esc_url_raw(rest_url('sc-lab/v1/compute/core/visualization/health')),
+                    'visualizationProfiles' => esc_url_raw(rest_url('sc-lab/v1/compute/core/visualization/profiles')),
+                    'visualizationSpec' => esc_url_raw(rest_url('sc-lab/v1/compute/core/visualization/spec')),
+                    'visualizationCsv' => esc_url_raw(rest_url('sc-lab/v1/compute/core/visualization/csv')),
                 ),
             ),
             'numerical' => array(
@@ -149,6 +155,7 @@ final class SC_Lab_Plugin {
                 'registeredMethodCount' => 12,
             ),
             'governance' => array('version'=>'0.27.3','policiesUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0273/policies')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0273/health')),'profiles'=>4),
+            'visualization' => array('version'=>'0.27.4','profilesUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0274/profiles')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0274/health')),'profiles'=>8,'formats'=>array('svg','png','csv','json')),
             'longJobs' => array(
                 'version' => '0.27.2',
                 'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0272/health')),
@@ -186,6 +193,7 @@ final class SC_Lab_Plugin {
             'sc_lab_numerical_validation' => 'numerical-validation',
             'sc_lab_long_jobs' => 'long-running-jobs',
             'sc_lab_solver_governance' => 'numerical-governance',
+            'sc_lab_numerical_visualization' => 'numerical-visualization',
             'sc_lab_materials' => 'materials',
             'sc_lab_earth_systems' => 'earth-systems',
             'sc_lab_energy' => 'energy-engineering',

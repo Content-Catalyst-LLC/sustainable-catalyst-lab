@@ -1,0 +1,74 @@
+{
+  "schema": "sc-lab-numerical-visualization-catalog/1.0",
+  "version": "0.27.4",
+  "profiles": [
+    {
+      "id": "time-series",
+      "title": "Time series",
+      "compatibleMethods": [
+        "numerics.ode_first_order",
+        "numerics.interpolation"
+      ]
+    },
+    {
+      "id": "spectrum",
+      "title": "Frequency spectrum",
+      "compatibleMethods": [
+        "signal.fft_spectrum"
+      ]
+    },
+    {
+      "id": "uncertainty-distribution",
+      "title": "Uncertainty distribution",
+      "compatibleMethods": [
+        "uncertainty.monte_carlo_propagation",
+        "uncertainty.bootstrap_mean_interval"
+      ]
+    },
+    {
+      "id": "sensitivity-tornado",
+      "title": "Sensitivity tornado",
+      "compatibleMethods": [
+        "sensitivity.local_finite_difference"
+      ]
+    },
+    {
+      "id": "parameter-sweep",
+      "title": "Parameter sweep",
+      "compatibleMethods": [
+        "simulation.parameter_sweep"
+      ]
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence diagnostics",
+      "compatibleMethods": [
+        "benchmark-convergence"
+      ]
+    },
+    {
+      "id": "scatter-line",
+      "title": "Scatter and fitted line",
+      "compatibleMethods": [
+        "numerics.interpolation"
+      ]
+    },
+    {
+      "id": "heatmap",
+      "title": "Heatmap and contour projection",
+      "compatibleMethods": [
+        "custom-grid"
+      ]
+    }
+  ],
+  "formats": [
+    "svg",
+    "png",
+    "csv",
+    "json"
+  ],
+  "limits": {
+    "maxPoints": 2000,
+    "maxGridCells": 10000
+  }
+}

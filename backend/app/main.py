@@ -17,6 +17,7 @@ from .config import settings
 from .extensions import load_legacy_extensions
 from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, QueueCapacityError
 from .precision import policy_catalog, recommend
+from .visualization import VisualizationInputError, build_spec as build_visualization_spec, catalog as visualization_catalog, csv_text as visualization_csv
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -99,6 +100,7 @@ def health():
         "methodCount": len(catalog()),
         "benchmarkCount": len(benchmark_catalog()),
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "referenceComparison": True, "unitAwareValidation": True},
+        "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "formats": ["svg", "png", "csv", "json"]},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -125,12 +127,12 @@ def version():
 @app.get("/v1/capabilities", dependencies=[Depends(require_compute_auth)])
 def capabilities():
     return {
-        "schema": "sc-lab-compute-capabilities/1.3",
+        "schema": "sc-lab-compute-capabilities/1.4",
         "version": settings.version,
         "executionTargets": ["python-core-cpu", "isolated-process-worker"],
         "modes": ["synchronous", "persistent-queued", "checkpointed-queued", "cached-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
-        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True, "solverGovernance": True, "precisionProfiles": True, "conditionDiagnostics": True, "referenceMethodComparisons": True},
+        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True, "solverGovernance": True, "precisionProfiles": True, "conditionDiagnostics": True, "referenceMethodComparisons": True, "scientificVisualization": True, "accessibleSvg": True, "exportFormats": ["svg", "png", "csv", "json"]},
         "benchmarks": {"count": len(benchmark_catalog()), "crossImplementation": ["python-core", "analytic-reference", "browser-reference"], "toleranceControls": True, "unitAssertions": True},
         "security": {
             "authMode": settings.auth_mode,
@@ -158,6 +160,7 @@ def capabilities():
             "maxActiveJobsPerProject": settings.max_active_jobs_per_project,
         },
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "manualSolverSelection": True, "automaticRecommendations": True, "unitAwareValidation": True, "referenceMethodComparisons": True, "floatingPointReporting": True},
+        "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "serverNormalizedSpecs": True, "accessibleDescriptions": True, "tabularFallback": True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -192,6 +195,36 @@ def governance_compare(payload: ComputeRequest, auth: dict[str, str] = Depends(r
     data = payload.model_dump(mode="json", by_alias=True)
     data.setdefault("governance", {})["referenceComparison"] = True
     return execute_or_http(ComputeRequest.model_validate(data), auth)
+
+
+@app.get("/v1/visualization/health")
+def visualization_health():
+    catalog_data = visualization_catalog()
+    return {"ok": True, "status": "ready", "version": "0.27.4", "serviceVersion": settings.version, "architecture": "governed-numerical-visualization", "profileCount": len(catalog_data["profiles"]), "formats": catalog_data["formats"], "accessibleSvg": True, "tabularFallback": True}
+
+
+@app.get("/v1/visualization/profiles", dependencies=[Depends(require_compute_auth)])
+def visualization_profiles():
+    return visualization_catalog()
+
+
+@app.post("/v1/visualization/spec")
+def visualization_spec(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return build_visualization_spec(payload)
+    except VisualizationInputError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/visualization/csv")
+def visualization_csv_export(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        spec = build_visualization_spec(payload)
+    except VisualizationInputError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return {"ok": True, "version": "0.27.4", "mimeType": "text/csv", "filename": "scientific-visualization.csv", "text": visualization_csv(spec), "spec": spec}
 
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])

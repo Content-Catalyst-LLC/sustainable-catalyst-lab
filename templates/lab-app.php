@@ -56,6 +56,7 @@
           'numerical-methods' => 'Numerical Methods Studio',
           'numerical-validation' => 'Numerical Validation Library',
           'numerical-governance' => 'Precision & Solver Governance',
+          'numerical-visualization' => 'Scientific Visualization',
           'long-running-jobs' => 'Long Jobs & Checkpoints',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
@@ -331,6 +332,22 @@
             </div><div class="sc-governance-actions"><button class="sc-lab-button" data-governance-example>Load example</button><button class="sc-lab-button" data-governance-recommend>Recommend solver</button><button class="sc-lab-button sc-lab-button-primary" data-governance-run>Run governed method</button><button class="sc-lab-button" data-governance-compare>Run comparison</button></div>
           </section>
           <section class="sc-governance-card"><h4>Governance result</h4><div class="sc-governance-recommendation" data-governance-recommendation><strong>No recommendation yet.</strong></div><div class="sc-governance-summary" data-governance-summary><strong>No governed run yet.</strong></div><h5>Floating-point precision</h5><pre data-governance-precision-output>No precision report.</pre><h5>Unit validation</h5><pre data-governance-unit-output>No unit report.</pre><h5>Convergence and conditioning</h5><pre data-governance-diagnostics-output>No diagnostics.</pre><h5>Reference comparison</h5><pre data-governance-comparison-output>No comparison.</pre><details><summary>Numerical output</summary><pre data-governance-result-output>No output.</pre></details><details><summary>Provenance</summary><pre data-governance-provenance>No provenance.</pre></details><button class="sc-lab-button" data-governance-export disabled>Export governance report</button></section>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-lab-visual-v0274" data-lab-module="numerical-visualization" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/COMPUTE/VISUALIZE</span><h3>Scientific Visualization for Numerical Results</h3></div><span class="sc-lab-status-dot is-ready">Accessible exports</span></div>
+        <div class="sc-lab-method-note">Run a governed numerical method or paste a compatible result, then generate a server-normalized visualization specification with an accessible SVG, tabular fallback, and SVG, PNG, CSV, and JSON exports. Arbitrary plotting code is not executed.</div>
+        <div data-visual-status role="status" aria-live="polite" data-tone="loading">Loading visualization profiles…</div>
+        <div class="sc-visual-layout">
+          <section class="sc-visual-card"><div class="sc-visual-method-summary" data-visual-method-summary><strong>Loading methods…</strong></div><div class="sc-visual-fields">
+            <label class="wide">Numerical method<select data-visual-method></select></label><label>Visualization type<select data-visual-type><option value="auto">Automatic</option></select></label><label>Measure<select data-visual-measure><option value="amplitude">Amplitude / derivative</option><option value="power">Power spectrum</option><option value="elasticity">Elasticity</option></select></label>
+            <label>Precision profile<select data-visual-profile><option value="fast">Fast</option><option value="balanced" selected>Balanced</option><option value="strict">Strict</option><option value="diagnostic">Diagnostic</option></select></label><label>Random seed<input data-visual-seed type="number" value="42"></label><label>Maximum plotted points<input data-visual-max-points type="number" min="50" max="2000" value="1200"></label>
+            <label class="wide">Title<input data-visual-title value="Scientific visualization"></label><label class="wide">Accessible description<textarea data-visual-description>Governed scientific visualization of the selected numerical result.</textarea></label><label>X-axis label<input data-visual-x-label></label><label>Y-axis label<input data-visual-y-label></label><label>Z-value label<input data-visual-z-label></label>
+            <label class="wide">Inputs JSON<textarea data-visual-inputs>{}</textarea></label><label class="wide">Parameters JSON<textarea data-visual-parameters>{}</textarea></label><label class="wide">Units JSON<textarea data-visual-units>{}</textarea></label><label class="wide">Result outputs JSON<textarea data-visual-outputs>{}</textarea></label>
+          </div><div class="sc-visual-actions"><button class="sc-lab-button" data-visual-example>Load method example</button><button class="sc-lab-button" data-visual-heatmap-example>Load heatmap example</button><button class="sc-lab-button sc-lab-button-primary" data-visual-run>Run & visualize</button><button class="sc-lab-button" data-visual-generate>Visualize pasted result</button></div></section>
+          <section class="sc-visual-card"><div class="sc-visual-canvas" data-visual-canvas><div class="sc-lab-data-note">Run a method or paste result outputs to render a visualization.</div></div><div class="sc-visual-actions"><button class="sc-lab-button" data-visual-svg disabled>Export SVG</button><button class="sc-lab-button" data-visual-png disabled>Export PNG</button><button class="sc-lab-button" data-visual-csv disabled>Export CSV</button><button class="sc-lab-button" data-visual-json disabled>Export JSON</button><button class="sc-lab-button" data-visual-save disabled>Save to project</button></div><div class="sc-visual-table" data-visual-table></div><details><summary>Visualization specification</summary><pre data-visual-spec>No specification.</pre></details><textarea data-visual-svg-output hidden></textarea></section>
         </div>
       </section>
 
