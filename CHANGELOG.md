@@ -1,3 +1,10 @@
+## 0.27.4.1 — WordPress Integrity Manifest Scope Repair
+
+- Separates WordPress plugin integrity hashes from Python backend/source-bundle hashes.
+- Prevents backend-only files from being reported as missing from the WordPress plugin ZIP.
+- Preserves v0.27.4 scientific visualization and the deployed Python Compute Core unchanged.
+- Adds explicit integrity scope and verified/excluded file counts to runtime health.
+
 ## 0.27.4 — Scientific Visualization for Numerical Results
 
 - Added eight governed numerical visualization profiles.

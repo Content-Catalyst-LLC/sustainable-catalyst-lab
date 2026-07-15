@@ -160,16 +160,38 @@ final class SC_Lab_Integrity_V02632 {
         return $checks;
     }
 
+    private static function wordpress_manifest_files($manifest) {
+        if (isset($manifest['wordpressCriticalFiles']) && is_array($manifest['wordpressCriticalFiles'])) {
+            return $manifest['wordpressCriticalFiles'];
+        }
+        $files = isset($manifest['criticalFiles']) && is_array($manifest['criticalFiles']) ? $manifest['criticalFiles'] : array();
+        // Backward-compatible safety: source-bundle manifests may include backend-only
+        // files that are intentionally excluded from the WordPress plugin ZIP.
+        return array_filter($files, function($expected, $relative) {
+            unset($expected);
+            return strpos(ltrim((string) $relative, '/'), 'backend/') !== 0;
+        }, ARRAY_FILTER_USE_BOTH);
+    }
+
     private static function verify_manifest() {
         $manifest = self::manifest();
         $results = array();
-        foreach ((array) (isset($manifest['criticalFiles']) ? $manifest['criticalFiles'] : array()) as $relative => $expected) {
+        $files = self::wordpress_manifest_files($manifest);
+        foreach ((array) $files as $relative => $expected) {
             $actual = self::file_hash($relative);
             $results[$relative] = array('expected' => $expected, 'actual' => $actual, 'ok' => is_string($expected) && hash_equals($expected, (string) $actual));
         }
         $ok = !empty($results);
         foreach ($results as $record) { if (empty($record['ok'])) { $ok = false; break; } }
-        return array('present' => !empty($manifest), 'ok' => $ok, 'files' => $results);
+        $all = isset($manifest['criticalFiles']) && is_array($manifest['criticalFiles']) ? $manifest['criticalFiles'] : array();
+        return array(
+            'present' => !empty($manifest),
+            'ok' => $ok,
+            'scope' => 'wordpress-plugin',
+            'verifiedFileCount' => count($results),
+            'excludedBackendFileCount' => max(0, count($all) - count($results)),
+            'files' => $results,
+        );
     }
 
     private static function identity() {
@@ -223,6 +245,7 @@ final class SC_Lab_Integrity_V02632 {
             'pluginCandidates' => $candidates,
             'routeChecks' => self::route_checks(),
             'assetStrategy' => 'content-sha256-query-versioning',
+            'integrityScope' => 'wordpress-plugin-files-only',
             'rollback' => array(
                 'method' => 'Restore the timestamped safety ZIP created by the installer, or upload the previous verified WordPress plugin ZIP.',
                 'preserve' => array('wp-content/uploads', 'sc_lab_settings', 'Python Compute Core database and environment variables'),

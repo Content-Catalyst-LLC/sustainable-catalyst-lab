@@ -379,3 +379,7 @@ Use **Analyze → Numerical Validation Library** or `[sc_lab_numerical_validatio
 ## v0.27.3 solver governance
 
 Use **Analyze → Precision & Solver Governance** or `[sc_lab_solver_governance]` to select precision profiles, inspect solver recommendations, validate units, review condition and convergence diagnostics, and run reference-method comparisons through the Python Compute Core.
+
+## v0.27.4.1 integrity scope repair
+
+The WordPress runtime verifies only files shipped in the WordPress plugin package. Backend files are tracked separately and no longer create false partial-install warnings.
