@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/production-readiness-v0266.schema.json",
+  "title": "Sustainable Catalyst Lab Production Readiness Report",
+  "type": "object",
+  "required": ["schema", "version", "generatedAt", "summary", "results"],
+  "properties": {
+    "schema": {"const": "sc-lab-production-readiness/1.0"},
+    "version": {"const": "0.26.6"},
+    "release": {"type": "string"},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "rounds": {"type": "integer", "minimum": 1},
+    "modules": {"type": "array", "items": {"type": "string"}},
+    "summary": {
+      "type": "object",
+      "required": ["totalLoads", "passedModules", "failedModules", "maxNodes", "maxStorageBytes", "totalErrors", "maxLongTasks"],
+      "properties": {
+        "totalLoads": {"type": "integer", "minimum": 0},
+        "passedModules": {"type": "integer", "minimum": 0},
+        "failedModules": {"type": "integer", "minimum": 0},
+        "maxNodes": {"type": "integer", "minimum": 0},
+        "maxStorageBytes": {"type": "integer", "minimum": 0},
+        "totalErrors": {"type": "integer", "minimum": 0},
+        "maxLongTasks": {"type": "integer", "minimum": 0},
+        "heapGrowthBytes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "results": {"type": "array", "items": {"type": "object"}}
+  }
+}

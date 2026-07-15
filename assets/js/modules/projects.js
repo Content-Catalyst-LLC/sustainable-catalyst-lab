@@ -39,13 +39,19 @@
   }
 
   const memoryStorage = new Map();
+  const recoveryStorage = w.SCLabProductionStorageV0266 || null;
+  const safeMode = !!w.__SCLabSafeModeV0266;
   function storageGet(key) {
+    if (safeMode) return memoryStorage.has(key) ? memoryStorage.get(key) : null;
+    if (recoveryStorage && typeof recoveryStorage.get === 'function') return recoveryStorage.get(key) ?? (memoryStorage.has(key) ? memoryStorage.get(key) : null);
     try { return w.localStorage?.getItem(key) ?? (memoryStorage.has(key) ? memoryStorage.get(key) : null); }
     catch (_) { return memoryStorage.has(key) ? memoryStorage.get(key) : null; }
   }
   function storageSet(key, value) {
     const text = String(value);
     memoryStorage.set(String(key), text);
+    if (safeMode) return true;
+    if (recoveryStorage && typeof recoveryStorage.set === 'function') return recoveryStorage.set(key, text);
     try { w.localStorage?.setItem(key, text); return true; }
     catch (_) { return false; }
   }

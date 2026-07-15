@@ -1,15 +1,18 @@
 {
   "activationRuntimeVersion": "0.26.3.3",
   "assetVersionStrategy": "sha256-content-query",
-  "buildFingerprint": "04e9d9e112ac9cb0b2f71ddde0bc3896271cd4f161229aa7bed563b8413dd812",
+  "buildFingerprint": "77b8019ae9a34a0a5004103e7563f7abfe9e9f1f106f3374876beb0dea193622",
   "criticalFiles": {
-    "CHANGELOG.md": "97806d0662ce57e1b09a37a70de59f424ccf429a832382a874fbf709c900446f",
-    "README.md": "c5080fbe358925cda4f6502ff997b225f1e0c690b0a7d91df62b9cb85b51f351",
+    "CHANGELOG.md": "59e6813e3e00070c8fca0e1e319e870953fae30336eeb1ad782eb98a7ebb7c2b",
+    "README.md": "55b4fff4cf0273768fec9ceb933c3b94fc8201c07dc0c4a4a14b546e5d7ab600",
     "assets/css/sc-lab-functional-validation-v0264.css": "9988889a102d82b9352c127c86ef736a2534fb34294fd272a1fa966a5a3111d0",
     "assets/css/sc-lab-interface-v0265.css": "c2731d8c62aac68f674d931d5631fd2d4ee59066175b75018afb37f4e8589c95",
     "assets/css/sc-lab-observe-feeds-v02634.css": "f792183456b13cf65bbaa3b0aba1e96e013f6a7f14551ab4aea55209188e99f9",
+    "assets/css/sc-lab-production-stability-v0266.css": "d22d2eb4eaf8ad22b0b0b11ed610bfc3fe9cc8adfda27f1a0ba1007744af831f",
+    "assets/js/modules/compute-client.js": "60a17c3741ef39a344ae7827db77b1db78209af9687980846498376517d0fddd",
     "assets/js/modules/feeds.js": "eea20d8906d977e48706e8baf0fe0927bcc1831cd8ef9e6801e8063e13cb8ff6",
     "assets/js/modules/observations.js": "fb9b7f9f8889cb0e135f4a9d420ed1988f77b1700862f968374ee6dbb87b20bc",
+    "assets/js/modules/projects.js": "449ed2e14e753d5a490e8c7bbd12f0ad8efef6e62d8babdfab9446a452f581de",
     "assets/js/sc-lab-app.js": "84eb50f0eb3eac39ee7ec19e61c755b7d0e8c5b7b33b57d6e28e082a2f383014",
     "assets/js/sc-lab-functional-health-admin-v0264.js": "34c334e501f126c4d9ee3b376d4a46e2e5b19fcbdb91bf7c556d96496bf11bad",
     "assets/js/sc-lab-functional-validation-v0264.js": "f0f8c05559b16f0a4818439d90f2ea2035ac6999311a98699671b8935d9ee2e2",
@@ -18,21 +21,28 @@
     "assets/js/sc-lab-interface-v0265.js": "24ad7d54fccb7172cbf03e706b4ef3347b5433b903ce0a077da8c63dfc60d800",
     "assets/js/sc-lab-observe-domain-v02633.js": "05731f9298ede9c1cba432b7758830e2a6a1b3eb4d7178c074387a6e15390e02",
     "assets/js/sc-lab-observe-feeds-v02634.js": "81c22a500effb9728e3ff01a63ad4230444d88e3249ce001c0054d07faad4a1f",
+    "assets/js/sc-lab-production-bootstrap-v0266.js": "7d668f91e3cb6fb3645aca904ddb65fb03edf289c0ddf0926b30986da4334e81",
+    "assets/js/sc-lab-production-health-admin-v0266.js": "b26961944a9462e8c65e6a685ab1a7964f47f2db4ac8e291f3373d3c7246ef3d",
+    "assets/js/sc-lab-production-stability-v0266.js": "5dd702bd2adbb37eb07a696387f023044c2ad1f0b50d1a8080890db3f05a41e8",
     "assets/js/sc-lab-runtime-v02631.js": "1b36a17edec0db11ccb1a78af18234db780c6f6a3b4c718ba19632c55b460cc7",
     "contracts/functional-health-v0264.schema.json": "39842801c2b508cf172e159d44c1840e4ca2bdf33bcbca3656691601adf5b6d6",
     "contracts/interface-health-v0265.schema.json": "34356445879cb861240bfb1aab3d48def0ca278630e92b609418a966e3c0a5bd",
+    "contracts/production-readiness-v0266.schema.json": "95984307a5ad2c212351ed8c0ea46b99909d43ad2230a87ecf0c023344e54d28",
     "docs/CROSS_LAB_FUNCTIONAL_VALIDATION_V0264.md": "3080d089d106f0b8f1bf04b46f1d56438b228179236ba54dd6fa915e1ad4e98e",
     "docs/MOBILE_ACCESSIBILITY_INTERFACE_RELIABILITY_V0265.md": "5a456c8857cedf04e5e6f0972a5124a35f758caf91b64d0b351e1d7ef126ddd6",
+    "docs/PRODUCTION_STABILITY_RECOVERY_V0266.md": "978e1cc4802ca6a7efcd4fc3d933cff2212fb42d6ea1c41b7b3ab6fd51fd7702",
     "docs/RELEASE_NOTES_0.26.5.md": "a5efa9ea1bd3a2c9c236ed1b7ac16d3fafa24acef851c1b00ad5b62e9b2a235c",
+    "docs/RELEASE_NOTES_0.26.6.md": "98aa12388f6a7f9d99d6b8a141dc5bcd363c00da29890e04c14614b10c0cf3a6",
     "includes/class-sc-lab-feeds.php": "8e6e4341c731e4223c0bc9bc73f10e65fc339824e4ec0a50a49f14719c17cbea",
     "includes/class-sc-lab-functional-validation-v0264.php": "b411bdd3ce9fbd659c1963aede12129a16de334b90ac18ef973660eeb57c98c1",
-    "includes/class-sc-lab-integrity-v02632.php": "e3ab2c77b860679054875e279ae19e14af2fbe0a43e79cd853a1393bc440b308",
+    "includes/class-sc-lab-integrity-v02632.php": "9b7c19d48da82920b2f4f38fc52a96005bca19711fdef9123bee93417f63abde",
     "includes/class-sc-lab-interface-reliability-v0265.php": "b615b2e11b3ef9e5e9078d11cc0736e938b6aa4026fd751f54fe6351e25a1c4b",
     "includes/class-sc-lab-observe-domain-v02633.php": "cf1c2fd740c61215409baca3f20716a9ce901bd61b960b4352bac6bc932b0bc4",
     "includes/class-sc-lab-observe-feeds-v02634.php": "2c7480ba52eef48c0179eba36887f5fe0b96a9f418ee68cda370b04b37ef9163",
-    "includes/class-sc-lab-plugin.php": "f1c335f7ce6ce363c1301292197a0401dc00f97ae315aa847e791ceb3595f3a8",
+    "includes/class-sc-lab-plugin.php": "6efce555bb338fd4918047abc94d90f71c8ea82a6271d6d9ed999c72b60f6518",
+    "includes/class-sc-lab-production-stability-v0266.php": "169223bfd5a5d2c8de584102e9625af51c3825c876bb16d898d1fec15c36ebb3",
     "includes/class-sc-lab-runtime-repair-v02631.php": "c9788a3b0424d10100dd3f95bcb007ea0675603f1fb44d66c3cdc53624a1b4ad",
-    "sustainable-catalyst-lab.php": "0ce4adead365a1fb9c43087721b6d91a8ac995d99a01f0234b326e146f97e08b",
+    "sustainable-catalyst-lab.php": "6cc7ec78fea79e76784903a716c029618a6848621a6cfc92b2fd6ad379bb2c6a",
     "templates/lab-app.php": "5dcbb291c192fbda5ea052dd704e1e7face8fb2b53d81b18e7eebb0e37088bc0"
   },
   "feedReliability": {
@@ -65,7 +75,7 @@
       "result_not_observed"
     ]
   },
-  "generatedAt": "2026-07-15T18:05:00Z",
+  "generatedAt": "2026-07-15T18:24:46Z",
   "integrityRuntimeVersion": "0.26.3.2",
   "interfaceReliability": {
     "accessibleTables": true,
@@ -138,7 +148,18 @@
   ],
   "panelRuntimeVersion": "0.26.3.1",
   "pluginBasename": "sustainable-catalyst-lab/sustainable-catalyst-lab.php",
-  "releaseVersion": "0.26.5",
+  "productionStability": {
+    "backendInterruptionRecovery": true,
+    "incidentBundleExport": true,
+    "jobRestoration": true,
+    "memoryBudgets": true,
+    "projectStorageQuarantine": true,
+    "reportSchema": "sc-lab-production-readiness/1.0",
+    "runtimeVersion": "0.26.6",
+    "safeModeMemoryOnly": true,
+    "switchStressRunner": true
+  },
+  "releaseVersion": "0.26.6",
   "routeAssertions": {
     "astronomy-observations": {
       "canonical": "space-telescopes",
@@ -158,5 +179,5 @@
     }
   },
   "schema": "sc-lab-release-manifest/1.3",
-  "sourceCommit": "artifact-v0.26.5"
+  "sourceCommit": "artifact-v0.26.6"
 }

@@ -1,3 +1,14 @@
+## 0.26.6 — Production Stability and Recovery
+
+- Added a true in-memory Safe Start that does not load or modify persisted projects.
+- Added early project-storage validation, oversized-record detection, and session quarantine for damaged JSON.
+- Added DOM, storage, JavaScript heap-growth, long-task, and runtime-error budgets.
+- Added persistent compute-job tracking and reconciliation after page reload.
+- Added backend interruption, offline, online, and automatic retry states.
+- Added privacy-preserving incident bundle export.
+- Added Settings → Lab Production Readiness with isolated lifecycle and repeated-switch stress tests.
+- Added a versioned production-readiness report schema and REST health endpoints.
+
 ## 0.26.5 — Mobile, Accessibility, and Interface Reliability
 
 - Added responsive phone, tablet, and landscape layouts across the isolated Lab lifecycle.

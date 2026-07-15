@@ -201,6 +201,7 @@ final class SC_Lab_Integrity_V02632 {
             'panelRuntime' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
             'computeCore' => class_exists('SC_Lab_Python_Compute_Core_V0260') ? SC_Lab_Python_Compute_Core_V0260::VERSION : null,
             'queueCore' => class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::VERSION : null,
+            'productionStability' => class_exists('SC_Lab_Production_Stability_V0266') ? SC_Lab_Production_Stability_V0266::VERSION : null,
             'manifestRelease' => isset($manifest['releaseVersion']) ? $manifest['releaseVersion'] : null,
         );
         $version_consistent = $versions['release'] === $versions['pluginConstant'] && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'];

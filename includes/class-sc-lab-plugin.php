@@ -55,7 +55,8 @@ final class SC_Lab_Plugin {
   wp_enqueue_style('sc-lab-v0100', SC_LAB_URL . 'assets/css/sc-lab-v0100.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0100.css'));
   wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0110.css')); wp_enqueue_style('sc-lab-v0120', SC_LAB_URL . 'assets/css/sc-lab-v0120.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0120.css'));
   wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v095.css'));
-        $deps = array();
+        if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
+        $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
         $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
@@ -126,6 +127,7 @@ final class SC_Lab_Plugin {
                 'saved' => __('Saved to the active Lab project.', 'sustainable-catalyst-lab'),
             ),
         ));
+        if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_front(); }
     }
 
     public function shortcode_app($atts = array()) {

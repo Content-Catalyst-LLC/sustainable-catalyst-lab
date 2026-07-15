@@ -1,8 +1,8 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.26.5 — Mobile, Accessibility, and Interface Reliability**
+**Current release: v0.26.6 — Production Stability and Recovery**
 
-This release adds browser-driven functional validation for all 41 Lab panels, including safe primary-action and rendered-output checks for 14 priority scientific and engineering laboratories. The WordPress admin dashboard separates code failures from optional backend and external-source degradation, saves versioned reports, and exports machine-readable diagnostics.
+This release adds Safe Start isolation, project-storage quarantine, compute-job restoration, backend interruption recovery, browser memory and DOM budgets, repeated module-switch stress testing, incident bundle export, and a production-readiness dashboard.
 
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 
