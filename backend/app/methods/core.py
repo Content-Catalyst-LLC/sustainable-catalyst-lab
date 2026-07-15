@@ -114,11 +114,24 @@ def solve_linear_system(inputs: dict[str, Any], parameters: dict[str, Any], seed
     if vector.shape != (matrix.shape[0],) or not np.isfinite(matrix).all() or not np.isfinite(vector).all():
         raise MethodInputError("vector length must equal the matrix dimension and all values must be finite.")
     condition = float(np.linalg.cond(matrix))
-    if not math.isfinite(condition) or condition > 1e14:
-        raise MethodInputError("matrix is singular or too ill-conditioned for a reliable solution.")
-    solution = np.linalg.solve(matrix, vector)
+    threshold = float(parameters.get("conditionThreshold", 1e14))
+    policy = str(parameters.get("illConditionedPolicy", "reject"))
+    requested_solver = str(parameters.get("solver", "automatic")).lower()
+    ill_conditioned = (not math.isfinite(condition)) or condition > threshold
+    if ill_conditioned and policy == "reject":
+        raise MethodInputError("matrix is singular or exceeds the governed condition-number threshold.")
+    use_lstsq = requested_solver == "least-squares" or (requested_solver == "automatic" and ill_conditioned) or (ill_conditioned and policy == "least-squares")
+    if use_lstsq:
+        solution, residual_values, rank, singular_values = np.linalg.lstsq(matrix, vector, rcond=None)
+        solver = "least-squares"
+    else:
+        solution = np.linalg.solve(matrix, vector)
+        residual_values = np.asarray([], dtype=float)
+        rank = int(np.linalg.matrix_rank(matrix))
+        singular_values = np.linalg.svd(matrix, compute_uv=False)
+        solver = "solve"
     residual = matrix @ solution - vector
-    return {"solution": solution.tolist(), "conditionNumber": condition, "residualNorm": float(np.linalg.norm(residual))}
+    return {"solution": solution.tolist(), "conditionNumber": condition, "conditionThreshold": threshold, "illConditioned": ill_conditioned, "solver": solver, "rank": int(rank), "singularValues": singular_values.tolist(), "leastSquaresResiduals": residual_values.tolist(), "residualNorm": float(np.linalg.norm(residual))}
 
 
 def polynomial_roots(inputs: dict[str, Any], parameters: dict[str, Any], seed: int | None) -> dict[str, Any]:

@@ -55,6 +55,7 @@
           'dataset-inspector' => 'Dataset inspector',
           'numerical-methods' => 'Numerical Methods Studio',
           'numerical-validation' => 'Numerical Validation Library',
+          'numerical-governance' => 'Precision & Solver Governance',
           'long-running-jobs' => 'Long Jobs & Checkpoints',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
@@ -313,6 +314,24 @@
           <p data-benchmark-convergence-summary>Select a benchmark with a convergence series.</p>
           <div class="sc-benchmark-table-wrap"><table><thead><tr><th>Level</th><th>Parameters</th><th>Actual</th><th>Absolute error</th><th>Runtime</th></tr></thead><tbody data-benchmark-convergence-results><tr><td colspan="5">No convergence series.</td></tr></tbody></table></div>
         </section>
+      </section>
+
+
+      <section class="sc-lab-panel sc-lab-governance-v0273" data-lab-module="numerical-governance" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/GOVERNANCE</span><h3>Numerical Precision and Solver Governance</h3></div><span class="sc-lab-status-dot is-ready">Governed solvers</span></div>
+        <div class="sc-lab-method-note">Choose a precision profile, request or accept a registered solver, validate units, inspect condition and convergence diagnostics, and compare selected results with an independent reference method. The backend continues to reject arbitrary code and unregistered solvers.</div>
+        <div data-governance-status role="status" aria-live="polite" data-tone="loading">Loading solver-governance policies…</div>
+        <div class="sc-governance-layout">
+          <section class="sc-governance-card"><h4 data-governance-title>Governed method</h4><p><code data-governance-id>Loading registry</code></p><p data-governance-description></p><p><strong>Profiles:</strong> <span data-governance-supported>—</span></p>
+            <div class="sc-governance-fields">
+              <label class="wide">Method<select data-governance-method></select></label><label>Precision profile<select data-governance-profile><option value="fast">Fast exploratory</option><option value="balanced" selected>Balanced scientific</option><option value="strict">Strict validation</option><option value="diagnostic">Diagnostic comparison</option></select></label><label>Solver policy<select data-governance-policy><option value="automatic">Automatic</option><option value="recommended">Recommended</option><option value="manual">Manual registered solver</option></select></label>
+              <label>Requested solver<input data-governance-solver placeholder="Leave blank for automatic"></label><label>Unit policy<select data-governance-unit-policy><option value="off">Off</option><option value="warn" selected>Warn</option><option value="strict">Strict</option></select></label><label>Ill-conditioned systems<select data-governance-ill-policy><option value="least-squares" selected>Use least-squares fallback</option><option value="warn">Warn and continue</option><option value="reject">Reject</option></select></label><label>Condition threshold<input data-governance-condition type="number" value="1e12" step="any"></label>
+              <label>Absolute tolerance<input data-governance-absolute type="number" value="1e-9" step="any"></label><label>Relative tolerance<input data-governance-relative type="number" value="1e-8" step="any"></label><label>Uncertainty standard<select data-governance-uncertainty><option>method-default</option><option>GUM-inspired</option><option>Monte-Carlo</option><option>bootstrap</option></select></label><label>Random seed<input data-governance-seed type="number" value="42"></label>
+              <label class="wide"><input data-governance-reference type="checkbox"> Run independent reference-method comparison</label><label class="wide">Inputs JSON<textarea data-governance-inputs>{}</textarea></label><label class="wide">Parameters JSON<textarea data-governance-parameters>{}</textarea></label><label class="wide">Units JSON<textarea data-governance-units>{}</textarea></label>
+            </div><div class="sc-governance-actions"><button class="sc-lab-button" data-governance-example>Load example</button><button class="sc-lab-button" data-governance-recommend>Recommend solver</button><button class="sc-lab-button sc-lab-button-primary" data-governance-run>Run governed method</button><button class="sc-lab-button" data-governance-compare>Run comparison</button></div>
+          </section>
+          <section class="sc-governance-card"><h4>Governance result</h4><div class="sc-governance-recommendation" data-governance-recommendation><strong>No recommendation yet.</strong></div><div class="sc-governance-summary" data-governance-summary><strong>No governed run yet.</strong></div><h5>Floating-point precision</h5><pre data-governance-precision-output>No precision report.</pre><h5>Unit validation</h5><pre data-governance-unit-output>No unit report.</pre><h5>Convergence and conditioning</h5><pre data-governance-diagnostics-output>No diagnostics.</pre><h5>Reference comparison</h5><pre data-governance-comparison-output>No comparison.</pre><details><summary>Numerical output</summary><pre data-governance-result-output>No output.</pre></details><details><summary>Provenance</summary><pre data-governance-provenance>No provenance.</pre></details><button class="sc-lab-button" data-governance-export disabled>Export governance report</button></section>
+        </div>
       </section>
 
       <section class="sc-lab-panel sc-lab-long-jobs-v0272" data-lab-module="long-running-jobs" hidden>

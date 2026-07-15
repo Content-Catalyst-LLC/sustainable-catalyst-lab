@@ -4,6 +4,21 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
+class SolverGovernanceRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    precision_profile: Literal["fast", "balanced", "strict", "diagnostic"] = Field(default="balanced", alias="precisionProfile")
+    solver_policy: Literal["automatic", "recommended", "manual"] = Field(default="automatic", alias="solverPolicy")
+    requested_solver: str | None = Field(default=None, max_length=64, alias="requestedSolver")
+    unit_policy: Literal["off", "warn", "strict"] = Field(default="warn", alias="unitPolicy")
+    condition_threshold: float | None = Field(default=None, gt=0, alias="conditionThreshold")
+    ill_conditioned_policy: Literal["reject", "warn", "least-squares"] = Field(default="least-squares", alias="illConditionedPolicy")
+    reference_comparison: bool = Field(default=False, alias="referenceComparison")
+    uncertainty_standard: Literal["method-default", "GUM-inspired", "Monte-Carlo", "bootstrap"] = Field(default="method-default", alias="uncertaintyStandard")
+    absolute_tolerance: float | None = Field(default=None, ge=1e-15, le=1e-2, alias="absoluteTolerance")
+    relative_tolerance: float | None = Field(default=None, ge=1e-15, le=1e-2, alias="relativeTolerance")
+
+
 class ComputeRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -16,6 +31,7 @@ class ComputeRequest(BaseModel):
     requested_outputs: list[str] = Field(default_factory=lambda: ["summary", "values"], max_length=16)
     random_seed: int | None = None
     execution_target: Literal["automatic", "python-core"] = "automatic"
+    governance: SolverGovernanceRequest = Field(default_factory=SolverGovernanceRequest)
 
     @field_validator("requested_outputs")
     @classmethod
@@ -59,6 +75,7 @@ class ProvenanceRecord(BaseModel):
     worker_type: str = "python-core-cpu"
     authentication_mode: str
     client_id: str
+    solver_governance: dict[str, Any] = Field(default_factory=dict, serialization_alias="solverGovernance")
 
 
 class ComputeResponse(BaseModel):
@@ -72,3 +89,4 @@ class ComputeResponse(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     validation: dict[str, Any] = Field(default_factory=dict)
     provenance: ProvenanceRecord
+    governance: dict[str, Any] = Field(default_factory=dict)

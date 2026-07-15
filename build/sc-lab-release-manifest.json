@@ -1,20 +1,22 @@
 {
   "activationRuntimeVersion": "0.26.3.3",
   "assetVersionStrategy": "sha256-content-query",
-  "buildFingerprint": "2d95de4c78c4be503199ac598d9a49823b66ba58cfedada2d257369092e40ad0",
+  "buildFingerprint": "457544bd2c6ba97f31ac0561972d5541c4ce437017a35244a6a77c7b90cb6d1b",
   "criticalFiles": {
-    "CHANGELOG.md": "0bcd8a0c4024943d2014f39580be890af0e55f8c45ced2e858d1a140142bbcc7",
-    "README.md": "a7872e5fb1ee22cf9ba2416adb26cffa7757e3dc48fd3d75d9d589fcd040ec8b",
+    "CHANGELOG.md": "9aa42de9b483b6c0cb646a6b8498d70905cb6ef0a1f0b735061595e448c03049",
+    "README.md": "b1f4c998862fc7892f0b13979a3e857b68fb28712319f0c1f31ec49ab0cd444d",
     "assets/css/sc-lab-functional-validation-v0264.css": "9988889a102d82b9352c127c86ef736a2534fb34294fd272a1fa966a5a3111d0",
     "assets/css/sc-lab-interface-v0265.css": "c2731d8c62aac68f674d931d5631fd2d4ee59066175b75018afb37f4e8589c95",
     "assets/css/sc-lab-long-jobs-v0272.css": "803b1c3e07f91ef49818b0e9e765bf29cd19061c3c5e99295e48c8a7786df2b7",
+    "assets/css/sc-lab-numerical-governance-v0273.css": "35265e528d10136954769e62e07ea00a56698e85abaebe0d278e539fcd41c279",
     "assets/css/sc-lab-numerical-methods-v0270.css": "b0da63bcfdba8cc227fd09c9646717ff88c79535f5dbbc01acdb4337c292e1b9",
     "assets/css/sc-lab-numerical-validation-v0271.css": "4bc8024daefe43b052b24bea2feb88aace58bb5f9c95982aceb539a930da8ce2",
     "assets/css/sc-lab-observe-feeds-v02634.css": "f792183456b13cf65bbaa3b0aba1e96e013f6a7f14551ab4aea55209188e99f9",
     "assets/css/sc-lab-production-stability-v0266.css": "d22d2eb4eaf8ad22b0b0b11ed610bfc3fe9cc8adfda27f1a0ba1007744af831f",
-    "assets/js/modules/compute-client.js": "b05beb3854dcba356960e18dff3a8ca82b24142c4ee6f87189db108fe72867ac",
+    "assets/js/modules/compute-client.js": "281882e074e43cfca839d35339605d12ab23f0a77aa1b8aadc60402effb39c32",
     "assets/js/modules/feeds.js": "eea20d8906d977e48706e8baf0fe0927bcc1831cd8ef9e6801e8063e13cb8ff6",
     "assets/js/modules/long-running-jobs-studio.js": "4759174ec345c599463a9fd6c915765f7a9660a75f054f770536993538282ccf",
+    "assets/js/modules/numerical-governance-studio.js": "502b533687f7cb03af3226bcc633393b38b9afa8a4ceb893983cf0978ebdd2fb",
     "assets/js/modules/numerical-methods-studio.js": "37aae865471ca423081265c042331c35adfa7cb1e9c348fd4da9c50d3e6f400a",
     "assets/js/modules/numerical-validation-studio.js": "1f2a1b1042094694ffded59978385b666cffcda42606f428c28dad9daa35314b",
     "assets/js/modules/observations.js": "fb9b7f9f8889cb0e135f4a9d420ed1988f77b1700862f968374ee6dbb87b20bc",
@@ -31,6 +33,21 @@
     "assets/js/sc-lab-production-health-admin-v0266.js": "b26961944a9462e8c65e6a685ab1a7964f47f2db4ac8e291f3373d3c7246ef3d",
     "assets/js/sc-lab-production-stability-v0266.js": "5dd702bd2adbb37eb07a696387f023044c2ad1f0b50d1a8080890db3f05a41e8",
     "assets/js/sc-lab-runtime-v02631.js": "1b36a17edec0db11ccb1a78af18234db780c6f6a3b4c718ba19632c55b460cc7",
+    "backend/README.md": "7c5172d00325862302c4efc8961ccbd74da3ad0001b66b90d88f02319f61379b",
+    "backend/app/compute.py": "d2b3f24cf007f1b213c1d2c684a0e7711ca4bbde2603283c70abf5a9c1e7bab8",
+    "backend/app/config.py": "6ee35a180291da34dd79d24b8a8f9a7819c2e96749565698e996754d5330a494",
+    "backend/app/main.py": "ff24c4109fe3dabcbe860b0ff909d8e20d701e6ef6841e24d1c99cebd4caf79c",
+    "backend/app/methods/core.py": "ec480ac370dff749e96ec47f4a32a95b63bd88c223f9af565b57420b139cace9",
+    "backend/app/methods/numerical.py": "b0bf6e391003104c83966285c44d13a10e46db662b801545a689d3b5d4738329",
+    "backend/app/precision.py": "8acbcbcd51415363b76ca68bc24d77ced087c8f092ec2a6e6041934ae4f37c2a",
+    "backend/app/provenance.py": "d5a13faecbbbc73fec48edb682dacb827d81121f4a56f40fe1881757a6ec4661",
+    "backend/app/registry.py": "2f8ccd3d6ebaf28c381f924c355f78a22b657ec56605a7912151fc8630d652bb",
+    "backend/app/schemas.py": "86dfdc0fba965d02eba7398fd4f19bb0c3caae13147c6445437c86a741dbbc40",
+    "backend/contracts/solver-governance-result-v0273.schema.json": "e68da776ef11d0f2272e77f2570276987af28d7bbc63af2124176232c21d35d5",
+    "backend/contracts/solver-governance-v0273.json": "e10833346551beb77e681aa83acd37c05c79e4792d83a8b2c0e2d48060cc50aa",
+    "backend/tests/test_precision_governance_v0273.py": "6e11da3baf6e443d2db796b0333da752994a54d68a0ef2791972ed0afe89cd80",
+    "contracts/compute-provenance-v0260.schema.json": "d51438e1b20b3a04faa1b8e6f02e4648ce63036269b31b2170a2bcabb4813954",
+    "contracts/compute-request-v0260.schema.json": "71c36ef6d8263405831000b3e90c6c13c281be017908d889d433fbbed6dd5cbe",
     "contracts/functional-health-v0264.schema.json": "39842801c2b508cf172e159d44c1840e4ca2bdf33bcbca3656691601adf5b6d6",
     "contracts/interface-health-v0265.schema.json": "34356445879cb861240bfb1aab3d48def0ca278630e92b609418a966e3c0a5bd",
     "contracts/long-running-job-v0272.schema.json": "fa32ce8a7fd316f3f419c22185c606e72763c2660099dec8b6101e7df5aef7cb",
@@ -40,9 +57,12 @@
     "contracts/numerical-method-result-v0270.schema.json": "5841644f45600e02ea61d46c1210a5ee5e8711f2350c594f58cad5e9dab4ad01",
     "contracts/numerical-methods-v0270.json": "d08a7bc58acd11e9a2690f1b4739592b73304c63d26c4f02fd87106c688f3244",
     "contracts/production-readiness-v0266.schema.json": "95984307a5ad2c212351ed8c0ea46b99909d43ad2230a87ecf0c023344e54d28",
+    "contracts/solver-governance-result-v0273.schema.json": "e68da776ef11d0f2272e77f2570276987af28d7bbc63af2124176232c21d35d5",
+    "contracts/solver-governance-v0273.json": "e10833346551beb77e681aa83acd37c05c79e4792d83a8b2c0e2d48060cc50aa",
     "docs/CROSS_LAB_FUNCTIONAL_VALIDATION_V0264.md": "3080d089d106f0b8f1bf04b46f1d56438b228179236ba54dd6fa915e1ad4e98e",
     "docs/LONG_RUNNING_NUMERICAL_JOBS_CHECKPOINT_RECOVERY_V0272.md": "8316a805a68fb2a777aff4d51d17a5bfd9189de9870af4cc80882d8d476c839b",
     "docs/MOBILE_ACCESSIBILITY_INTERFACE_RELIABILITY_V0265.md": "5a456c8857cedf04e5e6f0972a5124a35f758caf91b64d0b351e1d7ef126ddd6",
+    "docs/NUMERICAL_PRECISION_SOLVER_GOVERNANCE_V0273.md": "7f7113ce2153577a493e709d0c311273d9319889841e016a0dad8f868973f0bb",
     "docs/NUMERICAL_VALIDATION_BENCHMARK_LIBRARY_0.27.1.md": "beebe989ac7a3e94475fe047613517811ec1c5e7de84f667540609b2fd5e3fef",
     "docs/PRODUCTION_STABILITY_RECOVERY_V0266.md": "978e1cc4802ca6a7efcd4fc3d933cff2212fb42d6ea1c41b7b3ab6fd51fd7702",
     "docs/RELEASE_NOTES_0.26.5.md": "a5efa9ea1bd3a2c9c236ed1b7ac16d3fafa24acef851c1b00ad5b62e9b2a235c",
@@ -50,22 +70,24 @@
     "docs/RELEASE_NOTES_0.27.0.md": "91a93b8ef91f485e2685595140e90cd1f37f978b25049c25658ef5bfe93605c3",
     "docs/RELEASE_NOTES_0.27.1.md": "30bcc236f72f24fd4b55cbad9699ce3e4087d1aabe0a6d94dad58964c22c3767",
     "docs/RELEASE_NOTES_0.27.2.md": "5c127dec65a79e117608be322032bb6a44a217a861349b5a9940c28d4917ee4f",
+    "docs/RELEASE_NOTES_0.27.3.md": "749fb579b2c2834ffc628d0bb2524bfa4b0c4f1f3a3597ef4eb4bb6cb2f9c2e4",
     "docs/SCIENTIFIC_COMPUTING_NUMERICAL_METHODS_V0270.md": "22a4b90983bf6c7ea94095292384cdb3559b62686fdd50a1746234d7569911ed",
     "includes/class-sc-lab-feeds.php": "8e6e4341c731e4223c0bc9bc73f10e65fc339824e4ec0a50a49f14719c17cbea",
-    "includes/class-sc-lab-functional-validation-v0264.php": "1ba29a44ce756ba377ddb71da51ed8e01f1206ca63f43be3d70d939155facf46",
+    "includes/class-sc-lab-functional-validation-v0264.php": "8c60f8fa2900e3a957b97a9536f05ca95f13575715a6cdc1b1840b3e29559ea2",
     "includes/class-sc-lab-integrity-v02632.php": "9b7c19d48da82920b2f4f38fc52a96005bca19711fdef9123bee93417f63abde",
     "includes/class-sc-lab-interface-reliability-v0265.php": "b615b2e11b3ef9e5e9078d11cc0736e938b6aa4026fd751f54fe6351e25a1c4b",
     "includes/class-sc-lab-long-jobs-v0272.php": "1daec361ed044dceabcafdfa9d2b2b48cd10a6a67f24dc81bb939930b5ea657e",
+    "includes/class-sc-lab-numerical-governance-v0273.php": "a29fa2019ca5a182de013e62f79759b33d64ff75dfe46e552333b155594061d7",
     "includes/class-sc-lab-numerical-methods-v0270.php": "537a9f4d45c015091a97c41ddd60b547344dd61d2e1b26dad1527910dd0d823b",
     "includes/class-sc-lab-numerical-validation-v0271.php": "d2db604ccac111ba838e54bfeb0608c3d542584d39f24de7757793f2aef43408",
     "includes/class-sc-lab-observe-domain-v02633.php": "cf1c2fd740c61215409baca3f20716a9ce901bd61b960b4352bac6bc932b0bc4",
     "includes/class-sc-lab-observe-feeds-v02634.php": "2c7480ba52eef48c0179eba36887f5fe0b96a9f418ee68cda370b04b37ef9163",
-    "includes/class-sc-lab-plugin.php": "47d113d0bafe999bd958d1ca5f07e9642bb05ebd3c2eda3c09630a0070f6eced",
+    "includes/class-sc-lab-plugin.php": "ef5d06c133801da5c86ef78536e631e57e935ed60f04ef280b36ea35efb7f21c",
     "includes/class-sc-lab-production-stability-v0266.php": "169223bfd5a5d2c8de584102e9625af51c3825c876bb16d898d1fec15c36ebb3",
-    "includes/class-sc-lab-python-compute-core-v0261.php": "be77860e51c7b2231b461b16b34efc7f2600770d8d1116bb699ab5ae36cada51",
+    "includes/class-sc-lab-python-compute-core-v0261.php": "2e30e3612ffae3e6f7a65b6431f0d58820206430e31571f1cc2f14d4a010a291",
     "includes/class-sc-lab-runtime-repair-v02631.php": "c9788a3b0424d10100dd3f95bcb007ea0675603f1fb44d66c3cdc53624a1b4ad",
-    "sustainable-catalyst-lab.php": "e705cca273896bf4e03143cf82f87e1602b60730930bda335443bc090afd3989",
-    "templates/lab-app.php": "57405bd4ed16a1fab488a48e584ad63c17b099af8ebc42d82439d0a629f58945"
+    "sustainable-catalyst-lab.php": "68fe85cd08042fc54187283699219d6cfa1cfe67d762f6adf34f37ae77d9e987",
+    "templates/lab-app.php": "c382aa6923db38e2011f49a9d05f0d986f7c3531b6e2f495588d7acdb7d11fad"
   },
   "feedReliability": {
     "autoLoad": true,
@@ -79,8 +101,8 @@
   "functionalValidation": {
     "consoleErrorCapture": true,
     "isolatedFrameRunner": true,
-    "priorityModuleCount": 16,
-    "registryCount": 44,
+    "priorityModuleCount": 17,
+    "registryCount": 45,
     "runtimeVersion": "0.26.4",
     "safePrimaryActions": true,
     "savedReports": true,
@@ -97,7 +119,7 @@
       "result_not_observed"
     ]
   },
-  "generatedAt": "2026-07-15T20:36:49Z",
+  "generatedAt": "2026-07-15T21:03:29.685457Z",
   "integrityRuntimeVersion": "0.26.3.2",
   "interfaceReliability": {
     "accessibleTables": true,
@@ -141,7 +163,7 @@
     "schema": "sc-lab-long-running-job/1.0",
     "version": "0.27.2"
   },
-  "moduleCount": 44,
+  "moduleCount": 45,
   "modules": [
     "activity",
     "aerospace-engineering-flight-systems",
@@ -172,6 +194,7 @@
     "mechanical-thermal",
     "microbiology-laboratory",
     "notebook",
+    "numerical-governance",
     "numerical-methods",
     "numerical-validation",
     "overview",
@@ -191,7 +214,7 @@
   "numericalComputing": {
     "arbitraryCodeExecution": false,
     "backendRegisteredMethodCount": 23,
-    "backendServiceVersion": "0.27.2",
+    "backendServiceVersion": "0.27.3",
     "benchmarkCount": 14,
     "benchmarkLibraryVersion": "0.27.1",
     "benchmarkModule": "numerical-validation",
@@ -216,7 +239,7 @@
     "persistentQueuedExecution": true,
     "priorityScheduling": true,
     "projectComputeLimits": true,
-    "provenanceSchema": "sc-lab-compute-provenance/1.0",
+    "provenanceSchema": "sc-lab-compute-provenance/1.1",
     "registeredMethodCount": 12,
     "registeredMethodsOnly": true,
     "resultCaching": true,
@@ -259,7 +282,7 @@
     "safeModeMemoryOnly": true,
     "switchStressRunner": true
   },
-  "releaseVersion": "0.27.2",
+  "releaseVersion": "0.27.3",
   "routeAssertions": {
     "astronomy-observations": {
       "canonical": "space-telescopes",
@@ -278,6 +301,31 @@
       "present": true
     }
   },
-  "schema": "sc-lab-release-manifest/1.5",
-  "sourceCommit": "artifact-v0.27.2"
+  "schema": "sc-lab-release-manifest/1.6",
+  "solverGovernance": {
+    "automaticRecommendations": true,
+    "conditionDiagnostics": true,
+    "convergenceWarnings": true,
+    "floatingPoint": "IEEE-754 binary64",
+    "manualSolverSelection": true,
+    "module": "numerical-governance",
+    "policySchema": "sc-lab-solver-governance-catalog/1.0",
+    "precisionProfiles": [
+      "fast",
+      "balanced",
+      "strict",
+      "diagnostic"
+    ],
+    "referenceMethodComparisons": true,
+    "resultSchema": "sc-lab-solver-governance/1.0",
+    "uncertaintyStandards": [
+      "method-default",
+      "GUM-inspired",
+      "Monte-Carlo",
+      "bootstrap"
+    ],
+    "unitAwareValidation": true,
+    "version": "0.27.3"
+  },
+  "sourceCommit": "artifact-v0.27.3"
 }

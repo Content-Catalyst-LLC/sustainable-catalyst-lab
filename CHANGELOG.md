@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.27.3 — Numerical Precision and Solver Governance
+
+- Added four precision profiles and user-selectable tolerance governance.
+- Added automatic recommendations and registered manual solver selection.
+- Added condition-number diagnostics and least-squares fallback for ill-conditioned systems.
+- Added IEEE-754 binary64 reporting, convergence warnings, unit-aware validation, uncertainty standards, and reference-method comparisons.
+- Added the Numerical Precision and Solver Governance Lab workspace and WordPress/Python health endpoints.
+
 ## 0.27.2 — Long-Running Numerical Jobs and Checkpoint Recovery
 
 - Added checkpointed execution for parameter sweeps and bootstrap uncertainty runs.

@@ -1,10 +1,10 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.27.2 — Long-Running Numerical Jobs and Checkpoint Recovery**
+**Current release: v0.27.3 — Long-Running Numerical Jobs and Checkpoint Recovery**
 
 This release extends the governed Python Compute Core with checkpointed parameter sweeps and bootstrap runs, pause and resume controls, partial-result inspection, restart recovery, queue priorities, deterministic result caching, and project-level compute limits. The new Long Jobs & Checkpoints studio exposes those capabilities through WordPress while preserving the 23-method registry, fourteen numerical benchmarks, and production-recovery architecture.
 
-## v0.27.2 highlights
+## v0.27.3 highlights
 
 - Persistent SQLite checkpoint history and partial results
 - Checkpointed parameter sweeps and bootstrap confidence intervals
@@ -374,3 +374,8 @@ Marine Biology and Space Observations now auto-load, expose connector health, fa
 ## Numerical validation
 
 Use **Analyze → Numerical Validation Library** or `[sc_lab_numerical_validation]` to run the v0.27.1 known-answer benchmark suite against the configured Python Compute Core.
+
+
+## v0.27.3 solver governance
+
+Use **Analyze → Precision & Solver Governance** or `[sc_lab_solver_governance]` to select precision profiles, inspect solver recommendations, validate units, review condition and convergence diagnostics, and run reference-method comparisons through the Python Compute Core.

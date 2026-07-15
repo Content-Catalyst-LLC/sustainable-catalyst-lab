@@ -53,14 +53,16 @@ def polynomial_root_scalar(inputs: dict[str, Any], parameters: dict[str, Any], s
     def function(x: float) -> float:
         return float(np.polyval(coefficients, x))
 
+    solver = str(parameters.get("solver", "brentq"))
+    if solver not in {"brentq", "bisect", "ridder", "toms748"}: raise MethodInputError("Unsupported registered root solver.")
     f_lower, f_upper = function(lower), function(upper)
     if f_lower == 0:
-        return {"root": lower, "functionValue": 0.0, "iterations": 0, "converged": True, "method": "endpoint"}
+        return {"root": lower, "functionValue": 0.0, "iterations": 0, "converged": True, "method": "endpoint", "solver": solver, "absoluteTolerance": xtol, "relativeTolerance": rtol}
     if f_upper == 0:
-        return {"root": upper, "functionValue": 0.0, "iterations": 0, "converged": True, "method": "endpoint"}
+        return {"root": upper, "functionValue": 0.0, "iterations": 0, "converged": True, "method": "endpoint", "solver": solver, "absoluteTolerance": xtol, "relativeTolerance": rtol}
     if f_lower * f_upper > 0:
         raise MethodInputError("The polynomial must change sign across the bracket.")
-    result = optimize.root_scalar(function, bracket=(lower, upper), method="brentq", xtol=xtol, rtol=rtol, maxiter=max_iter)
+    result = optimize.root_scalar(function, bracket=(lower, upper), method=solver, xtol=xtol, rtol=rtol, maxiter=max_iter)
     return {
         "root": float(result.root),
         "functionValue": function(float(result.root)),
@@ -68,6 +70,9 @@ def polynomial_root_scalar(inputs: dict[str, Any], parameters: dict[str, Any], s
         "functionCalls": int(result.function_calls),
         "converged": bool(result.converged),
         "method": str(result.method),
+        "solver": solver,
+        "absoluteTolerance": xtol,
+        "relativeTolerance": rtol,
     }
 
 
@@ -168,7 +173,9 @@ def ode_first_order(inputs: dict[str, Any], parameters: dict[str, Any], seed: in
     if not all(math.isfinite(v) for v in numeric_parameters):
         raise MethodInputError("ODE parameters must be finite.")
     times = np.linspace(start, end, points)
-    solution = integrate.solve_ivp(derivative, (start, end), [y0], t_eval=times, rtol=rtol, atol=atol, method="RK45")
+    solver = str(parameters.get("solver", "RK45"));
+    if solver not in {"RK45", "DOP853", "Radau", "BDF", "LSODA"}: raise MethodInputError("Unsupported registered ODE solver.")
+    solution = integrate.solve_ivp(derivative, (start, end), [y0], t_eval=times, rtol=rtol, atol=atol, method=solver)
     if not solution.success:
         raise MethodInputError(f"ODE solver did not converge: {solution.message}")
     values = solution.y[0]
@@ -182,6 +189,9 @@ def ode_first_order(inputs: dict[str, Any], parameters: dict[str, Any], seed: in
         "functionEvaluations": int(solution.nfev),
         "success": True,
         "message": str(solution.message),
+        "solver": solver,
+        "absoluteTolerance": atol,
+        "relativeTolerance": rtol,
     }
 
 
@@ -190,10 +200,12 @@ def eigen_analysis(inputs: dict[str, Any], parameters: dict[str, Any], seed: int
     matrix = _matrix(inputs, "matrix", maximum=50, square=True)
     symmetric_tolerance = float(parameters.get("symmetricTolerance", 1e-10))
     symmetric = bool(np.allclose(matrix, matrix.T, atol=symmetric_tolerance, rtol=symmetric_tolerance))
-    if symmetric:
-        values, vectors = np.linalg.eigh(matrix)
-    else:
-        values, vectors = np.linalg.eig(matrix)
+    solver = str(parameters.get("solver", "automatic"));
+    if solver == "automatic": solver = "eigh" if symmetric else "eig"
+    if solver == "eigh" and not symmetric: raise MethodInputError("eigh requires a symmetric matrix within symmetricTolerance.")
+    if solver == "eigh": values, vectors = np.linalg.eigh(matrix)
+    elif solver == "eig": values, vectors = np.linalg.eig(matrix)
+    else: raise MethodInputError("solver must be automatic, eigh, or eig.")
     residuals = []
     for index in range(values.size):
         vector = vectors[:, index]
@@ -206,6 +218,8 @@ def eigen_analysis(inputs: dict[str, Any], parameters: dict[str, Any], seed: int
         "spectralRadius": float(np.max(np.abs(values))),
         "trace": float(np.trace(matrix)),
         "determinant": float(np.linalg.det(matrix)),
+        "conditionNumber": float(np.linalg.cond(matrix)),
+        "solver": solver,
     }
 
 
@@ -247,7 +261,7 @@ def bounded_minimize(inputs: dict[str, Any], parameters: dict[str, Any], seed: i
 
 
 def linear_program(inputs: dict[str, Any], parameters: dict[str, Any], seed: int | None) -> dict[str, Any]:
-    del seed, parameters
+    del seed
     c = _array(inputs, "objective", minimum=1, maximum=100)
     a_ub_raw = inputs.get("inequalityMatrix") or []
     b_ub_raw = inputs.get("inequalityVector") or []
@@ -275,7 +289,9 @@ def linear_program(inputs: dict[str, Any], parameters: dict[str, Any], seed: int
             if lower is not None and upper is not None and lower > upper:
                 raise MethodInputError("A lower bound cannot exceed its upper bound.")
             bounds.append((lower, upper))
-    result = optimize.linprog(c, A_ub=a_ub, b_ub=b_ub, A_eq=a_eq, b_eq=b_eq, bounds=bounds, method="highs")
+    solver = str(parameters.get("solver", "highs"))
+    if solver not in {"highs", "highs-ds", "highs-ipm"}: raise MethodInputError("Unsupported registered linear-program solver.")
+    result = optimize.linprog(c, A_ub=a_ub, b_ub=b_ub, A_eq=a_eq, b_eq=b_eq, bounds=bounds, method=solver)
     return {
         "success": bool(result.success),
         "status": int(result.status),
@@ -285,6 +301,7 @@ def linear_program(inputs: dict[str, Any], parameters: dict[str, Any], seed: int
         "iterations": int(getattr(result, "nit", 0) or 0),
         "slack": result.slack.tolist() if getattr(result, "slack", None) is not None else [],
         "equalityResiduals": result.con.tolist() if getattr(result, "con", None) is not None else [],
+        "solver": solver,
     }
 
 

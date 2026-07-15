@@ -56,6 +56,82 @@
         "automatic",
         "python-core"
       ]
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "precisionProfile": {
+          "enum": [
+            "fast",
+            "balanced",
+            "strict",
+            "diagnostic"
+          ]
+        },
+        "solverPolicy": {
+          "enum": [
+            "automatic",
+            "recommended",
+            "manual"
+          ]
+        },
+        "requestedSolver": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "unitPolicy": {
+          "enum": [
+            "off",
+            "warn",
+            "strict"
+          ]
+        },
+        "conditionThreshold": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "illConditionedPolicy": {
+          "enum": [
+            "reject",
+            "warn",
+            "least-squares"
+          ]
+        },
+        "referenceComparison": {
+          "type": "boolean"
+        },
+        "uncertaintyStandard": {
+          "enum": [
+            "method-default",
+            "GUM-inspired",
+            "Monte-Carlo",
+            "bootstrap"
+          ]
+        },
+        "absoluteTolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1e-15,
+          "maximum": 0.01
+        },
+        "relativeTolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1e-15,
+          "maximum": 0.01
+        }
+      }
     }
   }
 }

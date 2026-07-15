@@ -26,6 +26,7 @@ class MethodDefinition:
     example_parameters: dict[str, Any] = None
     recommended_execution: str = "synchronous"
     estimated_cost: str = "light"
+    solver_governance: dict[str, Any] = None
 
     def public(self) -> dict[str, Any]:
         row = asdict(self)
@@ -34,11 +35,13 @@ class MethodDefinition:
         row["references"] = self.references or []
         row["example_inputs"] = self.example_inputs or {}
         row["example_parameters"] = self.example_parameters or {}
+        row["solver_governance"] = self.solver_governance or {}
         return row
 
 
-def _method(id: str, title: str, domain: str, description: str, packages: list[str], inputs: dict[str, Any], outputs: dict[str, Any], assumptions: list[str], handler: Handler, references: list[dict[str, str]] | None = None, example_inputs: dict[str, Any] | None = None, example_parameters: dict[str, Any] | None = None, recommended_execution: str = "synchronous", estimated_cost: str = "light") -> MethodDefinition:
-    return MethodDefinition(id=id, version="1.0.0", title=title, domain=domain, description=description, packages=packages, input_schema=inputs, output_schema=outputs, assumptions=assumptions, handler=handler, execution_modes=["python-core", "queued-python-core"], references=references or [], example_inputs=example_inputs or {}, example_parameters=example_parameters or {}, recommended_execution=recommended_execution, estimated_cost=estimated_cost)
+def _method(id: str, title: str, domain: str, description: str, packages: list[str], inputs: dict[str, Any], outputs: dict[str, Any], assumptions: list[str], handler: Handler, references: list[dict[str, str]] | None = None, example_inputs: dict[str, Any] | None = None, example_parameters: dict[str, Any] | None = None, recommended_execution: str = "synchronous", estimated_cost: str = "light", solver_governance: dict[str, Any] | None = None) -> MethodDefinition:
+    governed = id.startswith(("numerics.", "optimization.", "signal.", "uncertainty.", "sensitivity.", "simulation.parameter_sweep"))
+    return MethodDefinition(id=id, version="1.1.0" if governed else "1.0.0", title=title, domain=domain, description=description, packages=packages, input_schema=inputs, output_schema=outputs, assumptions=assumptions, handler=handler, execution_modes=["python-core", "queued-python-core"], references=references or [], example_inputs=example_inputs or {}, example_parameters=example_parameters or {}, recommended_execution=recommended_execution, estimated_cost=estimated_cost, solver_governance=solver_governance or ({"profiles":["fast","balanced","strict","diagnostic"],"unitAware":True,"referenceComparison":True} if governed else {}))
 
 
 METHODS = [

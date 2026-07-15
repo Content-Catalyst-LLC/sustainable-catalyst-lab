@@ -16,6 +16,7 @@ from .compute import ComputeExecutionError, run_compute
 from .config import settings
 from .extensions import load_legacy_extensions
 from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, QueueCapacityError
+from .precision import policy_catalog, recommend
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -81,6 +82,7 @@ def job_payload(source: dict[str, Any]) -> ComputeRequest:
         project_id=source.get("project_id") or source.get("projectId"),
         requested_outputs=source.get("requested_outputs") or source.get("requestedOutputs") or ["summary", "values"],
         random_seed=source.get("random_seed") if source.get("random_seed") is not None else source.get("randomSeed"),
+        governance=source.get("governance") or {},
     )
 
 
@@ -96,6 +98,7 @@ def health():
         "authMode": settings.auth_mode,
         "methodCount": len(catalog()),
         "benchmarkCount": len(benchmark_catalog()),
+        "solverGovernance": {"version": "0.27.3", "profiles": 4, "referenceComparison": True, "unitAwareValidation": True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -127,7 +130,7 @@ def capabilities():
         "executionTargets": ["python-core-cpu", "isolated-process-worker"],
         "modes": ["synchronous", "persistent-queued", "checkpointed-queued", "cached-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
-        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True},
+        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True, "solverGovernance": True, "precisionProfiles": True, "conditionDiagnostics": True, "referenceMethodComparisons": True},
         "benchmarks": {"count": len(benchmark_catalog()), "crossImplementation": ["python-core", "analytic-reference", "browser-reference"], "toleranceControls": True, "unitAssertions": True},
         "security": {
             "authMode": settings.auth_mode,
@@ -154,10 +157,41 @@ def capabilities():
             "resultCaching": True,
             "maxActiveJobsPerProject": settings.max_active_jobs_per_project,
         },
-        "provenanceSchema": "sc-lab-compute-provenance/1.0",
+        "solverGovernance": {"version": "0.27.3", "profiles": 4, "manualSolverSelection": True, "automaticRecommendations": True, "unitAwareValidation": True, "referenceMethodComparisons": True, "floatingPointReporting": True},
+        "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
     }
+
+
+@app.get("/v1/governance/health")
+def governance_health():
+    catalog = policy_catalog()
+    return {"ok": True, "status": "ready", "version": "0.27.3", "serviceVersion": settings.version, "architecture": "solver-precision-governance", "profileCount": len(catalog["profiles"]), "governedMethodCount": len(catalog["solvers"]), "unitAwareValidation": True, "referenceComparison": True}
+
+
+@app.get("/v1/governance/policies", dependencies=[Depends(require_compute_auth)])
+def governance_policies():
+    return policy_catalog()
+
+
+@app.post("/v1/governance/recommend")
+def governance_recommend(payload: ComputeRequest, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        method_record = resolve(payload.method)
+        return {"ok": True, "version": "0.27.3", "recommendation": recommend(payload, method_record), "request": payload.model_dump(mode="json", by_alias=True)}
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/governance/compare", response_model=ComputeResponse)
+def governance_compare(payload: ComputeRequest, auth: dict[str, str] = Depends(require_compute_auth)):
+    data = payload.model_dump(mode="json", by_alias=True)
+    data.setdefault("governance", {})["referenceComparison"] = True
+    return execute_or_http(ComputeRequest.model_validate(data), auth)
 
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])

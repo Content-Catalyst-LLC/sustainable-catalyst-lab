@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/solver-governance-result-v0273.schema.json",
+  "title": "Sustainable Catalyst Solver Governance Result v0.27.3",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "precisionProfile",
+    "floatingPoint",
+    "effectiveTolerances",
+    "recommendation",
+    "units",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-solver-governance/1.0"
+    },
+    "version": {
+      "const": "0.27.3"
+    },
+    "precisionProfile": {
+      "enum": [
+        "fast",
+        "balanced",
+        "strict",
+        "diagnostic"
+      ]
+    },
+    "floatingPoint": {
+      "type": "object"
+    },
+    "effectiveTolerances": {
+      "type": "object"
+    },
+    "recommendation": {
+      "type": "object"
+    },
+    "units": {
+      "type": "object"
+    },
+    "diagnostics": {
+      "type": "object"
+    },
+    "referenceComparison": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

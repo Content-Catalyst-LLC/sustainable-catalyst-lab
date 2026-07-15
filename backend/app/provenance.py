@@ -31,7 +31,7 @@ def package_versions(names: list[str]) -> dict[str, str]:
     return versions
 
 
-def build_provenance(*, method: str, method_version: str, inputs: dict[str, Any], result: dict[str, Any], duration_ms: float, packages: list[str], random_seed: int | None, auth: dict[str, str]) -> ProvenanceRecord:
+def build_provenance(*, method: str, method_version: str, inputs: dict[str, Any], result: dict[str, Any], duration_ms: float, packages: list[str], random_seed: int | None, auth: dict[str, str], solver_governance: dict[str, Any] | None = None) -> ProvenanceRecord:
     return ProvenanceRecord(
         run_id=str(uuid.uuid4()),
         method=method,
@@ -47,4 +47,5 @@ def build_provenance(*, method: str, method_version: str, inputs: dict[str, Any]
         random_seed=random_seed,
         authentication_mode=auth.get("mode", "unknown"),
         client_id=auth.get("client", "unknown"),
+        solver_governance=solver_governance or {},
     )

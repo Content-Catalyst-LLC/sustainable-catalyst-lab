@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Python_Compute_Core_V0261 {
-    const VERSION = '0.27.2';
+    const VERSION = '0.27.3';
     const NAMESPACE = 'sc-lab/v1';
 
     public static function init() {
@@ -15,6 +15,10 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/methods', array('methods'=>'GET','callback'=>array(__CLASS__,'methods'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/methods/(?P<method>[A-Za-z0-9._-]{1,128})', array('methods'=>'GET','callback'=>array(__CLASS__,'method'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/run', array('methods'=>'POST','callback'=>array(__CLASS__,'run'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/governance/health', array('methods'=>'GET','callback'=>array(__CLASS__,'governance_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/governance/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'governance_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/governance/recommend', array('methods'=>'POST','callback'=>array(__CLASS__,'governance_recommend'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/governance/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'governance_compare'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -98,6 +102,21 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         return $clean;
     }
 
+    private static function clean_governance($value) {
+        $value=is_array($value)?$value:array(); $out=array();
+        $allowed_profiles=array('fast','balanced','strict','diagnostic'); $profile=isset($value['precisionProfile'])?sanitize_key($value['precisionProfile']):'balanced'; $out['precisionProfile']=in_array($profile,$allowed_profiles,true)?$profile:'balanced';
+        $solver_policy=isset($value['solverPolicy'])?sanitize_key($value['solverPolicy']):'automatic'; $out['solverPolicy']=in_array($solver_policy,array('automatic','recommended','manual'),true)?$solver_policy:'automatic';
+        if(!empty($value['requestedSolver'])){$out['requestedSolver']=substr(sanitize_text_field($value['requestedSolver']),0,64);}
+        $unit_policy=isset($value['unitPolicy'])?sanitize_key($value['unitPolicy']):'warn'; $out['unitPolicy']=in_array($unit_policy,array('off','warn','strict'),true)?$unit_policy:'warn';
+        $ill=isset($value['illConditionedPolicy'])?sanitize_key($value['illConditionedPolicy']):'least-squares'; $out['illConditionedPolicy']=in_array($ill,array('reject','warn','least-squares'),true)?$ill:'least-squares';
+        if(isset($value['conditionThreshold'])&&is_numeric($value['conditionThreshold'])){$out['conditionThreshold']=max(1.0,(float)$value['conditionThreshold']);}
+        if(isset($value['absoluteTolerance'])&&is_numeric($value['absoluteTolerance'])){$out['absoluteTolerance']=max(1e-15,min(1e-2,(float)$value['absoluteTolerance']));}
+        if(isset($value['relativeTolerance'])&&is_numeric($value['relativeTolerance'])){$out['relativeTolerance']=max(1e-15,min(1e-2,(float)$value['relativeTolerance']));}
+        $out['referenceComparison']=!empty($value['referenceComparison']);
+        $standard=isset($value['uncertaintyStandard'])?sanitize_text_field($value['uncertaintyStandard']):'method-default'; $out['uncertaintyStandard']=in_array($standard,array('method-default','GUM-inspired','Monte-Carlo','bootstrap'),true)?$standard:'method-default';
+        return $out;
+    }
+
     public static function health() { return self::proxy('/health'); }
     public static function capabilities() { return self::proxy('/v1/capabilities'); }
     public static function methods() { return self::proxy('/v1/methods'); }
@@ -111,6 +130,7 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         $payload=array('method'=>$method,'inputs'=>$inputs,'parameters'=>$parameters,'units'=>isset($body['units'])&&is_array($body['units'])?array_map('sanitize_text_field',$body['units']):array(),'project_id'=>isset($body['project_id'])?sanitize_text_field($body['project_id']):null,'requested_outputs'=>isset($body['requested_outputs'])&&is_array($body['requested_outputs'])?array_slice(array_map('sanitize_key',$body['requested_outputs']),0,16):array('summary','values'),'execution_target'=>'automatic');
         if(isset($body['version'])){$payload['version']=sanitize_text_field($body['version']);}
         if(isset($body['random_seed'])&&is_numeric($body['random_seed'])){$payload['random_seed']=(int)$body['random_seed'];}
+        $payload['governance']=self::clean_governance(isset($body['governance'])?$body['governance']:array());
         return self::proxy('/v1/compute/run','POST',$payload,4194304);
     }
 
@@ -133,6 +153,7 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         if(isset($source['version'])){$request['version']=sanitize_text_field($source['version']);}
         if(isset($source['random_seed'])&&is_numeric($source['random_seed'])){$request['random_seed']=(int)$source['random_seed'];}
         if(isset($source['randomSeed'])&&is_numeric($source['randomSeed'])){$request['random_seed']=(int)$source['randomSeed'];}
+        $request['governance']=self::clean_governance(isset($source['governance'])?$source['governance']:array());
         $payload=array('operation'=>'core_run','request'=>$request);
         if(isset($body['idempotencyKey'])){$payload['idempotencyKey']=substr(sanitize_text_field($body['idempotencyKey']),0,128);}
         if(isset($body['timeoutSeconds'])){$payload['timeoutSeconds']=max(1,min(900,absint($body['timeoutSeconds'])));}
@@ -199,5 +220,17 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         $payload=self::benchmark_payload($request); if(is_wp_error($payload)){return $payload;}
         return self::proxy('/v1/benchmarks/convergence','POST',$payload,8388608);
     }
+
+    public static function governance_health() { return self::proxy('/v1/governance/health'); }
+    public static function governance_policies() { return self::proxy('/v1/governance/policies'); }
+    private static function governance_payload(WP_REST_Request $request) {
+        $body=$request->get_json_params(); if(!is_array($body)){return new WP_Error('invalid_governance_request','A JSON compute request is required.',array('status'=>422));}
+        $method=isset($body['method'])?preg_replace('/[^A-Za-z0-9._-]/','',(string)$body['method']):''; if($method===''){return new WP_Error('invalid_compute_method','A registered method identifier is required.',array('status'=>422));}
+        $nodes=0;$inputs=self::sanitize_tree(isset($body['inputs'])?$body['inputs']:array(),0,$nodes);if(is_wp_error($inputs)){return $inputs;} $nodes=0;$parameters=self::sanitize_tree(isset($body['parameters'])?$body['parameters']:array(),0,$nodes);if(is_wp_error($parameters)){return $parameters;}
+        return array('method'=>$method,'inputs'=>$inputs,'parameters'=>$parameters,'units'=>isset($body['units'])&&is_array($body['units'])?array_map('sanitize_text_field',$body['units']):array(),'governance'=>self::clean_governance(isset($body['governance'])?$body['governance']:array()),'project_id'=>isset($body['project_id'])?sanitize_text_field($body['project_id']):null,'requested_outputs'=>array('summary','values'),'execution_target'=>'automatic','random_seed'=>isset($body['random_seed'])&&is_numeric($body['random_seed'])?(int)$body['random_seed']:42);
+    }
+    public static function governance_recommend(WP_REST_Request $request){$payload=self::governance_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/governance/recommend','POST',$payload,4194304);}
+    public static function governance_compare(WP_REST_Request $request){$payload=self::governance_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/governance/compare','POST',$payload,8388608);}
+
 
 }
