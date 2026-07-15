@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dataset-profile-v0281.schema.json",
+  "title": "Sustainable Catalyst Lab Dataset Profile v0.28.1",
+  "type": "object",
+  "required": ["schema", "version", "rowCount", "columnCount", "missingCellCount", "variables", "validation"],
+  "properties": {
+    "schema": {"const": "sc-lab-dataset-profile/0.28.1"},
+    "version": {"const": "0.28.1"},
+    "rowCount": {"type": "integer", "minimum": 0},
+    "columnCount": {"type": "integer", "minimum": 0},
+    "missingCellCount": {"type": "integer", "minimum": 0},
+    "variables": {"type": "array", "items": {"type": "object"}},
+    "validation": {"type": "object"},
+    "generatedAt": {"type": "string"}
+  },
+  "additionalProperties": true
+}

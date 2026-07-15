@@ -1,3 +1,6 @@
+## 0.28.1 — Dataset Registry and Scientific Data Management
+- Dataset registry, data dictionaries, units, validation, source/license metadata, lineage, profiling, and import support.
+
 ## 0.28.0 — Project and Workspace Data Architecture
 - Shared schema 0.28.0, canonical records, migration, search, relationships, checkpoints, and project bundles.
 

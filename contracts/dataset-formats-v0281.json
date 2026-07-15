@@ -1,0 +1,12 @@
+{
+  "schema": "sc-lab-dataset-formats/0.28.1",
+  "version": "0.28.1",
+  "formats": [
+    {"id": "csv", "label": "CSV", "browserImport": "full", "notes": "Header row plus delimited records."},
+    {"id": "json", "label": "JSON records", "browserImport": "full", "notes": "Array of objects or an object containing records/data/results."},
+    {"id": "geojson", "label": "GeoJSON", "browserImport": "full", "notes": "Feature properties are flattened and geometry metadata is preserved."},
+    {"id": "netcdf", "label": "NetCDF", "browserImport": "metadata-only", "notes": "Register metadata in the browser; binary parsing is reserved for a governed Python method."},
+    {"id": "tabular", "label": "Tabular records", "browserImport": "full", "notes": "Existing Lab datasets and scientific-feed results."}
+  ],
+  "licenses": ["CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "ODC-PDDL-1.0", "ODC-BY-1.0", "US-Public-Domain", "Proprietary", "Other", "Unknown"]
+}

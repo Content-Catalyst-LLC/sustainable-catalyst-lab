@@ -388,3 +388,8 @@ The WordPress runtime verifies only files shipped in the WordPress plugin packag
 ## v0.28.0 project architecture
 
 Use `[sc_lab_project_workspace]` or open **Project → Project architecture** to inspect the shared project schema, indexed records, relationships, checkpoints, import/export bundles, and migration state. Project content remains browser-local in this release.
+
+
+## v0.28.1 dataset registry
+
+Use `[sc_lab_dataset_registry]` or open **Project → Dataset registry** to register CSV, JSON, GeoJSON, NetCDF metadata, and existing Lab datasets with structured variables, units, validation, source/license metadata, profiles, and lineage.

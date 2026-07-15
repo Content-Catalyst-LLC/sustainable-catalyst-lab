@@ -1,0 +1,106 @@
+{
+  "schema": "sc-lab-global-science/1.0",
+  "version": "0.28.0",
+  "release": "Earth, Space, and Global Data Laboratory",
+  "originalRoadmapLabel": "v0.26.0",
+  "minimumLabVersion": "0.26.0",
+  "recommendedCoreVersion": "2.8.0",
+  "freeSourceOnly": true,
+  "states": [
+    "connected",
+    "degraded",
+    "disabled",
+    "unavailable",
+    "stale"
+  ],
+  "domains": [
+    "earth_observation",
+    "climate",
+    "weather",
+    "ocean",
+    "hazards",
+    "astronomy",
+    "space_weather",
+    "biodiversity",
+    "chemistry",
+    "materials",
+    "global_science"
+  ],
+  "coreEndpoints": [
+    "/api/v1/science/records",
+    "/api/v1/fabric/assets",
+    "/api/v1/fabric/features.geojson",
+    "/api/v1/fabric/timeseries",
+    "/api/v1/stac/collections",
+    "/api/v1/stac/search"
+  ],
+  "providerFamilies": [
+    "NASA Earthdata CMR",
+    "NASA GIBS",
+    "NASA Open APIs",
+    "NOAA NCEI",
+    "ECMWF Open Data",
+    "USGS",
+    "GBIF",
+    "NCBI",
+    "PubChem",
+    "Materials Project",
+    "MAST",
+    "HEASARC",
+    "IRSA",
+    "ESO"
+  ],
+  "analysisMethods": [
+    {
+      "id": "series_summary",
+      "outputs": [
+        "count",
+        "minimum",
+        "maximum",
+        "mean",
+        "standard_deviation",
+        "trend_slope"
+      ]
+    },
+    {
+      "id": "series_compare",
+      "outputs": [
+        "aligned_count",
+        "mean_delta",
+        "mean_percent_change",
+        "correlation"
+      ]
+    },
+    {
+      "id": "spectrum_summary",
+      "outputs": [
+        "peak_wavelength",
+        "peak_value",
+        "centroid",
+        "integral"
+      ]
+    },
+    {
+      "id": "raster_metadata_compare",
+      "outputs": [
+        "crs_match",
+        "extent_overlap",
+        "resolution_ratio",
+        "band_difference"
+      ]
+    }
+  ],
+  "exports": [
+    "jupyter_notebook",
+    "workbench_handoff",
+    "csv_metadata"
+  ],
+  "safeguards": [
+    "Core credentials remain server-side.",
+    "No paid provider is required.",
+    "No scientific result is fabricated when upstream data are unavailable.",
+    "Remote scientific assets are metadata-only by default.",
+    "Notebook exports never contain API keys.",
+    "Raster comparison in this release is metadata-level unless a validated compute backend is available."
+  ]
+}

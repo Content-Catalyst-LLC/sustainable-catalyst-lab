@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dataset-bundle-v0281.schema.json",
+  "title": "Sustainable Catalyst Lab Dataset Bundle v0.28.1",
+  "type": "object",
+  "required": ["schema", "version", "exportedAt", "dataset", "integrity"],
+  "properties": {
+    "schema": {"const": "sc-lab-dataset-bundle/0.28.1"},
+    "version": {"const": "0.28.1"},
+    "exportedAt": {"type": "string"},
+    "dataset": {"$ref": "dataset-registry-v0281.schema.json"},
+    "integrity": {
+      "type": "object",
+      "required": ["rowCount", "columnCount", "sha256"],
+      "properties": {
+        "rowCount": {"type": "integer", "minimum": 0},
+        "columnCount": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    }
+  }
+}

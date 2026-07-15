@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dataset-registry-v0281.schema.json",
+  "title": "Sustainable Catalyst Lab Dataset Registry Record v0.28.1",
+  "type": "object",
+  "required": ["id", "recordType", "collection", "title", "datasetSchemaVersion", "format", "columns", "rows", "dataDictionary", "validation", "sourceMetadata", "licenseMetadata", "createdAt", "updatedAt"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "recordType": {"const": "dataset"},
+    "collection": {"const": "datasets"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 240},
+    "description": {"type": "string", "maxLength": 8000},
+    "datasetSchemaVersion": {"const": "0.28.1"},
+    "format": {"enum": ["csv", "json", "geojson", "netcdf", "tabular", "records", "metadata-only"]},
+    "columns": {"type": "array", "maxItems": 2000, "items": {"type": "string", "maxLength": 240}},
+    "rows": {"type": "array", "maxItems": 100000, "items": {"type": "object"}},
+    "dataDictionary": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": {
+        "type": "object",
+        "required": ["name", "dataType", "role"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 240},
+          "label": {"type": "string", "maxLength": 240},
+          "dataType": {"enum": ["integer", "number", "boolean", "datetime", "string", "object", "unknown"]},
+          "unit": {"type": "string", "maxLength": 120},
+          "role": {"enum": ["identifier", "dimension", "measure", "time", "latitude", "longitude", "geometry", "attribute"]},
+          "description": {"type": "string", "maxLength": 2000},
+          "missingPolicy": {"enum": ["allowed", "not-allowed", "unknown"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "issues"],
+      "properties": {
+        "status": {"enum": ["valid", "warning", "invalid", "not-validated"]},
+        "issues": {"type": "array", "maxItems": 1000, "items": {"type": "object"}},
+        "validatedAt": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "profile": {"type": "object"},
+    "sourceMetadata": {"type": "object"},
+    "licenseMetadata": {"type": "object"},
+    "derivedFrom": {"type": "array", "items": {"type": "string"}},
+    "createdAt": {"type": "string"},
+    "updatedAt": {"type": "string"}
+  },
+  "additionalProperties": true
+}

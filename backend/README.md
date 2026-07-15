@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab Python Compute Core v0.28.0
+# Sustainable Catalyst Lab Python Compute Core v0.28.1
 
 The v0.27.3 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves the 23-method registry, fourteen known-answer benchmarks, persistent SQLite WAL queue, checkpoints, retries, cache, and thirteen domain extensions while adding numerical precision profiles and solver governance.
 

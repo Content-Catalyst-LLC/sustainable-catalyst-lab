@@ -18,6 +18,7 @@ from .extensions import load_legacy_extensions
 from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, QueueCapacityError
 from .precision import policy_catalog, recommend
 from .visualization import VisualizationInputError, build_spec as build_visualization_spec, catalog as visualization_catalog, csv_text as visualization_csv
+from .datasets import DatasetProfileError, health as dataset_health_payload, profile_dataset
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -102,6 +103,7 @@ def health():
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "referenceComparison": True, "unitAwareValidation": True},
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "formats": ["svg", "png", "csv", "json"]},
         "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
+        "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -163,6 +165,7 @@ def capabilities():
         "solverGovernance": {"version": "0.27.3", "profiles": 4, "manualSolverSelection": True, "automaticRecommendations": True, "unitAwareValidation": True, "referenceMethodComparisons": True, "floatingPointReporting": True},
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "serverNormalizedSpecs": True, "accessibleDescriptions": True, "tabularFallback": True},
         "projectWorkspace": {"version": "0.28.0", "projectContextAccepted": True, "serverBackedStorage": False},
+        "datasetRegistry": {"version": "0.28.1", "profileEndpoint": True, "dataDictionary": True, "unitMetadata": True, "lineage": True, "serverBackedRegistry": False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -227,6 +230,22 @@ def visualization_csv_export(payload: dict[str, Any], auth: dict[str, str] = Dep
     except VisualizationInputError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return {"ok": True, "version": "0.27.4", "mimeType": "text/csv", "filename": "scientific-visualization.csv", "text": visualization_csv(spec), "spec": spec}
+
+
+@app.get("/v1/datasets/health")
+def datasets_health():
+    body = dataset_health_payload()
+    body["serviceVersion"] = settings.version
+    return body
+
+
+@app.post("/v1/datasets/profile")
+def datasets_profile(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return profile_dataset(payload)
+    except DatasetProfileError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])
