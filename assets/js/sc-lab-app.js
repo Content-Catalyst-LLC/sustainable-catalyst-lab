@@ -17,9 +17,10 @@
 
   function qs(root, selector) { return root?.querySelector?.(selector) || missingElement; }
   function qsa(root, selector) { return root?.querySelectorAll ? [...root.querySelectorAll(selector)] : []; }
+  function canonicalModule(id) { return w.SCLabRuntimeV02631?.resolveModule?.(id) || String(id || 'overview'); }
   function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
   function reportRuntimeError(scope, error, metadata = {}) {
-    if (w.SCLabRuntimeV0263?.recordError) return w.SCLabRuntimeV0263.recordError(scope, error, metadata);
+    if (w.SCLabRuntimeV02631?.recordError) return w.SCLabRuntimeV0263.recordError(scope, error, metadata);
     try { console.error('[Sustainable Catalyst Lab]', scope, error, metadata); } catch (_) {}
     return null;
   }
@@ -86,9 +87,10 @@
     }
 
     function openModule(id, options = {}) {
+      id = canonicalModule(id);
       const exists = qsa(root, '[data-lab-module]').find(panel => panel.dataset.labModule === id);
       if (!exists) {
-        if (w.SCLabRuntimeV0263?.navigate) w.SCLabRuntimeV0263.navigate(id);
+        if (w.SCLabRuntimeV02631?.navigate) w.SCLabRuntimeV0263.navigate(id);
         return;
       }
       qsa(root, '[data-lab-module]').forEach(panel => { panel.hidden = panel.dataset.labModule !== id; });
@@ -1011,7 +1013,7 @@
     openModule(initial);
     root.dataset.scLabAppReady = '1';
     root.dataset.scLabRuntimeState = 'ready';
-    d.dispatchEvent(new CustomEvent('sc-lab:app-ready', { detail: { version: config.version || '0.26.3', module: initial, root } }));
+    d.dispatchEvent(new CustomEvent('sc-lab:app-ready', { detail: { version: config.version || '0.26.3.1', module: initial, root } }));
   }
 
   d.addEventListener('DOMContentLoaded', () => {

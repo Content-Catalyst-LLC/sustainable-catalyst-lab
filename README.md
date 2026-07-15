@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab v0.26.3.1 — Panel Alias and Compatibility Routing Repair
+
+Canonical panel routing for legacy identifiers, false-positive compatibility-warning suppression, content-hash cache busting where supported, and duplicate-plugin diagnostics.
+
 # Sustainable Catalyst Lab v0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
 
 This release repairs a shared browser-runtime failure that prevented later laboratory controllers from mounting when inactive panels were removed. It adds guarded initialization, active-panel controller mounting, cache-busting, runtime diagnostics, and resilient project storage while preserving the existing Python Compute Core and queue.

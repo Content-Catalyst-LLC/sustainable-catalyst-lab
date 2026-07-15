@@ -17,6 +17,11 @@ final class SC_Lab_Plugin {
         flush_rewrite_rules(false);
     }
 
+    private function asset_version($relative) {
+        $path = SC_LAB_DIR . ltrim($relative, '/');
+        return SC_LAB_VERSION . '.' . (is_file($path) ? substr(hash_file('sha256', $path), 0, 12) : '0');
+    }
+
     private function __construct() {
         new SC_Lab_REST();
         if (is_admin()) { new SC_Lab_Admin(); }
@@ -72,7 +77,7 @@ final class SC_Lab_Plugin {
             wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, SC_LAB_VERSION, true);
             $deps[] = $handle;
         }
-        if (wp_script_is('sc-lab-runtime-v0263', 'registered') || wp_script_is('sc-lab-runtime-v0263', 'enqueued')) { $deps[] = 'sc-lab-runtime-v0263'; }
+        if (wp_script_is('sc-lab-runtime-v02631', 'registered') || wp_script_is('sc-lab-runtime-v02631', 'enqueued')) { $deps[] = 'sc-lab-runtime-v02631'; }
         wp_enqueue_script('sc-lab-app', SC_LAB_URL . 'assets/js/sc-lab-app.js', array_values(array_unique($deps)), SC_LAB_VERSION . '.' . (string) filemtime(SC_LAB_DIR . 'assets/js/sc-lab-app.js'), true);
 
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults());

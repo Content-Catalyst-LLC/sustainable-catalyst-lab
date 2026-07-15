@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.3.1 — Panel Alias and Compatibility Routing Repair
+
+- Maps `marine` to `marine-biology`, `climate` to `climate-maps`, and `evidence` to `evidence-decisions`.
+- Canonicalizes query URLs, navigation controls, and application module lookups.
+- Suppresses only false compatibility warnings backed by the canonical module manifest.
+- Keeps genuine missing-panel conditions in runtime diagnostics.
+- Adds content-hash asset cache busting where supported and duplicate-plugin-folder diagnostics.
+
 ## 0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
 
 - Fixes the missing-element select proxy so shared calculator initialization no longer stops on `HTMLSelectElement.add()`.
