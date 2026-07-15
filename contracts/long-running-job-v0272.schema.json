@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/long-running-job-v0272.schema.json",
+  "title": "Sustainable Catalyst Lab long-running job",
+  "type": "object",
+  "required": ["schema", "jobId", "method", "status", "progress", "priority", "checkpointAvailable"],
+  "properties": {
+    "schema": {"const": "sc-lab-compute-job/1.1"},
+    "jobId": {"type": "string"},
+    "method": {"type": "string"},
+    "status": {"enum": ["queued", "running", "paused", "retrying", "completed", "failed", "cancelled", "timed_out"]},
+    "progress": {"type": "number", "minimum": 0, "maximum": 100},
+    "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+    "cacheMode": {"enum": ["use", "refresh", "bypass"]},
+    "cacheHit": {"type": "boolean"},
+    "checkpointAvailable": {"type": "boolean"},
+    "checkpointSequence": {"type": "integer", "minimum": 0},
+    "estimatedRemainingSeconds": {"type": ["number", "null"], "minimum": 0},
+    "partialResult": {"type": ["object", "null"]},
+    "result": {"type": ["object", "null"]},
+    "error": {"type": ["object", "null"]}
+  }
+}

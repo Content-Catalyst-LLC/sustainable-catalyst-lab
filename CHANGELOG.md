@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.27.2 — Long-Running Numerical Jobs and Checkpoint Recovery
+
+- Added checkpointed execution for parameter sweeps and bootstrap uncertainty runs.
+- Added persisted partial results, checkpoint history, progress, ETA, pause, resume, and restart recovery.
+- Added priority scheduling, project-level active-job limits, and deterministic result caching.
+- Added queue schema 1.1, worker schema 1.1, and long-job result contract.
+- Added Analyze → Long Jobs & Checkpoints and `[sc_lab_long_jobs]`.
+- Preserved the 23-method registry, fourteen numerical benchmarks, HMAC authentication, and domain extensions.
+
 ## 0.27.1 — Numerical Validation and Benchmark Library
 
 - Added a dedicated Numerical Validation Library under Analyze and the `[sc_lab_numerical_validation]` focused shortcode.

@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Python_Compute_Core_V0261 {
-    const VERSION = '0.26.1';
+    const VERSION = '0.27.2';
     const NAMESPACE = 'sc-lab/v1';
 
     public static function init() {
@@ -25,6 +25,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         ));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'job_cancel_post'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/retry', array('methods'=>'POST','callback'=>array(__CLASS__,'job_retry'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/pause', array('methods'=>'POST','callback'=>array(__CLASS__,'job_pause'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/resume', array('methods'=>'POST','callback'=>array(__CLASS__,'job_resume'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/checkpoints', array('methods'=>'GET','callback'=>array(__CLASS__,'job_checkpoints'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/cache/status', array('methods'=>'GET','callback'=>array(__CLASS__,'cache_status'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/cache', array('methods'=>'DELETE','callback'=>array(__CLASS__,'cache_purge'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/workers', array('methods'=>'GET','callback'=>array(__CLASS__,'workers'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/queue/status', array('methods'=>'GET','callback'=>array(__CLASS__,'queue_status'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/benchmarks', array('methods'=>'GET','callback'=>array(__CLASS__,'benchmarks'),'permission_callback'=>'__return_true'));
@@ -42,7 +47,7 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : 'unknown';
         $key = 'sc_lab_core_rate_' . md5($ip . gmdate('YmdHi'));
         $count = (int) get_transient($key);
-        if ($count >= 30) { return new WP_Error('compute_rate_limited','Too many Python Compute Core requests. Try again in a minute.',array('status'=>429)); }
+        if ($count >= 120) { return new WP_Error('compute_rate_limited','Too many Python Compute Core requests. Try again in a minute.',array('status'=>429)); }
         set_transient($key, $count + 1, 2 * MINUTE_IN_SECONDS);
         return true;
     }
@@ -132,6 +137,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         if(isset($body['idempotencyKey'])){$payload['idempotencyKey']=substr(sanitize_text_field($body['idempotencyKey']),0,128);}
         if(isset($body['timeoutSeconds'])){$payload['timeoutSeconds']=max(1,min(900,absint($body['timeoutSeconds'])));}
         if(isset($body['maxAttempts'])){$payload['maxAttempts']=max(1,min(5,absint($body['maxAttempts'])));}
+        if(isset($body['priority'])){$payload['priority']=max(0,min(100,absint($body['priority'])));}
+        if(isset($body['cacheMode'])){
+            $cache_mode=sanitize_key($body['cacheMode']);
+            $payload['cacheMode']=in_array($cache_mode,array('use','refresh','bypass'),true)?$cache_mode:'use';
+        }
         return $payload;
     }
 
@@ -151,6 +161,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function job_cancel(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']),'DELETE'); }
     public static function job_cancel_post(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/cancel','POST',array()); }
     public static function job_retry(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/retry','POST',array()); }
+    public static function job_pause(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/pause','POST',array()); }
+    public static function job_resume(WP_REST_Request $request) { return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/resume','POST',array()); }
+    public static function job_checkpoints(WP_REST_Request $request) {
+        $limit=max(1,min(200,absint($request->get_param('limit')?:20)));
+        return self::proxy('/v1/jobs/' . rawurlencode($request['job']) . '/checkpoints?limit=' . $limit,'GET',null,8388608,'/v1/jobs/' . rawurlencode($request['job']) . '/checkpoints');
+    }
+    public static function cache_status() { return self::proxy('/v1/cache/status'); }
+    public static function cache_purge() { return self::proxy('/v1/cache','DELETE'); }
     public static function workers() { return self::proxy('/v1/workers'); }
     public static function queue_status() { return self::proxy('/v1/queue/status'); }
     public static function benchmarks() { return self::proxy('/v1/benchmarks'); }

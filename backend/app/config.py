@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.27.1"
+    version: str = "0.27.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -36,6 +36,12 @@ class Settings:
     job_scheduler_interval_seconds: float = max(0.05, min(5.0, float(os.getenv("SC_LAB_JOB_SCHEDULER_INTERVAL_SECONDS", "0.2"))))
     job_db_path: str = os.getenv("SC_LAB_JOB_DB_PATH", "./data/sc-lab-compute-jobs.sqlite3").strip()
     extension_loading: bool = os.getenv("SC_LAB_LOAD_LEGACY_EXTENSIONS", "1").lower() not in {"0", "false", "no"}
+    max_active_jobs_per_project: int = _int("SC_LAB_MAX_ACTIVE_JOBS_PER_PROJECT", 5, 1, 100)
+    checkpoint_retention_per_job: int = _int("SC_LAB_CHECKPOINT_RETENTION_PER_JOB", 20, 1, 200)
+    max_checkpoint_bytes: int = _int("SC_LAB_MAX_CHECKPOINT_BYTES", 8388608, 65536, 67108864)
+    result_cache_ttl_seconds: int = _int("SC_LAB_RESULT_CACHE_TTL_SECONDS", 86400, 60, 2592000)
+    max_cache_records: int = _int("SC_LAB_MAX_CACHE_RECORDS", 250, 1, 5000)
+    default_job_priority: int = _int("SC_LAB_DEFAULT_JOB_PRIORITY", 50, 0, 100)
 
     @property
     def auth_mode(self) -> str:

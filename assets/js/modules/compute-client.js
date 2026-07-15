@@ -84,6 +84,11 @@
     job(jobId) { return request(jobUrl(jobId)); },
     cancel(jobId) { return request(`${jobUrl(jobId)}/cancel`, { method:'POST', body:{} }); },
     retry(jobId) { return request(`${jobUrl(jobId)}/retry`, { method:'POST', body:{} }); },
+    pause(jobId) { return request(`${jobUrl(jobId)}/pause`, { method:'POST', body:{} }); },
+    resume(jobId) { return request(`${jobUrl(jobId)}/resume`, { method:'POST', body:{} }); },
+    checkpoints(jobId, limit = 20) { return request(withQuery(`${jobUrl(jobId)}/checkpoints`, { limit })); },
+    cacheStatus() { return request(endpoint('cacheStatus')); },
+    purgeCache() { return request(endpoint('cachePurge'), { method:'DELETE' }); },
     queueStatus() { return request(endpoint('queueStatus')); },
     workers() { return request(endpoint('workers')); },
     benchmarks() { return request(endpoint('benchmarks')); },
@@ -98,7 +103,7 @@
         const record = await api.job(jobId);
         options.onUpdate?.(record);
         const state = String(record.status || record.state || '').toLowerCase();
-        if (['finished','completed','succeeded','failed','cancelled','canceled','timed_out'].includes(state)) return record;
+        if (['finished','completed','succeeded','failed','cancelled','canceled','timed_out','paused'].includes(state)) return record;
         await new Promise(resolve => setTimeout(resolve, interval));
       }
       const error = new Error('The execution job did not finish before the polling timeout.');

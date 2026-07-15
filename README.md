@@ -1,20 +1,28 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.27.1 — Numerical Validation and Benchmark Library**
+**Current release: v0.27.2 — Long-Running Numerical Jobs and Checkpoint Recovery**
 
-This release adds a governed numerical-validation layer on top of the v0.27.0 Python Compute Core. Fourteen known-answer benchmarks verify root finding, quadrature, interpolation, ODE integration, eigen analysis, optimization, FFT analysis, uncertainty methods, sensitivity analysis, parameter sweeps, linear systems, and sampled integration. The new Numerical Validation Library exposes tolerances, residuals, convergence behavior, browser references, Python provenance, full-suite reporting, and JSON export without enabling arbitrary Python execution.
+This release extends the governed Python Compute Core with checkpointed parameter sweeps and bootstrap runs, pause and resume controls, partial-result inspection, restart recovery, queue priorities, deterministic result caching, and project-level compute limits. The new Long Jobs & Checkpoints studio exposes those capabilities through WordPress while preserving the 23-method registry, fourteen numerical benchmarks, and production-recovery architecture.
 
-## v0.27.1 highlights
+## v0.27.2 highlights
 
-- 14 registered known-answer numerical benchmarks
-- Numerical Validation Library under Analyze
-- Absolute and relative tolerance assertions
-- Residual, sequence, monotonicity, deterministic-seed, derivative, and unit checks
-- Root-finding and ODE convergence diagnostics
-- Independent browser references for supported cases
-- Full-suite execution, report export, and provenance inspection
-- Focused `[sc_lab_numerical_validation]` shortcode
-- Preservation of the v0.27.0 Numerical Methods Studio and v0.26.6 recovery architecture
+- Persistent SQLite checkpoint history and partial results
+- Checkpointed parameter sweeps and bootstrap confidence intervals
+- Pause, resume, retry, cancellation, and restart recovery
+- Priority scheduling and project-level active-job limits
+- Result cache with use, refresh, and bypass policies
+- Progress, ETA, resume count, result size, and checkpoint diagnostics
+- Analyze → Long Jobs & Checkpoints
+- Focused `[sc_lab_long_jobs]` shortcode
+- Preservation of v0.27.1 numerical validation and v0.26.6 recovery protections
+
+# Sustainable Catalyst Lab v0.27.1 — Numerical Validation and Benchmark Library
+
+Fourteen governed known-answer benchmarks verify the numerical methods registry with tolerance, residual, deterministic-seed, unit, and convergence checks. The Numerical Validation Library supports selected and full-suite runs, browser references, provenance inspection, and JSON export.
+
+# Sustainable Catalyst Lab v0.27.0 — Scientific Computing and Numerical Methods
+
+Twelve governed numerical methods and the Numerical Methods Studio added root finding, quadrature, interpolation, ODEs, eigen analysis, optimization, FFT, Monte Carlo, bootstrap, sensitivity analysis, and parameter sweeps.
 
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 

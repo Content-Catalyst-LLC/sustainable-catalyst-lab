@@ -15,7 +15,7 @@ from .benchmarks import catalog as benchmark_catalog, resolve as resolve_benchma
 from .compute import ComputeExecutionError, run_compute
 from .config import settings
 from .extensions import load_legacy_extensions
-from .jobs import InvalidJobStateError, PersistentJobQueue, QueueCapacityError
+from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, QueueCapacityError
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -101,9 +101,15 @@ def health():
         "queue": {
             "persistent": queue_state["persistent"],
             "storage": queue_state["storage"],
+            "schema": queue_state["schema"],
             "activeWorkers": queue_state["activeWorkers"],
             "workerCapacity": queue_state["workerCapacity"],
             "queued": queue_state["counts"]["queued"] + queue_state["counts"]["retrying"],
+            "paused": queue_state["counts"]["paused"],
+            "checkpointRecovery": queue_state["checkpointRecovery"],
+            "priorityScheduling": queue_state["priorityScheduling"],
+            "maxActiveJobsPerProject": queue_state["maxActiveJobsPerProject"],
+            "cache": queue_state["cache"],
         },
     }
 
@@ -116,10 +122,10 @@ def version():
 @app.get("/v1/capabilities", dependencies=[Depends(require_compute_auth)])
 def capabilities():
     return {
-        "schema": "sc-lab-compute-capabilities/1.2",
+        "schema": "sc-lab-compute-capabilities/1.3",
         "version": settings.version,
         "executionTargets": ["python-core-cpu", "isolated-process-worker"],
-        "modes": ["synchronous", "persistent-queued"],
+        "modes": ["synchronous", "persistent-queued", "checkpointed-queued", "cached-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
         "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True},
         "benchmarks": {"count": len(benchmark_catalog()), "crossImplementation": ["python-core", "analytic-reference", "browser-reference"], "toleranceControls": True, "unitAssertions": True},
@@ -133,7 +139,7 @@ def capabilities():
         "jobs": {
             "persistent": True,
             "storage": "sqlite-wal",
-            "states": ["queued", "running", "completed", "failed", "cancelled", "timed_out", "retrying"],
+            "states": ["queued", "running", "paused", "completed", "failed", "cancelled", "timed_out", "retrying"],
             "workerCount": settings.job_workers,
             "maxQueuedJobs": settings.max_queued_jobs,
             "defaultTimeoutSeconds": settings.default_job_timeout_seconds,
@@ -142,6 +148,11 @@ def capabilities():
             "maxAttempts": settings.max_job_attempts,
             "deduplication": True,
             "restartRecovery": True,
+            "checkpointRecovery": True,
+            "partialResultInspection": True,
+            "priorityScheduling": True,
+            "resultCaching": True,
+            "maxActiveJobsPerProject": settings.max_active_jobs_per_project,
         },
         "provenanceSchema": "sc-lab-compute-provenance/1.0",
         "methodCount": len(catalog()),
@@ -305,6 +316,8 @@ def create_job(payload: dict[str, Any], auth: dict[str, str] = Depends(require_c
     idempotency_key = str(payload.get("idempotencyKey") or payload.get("idempotency_key") or "") or None
     timeout_seconds = payload.get("timeoutSeconds") or payload.get("timeout_seconds") or source.get("timeoutSeconds")
     max_attempts = payload.get("maxAttempts") or payload.get("max_attempts")
+    priority = payload.get("priority")
+    cache_mode = payload.get("cacheMode") or payload.get("cache_mode") or "use"
     try:
         record, deduplicated = jobs.submit(
             operation=operation,
@@ -313,9 +326,13 @@ def create_job(payload: dict[str, Any], auth: dict[str, str] = Depends(require_c
             timeout_seconds=int(timeout_seconds) if timeout_seconds is not None else None,
             max_attempts=int(max_attempts) if max_attempts is not None else None,
             idempotency_key=idempotency_key,
+            priority=int(priority) if priority is not None else None,
+            cache_mode=str(cache_mode),
         )
-    except QueueCapacityError as exc:
+    except (QueueCapacityError, ProjectLimitError) as exc:
         raise HTTPException(status_code=429, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     record["deduplicated"] = deduplicated
     return record
 
@@ -367,6 +384,46 @@ def retry_job(job_id: str):
     if not job:
         raise HTTPException(status_code=404, detail="Compute job not found.")
     return job
+
+
+@app.post("/v1/jobs/{job_id}/pause", dependencies=[Depends(require_compute_auth)])
+def pause_job(job_id: str):
+    try:
+        job = jobs.pause(job_id)
+    except InvalidJobStateError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
+
+
+@app.post("/v1/jobs/{job_id}/resume", dependencies=[Depends(require_compute_auth)])
+def resume_job(job_id: str):
+    try:
+        job = jobs.resume(job_id)
+    except InvalidJobStateError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not job:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return job
+
+
+@app.get("/v1/jobs/{job_id}/checkpoints", dependencies=[Depends(require_compute_auth)])
+def job_checkpoints(job_id: str, limit: int = Query(default=20, ge=1, le=200)):
+    result = jobs.checkpoints(job_id, limit=limit)
+    if not result:
+        raise HTTPException(status_code=404, detail="Compute job not found.")
+    return result
+
+
+@app.get("/v1/cache/status", dependencies=[Depends(require_compute_auth)])
+def cache_status():
+    return jobs.cache_status()
+
+
+@app.delete("/v1/cache", dependencies=[Depends(require_compute_auth)])
+def cache_purge():
+    return jobs.purge_cache()
 
 
 @app.get("/v1/workers", dependencies=[Depends(require_compute_auth)])

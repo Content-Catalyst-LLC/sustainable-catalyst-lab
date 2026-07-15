@@ -36,6 +36,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_astronomy', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_numerical_methods', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_numerical_validation', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_long_jobs', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
@@ -59,9 +60,10 @@ final class SC_Lab_Plugin {
   wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v095.css'));
         wp_enqueue_style('sc-lab-numerical-methods-v0270', SC_LAB_URL . 'assets/css/sc-lab-numerical-methods-v0270.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-methods-v0270.css'));
         wp_enqueue_style('sc-lab-numerical-validation-v0271', SC_LAB_URL . 'assets/css/sc-lab-numerical-validation-v0271.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-validation-v0271.css'));
+        wp_enqueue_style('sc-lab-long-jobs-v0272', SC_LAB_URL . 'assets/css/sc-lab-long-jobs-v0272.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-long-jobs-v0272.css'));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
             // Preserve the legacy key for compatibility tests,
@@ -118,6 +120,8 @@ final class SC_Lab_Plugin {
                     'jobs' => esc_url_raw(rest_url('sc-lab/v1/compute/jobs')),
                     'queueStatus' => esc_url_raw(rest_url('sc-lab/v1/compute/queue/status')),
                     'workers' => esc_url_raw(rest_url('sc-lab/v1/compute/workers')),
+                    'cacheStatus' => esc_url_raw(rest_url('sc-lab/v1/compute/core/cache/status')),
+                    'cachePurge' => esc_url_raw(rest_url('sc-lab/v1/compute/core/cache')),
                     'reportValidate' => esc_url_raw(rest_url('sc-lab/v1/compute/reports/validate')),
                     'reportPdf' => esc_url_raw(rest_url('sc-lab/v1/compute/reports/pdf')),
                     'handoffValidate' => esc_url_raw(rest_url('sc-lab/v1/compute/handoffs/decision-studio/validate')),
@@ -137,6 +141,11 @@ final class SC_Lab_Plugin {
                 'catalogUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/catalog')),
                 'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/health')),
                 'registeredMethodCount' => 12,
+            ),
+            'longJobs' => array(
+                'version' => '0.27.2',
+                'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0272/health')),
+                'checkpointableMethods' => array('simulation.parameter_sweep','uncertainty.bootstrap_mean_interval'),
             ),
             'validation' => array(
                 'version' => '0.27.1',
@@ -168,6 +177,7 @@ final class SC_Lab_Plugin {
             'sc_lab_astronomy' => 'astronomy',
             'sc_lab_numerical_methods' => 'numerical-methods',
             'sc_lab_numerical_validation' => 'numerical-validation',
+            'sc_lab_long_jobs' => 'long-running-jobs',
             'sc_lab_materials' => 'materials',
             'sc_lab_earth_systems' => 'earth-systems',
             'sc_lab_energy' => 'energy-engineering',

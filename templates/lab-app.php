@@ -55,6 +55,7 @@
           'dataset-inspector' => 'Dataset inspector',
           'numerical-methods' => 'Numerical Methods Studio',
           'numerical-validation' => 'Numerical Validation Library',
+          'long-running-jobs' => 'Long Jobs & Checkpoints',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
@@ -312,6 +313,28 @@
           <p data-benchmark-convergence-summary>Select a benchmark with a convergence series.</p>
           <div class="sc-benchmark-table-wrap"><table><thead><tr><th>Level</th><th>Parameters</th><th>Actual</th><th>Absolute error</th><th>Runtime</th></tr></thead><tbody data-benchmark-convergence-results><tr><td colspan="5">No convergence series.</td></tr></tbody></table></div>
         </section>
+      </section>
+
+      <section class="sc-lab-panel sc-lab-long-jobs-v0272" data-lab-module="long-running-jobs" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/COMPUTE/JOBS</span><h3>Long-Running Numerical Jobs and Checkpoint Recovery</h3></div>
+          <span class="sc-lab-status-dot is-ready">Persistent queue</span>
+        </div>
+        <div class="sc-lab-method-note">Run larger numerical studies through the governed Python Compute Core. Checkpoint-capable methods can be paused, resumed after interruption, inspected before completion, prioritized, and reused from the result cache.</div>
+        <div data-longjobs-status role="status" aria-live="polite" data-state="loading">Loading compute queue…</div>
+        <div class="sc-lab-toolbar">
+          <label>Example job<select data-longjobs-example><option value="sweep">1,000-point logistic parameter sweep</option><option value="bootstrap">20,000-resample bootstrap interval</option></select></label>
+          <label>Priority<input type="number" min="0" max="100" step="10" value="50" data-longjobs-priority></label>
+          <label>Cache policy<select data-longjobs-cache><option value="use">Use cached result</option><option value="refresh">Refresh cache</option><option value="bypass">Bypass cache</option></select></label>
+          <button type="button" class="sc-lab-button sc-lab-button-primary" data-longjobs-submit>Submit checkpointed job</button>
+          <button type="button" class="sc-lab-button" data-longjobs-refresh>Refresh</button>
+          <button type="button" class="sc-lab-button" data-longjobs-purge>Purge result cache</button>
+        </div>
+        <div class="sc-longjobs-metrics" data-longjobs-metrics></div>
+        <div class="sc-longjobs-grid">
+          <section class="sc-longjobs-card" aria-labelledby="sc-longjobs-list-title"><h4 id="sc-longjobs-list-title">Project compute jobs</h4><div class="sc-longjobs-list" data-longjobs-list><div class="sc-lab-data-note">Loading jobs…</div></div></section>
+          <section class="sc-longjobs-card" aria-labelledby="sc-longjobs-detail-title"><h4 id="sc-longjobs-detail-title">Job recovery and partial results</h4><div data-longjobs-detail><div class="sc-lab-data-note">Select a job to inspect checkpoints.</div></div></section>
+        </div>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="chemistry" hidden>

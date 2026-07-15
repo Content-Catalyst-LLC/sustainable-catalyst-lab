@@ -28,6 +28,9 @@ class SC_Lab_REST {
         ));
         register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/cancel', array('methods'=>'POST','callback'=>array($this,'compute_job_cancel_post'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/retry', array('methods'=>'POST','callback'=>array($this,'compute_job_retry'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/pause', array('methods'=>'POST','callback'=>array($this,'compute_job_pause'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/resume', array('methods'=>'POST','callback'=>array($this,'compute_job_resume'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/jobs/(?P<job>[a-zA-Z0-9-]{8,64})/checkpoints', array('methods'=>'GET','callback'=>array($this,'compute_job_checkpoints'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/queue/status', array('methods'=>'GET','callback'=>array($this,'compute_queue_status'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/workers', array('methods'=>'GET','callback'=>array($this,'compute_workers'),'permission_callback'=>'__return_true'));
 
@@ -93,7 +96,7 @@ class SC_Lab_REST {
         $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : 'unknown';
         $key = 'sc_lab_compute_rate_' . md5($ip . gmdate('YmdHi'));
         $count = (int) get_transient($key);
-        if ($count >= 30) { return new WP_Error('compute_rate_limited','Too many compute requests. Try again in a minute.',array('status'=>429)); }
+        if ($count >= 120) { return new WP_Error('compute_rate_limited','Too many compute requests. Try again in a minute.',array('status'=>429)); }
         set_transient($key, $count + 1, 2 * MINUTE_IN_SECONDS);
         return true;
     }
@@ -221,6 +224,8 @@ class SC_Lab_REST {
         if(isset($body['idempotencyKey'])){$options['idempotencyKey']=substr(sanitize_text_field($body['idempotencyKey']),0,128);}
         if(isset($body['timeoutSeconds'])){$options['timeoutSeconds']=max(1,min(900,absint($body['timeoutSeconds'])));}
         if(isset($body['maxAttempts'])){$options['maxAttempts']=max(1,min(5,absint($body['maxAttempts'])));}
+        if(isset($body['priority'])){$options['priority']=max(0,min(100,absint($body['priority'])));}
+        if(isset($body['cacheMode'])){$mode=sanitize_key($body['cacheMode']);$options['cacheMode']=in_array($mode,array('use','refresh','bypass'),true)?$mode:'use';}
         if ($operation==='execute') { $payload=$this->clean_execute_payload(isset($body['execute'])?$body['execute']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array_merge(array('operation'=>'execute','execute'=>$payload),$options)); }
         if ($operation==='compare') { $payload=$this->clean_compare_payload(isset($body['compare'])?$body['compare']:array()); if(is_wp_error($payload)){return $payload;} return $this->proxy('/v1/jobs','POST',array_merge(array('operation'=>'compare','compare'=>$payload),$options)); }
         if ($operation==='core_run') { return SC_Lab_Python_Compute_Core_V0261::job_create($request); }
@@ -236,6 +241,9 @@ class SC_Lab_REST {
     public function compute_job_cancel(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']),'DELETE'); }
     public function compute_job_cancel_post(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/cancel','POST',array()); }
     public function compute_job_retry(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/retry','POST',array()); }
+    public function compute_job_pause(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/pause','POST',array()); }
+    public function compute_job_resume(WP_REST_Request $request) { return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/resume','POST',array()); }
+    public function compute_job_checkpoints(WP_REST_Request $request) { $limit=max(1,min(200,absint($request->get_param('limit')?:20))); return $this->proxy('/v1/jobs/' . rawurlencode($request['job']) . '/checkpoints?limit=' . $limit); }
     public function compute_queue_status() { return $this->proxy('/v1/queue/status'); }
     public function compute_workers() { return $this->proxy('/v1/workers'); }
 
