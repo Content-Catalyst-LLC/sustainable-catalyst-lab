@@ -23,7 +23,7 @@ def biosignal_production_health() -> dict[str, Any]:
         and category_count == 8
     )
 
-    root = Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[1]
     app = Path(__file__).resolve().parent
 
     return {

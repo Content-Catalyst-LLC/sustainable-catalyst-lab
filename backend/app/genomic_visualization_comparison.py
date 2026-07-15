@@ -2,7 +2,7 @@ from __future__ import annotations
 import json,re
 from pathlib import Path
 from typing import Any
-VERSION="0.24.2";CONTRACT_PATH=Path(__file__).resolve().parents[2]/"contracts"/"genomic-visualization-comparison-v0242.json"
+VERSION="0.24.2";CONTRACT_PATH=Path(__file__).resolve().parents[1]/"contracts"/"genomic-visualization-comparison-v0242.json"
 def contract():return json.loads(CONTRACT_PATH.read_text())
 def norm(v):return re.sub(r"\s+","",str(v or "")).upper()
 def execute(method_id:str,inputs:dict[str,Any]):

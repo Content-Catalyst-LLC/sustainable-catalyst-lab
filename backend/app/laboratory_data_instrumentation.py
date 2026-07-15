@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 from typing import Any
 VERSION="0.25.0"
-CONTRACT_PATH=Path(__file__).resolve().parents[2]/"contracts"/"laboratory-data-instrumentation-v0250.json"
+CONTRACT_PATH=Path(__file__).resolve().parents[1]/"contracts"/"laboratory-data-instrumentation-v0250.json"
 class InstrumentationError(ValueError):pass
 def catalog():return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 def _f(v,n):

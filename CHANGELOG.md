@@ -1,3 +1,15 @@
+# Changelog
+
+## 0.27.0 — Scientific Computing and Numerical Methods
+
+- Added a dedicated Numerical Methods Studio under Analyze and the `[sc_lab_numerical_methods]` focused shortcode.
+- Added twelve governed Python methods for bracketed root finding, adaptive quadrature, interpolation, first-order ODEs, eigen analysis, bounded optimization, linear programming, FFT spectra, Monte Carlo uncertainty propagation, bootstrap confidence intervals, local sensitivity, and parameter sweeps.
+- Added automatic synchronous or persistent-queued execution through the existing Compute Core and v0.26.1 worker architecture.
+- Added governed examples, JSON input and parameter editors, queue cancellation, project saving, accessible plots, raw result inspection, reproducibility provenance, and JSON export.
+- Added numerical catalog, result, and health contracts plus method and backend validation.
+- Added deterministic numerical benchmarks and preserved all v0.26.6 production-recovery, interface, feed, lifecycle, and functional-validation protections.
+- Kept public arbitrary-code execution disabled and enforced registered-method, input-size, runtime, and worker boundaries.
+
 ## 0.26.6 — Production Stability and Recovery
 
 - Added a true in-memory Safe Start that does not load or modify persisted projects.

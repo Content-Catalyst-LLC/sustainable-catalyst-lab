@@ -11,7 +11,7 @@ ENGINE_VERSION = "0.25.0"
 PRODUCTION_VERSION = "0.25.1"
 LIVE_VERSION = "0.25.2"
 CONTRACT_PATH = (
-    Path(__file__).resolve().parents[2]
+    Path(__file__).resolve().parents[1]
     / "contracts"
     / "instrumentation-validation-custody-v0253.json"
 )

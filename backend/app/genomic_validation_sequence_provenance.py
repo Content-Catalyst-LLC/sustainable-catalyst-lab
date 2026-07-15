@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 VERSION="0.24.3"
-CONTRACT_PATH=Path(__file__).resolve().parents[2]/"contracts"/"genomic-validation-sequence-provenance-v0243.json"
+CONTRACT_PATH=Path(__file__).resolve().parents[1]/"contracts"/"genomic-validation-sequence-provenance-v0243.json"
 
 class GenomicValidationError(ValueError):pass
 def contract():return json.loads(CONTRACT_PATH.read_text())

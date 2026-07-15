@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/numerical-method-result-v0270.schema.json",
+  "title": "Sustainable Catalyst Lab Numerical Method Result",
+  "type": "object",
+  "required": ["schema", "version", "method", "execution", "exportedAt", "result"],
+  "properties": {
+    "schema": {"const": "sc-lab-numerical-method-result/1.0"},
+    "version": {"const": "0.27.0"},
+    "method": {"type": "string", "minLength": 1, "maxLength": 128},
+    "execution": {"enum": ["synchronous", "queued"]},
+    "jobId": {"type": ["string", "null"], "maxLength": 128},
+    "exportedAt": {"type": "string", "format": "date-time"},
+    "result": {
+      "type": "object",
+      "required": ["method", "outputs", "provenance"],
+      "properties": {
+        "method": {"type": "string"},
+        "method_version": {"type": "string"},
+        "outputs": {"type": "object"},
+        "summary": {"type": "string"},
+        "warnings": {"type": "array", "items": {"type": "string"}},
+        "validation": {"type": "object"},
+        "provenance": {"type": "object"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

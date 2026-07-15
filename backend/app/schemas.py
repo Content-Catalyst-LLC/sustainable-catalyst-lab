@@ -35,6 +35,10 @@ class MethodSummary(BaseModel):
     output_schema: dict[str, Any]
     assumptions: list[str]
     references: list[dict[str, str]] = Field(default_factory=list)
+    example_inputs: dict[str, Any] = Field(default_factory=dict)
+    example_parameters: dict[str, Any] = Field(default_factory=dict)
+    recommended_execution: str = "synchronous"
+    estimated_cost: str = "light"
 
 
 class ProvenanceRecord(BaseModel):

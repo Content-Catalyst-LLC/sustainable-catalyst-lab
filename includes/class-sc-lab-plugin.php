@@ -34,6 +34,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_physics', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_biology', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_astronomy', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_numerical_methods', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_energy', array($this, 'shortcode_focus'));
@@ -55,9 +56,10 @@ final class SC_Lab_Plugin {
   wp_enqueue_style('sc-lab-v0100', SC_LAB_URL . 'assets/css/sc-lab-v0100.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0100.css'));
   wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0110.css')); wp_enqueue_style('sc-lab-v0120', SC_LAB_URL . 'assets/css/sc-lab-v0120.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0120.css'));
   wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v095.css'));
+        wp_enqueue_style('sc-lab-numerical-methods-v0270', SC_LAB_URL . 'assets/css/sc-lab-numerical-methods-v0270.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-methods-v0270.css'));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
             // Preserve the legacy key for compatibility tests,
@@ -120,7 +122,15 @@ final class SC_Lab_Plugin {
                     'capabilities' => esc_url_raw(rest_url('sc-lab/v1/compute/core/capabilities')),
                     'coreMethods' => esc_url_raw(rest_url('sc-lab/v1/compute/core/methods')),
                     'coreRun' => esc_url_raw(rest_url('sc-lab/v1/compute/core/run')),
+                    'numericalCatalog' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/catalog')),
+                    'numericalHealth' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/health')),
                 ),
+            ),
+            'numerical' => array(
+                'version' => '0.27.0',
+                'catalogUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/catalog')),
+                'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0270/health')),
+                'registeredMethodCount' => 12,
             ),
             'strings' => array(
                 'networkError' => __('The scientific source could not be reached.', 'sustainable-catalyst-lab'),
@@ -144,6 +154,7 @@ final class SC_Lab_Plugin {
             'sc_lab_physics' => 'physics',
             'sc_lab_biology' => 'biology',
             'sc_lab_astronomy' => 'astronomy',
+            'sc_lab_numerical_methods' => 'numerical-methods',
             'sc_lab_materials' => 'materials',
             'sc_lab_earth_systems' => 'earth-systems',
             'sc_lab_energy' => 'energy-engineering',

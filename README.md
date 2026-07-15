@@ -1,8 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.26.6 — Production Stability and Recovery**
+**Current release: v0.27.0 — Scientific Computing and Numerical Methods**
 
-This release adds Safe Start isolation, project-storage quarantine, compute-job restoration, backend interruption recovery, browser memory and DOM budgets, repeated module-switch stress testing, incident bundle export, and a production-readiness dashboard.
+This release adds a governed Python numerical-computing layer and a dedicated Numerical Methods Studio with registered root finding, adaptive integration, interpolation, ODE solving, eigen analysis, optimization, FFT analysis, Monte Carlo uncertainty propagation, bootstrap intervals, sensitivity analysis, and parameter sweeps. Lightweight methods run immediately; heavier methods use the persistent v0.26.1 queue and retain reproducibility provenance. Public arbitrary-code execution remains disabled.
+
+## v0.27.0 highlights
+
+- 12 registered, schema-constrained numerical methods
+- Numerical Methods Studio under Analyze
+- Automatic immediate or queued execution
+- Seeded stochastic methods and reproducible result hashes
+- Accessible line-series plots, structured output, raw response, and provenance views
+- Save-to-project and JSON export workflows
+- Numerical catalog and health REST endpoints
+- Focused `[sc_lab_numerical_methods]` shortcode
+- Full preservation of v0.26.6 Safe Start, recovery, accessibility, feed, and functional-validation protections
 
 # Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
 

@@ -10,7 +10,7 @@ from typing import Any
 
 VERSION = "0.22.3"
 CONTRACT_PATH = (
-    Path(__file__).resolve().parents[2]
+    Path(__file__).resolve().parents[1]
     / "contracts"
     / "bioprocess-validation-provenance-v0223.json"
 )

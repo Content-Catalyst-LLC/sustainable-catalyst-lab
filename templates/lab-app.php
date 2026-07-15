@@ -53,6 +53,7 @@
         ),
         'Analyze' => array(
           'dataset-inspector' => 'Dataset inspector',
+          'numerical-methods' => 'Numerical Methods Studio',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
           'biology' => 'Biology laboratory',
@@ -227,6 +228,45 @@
         <details class="sc-lab-data-import"><summary>Import CSV or JSON</summary><textarea rows="8" data-dataset-import placeholder="Paste CSV or a JSON array of records"></textarea><button class="sc-lab-button sc-lab-button-primary" data-dataset-import-run>Import data</button></details>
         <div class="sc-lab-dataset-stats" data-dataset-stats></div>
         <div class="sc-lab-grid sc-lab-grid-2"><section><h4>Data table</h4><div data-dataset-table></div></section><section><h4>Variable plot</h4><div class="sc-lab-chart" data-dataset-chart></div></section></div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-lab-numerical-v0270" data-lab-module="numerical-methods" hidden>
+        <div class="sc-lab-panel-head">
+          <div><span class="sc-lab-section-code">LAB/NUMERICS</span><h3>Scientific Computing and Numerical Methods</h3></div>
+          <span class="sc-lab-status-dot is-ready">Python Compute Core</span>
+        </div>
+        <div class="sc-lab-method-note">Run governed numerical methods through the Sustainable Catalyst Python Compute Core. Methods are registered, schema-constrained, resource-bounded, and returned with reproducibility provenance. Public arbitrary-code execution is not enabled.</div>
+        <div class="sc-num-status" data-numerical-status role="status" aria-live="polite" data-tone="loading">Loading the numerical-method registry…</div>
+        <div class="sc-num-grid">
+          <section class="sc-num-card" aria-labelledby="sc-num-method-heading">
+            <h4 id="sc-num-method-heading" data-numerical-method-title>Numerical method</h4>
+            <div class="sc-num-meta"><code data-numerical-method-id>Registry loading</code><span>Packages: <strong data-numerical-packages>—</strong></span><span>Cost: <strong data-numerical-cost>—</strong></span></div>
+            <p data-numerical-description>Choose a governed scientific method.</p>
+            <ul data-numerical-assumptions><li>Method assumptions will appear here.</li></ul>
+            <div class="sc-num-fields">
+              <label class="is-wide">Method<select data-numerical-method aria-describedby="sc-num-method-heading"></select></label>
+              <label>Execution<select data-numerical-execution><option value="automatic">Automatic</option><option value="synchronous">Immediate</option><option value="queued">Persistent queue</option></select></label>
+              <label>Random seed<input data-numerical-seed type="number" step="1" value="42"></label>
+              <label class="is-wide">Inputs JSON<textarea data-numerical-inputs spellcheck="false">{}</textarea></label>
+              <label class="is-wide">Parameters JSON<textarea data-numerical-parameters spellcheck="false">{}</textarea></label>
+            </div>
+            <div class="sc-num-actions">
+              <button type="button" class="sc-lab-button" data-numerical-example>Load governed example</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-numerical-run>Run method</button>
+              <button type="button" class="sc-lab-button" data-numerical-cancel disabled>Cancel queued job</button>
+            </div>
+          </section>
+          <section class="sc-num-card sc-num-result" aria-labelledby="sc-num-result-heading">
+            <h4 id="sc-num-result-heading">Result and provenance</h4>
+            <div class="sc-num-summary" data-numerical-summary><strong>No method has run.</strong><span>Choose a method and run the governed example.</span></div>
+            <div data-numerical-plot><div class="sc-lab-data-note">A supported line-series output will render here.</div></div>
+            <h5>Numerical output</h5><pre data-numerical-output>No output.</pre>
+            <div class="sc-num-actions"><button type="button" class="sc-lab-button" data-numerical-save disabled>Save to project</button><button type="button" class="sc-lab-button" data-numerical-export disabled>Export result JSON</button></div>
+            <details><summary>Execution provenance</summary><pre data-numerical-provenance>No provenance.</pre></details>
+            <details><summary>Raw compute response</summary><pre data-numerical-raw>No response.</pre></details>
+          </section>
+        </div>
       </section>
 
       <section class="sc-lab-panel" data-lab-module="chemistry" hidden>

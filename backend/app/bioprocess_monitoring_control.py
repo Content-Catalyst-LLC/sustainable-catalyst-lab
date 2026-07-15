@@ -3,7 +3,7 @@ import json, math
 from pathlib import Path
 from typing import Any
 VERSION='0.22.2'
-CONTRACT_PATH=Path(__file__).resolve().parents[2]/'contracts'/'bioprocess-monitoring-control-v0222.json'
+CONTRACT_PATH=Path(__file__).resolve().parents[1]/'contracts'/'bioprocess-monitoring-control-v0222.json'
 class MonitoringError(ValueError): pass
 def contract()->dict[str,Any]: return json.loads(CONTRACT_PATH.read_text(encoding='utf-8'))
 def _finite(v:Any,label:str)->float:

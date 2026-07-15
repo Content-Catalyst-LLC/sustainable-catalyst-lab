@@ -1,0 +1,602 @@
+{
+  "methodCount": 12,
+  "methods": [
+    {
+      "assumptions": [
+        "The polynomial changes sign across the supplied bracket."
+      ],
+      "description": "Finds a real polynomial root inside a sign-changing bracket using Brent's method.",
+      "domain": "numerical-analysis",
+      "estimated_cost": "light",
+      "example_inputs": {
+        "bracket": [
+          0,
+          2
+        ],
+        "coefficients": [
+          1,
+          0,
+          -2
+        ]
+      },
+      "example_parameters": {
+        "absoluteTolerance": 1e-10,
+        "relativeTolerance": 1e-10
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "numerics.root_scalar_polynomial",
+      "input_schema": {
+        "bracket": "[lower, upper]",
+        "coefficients": "descending polynomial coefficients"
+      },
+      "output_schema": {
+        "converged": "boolean",
+        "functionValue": "number",
+        "root": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Bracketed polynomial root",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "The integrand is represented by a finite polynomial."
+      ],
+      "description": "Integrates a polynomial over finite bounds with adaptive Gauss-Kronrod quadrature and an exact polynomial cross-check.",
+      "domain": "numerical-analysis",
+      "estimated_cost": "light",
+      "example_inputs": {
+        "coefficients": [
+          3,
+          0,
+          2
+        ],
+        "lower": 0,
+        "upper": 2
+      },
+      "example_parameters": {
+        "absoluteTolerance": 1e-10,
+        "relativeTolerance": 1e-10
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "numerics.adaptive_quadrature_polynomial",
+      "input_schema": {
+        "coefficients": "descending polynomial coefficients",
+        "lower": "number",
+        "upper": "number"
+      },
+      "output_schema": {
+        "absoluteErrorEstimate": "number",
+        "integral": "number",
+        "polynomialExactIntegral": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Adaptive polynomial quadrature",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Observed x values are strictly increasing.",
+        "Extrapolation is disabled unless explicitly requested."
+      ],
+      "description": "Evaluates linear, monotone PCHIP, or cubic interpolation over ordered observations.",
+      "domain": "numerical-analysis",
+      "estimated_cost": "light",
+      "example_inputs": {
+        "query": [
+          0.5,
+          1.5,
+          2.5,
+          3.5
+        ],
+        "x": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "y": [
+          0,
+          1,
+          4,
+          9,
+          16
+        ]
+      },
+      "example_parameters": {
+        "extrapolate": false,
+        "kind": "pchip"
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "numerics.interpolation",
+      "input_schema": {
+        "query": "numeric[]",
+        "x": "strictly increasing numeric[]",
+        "y": "numeric[]"
+      },
+      "output_schema": {
+        "kind": "string",
+        "values": "numeric[]"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Interpolation query",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Only registered differential-equation families are executed.",
+        "The solver uses adaptive RK45 with bounded output size."
+      ],
+      "description": "Solves governed first-order exponential, decay, logistic, or forced-linear models with adaptive RK45 integration.",
+      "domain": "differential-equations",
+      "estimated_cost": "medium",
+      "example_inputs": {
+        "endTime": 20,
+        "initialValue": 10,
+        "model": "logistic",
+        "points": 101,
+        "startTime": 0
+      },
+      "example_parameters": {
+        "absoluteTolerance": 1e-09,
+        "carryingCapacity": 100,
+        "rate": 0.35,
+        "relativeTolerance": 1e-07
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "numerics.ode_first_order",
+      "input_schema": {
+        "endTime": "number",
+        "initialValue": "number",
+        "model": "exponential|decay|logistic|forced_linear",
+        "points": "integer",
+        "startTime": "number"
+      },
+      "output_schema": {
+        "finalValue": "number",
+        "time": "numeric[]",
+        "values": "numeric[]"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "First-order ODE solver",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Dense matrices are limited to 50x50.",
+        "Symmetric matrices use a Hermitian solver."
+      ],
+      "description": "Computes eigenvalues, eigenvectors, spectral radius, and residual diagnostics for a dense matrix.",
+      "domain": "linear-algebra",
+      "estimated_cost": "medium",
+      "example_inputs": {
+        "matrix": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      "example_parameters": {
+        "symmetricTolerance": 1e-10
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "numerics.eigen_analysis",
+      "input_schema": {
+        "matrix": "square numeric[][]"
+      },
+      "output_schema": {
+        "eigenvalues": "number|complex[]",
+        "eigenvectors": "number|complex[][]",
+        "residualNorms": "numeric[]"
+      },
+      "packages": [
+        "numpy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Matrix eigen analysis",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Only registered objective families are permitted.",
+        "A bounded local optimizer is used."
+      ],
+      "description": "Minimizes a registered one-dimensional objective over finite bounds.",
+      "domain": "optimization",
+      "estimated_cost": "light",
+      "example_inputs": {
+        "coefficients": [
+          1,
+          -4,
+          7
+        ],
+        "lower": -10,
+        "objective": "quadratic",
+        "upper": 10
+      },
+      "example_parameters": {
+        "absoluteTolerance": 1e-08,
+        "maxIterations": 1000
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "optimization.scalar_bounded",
+      "input_schema": {
+        "coefficients": "numeric[] optional",
+        "lower": "number",
+        "objective": "quadratic|quartic|oscillatory",
+        "upper": "number"
+      },
+      "output_schema": {
+        "minimum": "number",
+        "success": "boolean",
+        "x": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Bounded scalar minimization",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "The model is linear and continuous.",
+        "Default variable bounds are non-negative."
+      ],
+      "description": "Solves a bounded linear objective with optional equality and inequality constraints using HiGHS.",
+      "domain": "optimization",
+      "estimated_cost": "medium",
+      "example_inputs": {
+        "bounds": [
+          [
+            0,
+            null
+          ],
+          [
+            0,
+            null
+          ]
+        ],
+        "inequalityMatrix": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "inequalityVector": [
+          18,
+          16
+        ],
+        "objective": [
+          -3,
+          -2
+        ]
+      },
+      "example_parameters": {},
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "optimization.linear_program",
+      "input_schema": {
+        "bounds": "[lower,upper][] optional",
+        "equalityMatrix": "numeric[][] optional",
+        "equalityVector": "numeric[] optional",
+        "inequalityMatrix": "numeric[][] optional",
+        "inequalityVector": "numeric[] optional",
+        "objective": "numeric[]"
+      },
+      "output_schema": {
+        "objectiveMinimum": "number",
+        "solution": "numeric[]",
+        "success": "boolean"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "Linear programming",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Samples are evenly spaced.",
+        "Reported amplitudes are window coherent-gain corrected."
+      ],
+      "description": "Computes a one-sided amplitude and power spectrum with windowing and detrending.",
+      "domain": "signal-processing",
+      "estimated_cost": "medium",
+      "example_inputs": {
+        "sampleRate": 16,
+        "values": [
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1
+        ]
+      },
+      "example_parameters": {
+        "detrend": "constant",
+        "window": "hann"
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "signal.fft_spectrum",
+      "input_schema": {
+        "sampleRate": "Hz > 0",
+        "values": "numeric[]"
+      },
+      "output_schema": {
+        "amplitude": "numeric[]",
+        "frequencyHz": "numeric[]",
+        "peakFrequencyHz": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "FFT spectrum",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Pseudo-random execution is reproducible for a fixed seed.",
+        "Only registered algebraic models are permitted."
+      ],
+      "description": "Propagates named normal, uniform, or triangular inputs through a registered algebraic model.",
+      "domain": "uncertainty-analysis",
+      "estimated_cost": "heavy",
+      "example_inputs": {
+        "distributions": [
+          {
+            "distribution": "normal",
+            "mean": 10,
+            "name": "area",
+            "stdDev": 0.4
+          },
+          {
+            "distribution": "normal",
+            "mean": 1000,
+            "name": "intensity",
+            "stdDev": 50
+          }
+        ],
+        "model": "product",
+        "samples": 20000
+      },
+      "example_parameters": {
+        "confidence": 0.95
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "uncertainty.monte_carlo_propagation",
+      "input_schema": {
+        "distributions": "distribution[]",
+        "model": "linear|product|ratio|power",
+        "samples": "integer"
+      },
+      "output_schema": {
+        "confidenceInterval": "[number,number]",
+        "mean": "number",
+        "standardDeviation": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "Monte Carlo uncertainty propagation",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Observations are treated as exchangeable for resampling."
+      ],
+      "description": "Computes a seeded nonparametric percentile confidence interval for the sample mean.",
+      "domain": "uncertainty-analysis",
+      "estimated_cost": "heavy",
+      "example_inputs": {
+        "resamples": 5000,
+        "values": [
+          12.1,
+          11.8,
+          12.5,
+          12.0,
+          11.9,
+          12.3,
+          12.2,
+          11.7
+        ]
+      },
+      "example_parameters": {
+        "confidence": 0.95
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "uncertainty.bootstrap_mean_interval",
+      "input_schema": {
+        "resamples": "integer",
+        "values": "numeric[]"
+      },
+      "output_schema": {
+        "bootstrapStandardError": "number",
+        "confidenceInterval": "[number,number]",
+        "sampleMean": "number"
+      },
+      "packages": [
+        "numpy",
+        "scipy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "Bootstrap mean interval",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Sensitivities are local to the supplied baseline.",
+        "Central differences are used."
+      ],
+      "description": "Estimates local partial derivatives and elasticities for a registered algebraic model.",
+      "domain": "sensitivity-analysis",
+      "estimated_cost": "light",
+      "example_inputs": {
+        "baseline": {
+          "area": 10,
+          "efficiency": 0.2,
+          "irradiance": 1000
+        },
+        "model": "product"
+      },
+      "example_parameters": {
+        "absoluteStep": 1e-08,
+        "relativeStep": 0.0001
+      },
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "sensitivity.local_finite_difference",
+      "input_schema": {
+        "baseline": "named numeric object",
+        "model": "linear|product|ratio|power"
+      },
+      "output_schema": {
+        "baselineOutput": "number",
+        "sensitivities": "record[]"
+      },
+      "packages": [
+        "numpy"
+      ],
+      "recommended_execution": "synchronous",
+      "references": [],
+      "title": "Local finite-difference sensitivity",
+      "version": "1.0.0"
+    },
+    {
+      "assumptions": [
+        "Only registered model families are evaluated.",
+        "The sweep is deterministic."
+      ],
+      "description": "Evaluates a bounded sequence of parameter values for logistic growth, projectile range, photovoltaic output, or Michaelis-Menten kinetics.",
+      "domain": "simulation",
+      "estimated_cost": "medium",
+      "example_inputs": {
+        "fixed": {
+          "carryingCapacity": 100,
+          "initial": 10,
+          "time": 10
+        },
+        "model": "logistic_growth",
+        "parameter": "rate",
+        "values": [
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      "example_parameters": {},
+      "execution_modes": [
+        "python-core",
+        "queued-python-core"
+      ],
+      "id": "simulation.parameter_sweep",
+      "input_schema": {
+        "fixed": "object",
+        "model": "logistic_growth|projectile_range|photovoltaic_output|michaelis_menten",
+        "parameter": "string",
+        "values": "numeric[]"
+      },
+      "output_schema": {
+        "maximumOutput": "number",
+        "minimumOutput": "number",
+        "rows": "record[]"
+      },
+      "packages": [
+        "numpy"
+      ],
+      "recommended_execution": "queued",
+      "references": [],
+      "title": "Registered parameter sweep",
+      "version": "1.0.0"
+    }
+  ],
+  "schema": "sc-lab-numerical-methods-catalog/1.0",
+  "version": "0.27.0"
+}

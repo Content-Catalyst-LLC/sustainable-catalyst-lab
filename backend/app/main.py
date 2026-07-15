@@ -114,11 +114,12 @@ def version():
 @app.get("/v1/capabilities", dependencies=[Depends(require_compute_auth)])
 def capabilities():
     return {
-        "schema": "sc-lab-compute-capabilities/1.1",
+        "schema": "sc-lab-compute-capabilities/1.2",
         "version": settings.version,
         "executionTargets": ["python-core-cpu", "isolated-process-worker"],
         "modes": ["synchronous", "persistent-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
+        "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True},
         "security": {
             "authMode": settings.auth_mode,
             "arbitraryCode": False,
