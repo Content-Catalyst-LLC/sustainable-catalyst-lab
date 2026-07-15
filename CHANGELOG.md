@@ -1,3 +1,15 @@
+# Changelog
+
+## 0.26.3.4 — Scientific Feed Rendering and Observe Data Reliability
+
+- Automatically runs the initial NASA and OBIS queries when their Observe panels mount.
+- Adds visible loading, ready, empty, disabled, and source-error states so feed panels cannot appear blank.
+- Adds a governed WordPress feed endpoint with connector diagnostics and cache-aware responses.
+- Falls back to direct browser access for NASA Image Library and OBIS when WordPress outbound HTTP fails.
+- Adds request timeouts, retry controls, source-health controls, and transparent proxy/direct mode labels.
+- Improves upstream request retry behavior and release-aware user-agent metadata.
+- Preserves dataset saving and provenance for both proxy and browser-direct records.
+
 ## 0.26.3.3 — Observe and Domain Module Activation Repair
 
 - Adds a dedicated Observe controller for scientific feeds, Climate Maps, Space & Astronomy Observations, and Marine Biology.

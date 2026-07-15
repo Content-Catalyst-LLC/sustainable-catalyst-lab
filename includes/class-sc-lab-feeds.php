@@ -27,14 +27,36 @@ class SC_Lab_Feeds {
     }
 
     private static function remote_json($url, $args = array()) {
-        $args = wp_parse_args($args, array('timeout'=>18, 'headers'=>array('Accept'=>'application/json','User-Agent'=>'SustainableCatalystLab/0.9.4 (+https://sustainablecatalyst.com/lab/)')));
-        $response = wp_safe_remote_get($url, $args);
-        if (is_wp_error($response)) { return $response; }
-        $code = wp_remote_retrieve_response_code($response);
-        if ($code < 200 || $code >= 300) { return new WP_Error('source_http_error', 'Scientific source returned HTTP ' . $code, array('status'=>502)); }
-        $data = json_decode(wp_remote_retrieve_body($response), true);
-        if (!is_array($data)) { return new WP_Error('source_parse_error', 'Scientific source returned invalid data.', array('status'=>502)); }
-        return $data;
+        $args = wp_parse_args($args, array(
+            'timeout' => 18,
+            'redirection' => 3,
+            'httpversion' => '1.1',
+            'headers' => array(
+                'Accept' => 'application/json',
+                'User-Agent' => 'SustainableCatalystLab/' . (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : '0.26.3.4') . ' (+https://sustainablecatalyst.com/lab/)',
+            ),
+        ));
+        $last_error = null;
+        for ($attempt = 1; $attempt <= 2; $attempt++) {
+            $response = wp_safe_remote_get($url, $args);
+            if (is_wp_error($response)) {
+                $last_error = $response;
+                if ($attempt < 2) { usleep(150000); continue; }
+                return new WP_Error('source_network_error', $response->get_error_message(), array('status'=>502, 'attempts'=>$attempt));
+            }
+            $code = wp_remote_retrieve_response_code($response);
+            if ($code === 429 || $code >= 500) {
+                $last_error = new WP_Error('source_http_error', 'Scientific source returned HTTP ' . $code, array('status'=>502, 'upstreamStatus'=>$code));
+                if ($attempt < 2) { usleep(150000); continue; }
+                return $last_error;
+            }
+            if ($code < 200 || $code >= 300) { return new WP_Error('source_http_error', 'Scientific source returned HTTP ' . $code, array('status'=>502, 'upstreamStatus'=>$code)); }
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+            if (!is_array($data)) { return new WP_Error('source_parse_error', 'Scientific source returned invalid JSON data.', array('status'=>502, 'bodyLength'=>strlen((string) $body))); }
+            return $data;
+        }
+        return $last_error ?: new WP_Error('source_unknown_error', 'Scientific source request failed.', array('status'=>502));
     }
 
     private static function record($id, $source, $domain, $title, $summary, $observed, $url, $extra = array()) {

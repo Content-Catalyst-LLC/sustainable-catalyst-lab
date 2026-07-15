@@ -1,26 +1,35 @@
 {
   "activationRuntimeVersion": "0.26.3.3",
   "assetVersionStrategy": "sha256-content-query",
-  "buildFingerprint": "24ded2d7381060d24d15cdf2265cbd25d16bc823859f1e38cb2d46b28c44b31a",
+  "buildFingerprint": "b4b209a2f25e3e17042f07763b39e37c9f6b16500351ea0adb2510ea74c0ce1f",
   "criticalFiles": {
-    "assets/js/modules/astronomy-lab.js": "8199a552555c0ed24c8c0c8e819d9862706a316e9680d5459dac0cc3ef3b7ee1",
-    "assets/js/modules/climate-map.js": "b76bdde88366668c1ba37f7f6eab1ec3675ce0ebb2bff5362b3627069636241f",
+    "assets/css/sc-lab-observe-feeds-v02634.css": "f792183456b13cf65bbaa3b0aba1e96e013f6a7f14551ab4aea55209188e99f9",
     "assets/js/modules/feeds.js": "eea20d8906d977e48706e8baf0fe0927bcc1831cd8ef9e6801e8063e13cb8ff6",
-    "assets/js/modules/microbiology-laboratory.js": "42818ca3675fb7745c252989c664610105748443a65ddbe54a98c7a80002fed3",
     "assets/js/modules/observations.js": "fb9b7f9f8889cb0e135f4a9d420ed1988f77b1700862f968374ee6dbb87b20bc",
     "assets/js/sc-lab-app.js": "84eb50f0eb3eac39ee7ec19e61c755b7d0e8c5b7b33b57d6e28e082a2f383014",
     "assets/js/sc-lab-integrity-v02632.js": "86de7f8d963d31138a9cdccc63e05fb24408ccbc2ab65b8f64e20fc23b1319f3",
-    "assets/js/sc-lab-observe-domain-v02633.js": "237f7f4a47bfd8b806af4f68442143b72dc7f4137585ba500e70967897423dc5",
+    "assets/js/sc-lab-observe-domain-v02633.js": "05731f9298ede9c1cba432b7758830e2a6a1b3eb4d7178c074387a6e15390e02",
+    "assets/js/sc-lab-observe-feeds-v02634.js": "81c22a500effb9728e3ff01a63ad4230444d88e3249ce001c0054d07faad4a1f",
     "assets/js/sc-lab-runtime-v02631.js": "1b36a17edec0db11ccb1a78af18234db780c6f6a3b4c718ba19632c55b460cc7",
+    "includes/class-sc-lab-feeds.php": "8e6e4341c731e4223c0bc9bc73f10e65fc339824e4ec0a50a49f14719c17cbea",
     "includes/class-sc-lab-integrity-v02632.php": "e3ab2c77b860679054875e279ae19e14af2fbe0a43e79cd853a1393bc440b308",
-    "includes/class-sc-lab-microbiology-laboratory.php": "81e70c2b8c30279be1c608a70a88f473eec866c3392c8cb1c2af4796a553915b",
-    "includes/class-sc-lab-observe-domain-v02633.php": "04f5a8152cb29ea409433f2df64d848488e60b4863a5c4eccd1f7de50f52d638",
+    "includes/class-sc-lab-observe-domain-v02633.php": "cf1c2fd740c61215409baca3f20716a9ce901bd61b960b4352bac6bc932b0bc4",
+    "includes/class-sc-lab-observe-feeds-v02634.php": "2c7480ba52eef48c0179eba36887f5fe0b96a9f418ee68cda370b04b37ef9163",
     "includes/class-sc-lab-plugin.php": "f1c335f7ce6ce363c1301292197a0401dc00f97ae315aa847e791ceb3595f3a8",
     "includes/class-sc-lab-runtime-repair-v02631.php": "c9788a3b0424d10100dd3f95bcb007ea0675603f1fb44d66c3cdc53624a1b4ad",
-    "sustainable-catalyst-lab.php": "06a7f961a9bc10b1f3cf9f778773944388702d842b450088400d11d030865303",
-    "templates/lab-app.php": "4402f9a1ed8acf0176617ab8e3787f85795f768441c258e87aab68d86ee909db"
+    "sustainable-catalyst-lab.php": "896e55e313af029342cf3125b5ada072bbbe96f48cf454b17b5d80a6141a94e7",
+    "templates/lab-app.php": "5dcbb291c192fbda5ea052dd704e1e7face8fb2b53d81b18e7eebb0e37088bc0"
   },
-  "generatedAt": "2026-07-15T02:22:37Z",
+  "feedReliability": {
+    "autoLoad": true,
+    "browserDirectFallback": true,
+    "explicitEmptyState": true,
+    "explicitErrorState": true,
+    "sourceHealth": true,
+    "wordpressProxy": true
+  },
+  "feedRuntimeVersion": "0.26.3.4",
+  "generatedAt": "2026-07-15T02:58:01Z",
   "integrityRuntimeVersion": "0.26.3.2",
   "moduleCount": 41,
   "modules": [
@@ -74,7 +83,7 @@
   ],
   "panelRuntimeVersion": "0.26.3.1",
   "pluginBasename": "sustainable-catalyst-lab/sustainable-catalyst-lab.php",
-  "releaseVersion": "0.26.3.3",
+  "releaseVersion": "0.26.3.4",
   "routeAssertions": {
     "astronomy-observations": {
       "canonical": "space-telescopes",
@@ -93,6 +102,6 @@
       "present": true
     }
   },
-  "schema": "sc-lab-release-manifest/1.1",
-  "sourceCommit": "artifact-v0.26.3.3"
+  "schema": "sc-lab-release-manifest/1.2",
+  "sourceCommit": "artifact-v0.26.3.4"
 }

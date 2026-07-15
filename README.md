@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab v0.26.3.3 — Observe and Domain Module Activation Repair
+# Sustainable Catalyst Lab v0.26.3.4 — Observe and Domain Module Activation Repair
 
 This release gives Climate Maps, Marine Biology, Space & Astronomy Observations, and Microbiology explicit module controllers under the isolated single-panel runtime. It also distinguishes observation workflows from astronomy calculations, injects the active project store into Microbiology, and adds controller-level recovery diagnostics.
 
@@ -343,3 +343,8 @@ Adds 48 auditable methods across microbial growth, continuous culture, enumerati
 ## Python Compute Core Foundation
 
 v0.26.0 includes a deployable `backend/` FastAPI service, a registered scientific method catalog, HMAC request signing, provenance manifests, and WordPress gateway routes under `/wp-json/sc-lab/v1/compute/core/*`.
+
+
+## v0.26.3.4 Scientific Feed Rendering and Observe Data Reliability
+
+Marine Biology and Space Observations now auto-load, expose connector health, fall back from the WordPress proxy to browser-direct official APIs, and always render an explicit loading, empty, or error state.

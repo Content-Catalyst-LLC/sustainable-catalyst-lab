@@ -5,7 +5,7 @@
   W.__SCLabObserveDomainV02633 = true;
 
   const VERSION = '0.26.3.3';
-  const MODULES = new Set(['scientific-feeds', 'climate-maps', 'space-telescopes', 'marine-biology']);
+  const MODULES = new Set(['scientific-feeds', 'climate-maps']);
   const state = { module: null, ready: false, errors: [], records: [] };
 
   function key(value) {
