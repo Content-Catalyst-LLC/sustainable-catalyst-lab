@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/interface-health-v0265.schema.json",
+  "title": "Sustainable Catalyst Lab interface health report",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "auditedAt",
+    "module",
+    "viewport",
+    "summary",
+    "issues"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-interface-health/1.0"
+    },
+    "version": {
+      "const": "0.26.5"
+    },
+    "release": {
+      "type": "string"
+    },
+    "auditedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "module": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "viewport": {
+      "type": "object",
+      "required": [
+        "width",
+        "height"
+      ],
+      "properties": {
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "devicePixelRatio": {
+          "type": "number"
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "reducedMotion": {
+          "type": "boolean"
+        },
+        "forcedColors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "errors",
+        "warnings",
+        "status"
+      ],
+      "properties": {
+        "errors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "usable_with_warnings",
+            "needs_attention"
+          ]
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "check",
+          "details"
+        ],
+        "properties": {
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ]
+          },
+          "check": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "selector": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

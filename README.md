@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.26.4 — Cross-Laboratory Functional Validation**
+**Current release: v0.26.5 — Mobile, Accessibility, and Interface Reliability**
 
 This release adds browser-driven functional validation for all 41 Lab panels, including safe primary-action and rendered-output checks for 14 priority scientific and engineering laboratories. The WordPress admin dashboard separates code failures from optional backend and external-source degradation, saves versioned reports, and exports machine-readable diagnostics.
 

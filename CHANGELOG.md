@@ -1,3 +1,11 @@
+## 0.26.5 — Mobile, Accessibility, and Interface Reliability
+
+- Added responsive phone, tablet, and landscape layouts across the isolated Lab lifecycle.
+- Added 44-pixel touch targets, mobile navigation focus management, a navigation scrim, Escape-key close, and scroll locking.
+- Added skip navigation, visible focus, keyboard tab navigation, accessible names, live regions, table semantics, dialog semantics, and visualization labels.
+- Added reduced-motion, increased-contrast, forced-colors, and print reliability.
+- Added Settings → Lab Interface Health with phone, tablet, and desktop audits and exportable `sc-lab-interface-health/1.0` reports.
+
 # Changelog
 
 ## 0.26.4 — Cross-Laboratory Functional Validation

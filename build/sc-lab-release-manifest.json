@@ -1,9 +1,12 @@
 {
   "activationRuntimeVersion": "0.26.3.3",
   "assetVersionStrategy": "sha256-content-query",
-  "buildFingerprint": "dfe68516865eb6ee87c1ea4d13b1930137f79011382baef1272e34af5837abd6",
+  "buildFingerprint": "04e9d9e112ac9cb0b2f71ddde0bc3896271cd4f161229aa7bed563b8413dd812",
   "criticalFiles": {
+    "CHANGELOG.md": "97806d0662ce57e1b09a37a70de59f424ccf429a832382a874fbf709c900446f",
+    "README.md": "c5080fbe358925cda4f6502ff997b225f1e0c690b0a7d91df62b9cb85b51f351",
     "assets/css/sc-lab-functional-validation-v0264.css": "9988889a102d82b9352c127c86ef736a2534fb34294fd272a1fa966a5a3111d0",
+    "assets/css/sc-lab-interface-v0265.css": "c2731d8c62aac68f674d931d5631fd2d4ee59066175b75018afb37f4e8589c95",
     "assets/css/sc-lab-observe-feeds-v02634.css": "f792183456b13cf65bbaa3b0aba1e96e013f6a7f14551ab4aea55209188e99f9",
     "assets/js/modules/feeds.js": "eea20d8906d977e48706e8baf0fe0927bcc1831cd8ef9e6801e8063e13cb8ff6",
     "assets/js/modules/observations.js": "fb9b7f9f8889cb0e135f4a9d420ed1988f77b1700862f968374ee6dbb87b20bc",
@@ -11,19 +14,25 @@
     "assets/js/sc-lab-functional-health-admin-v0264.js": "34c334e501f126c4d9ee3b376d4a46e2e5b19fcbdb91bf7c556d96496bf11bad",
     "assets/js/sc-lab-functional-validation-v0264.js": "f0f8c05559b16f0a4818439d90f2ea2035ac6999311a98699671b8935d9ee2e2",
     "assets/js/sc-lab-integrity-v02632.js": "86de7f8d963d31138a9cdccc63e05fb24408ccbc2ab65b8f64e20fc23b1319f3",
+    "assets/js/sc-lab-interface-health-admin-v0265.js": "758592c1274617a6a5218d23ef1f55ae79ac1ba82627cf06a7edf3d744252db0",
+    "assets/js/sc-lab-interface-v0265.js": "24ad7d54fccb7172cbf03e706b4ef3347b5433b903ce0a077da8c63dfc60d800",
     "assets/js/sc-lab-observe-domain-v02633.js": "05731f9298ede9c1cba432b7758830e2a6a1b3eb4d7178c074387a6e15390e02",
     "assets/js/sc-lab-observe-feeds-v02634.js": "81c22a500effb9728e3ff01a63ad4230444d88e3249ce001c0054d07faad4a1f",
     "assets/js/sc-lab-runtime-v02631.js": "1b36a17edec0db11ccb1a78af18234db780c6f6a3b4c718ba19632c55b460cc7",
     "contracts/functional-health-v0264.schema.json": "39842801c2b508cf172e159d44c1840e4ca2bdf33bcbca3656691601adf5b6d6",
+    "contracts/interface-health-v0265.schema.json": "34356445879cb861240bfb1aab3d48def0ca278630e92b609418a966e3c0a5bd",
     "docs/CROSS_LAB_FUNCTIONAL_VALIDATION_V0264.md": "3080d089d106f0b8f1bf04b46f1d56438b228179236ba54dd6fa915e1ad4e98e",
+    "docs/MOBILE_ACCESSIBILITY_INTERFACE_RELIABILITY_V0265.md": "5a456c8857cedf04e5e6f0972a5124a35f758caf91b64d0b351e1d7ef126ddd6",
+    "docs/RELEASE_NOTES_0.26.5.md": "a5efa9ea1bd3a2c9c236ed1b7ac16d3fafa24acef851c1b00ad5b62e9b2a235c",
     "includes/class-sc-lab-feeds.php": "8e6e4341c731e4223c0bc9bc73f10e65fc339824e4ec0a50a49f14719c17cbea",
     "includes/class-sc-lab-functional-validation-v0264.php": "b411bdd3ce9fbd659c1963aede12129a16de334b90ac18ef973660eeb57c98c1",
     "includes/class-sc-lab-integrity-v02632.php": "e3ab2c77b860679054875e279ae19e14af2fbe0a43e79cd853a1393bc440b308",
+    "includes/class-sc-lab-interface-reliability-v0265.php": "b615b2e11b3ef9e5e9078d11cc0736e938b6aa4026fd751f54fe6351e25a1c4b",
     "includes/class-sc-lab-observe-domain-v02633.php": "cf1c2fd740c61215409baca3f20716a9ce901bd61b960b4352bac6bc932b0bc4",
     "includes/class-sc-lab-observe-feeds-v02634.php": "2c7480ba52eef48c0179eba36887f5fe0b96a9f418ee68cda370b04b37ef9163",
     "includes/class-sc-lab-plugin.php": "f1c335f7ce6ce363c1301292197a0401dc00f97ae315aa847e791ceb3595f3a8",
     "includes/class-sc-lab-runtime-repair-v02631.php": "c9788a3b0424d10100dd3f95bcb007ea0675603f1fb44d66c3cdc53624a1b4ad",
-    "sustainable-catalyst-lab.php": "4369133b344e6208f26f160690c4d32783194dcd9e1e13255c1c319e1cdd790e",
+    "sustainable-catalyst-lab.php": "0ce4adead365a1fb9c43087721b6d91a8ac995d99a01f0234b326e146f97e08b",
     "templates/lab-app.php": "5dcbb291c192fbda5ea052dd704e1e7face8fb2b53d81b18e7eebb0e37088bc0"
   },
   "feedReliability": {
@@ -56,8 +65,27 @@
       "result_not_observed"
     ]
   },
-  "generatedAt": "2026-07-15T17:38:59Z",
+  "generatedAt": "2026-07-15T18:05:00Z",
   "integrityRuntimeVersion": "0.26.3.2",
+  "interfaceReliability": {
+    "accessibleTables": true,
+    "accessibleVisualizations": true,
+    "adminAudit": true,
+    "forcedColors": true,
+    "keyboardTabs": true,
+    "minimumTouchTargetCssPixels": 44,
+    "mobileNavigationFocusManagement": true,
+    "reducedMotion": true,
+    "reportSchema": "sc-lab-interface-health/1.0",
+    "responsiveViewports": [
+      "phone",
+      "tablet",
+      "desktop",
+      "mobile-landscape"
+    ],
+    "runtimeVersion": "0.26.5",
+    "screenReaderLiveRegions": true
+  },
   "moduleCount": 41,
   "modules": [
     "activity",
@@ -110,7 +138,7 @@
   ],
   "panelRuntimeVersion": "0.26.3.1",
   "pluginBasename": "sustainable-catalyst-lab/sustainable-catalyst-lab.php",
-  "releaseVersion": "0.26.4",
+  "releaseVersion": "0.26.5",
   "routeAssertions": {
     "astronomy-observations": {
       "canonical": "space-telescopes",
@@ -129,6 +157,6 @@
       "present": true
     }
   },
-  "schema": "sc-lab-release-manifest/1.2",
-  "sourceCommit": "artifact-v0.26.4"
+  "schema": "sc-lab-release-manifest/1.3",
+  "sourceCommit": "artifact-v0.26.5"
 }
