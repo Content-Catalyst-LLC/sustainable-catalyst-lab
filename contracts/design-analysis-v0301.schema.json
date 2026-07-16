@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design analysis v0.30.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "matrixId",
+    "coefficients",
+    "analysisHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-design-analysis/0.30.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "matrixId": {
+      "type": "string"
+    },
+    "coefficients": {
+      "type": "array"
+    },
+    "analysisHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

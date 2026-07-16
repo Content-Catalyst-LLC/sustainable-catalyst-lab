@@ -51,6 +51,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/experiments/runs/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_runs_compare'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/experiments/reports/build', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_report_build'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/experiments/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/health', array('methods'=>'GET','callback'=>array(__CLASS__,'design_studies_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'design_studies_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/generate', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_generate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/analyze', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_analyze'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/recommend', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_recommend'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/batches/build', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_batch'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/design-studies/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -311,6 +319,16 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function experiments_runs_compare(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/runs/compare','POST',$p,8388608);}
     public static function experiments_report_build(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/reports/build','POST',$p,8388608);}
     public static function experiments_verify(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/verify','POST',$p,8388608);}
+
+    public static function design_studies_health(){return self::proxy('/v1/design-studies/health');}
+    public static function design_studies_policies(){return self::proxy('/v1/design-studies/policies');}
+    private static function design_studies_payload(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_design_study_payload','A JSON design-study payload is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);if(is_wp_error($clean)){return $clean;}return $clean;}
+    public static function design_studies_normalize(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/normalize','POST',$p,8388608);}
+    public static function design_studies_generate(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/generate','POST',$p,8388608);}
+    public static function design_studies_analyze(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/analyze','POST',$p,8388608);}
+    public static function design_studies_recommend(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/recommend','POST',$p,8388608);}
+    public static function design_studies_batch(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/batches/build','POST',$p,8388608);}
+    public static function design_studies_verify(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/verify','POST',$p,8388608);}
 
 
 }

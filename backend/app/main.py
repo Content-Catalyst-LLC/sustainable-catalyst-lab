@@ -24,6 +24,7 @@ from .research_provenance import ProvenanceError, health as research_provenance_
 from .research_quality import QualityReviewError, compare_reviews as compare_quality_reviews, evaluate_review as evaluate_quality_review, health as research_quality_health, normalize_review as normalize_quality_review, policies as research_quality_policies, verify_review as verify_quality_review
 from .external_discovery import DiscoveryError, build_openurl as build_discovery_openurl, deduplicate as deduplicate_discovery, health as external_discovery_health, normalize as normalize_discovery, open_access_lookup, provider_catalog as discovery_provider_catalog, search as search_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
+from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -114,6 +115,7 @@ def health():
         "researchQuality": {"version":"0.29.1","methodReview":True,"benchmarkCoverage":True,"calibration":True,"approvalWorkflow":True,"deprecationHistory":True},
         "externalDiscovery": {"version":"0.29.2","providers":["crossref","openalex","datacite"],"worldCatHandoff":True,"openUrlHandoff":True,"deduplication":True,"sourceImport":True},
         "experimentFramework": {"version":"0.30.0","protocols":True,"runHistories":True,"replications":True,"comparisons":True,"reports":True},
+        "designStudies": {"version":"0.30.1","factorial":True,"latinHypercube":True,"responseSurfaces":True,"sensitivity":True,"batchPlans":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -179,6 +181,8 @@ def capabilities():
         "reproducibility": {"version": "0.28.2", "frozenManifests": True, "environmentFingerprint": True, "verification": True, "comparison": True, "portableBundles": True, "serverBackedRegistry": False},
         "researchQuality": {"version":"0.29.1","reviewNormalization":True,"policyEvaluation":True,"hashVerification":True,"revisionComparison":True,"serverBackedRegistry":False},
         "externalDiscovery": {"version":"0.29.2","liveProviders":["crossref","openalex","datacite"],"handoffs":["worldcat","google-scholar","openurl"],"deduplication":True,"sourceImport":True,"arbitraryRemoteFetch":False},
+        "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
+        "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -777,3 +781,42 @@ def experiments_report_build_route(payload: dict[str, Any], auth: dict[str, str]
 def experiments_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return verify_experiment_record(payload)
     except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/design-studies/health")
+def design_studies_health_route():
+    body=design_studies_health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/design-studies/policies")
+def design_studies_policies_route():
+    body=design_studies_policies(); body["serviceVersion"]=settings.version; return body
+
+@app.post("/v1/design-studies/normalize")
+def design_studies_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_study(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/design-studies/generate")
+def design_studies_generate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return generate_design(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/design-studies/analyze")
+def design_studies_analyze_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return analyze_design_results(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/design-studies/recommend")
+def design_studies_recommend_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return recommend_design(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/design-studies/batches/build")
+def design_studies_batch_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_design_batch(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/design-studies/verify")
+def design_studies_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return verify_design_record(payload)
+    except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc

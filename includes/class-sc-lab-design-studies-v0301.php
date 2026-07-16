@@ -1,0 +1,12 @@
+<?php
+/** Sustainable Catalyst Lab v0.30.1 Parameter Studies and Design of Experiments. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Design_Studies_V0301 {
+    const VERSION='0.30.1'; private static $initialized=false;
+    public static function init(){if(self::$initialized){return;}self::$initialized=true;add_action('rest_api_init',array(__CLASS__,'routes'));add_filter('sc_lab_module_aliases_v02631',array(__CLASS__,'aliases'));}
+    public static function aliases($aliases){$aliases=is_array($aliases)?$aliases:array();foreach(array('design-studies','parameter-studies','design-of-experiments','doe','response-surface') as $a){$aliases[$a]='design-studies';}return $aliases;}
+    public static function routes(){register_rest_route('sc-lab/v1','/design-studies/v0301/health',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));register_rest_route('sc-lab/v1','/design-studies/v0301/schema',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'schema'),'permission_callback'=>'__return_true'));}
+    private static function file_state($rel){$p=SC_LAB_DIR.$rel;return array('exists'=>is_file($p),'sha256'=>is_file($p)?hash_file('sha256',$p):null);}
+    public static function schema(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'studySchema'=>'sc-lab-parameter-study/0.30.1','matrixSchema'=>'sc-lab-design-matrix/0.30.1','analysisSchema'=>'sc-lab-design-analysis/0.30.1','batchSchema'=>'sc-lab-design-batch/0.30.1','bundleSchema'=>'sc-lab-design-study-bundle/0.30.1','storage'=>'browser-local-project-records','pythonAnalysis'=>true,'serverBackedRegistry'=>false));}
+    public static function health(){$required=array('assets/js/modules/design-studies-v0301.js','assets/css/sc-lab-design-studies-v0301.css','contracts/design-study-policy-v0301.json','contracts/parameter-study-v0301.schema.json','contracts/design-matrix-v0301.schema.json','contracts/design-analysis-v0301.schema.json','contracts/design-batch-v0301.schema.json','includes/class-sc-lab-design-studies-v0301.php');$files=array();foreach($required as $rel){$files[$rel]=self::file_state($rel);} $ok=true;foreach($files as $row){if(empty($row['exists'])){$ok=false;break;}}return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'ready':'incomplete','version'=>self::VERSION,'release'=>defined('SC_LAB_VERSION')?SC_LAB_VERSION:null,'architecture'=>'project-scoped-design-of-experiments','serverBackedRegistry'=>false,'files'=>$files,'time'=>gmdate('c')));}
+}

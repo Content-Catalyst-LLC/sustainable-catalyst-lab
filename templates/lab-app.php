@@ -50,6 +50,7 @@
           'method-review' => 'Method review',
           'scholarly-discovery' => 'Scholarly discovery',
           'experiment-framework' => 'Experiment framework',
+          'design-studies' => 'Design studies',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -222,6 +223,25 @@
           <section class="sc-exp0300-card"><h4>Saved protocols</h4><div class="sc-exp0300-list" data-exp-v0300-protocols></div></section>
           <section class="sc-exp0300-card is-wide"><h4>Run history</h4><div class="sc-exp0300-table-wrap"><table class="sc-exp0300-table"><thead><tr><th>Run</th><th>Protocol</th><th>Replicate</th><th>Status</th><th>Completed</th></tr></thead><tbody data-exp-v0300-runs></tbody></table></div></section>
           <section class="sc-exp0300-card is-wide"><h4>Validation, comparison, and report output</h4><pre class="sc-exp0300-output" data-exp-v0300-output>No output yet.</pre></section>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-doe0301" data-lab-module="design-studies" data-module-panel="design-studies" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/DESIGN-STUDIES</span><h3>Parameter Studies and Design of Experiments</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.30.1</span></div>
+        <p>Generate governed experimental designs, attach them to project protocols, record observed responses, fit bounded response models, rank sensitivities, and prepare registered-method batch plans.</p>
+        <div class="sc-doe0301-status" data-doe-v0301-status role="status" aria-live="polite">Loading design-study architecture…</div><div class="sc-doe0301-metrics" data-doe-v0301-metrics></div>
+        <div class="sc-doe0301-grid">
+          <section class="sc-doe0301-card is-wide"><h4>Study definition</h4><div class="sc-doe0301-form">
+            <label>Title<input data-doe-v0301-title value="Controlled parameter study"></label><label>Linked experiment protocol<select data-doe-v0301-protocol><option value="">No linked protocol</option></select></label><label>Purpose<select data-doe-v0301-purpose><option value="screening">Screening</option><option value="space-filling">Space filling</option><option value="optimization">Optimization</option><option value="response-surface">Response surface</option></select></label>
+            <label>Design<select data-doe-v0301-design><option value="full-factorial">Full factorial</option><option value="fractional-factorial">Fractional factorial</option><option value="latin-hypercube">Latin hypercube</option><option value="central-composite">Central composite</option><option value="box-behnken">Box-Behnken</option><option value="one-factor-at-a-time">One factor at a time</option></select></label><label>Objective<select data-doe-v0301-objective><option value="explore">Explore</option><option value="maximize">Maximize</option><option value="minimize">Minimize</option><option value="target">Target</option></select></label><label>Target value<input type="number" step="any" data-doe-v0301-target></label>
+            <label>Response name<input data-doe-v0301-response value="outcome"></label><label>Response unit<input data-doe-v0301-response-unit></label><label>Run budget<input type="number" min="2" max="2000" value="20" data-doe-v0301-budget></label><label>Random seed<input type="number" value="42" data-doe-v0301-seed></label><label>Center points<input type="number" min="1" max="20" value="3" data-doe-v0301-centers></label><label>Registered method ID<input data-doe-v0301-method placeholder="simulation.parameter_sweep"></label>
+            <label class="is-wide">Factors — name | type | low | high | levels comma-separated | unit<textarea rows="6" data-doe-v0301-factors>temperature|continuous|10|30||°C
+pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<textarea rows="2" data-doe-v0301-notes></textarea></label>
+          </div><div class="sc-doe0301-actions"><button class="sc-lab-button" data-doe-v0301-recommend>Recommend design</button><button class="sc-lab-button sc-lab-button-primary" data-doe-v0301-generate>Generate design</button><button class="sc-lab-button" data-doe-v0301-batch>Build batch plan</button><button class="sc-lab-button" data-doe-v0301-export>Export bundle</button></div></section>
+          <section class="sc-doe0301-card is-wide"><div class="sc-lab-panel-head"><h4>Design matrix and observed response</h4><span data-doe-v0301-run-count>0 runs</span></div><div class="sc-doe0301-table-wrap"><table class="sc-doe0301-table"><thead><tr data-doe-v0301-matrix-head><th>Design</th></tr></thead><tbody data-doe-v0301-matrix></tbody></table></div><div class="sc-doe0301-actions"><button class="sc-lab-button sc-lab-button-primary" data-doe-v0301-analyze>Analyze responses</button></div></section>
+          <section class="sc-doe0301-card"><h4>Saved studies</h4><div class="sc-doe0301-list" data-doe-v0301-studies></div></section>
+          <section class="sc-doe0301-card"><h4>Governed output</h4><pre class="sc-doe0301-output" data-doe-v0301-output>No design generated.</pre></section>
         </div>
       </section>
 

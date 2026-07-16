@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parameter study v0.30.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "designType",
+    "factors",
+    "studyHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-parameter-study/0.30.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "designType": {
+      "type": "string"
+    },
+    "factors": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12
+    },
+    "studyHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

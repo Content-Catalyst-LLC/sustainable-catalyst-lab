@@ -412,3 +412,8 @@ The Project workspace now includes governed discovery across Crossref, OpenAlex,
 ### v0.30.0 — Reproducible Experiment Framework
 
 Adds a project-scoped reproducible experiment framework with protocol validation, run histories, replication comparison, reports, and portable bundles.
+
+## v0.30.1 — Parameter Studies and Design of Experiments
+
+- Factorial, fractional-factorial, Latin-hypercube, central-composite, Box-Behnken, and one-factor-at-a-time designs.
+- Response-surface fitting, sensitivity ranking, optimal-design recommendations, and registered-method batch plans.

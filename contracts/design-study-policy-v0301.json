@@ -1,0 +1,31 @@
+{
+  "schema": "sc-lab-design-study-policy/0.30.1",
+  "version": "0.30.1",
+  "designTypes": [
+    "full-factorial",
+    "fractional-factorial",
+    "latin-hypercube",
+    "central-composite",
+    "box-behnken",
+    "one-factor-at-a-time"
+  ],
+  "factorTypes": [
+    "continuous",
+    "integer",
+    "categorical"
+  ],
+  "objectives": [
+    "explore",
+    "maximize",
+    "minimize",
+    "target"
+  ],
+  "limits": {
+    "factors": 12,
+    "runs": 2000,
+    "levelsPerFactor": 20
+  },
+  "registeredMethodsOnly": true,
+  "arbitraryCode": false,
+  "serverBackedRegistry": false
+}
