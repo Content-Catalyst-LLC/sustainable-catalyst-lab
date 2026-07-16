@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dispatch contract",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "leaseId",
+    "workerId",
+    "workload",
+    "expiresAt",
+    "signature"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-dispatch-contract/0.31.0"
+    },
+    "version": {
+      "const": "0.31.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "leaseId": {
+      "type": "string"
+    },
+    "workerId": {
+      "type": "string"
+    },
+    "workload": {
+      "type": "object"
+    },
+    "expiresAt": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

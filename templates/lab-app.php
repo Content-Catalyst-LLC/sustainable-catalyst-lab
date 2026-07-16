@@ -52,6 +52,7 @@
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
+          'distributed-dispatcher' => 'Compute dispatcher',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -1528,6 +1529,29 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <label>Dataset registry ID<input data-cal-v0302-dataset-id></label><label>Experiment protocol ID<input data-cal-v0302-protocol-id></label><label>Design study ID<input data-cal-v0302-design-id></label><label>Limitations and notes<textarea data-cal-v0302-notes></textarea></label>
         </div><div class="sc-cal0302-card"><label>Dataset rows as JSON<textarea data-cal-v0302-rows placeholder='[{"x":1,"y":3}]'></textarea></label><div class="sc-cal0302-actions"><button class="sc-lab-button" data-cal-v0302-sample>Load example</button><button class="sc-lab-button sc-lab-button-primary" data-cal-v0302-run>Calibrate and validate</button></div><label>Saved results<select multiple size="6" data-cal-v0302-results></select></label><div class="sc-cal0302-actions"><button class="sc-lab-button" data-cal-v0302-compare>Compare selected</button><button class="sc-lab-button" data-cal-v0302-report>Build report</button><button class="sc-lab-button" data-cal-v0302-export>Export bundle</button></div></div></div>
         <div class="sc-cal0302-card"><h4>Calibration output</h4><pre data-cal-v0302-output>Run a governed calibration to inspect parameters, confidence intervals, residuals, holdout metrics, and provenance.</pre></div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-dsp0310" data-lab-module="distributed-dispatcher" data-module-panel="distributed-dispatcher" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.0</p><h3>Distributed Compute Dispatcher</h3><p>Register governed worker capabilities, route registered numerical workloads, issue signed leases, and preserve dispatch records without enabling arbitrary callbacks or arbitrary code.</p></header>
+        <p data-dsp-v0310-status role="status" aria-live="polite">Compute dispatcher loading…</p>
+        <div class="sc-dsp0310-metrics" data-dsp-v0310-metrics></div>
+        <div class="sc-dsp0310-grid"><div class="sc-dsp0310-card"><h4>Worker profile</h4>
+          <label>Worker ID<input data-dsp-v0310-worker-id value="browser-worker-1"></label><label>Name<input data-dsp-v0310-worker-name value="Browser analysis worker"></label>
+          <label>Worker type<select data-dsp-v0310-worker-type><option value="browser-web-worker">Browser Web Worker</option><option value="render-cpu">Render CPU</option><option value="local-python">Local Python</option><option value="raspberry-pi">Raspberry Pi</option><option value="institutional-node">Institutional node</option></select></label>
+          <label>Registered methods<input data-dsp-v0310-methods value="simulation.parameter_sweep,numerical.root.bracketed_polynomial"></label><label>Packages<input data-dsp-v0310-packages value="numpy,scipy"></label>
+          <label>Memory MB<input type="number" min="128" value="1024" data-dsp-v0310-memory></label><label>Concurrent jobs<input type="number" min="1" value="1" data-dsp-v0310-concurrency></label>
+          <label><input type="checkbox" data-dsp-v0310-checkpointing checked> Checkpoint capable</label><label>Tags<input data-dsp-v0310-tags value="trusted,cpu"></label>
+          <div class="sc-dsp0310-actions"><button class="sc-lab-button sc-lab-button-primary" data-dsp-v0310-register>Register worker</button><button class="sc-lab-button" data-dsp-v0310-heartbeat>Send heartbeat</button><button class="sc-lab-button" data-dsp-v0310-refresh>Refresh registry</button></div>
+        </div><div class="sc-dsp0310-card"><h4>Workload routing</h4>
+          <label>Registered method<input data-dsp-v0310-workload-method value="simulation.parameter_sweep"></label><label>Target preference<input data-dsp-v0310-targets value="local-python,raspberry-pi,browser-web-worker"></label>
+          <label>Required packages<input data-dsp-v0310-required-packages value="numpy"></label><label>Required tags<input data-dsp-v0310-required-tags value="trusted"></label>
+          <label>Minimum memory MB<input type="number" min="128" value="512" data-dsp-v0310-min-memory></label><label>Priority<input type="number" min="0" max="100" value="70" data-dsp-v0310-priority></label>
+          <label><input type="checkbox" data-dsp-v0310-require-checkpoint checked> Require checkpointing</label><label>Request JSON<textarea data-dsp-v0310-request>{"inputs":{"values":[1,2,3]}}</textarea></label>
+          <div class="sc-dsp0310-actions"><button class="sc-lab-button" data-dsp-v0310-route>Route workload</button><button class="sc-lab-button sc-lab-button-primary" data-dsp-v0310-contract>Build signed contract</button><button class="sc-lab-button" data-dsp-v0310-verify>Verify contract</button><button class="sc-lab-button" data-dsp-v0310-export>Export record</button></div>
+        </div></div>
+        <div class="sc-dsp0310-card"><h4>Worker registry</h4><div class="sc-dsp0310-table-wrap"><table><thead><tr><th>Worker</th><th>Type</th><th>State</th><th>Load</th><th>Memory</th><th>Methods</th></tr></thead><tbody data-dsp-v0310-workers></tbody></table></div></div>
+        <div class="sc-dsp0310-card"><h4>Routing and contract output</h4><pre data-dsp-v0310-output>Register a worker, route a workload, and issue a governed dispatch contract.</pre></div>
       </section>
 
 </main>

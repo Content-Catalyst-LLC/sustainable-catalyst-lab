@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.30.2"
+    version: str = "0.31.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -48,6 +48,9 @@ class Settings:
     openurl_resolver_base: str = os.getenv("SC_LAB_OPENURL_RESOLVER_BASE", "").strip()
     discovery_timeout_seconds: int = _int("SC_LAB_DISCOVERY_TIMEOUT_SECONDS", 15, 3, 60)
     discovery_max_results: int = _int("SC_LAB_DISCOVERY_MAX_RESULTS", 25, 1, 50)
+    dispatcher_worker_stale_seconds: int = _int("SC_LAB_DISPATCHER_WORKER_STALE_SECONDS", 120, 30, 3600)
+    dispatcher_default_lease_seconds: int = _int("SC_LAB_DISPATCHER_DEFAULT_LEASE_SECONDS", 300, 30, 3600)
+    dispatcher_max_workers: int = _int("SC_LAB_DISPATCHER_MAX_WORKERS", 500, 1, 5000)
 
     @property
     def auth_mode(self) -> str:

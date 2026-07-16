@@ -597,3 +597,8 @@
 - Added benchmark, suite, and convergence endpoints to Python Compute Core.
 - Added the Numerical Validation Library panel and shortcode.
 - Added analytic/browser references, tolerance controls, unit assertions, residual checks, and exportable reports.
+
+
+## v0.31.0 — Distributed Compute Dispatcher
+
+Adds worker capability discovery, governed workload routing, signed leases, heartbeat/load tracking, project-aware dispatch records, and browser/Render/local/Raspberry Pi/institutional worker profiles.

@@ -67,6 +67,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_compare'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/reports/build', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_report'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/health', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/workers', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_workers'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/workers/register', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_register'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/workers/(?P<worker>[A-Za-z0-9._-]{1,180})/heartbeat', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_heartbeat'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/route', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_route'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/contracts/build', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_contract_build'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/contracts/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_contract_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -346,6 +354,15 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_calibration_compare(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/compare','POST',$p,8388608);}
     public static function model_calibration_report(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/reports/build','POST',$p,8388608);}
     public static function model_calibration_verify(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/verify','POST',$p,8388608);}
+    private static function dispatcher_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_dispatcher_payload','A JSON dispatcher payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:$clean;}
+    public static function dispatcher_health(){return self::proxy('/v1/dispatcher/health');}
+    public static function dispatcher_policies(){return self::proxy('/v1/dispatcher/policies');}
+    public static function dispatcher_workers(WP_REST_Request $request){$active=$request->get_param('activeOnly')?'true':'false';return self::proxy('/v1/dispatcher/workers?activeOnly='.$active);}
+    public static function dispatcher_register(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/workers/register','POST',$p,8388608);}
+    public static function dispatcher_heartbeat(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/workers/'.rawurlencode($request['worker']).'/heartbeat','POST',$p,8388608);}
+    public static function dispatcher_route(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/route','POST',$p,8388608);}
+    public static function dispatcher_contract_build(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/contracts/build','POST',$p,8388608);}
+    public static function dispatcher_contract_verify(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/contracts/verify','POST',$p,8388608);}
 
 
 }

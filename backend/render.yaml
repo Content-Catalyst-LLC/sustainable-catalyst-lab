@@ -24,3 +24,9 @@ services:
         value: "60"
       - key: SC_LAB_DEFAULT_JOB_ATTEMPTS
         value: "2"
+      - key: SC_LAB_DISPATCHER_WORKER_STALE_SECONDS
+        value: "120"
+      - key: SC_LAB_DISPATCHER_DEFAULT_LEASE_SECONDS
+        value: "300"
+      - key: SC_LAB_DISPATCHER_MAX_WORKERS
+        value: "500"

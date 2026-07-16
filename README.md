@@ -421,3 +421,8 @@ Adds a project-scoped reproducible experiment framework with protocol validation
 ### v0.30.2 — Scientific Model Calibration and Validation
 
 Project-scoped calibration and validation for registered scientific model forms, including holdout metrics, uncertainty, residuals, comparison, and provenance.
+
+
+## v0.31.0 — Distributed Compute Dispatcher
+
+Adds worker capability discovery, governed workload routing, signed leases, heartbeat/load tracking, project-aware dispatch records, and browser/Render/local/Raspberry Pi/institutional worker profiles.

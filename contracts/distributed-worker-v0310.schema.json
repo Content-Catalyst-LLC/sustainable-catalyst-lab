@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Distributed worker",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workerType",
+    "state",
+    "capabilities",
+    "capabilityFingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-distributed-worker/0.31.0"
+    },
+    "version": {
+      "const": "0.31.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workerType": {
+      "enum": [
+        "browser-web-worker",
+        "institutional-node",
+        "local-python",
+        "raspberry-pi",
+        "render-cpu"
+      ]
+    },
+    "state": {
+      "enum": [
+        "online",
+        "draining",
+        "offline",
+        "quarantined"
+      ]
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "capabilityFingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

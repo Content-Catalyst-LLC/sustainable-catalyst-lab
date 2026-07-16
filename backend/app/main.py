@@ -26,12 +26,14 @@ from .external_discovery import DiscoveryError, build_openurl as build_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
+from .distributed_dispatcher import DispatcherError, DistributedDispatcher, policies as distributed_dispatcher_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
 
 
 jobs = PersistentJobQueue()
+dispatcher = DistributedDispatcher()
 
 
 @asynccontextmanager
@@ -118,6 +120,7 @@ def health():
         "experimentFramework": {"version":"0.30.0","protocols":True,"runHistories":True,"replications":True,"comparisons":True,"reports":True},
         "designStudies": {"version":"0.30.1","factorial":True,"latinHypercube":True,"responseSurfaces":True,"sensitivity":True,"batchPlans":True},
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
+        "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True,"persistentWorkerRegistry":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -146,7 +149,7 @@ def capabilities():
     return {
         "schema": "sc-lab-compute-capabilities/1.4",
         "version": settings.version,
-        "executionTargets": ["python-core-cpu", "isolated-process-worker"],
+        "executionTargets": ["python-core-cpu", "isolated-process-worker", "browser-web-worker", "local-python", "raspberry-pi", "institutional-node"],
         "modes": ["synchronous", "persistent-queued", "checkpointed-queued", "cached-queued"],
         "packages": ["numpy", "scipy", "pandas", "sympy", "reportlab"],
         "numericalMethods": {"registeredOnly": True, "differentialEquations": True, "optimization": True, "signalProcessing": True, "uncertainty": True, "sensitivity": True, "parameterSweeps": True, "benchmarkLibrary": True, "knownAnswerFixtures": True, "convergenceDiagnostics": True, "solverGovernance": True, "precisionProfiles": True, "conditionDiagnostics": True, "referenceMethodComparisons": True, "scientificVisualization": True, "accessibleSvg": True, "exportFormats": ["svg", "png", "csv", "json"]},
@@ -861,3 +864,56 @@ def model_calibration_report_route(payload: dict[str, Any]):
 def model_calibration_verify_route(payload: dict[str, Any]):
     try: return verify_calibration_record(payload)
     except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/dispatcher/health")
+def distributed_dispatcher_health_route():
+    body=dispatcher.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/dispatcher/policies")
+def distributed_dispatcher_policies_route():
+    body=distributed_dispatcher_policies(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/dispatcher/workers")
+def distributed_dispatcher_workers_route(active_only: bool = Query(False, alias="activeOnly"), auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.list(active_only)
+
+@app.post("/v1/dispatcher/workers/register")
+def distributed_dispatcher_register_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.register(payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/workers/{worker_id}/heartbeat")
+def distributed_dispatcher_heartbeat_route(worker_id: str, payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.heartbeat(worker_id,payload)
+    except DispatcherError as exc: raise HTTPException(status_code=404 if "not found" in str(exc).lower() else 422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/route")
+def distributed_dispatcher_route_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.route(payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/contracts/build")
+def distributed_dispatcher_contract_build_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.build_contract(payload,settings.signing_secret)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/contracts/verify")
+def distributed_dispatcher_contract_verify_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.verify_contract(payload,settings.signing_secret)
+
+@app.post("/v1/dispatcher/contracts/{contract_id}/acknowledge")
+def distributed_dispatcher_contract_ack_route(contract_id: str, payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.acknowledge(contract_id,str(payload.get("workerId") or ""))
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/contracts/{contract_id}/complete")
+def distributed_dispatcher_contract_complete_route(contract_id: str, payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.complete(contract_id,payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc

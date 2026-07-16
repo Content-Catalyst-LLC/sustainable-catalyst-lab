@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Distributed workload",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "method",
+    "workloadHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-distributed-workload/0.31.0"
+    },
+    "version": {
+      "const": "0.31.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "workloadHash": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

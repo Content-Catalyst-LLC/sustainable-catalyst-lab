@@ -1,0 +1,29 @@
+{
+  "schema": "sc-lab-distributed-compute-policy/0.31.0",
+  "version": "0.31.0",
+  "workerTypes": [
+    "browser-web-worker",
+    "institutional-node",
+    "local-python",
+    "raspberry-pi",
+    "render-cpu"
+  ],
+  "routing": {
+    "registeredMethodsOnly": true,
+    "capabilityMatch": true,
+    "loadAware": true,
+    "targetPreference": true,
+    "projectQuotaAware": true
+  },
+  "leases": {
+    "defaultSeconds": 300,
+    "maximumSeconds": 3600,
+    "acknowledgementRequired": true
+  },
+  "security": {
+    "signedContracts": true,
+    "arbitraryCallbackUrls": false,
+    "arbitraryCode": false
+  },
+  "persistentWorkerRegistry": false
+}
