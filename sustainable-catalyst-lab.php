@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, and data-connected documentation.
- * Version: 0.29.2
+ * Version: 0.30.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.29.2');
+define('SC_LAB_VERSION', '0.30.0');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -130,6 +130,9 @@ SC_Lab_Research_Quality_V0291::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-external-discovery-v0292.php';
 SC_Lab_External_Discovery_V0292::init();
+
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-experiment-framework-v0300.php';
+SC_Lab_Experiment_Framework_V0300::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-python-compute-core-v0261.php';
 SC_Lab_Python_Compute_Core_V0261::init();

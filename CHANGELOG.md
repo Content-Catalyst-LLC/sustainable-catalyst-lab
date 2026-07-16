@@ -1,3 +1,9 @@
+
+## v0.30.0 — Reproducible Experiment Framework
+
+- Project-scoped experiment protocols and preregistration metadata.
+- Variables, controls, procedure steps, sample plans, analysis plans, run histories, replication comparison, hashes, reports, and portable bundles.
+- Governed Python normalization, validation, verification, comparison, and report endpoints.
 ## 0.29.2 — External Scholarly and Data Discovery
 
 - Added allowlisted scholarly and data discovery, access handoffs, cross-provider deduplication, and source-library imports.

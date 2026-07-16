@@ -43,6 +43,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/discovery/deduplicate', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_deduplicate'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/discovery/open-access', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_open_access'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/discovery/openurl', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_openurl'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/health', array('methods'=>'GET','callback'=>array(__CLASS__,'experiments_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'experiments_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/protocols/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_protocol_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/protocols/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_protocol_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/runs/build', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_run_build'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/runs/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_runs_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/reports/build', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_report_build'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiments/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'experiments_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -293,6 +301,16 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function discovery_deduplicate(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/deduplicate','POST',$p,8388608);}
     public static function discovery_open_access(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/open-access','POST',$p,8388608);}
     public static function discovery_openurl(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/openurl','POST',$p,8388608);}
+
+    public static function experiments_health(){return self::proxy('/v1/experiments/health');}
+    public static function experiments_policies(){return self::proxy('/v1/experiments/policies');}
+    private static function experiments_payload(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_experiment_payload','A JSON experiment payload is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);if(is_wp_error($clean)){return $clean;}return $clean;}
+    public static function experiments_protocol_normalize(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/protocols/normalize','POST',$p,8388608);}
+    public static function experiments_protocol_validate(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/protocols/validate','POST',$p,8388608);}
+    public static function experiments_run_build(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/runs/build','POST',$p,8388608);}
+    public static function experiments_runs_compare(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/runs/compare','POST',$p,8388608);}
+    public static function experiments_report_build(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/reports/build','POST',$p,8388608);}
+    public static function experiments_verify(WP_REST_Request $request){$p=self::experiments_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiments/verify','POST',$p,8388608);}
 
 
 }

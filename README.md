@@ -407,3 +407,8 @@ The Lab now stores benchmark coverage, validation evidence, calibration state, r
 ## v0.29.2 — External Scholarly and Data Discovery
 
 The Project workspace now includes governed discovery across Crossref, OpenAlex, and DataCite, plus WorldCat, Google Scholar, DOI, and OpenURL handoffs. Results can be deduplicated and imported into project research sources for evidence, provenance, reproducibility, and method review.
+
+
+### v0.30.0 — Reproducible Experiment Framework
+
+Adds a project-scoped reproducible experiment framework with protocol validation, run histories, replication comparison, reports, and portable bundles.

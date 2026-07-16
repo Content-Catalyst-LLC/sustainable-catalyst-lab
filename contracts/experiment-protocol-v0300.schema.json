@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experiment protocol v0.30.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "hypothesis",
+    "variables",
+    "procedure",
+    "protocolHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-experiment-protocol/0.30.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "hypothesis": {
+      "type": "string"
+    },
+    "variables": {
+      "type": "array",
+      "maxItems": 100
+    },
+    "procedure": {
+      "type": "array",
+      "maxItems": 200
+    },
+    "protocolHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

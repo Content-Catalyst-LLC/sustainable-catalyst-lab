@@ -49,6 +49,7 @@
           'research-provenance' => 'Evidence & provenance',
           'method-review' => 'Method review',
           'scholarly-discovery' => 'Scholarly discovery',
+          'experiment-framework' => 'Experiment framework',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -203,6 +204,26 @@
       </section>
 
 
+
+
+      <section class="sc-lab-panel sc-exp0300" data-lab-module="experiment-framework" data-module-panel="experiment-framework" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/EXPERIMENTS</span><h3>Reproducible Experiment Framework</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.30.0</span></div>
+        <p>Design protocols before execution, freeze hypotheses and analysis plans, record governed runs and deviations, compare replications, and export a portable experiment bundle.</p>
+        <div class="sc-exp0300-status" data-exp-v0300-status role="status" aria-live="polite">Loading experiment framework…</div><div class="sc-exp0300-metrics" data-exp-v0300-metrics></div>
+        <div class="sc-exp0300-grid">
+          <section class="sc-exp0300-card is-wide"><h4>Experiment protocol</h4><div class="sc-exp0300-form">
+            <input type="hidden" data-exp-v0300-protocol-id><label>Title<input data-exp-v0300-title value="Controlled growth response experiment"></label><label>Domain<input data-exp-v0300-domain value="Scientific experiment"></label><label>Design<select data-exp-v0300-design><option value="observational">Observational</option><option value="controlled" selected>Controlled</option><option value="randomized-controlled">Randomized controlled</option><option value="factorial">Factorial</option><option value="crossover">Crossover</option><option value="simulation">Simulation</option><option value="field-study">Field study</option><option value="replication">Replication</option></select></label><label>Protocol status<select data-exp-v0300-protocol-status><option value="draft">Draft</option><option value="preregistered">Preregistered</option><option value="active">Active</option><option value="completed">Completed</option><option value="suspended">Suspended</option><option value="archived">Archived</option></select></label>
+            <label class="is-wide">Objective<textarea rows="2" data-exp-v0300-objective>Measure the effect of the independent variable on the dependent outcome.</textarea></label><label class="is-wide">Hypothesis<textarea rows="2" data-exp-v0300-hypothesis>The independent variable produces a measurable change in the dependent outcome.</textarea></label><label class="is-wide">Null hypothesis<textarea rows="2" data-exp-v0300-null>No measurable difference exists between conditions.</textarea></label>
+            <label class="is-wide">Variables — one per line: name | role | unit<textarea rows="5" data-exp-v0300-variables>treatment|independent|condition\noutcome|dependent|unit</textarea></label><label>Controls — one per line<textarea rows="4" data-exp-v0300-controls>control condition</textarea></label><label>Procedure — one step per line<textarea rows="4" data-exp-v0300-procedure>Assign conditions\nApply procedure\nMeasure outcome\nRecord deviations</textarea></label>
+            <label>Target sample size<input type="number" min="0" data-exp-v0300-sample-size value="30"></label><label>Preregistration identifier<input data-exp-v0300-preregistration></label><label class="is-wide">Analysis plan<textarea rows="3" data-exp-v0300-analysis>Compare prespecified outcome measures across conditions and report effect sizes, uncertainty, exclusions, and deviations.</textarea></label><label>Randomization<textarea rows="2" data-exp-v0300-randomization></textarea></label><label>Blinding<textarea rows="2" data-exp-v0300-blinding></textarea></label><label class="is-wide">Linked source IDs — one per line<textarea rows="2" data-exp-v0300-sources></textarea></label>
+          </div><div class="sc-exp0300-actions"><button class="sc-lab-button" data-exp-v0300-validate>Validate protocol</button><button class="sc-lab-button sc-lab-button-primary" data-exp-v0300-save>Save protocol</button><button class="sc-lab-button" data-exp-v0300-export>Export experiment bundle</button></div></section>
+          <section class="sc-exp0300-card"><h4>Record experiment run</h4><div class="sc-exp0300-form"><label class="is-wide">Run title<input data-exp-v0300-run-title></label><label>Replicate<input type="number" min="1" value="1" data-exp-v0300-replicate></label><label>Status<select data-exp-v0300-run-status><option value="planned">Planned</option><option value="running">Running</option><option value="completed" selected>Completed</option><option value="failed">Failed</option><option value="excluded">Excluded</option></select></label><label>Operator<input data-exp-v0300-operator></label><label>Location<input data-exp-v0300-location></label><label class="is-wide">Results JSON<textarea rows="5" data-exp-v0300-result-json>{"outcome": 1.0}</textarea></label><label class="is-wide">Deviations — one per line<textarea rows="3" data-exp-v0300-deviations></textarea></label></div><div class="sc-exp0300-actions"><button class="sc-lab-button sc-lab-button-primary" data-exp-v0300-run>Record run</button></div></section>
+          <section class="sc-exp0300-card"><h4>Replication and reporting</h4><label>Select two or more runs<select multiple size="8" data-exp-v0300-run-select></select></label><label>Relative tolerance<input type="number" min="0" step="0.001" value="0.05" data-exp-v0300-tolerance></label><div class="sc-exp0300-actions"><button class="sc-lab-button" data-exp-v0300-compare>Compare runs</button><button class="sc-lab-button" data-exp-v0300-report>Build report</button></div></section>
+          <section class="sc-exp0300-card"><h4>Saved protocols</h4><div class="sc-exp0300-list" data-exp-v0300-protocols></div></section>
+          <section class="sc-exp0300-card is-wide"><h4>Run history</h4><div class="sc-exp0300-table-wrap"><table class="sc-exp0300-table"><thead><tr><th>Run</th><th>Protocol</th><th>Replicate</th><th>Status</th><th>Completed</th></tr></thead><tbody data-exp-v0300-runs></tbody></table></div></section>
+          <section class="sc-exp0300-card is-wide"><h4>Validation, comparison, and report output</h4><pre class="sc-exp0300-output" data-exp-v0300-output>No output yet.</pre></section>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-lab-provenance-v0290" data-lab-module="research-provenance" data-module-panel="research-provenance" hidden>
         <header><p class="sc-lab-eyebrow">Project governance</p><h2>Evidence, Sources, and Research Provenance</h2><p>Capture sources, quotations, assumptions, limitations, citations, and evidence links as durable project records.</p><div data-prov-v0290-status role="status">Loading provenance workspace…</div></header>

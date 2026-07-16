@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experiment run v0.30.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "protocolId",
+    "runHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-experiment-run/0.30.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "protocolId": {
+      "type": "string"
+    },
+    "results": {},
+    "runHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

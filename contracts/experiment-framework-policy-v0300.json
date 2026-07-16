@@ -1,0 +1,39 @@
+{
+  "schema": "sc-lab-experiment-framework-policy/0.30.0",
+  "version": "0.30.0",
+  "designTypes": [
+    "observational",
+    "controlled",
+    "randomized-controlled",
+    "factorial",
+    "crossover",
+    "simulation",
+    "field-study",
+    "replication"
+  ],
+  "variableRoles": [
+    "independent",
+    "dependent",
+    "control",
+    "covariate",
+    "confounder",
+    "derived"
+  ],
+  "protocolStates": [
+    "draft",
+    "preregistered",
+    "active",
+    "completed",
+    "suspended",
+    "archived"
+  ],
+  "runStates": [
+    "planned",
+    "running",
+    "completed",
+    "failed",
+    "excluded"
+  ],
+  "arbitraryCode": false,
+  "serverBackedRegistry": false
+}

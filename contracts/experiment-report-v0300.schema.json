@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experiment report v0.30.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "protocolId",
+    "reportHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-experiment-report/0.30.0"
+    },
+    "protocolId": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array"
+    },
+    "reportHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

@@ -23,6 +23,7 @@ from .reproducibility import ReproducibilityError, build_manifest as build_repro
 from .research_provenance import ProvenanceError, health as research_provenance_health, normalize_source, normalize_evidence, verify_record as verify_provenance_record, build_provenance
 from .research_quality import QualityReviewError, compare_reviews as compare_quality_reviews, evaluate_review as evaluate_quality_review, health as research_quality_health, normalize_review as normalize_quality_review, policies as research_quality_policies, verify_review as verify_quality_review
 from .external_discovery import DiscoveryError, build_openurl as build_discovery_openurl, deduplicate as deduplicate_discovery, health as external_discovery_health, normalize as normalize_discovery, open_access_lookup, provider_catalog as discovery_provider_catalog, search as search_discovery
+from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -112,6 +113,7 @@ def health():
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
         "researchQuality": {"version":"0.29.1","methodReview":True,"benchmarkCoverage":True,"calibration":True,"approvalWorkflow":True,"deprecationHistory":True},
         "externalDiscovery": {"version":"0.29.2","providers":["crossref","openalex","datacite"],"worldCatHandoff":True,"openUrlHandoff":True,"deduplication":True,"sourceImport":True},
+        "experimentFramework": {"version":"0.30.0","protocols":True,"runHistories":True,"replications":True,"comparisons":True,"reports":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -736,3 +738,42 @@ def handoff_validate(payload: dict[str, Any], auth: dict[str, str] = Depends(req
         "errors": [] if valid else ["packet must be a non-empty object"],
         "schema": "sc-lab-decision-handoff-validation/1.0",
     }
+
+
+@app.get("/v1/experiments/health")
+def experiments_health_route():
+    body=experiment_framework_health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/experiments/policies")
+def experiments_policies_route():
+    body=experiment_framework_policies(); body["serviceVersion"]=settings.version; return body
+
+@app.post("/v1/experiments/protocols/normalize")
+def experiments_protocol_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_protocol(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/experiments/protocols/validate")
+def experiments_protocol_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return validate_protocol(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/experiments/runs/build")
+def experiments_run_build_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_experiment_run(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/experiments/runs/compare")
+def experiments_runs_compare_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return compare_experiment_runs(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/experiments/reports/build")
+def experiments_report_build_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_experiment_report(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/experiments/verify")
+def experiments_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return verify_experiment_record(payload)
+    except ExperimentFrameworkError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc

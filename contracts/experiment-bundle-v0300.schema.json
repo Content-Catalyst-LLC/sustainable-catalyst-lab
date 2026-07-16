@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experiment bundle v0.30.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "protocol"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-experiment-bundle/0.30.0"
+    },
+    "protocol": {
+      "type": "object"
+    },
+    "runs": {
+      "type": "array"
+    },
+    "comparisons": {
+      "type": "array"
+    },
+    "reports": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

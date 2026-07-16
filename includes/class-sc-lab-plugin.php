@@ -44,6 +44,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_research_provenance', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_method_review', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_scholarly_discovery', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_experiment_framework', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_dataset_registry', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
@@ -76,10 +77,11 @@ final class SC_Lab_Plugin {
         wp_enqueue_style('sc-lab-research-provenance-v0290', SC_LAB_URL . 'assets/css/sc-lab-research-provenance-v0290.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-provenance-v0290.css'));
         wp_enqueue_style('sc-lab-research-quality-v0291', SC_LAB_URL . 'assets/css/sc-lab-research-quality-v0291.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-quality-v0291.css'));
         wp_enqueue_style('sc-lab-external-discovery-v0292', SC_LAB_URL . 'assets/css/sc-lab-external-discovery-v0292.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-external-discovery-v0292.css'));
+        wp_enqueue_style('sc-lab-experiment-framework-v0300', SC_LAB_URL . 'assets/css/sc-lab-experiment-framework-v0300.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-experiment-framework-v0300.css'));
         wp_enqueue_style('sc-lab-reproducible-runs-v0282', SC_LAB_URL . 'assets/css/sc-lab-reproducible-runs-v0282.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-reproducible-runs-v0282.css'));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        $modules = array('core','projects','project-workspace-v0280','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','dataset-registry-v0281','reproducible-runs-v0282','research-provenance-v0290','research-quality-v0291','external-discovery-v0292','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','project-workspace-v0280','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','dataset-registry-v0281','reproducible-runs-v0282','research-provenance-v0290','research-quality-v0291','external-discovery-v0292','experiment-framework-v0300','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
             // Preserve the legacy key for compatibility tests,
