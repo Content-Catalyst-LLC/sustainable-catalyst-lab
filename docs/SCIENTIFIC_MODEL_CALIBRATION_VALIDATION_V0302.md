@@ -1,0 +1,3 @@
+# Scientific Model Calibration and Validation v0.30.2
+
+This release connects governed scientific model fitting to the shared project, dataset, experiment, design-study, evidence, and reproducibility architecture. Supported registered model forms are linear multivariate, polynomial univariate, exponential univariate, and logistic univariate. The backend provides bounded parameter fitting, seeded holdout validation, robust objectives, residual diagnostics, approximate 95% confidence intervals, AIC/BIC model comparison, record hashing, and report generation. Arbitrary formulas and arbitrary Python remain disabled.

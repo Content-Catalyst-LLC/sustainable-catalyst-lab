@@ -59,6 +59,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/design-studies/recommend', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_recommend'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/design-studies/batches/build', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_batch'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/design-studies/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'design_studies_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_calibration_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_calibration_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/calibrate', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_calibrate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/reports/build', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_report'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-calibration/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'model_calibration_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -329,6 +337,15 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function design_studies_recommend(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/recommend','POST',$p,8388608);}
     public static function design_studies_batch(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/batches/build','POST',$p,8388608);}
     public static function design_studies_verify(WP_REST_Request $request){$p=self::design_studies_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/design-studies/verify','POST',$p,8388608);}
+    private static function model_calibration_payload(WP_REST_Request $request){$p=$request->get_json_params();return is_array($p)?$p:new WP_Error('sc_lab_invalid_calibration_payload','A JSON object is required.',array('status'=>400));}
+    public static function model_calibration_health(){return self::proxy('/v1/model-calibration/health');}
+    public static function model_calibration_policies(){return self::proxy('/v1/model-calibration/policies');}
+    public static function model_calibration_normalize(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/normalize','POST',$p,8388608);}
+    public static function model_calibration_calibrate(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/calibrate','POST',$p,8388608);}
+    public static function model_calibration_validate(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/validate','POST',$p,8388608);}
+    public static function model_calibration_compare(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/compare','POST',$p,8388608);}
+    public static function model_calibration_report(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/reports/build','POST',$p,8388608);}
+    public static function model_calibration_verify(WP_REST_Request $request){$p=self::model_calibration_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-calibration/verify','POST',$p,8388608);}
 
 
 }

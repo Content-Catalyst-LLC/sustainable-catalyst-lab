@@ -1,4 +1,8 @@
 
+## 0.30.2 — Scientific Model Calibration and Validation
+
+- Added governed calibration studies, fitted-parameter records, holdout validation, residual diagnostics, confidence intervals, model comparison, and calibration reports.
+
 ## v0.30.1 — Parameter Studies and Design of Experiments
 
 - Factorial, fractional-factorial, Latin-hypercube, central-composite, Box-Behnken, and one-factor-at-a-time designs.

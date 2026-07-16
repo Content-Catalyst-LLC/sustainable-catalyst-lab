@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "recordType",
+    "id",
+    "title"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.30.2"
+    },
+    "recordType": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}

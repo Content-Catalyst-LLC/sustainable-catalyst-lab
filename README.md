@@ -417,3 +417,7 @@ Adds a project-scoped reproducible experiment framework with protocol validation
 
 - Factorial, fractional-factorial, Latin-hypercube, central-composite, Box-Behnken, and one-factor-at-a-time designs.
 - Response-surface fitting, sensitivity ranking, optimal-design recommendations, and registered-method batch plans.
+
+### v0.30.2 — Scientific Model Calibration and Validation
+
+Project-scoped calibration and validation for registered scientific model forms, including holdout metrics, uncertainty, residuals, comparison, and provenance.

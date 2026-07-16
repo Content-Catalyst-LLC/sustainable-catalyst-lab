@@ -51,6 +51,7 @@
           'scholarly-discovery' => 'Scholarly discovery',
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
+          'model-calibration' => 'Model calibration',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -1511,6 +1512,23 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 
     <div data-instrumentation-validation-custody-root></div>
 </section>
+
+      <section class="sc-lab-panel sc-cal0302" data-lab-module="model-calibration" data-module-panel="model-calibration" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL CALIBRATION / v0.30.2</p><h3>Scientific model calibration and validation</h3><p>Fit registered scientific model forms to project datasets, reserve holdout observations, inspect residuals and parameter uncertainty, compare models, and preserve calibration provenance.</p></header>
+        <p data-cal-v0302-status role="status" aria-live="polite">Model calibration loading…</p>
+        <div class="sc-cal0302-metrics" data-cal-v0302-metrics></div>
+        <div class="sc-cal0302-grid"><div class="sc-cal0302-card">
+          <input type="hidden" data-cal-v0302-study-id>
+          <label>Study title<input data-cal-v0302-title value="Scientific model calibration"></label>
+          <label>Model form<select data-cal-v0302-model><option value="linear-multivariate">Linear multivariate</option><option value="polynomial-univariate">Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option></select></label>
+          <label>Feature columns<input data-cal-v0302-features value="x"></label><label>Response column<input data-cal-v0302-response value="y"></label>
+          <label>Objective<select data-cal-v0302-objective><option value="least-squares">Least squares</option><option value="weighted-least-squares">Weighted least squares</option><option value="robust-huber">Robust Huber</option><option value="robust-soft-l1">Robust soft L1</option></select></label>
+          <label>Weight column<input data-cal-v0302-weight></label><label>Polynomial degree<input type="number" min="1" max="5" value="2" data-cal-v0302-degree></label>
+          <label>Holdout fraction<input type="number" min="0" max="0.5" step="0.05" value="0.2" data-cal-v0302-holdout></label><label>Random seed<input type="number" value="42" data-cal-v0302-seed></label>
+          <label>Dataset registry ID<input data-cal-v0302-dataset-id></label><label>Experiment protocol ID<input data-cal-v0302-protocol-id></label><label>Design study ID<input data-cal-v0302-design-id></label><label>Limitations and notes<textarea data-cal-v0302-notes></textarea></label>
+        </div><div class="sc-cal0302-card"><label>Dataset rows as JSON<textarea data-cal-v0302-rows placeholder='[{"x":1,"y":3}]'></textarea></label><div class="sc-cal0302-actions"><button class="sc-lab-button" data-cal-v0302-sample>Load example</button><button class="sc-lab-button sc-lab-button-primary" data-cal-v0302-run>Calibrate and validate</button></div><label>Saved results<select multiple size="6" data-cal-v0302-results></select></label><div class="sc-cal0302-actions"><button class="sc-lab-button" data-cal-v0302-compare>Compare selected</button><button class="sc-lab-button" data-cal-v0302-report>Build report</button><button class="sc-lab-button" data-cal-v0302-export>Export bundle</button></div></div></div>
+        <div class="sc-cal0302-card"><h4>Calibration output</h4><pre data-cal-v0302-output>Run a governed calibration to inspect parameters, confidence intervals, residuals, holdout metrics, and provenance.</pre></div>
+      </section>
 
 </main>
   </div>

@@ -25,6 +25,7 @@ from .research_quality import QualityReviewError, compare_reviews as compare_qua
 from .external_discovery import DiscoveryError, build_openurl as build_discovery_openurl, deduplicate as deduplicate_discovery, health as external_discovery_health, normalize as normalize_discovery, open_access_lookup, provider_catalog as discovery_provider_catalog, search as search_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
+from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -116,6 +117,7 @@ def health():
         "externalDiscovery": {"version":"0.29.2","providers":["crossref","openalex","datacite"],"worldCatHandoff":True,"openUrlHandoff":True,"deduplication":True,"sourceImport":True},
         "experimentFramework": {"version":"0.30.0","protocols":True,"runHistories":True,"replications":True,"comparisons":True,"reports":True},
         "designStudies": {"version":"0.30.1","factorial":True,"latinHypercube":True,"responseSurfaces":True,"sensitivity":True,"batchPlans":True},
+        "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -820,3 +822,42 @@ def design_studies_batch_route(payload: dict[str, Any], auth: dict[str, str] = D
 def design_studies_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return verify_design_record(payload)
     except DesignStudyError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/model-calibration/health")
+def model_calibration_health_route():
+    return model_calibration_health()
+
+@app.get("/v1/model-calibration/policies")
+def model_calibration_policies_route():
+    return model_calibration_policies()
+
+@app.post("/v1/model-calibration/normalize")
+def model_calibration_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "study": normalize_calibration_study(payload)}
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-calibration/calibrate")
+def model_calibration_calibrate_route(payload: dict[str, Any]):
+    try: return calibrate_model(payload)
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-calibration/validate")
+def model_calibration_validate_route(payload: dict[str, Any]):
+    try: return validate_calibration_result(payload)
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-calibration/compare")
+def model_calibration_compare_route(payload: dict[str, Any]):
+    try: return compare_models(payload)
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-calibration/reports/build")
+def model_calibration_report_route(payload: dict[str, Any]):
+    try: return build_calibration_report(payload)
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-calibration/verify")
+def model_calibration_verify_route(payload: dict[str, Any]):
+    try: return verify_calibration_record(payload)
+    except ModelCalibrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
