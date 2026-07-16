@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scholarly-discovery-candidate-v0292.schema.json",
+  "title": "Scholarly discovery candidate",
+  "type": "object",
+  "required": [
+    "schema",
+    "provider",
+    "title",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scholarly-discovery-candidate/0.29.2"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "providerId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "workType": {
+      "type": "string"
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "containerTitle": {
+      "type": "string"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "abstract": {
+      "type": "string"
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "identifiers": {
+      "type": "object"
+    },
+    "isbn": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "citationCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "isOpenAccess": {
+      "type": "boolean"
+    },
+    "openAccessStatus": {
+      "type": "string"
+    },
+    "openAccessUrl": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "citation": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

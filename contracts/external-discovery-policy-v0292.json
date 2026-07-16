@@ -1,0 +1,81 @@
+{
+  "schema": "sc-lab-external-discovery-policy/0.29.2",
+  "version": "0.29.2",
+  "liveProviders": [
+    {
+      "id": "crossref",
+      "label": "Crossref",
+      "authentication": "public",
+      "contactEnvironment": "SC_LAB_DISCOVERY_CONTACT_EMAIL",
+      "maximumResults": 25,
+      "capabilities": [
+        "works-search",
+        "doi-metadata",
+        "licenses",
+        "citations"
+      ]
+    },
+    {
+      "id": "openalex",
+      "label": "OpenAlex",
+      "authentication": "api-key",
+      "keyEnvironment": "SC_LAB_OPENALEX_API_KEY",
+      "maximumResults": 25,
+      "capabilities": [
+        "works-search",
+        "citation-counts",
+        "topics",
+        "open-access"
+      ]
+    },
+    {
+      "id": "datacite",
+      "label": "DataCite",
+      "authentication": "public",
+      "contactEnvironment": "SC_LAB_DISCOVERY_CONTACT_EMAIL",
+      "maximumResults": 25,
+      "capabilities": [
+        "doi-search",
+        "datasets",
+        "software",
+        "licenses"
+      ]
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "worldcat",
+      "label": "WorldCat",
+      "mode": "catalog-handoff",
+      "apiAccessEnvironment": "SC_LAB_OCLC_ACCESS_TOKEN",
+      "liveApiEnabled": false
+    },
+    {
+      "id": "google-scholar",
+      "label": "Google Scholar",
+      "mode": "search-handoff",
+      "scraping": false
+    },
+    {
+      "id": "openurl",
+      "label": "Institutional link resolver",
+      "mode": "openurl-handoff",
+      "baseEnvironment": "SC_LAB_OPENURL_RESOLVER_BASE"
+    }
+  ],
+  "controls": {
+    "arbitraryRemoteFetch": false,
+    "allowlistedHosts": [
+      "api.crossref.org",
+      "api.openalex.org",
+      "api.datacite.org"
+    ],
+    "maximumResponseBytes": 5242880,
+    "maximumResultsPerProvider": 25,
+    "deduplicationKeys": [
+      "doi",
+      "isbn",
+      "normalized-title-year-author"
+    ]
+  }
+}

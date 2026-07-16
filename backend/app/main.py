@@ -22,6 +22,7 @@ from .datasets import DatasetProfileError, health as dataset_health_payload, pro
 from .reproducibility import ReproducibilityError, build_manifest as build_reproducibility_manifest, compare_manifests, environment_fingerprint, health as reproducibility_health_payload, verify_manifest
 from .research_provenance import ProvenanceError, health as research_provenance_health, normalize_source, normalize_evidence, verify_record as verify_provenance_record, build_provenance
 from .research_quality import QualityReviewError, compare_reviews as compare_quality_reviews, evaluate_review as evaluate_quality_review, health as research_quality_health, normalize_review as normalize_quality_review, policies as research_quality_policies, verify_review as verify_quality_review
+from .external_discovery import DiscoveryError, build_openurl as build_discovery_openurl, deduplicate as deduplicate_discovery, health as external_discovery_health, normalize as normalize_discovery, open_access_lookup, provider_catalog as discovery_provider_catalog, search as search_discovery
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -110,6 +111,7 @@ def health():
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
         "researchQuality": {"version":"0.29.1","methodReview":True,"benchmarkCoverage":True,"calibration":True,"approvalWorkflow":True,"deprecationHistory":True},
+        "externalDiscovery": {"version":"0.29.2","providers":["crossref","openalex","datacite"],"worldCatHandoff":True,"openUrlHandoff":True,"deduplication":True,"sourceImport":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -174,6 +176,7 @@ def capabilities():
         "datasetRegistry": {"version": "0.28.1", "profileEndpoint": True, "dataDictionary": True, "unitMetadata": True, "lineage": True, "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "frozenManifests": True, "environmentFingerprint": True, "verification": True, "comparison": True, "portableBundles": True, "serverBackedRegistry": False},
         "researchQuality": {"version":"0.29.1","reviewNormalization":True,"policyEvaluation":True,"hashVerification":True,"revisionComparison":True,"serverBackedRegistry":False},
+        "externalDiscovery": {"version":"0.29.2","liveProviders":["crossref","openalex","datacite"],"handoffs":["worldcat","google-scholar","openurl"],"deduplication":True,"sourceImport":True,"arbitraryRemoteFetch":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -354,6 +357,51 @@ def research_quality_compare_route(payload: dict[str, Any], auth: dict[str, str]
         return compare_quality_reviews(payload)
     except QualityReviewError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/discovery/health")
+def discovery_health_route():
+    body=external_discovery_health(); body["serviceVersion"]=settings.version; return body
+
+
+@app.get("/v1/discovery/providers")
+def discovery_providers_route():
+    body=discovery_provider_catalog(); body["serviceVersion"]=settings.version; return body
+
+
+@app.post("/v1/discovery/search")
+def discovery_search_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return search_discovery(payload)
+    except DiscoveryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/discovery/normalize")
+def discovery_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return normalize_discovery(payload)
+    except DiscoveryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/discovery/deduplicate")
+def discovery_deduplicate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return deduplicate_discovery(payload)
+    except DiscoveryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/discovery/open-access")
+def discovery_open_access_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return open_access_lookup(payload)
+    except DiscoveryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/discovery/openurl")
+def discovery_openurl_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_discovery_openurl(payload)
+    except DiscoveryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])

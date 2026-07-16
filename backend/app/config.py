@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.29.1"
+    version: str = "0.29.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -42,6 +42,12 @@ class Settings:
     result_cache_ttl_seconds: int = _int("SC_LAB_RESULT_CACHE_TTL_SECONDS", 86400, 60, 2592000)
     max_cache_records: int = _int("SC_LAB_MAX_CACHE_RECORDS", 250, 1, 5000)
     default_job_priority: int = _int("SC_LAB_DEFAULT_JOB_PRIORITY", 50, 0, 100)
+    discovery_contact_email: str = os.getenv("SC_LAB_DISCOVERY_CONTACT_EMAIL", "").strip()
+    openalex_api_key: str = os.getenv("SC_LAB_OPENALEX_API_KEY", "").strip()
+    oclc_access_token: str = os.getenv("SC_LAB_OCLC_ACCESS_TOKEN", "").strip()
+    openurl_resolver_base: str = os.getenv("SC_LAB_OPENURL_RESOLVER_BASE", "").strip()
+    discovery_timeout_seconds: int = _int("SC_LAB_DISCOVERY_TIMEOUT_SECONDS", 15, 3, 60)
+    discovery_max_results: int = _int("SC_LAB_DISCOVERY_MAX_RESULTS", 25, 1, 50)
 
     @property
     def auth_mode(self) -> str:

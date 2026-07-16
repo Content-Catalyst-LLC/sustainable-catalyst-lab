@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/discovery-source-import-v0292.schema.json",
+  "title": "Discovery source import",
+  "type": "object",
+  "required": [
+    "schema",
+    "source"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-discovery-source-import/0.29.2"
+    },
+    "source": {
+      "type": "object"
+    },
+    "candidate": {
+      "$ref": "scholarly-discovery-candidate-v0292.schema.json"
+    },
+    "importedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "projectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

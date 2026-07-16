@@ -403,3 +403,7 @@ Use **Project → Reproducible runs** or `[sc_lab_reproducible_runs]` to freeze 
 ## v0.29.1 Research Quality and Method Review
 
 The Lab now stores benchmark coverage, validation evidence, calibration state, reviewer decisions, approval status, and deprecation history as project-scoped method-review records.
+
+## v0.29.2 — External Scholarly and Data Discovery
+
+The Project workspace now includes governed discovery across Crossref, OpenAlex, and DataCite, plus WorldCat, Google Scholar, DOI, and OpenURL handoffs. Results can be deduplicated and imported into project research sources for evidence, provenance, reproducibility, and method review.

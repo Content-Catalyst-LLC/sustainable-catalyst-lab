@@ -36,6 +36,13 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/evaluate', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_evaluate'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/health', array('methods'=>'GET','callback'=>array(__CLASS__,'discovery_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/providers', array('methods'=>'GET','callback'=>array(__CLASS__,'discovery_providers'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/search', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_search'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/deduplicate', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_deduplicate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/open-access', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_open_access'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/discovery/openurl', array('methods'=>'POST','callback'=>array(__CLASS__,'discovery_openurl'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -270,6 +277,22 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function research_quality_verify(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/verify','POST',$p,8388608);}
     public static function research_quality_compare(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/compare','POST',$p,8388608);}
 
+    public static function discovery_health(){return self::proxy('/v1/discovery/health');}
+    public static function discovery_providers(){return self::proxy('/v1/discovery/providers');}
+    private static function discovery_payload(WP_REST_Request $request){
+        $body=$request->get_json_params(); if(!is_array($body)){return new WP_Error('invalid_discovery_payload','A JSON discovery payload is required.',array('status'=>422));}
+        $nodes=0; $clean=self::sanitize_tree($body,0,$nodes); if(is_wp_error($clean)){return $clean;}
+        if(isset($clean['query'])){$clean['query']=substr(sanitize_text_field((string)$clean['query']),0,500);}
+        if(isset($clean['providers'])&&is_array($clean['providers'])){$allowed=array('crossref','openalex','datacite');$clean['providers']=array_values(array_intersect($allowed,array_map('sanitize_key',array_slice($clean['providers'],0,3))));}
+        if(isset($clean['maxResults'])){$clean['maxResults']=max(1,min(25,absint($clean['maxResults'])));}
+        if(isset($clean['candidates'])&&is_array($clean['candidates'])){$clean['candidates']=array_slice($clean['candidates'],0,500);}
+        return $clean;
+    }
+    public static function discovery_search(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/search','POST',$p,8388608);}
+    public static function discovery_normalize(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/normalize','POST',$p,8388608);}
+    public static function discovery_deduplicate(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/deduplicate','POST',$p,8388608);}
+    public static function discovery_open_access(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/open-access','POST',$p,8388608);}
+    public static function discovery_openurl(WP_REST_Request $request){$p=self::discovery_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/discovery/openurl','POST',$p,8388608);}
 
 
 }

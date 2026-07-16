@@ -1,3 +1,9 @@
+## 0.29.2 — External Scholarly and Data Discovery
+
+- Added allowlisted scholarly and data discovery, access handoffs, cross-provider deduplication, and source-library imports.
+- Added provider configuration health and protected WordPress proxy endpoints.
+- Registered the 52nd Lab panel and retained the corrected integrity manifest schema.
+
 ## 0.29.1 — Research Quality and Method Review
 
 - Added project-scoped method reviews, evidence and benchmark coverage, calibration tracking, approval decisions, deprecation history, and governed Python quality evaluation.

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/external-discovery-search-v0292.schema.json",
+  "title": "External scholarly discovery search",
+  "type": "object",
+  "required": [
+    "query",
+    "providers"
+  ],
+  "properties": {
+    "query": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 500
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "crossref",
+          "openalex",
+          "datacite"
+        ]
+      },
+      "maxItems": 3
+    },
+    "maxResults": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 25
+    },
+    "deduplicate": {
+      "type": "boolean"
+    },
+    "filters": {
+      "type": "object",
+      "properties": {
+        "yearFrom": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 3000
+        },
+        "yearTo": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 3000
+        },
+        "workType": {
+          "type": "string",
+          "maxLength": 100
+        }
+      }
+    }
+  }
+}
