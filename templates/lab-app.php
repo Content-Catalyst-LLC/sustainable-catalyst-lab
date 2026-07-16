@@ -45,6 +45,7 @@
           'overview' => 'Overview',
           'project-workspace' => 'Project architecture',
           'dataset-registry' => 'Dataset registry',
+          'reproducible-runs' => 'Reproducible runs',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -195,6 +196,21 @@
           <section class="sc-ws0280-card"><h4>Schema and migration</h4><div class="sc-ws0280-migration" data-workspace-v0280-migration></div><p class="sc-ws0280-note" data-workspace-v0280-storage></p><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button" data-workspace-v0280-migrate>Normalize all projects</button><button type="button" class="sc-lab-button" data-workspace-v0280-export>Export project bundle</button><button type="button" class="sc-lab-button" data-workspace-v0280-import>Import project bundle</button><input type="file" accept="application/json,.json" hidden data-workspace-v0280-file></div></section>
           <section class="sc-ws0280-card"><h4>Project checkpoints</h4><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-workspace-v0280-checkpoint>Create checkpoint</button></div><div class="sc-ws0280-list" data-workspace-v0280-checkpoints></div></section>
           <section class="sc-ws0280-card is-wide"><h4>Record relationships</h4><div class="sc-ws0280-relationship-fields"><label>From<select data-workspace-v0280-from><option value="">Choose a record</option></select></label><label>To<select data-workspace-v0280-to><option value="">Choose a record</option></select></label><label>Relationship<select data-workspace-v0280-relationship-type><option value="related-to">Related to</option><option value="derived-from">Derived from</option><option value="supports">Supports</option><option value="tests">Tests</option><option value="documents">Documents</option><option value="uses">Uses</option></select></label><div class="sc-ws0280-actions"><button type="button" class="sc-lab-button" data-workspace-v0280-relationship-add>Add relationship</button></div></div><div class="sc-ws0280-list" data-workspace-v0280-relationships></div></section>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-lab-repro-v0282" data-lab-module="reproducible-runs" data-module-panel="reproducible-runs" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/REPRODUCIBILITY</span><h3>Reproducible Computational Runs</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.28.2</span></div>
+        <p>Freeze governed requests, outputs, environments, package versions, checksums, warnings, and failure histories into portable project records.</p>
+        <div class="sc-repro0282-status" data-repro-v0282-status role="status" aria-live="polite">Preparing reproducible-run registry…</div>
+        <div class="sc-repro0282-metrics" data-repro-v0282-metrics></div>
+        <div class="sc-repro0282-grid">
+          <section class="sc-repro0282-card"><h4>Freeze a project result</h4><div class="sc-repro0282-toolbar"><label>Completed record<select data-repro-v0282-source></select></label><label>Notes<textarea class="sc-repro0282-note" data-repro-v0282-notes placeholder="Method notes, assumptions, or limitations"></textarea></label></div><div class="sc-repro0282-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-repro-v0282-freeze>Freeze selected record</button><button type="button" class="sc-lab-button" data-repro-v0282-example>Run verified example</button></div></section>
+          <section class="sc-repro0282-card"><h4>Compare runs</h4><div class="sc-repro0282-toolbar"><label>Absolute tolerance<input type="number" step="any" value="1e-9" data-repro-v0282-abs></label><label>Relative tolerance<input type="number" step="any" value="1e-7" data-repro-v0282-rel></label></div><div class="sc-repro0282-actions"><button type="button" class="sc-lab-button" data-repro-v0282-compare>Compare two selected runs</button><button type="button" class="sc-lab-button" data-repro-v0282-export>Export bundle</button><button type="button" class="sc-lab-button" data-repro-v0282-import>Import bundle</button><input type="file" accept="application/json" hidden data-repro-v0282-file></div></section>
+          <section class="sc-repro0282-card"><h4>Run manifests</h4><div class="sc-repro0282-runs" data-repro-v0282-runs></div></section>
+          <section class="sc-repro0282-card"><h4>Selected manifest or comparison</h4><pre class="sc-repro0282-detail" data-repro-v0282-detail>No run selected.</pre></section>
+          <section class="sc-repro0282-card is-wide"><h4>Comparison history</h4><div class="sc-lab-table-wrap"><table class="sc-repro0282-table"><thead><tr><th>Left</th><th>Right</th><th>Status</th><th>Differences</th><th>Created</th></tr></thead><tbody data-repro-v0282-comparisons></tbody></table></div></section>
         </div>
       </section>
 

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/reproducible-run-v0282.schema.json",
+  "title": "Sustainable Catalyst Lab Reproducible Computational Run v0.28.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "method",
+    "request",
+    "response",
+    "environment",
+    "checksums",
+    "manifestSha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-reproducible-run/0.28.2"
+    },
+    "version": {
+      "const": "0.28.2"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "failed",
+        "cancelled",
+        "timed_out"
+      ]
+    },
+    "method": {
+      "type": "string"
+    },
+    "methodVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "serviceVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request": {
+      "type": "object"
+    },
+    "response": {
+      "type": "object"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "checksums": {
+      "type": "object"
+    },
+    "manifestSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "history": {
+      "type": "array"
+    },
+    "parentRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

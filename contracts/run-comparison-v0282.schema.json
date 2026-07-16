@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/run-comparison-v0282.schema.json",
+  "title": "Sustainable Catalyst Lab Run Comparison v0.28.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "leftRunId",
+    "rightRunId",
+    "status",
+    "differences",
+    "sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-run-comparison/0.28.2"
+    },
+    "version": {
+      "const": "0.28.2"
+    },
+    "id": {
+      "type": "string"
+    },
+    "leftRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rightRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "reproduced",
+        "changed"
+      ]
+    },
+    "differences": {
+      "type": "array"
+    },
+    "sha256": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

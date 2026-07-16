@@ -1,3 +1,8 @@
+## 0.28.2 — Reproducible Computational Runs
+
+- Adds frozen computational run manifests, environment fingerprints, integrity verification, rerun-and-compare, histories, and portable bundles.
+- Preserves browser-local project storage and uses the Python Compute Core only for governed verification and comparison.
+
 ## 0.28.1 — Dataset Registry and Scientific Data Management
 - Dataset registry, data dictionaries, units, validation, source/license metadata, lineage, profiling, and import support.
 

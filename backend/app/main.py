@@ -19,6 +19,7 @@ from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, Q
 from .precision import policy_catalog, recommend
 from .visualization import VisualizationInputError, build_spec as build_visualization_spec, catalog as visualization_catalog, csv_text as visualization_csv
 from .datasets import DatasetProfileError, health as dataset_health_payload, profile_dataset
+from .reproducibility import ReproducibilityError, build_manifest as build_reproducibility_manifest, compare_manifests, environment_fingerprint, health as reproducibility_health_payload, verify_manifest
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -104,6 +105,7 @@ def health():
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "formats": ["svg", "png", "csv", "json"]},
         "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
+        "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -166,6 +168,7 @@ def capabilities():
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "serverNormalizedSpecs": True, "accessibleDescriptions": True, "tabularFallback": True},
         "projectWorkspace": {"version": "0.28.0", "projectContextAccepted": True, "serverBackedStorage": False},
         "datasetRegistry": {"version": "0.28.1", "profileEndpoint": True, "dataDictionary": True, "unitMetadata": True, "lineage": True, "serverBackedRegistry": False},
+        "reproducibility": {"version": "0.28.2", "frozenManifests": True, "environmentFingerprint": True, "verification": True, "comparison": True, "portableBundles": True, "serverBackedRegistry": False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -247,6 +250,33 @@ def datasets_profile(payload: dict[str, Any], auth: dict[str, str] = Depends(req
     except DatasetProfileError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+
+@app.get("/v1/reproducibility/health")
+def reproducibility_health():
+    body = reproducibility_health_payload(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/reproducibility/environment", dependencies=[Depends(require_compute_auth)])
+def reproducibility_environment():
+    return {"ok": True, "version": "0.28.2", "environment": environment_fingerprint()}
+
+@app.post("/v1/reproducibility/manifest")
+def reproducibility_manifest(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_reproducibility_manifest(payload)
+    except ReproducibilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/reproducibility/verify")
+def reproducibility_verify(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_manifest(payload)
+    except ReproducibilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/reproducibility/compare")
+def reproducibility_compare(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return compare_manifests(payload)
+    except ReproducibilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])
 def methods():

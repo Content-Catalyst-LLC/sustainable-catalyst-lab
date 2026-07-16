@@ -1,0 +1,27 @@
+{
+  "schema": "sc-lab-reproducibility-policy/0.28.2",
+  "version": "0.28.2",
+  "requiredFields": [
+    "method",
+    "request",
+    "response",
+    "environment",
+    "checksums"
+  ],
+  "frozenFields": [
+    "method",
+    "methodVersion",
+    "serviceVersion",
+    "request",
+    "response",
+    "environment",
+    "checksums"
+  ],
+  "defaultTolerances": {
+    "absolute": 1e-09,
+    "relative": 1e-07
+  },
+  "bundleSchema": "sc-lab-reproducibility-bundle/0.28.2",
+  "storage": "browser-local-project-records",
+  "serverBackedRegistry": false
+}

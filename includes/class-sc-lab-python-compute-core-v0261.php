@@ -25,6 +25,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/visualization/csv', array('methods'=>'POST','callback'=>array(__CLASS__,'visualization_csv'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/datasets/health', array('methods'=>'GET','callback'=>array(__CLASS__,'dataset_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/datasets/profile', array('methods'=>'POST','callback'=>array(__CLASS__,'dataset_profile'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/health', array('methods'=>'GET','callback'=>array(__CLASS__,'reproducibility_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/environment', array('methods'=>'GET','callback'=>array(__CLASS__,'reproducibility_environment'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/manifest', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_manifest'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_compare'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -244,6 +249,12 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function visualization_csv(WP_REST_Request $request){$payload=self::visualization_payload($request);return is_wp_error($payload)?$payload:self::proxy('/v1/visualization/csv','POST',$payload,8388608);}
     public static function dataset_health(){return self::proxy('/v1/datasets/health');}
     public static function dataset_profile(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_dataset_profile','A JSON dataset profile request is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);if(is_wp_error($clean)){return $clean;}if(isset($clean['rows'])&&is_array($clean['rows'])){$clean['rows']=array_slice($clean['rows'],0,5000);}return self::proxy('/v1/datasets/profile','POST',$clean,8388608);}
+    public static function reproducibility_health(){return self::proxy('/v1/reproducibility/health');}
+    public static function reproducibility_environment(){return self::proxy('/v1/reproducibility/environment');}
+    private static function reproducibility_payload(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_reproducibility_payload','A JSON reproducibility payload is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);return is_wp_error($clean)?$clean:$clean;}
+    public static function reproducibility_manifest(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/manifest','POST',$p,8388608);}
+    public static function reproducibility_verify(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/verify','POST',$p,8388608);}
+    public static function reproducibility_compare(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/compare','POST',$p,8388608);}
 
 
 

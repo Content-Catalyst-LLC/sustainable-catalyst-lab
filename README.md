@@ -393,3 +393,8 @@ Use `[sc_lab_project_workspace]` or open **Project → Project architecture** to
 ## v0.28.1 dataset registry
 
 Use `[sc_lab_dataset_registry]` or open **Project → Dataset registry** to register CSV, JSON, GeoJSON, NetCDF metadata, and existing Lab datasets with structured variables, units, validation, source/license metadata, profiles, and lineage.
+
+
+## v0.28.2 reproducible computational runs
+
+Use **Project → Reproducible runs** or `[sc_lab_reproducible_runs]` to freeze completed requests and results, verify checksums, rerun and compare within tolerances, and export portable reproducibility bundles.

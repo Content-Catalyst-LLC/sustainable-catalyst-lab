@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/reproducibility-bundle-v0282.schema.json",
+  "title": "Sustainable Catalyst Lab Reproducibility Bundle v0.28.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "exportedAt",
+    "runs",
+    "comparisons",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-reproducibility-bundle/0.28.2"
+    },
+    "version": {
+      "const": "0.28.2"
+    },
+    "exportedAt": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "reproducible-run-v0282.schema.json"
+      }
+    },
+    "comparisons": {
+      "type": "array"
+    },
+    "integrity": {
+      "type": "object",
+      "required": [
+        "runCount",
+        "comparisonCount",
+        "sha256"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
