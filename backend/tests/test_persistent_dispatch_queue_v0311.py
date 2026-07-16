@@ -25,7 +25,7 @@ def test_expired_lease_is_requeued():
  with TemporaryDirectory() as td:
   d=PersistentDistributedDispatcher(str(Path(td)/'d.sqlite3'),max_attempts=2); d.register(worker()); d.enqueue(workload()); c=d.claim({'workerId':'worker-a','leaseSeconds':30},'secret');
   with d._connect() as con: con.execute("UPDATE dispatcher_queue SET lease_expires_at='2000-01-01T00:00:00+00:00' WHERE lease_id=?",(c['contract']['leaseId'],))
-  r=d.recover(); assert r['requeued']==1 and d.status()['counts']['queued']==1
+  r=d.recover(); assert r['requeued']==1 and d.status()['counts']['retrying']==1
 
 def test_atomic_claim_prevents_double_lease():
  with TemporaryDirectory() as td:

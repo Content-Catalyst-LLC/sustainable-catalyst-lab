@@ -54,6 +54,7 @@
           'model-calibration' => 'Model calibration',
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
+          'dispatcher-operations' => 'Dispatcher operations',
           'worker-agent' => 'Secure worker agents',
           'artifact-transport' => 'Artifact transport',
           'activity' => 'Activity',
@@ -1545,6 +1546,29 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         <h3>Active leases</h3><div class="sc-lab-table-wrap"><table><thead><tr><th>Lease</th><th>Worker</th><th>Status</th><th>Expires</th></tr></thead><tbody data-pq-v0311-leases></tbody></table></div>
         <h3>Recent queue history</h3><div class="sc-lab-table-wrap"><table><thead><tr><th>Time</th><th>Entity</th><th>Event</th><th>ID</th></tr></thead><tbody data-pq-v0311-history></tbody></table></div>
         <pre data-pq-v0311-output aria-label="Persistent queue response">No response yet.</pre>
+      </section>
+
+      <section class="sc-lab-panel sc-do0314" data-lab-module="dispatcher-operations" data-module-panel="dispatcher-operations" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.4</p><h3>Dispatcher Operations, Dead-Letter Recovery, and Observability</h3><p>Classify failed workloads, apply bounded retry policies, inspect dead-letter records, replay corrected work, cancel unsafe or obsolete jobs, trace dispatch events, and verify SQLite queue health from one governed operations workspace.</p></header>
+        <p class="sc-do0314-status" data-do-v0314-status role="status" aria-live="polite">Dispatcher operations loading…</p>
+        <div class="sc-do0314-metrics" data-do-v0314-metrics></div>
+        <div class="sc-do0314-grid">
+          <div class="sc-do0314-card">
+            <h4>Dead-letter queue</h4>
+            <label>Maximum records<input type="number" min="1" max="1000" value="100" data-do-v0314-limit></label>
+            <div class="sc-do0314-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-do-v0314-refresh>Refresh operations</button><button type="button" class="sc-lab-button" data-do-v0314-recover>Run recovery</button><button type="button" class="sc-lab-button" data-do-v0314-diagnostics>Verify database</button></div>
+            <div class="sc-do0314-table-wrap"><table class="sc-do0314-table"><thead><tr><th>Queue ID</th><th>Method</th><th>Project</th><th>Failure</th><th>Attempts</th><th>Dead-lettered</th><th>Actions</th></tr></thead><tbody data-do-v0314-deadletters></tbody></table></div>
+          </div>
+          <div class="sc-do0314-card">
+            <h4>Operator action</h4>
+            <label>Queue ID<input data-do-v0314-queueid placeholder="dispatch-job-…"></label>
+            <label>Reason<textarea rows="4" data-do-v0314-reason>Reviewed and corrected by the Lab operator.</textarea></label>
+            <label><input type="checkbox" checked data-do-v0314-reset> Reset attempt counter on replay</label>
+            <div class="sc-do0314-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-do-v0314-replay>Replay queue item</button><button type="button" class="sc-lab-button" data-do-v0314-cancel>Cancel queue item</button></div>
+            <p><strong>Safety:</strong> replay and cancellation preserve operator actions and event history. Hard deletion is not exposed.</p>
+          </div>
+          <div class="sc-do0314-card is-wide"><h4>Operations health, diagnostics, and event timeline</h4><pre class="sc-do0314-output" data-do-v0314-output>No response yet.</pre></div>
+        </div>
       </section>
 
       <section class="sc-lab-panel sc-at0313" data-lab-module="artifact-transport" data-module-panel="artifact-transport" hidden>

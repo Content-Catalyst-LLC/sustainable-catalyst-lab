@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dispatcher-failure-v0314.schema.json",
+  "title": "Sustainable Catalyst Lab Dispatcher Failure Classification",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "failureClass",
+    "failureCode",
+    "retryable",
+    "severity",
+    "description",
+    "error",
+    "classifiedAt",
+    "classificationSource"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-dispatch-failure/0.31.4"
+    },
+    "version": {
+      "const": "0.31.4"
+    },
+    "failureClass": {
+      "enum": [
+        "worker-transient",
+        "lease-timeout",
+        "capacity",
+        "artifact-transport",
+        "coordinator-transient",
+        "input-validation",
+        "method-not-found",
+        "security-policy",
+        "worker-quarantined",
+        "operator-cancelled",
+        "unknown"
+      ]
+    },
+    "failureCode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "classifiedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "classificationSource": {
+      "enum": [
+        "explicit",
+        "automatic"
+      ]
+    },
+    "retryDelaySeconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "nextAvailableAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deadLetterReason": {
+      "enum": [
+        "non-retryable",
+        "attempt-limit-exhausted"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

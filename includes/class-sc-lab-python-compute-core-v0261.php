@@ -83,6 +83,16 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/leases/(?P<lease>[A-Za-z0-9._-]{1,180})/release', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_lease_release'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/recovery/run', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_recovery'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/history', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_history'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/operations/health', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_operations_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/operations/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_operations_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/operations/metrics', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_operations_metrics'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/operations/diagnostics', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_operations_diagnostics'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/dead-letters', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_dead_letters'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/dead-letters/replay', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_dead_letters_replay'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/(?P<queue>[A-Za-z0-9._-]{1,220})', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_queue_item'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/(?P<queue>[A-Za-z0-9._-]{1,220})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_queue_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/(?P<queue>[A-Za-z0-9._-]{1,220})/replay', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_queue_replay'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/(?P<queue>[A-Za-z0-9._-]{1,220})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_queue_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/health', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/credentials/status', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_credentials_status'),'permission_callback'=>'__return_true'));
@@ -188,6 +198,10 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         $out['referenceComparison']=!empty($value['referenceComparison']);
         $standard=isset($value['uncertaintyStandard'])?sanitize_text_field($value['uncertaintyStandard']):'method-default'; $out['uncertaintyStandard']=in_array($standard,array('method-default','GUM-inspired','Monte-Carlo','bootstrap'),true)?$standard:'method-default';
         return $out;
+    }
+
+    public static function operations_permission() {
+        return current_user_can('manage_options');
     }
 
     public static function health() { return self::proxy('/health'); }
@@ -388,6 +402,16 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function dispatcher_lease_release(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/leases/'.rawurlencode($request['lease']).'/release','POST',$p,8388608);}
     public static function dispatcher_recovery(){return self::proxy('/v1/dispatcher/recovery/run','POST',array(),8388608);}
     public static function dispatcher_history(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/dispatcher/history?limit='.$limit);}
+    public static function dispatcher_operations_health(){return self::proxy('/v1/dispatcher/operations/health');}
+    public static function dispatcher_operations_policies(){return self::proxy('/v1/dispatcher/operations/policies');}
+    public static function dispatcher_operations_metrics(){return self::proxy('/v1/dispatcher/operations/metrics');}
+    public static function dispatcher_operations_diagnostics(){return self::proxy('/v1/dispatcher/operations/diagnostics');}
+    public static function dispatcher_dead_letters(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));$class=sanitize_key($request->get_param('failureClass')?:'');$query='limit='.$limit.($class?'&failureClass='.rawurlencode($class):'');return self::proxy('/v1/dispatcher/dead-letters?'.$query);}
+    public static function dispatcher_dead_letters_replay(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/dead-letters/replay','POST',$p,8388608);}
+    public static function dispatcher_queue_item(WP_REST_Request $request){return self::proxy('/v1/dispatcher/queue/'.rawurlencode($request['queue']));}
+    public static function dispatcher_queue_timeline(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:250)));return self::proxy('/v1/dispatcher/queue/'.rawurlencode($request['queue']).'/timeline?limit='.$limit);}
+    public static function dispatcher_queue_replay(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/queue/'.rawurlencode($request['queue']).'/replay','POST',$p,8388608);}
+    public static function dispatcher_queue_cancel(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/queue/'.rawurlencode($request['queue']).'/cancel','POST',$p,8388608);}
     public static function worker_agent_health(){return self::proxy('/v1/worker-agent/health');}
     public static function worker_agent_policies(){return self::proxy('/v1/worker-agent/policies');}
     public static function worker_agent_credentials_status(){return self::proxy('/v1/worker-agent/credentials/status');}

@@ -1,3 +1,17 @@
+# Changelog
+
+## 0.31.4 — Dispatcher Operations, Dead-Letter Recovery, and Observability
+
+- Added normalized dispatcher failure classification with explicit retryability and severity policies.
+- Added bounded exponential backoff and a durable `retrying` queue state.
+- Added terminal dead-letter handling for non-retryable and attempt-exhausted workloads.
+- Added durable failure metadata, operator notes, and append-only replay/cancellation actions.
+- Added single and bulk replay, terminal-work cancellation, per-item inspection, and combined event timelines.
+- Added queue-depth, age, lease, throughput, failure-distribution, and operator-action metrics.
+- Added SQLite integrity, foreign-key, WAL, journal-mode, database-size, schema, and storage-path diagnostics.
+- Added administrator-only WordPress operations routes and the 60th Lab panel, Dispatcher Operations.
+- Added v0.31.4 contracts, tests, deployment variables, documentation, and release metadata.
+
 ## 0.31.3 — Distributed Artifact, Result, and Checkpoint Transport
 
 - Added a content-addressed artifact store backed by SQLite WAL metadata and SHA-256 filesystem blobs.
@@ -6,8 +20,6 @@
 - Bound worker input downloads to active dispatch leases and preserved artifact provenance across project, queue, contract, worker, method, and receipt identifiers.
 - Added worker input materialization and automatic large-result externalization.
 - Added Artifact Transport WordPress operations UI, health/schema routes, backend proxies, contracts, tests, deployment settings, and release metadata.
-
-# Changelog
 
 ## 0.31.2 — Secure Worker Agent Runtime and Pull-Based Execution
 

@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab Python Compute Core v0.31.3
+# Sustainable Catalyst Lab Python Compute Core v0.31.4
 
-The v0.31.3 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves the 23-method registry, fourteen known-answer benchmarks, persistent SQLite WAL queue, checkpoints, retries, cache, and thirteen domain extensions while adding numerical precision profiles and solver governance.
+The v0.31.4 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves the 23-method registry, fourteen known-answer benchmarks, persistent SQLite WAL queue, checkpoints, retries, cache, and thirteen domain extensions while adding numerical precision profiles and solver governance.
 
 ## Solver governance
 
@@ -84,3 +84,15 @@ SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED=0
 ```
 
 Workers upload large results automatically when the encoded result exceeds `SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES`. Artifact inputs listed in a dispatch workload are downloadable only while the worker owns the active lease.
+
+
+## Dispatcher operations and dead-letter recovery v0.31.4
+
+The persistent dispatcher now classifies failures, applies bounded exponential retry delays, and moves non-retryable or attempt-exhausted work into a durable dead-letter state. Administrator routes provide queue inspection, combined event timelines, single and bulk replay, cancellation, metrics, recovery, and SQLite diagnostics.
+
+```bash
+SC_LAB_DISPATCHER_RETRY_BASE_DELAY_SECONDS=15
+SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS=900
+```
+
+Backend operations routes require the compute API key. WordPress recovery and operator routes require an authenticated administrator with `manage_options`. Dead-letter replay preserves the earlier failure and operator history instead of deleting it.

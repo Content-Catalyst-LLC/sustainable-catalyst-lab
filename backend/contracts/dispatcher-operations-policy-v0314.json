@@ -1,0 +1,84 @@
+{
+  "ok": true,
+  "schema": "sc-lab-dispatch-operations/0.31.4",
+  "version": "0.31.4",
+  "failureClasses": {
+    "worker-transient": {
+      "retryable": true,
+      "severity": "warning"
+    },
+    "lease-timeout": {
+      "retryable": true,
+      "severity": "warning"
+    },
+    "capacity": {
+      "retryable": true,
+      "severity": "warning"
+    },
+    "artifact-transport": {
+      "retryable": true,
+      "severity": "warning"
+    },
+    "coordinator-transient": {
+      "retryable": true,
+      "severity": "warning"
+    },
+    "input-validation": {
+      "retryable": false,
+      "severity": "error"
+    },
+    "method-not-found": {
+      "retryable": false,
+      "severity": "error"
+    },
+    "security-policy": {
+      "retryable": false,
+      "severity": "critical"
+    },
+    "worker-quarantined": {
+      "retryable": false,
+      "severity": "critical"
+    },
+    "operator-cancelled": {
+      "retryable": false,
+      "severity": "info"
+    },
+    "unknown": {
+      "retryable": true,
+      "severity": "error"
+    }
+  },
+  "retry": {
+    "strategy": "bounded-exponential-backoff",
+    "defaultBaseDelaySeconds": 15,
+    "defaultMaximumDelaySeconds": 900,
+    "attemptLimitPerQueueItem": true,
+    "operatorReplay": true,
+    "replayResetsAttemptsByDefault": true
+  },
+  "deadLetters": {
+    "terminalState": "dead-lettered",
+    "inspection": true,
+    "timeline": true,
+    "singleReplay": true,
+    "bulkReplay": true,
+    "operatorCancellation": true,
+    "hardDelete": false
+  },
+  "observability": {
+    "queueMetrics": true,
+    "failureClassification": true,
+    "oldestQueueAge": true,
+    "leaseExpiryWindow": true,
+    "throughputWindows": [
+      "1h",
+      "24h"
+    ],
+    "sqliteIntegrity": true,
+    "eventTimeline": true
+  },
+  "administration": {
+    "wordpressOperationsRoutesRequireManageOptions": true,
+    "backendRoutesRequireComputeApiKey": true
+  }
+}

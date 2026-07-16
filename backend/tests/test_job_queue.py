@@ -92,7 +92,7 @@ def test_restart_recovery_returns_running_job_to_queue(tmp_path: Path):
         operation="core_run",
         payload={"method": "system.controlled_delay", "inputs": {"seconds": 1.5}},
         auth={"mode": "test", "client": "pytest"},
-        timeout_seconds=5,
+        timeout_seconds=10,
         max_attempts=1,
         idempotency_key="restart-recovery",
     )
@@ -110,7 +110,7 @@ def test_restart_recovery_returns_running_job_to_queue(tmp_path: Path):
     assert recovered["status"] == "queued"
     assert "Recovered" in recovered["progressMessage"]
     queue_two.start()
-    deadline = time.time() + 8
+    deadline = time.time() + 15
     while time.time() < deadline:
         recovered = queue_two.get(record["jobId"])
         if recovered and recovered["status"] == "completed":

@@ -37,7 +37,7 @@ from .security import require_compute_auth
 
 
 jobs = PersistentJobQueue()
-dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit)
+dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit, settings.dispatcher_retry_base_delay_seconds, settings.dispatcher_retry_max_delay_seconds)
 artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, settings.artifact_max_bytes, settings.artifact_chunk_bytes, settings.artifact_upload_ttl_seconds, settings.artifact_retention_seconds)
 
 
@@ -128,8 +128,9 @@ def health():
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
         "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True},
-        "secureWorkerAgent": {"version":"0.31.3","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.31.4","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumable":True,"sha256Verification":True,"resultArtifacts":True,"checkpointArtifacts":True,"retentionControls":True},
+        "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -200,7 +201,7 @@ def capabilities():
         "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
         "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True,"horizontalCoordinatorSafeClaims":True,"centralHistory":True},
-        "secureWorkerAgent": {"version":"0.31.3","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.31.4","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumableChunks":True,"sha256Verification":True,"deduplication":True,"inputMaterialization":True,"resultExternalization":True,"checkpointTransport":True,"retentionControls":True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
@@ -972,6 +973,58 @@ def dispatcher_recovery_route(auth:dict[str,str]=Depends(require_compute_auth)):
 @app.get("/v1/dispatcher/history")
 def dispatcher_history_route(limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
     del auth; return dispatcher.history(limit)
+
+# v0.31.4 Dispatcher Operations, Dead-Letter Recovery, and Observability
+
+@app.get("/v1/dispatcher/operations/health")
+def dispatcher_operations_health_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.operations_health()
+
+@app.get("/v1/dispatcher/operations/policies")
+def dispatcher_operations_policies_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.failure_policies()
+
+@app.get("/v1/dispatcher/operations/metrics")
+def dispatcher_operations_metrics_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.operations_metrics()
+
+@app.get("/v1/dispatcher/operations/diagnostics")
+def dispatcher_operations_diagnostics_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.diagnostics()
+
+@app.get("/v1/dispatcher/dead-letters")
+def dispatcher_dead_letters_route(limit:int=Query(100,ge=1,le=1000), failure_class:str=Query("",alias="failureClass"), auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.dead_letters(limit,failure_class)
+
+@app.post("/v1/dispatcher/dead-letters/replay")
+def dispatcher_dead_letters_replay_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.replay_many(payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.get("/v1/dispatcher/queue/{queue_id}")
+def dispatcher_queue_item_route(queue_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.queue_item(queue_id)
+    except DispatcherError as exc: raise HTTPException(status_code=404,detail=str(exc)) from exc
+
+@app.get("/v1/dispatcher/queue/{queue_id}/timeline")
+def dispatcher_queue_timeline_route(queue_id:str,limit:int=Query(250,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.timeline(queue_id,limit)
+    except DispatcherError as exc: raise HTTPException(status_code=404,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/queue/{queue_id}/replay")
+def dispatcher_queue_replay_route(queue_id:str,payload:dict[str,Any] | None=None,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.replay(queue_id,payload or {})
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/queue/{queue_id}/cancel")
+def dispatcher_queue_cancel_route(queue_id:str,payload:dict[str,Any] | None=None,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.cancel_queue_item(queue_id,payload or {})
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
 
 # v0.31.3 Distributed Artifact, Result, and Checkpoint Transport
 

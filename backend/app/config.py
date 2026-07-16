@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.31.3"
+    version: str = "0.31.4"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -55,6 +55,8 @@ class Settings:
     dispatcher_max_queue_records: int = _int("SC_LAB_DISPATCHER_MAX_QUEUE_RECORDS", 5000, 100, 100000)
     dispatcher_max_attempts: int = _int("SC_LAB_DISPATCHER_MAX_ATTEMPTS", 5, 1, 20)
     dispatcher_history_limit: int = _int("SC_LAB_DISPATCHER_HISTORY_LIMIT", 10000, 100, 1000000)
+    dispatcher_retry_base_delay_seconds: int = _int("SC_LAB_DISPATCHER_RETRY_BASE_DELAY_SECONDS", 15, 1, 3600)
+    dispatcher_retry_max_delay_seconds: int = _int("SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS", 900, 1, 86400)
     dispatcher_contract_secret: str = os.getenv("SC_LAB_DISPATCHER_CONTRACT_SECRET", os.getenv("SC_LAB_COMPUTE_SIGNING_SECRET", "")).strip()
     worker_enrollment_token: str = os.getenv("SC_LAB_WORKER_ENROLLMENT_TOKEN", "").strip()
     allow_open_worker_enrollment: bool = os.getenv("SC_LAB_ALLOW_OPEN_WORKER_ENROLLMENT", "0").lower() in {"1", "true", "yes"}

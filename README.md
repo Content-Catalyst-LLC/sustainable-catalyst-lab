@@ -1,8 +1,21 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.31.3 — Distributed Artifact, Result, and Checkpoint Transport**
+**Current release: v0.31.4 — Dispatcher Operations, Dead-Letter Recovery, and Observability**
 
 Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, and verified artifact transport.
+
+## v0.31.4 highlights
+
+- Normalized failure classification for transient, validation, security, capacity, artifact, lease, and worker failures
+- Bounded exponential retry backoff with configurable base and maximum delays
+- Durable `retrying`, `dead-lettered`, and operator-cancelled queue lifecycles
+- Attempt-exhaustion handling without dropping the original workload or event history
+- Single and bulk dead-letter replay with optional attempt reset
+- Per-item queue, contract, lease, and operator-action timelines
+- Queue depth, oldest-ready age, lease-expiry, throughput, failure-distribution, and operator-action metrics
+- SQLite integrity, foreign-key, WAL, size, schema, and storage-path diagnostics
+- Administrator-only WordPress Dispatcher Operations panel and recovery proxies
+- Direct cumulative installer bridge from v0.31.0 through v0.31.3
 
 ## v0.31.3 highlights
 

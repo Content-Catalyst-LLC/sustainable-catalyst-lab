@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dispatcher-dead-letter-v0314.schema.json",
+  "title": "Sustainable Catalyst Lab Dispatcher Dead-Letter Collection",
+  "type": "object",
+  "required": [
+    "ok",
+    "schema",
+    "count",
+    "deadLetters"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "schema": {
+      "const": "sc-lab-dispatch-dead-letter/0.31.4"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deadLetters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema",
+          "id",
+          "status",
+          "attempts",
+          "maxAttempts",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "schema": {
+            "const": "sc-lab-dispatch-queue-item/0.31.1"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "dead-lettered"
+          },
+          "workloadHash": {
+            "type": "string"
+          },
+          "workload": {
+            "type": "object"
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxAttempts": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "dispatcher-failure-v0314.schema.json"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deadLetteredAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "operatorNote": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

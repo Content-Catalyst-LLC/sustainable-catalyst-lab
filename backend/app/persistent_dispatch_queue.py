@@ -8,6 +8,7 @@ import secrets
 import sqlite3
 from typing import Any
 
+from .dispatcher_operations import DEAD_LETTER_SCHEMA, FAILURE_SCHEMA, classify_failure, policies as operations_policies, retry_delay_seconds
 from .distributed_dispatcher import (
     CONTRACT_SCHEMA, VERSION, DispatcherError, DistributedDispatcher,
     _hash, _now, _now_dt, _stable, _text, normalize_worker, normalize_workload,
@@ -16,14 +17,15 @@ from .distributed_dispatcher import (
 QUEUE_SCHEMA = "sc-lab-dispatch-queue-item/0.31.1"
 LEASE_SCHEMA = "sc-lab-dispatch-lease/0.31.1"
 EVENT_SCHEMA = "sc-lab-dispatch-event/0.31.1"
-DB_SCHEMA_VERSION = 2
+DB_SCHEMA_VERSION = 3
 ACTIVE_QUEUE_STATES = {"queued", "leased", "running", "retrying"}
-FINAL_QUEUE_STATES = {"completed", "failed", "cancelled"}
+FINAL_QUEUE_STATES = {"completed", "failed", "cancelled", "dead-lettered"}
 
 class PersistentDistributedDispatcher(DistributedDispatcher):
     def __init__(self, db_path: str, stale_seconds: int = 120, default_lease_seconds: int = 300,
                  max_workers: int = 500, max_queue_records: int = 5000,
-                 max_attempts: int = 5, history_limit: int = 10000):
+                 max_attempts: int = 5, history_limit: int = 10000,
+                 retry_base_delay_seconds: int = 15, retry_max_delay_seconds: int = 900):
         super().__init__()
         self.db_path = str(db_path)
         self.stale_seconds = max(30, int(stale_seconds))
@@ -32,6 +34,8 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         self.max_queue_records = max(100, int(max_queue_records))
         self.max_attempts = max(1, int(max_attempts))
         self.history_limit = max(100, int(history_limit))
+        self.retry_base_delay_seconds = max(1, int(retry_base_delay_seconds))
+        self.retry_max_delay_seconds = max(self.retry_base_delay_seconds, int(retry_max_delay_seconds))
         Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         self._migrate()
 
@@ -87,6 +91,27 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
             CREATE INDEX IF NOT EXISTS idx_dispatcher_events_entity
               ON dispatcher_events(entity_type, entity_id, id DESC);
             ''')
+            columns = {row["name"] for row in con.execute("PRAGMA table_info(dispatcher_queue)").fetchall()}
+            for name, declaration in (
+                ("failure_class", "TEXT"),
+                ("failure_code", "TEXT"),
+                ("retryable", "INTEGER"),
+                ("dead_lettered_at", "TEXT"),
+                ("operator_note", "TEXT"),
+            ):
+                if name not in columns:
+                    con.execute(f"ALTER TABLE dispatcher_queue ADD COLUMN {name} {declaration}")
+            con.executescript("""
+            CREATE INDEX IF NOT EXISTS idx_dispatcher_queue_failure
+              ON dispatcher_queue(status, failure_class, updated_at DESC);
+            CREATE TABLE IF NOT EXISTS dispatcher_operator_actions(
+              id INTEGER PRIMARY KEY AUTOINCREMENT, queue_id TEXT NOT NULL,
+              action TEXT NOT NULL, operator_id TEXT NOT NULL, reason TEXT,
+              payload_json TEXT NOT NULL, created_at TEXT NOT NULL
+            );
+            CREATE INDEX IF NOT EXISTS idx_dispatcher_operator_queue
+              ON dispatcher_operator_actions(queue_id, id DESC);
+            """)
             con.execute("INSERT INTO dispatcher_meta(key,value) VALUES('schema_version',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (str(DB_SCHEMA_VERSION),))
 
     @staticmethod
@@ -97,6 +122,27 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         con.execute("INSERT INTO dispatcher_events(schema_name,entity_type,entity_id,event_type,payload_json,created_at) VALUES(?,?,?,?,?,?)",
                     (EVENT_SCHEMA, entity_type, entity_id, event_type, _stable(payload if payload is not None else {}), _now()))
         con.execute("DELETE FROM dispatcher_events WHERE id NOT IN (SELECT id FROM dispatcher_events ORDER BY id DESC LIMIT ?)", (self.history_limit,))
+
+    def _operator_action(self, con: sqlite3.Connection, queue_id: str, action: str, operator_id: str, reason: str, payload: Any | None = None) -> None:
+        con.execute(
+            "INSERT INTO dispatcher_operator_actions(queue_id,action,operator_id,reason,payload_json,created_at) VALUES(?,?,?,?,?,?)",
+            (_text(queue_id, 220), _text(action, 80), _text(operator_id, 180) or "operator", _text(reason, 1000), _stable(payload if payload is not None else {}), _now()),
+        )
+
+    def failure_policies(self) -> dict[str, Any]:
+        return operations_policies(self.retry_base_delay_seconds, self.retry_max_delay_seconds)
+
+    def _failure_transition(self, row: sqlite3.Row, payload: dict[str, Any] | None = None, fallback: str = "") -> tuple[str, dict[str, Any], str]:
+        failure = classify_failure(payload, fallback)
+        can_retry = bool(failure["retryable"]) and int(row["attempts"]) < int(row["max_attempts"])
+        if can_retry:
+            delay = retry_delay_seconds(int(row["attempts"]), self.retry_base_delay_seconds, self.retry_max_delay_seconds)
+            available_at = (_now_dt() + timedelta(seconds=delay)).isoformat()
+            failure["retryDelaySeconds"] = delay
+            failure["nextAvailableAt"] = available_at
+            return "retrying", failure, available_at
+        failure["deadLetterReason"] = "non-retryable" if not failure["retryable"] else "attempt-limit-exhausted"
+        return "dead-lettered", failure, _now()
 
     def register(self, payload: dict[str, Any]) -> dict[str, Any]:
         worker = normalize_worker(payload)
@@ -270,7 +316,15 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         return {'ok':True,'deduplicated':False,'queueItem':self._queue_dict(row)}
 
     def _queue_dict(self,row:sqlite3.Row)->dict[str,Any]:
-        return {'schema':QUEUE_SCHEMA,'version':VERSION,'id':row['id'],'recordType':'dispatch-queue-item','status':row['status'],'priority':row['priority'],'attempts':row['attempts'],'maxAttempts':row['max_attempts'],'availableAt':row['available_at'],'leaseId':row['lease_id'],'workerId':row['worker_id'],'leaseExpiresAt':row['lease_expires_at'],'createdAt':row['created_at'],'updatedAt':row['updated_at'],'completedAt':row['completed_at'],'workload':self._loads(row['payload_json']),'result':self._loads(row['result_json']),'error':row['error_text']}
+        keys=set(row.keys())
+        created=row['created_at']; age=max(0,int((_now_dt()-datetime.fromisoformat(created)).total_seconds())) if created else 0
+        failure_class=row['failure_class'] if 'failure_class' in keys else None
+        failure={
+            'schema':FAILURE_SCHEMA,'failureClass':failure_class,'failureCode':row['failure_code'] if 'failure_code' in keys else None,
+            'retryable':bool(row['retryable']) if 'retryable' in keys and row['retryable'] is not None else None,
+            'error':row['error_text'],
+        } if failure_class else None
+        return {'schema':QUEUE_SCHEMA,'version':VERSION,'id':row['id'],'recordType':'dispatch-queue-item','status':row['status'],'priority':row['priority'],'attempts':row['attempts'],'maxAttempts':row['max_attempts'],'availableAt':row['available_at'],'leaseId':row['lease_id'],'workerId':row['worker_id'],'leaseExpiresAt':row['lease_expires_at'],'createdAt':created,'updatedAt':row['updated_at'],'completedAt':row['completed_at'],'deadLetteredAt':row['dead_lettered_at'] if 'dead_lettered_at' in keys else None,'operatorNote':row['operator_note'] if 'operator_note' in keys else None,'ageSeconds':age,'workload':self._loads(row['payload_json']),'result':self._loads(row['result_json']),'error':row['error_text'],'failure':failure}
 
     def _contract(self, queue_item:dict[str,Any], worker:dict[str,Any], lease_id:str, expires:str, secret:str)->dict[str,Any]:
         body={'schema':CONTRACT_SCHEMA,'version':VERSION,'recordType':'dispatch-contract','id':f"dispatch-{secrets.token_hex(10)}",'leaseId':lease_id,'queueId':queue_item['id'],'workerId':worker['id'],'workerFingerprint':worker['capabilityFingerprint'],'workload':queue_item['workload'],'issuedAt':_now(),'expiresAt':expires,'status':'offered','acknowledgementRequired':True,'completionReceiptRequired':True,'coordinator':'sustainable-catalyst-lab-python-compute-core'}
@@ -344,11 +398,16 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
             con.execute('BEGIN IMMEDIATE'); row=con.execute("SELECT * FROM dispatcher_queue WHERE lease_id=? AND status IN ('leased','running')",(lease_id,)).fetchone()
             if not row: con.execute('ROLLBACK'); raise DispatcherError('Active lease was not found.')
             if worker_id and row['worker_id']!=worker_id: con.execute('ROLLBACK'); raise DispatcherError('Worker does not own this lease.')
-            status='queued' if requeue and row['attempts']<row['max_attempts'] else 'failed'
-            con.execute("UPDATE dispatcher_queue SET status=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,error_text=?,available_at=?,updated_at=?,completed_at=? WHERE id=?",(status,reason,now,now,now if status=='failed' else None,row['id']))
+            if requeue:
+                status,failure,available_at=self._failure_transition(row,payload,reason)
+            else:
+                status='cancelled'; failure=classify_failure({'failureClass':'operator-cancelled','retryable':False,'error':reason}); available_at=now
+            completed_at=now if status in FINAL_QUEUE_STATES else None
+            dead_lettered_at=now if status=='dead-lettered' else None
+            con.execute("UPDATE dispatcher_queue SET status=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,error_text=?,failure_class=?,failure_code=?,retryable=?,dead_lettered_at=?,available_at=?,updated_at=?,completed_at=? WHERE id=?",(status,failure['error'],failure['failureClass'],failure['failureCode'],1 if failure['retryable'] else 0,dead_lettered_at,available_at,now,completed_at,row['id']))
             con.execute("UPDATE dispatcher_contracts SET status='released',updated_at=? WHERE lease_id=?",(now,lease_id))
-            self._event(con,'lease',lease_id,'released',{'reason':reason,'status':status}); q=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(row['id'],)).fetchone(); con.execute('COMMIT')
-        return {'ok':True,'queueItem':self._queue_dict(q)}
+            self._event(con,'lease',lease_id,'released',{'reason':reason,'status':status,'failure':failure}); q=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(row['id'],)).fetchone(); con.execute('COMMIT')
+        return {'ok':True,'queueItem':self._queue_dict(q),'failure':failure}
 
     def complete(self,contract_id:str,payload:dict[str,Any],worker_id:str='')->dict[str,Any]:
         with self._connect() as con:
@@ -356,41 +415,53 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
             if not row: con.execute('ROLLBACK'); raise DispatcherError('Dispatch contract was not found.')
             if worker_id and row['worker_id'] != worker_id:
                 con.execute('ROLLBACK'); raise DispatcherError('Worker does not own this dispatch contract.')
-            contract=self._loads(row['payload_json']); ok=bool(payload.get('ok',True)); now=_now(); status='completed' if ok else 'failed'; result_hash=_hash(payload.get('result'))
-            if row['status'] in ('completed','failed'):
+            contract=self._loads(row['payload_json']); ok=bool(payload.get('ok',True)); now=_now(); result_hash=_hash(payload.get('result'))
+            if row['status'] in ('completed','failed','dead-lettered'):
                 existing_hash=contract.get('resultHash')
                 if existing_hash and existing_hash != result_hash:
                     con.execute('ROLLBACK'); raise DispatcherError('Completion receipt conflicts with the recorded terminal result.')
                 con.execute('COMMIT'); return {'ok':True,'contract':contract,'idempotent':True}
-            contract['status']=status; contract['completedAt']=now; contract['resultHash']=result_hash; contract['receipt']={'ok':ok,'warnings':payload.get('warnings') if isinstance(payload.get('warnings'),list) else [],'error':_text(payload.get('error'),2000),'workerId':worker_id or row['worker_id'],'receiptHash':_text(payload.get('receiptHash'),128)}
-            con.execute("UPDATE dispatcher_contracts SET status=?,payload_json=?,updated_at=? WHERE id=?",(status,_stable(contract),now,contract_id))
-            con.execute("UPDATE dispatcher_queue SET status=?,result_json=?,error_text=?,completed_at=?,updated_at=? WHERE id=?",(status,_stable(payload.get('result')) if payload.get('result') is not None else None,_text(payload.get('error'),2000) or None,now,now,row['queue_id']))
-            self._event(con,'contract',contract_id,status,contract['receipt']); con.execute('COMMIT')
-        return {'ok':True,'contract':contract,'idempotent':False}
+            qrow=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(row['queue_id'],)).fetchone()
+            if not qrow: con.execute('ROLLBACK'); raise DispatcherError('Dispatch queue item was not found.')
+            if ok:
+                queue_status='completed'; contract_status='completed'; failure=None; available_at=qrow['available_at']; completed_at=now; dead_lettered_at=None
+            else:
+                queue_status,failure,available_at=self._failure_transition(qrow,payload,_text(payload.get('error'),2000))
+                contract_status='failed'; completed_at=now if queue_status in FINAL_QUEUE_STATES else None; dead_lettered_at=now if queue_status=='dead-lettered' else None
+            contract['status']=contract_status; contract['completedAt']=now; contract['resultHash']=result_hash; contract['receipt']={'ok':ok,'warnings':payload.get('warnings') if isinstance(payload.get('warnings'),list) else [],'error':_text(payload.get('error'),2000),'workerId':worker_id or row['worker_id'],'receiptHash':_text(payload.get('receiptHash'),128)}
+            if failure: contract['failure']=failure
+            con.execute("UPDATE dispatcher_contracts SET status=?,payload_json=?,updated_at=? WHERE id=?",(contract_status,_stable(contract),now,contract_id))
+            con.execute("UPDATE dispatcher_queue SET status=?,result_json=?,error_text=?,failure_class=?,failure_code=?,retryable=?,dead_lettered_at=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,available_at=?,completed_at=?,updated_at=? WHERE id=?",(queue_status,_stable(payload.get('result')) if payload.get('result') is not None else None,_text(payload.get('error'),2000) or None,failure['failureClass'] if failure else None,failure['failureCode'] if failure else None,(1 if failure['retryable'] else 0) if failure else None,dead_lettered_at,available_at,completed_at,now,row['queue_id']))
+            event_payload=dict(contract['receipt'])
+            if failure: event_payload['failure']=failure
+            self._event(con,'contract',contract_id,queue_status,event_payload); con.execute('COMMIT')
+        return {'ok':True,'contract':contract,'idempotent':False,'queueStatus':queue_status,'failure':failure}
 
     def recover(self)->dict[str,Any]:
-        now=_now(); cutoff=(_now_dt()-timedelta(seconds=self.stale_seconds)).isoformat(); requeued=failed=stale=0
+        now=_now(); cutoff=(_now_dt()-timedelta(seconds=self.stale_seconds)).isoformat(); requeued=dead_lettered=stale=0
         with self._connect() as con:
             con.execute('BEGIN IMMEDIATE')
             for row in con.execute("SELECT * FROM dispatcher_queue WHERE status IN ('leased','running') AND lease_expires_at IS NOT NULL AND lease_expires_at<?",(now,)).fetchall():
-                status='queued' if row['attempts']<row['max_attempts'] else 'failed'
-                con.execute("UPDATE dispatcher_queue SET status=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,error_text='lease expired',available_at=?,updated_at=?,completed_at=? WHERE id=?",(status,now,now,now if status=='failed' else None,row['id']))
+                status,failure,available_at=self._failure_transition(row,{'failureClass':'lease-timeout','failureCode':'lease_expired','error':'lease expired'})
+                completed_at=now if status in FINAL_QUEUE_STATES else None; dl_at=now if status=='dead-lettered' else None
+                con.execute("UPDATE dispatcher_queue SET status=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,error_text=?,failure_class=?,failure_code=?,retryable=?,dead_lettered_at=?,available_at=?,updated_at=?,completed_at=? WHERE id=?",(status,failure['error'],failure['failureClass'],failure['failureCode'],1 if failure['retryable'] else 0,dl_at,available_at,now,completed_at,row['id']))
                 con.execute("UPDATE dispatcher_contracts SET status='expired',updated_at=? WHERE lease_id=?",(now,row['lease_id']))
-                self._event(con,'queue-item',row['id'],'lease-expired',{'nextStatus':status}); requeued += status=='queued'; failed += status=='failed'
+                self._event(con,'queue-item',row['id'],'lease-expired',{'nextStatus':status,'failure':failure}); requeued += status=='retrying'; dead_lettered += status=='dead-lettered'
             for row in con.execute("SELECT id,payload_json FROM dispatcher_workers WHERE state='online' AND last_heartbeat_at<?",(cutoff,)).fetchall():
                 w=self._loads(row['payload_json']); w['state']='offline'; w['stale']=True
                 con.execute("UPDATE dispatcher_workers SET state='offline',payload_json=?,updated_at=? WHERE id=?",(_stable(w),now,row['id'])); self._event(con,'worker',row['id'],'marked-stale',{}); stale+=1
             con.execute('COMMIT')
-        return {'ok':True,'requeued':requeued,'failed':failed,'staleWorkers':stale,'recoveredAt':now}
+        return {'ok':True,'requeued':requeued,'failed':dead_lettered,'deadLettered':dead_lettered,'staleWorkers':stale,'recoveredAt':now}
 
     def status(self)->dict[str,Any]:
         with self._connect() as con:
             counts={r['status']:r['n'] for r in con.execute("SELECT status,COUNT(*) n FROM dispatcher_queue GROUP BY status")}
+            for state in ('queued','retrying','leased','running','completed','failed','cancelled','dead-lettered'): counts.setdefault(state,0)
             active=con.execute("SELECT COUNT(*) FROM dispatcher_queue WHERE status IN ('leased','running')").fetchone()[0]
             workers=con.execute("SELECT COUNT(*) FROM dispatcher_workers").fetchone()[0]
             events=con.execute("SELECT COUNT(*) FROM dispatcher_events").fetchone()[0]
             page_count=con.execute("PRAGMA page_count").fetchone()[0]; page_size=con.execute("PRAGMA page_size").fetchone()[0]
-        return {'ok':True,'version':VERSION,'storage':'sqlite-wal','persistent':True,'schemaVersion':DB_SCHEMA_VERSION,'credentials':self.credential_status(),'counts':counts,'activeLeases':active,'workerCount':workers,'eventCount':events,'databaseBytes':page_count*page_size,'restartRecovery':True,'horizontalCoordinatorSafeClaims':True}
+        return {'ok':True,'version':VERSION,'storage':'sqlite-wal','persistent':True,'schemaVersion':DB_SCHEMA_VERSION,'credentials':self.credential_status(),'counts':counts,'activeLeases':active,'workerCount':workers,'eventCount':events,'databaseBytes':page_count*page_size,'restartRecovery':True,'horizontalCoordinatorSafeClaims':True,'deadLetterQueue':True,'failureClassification':True,'operatorReplay':True}
 
     def leases(self,limit:int=100)->dict[str,Any]:
         with self._connect() as con: rows=con.execute("SELECT * FROM dispatcher_queue WHERE status IN ('leased','running') ORDER BY lease_expires_at ASC LIMIT ?",(max(1,min(500,limit)),)).fetchall()
@@ -401,6 +472,100 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         with self._connect() as con: rows=con.execute("SELECT * FROM dispatcher_events ORDER BY id DESC LIMIT ?",(max(1,min(1000,limit)),)).fetchall()
         events=[{'schema':r['schema_name'],'id':r['id'],'entityType':r['entity_type'],'entityId':r['entity_id'],'eventType':r['event_type'],'payload':self._loads(r['payload_json']),'createdAt':r['created_at']} for r in rows]
         return {'ok':True,'count':len(events),'events':events}
+
+    def queue_item(self, queue_id: str) -> dict[str, Any]:
+        with self._connect() as con:
+            row=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(_text(queue_id,220),)).fetchone()
+        if not row: raise DispatcherError('Dispatch queue item was not found.')
+        return {'ok':True,'queueItem':self._queue_dict(row)}
+
+    def timeline(self, queue_id: str, limit: int = 250) -> dict[str, Any]:
+        queue_id=_text(queue_id,220); limit=max(1,min(1000,int(limit)))
+        with self._connect() as con:
+            q=con.execute("SELECT id FROM dispatcher_queue WHERE id=?",(queue_id,)).fetchone()
+            if not q: raise DispatcherError('Dispatch queue item was not found.')
+            events=con.execute("SELECT * FROM dispatcher_events WHERE (entity_type='queue-item' AND entity_id=?) OR (entity_type='contract' AND entity_id IN (SELECT id FROM dispatcher_contracts WHERE queue_id=?)) OR (entity_type='lease' AND entity_id IN (SELECT lease_id FROM dispatcher_contracts WHERE queue_id=?)) ORDER BY id DESC LIMIT ?",(queue_id,queue_id,queue_id,limit)).fetchall()
+            actions=con.execute("SELECT * FROM dispatcher_operator_actions WHERE queue_id=? ORDER BY id DESC LIMIT ?",(queue_id,limit)).fetchall()
+        records=[{'kind':'event','id':r['id'],'entityType':r['entity_type'],'entityId':r['entity_id'],'eventType':r['event_type'],'payload':self._loads(r['payload_json']),'createdAt':r['created_at']} for r in events]
+        records += [{'kind':'operator-action','id':r['id'],'entityType':'queue-item','entityId':queue_id,'eventType':r['action'],'operatorId':r['operator_id'],'reason':r['reason'],'payload':self._loads(r['payload_json']),'createdAt':r['created_at']} for r in actions]
+        records.sort(key=lambda item:item['createdAt'],reverse=True)
+        return {'ok':True,'queueId':queue_id,'count':len(records[:limit]),'timeline':records[:limit]}
+
+    def dead_letters(self, limit: int = 100, failure_class: str = '') -> dict[str, Any]:
+        limit=max(1,min(1000,int(limit))); params=[]; where="status='dead-lettered'"
+        if failure_class:
+            where += " AND failure_class=?"; params.append(_text(failure_class,80))
+        params.append(limit)
+        with self._connect() as con:
+            rows=con.execute(f"SELECT * FROM dispatcher_queue WHERE {where} ORDER BY dead_lettered_at DESC,updated_at DESC LIMIT ?",params).fetchall()
+        return {'ok':True,'schema':DEAD_LETTER_SCHEMA,'count':len(rows),'deadLetters':[self._queue_dict(row) for row in rows]}
+
+    def replay(self, queue_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload=payload if isinstance(payload,dict) else {}; queue_id=_text(queue_id,220); operator=_text(payload.get('operatorId'),180) or 'operator'; reason=_text(payload.get('reason'),1000) or 'operator replay'; reset_attempts=bool(payload.get('resetAttempts',True)); now=_now()
+        with self._connect() as con:
+            con.execute('BEGIN IMMEDIATE'); row=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(queue_id,)).fetchone()
+            if not row: con.execute('ROLLBACK'); raise DispatcherError('Dispatch queue item was not found.')
+            if row['status'] not in ('dead-lettered','failed','cancelled'):
+                con.execute('ROLLBACK'); raise DispatcherError('Only terminal queue items can be replayed.')
+            attempts=0 if reset_attempts else min(int(row['attempts']),max(0,int(row['max_attempts'])-1))
+            con.execute("UPDATE dispatcher_queue SET status='queued',attempts=?,available_at=?,lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,result_json=NULL,error_text=NULL,failure_class=NULL,failure_code=NULL,retryable=NULL,dead_lettered_at=NULL,operator_note=?,completed_at=NULL,updated_at=? WHERE id=?",(attempts,now,reason,now,queue_id))
+            self._operator_action(con,queue_id,'replayed',operator,reason,{'resetAttempts':reset_attempts,'previousStatus':row['status']})
+            self._event(con,'queue-item',queue_id,'operator-replayed',{'operatorId':operator,'reason':reason,'resetAttempts':reset_attempts})
+            updated=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(queue_id,)).fetchone(); con.execute('COMMIT')
+        return {'ok':True,'replayed':True,'queueItem':self._queue_dict(updated)}
+
+    def replay_many(self, payload: dict[str, Any]) -> dict[str, Any]:
+        ids=payload.get('queueIds') if isinstance(payload.get('queueIds'),list) else []
+        if not ids: raise DispatcherError('At least one queue ID is required.')
+        results=[]; errors=[]
+        for queue_id in ids[:250]:
+            try: results.append(self.replay(str(queue_id),payload)['queueItem'])
+            except DispatcherError as exc: errors.append({'queueId':str(queue_id),'error':str(exc)})
+        return {'ok':not errors,'replayed':len(results),'failed':len(errors),'queueItems':results,'errors':errors}
+
+    def cancel_queue_item(self, queue_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload=payload if isinstance(payload,dict) else {}; queue_id=_text(queue_id,220); operator=_text(payload.get('operatorId'),180) or 'operator'; reason=_text(payload.get('reason'),1000) or 'operator cancellation'; now=_now()
+        failure=classify_failure({'failureClass':'operator-cancelled','retryable':False,'error':reason})
+        with self._connect() as con:
+            con.execute('BEGIN IMMEDIATE'); row=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(queue_id,)).fetchone()
+            if not row: con.execute('ROLLBACK'); raise DispatcherError('Dispatch queue item was not found.')
+            if row['status']=='completed': con.execute('ROLLBACK'); raise DispatcherError('Completed queue items cannot be cancelled.')
+            con.execute("UPDATE dispatcher_queue SET status='cancelled',lease_id=NULL,worker_id=NULL,lease_expires_at=NULL,error_text=?,failure_class=?,failure_code=?,retryable=0,operator_note=?,completed_at=?,updated_at=? WHERE id=?",(reason,failure['failureClass'],failure['failureCode'],reason,now,now,queue_id))
+            con.execute("UPDATE dispatcher_contracts SET status='cancelled',updated_at=? WHERE queue_id=? AND status NOT IN ('completed','failed','cancelled')",(now,queue_id))
+            self._operator_action(con,queue_id,'cancelled',operator,reason,{})
+            self._event(con,'queue-item',queue_id,'operator-cancelled',{'operatorId':operator,'reason':reason})
+            updated=con.execute("SELECT * FROM dispatcher_queue WHERE id=?",(queue_id,)).fetchone(); con.execute('COMMIT')
+        return {'ok':True,'cancelled':True,'queueItem':self._queue_dict(updated)}
+
+    def operations_metrics(self) -> dict[str, Any]:
+        now=_now_dt(); hour=(now-timedelta(hours=1)).isoformat(); day=(now-timedelta(hours=24)).isoformat(); expiring=(now+timedelta(seconds=60)).isoformat()
+        with self._connect() as con:
+            counts={r['status']:r['n'] for r in con.execute("SELECT status,COUNT(*) n FROM dispatcher_queue GROUP BY status")}
+            failures={r['failure_class'] or 'unclassified':r['n'] for r in con.execute("SELECT failure_class,COUNT(*) n FROM dispatcher_queue WHERE failure_class IS NOT NULL GROUP BY failure_class")}
+            oldest=con.execute("SELECT created_at FROM dispatcher_queue WHERE status IN ('queued','retrying') ORDER BY created_at ASC LIMIT 1").fetchone()
+            expiring_leases=con.execute("SELECT COUNT(*) FROM dispatcher_queue WHERE status IN ('leased','running') AND lease_expires_at<=?",(expiring,)).fetchone()[0]
+            completed_hour=con.execute("SELECT COUNT(*) FROM dispatcher_queue WHERE status='completed' AND completed_at>=?",(hour,)).fetchone()[0]
+            completed_day=con.execute("SELECT COUNT(*) FROM dispatcher_queue WHERE status='completed' AND completed_at>=?",(day,)).fetchone()[0]
+            failed_hour=con.execute("SELECT COUNT(*) FROM dispatcher_queue WHERE status='dead-lettered' AND dead_lettered_at>=?",(hour,)).fetchone()[0]
+            action_count=con.execute("SELECT COUNT(*) FROM dispatcher_operator_actions").fetchone()[0]
+        oldest_age=0
+        if oldest and oldest['created_at']:
+            oldest_age=max(0,int((now-datetime.fromisoformat(oldest['created_at'])).total_seconds()))
+        for state in ('queued','retrying','leased','running','completed','failed','cancelled','dead-lettered'): counts.setdefault(state,0)
+        return {'ok':True,'version':VERSION,'capturedAt':now.isoformat(),'counts':counts,'failureClasses':failures,'queueDepth':counts['queued']+counts['retrying'],'oldestReadyAgeSeconds':oldest_age,'activeLeases':counts['leased']+counts['running'],'leasesExpiringWithin60Seconds':expiring_leases,'throughput':{'completedLastHour':completed_hour,'completedLast24Hours':completed_day,'deadLetteredLastHour':failed_hour},'operatorActionCount':action_count}
+
+    def diagnostics(self) -> dict[str, Any]:
+        path=Path(self.db_path); wal=Path(self.db_path+'-wal'); shm=Path(self.db_path+'-shm')
+        with self._connect() as con:
+            integrity=con.execute("PRAGMA integrity_check").fetchone()[0]
+            journal=con.execute("PRAGMA journal_mode").fetchone()[0]
+            foreign=con.execute("PRAGMA foreign_key_check").fetchall()
+            page_count=con.execute("PRAGMA page_count").fetchone()[0]; page_size=con.execute("PRAGMA page_size").fetchone()[0]
+        return {'ok':integrity=='ok' and not foreign,'version':VERSION,'databasePath':str(path),'databaseExists':path.exists(),'databaseBytes':path.stat().st_size if path.exists() else page_count*page_size,'walBytes':wal.stat().st_size if wal.exists() else 0,'sharedMemoryBytes':shm.stat().st_size if shm.exists() else 0,'journalMode':journal,'integrityCheck':integrity,'foreignKeyViolations':len(foreign),'schemaVersion':DB_SCHEMA_VERSION,'instanceLocalPath':not str(path).startswith('/app/data/')}
+
+    def operations_health(self) -> dict[str, Any]:
+        metrics=self.operations_metrics(); diagnostics=self.diagnostics()
+        return {'ok':bool(diagnostics['ok']),'status':'ready' if diagnostics['ok'] else 'degraded','version':VERSION,'architecture':'dispatcher-operations-dead-letter-observability','failureClassification':True,'boundedRetries':True,'deadLetterRecovery':True,'operatorReplay':True,'queueMetrics':True,'eventTimelines':True,'databaseDiagnostics':True,'metrics':metrics,'diagnostics':diagnostics}
 
     def artifact_access_allowed(self, worker_id: str, artifact_id: str) -> bool:
         worker_id = _text(worker_id, 180)
@@ -421,5 +586,5 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         return False
 
     def health(self)->dict[str,Any]:
-        st=self.status(); workers=self.list(False)['workers']
-        return {'ok':True,'status':'ready','version':VERSION,'architecture':'persistent-distributed-compute-dispatcher','workerCount':len(workers),'onlineWorkers':sum(1 for w in workers if w['state']=='online'),'capabilityDiscovery':True,'workloadRouting':True,'signedDispatchContracts':True,'leases':True,'persistentWorkerRegistry':True,'persistentQueue':True,'restartRecovery':True,'horizontalCoordinatorSafeClaims':True,'storage':'sqlite-wal','schemaVersion':DB_SCHEMA_VERSION,'workerCredentials':st['credentials'],'queueCounts':st['counts'],'arbitraryCallbackUrls':False,'arbitraryCode':False}
+        st=self.status(); workers=self.list(False)['workers']; ops=self.operations_health()
+        return {'ok':ops['ok'],'status':ops['status'],'version':VERSION,'architecture':'persistent-distributed-compute-dispatcher','workerCount':len(workers),'onlineWorkers':sum(1 for w in workers if w['state']=='online'),'capabilityDiscovery':True,'workloadRouting':True,'signedDispatchContracts':True,'leases':True,'persistentWorkerRegistry':True,'persistentQueue':True,'restartRecovery':True,'horizontalCoordinatorSafeClaims':True,'storage':'sqlite-wal','schemaVersion':DB_SCHEMA_VERSION,'workerCredentials':st['credentials'],'queueCounts':st['counts'],'deadLetterRecovery':True,'failureClassification':True,'operatorReplay':True,'operationsStatus':ops['status'],'arbitraryCallbackUrls':False,'arbitraryCode':False}

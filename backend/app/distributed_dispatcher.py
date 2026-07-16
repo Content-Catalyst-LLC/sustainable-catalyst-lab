@@ -10,7 +10,7 @@ import secrets
 from threading import RLock
 from typing import Any
 
-VERSION = "0.31.3"
+VERSION = "0.31.4"
 WORKER_SCHEMA = "sc-lab-distributed-worker/0.31.0"
 WORKLOAD_SCHEMA = "sc-lab-distributed-workload/0.31.0"
 CONTRACT_SCHEMA = "sc-lab-dispatch-contract/0.31.0"

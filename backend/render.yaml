@@ -44,6 +44,10 @@ services:
         value: "5"
       - key: SC_LAB_DISPATCHER_HISTORY_LIMIT
         value: "10000"
+      - key: SC_LAB_DISPATCHER_RETRY_BASE_DELAY_SECONDS
+        value: "15"
+      - key: SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS
+        value: "900"
       - key: SC_LAB_ARTIFACT_ROOT
         value: /app/data/artifacts
       - key: SC_LAB_ARTIFACT_DB_PATH
