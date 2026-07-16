@@ -12,6 +12,10 @@ services:
         generateValue: true
       - key: SC_LAB_COMPUTE_SIGNING_SECRET
         generateValue: true
+      - key: SC_LAB_DISPATCHER_CONTRACT_SECRET
+        generateValue: true
+      - key: SC_LAB_WORKER_ENROLLMENT_TOKEN
+        generateValue: true
       - key: SC_LAB_LOAD_LEGACY_EXTENSIONS
         value: "1"
       - key: SC_LAB_JOB_DB_PATH
@@ -24,9 +28,19 @@ services:
         value: "60"
       - key: SC_LAB_DEFAULT_JOB_ATTEMPTS
         value: "2"
+      - key: SC_LAB_DISPATCHER_DB_PATH
+        value: /app/data/sc-lab-dispatcher.sqlite3
+      - key: SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED
+        value: "0"
       - key: SC_LAB_DISPATCHER_WORKER_STALE_SECONDS
         value: "120"
       - key: SC_LAB_DISPATCHER_DEFAULT_LEASE_SECONDS
         value: "300"
       - key: SC_LAB_DISPATCHER_MAX_WORKERS
         value: "500"
+      - key: SC_LAB_DISPATCHER_MAX_QUEUE_RECORDS
+        value: "5000"
+      - key: SC_LAB_DISPATCHER_MAX_ATTEMPTS
+        value: "5"
+      - key: SC_LAB_DISPATCHER_HISTORY_LIMIT
+        value: "10000"

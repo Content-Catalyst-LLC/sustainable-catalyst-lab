@@ -53,6 +53,8 @@
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
           'distributed-dispatcher' => 'Compute dispatcher',
+          'persistent-queue' => 'Persistent queue',
+          'worker-agent' => 'Secure worker agents',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -1531,6 +1533,30 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         <div class="sc-cal0302-card"><h4>Calibration output</h4><pre data-cal-v0302-output>Run a governed calibration to inspect parameters, confidence intervals, residuals, holdout metrics, and provenance.</pre></div>
       </section>
 
+
+
+      <section class="sc-lab-panel sc-pq0311" data-lab-module="persistent-queue" data-module-panel="persistent-queue" hidden>
+        <h2>Persistent Queue Infrastructure</h2>
+        <p>Inspect the durable distributed workload queue, leases, recovery state, and central event history.</p>
+        <p data-pq-v0311-status role="status" aria-live="polite">Persistent queue loading…</p>
+        <div class="sc-pq-grid" data-pq-v0311-metrics></div>
+        <div class="sc-pq-card"><h3>Enqueue and lease</h3><label>Registered method <input data-pq-v0311-method value="simulation.parameter_sweep"></label><label>Priority <input data-pq-v0311-priority type="number" min="0" max="100" value="70"></label><label>Required packages <input data-pq-v0311-packages value="numpy"></label><label>Worker ID <input data-pq-v0311-worker value="browser-worker-default"></label><label>Lease seconds <input data-pq-v0311-lease-seconds type="number" min="30" max="3600" value="300"></label><div class="sc-pq-actions"><button type="button" data-pq-v0311-enqueue>Enqueue workload</button><button type="button" data-pq-v0311-claim>Claim next lease</button><button type="button" data-pq-v0311-renew>Renew lease</button><button type="button" data-pq-v0311-release>Release and requeue</button><button type="button" data-pq-v0311-recover>Run recovery</button><button type="button" data-pq-v0311-refresh>Refresh</button></div></div>
+        <h3>Active leases</h3><div class="sc-lab-table-wrap"><table><thead><tr><th>Lease</th><th>Worker</th><th>Status</th><th>Expires</th></tr></thead><tbody data-pq-v0311-leases></tbody></table></div>
+        <h3>Recent queue history</h3><div class="sc-lab-table-wrap"><table><thead><tr><th>Time</th><th>Entity</th><th>Event</th><th>ID</th></tr></thead><tbody data-pq-v0311-history></tbody></table></div>
+        <pre data-pq-v0311-output aria-label="Persistent queue response">No response yet.</pre>
+      </section>
+
+      <section class="sc-lab-panel sc-wa0312" data-lab-module="worker-agent" data-module-panel="worker-agent" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.2</p><h3>Secure Worker Agent Runtime</h3><p>Operate pull-based Python workers with one-time enrollment, worker-scoped credentials, local signed-contract verification, governed registered-method execution, automatic lease renewal, and provenance-bearing completion receipts.</p></header>
+        <p data-wa-v0312-status role="status" aria-live="polite">Secure worker runtime loading…</p>
+        <div class="sc-wa0312-metrics" data-wa-v0312-metrics></div>
+        <div class="sc-wa0312-grid">
+          <div class="sc-wa0312-card"><h4>Registered worker agents</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Worker</th><th>Type</th><th>State</th><th>Mode</th><th>Load</th><th>Agent</th></tr></thead><tbody data-wa-v0312-workers></tbody></table></div></div>
+          <div class="sc-wa0312-card"><h4>Security model</h4><ul class="sc-wa0312-security"><li>Enrollment tokens remain on the coordinator and worker host.</li><li>Worker credentials are returned once and stored as coordinator-side SHA-256 digests.</li><li>Dispatch contracts are bound to a worker, signed, and locally verified before execution.</li><li>Only methods registered in the Python Compute Core can run.</li><li>Arbitrary source code, shell commands, callbacks, and executable payloads are rejected.</li></ul><div class="sc-wa0312-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wa-v0312-refresh>Refresh security status</button></div></div>
+        </div>
+        <div class="sc-wa0312-card"><h4>Local or institutional worker startup</h4><p>Copy the worker environment example, add the coordinator URL and the two worker secrets on the worker host, validate the configuration, and start the agent.</p><pre data-wa-v0312-command aria-label="Worker startup command"></pre><div class="sc-wa0312-actions"><button type="button" class="sc-lab-button" data-wa-v0312-copy>Copy command</button><button type="button" class="sc-lab-button" data-wa-v0312-download>Download command</button></div></div>
+        <div class="sc-wa0312-card"><h4>Coordinator worker-agent health</h4><pre data-wa-v0312-output>No response yet.</pre></div>
+      </section>
 
       <section class="sc-lab-panel sc-dsp0310" data-lab-module="distributed-dispatcher" data-module-panel="distributed-dispatcher" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.0</p><h3>Distributed Compute Dispatcher</h3><p>Register governed worker capabilities, route registered numerical workloads, issue signed leases, and preserve dispatch records without enabling arbitrary callbacks or arbitrary code.</p></header>

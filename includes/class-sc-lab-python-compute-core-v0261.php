@@ -75,6 +75,18 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/route', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_route'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/contracts/build', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_contract_build'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/contracts/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_contract_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/status', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_queue_status'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/queue/enqueue', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_queue_enqueue'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/leases', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_leases'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/leases/claim', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_lease_claim'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/leases/(?P<lease>[A-Za-z0-9._-]{1,180})/renew', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_lease_renew'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/leases/(?P<lease>[A-Za-z0-9._-]{1,180})/release', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_lease_release'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/recovery/run', array('methods'=>'POST','callback'=>array(__CLASS__,'dispatcher_recovery'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/dispatcher/history', array('methods'=>'GET','callback'=>array(__CLASS__,'dispatcher_history'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/health', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/credentials/status', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_credentials_status'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/workers', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_workers'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -363,6 +375,18 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function dispatcher_route(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/route','POST',$p,8388608);}
     public static function dispatcher_contract_build(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/contracts/build','POST',$p,8388608);}
     public static function dispatcher_contract_verify(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/contracts/verify','POST',$p,8388608);}
+    public static function dispatcher_queue_status(){return self::proxy('/v1/dispatcher/queue/status');}
+    public static function dispatcher_queue_enqueue(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/queue/enqueue','POST',$p,8388608);}
+    public static function dispatcher_leases(WP_REST_Request $request){$limit=max(1,min(500,intval($request->get_param('limit')?:100)));return self::proxy('/v1/dispatcher/leases?limit='.$limit);}
+    public static function dispatcher_lease_claim(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/leases/claim','POST',$p,8388608);}
+    public static function dispatcher_lease_renew(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/leases/'.rawurlencode($request['lease']).'/renew','POST',$p,8388608);}
+    public static function dispatcher_lease_release(WP_REST_Request $request){$p=self::dispatcher_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/dispatcher/leases/'.rawurlencode($request['lease']).'/release','POST',$p,8388608);}
+    public static function dispatcher_recovery(){return self::proxy('/v1/dispatcher/recovery/run','POST',array(),8388608);}
+    public static function dispatcher_history(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/dispatcher/history?limit='.$limit);}
+    public static function worker_agent_health(){return self::proxy('/v1/worker-agent/health');}
+    public static function worker_agent_policies(){return self::proxy('/v1/worker-agent/policies');}
+    public static function worker_agent_credentials_status(){return self::proxy('/v1/worker-agent/credentials/status');}
+    public static function worker_agent_workers(){return self::proxy('/v1/dispatcher/workers');}
 
 
 }

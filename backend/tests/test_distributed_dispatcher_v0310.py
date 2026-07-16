@@ -11,7 +11,7 @@ def workload():
 
 def test_worker_and_workload_normalization():
     w=normalize_worker(worker()); q=normalize_workload(workload())
-    assert w["version"]=="0.31.0" and w["capabilityFingerprint"]
+    assert w["version"]=="0.31.2" and w["capabilityFingerprint"]
     assert q["method"]=="simulation.parameter_sweep" and q["workloadHash"]
 
 def test_capability_and_load_aware_routing():
@@ -37,7 +37,7 @@ def test_heartbeat_updates_worker_load():
 
 def test_fastapi_dispatcher_routes():
     with TestClient(app) as client:
-        assert client.get('/v1/dispatcher/health').json()["version"]=="0.31.0"
+        assert client.get('/v1/dispatcher/health').json()["version"]=="0.31.2"
         reg=client.post('/v1/dispatcher/workers/register',json=worker("api-worker")); assert reg.status_code==200
         route=client.post('/v1/dispatcher/route',json=workload()); assert route.status_code==200 and route.json()["ok"]
         contract=client.post('/v1/dispatcher/contracts/build',json=workload()); assert contract.status_code==200

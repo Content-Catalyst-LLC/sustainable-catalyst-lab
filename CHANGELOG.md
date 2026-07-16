@@ -1,3 +1,31 @@
+# Changelog
+
+## 0.31.2 — Secure Worker Agent Runtime and Pull-Based Execution
+
+- Added a standalone `python3 -m worker_agent` runtime for local, Raspberry Pi, Render, and institutional execution nodes.
+- Added token-gated worker enrollment and one-time worker-scoped credential issuance.
+- Stored worker credentials as SHA-256 digests with rotation, revocation, last-use tracking, and quarantine operations.
+- Added credential-scoped heartbeat, claim, acknowledgement, renewal, release, completion, and rotation endpoints.
+- Added local HMAC contract verification with worker, expiration, and method binding.
+- Restricted worker execution to registered Python Compute Core methods and rejected arbitrary code, commands, callbacks, executable payloads, and unknown request fields.
+- Added automatic lease renewal and idempotent completion receipt handling.
+- Added execution receipt contracts with runtime metadata, result hashes, receipt hashes, and compute provenance.
+- Added macOS launchd, Linux systemd, environment, and startup examples.
+- Added a WordPress Secure Worker Agents panel, health/schema routes, and backend status proxies.
+- Corrected `SC_LAB_DISPATCHER_DB_PATH` deployment configuration and added explicit instance-local versus persistent-disk health reporting without forcing a paid Render disk.
+- Updated release identity, documentation, contracts, tests, and deployment metadata to v0.31.2.
+
+## 0.31.1 — Persistent Queue Infrastructure
+
+- Added the SQLite-WAL worker registry, workload queue, atomic lease claims, lease recovery, and event history.
+- Added active-workload deduplication, retry limits, stale-worker recovery, and multi-coordinator-safe claims.
+
+## 0.31.0 — Distributed Compute Dispatcher
+
+- Added capability-aware worker discovery, workload routing, signed dispatch contracts, lease acknowledgement, renewal, release, and completion.
+- Added bounded worker and contract registries, project allowlists, package and tag matching, and coordinator health and policy endpoints.
+- Preserved registered-method-only execution with no arbitrary callback URLs or arbitrary code.
+
 
 ## 0.30.2 — Scientific Model Calibration and Validation
 

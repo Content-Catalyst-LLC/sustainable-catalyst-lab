@@ -10,7 +10,7 @@ import secrets
 from threading import RLock
 from typing import Any
 
-VERSION = "0.31.0"
+VERSION = "0.31.2"
 WORKER_SCHEMA = "sc-lab-distributed-worker/0.31.0"
 WORKLOAD_SCHEMA = "sc-lab-distributed-workload/0.31.0"
 CONTRACT_SCHEMA = "sc-lab-dispatch-contract/0.31.0"
@@ -56,8 +56,8 @@ def policies() -> dict[str,Any]:
         "leases": {"defaultSeconds": 300, "maximumSeconds": MAX_LEASE_SECONDS, "acknowledgementRequired": True, "completionReceipt": True},
         "security": {"signedContracts": True, "hmacWhenConfigured": True, "arbitraryCallbackUrls": False, "arbitraryCode": False, "registeredMethodsOnly": True},
         "limits": {"workers": MAX_WORKERS, "methodsPerWorker": MAX_METHODS, "packagesPerWorker": MAX_PACKAGES, "tagsPerWorker": MAX_TAGS},
-        "storage": "coordinator-memory-registry",
-        "persistentWorkerRegistry": False,
+        "storage": "sqlite-wal-persistent-registry",
+        "persistentWorkerRegistry": True,
     }
 
 def normalize_worker(payload: dict[str,Any]) -> dict[str,Any]:

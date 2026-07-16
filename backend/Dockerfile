@@ -5,6 +5,8 @@ RUN useradd --create-home --uid 10001 appuser
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY --chown=appuser:appuser app ./app
+COPY --chown=appuser:appuser worker_agent ./worker_agent
+COPY --chown=appuser:appuser scripts ./scripts
 COPY --chown=appuser:appuser contracts ./contracts
 RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 USER appuser

@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import base64
 import io
+import hmac
 from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from reportlab.lib.pagesizes import A4, letter
@@ -26,14 +27,16 @@ from .external_discovery import DiscoveryError, build_openurl as build_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
-from .distributed_dispatcher import DispatcherError, DistributedDispatcher, policies as distributed_dispatcher_policies
+from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
+from .persistent_dispatch_queue import PersistentDistributedDispatcher
+from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
 
 
 jobs = PersistentJobQueue()
-dispatcher = DistributedDispatcher()
+dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit)
 
 
 @asynccontextmanager
@@ -120,13 +123,17 @@ def health():
         "experimentFramework": {"version":"0.30.0","protocols":True,"runHistories":True,"replications":True,"comparisons":True,"reports":True},
         "designStudies": {"version":"0.30.1","factorial":True,"latinHypercube":True,"responseSurfaces":True,"sensitivity":True,"batchPlans":True},
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
-        "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True,"persistentWorkerRegistry":False},
+        "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True},
+        "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True},
+        "secureWorkerAgent": {"version":"0.31.2","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
             "persistent": queue_state["persistent"],
             "storage": queue_state["storage"],
             "schema": queue_state["schema"],
+            "deploymentDurability": "persistent-disk" if settings.dispatcher_persistent_disk_mounted else "instance-local",
+            "durabilityWarning": None if settings.dispatcher_persistent_disk_mounted else "SQLite queue files are instance-local unless a persistent disk is mounted at /app/data.",
             "activeWorkers": queue_state["activeWorkers"],
             "workerCapacity": queue_state["workerCapacity"],
             "queued": queue_state["counts"]["queued"] + queue_state["counts"]["retrying"],
@@ -188,6 +195,8 @@ def capabilities():
         "externalDiscovery": {"version":"0.29.2","liveProviders":["crossref","openalex","datacite"],"handoffs":["worldcat","google-scholar","openurl"],"deduplication":True,"sourceImport":True,"arbitraryRemoteFetch":False},
         "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
         "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
+        "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True,"horizontalCoordinatorSafeClaims":True,"centralHistory":True},
+        "secureWorkerAgent": {"version":"0.31.2","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -899,12 +908,12 @@ def distributed_dispatcher_route_route(payload: dict[str,Any], auth: dict[str,st
 @app.post("/v1/dispatcher/contracts/build")
 def distributed_dispatcher_contract_build_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
     del auth
-    try: return dispatcher.build_contract(payload,settings.signing_secret)
+    try: return dispatcher.build_contract(payload,settings.dispatcher_contract_secret)
     except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
 
 @app.post("/v1/dispatcher/contracts/verify")
 def distributed_dispatcher_contract_verify_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
-    del auth; return dispatcher.verify_contract(payload,settings.signing_secret)
+    del auth; return dispatcher.verify_contract(payload,settings.dispatcher_contract_secret)
 
 @app.post("/v1/dispatcher/contracts/{contract_id}/acknowledge")
 def distributed_dispatcher_contract_ack_route(contract_id: str, payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
@@ -915,5 +924,175 @@ def distributed_dispatcher_contract_ack_route(contract_id: str, payload: dict[st
 @app.post("/v1/dispatcher/contracts/{contract_id}/complete")
 def distributed_dispatcher_contract_complete_route(contract_id: str, payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
     del auth
-    try: return dispatcher.complete(contract_id,payload)
+    try: return dispatcher.complete(contract_id,payload,str(payload.get("workerId") or ""))
     except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+
+@app.get("/v1/dispatcher/queue/status")
+def dispatcher_queue_status_route(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.status()
+
+@app.post("/v1/dispatcher/queue/enqueue")
+def dispatcher_queue_enqueue_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.enqueue(payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/leases/claim")
+def dispatcher_lease_claim_route(payload: dict[str,Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return dispatcher.claim(payload,settings.dispatcher_contract_secret)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.get("/v1/dispatcher/leases")
+def dispatcher_leases_route(limit:int=Query(100,ge=1,le=500), auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.leases(limit)
+
+@app.post("/v1/dispatcher/leases/{lease_id}/renew")
+def dispatcher_lease_renew_route(lease_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.renew(lease_id,payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/leases/{lease_id}/release")
+def dispatcher_lease_release_route(lease_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return dispatcher.release(lease_id,payload)
+    except DispatcherError as exc: raise HTTPException(status_code=422,detail=str(exc)) from exc
+
+@app.post("/v1/dispatcher/recovery/run")
+def dispatcher_recovery_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.recover()
+
+@app.get("/v1/dispatcher/history")
+def dispatcher_history_route(limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return dispatcher.history(limit)
+
+# v0.31.2 Secure Worker Agent Runtime
+
+def _require_worker_enrollment(presented: str) -> None:
+    expected = settings.worker_enrollment_token
+    if expected:
+        if not presented or not hmac.compare_digest(presented, expected):
+            raise HTTPException(status_code=401, detail="Worker enrollment token is invalid.")
+        return
+    if settings.environment == "production" and not settings.allow_open_worker_enrollment:
+        raise HTTPException(status_code=503, detail="Worker enrollment is disabled until SC_LAB_WORKER_ENROLLMENT_TOKEN is configured.")
+
+
+def _authenticate_worker(worker_id: str, credential: str) -> dict[str, Any]:
+    try:
+        return dispatcher.authenticate_worker(worker_id, credential)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=401, detail=str(exc)) from exc
+
+
+@app.get("/v1/worker-agent/health")
+def worker_agent_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    credentials = dispatcher.credential_status()
+    return {
+        "ok": True,
+        "status": "ready",
+        "version": settings.version,
+        "architecture": "secure-pull-based-worker-agent-runtime",
+        "enrollmentTokenConfigured": bool(settings.worker_enrollment_token),
+        "openEnrollment": not bool(settings.worker_enrollment_token) and (settings.environment != "production" or settings.allow_open_worker_enrollment),
+        "contractSecretConfigured": bool(settings.dispatcher_contract_secret),
+        "credentials": credentials,
+        "policies": worker_agent_policies(bool(settings.worker_enrollment_token), bool(settings.dispatcher_contract_secret)),
+    }
+
+
+@app.get("/v1/worker-agent/policies")
+def worker_agent_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return worker_agent_policies(bool(settings.worker_enrollment_token), bool(settings.dispatcher_contract_secret))
+
+
+@app.get("/v1/worker-agent/credentials/status")
+def worker_agent_credentials_status_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return dispatcher.credential_status()
+
+
+@app.post("/v1/worker-agent/enroll")
+def worker_agent_enroll_route(payload: dict[str, Any], x_sc_lab_worker_enrollment: str = Header(default="")):
+    _require_worker_enrollment(x_sc_lab_worker_enrollment)
+    try:
+        return dispatcher.enroll(payload)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/heartbeat")
+def worker_agent_heartbeat_route(worker_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.heartbeat(worker_id, payload)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/claim")
+def worker_agent_claim_route(worker_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.claim({"workerId": worker_id, "leaseSeconds": payload.get("leaseSeconds") or settings.dispatcher_default_lease_seconds}, settings.dispatcher_contract_secret)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/contracts/{contract_id}/acknowledge")
+def worker_agent_acknowledge_route(worker_id: str, contract_id: str, x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.acknowledge(contract_id, worker_id)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/contracts/{contract_id}/complete")
+def worker_agent_complete_route(worker_id: str, contract_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.complete(contract_id, payload, worker_id)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/leases/{lease_id}/renew")
+def worker_agent_renew_route(worker_id: str, lease_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.renew(lease_id, {"workerId": worker_id, "leaseSeconds": payload.get("leaseSeconds") or settings.dispatcher_default_lease_seconds})
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/leases/{lease_id}/release")
+def worker_agent_release_route(worker_id: str, lease_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.release(lease_id, {"workerId": worker_id, "reason": payload.get("reason"), "requeue": payload.get("requeue", True)})
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/credential/rotate")
+def worker_agent_rotate_credential_route(worker_id: str, x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return dispatcher.rotate_worker_credential(worker_id)
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/revoke")
+def worker_agent_revoke_route(worker_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return dispatcher.revoke_worker(worker_id, str(payload.get("reason") or "revoked by coordinator"))
+    except DispatcherError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+

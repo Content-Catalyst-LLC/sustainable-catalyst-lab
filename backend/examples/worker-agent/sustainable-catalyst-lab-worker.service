@@ -1,0 +1,20 @@
+[Unit]
+Description=Sustainable Catalyst Lab Secure Worker Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/sustainable-catalyst-lab/backend
+EnvironmentFile=/etc/sustainable-catalyst-lab/worker-agent.env
+ExecStart=/opt/sustainable-catalyst-lab/backend/scripts/run_worker_agent.sh
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/sustainable-catalyst-lab
+
+[Install]
+WantedBy=multi-user.target

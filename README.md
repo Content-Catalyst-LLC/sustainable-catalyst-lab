@@ -1,20 +1,21 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.29.0.1 — WordPress Integrity Manifest and Evidence Route Repair**
+**Current release: v0.31.2 — Secure Worker Agent Runtime and Pull-Based Execution**
 
-This release extends the governed Python Compute Core with checkpointed parameter sweeps and bootstrap runs, pause and resume controls, partial-result inspection, restart recovery, queue priorities, deterministic result caching, and project-level compute limits. The new Long Jobs & Checkpoints studio exposes those capabilities through WordPress while preserving the 23-method registry, fourteen numerical benchmarks, and production-recovery architecture.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, and secure pull-based worker execution.
 
-## v0.27.3 highlights
+## v0.31.2 highlights
 
-- Persistent SQLite checkpoint history and partial results
-- Checkpointed parameter sweeps and bootstrap confidence intervals
-- Pause, resume, retry, cancellation, and restart recovery
-- Priority scheduling and project-level active-job limits
-- Result cache with use, refresh, and bypass policies
-- Progress, ETA, resume count, result size, and checkpoint diagnostics
-- Analyze → Long Jobs & Checkpoints
-- Focused `[sc_lab_long_jobs]` shortcode
-- Preservation of v0.27.1 numerical validation and v0.26.6 recovery protections
+- Installable Python worker agent for local, Raspberry Pi, Render, and institutional nodes
+- One-time coordinator enrollment with worker-scoped credentials
+- Coordinator-side credential digests, rotation, revocation, and quarantine
+- Pull-based compatible-lease claiming without inbound worker callbacks
+- Local HMAC contract verification with exact worker, method, and expiration binding
+- Registered-method-only execution; arbitrary code, commands, callbacks, and executable payloads are rejected
+- Automatic lease renewal during long computations
+- Idempotent completion receipts with result hashes and compute provenance
+- WordPress Secure Worker Agents operations panel and health routes
+- Corrected dispatcher database deployment path and explicit instance-local versus persistent-disk health reporting
 
 # Sustainable Catalyst Lab v0.27.1 — Numerical Validation and Benchmark Library
 

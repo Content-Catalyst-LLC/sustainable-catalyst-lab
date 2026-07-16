@@ -1,0 +1,17 @@
+{
+  "schema": "sc-lab-persistent-queue-policy/0.31.1",
+  "version": "0.31.1",
+  "storage": "sqlite-wal",
+  "persistentWorkerRegistry": true,
+  "persistentWorkloadQueue": true,
+  "atomicLeaseClaims": true,
+  "leaseRecovery": true,
+  "centralHistory": true,
+  "arbitraryCode": false,
+  "arbitraryCallbacks": false,
+  "limits": {
+    "queueRecords": 5000,
+    "attempts": 5,
+    "historyEvents": 10000
+  }
+}
