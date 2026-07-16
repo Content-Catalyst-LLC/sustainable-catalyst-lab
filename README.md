@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.27.3 — Long-Running Numerical Jobs and Checkpoint Recovery**
+**Current release: v0.29.0.1 — WordPress Integrity Manifest and Evidence Route Repair**
 
 This release extends the governed Python Compute Core with checkpointed parameter sweeps and bootstrap runs, pause and resume controls, partial-result inspection, restart recovery, queue priorities, deterministic result caching, and project-level compute limits. The new Long Jobs & Checkpoints studio exposes those capabilities through WordPress while preserving the 23-method registry, fourteen numerical benchmarks, and production-recovery architecture.
 

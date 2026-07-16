@@ -1,3 +1,10 @@
+## 0.29.0.1 — WordPress Integrity Manifest and Evidence Route Repair
+
+- Rebuilt the WordPress integrity manifest in the runtime-compatible schema.
+- Restored the legacy Evidence & decisions and Source registry aliases.
+- Preserved the v0.29.0 research provenance workspace under non-conflicting routes.
+- Left the Python Compute Core at v0.29.0 unchanged.
+
 ## 0.29.0 — Evidence, Sources, and Research Provenance
 
 - Added structured project source, evidence, assumption, limitation, and provenance records.
