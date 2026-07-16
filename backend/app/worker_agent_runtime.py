@@ -12,10 +12,10 @@ from .compute import run_compute
 from .distributed_dispatcher import CONTRACT_SCHEMA, DispatcherError, _hash, _stable, _text
 from .schemas import ComputeRequest, ComputeResponse
 
-VERSION = "0.31.2"
-AGENT_CONFIG_SCHEMA = "sc-lab-worker-agent-config/0.31.2"
-ENROLLMENT_SCHEMA = "sc-lab-worker-enrollment/0.31.2"
-RECEIPT_SCHEMA = "sc-lab-worker-execution-receipt/0.31.2"
+VERSION = "0.31.3"
+AGENT_CONFIG_SCHEMA = "sc-lab-worker-agent-config/0.31.3"
+ENROLLMENT_SCHEMA = "sc-lab-worker-enrollment/0.31.3"
+RECEIPT_SCHEMA = "sc-lab-worker-execution-receipt/0.31.3"
 ALLOWED_REQUEST_KEYS = {
     "version", "inputs", "units", "parameters", "project_id", "projectId",
     "requested_outputs", "requestedOutputs", "random_seed", "randomSeed", "governance",
@@ -70,7 +70,8 @@ def policies(enrollment_required: bool = True, contract_secret_configured: bool 
             "leaseRenewal": True,
             "idempotentCompletion": True,
         },
-        "receipts": {"schema": RECEIPT_SCHEMA, "provenance": True, "resultHash": True},
+        "receipts": {"schema": RECEIPT_SCHEMA, "provenance": True, "resultHash": True, "externalResultArtifacts": True},
+        "artifactTransport": {"version": VERSION, "inputMaterialization": True, "resultExternalization": True, "checkpointTransport": True, "sha256Verification": True},
     }
 
 
@@ -123,7 +124,7 @@ def _reject_unsafe_tree(value: Any, path: str = "request") -> None:
             _reject_unsafe_tree(child, f"{path}[{index}]")
 
 
-def compute_request_from_contract(contract: dict[str, Any], worker_id: str, secret: str, allow_insecure: bool = False) -> ComputeRequest:
+def compute_request_from_contract(contract: dict[str, Any], worker_id: str, secret: str, allow_insecure: bool = False, materialized_inputs: dict[str, Any] | None = None) -> ComputeRequest:
     verified = verify_contract(contract, worker_id, secret, allow_insecure)
     workload = contract["workload"]
     raw = workload.get("request") if isinstance(workload.get("request"), dict) else {}
@@ -134,7 +135,7 @@ def compute_request_from_contract(contract: dict[str, Any], worker_id: str, secr
     payload = {
         "method": verified["method"],
         "version": raw.get("version"),
-        "inputs": raw.get("inputs") or {},
+        "inputs": {**(raw.get("inputs") or {}), **(materialized_inputs or {})},
         "units": raw.get("units") or {},
         "parameters": raw.get("parameters") or {},
         "project_id": raw.get("project_id") or raw.get("projectId") or workload.get("projectId") or None,
@@ -173,8 +174,77 @@ def build_receipt(contract: dict[str, Any], worker_id: str, response: ComputeRes
     return receipt
 
 
-def execute_contract(contract: dict[str, Any], worker_id: str, secret: str, auth: dict[str, str], allow_insecure: bool = False) -> dict[str, Any]:
-    request = compute_request_from_contract(contract, worker_id, secret, allow_insecure)
+def materialize_artifact_inputs(contract: dict[str, Any], downloader) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    workload = contract.get("workload") if isinstance(contract.get("workload"), dict) else {}
+    references = workload.get("artifactInputs") if isinstance(workload.get("artifactInputs"), list) else []
+    inputs: dict[str, Any] = {}
+    materialized: list[dict[str, Any]] = []
+    for index, reference in enumerate(references):
+        if not isinstance(reference, dict):
+            raise WorkerAgentError(f"Artifact input {index} is invalid.")
+        artifact_id = _text(reference.get("artifactId"), 220)
+        input_key = _text(reference.get("inputKey"), 128)
+        fmt = _text(reference.get("format"), 40).lower() or "json"
+        if not artifact_id or not input_key:
+            raise WorkerAgentError("Artifact inputs require artifactId and inputKey.")
+        payload, metadata = downloader(artifact_id)
+        expected = _text(reference.get("sha256"), 64).lower()
+        actual = sha256(payload).hexdigest()
+        if expected and not hmac.compare_digest(expected, actual):
+            raise WorkerAgentError(f"Artifact input SHA-256 verification failed: {artifact_id}")
+        if metadata.get("sha256") and not hmac.compare_digest(str(metadata["sha256"]), actual):
+            raise WorkerAgentError(f"Coordinator artifact metadata hash mismatch: {artifact_id}")
+        try:
+            if fmt == "json":
+                value = json.loads(payload.decode("utf-8"))
+            elif fmt == "text":
+                value = payload.decode("utf-8")
+            elif fmt == "binary-base64":
+                import base64
+                value = base64.b64encode(payload).decode("ascii")
+            else:
+                raise WorkerAgentError(f"Unsupported artifact input format: {fmt}")
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise WorkerAgentError(f"Artifact input decoding failed: {artifact_id}") from exc
+        inputs[input_key] = value
+        materialized.append({"artifactId": artifact_id, "inputKey": input_key, "format": fmt, "sha256": actual, "sizeBytes": len(payload)})
+    return inputs, materialized
+
+
+def externalize_receipt_result(receipt: dict[str, Any], uploader, threshold_bytes: int) -> dict[str, Any]:
+    result = receipt.get("result")
+    encoded = _stable(result).encode("utf-8")
+    if len(encoded) < max(1024, int(threshold_bytes)):
+        receipt["artifactTransport"] = {"externalized": False, "inlineBytes": len(encoded), "version": VERSION}
+        return receipt
+    artifact = uploader(
+        encoded,
+        {
+            "kind": "result",
+            "filename": f"{receipt.get('contractId') or 'worker-result'}.json",
+            "mediaType": "application/json",
+            "sha256": sha256(encoded).hexdigest(),
+            "sizeBytes": len(encoded),
+            "queueId": receipt.get("queueId"),
+            "contractId": receipt.get("contractId"),
+            "metadata": {"receiptId": receipt.get("id"), "method": receipt.get("method"), "resultHash": receipt.get("resultHash")},
+        },
+    )
+    receipt["resultArtifact"] = artifact
+    receipt["result"] = {
+        "externalized": True,
+        "artifactId": artifact.get("id"),
+        "sha256": artifact.get("sha256"),
+        "sizeBytes": artifact.get("sizeBytes"),
+        "mediaType": artifact.get("mediaType"),
+    }
+    receipt["artifactTransport"] = {"externalized": True, "inlineBytes": 0, "version": VERSION}
+    receipt["receiptHash"] = _hash({key: value for key, value in receipt.items() if key != "receiptHash"})
+    return receipt
+
+
+def execute_contract(contract: dict[str, Any], worker_id: str, secret: str, auth: dict[str, str], allow_insecure: bool = False, materialized_inputs: dict[str, Any] | None = None) -> dict[str, Any]:
+    request = compute_request_from_contract(contract, worker_id, secret, allow_insecure, materialized_inputs)
     started = _utcnow()
     clock = time.perf_counter()
     response = run_compute(request, auth)

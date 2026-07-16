@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/worker-enrollment-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Worker Enrollment",
+  "type": "object",
+  "required": ["schema", "version", "worker", "credential", "credentialReturnedOnce"],
+  "properties": {
+    "schema": {"const": "sc-lab-worker-enrollment/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "worker": {"type": "object"},
+    "credential": {"type": "string", "minLength": 32},
+    "credentialReturnedOnce": {"const": true}
+  },
+  "additionalProperties": true
+}

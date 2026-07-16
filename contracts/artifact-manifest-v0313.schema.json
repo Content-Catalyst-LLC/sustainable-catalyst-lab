@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/artifact-manifest-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Artifact Manifest v0.31.3",
+  "type": "object",
+  "required": ["schema", "version", "createdAt", "artifacts", "manifestSha256"],
+  "properties": {
+    "schema": {"const": "sc-lab-artifact-manifest/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "artifacts": {"type": "array", "items": {"$ref": "artifact-record-v0313.schema.json"}, "maxItems": 1000},
+    "manifestSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

@@ -1,6 +1,6 @@
 # Optional Render persistent disk configuration.
 # Persistent disks are not included in the default blueprint because they may require a paid service.
-# Merge this block into the web service only when durable queue storage is desired.
+# Merge this block into the web service only when durable queue, result, and checkpoint storage is desired.
 disk:
   name: sustainable-catalyst-lab-data
   mountPath: /app/data
@@ -11,4 +11,10 @@ envVars:
   - key: SC_LAB_DISPATCHER_DB_PATH
     value: /app/data/sc-lab-dispatcher.sqlite3
   - key: SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED
+    value: "1"
+  - key: SC_LAB_ARTIFACT_ROOT
+    value: /app/data/artifacts
+  - key: SC_LAB_ARTIFACT_DB_PATH
+    value: /app/data/sc-lab-artifacts.sqlite3
+  - key: SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED
     value: "1"

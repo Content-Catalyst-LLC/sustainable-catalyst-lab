@@ -10,7 +10,7 @@ import secrets
 from threading import RLock
 from typing import Any
 
-VERSION = "0.31.2"
+VERSION = "0.31.3"
 WORKER_SCHEMA = "sc-lab-distributed-worker/0.31.0"
 WORKLOAD_SCHEMA = "sc-lab-distributed-workload/0.31.0"
 CONTRACT_SCHEMA = "sc-lab-dispatch-contract/0.31.0"
@@ -100,7 +100,10 @@ def normalize_workload(payload: dict[str,Any]) -> dict[str,Any]:
         "requiredTags":_list(src.get("requiredTags"),MAX_TAGS,80),"minimumMemoryMb":_int(src.get("minimumMemoryMb"),128,128,1048576),
         "gpuRequired":bool(src.get("gpuRequired",False)),"checkpointingRequired":bool(src.get("checkpointingRequired",False)),
         "timeoutSeconds":_int(src.get("timeoutSeconds"),300,1,86400),"leaseSeconds":_int(src.get("leaseSeconds"),300,30,MAX_LEASE_SECONDS),
-        "request":src.get("request") if isinstance(src.get("request"),dict) else {},"createdAt":src.get("createdAt") or _now(),
+        "request":src.get("request") if isinstance(src.get("request"),dict) else {},
+        "artifactInputs":[item for item in (src.get("artifactInputs") if isinstance(src.get("artifactInputs"),list) else []) if isinstance(item,dict)][:100],
+        "artifactOutputs":[item for item in (src.get("artifactOutputs") if isinstance(src.get("artifactOutputs"),list) else []) if isinstance(item,dict)][:100],
+        "createdAt":src.get("createdAt") or _now(),
     }
     workload["workloadHash"]=_hash({k:v for k,v in workload.items() if k!="workloadHash"})
     return workload

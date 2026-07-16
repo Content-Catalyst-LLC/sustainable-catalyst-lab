@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/artifact-upload-session-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Artifact Upload Session v0.31.3",
+  "type": "object",
+  "required": ["schema", "version", "sessionId", "status", "bytesReceived", "nextOffset", "recommendedChunkBytes", "expiresAt"],
+  "properties": {
+    "schema": {"const": "sc-lab-artifact-upload-session/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "sessionId": {"type": "string", "pattern": "^artifact-upload-"},
+    "status": {"enum": ["open", "completed", "quarantined", "expired"]},
+    "bytesReceived": {"type": "integer", "minimum": 0},
+    "nextOffset": {"type": "integer", "minimum": 0},
+    "recommendedChunkBytes": {"type": "integer", "minimum": 65536},
+    "expiresAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

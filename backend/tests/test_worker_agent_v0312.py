@@ -70,7 +70,7 @@ def test_signed_contract_executes_registered_method_and_completion_is_idempotent
         assert verified["signatureValid"] is True
         dispatcher.acknowledge(contract["id"], "agent-a")
         receipt = execute_contract(contract, "agent-a", "contract-secret", {"mode": "worker-agent", "client": "agent-a"})
-        assert receipt["schema"] == "sc-lab-worker-execution-receipt/0.31.2"
+        assert receipt["schema"] == "sc-lab-worker-execution-receipt/0.31.3"
         assert receipt["result"]["outputs"]["kineticEnergyJ"] == 9.0
         first = dispatcher.complete(contract["id"], {"ok": True, "result": receipt, "receiptHash": receipt["receiptHash"]}, "agent-a")
         second = dispatcher.complete(contract["id"], {"ok": True, "result": receipt, "receiptHash": receipt["receiptHash"]}, "agent-a")
@@ -123,7 +123,7 @@ def test_agent_config_requires_contract_verification_secret(tmp_path: Path):
         credential_file=tmp_path / "credential.json",
         methods=["mechanics.kinetic_energy"],
     )
-    assert config.worker_payload()["endpointMode"] == "secure-credential-pull"
+    assert config.worker_payload()["endpointMode"] == "secure-credential-pull-artifact-transport"
 
 
 def test_fastapi_worker_agent_enrollment_and_scoped_routes(monkeypatch, tmp_path: Path):

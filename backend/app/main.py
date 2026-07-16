@@ -8,7 +8,7 @@ from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from reportlab.lib.pagesizes import A4, letter
 from reportlab.pdfgen import canvas
 
@@ -30,6 +30,7 @@ from .model_calibration import ModelCalibrationError, build_report as build_cali
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
+from .artifact_transport import ArtifactStore, ArtifactTransportError
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -37,6 +38,7 @@ from .security import require_compute_auth
 
 jobs = PersistentJobQueue()
 dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit)
+artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, settings.artifact_max_bytes, settings.artifact_chunk_bytes, settings.artifact_upload_ttl_seconds, settings.artifact_retention_seconds)
 
 
 @asynccontextmanager
@@ -71,10 +73,11 @@ app.add_middleware(
 async def request_limits(request: Request, call_next):
     if request.method in {"POST", "PUT", "PATCH"}:
         body = await request.body()
-        if len(body) > settings.max_request_bytes:
+        limit = settings.artifact_chunk_bytes if "/artifacts/uploads/" in request.url.path and request.url.path.endswith("/chunks") else settings.max_request_bytes
+        if len(body) > limit:
             return JSONResponse(
                 status_code=413,
-                content={"detail": "Compute request exceeds the configured size limit."},
+                content={"detail": "Request exceeds the configured size limit."},
             )
     return await call_next(request)
 
@@ -125,7 +128,8 @@ def health():
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
         "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True},
-        "secureWorkerAgent": {"version":"0.31.2","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True},
+        "secureWorkerAgent": {"version":"0.31.3","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumable":True,"sha256Verification":True,"resultArtifacts":True,"checkpointArtifacts":True,"retentionControls":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -196,7 +200,8 @@ def capabilities():
         "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
         "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True,"horizontalCoordinatorSafeClaims":True,"centralHistory":True},
-        "secureWorkerAgent": {"version":"0.31.2","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True},
+        "secureWorkerAgent": {"version":"0.31.3","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumableChunks":True,"sha256Verification":True,"deduplication":True,"inputMaterialization":True,"resultExternalization":True,"checkpointTransport":True,"retentionControls":True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -968,7 +973,113 @@ def dispatcher_recovery_route(auth:dict[str,str]=Depends(require_compute_auth)):
 def dispatcher_history_route(limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
     del auth; return dispatcher.history(limit)
 
-# v0.31.2 Secure Worker Agent Runtime
+# v0.31.3 Distributed Artifact, Result, and Checkpoint Transport
+
+def _artifact_http_error(exc: ArtifactTransportError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/artifacts/health")
+def artifact_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = artifacts.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.artifact_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.artifact_persistent_disk_mounted else "Artifact files are instance-local unless a persistent disk is mounted."
+    return body
+
+
+@app.get("/v1/artifacts/policies")
+def artifact_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return artifacts.policies()
+
+
+@app.get("/v1/artifacts")
+def artifact_list_route(project_id: str = Query("", alias="projectId"), queue_id: str = Query("", alias="queueId"), kind: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return artifacts.list(project_id, queue_id, kind, limit)
+
+
+@app.get("/v1/artifacts/uploads")
+def artifact_sessions_route(limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return artifacts.sessions(limit)
+
+
+@app.post("/v1/artifacts/uploads")
+def artifact_create_upload_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return artifacts.create_upload(payload)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.post("/v1/artifacts/uploads/{session_id}/chunks")
+async def artifact_append_chunk_route(session_id: str, request: Request, offset: int = Query(..., ge=0), x_sc_lab_chunk_sha256: str = Header(default=""), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return artifacts.append_chunk(session_id, offset, await request.body(), chunk_sha256=x_sc_lab_chunk_sha256)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.post("/v1/artifacts/uploads/{session_id}/finalize")
+def artifact_finalize_route(session_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return artifacts.finalize(session_id, payload or {})
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.get("/v1/artifacts/{artifact_id}")
+def artifact_metadata_route(artifact_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return artifacts.get(artifact_id)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.get("/v1/artifacts/{artifact_id}/content")
+def artifact_content_route(artifact_id: str, offset: int = Query(0, ge=0), length: int | None = Query(None, ge=0), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        metadata, data = artifacts.read(artifact_id, offset, length)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+    headers = {"X-SC-Lab-Artifact-SHA256": metadata["sha256"], "X-SC-Lab-Artifact-Size": str(metadata["sizeBytes"]), "Content-Disposition": f'attachment; filename="{metadata["filename"]}"'}
+    return Response(content=data, media_type=metadata["mediaType"], headers=headers)
+
+
+@app.post("/v1/artifacts/manifest")
+def artifact_manifest_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        ids = payload.get("artifactIds") if isinstance(payload.get("artifactIds"), list) else []
+        return artifacts.manifest([str(item) for item in ids])
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.post("/v1/artifacts/cleanup")
+def artifact_cleanup_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return artifacts.cleanup_retention()
+
+
+@app.delete("/v1/artifacts/{artifact_id}")
+def artifact_delete_route(artifact_id: str, reason: str = Query("operator deletion"), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return artifacts.delete(artifact_id, reason)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+# v0.31.3 Secure Worker Agent Runtime and Artifact Transport
 
 def _require_worker_enrollment(presented: str) -> None:
     expected = settings.worker_enrollment_token
@@ -1086,6 +1197,59 @@ def worker_agent_rotate_credential_route(worker_id: str, x_sc_lab_worker_credent
         return dispatcher.rotate_worker_credential(worker_id)
     except DispatcherError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/artifacts/uploads")
+def worker_artifact_create_upload_route(worker_id: str, payload: dict[str, Any], x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return artifacts.create_upload(payload, worker_id)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/artifacts/uploads/{session_id}/chunks")
+async def worker_artifact_append_chunk_route(worker_id: str, session_id: str, request: Request, offset: int = Query(..., ge=0), x_sc_lab_chunk_sha256: str = Header(default=""), x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return artifacts.append_chunk(session_id, offset, await request.body(), worker_id, x_sc_lab_chunk_sha256)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.post("/v1/worker-agent/{worker_id}/artifacts/uploads/{session_id}/finalize")
+def worker_artifact_finalize_route(worker_id: str, session_id: str, payload: dict[str, Any] | None = None, x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        return artifacts.finalize(session_id, payload or {}, worker_id)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+
+
+@app.get("/v1/worker-agent/{worker_id}/artifacts/{artifact_id}")
+def worker_artifact_metadata_route(worker_id: str, artifact_id: str, x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        metadata = artifacts.get(artifact_id)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+    if metadata.get("workerId") != worker_id and not dispatcher.artifact_access_allowed(worker_id, artifact_id):
+        raise HTTPException(status_code=403, detail="Worker does not have an active artifact grant.")
+    return metadata
+
+
+@app.get("/v1/worker-agent/{worker_id}/artifacts/{artifact_id}/content")
+def worker_artifact_content_route(worker_id: str, artifact_id: str, offset: int = Query(0, ge=0), length: int | None = Query(None, ge=0), x_sc_lab_worker_credential: str = Header(default="")):
+    _authenticate_worker(worker_id, x_sc_lab_worker_credential)
+    try:
+        metadata = artifacts.get(artifact_id)
+        if metadata.get("workerId") != worker_id and not dispatcher.artifact_access_allowed(worker_id, artifact_id):
+            raise HTTPException(status_code=403, detail="Worker does not have an active artifact grant.")
+        metadata, data = artifacts.read(artifact_id, offset, length)
+    except ArtifactTransportError as exc:
+        raise _artifact_http_error(exc) from exc
+    headers = {"X-SC-Lab-Artifact-SHA256": metadata["sha256"], "X-SC-Lab-Artifact-Size": str(metadata["sizeBytes"])}
+    return Response(content=data, media_type=metadata["mediaType"], headers=headers)
 
 
 @app.post("/v1/worker-agent/{worker_id}/revoke")

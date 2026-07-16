@@ -7,7 +7,7 @@ import traceback
 from typing import Callable
 
 from app.compute import ComputeExecutionError
-from app.worker_agent_runtime import WorkerAgentError, execute_contract, verify_contract
+from app.worker_agent_runtime import WorkerAgentError, execute_contract, externalize_receipt_result, materialize_artifact_inputs, verify_contract
 
 from .client import CoordinatorClient, CoordinatorError
 from .config import AgentConfig
@@ -83,6 +83,7 @@ class WorkerAgent:
             self.config.contract_secret,
             self.config.allow_insecure_contracts,
         )
+        materialized_inputs, materialized_artifacts = materialize_artifact_inputs(contract, self.client.download_artifact)
         self.client.acknowledge(contract_id)
         self.active_jobs = 1
         self.heartbeat(force=True)
@@ -95,6 +96,13 @@ class WorkerAgent:
                     self.config.contract_secret,
                     {"mode": "worker-agent", "client": self.config.worker_id},
                     self.config.allow_insecure_contracts,
+                    materialized_inputs,
+                )
+                receipt["materializedInputArtifacts"] = materialized_artifacts
+                receipt = externalize_receipt_result(
+                    receipt,
+                    self.client.upload_artifact,
+                    self.config.result_artifact_threshold_bytes,
                 )
                 if renewer.error:
                     raise CoordinatorError(f"Lease renewal failed during execution: {renewer.error}")

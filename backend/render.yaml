@@ -44,3 +44,19 @@ services:
         value: "5"
       - key: SC_LAB_DISPATCHER_HISTORY_LIMIT
         value: "10000"
+      - key: SC_LAB_ARTIFACT_ROOT
+        value: /app/data/artifacts
+      - key: SC_LAB_ARTIFACT_DB_PATH
+        value: /app/data/sc-lab-artifacts.sqlite3
+      - key: SC_LAB_ARTIFACT_MAX_BYTES
+        value: "268435456"
+      - key: SC_LAB_ARTIFACT_CHUNK_BYTES
+        value: "1048576"
+      - key: SC_LAB_ARTIFACT_UPLOAD_TTL_SECONDS
+        value: "86400"
+      - key: SC_LAB_ARTIFACT_RETENTION_SECONDS
+        value: "2592000"
+      - key: SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED
+        value: "0"
+      - key: SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES
+        value: "262144"

@@ -4,4 +4,4 @@ from .config import AgentConfig
 from .runtime import WorkerAgent
 
 __all__ = ["AgentConfig", "WorkerAgent"]
-__version__ = "0.31.2"
+__version__ = "0.31.3"

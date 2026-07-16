@@ -1,0 +1,29 @@
+{
+  "schema": "sc-lab-worker-agent-policy/0.31.3",
+  "version": "0.31.3",
+  "architecture": "secure-pull-based-worker-agent-runtime",
+  "enrollment": {
+    "tokenRequiredInProduction": true,
+    "workerCredentialReturnedOnce": true,
+    "credentialStoredByCoordinatorAsSha256Digest": true,
+    "rotationSupported": true,
+    "revocationSupported": true
+  },
+  "contracts": {
+    "hmacSha256": true,
+    "workerBound": true,
+    "expirationRequired": true,
+    "localVerificationRequired": true
+  },
+  "execution": {
+    "registeredMethodsOnly": true,
+    "arbitraryCode": false,
+    "arbitraryCommands": false,
+    "arbitraryCallbackUrls": false,
+    "pullBased": true,
+    "leaseRenewal": true,
+    "idempotentCompletion": true
+  }
+,
+  "artifactTransport": {"inputMaterialization": true, "resultExternalization": true, "checkpointTransport": true, "sha256Verification": true}
+}

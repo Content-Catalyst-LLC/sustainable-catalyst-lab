@@ -1,8 +1,21 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.31.2 — Secure Worker Agent Runtime and Pull-Based Execution**
+**Current release: v0.31.3 — Distributed Artifact, Result, and Checkpoint Transport**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, and secure pull-based worker execution.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, and verified artifact transport.
+
+## v0.31.3 highlights
+
+- Content-addressed storage for inputs, results, checkpoints, logs, reports, datasets, and provenance artifacts
+- Sequential resumable chunk uploads with per-chunk and final SHA-256 verification
+- Deduplication, quarantine for failed integrity checks, ranged downloads, manifests, and audit events
+- Worker-scoped uploads and lease-bound input-artifact downloads
+- JSON, text, and base64 binary input materialization into registered compute requests
+- Automatic externalization of large worker results from completion receipts
+- Queue, contract, project, worker, method, and receipt provenance on retained artifacts
+- Upload expiration and artifact-retention cleanup controls
+- WordPress Artifact Transport operations panel and same-origin backend proxies
+- Direct installer bridge from v0.31.0, v0.31.1, or v0.31.2
 
 ## v0.31.2 highlights
 

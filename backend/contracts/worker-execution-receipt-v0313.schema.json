@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/worker-execution-receipt-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Worker Execution Receipt",
+  "type": "object",
+  "required": ["schema", "version", "id", "workerId", "contractId", "leaseId", "method", "startedAt", "completedAt", "durationMs", "resultHash", "receiptHash", "result"],
+  "properties": {
+    "schema": {"const": "sc-lab-worker-execution-receipt/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "id": {"type": "string"},
+    "workerId": {"type": "string"},
+    "contractId": {"type": "string"},
+    "leaseId": {"type": "string"},
+    "queueId": {"type": ["string", "null"]},
+    "workloadHash": {"type": ["string", "null"]},
+    "method": {"type": "string"},
+    "methodVersion": {"type": "string"},
+    "startedAt": {"type": "string", "format": "date-time"},
+    "completedAt": {"type": "string", "format": "date-time"},
+    "durationMs": {"type": "number", "minimum": 0},
+    "runtime": {"type": "object"},
+    "resultHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "receiptHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "result": {"type": "object"},
+    "resultArtifact": {"type": "object"},
+    "materializedInputArtifacts": {"type": "array", "items": {"type": "object"}},
+    "artifactTransport": {"type": "object"}
+  },
+  "additionalProperties": false
+}

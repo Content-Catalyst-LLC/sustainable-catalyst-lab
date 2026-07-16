@@ -87,6 +87,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/credentials/status', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_credentials_status'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/worker-agent/workers', array('methods'=>'GET','callback'=>array(__CLASS__,'worker_agent_workers'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/artifacts/health', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/artifacts/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/artifacts/list', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_list'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/artifacts/uploads', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_uploads'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/artifacts/cleanup', array('methods'=>'POST','callback'=>array(__CLASS__,'artifact_cleanup'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -387,6 +392,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function worker_agent_policies(){return self::proxy('/v1/worker-agent/policies');}
     public static function worker_agent_credentials_status(){return self::proxy('/v1/worker-agent/credentials/status');}
     public static function worker_agent_workers(){return self::proxy('/v1/dispatcher/workers');}
+    public static function artifact_health(){return self::proxy('/v1/artifacts/health');}
+    public static function artifact_policies(){return self::proxy('/v1/artifacts/policies');}
+    public static function artifact_list(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/artifacts?limit='.$limit);}
+    public static function artifact_uploads(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/artifacts/uploads?limit='.$limit);}
+    public static function artifact_cleanup(){return self::proxy('/v1/artifacts/cleanup','POST',array(),8388608);}
 
 
 }

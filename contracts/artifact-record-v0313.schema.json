@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/artifact-record-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Artifact Record v0.31.3",
+  "type": "object",
+  "required": ["schema", "version", "id", "kind", "filename", "mediaType", "sha256", "sizeBytes", "retentionUntil", "createdAt"],
+  "properties": {
+    "schema": {"const": "sc-lab-artifact-record/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "id": {"type": "string", "pattern": "^artifact-"},
+    "kind": {"enum": ["input", "result", "checkpoint", "log", "report", "dataset", "provenance"]},
+    "projectId": {"type": ["string", "null"]},
+    "queueId": {"type": ["string", "null"]},
+    "contractId": {"type": ["string", "null"]},
+    "workerId": {"type": ["string", "null"]},
+    "filename": {"type": "string", "minLength": 1, "maxLength": 180},
+    "mediaType": {"type": "string", "minLength": 1, "maxLength": 160},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "sizeBytes": {"type": "integer", "minimum": 0},
+    "metadata": {"type": "object"},
+    "retentionUntil": {"type": "string", "format": "date-time"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "contentAddressed": {"const": true}
+  },
+  "additionalProperties": true
+}

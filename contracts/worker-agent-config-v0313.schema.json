@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/worker-agent-config-v0313.schema.json",
+  "title": "Sustainable Catalyst Lab Worker Agent Configuration",
+  "type": "object",
+  "required": ["schema", "version", "workerId", "coordinatorUrl", "workerType", "capabilities"],
+  "properties": {
+    "schema": {"const": "sc-lab-worker-agent-config/0.31.3"},
+    "version": {"const": "0.31.3"},
+    "workerId": {"type": "string", "minLength": 1, "maxLength": 180, "pattern": "^[A-Za-z0-9._-]+$"},
+    "coordinatorUrl": {"type": "string", "format": "uri", "pattern": "^https?://"},
+    "workerType": {"enum": ["browser-web-worker", "render-cpu", "local-python", "raspberry-pi", "institutional-node"]},
+    "capabilities": {
+      "type": "object",
+      "required": ["methods", "packages", "memoryMb", "cpuCores", "maxConcurrentJobs"],
+      "properties": {
+        "methods": {"type": "array", "maxItems": 256, "items": {"type": "string"}, "uniqueItems": true},
+        "packages": {"type": "array", "maxItems": 128, "items": {"type": "string"}, "uniqueItems": true},
+        "memoryMb": {"type": "integer", "minimum": 128, "maximum": 1048576},
+        "cpuCores": {"type": "integer", "minimum": 1, "maximum": 256},
+        "maxConcurrentJobs": {"type": "integer", "minimum": 1, "maximum": 128},
+        "checkpointing": {"type": "boolean"},
+        "localData": {"type": "boolean"},
+        "artifactTransport": {"type": "boolean"},
+        "resumableTransfers": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "credentialFile": {"type": "string"},
+    "pollIntervalSeconds": {"type": "number", "minimum": 0.5, "maximum": 300},
+    "heartbeatIntervalSeconds": {"type": "integer", "minimum": 5, "maximum": 3600},
+    "leaseSeconds": {"type": "integer", "minimum": 30, "maximum": 3600},
+    "artifactChunkBytes": {"type": "integer", "minimum": 65536, "maximum": 8388608},
+    "resultArtifactThresholdBytes": {"type": "integer", "minimum": 1024, "maximum": 16777216}
+  },
+  "additionalProperties": false
+}

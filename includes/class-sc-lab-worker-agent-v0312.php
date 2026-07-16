@@ -1,8 +1,8 @@
 <?php
-/** Sustainable Catalyst Lab v0.31.2 Secure Worker Agent Runtime. */
+/** Sustainable Catalyst Lab v0.31.3 Secure Worker Agent Runtime with artifact transport. */
 if (!defined('ABSPATH')) { exit; }
 final class SC_Lab_Worker_Agent_V0312 {
-    const VERSION = '0.31.2';
+    const VERSION = '0.31.3';
     private static $initialized = false;
     public static function init() {
         if (self::$initialized) { return; }
@@ -32,9 +32,9 @@ final class SC_Lab_Worker_Agent_V0312 {
         return rest_ensure_response(array(
             'ok'=>true,
             'version'=>self::VERSION,
-            'configSchema'=>'sc-lab-worker-agent-config/0.31.2',
-            'enrollmentSchema'=>'sc-lab-worker-enrollment/0.31.2',
-            'receiptSchema'=>'sc-lab-worker-execution-receipt/0.31.2',
+            'configSchema'=>'sc-lab-worker-agent-config/0.31.3',
+            'enrollmentSchema'=>'sc-lab-worker-enrollment/0.31.3',
+            'receiptSchema'=>'sc-lab-worker-execution-receipt/0.31.3',
             'pullBased'=>true,
             'workerScopedCredentials'=>true,
             'registeredMethodsOnly'=>true,
@@ -46,10 +46,10 @@ final class SC_Lab_Worker_Agent_V0312 {
         $required = array(
             'assets/js/modules/worker-agent-v0312.js',
             'assets/css/sc-lab-worker-agent-v0312.css',
-            'contracts/worker-agent-policy-v0312.json',
-            'contracts/worker-agent-config-v0312.schema.json',
-            'contracts/worker-enrollment-v0312.schema.json',
-            'contracts/worker-execution-receipt-v0312.schema.json',
+            'contracts/worker-agent-policy-v0313.json',
+            'contracts/worker-agent-config-v0313.schema.json',
+            'contracts/worker-enrollment-v0313.schema.json',
+            'contracts/worker-execution-receipt-v0313.schema.json',
             'includes/class-sc-lab-worker-agent-v0312.php',
         );
         $files = array(); $ok = true;
@@ -66,7 +66,7 @@ final class SC_Lab_Worker_Agent_V0312 {
             'credentialRotation'=>true,
             'credentialRevocation'=>true,
             'leaseRenewal'=>true,
-            'completionReceipts'=>true,
+            'completionReceipts'=>true,'artifactTransport'=>true,
             'files'=>$files,
             'time'=>gmdate('c'),
         ));

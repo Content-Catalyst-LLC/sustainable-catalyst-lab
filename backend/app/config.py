@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.31.2"
+    version: str = "0.31.3"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -59,6 +59,14 @@ class Settings:
     worker_enrollment_token: str = os.getenv("SC_LAB_WORKER_ENROLLMENT_TOKEN", "").strip()
     allow_open_worker_enrollment: bool = os.getenv("SC_LAB_ALLOW_OPEN_WORKER_ENROLLMENT", "0").lower() in {"1", "true", "yes"}
     dispatcher_persistent_disk_mounted: bool = os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0").lower() in {"1", "true", "yes"}
+    artifact_root: str = os.getenv("SC_LAB_ARTIFACT_ROOT", "./data/artifacts").strip()
+    artifact_db_path: str = os.getenv("SC_LAB_ARTIFACT_DB_PATH", "").strip()
+    artifact_max_bytes: int = _int("SC_LAB_ARTIFACT_MAX_BYTES", 268435456, 1048576, 2147483648)
+    artifact_chunk_bytes: int = _int("SC_LAB_ARTIFACT_CHUNK_BYTES", 1048576, 65536, 8388608)
+    artifact_upload_ttl_seconds: int = _int("SC_LAB_ARTIFACT_UPLOAD_TTL_SECONDS", 86400, 300, 604800)
+    artifact_retention_seconds: int = _int("SC_LAB_ARTIFACT_RETENTION_SECONDS", 2592000, 3600, 31536000)
+    worker_result_artifact_threshold_bytes: int = _int("SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES", 262144, 1024, 16777216)
+    artifact_persistent_disk_mounted: bool = os.getenv("SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

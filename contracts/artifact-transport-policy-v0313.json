@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-artifact-transport-policy/0.31.3",
+  "version": "0.31.3",
+  "contentAddressed": true,
+  "hashAlgorithm": "sha256",
+  "resumableSequentialChunks": true,
+  "workerScopedUploads": true,
+  "leaseBoundInputAccess": true,
+  "resultExternalization": true,
+  "checkpointTransport": true,
+  "retentionControls": true,
+  "arbitraryRemoteFetch": false,
+  "executableArtifacts": false,
+  "defaultKinds": ["input", "result", "checkpoint", "log", "report", "dataset", "provenance"]
+}

@@ -55,6 +55,7 @@
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
           'worker-agent' => 'Secure worker agents',
+          'artifact-transport' => 'Artifact transport',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -1546,8 +1547,19 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         <pre data-pq-v0311-output aria-label="Persistent queue response">No response yet.</pre>
       </section>
 
+      <section class="sc-lab-panel sc-at0313" data-lab-module="artifact-transport" data-module-panel="artifact-transport" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.3</p><h3>Distributed Artifact, Result, and Checkpoint Transport</h3><p>Move governed inputs, large results, checkpoints, logs, datasets, and provenance records between the coordinator and secure workers with resumable chunks, SHA-256 verification, content-addressed storage, lease-bound access, and retention controls.</p></header>
+        <p data-at-v0313-status role="status" aria-live="polite">Artifact transport loading…</p>
+        <div class="sc-at0313-metrics" data-at-v0313-metrics></div>
+        <div class="sc-at0313-grid">
+          <div class="sc-at0313-card"><h4>Retained artifacts</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Artifact</th><th>Kind</th><th>Size</th><th>SHA-256</th><th>Owner</th><th>Created</th></tr></thead><tbody data-at-v0313-artifacts></tbody></table></div><div class="sc-lab-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-at-v0313-refresh>Refresh transport</button><button type="button" class="sc-lab-button" data-at-v0313-cleanup>Run retention cleanup</button></div></div>
+          <div class="sc-at0313-card"><h4>Transport guarantees</h4><ul><li>Content is addressed and deduplicated by SHA-256.</li><li>Chunks are sequential, resumable, and independently verifiable.</li><li>Workers can download only artifacts granted by an active lease.</li><li>Large worker results are externalized from completion receipts.</li><li>Checkpoint and result artifacts retain queue, contract, project, and worker provenance.</li><li>Expired uploads and retained artifacts can be cleaned by policy.</li></ul></div>
+        </div>
+        <div class="sc-at0313-card"><h4>Coordinator transport health and sessions</h4><pre data-at-v0313-output>No response yet.</pre></div>
+      </section>
+
       <section class="sc-lab-panel sc-wa0312" data-lab-module="worker-agent" data-module-panel="worker-agent" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.2</p><h3>Secure Worker Agent Runtime</h3><p>Operate pull-based Python workers with one-time enrollment, worker-scoped credentials, local signed-contract verification, governed registered-method execution, automatic lease renewal, and provenance-bearing completion receipts.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / DISTRIBUTED COMPUTE / v0.31.3</p><h3>Secure Worker Agent Runtime</h3><p>Operate pull-based Python workers with one-time enrollment, worker-scoped credentials, local signed-contract verification, governed registered-method execution, automatic lease renewal, provenance-bearing completion receipts, and verified artifact transport.</p></header>
         <p data-wa-v0312-status role="status" aria-live="polite">Secure worker runtime loading…</p>
         <div class="sc-wa0312-metrics" data-wa-v0312-metrics></div>
         <div class="sc-wa0312-grid">

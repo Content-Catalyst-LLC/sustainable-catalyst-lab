@@ -74,6 +74,8 @@ class AgentConfig:
     heartbeat_interval_seconds: int = 30
     lease_seconds: int = 300
     request_timeout_seconds: int = 30
+    artifact_chunk_bytes: int = 1048576
+    result_artifact_threshold_bytes: int = 262144
     allow_insecure_contracts: bool = False
     once: bool = False
 
@@ -121,6 +123,8 @@ class AgentConfig:
             "heartbeat_interval_seconds": _int("SC_LAB_WORKER_HEARTBEAT_INTERVAL_SECONDS", 30, 5, 3600),
             "lease_seconds": _int("SC_LAB_WORKER_LEASE_SECONDS", 300, 30, 3600),
             "request_timeout_seconds": _int("SC_LAB_WORKER_REQUEST_TIMEOUT_SECONDS", 30, 3, 300),
+            "artifact_chunk_bytes": _int("SC_LAB_WORKER_ARTIFACT_CHUNK_BYTES", 1048576, 65536, 8388608),
+            "result_artifact_threshold_bytes": _int("SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES", 262144, 1024, 16777216),
             "allow_insecure_contracts": _bool("SC_LAB_WORKER_ALLOW_INSECURE_CONTRACTS", False),
             "once": _bool("SC_LAB_WORKER_ONCE", False),
         }
@@ -133,7 +137,7 @@ class AgentConfig:
             "name": self.name,
             "workerType": self.worker_type,
             "state": "online",
-            "endpointMode": "secure-credential-pull",
+            "endpointMode": "secure-credential-pull-artifact-transport",
             "capabilities": {
                 "methods": self.methods,
                 "packages": self.packages,
@@ -144,12 +148,14 @@ class AgentConfig:
                 "localData": self.local_data,
                 "maxConcurrentJobs": self.max_concurrent_jobs,
                 "architectures": [platform.machine(), platform.system().lower()],
+                "artifactTransport": True,
+                "resumableTransfers": True,
             },
             "load": {"activeJobs": 0, "queuedJobs": 0},
             "tags": self.tags,
             "projectAllowlist": self.project_allowlist,
             "metadata": {
-                "agentVersion": "0.31.2",
+                "agentVersion": "0.31.3",
                 "pythonVersion": platform.python_version(),
                 "platform": platform.platform(),
             },

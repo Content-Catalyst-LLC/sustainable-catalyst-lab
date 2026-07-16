@@ -139,7 +139,7 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
             con.execute("COMMIT")
         return {
             "ok": True,
-            "schema": "sc-lab-worker-enrollment/0.31.2",
+            "schema": "sc-lab-worker-enrollment/0.31.3",
             "version": VERSION,
             "worker": worker,
             "credential": credential,
@@ -401,6 +401,24 @@ class PersistentDistributedDispatcher(DistributedDispatcher):
         with self._connect() as con: rows=con.execute("SELECT * FROM dispatcher_events ORDER BY id DESC LIMIT ?",(max(1,min(1000,limit)),)).fetchall()
         events=[{'schema':r['schema_name'],'id':r['id'],'entityType':r['entity_type'],'entityId':r['entity_id'],'eventType':r['event_type'],'payload':self._loads(r['payload_json']),'createdAt':r['created_at']} for r in rows]
         return {'ok':True,'count':len(events),'events':events}
+
+    def artifact_access_allowed(self, worker_id: str, artifact_id: str) -> bool:
+        worker_id = _text(worker_id, 180)
+        artifact_id = _text(artifact_id, 220)
+        if not worker_id or not artifact_id:
+            return False
+        with self._connect() as con:
+            rows = con.execute(
+                "SELECT payload_json FROM dispatcher_queue WHERE worker_id=? AND status IN ('leased','running')",
+                (worker_id,),
+            ).fetchall()
+        for row in rows:
+            workload = self._loads(row['payload_json'])
+            references = workload.get('artifactInputs') if isinstance(workload.get('artifactInputs'), list) else []
+            for reference in references:
+                if isinstance(reference, dict) and _text(reference.get('artifactId'), 220) == artifact_id:
+                    return True
+        return False
 
     def health(self)->dict[str,Any]:
         st=self.status(); workers=self.list(False)['workers']
