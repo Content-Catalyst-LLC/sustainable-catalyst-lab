@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-workflow-run-v0321.schema.json",
+  "title": "Sustainable Catalyst Lab Workflow Run 0.32.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workflowId",
+    "definitionHash",
+    "projectId",
+    "status",
+    "nodes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workflow-run/0.32.1"
+    },
+    "version": {
+      "const": "0.32.1"
+    },
+    "recordType": {
+      "const": "workflow-run"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workflowId": {
+      "type": "string"
+    },
+    "definitionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "context": {
+      "type": "object"
+    },
+    "nodeCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "recoveryOfRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recoveryGeneration": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recoveryPolicy": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema",
+          "runId",
+          "nodeId",
+          "status"
+        ],
+        "properties": {
+          "schema": {
+            "const": "sc-lab-workflow-node-run/0.32.1"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "nodeId": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "waiting",
+              "queued",
+              "running",
+              "completed",
+              "reused",
+              "failed",
+              "skipped",
+              "cancelled"
+            ]
+          },
+          "queueId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "definition": {
+            "type": "object"
+          },
+          "result": {},
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "skipReason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "latestCheckpointId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "latestCheckpoint": {},
+          "checkpointAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "recoverySourceRunId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recoverySourceNodeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recoveryGeneration": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "startedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

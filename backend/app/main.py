@@ -130,10 +130,10 @@ def health():
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
         "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True},
-        "secureWorkerAgent": {"version":"0.32.0","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.32.1","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumable":True,"sha256Verification":True,"resultArtifacts":True,"checkpointArtifacts":True,"retentionControls":True},
         "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
-        "workflowOrchestration": {"version":"0.32.0","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True},
+        "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -204,9 +204,9 @@ def capabilities():
         "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
         "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True,"horizontalCoordinatorSafeClaims":True,"centralHistory":True},
-        "secureWorkerAgent": {"version":"0.32.0","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.32.1","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumableChunks":True,"sha256Verification":True,"deduplication":True,"inputMaterialization":True,"resultExternalization":True,"checkpointTransport":True,"retentionControls":True},
-        "workflowOrchestration": {"version":"0.32.0","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"serverBackedRegistry":True},
+        "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"serverBackedRegistry":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1319,7 +1319,7 @@ def worker_agent_revoke_route(worker_id: str, payload: dict[str, Any], auth: dic
 
 
 
-# v0.32.0 Scientific Workflow Orchestration and Dependency Graphs
+# v0.32.1 Workflow Checkpoints, Conditional Execution, and Partial Recovery
 
 def _workflow_http_error(exc: WorkflowError) -> HTTPException:
     return HTTPException(status_code=exc.status_code, detail=exc.detail)
@@ -1415,6 +1415,51 @@ def workflow_cancel_route(run_id: str, payload: dict[str, Any] | None = None, au
     del auth
     try:
         return workflows.cancel(run_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/recovery-plan")
+def workflow_recovery_plan_route(run_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.recovery_plan(run_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/recover")
+def workflow_recover_route(run_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.recover(run_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/nodes/{node_id}/restart")
+def workflow_restart_node_route(run_id: str, node_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.restart_node(run_id, node_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-runs/{run_id}/nodes/{node_id}/checkpoints")
+def workflow_checkpoints_route(run_id: str, node_id: str, limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.checkpoints(run_id, node_id, limit)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/nodes/{node_id}/checkpoints")
+def workflow_record_checkpoint_route(run_id: str, node_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.record_checkpoint(run_id, node_id, payload or {})
     except WorkflowError as exc:
         raise _workflow_http_error(exc) from exc
 

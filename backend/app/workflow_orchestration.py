@@ -12,15 +12,19 @@ from typing import Any
 
 from .distributed_dispatcher import DispatcherError
 
-VERSION = "0.32.0"
-WORKFLOW_SCHEMA = "sc-lab-scientific-workflow/0.32.0"
-RUN_SCHEMA = "sc-lab-workflow-run/0.32.0"
-NODE_SCHEMA = "sc-lab-workflow-node-run/0.32.0"
-EVENT_SCHEMA = "sc-lab-workflow-event/0.32.0"
-DB_SCHEMA_VERSION = 1
+VERSION = "0.32.1"
+WORKFLOW_SCHEMA = "sc-lab-scientific-workflow/0.32.1"
+RUN_SCHEMA = "sc-lab-workflow-run/0.32.1"
+NODE_SCHEMA = "sc-lab-workflow-node-run/0.32.1"
+EVENT_SCHEMA = "sc-lab-workflow-event/0.32.1"
+CHECKPOINT_SCHEMA = "sc-lab-workflow-checkpoint/0.32.1"
+RECOVERY_SCHEMA = "sc-lab-workflow-recovery-plan/0.32.1"
+DB_SCHEMA_VERSION = 2
 RUN_STATES = {"pending", "running", "completed", "failed", "cancelled"}
-NODE_STATES = {"waiting", "queued", "running", "completed", "failed", "skipped", "cancelled"}
-TERMINAL_NODE_STATES = {"completed", "failed", "skipped", "cancelled"}
+NODE_STATES = {"waiting", "queued", "running", "completed", "reused", "failed", "skipped", "cancelled"}
+TERMINAL_NODE_STATES = {"completed", "reused", "failed", "skipped", "cancelled"}
+SUCCESS_NODE_STATES = {"completed", "reused"}
+CONDITION_OPERATORS = {"exists", "truthy", "falsy", "equals", "notEquals", "greaterThan", "greaterThanOrEqual", "lessThan", "lessThanOrEqual", "in", "notIn", "contains"}
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$")
 
 
@@ -85,15 +89,92 @@ def _deep_set(target: dict[str, Any], path: str, value: Any) -> None:
     current[parts[-1]] = copy.deepcopy(value)
 
 
+def _normalize_condition(value: Any, node_id: str, depth: int = 0) -> dict[str, Any] | None:
+    if value in (None, {}, []):
+        return None
+    if depth > 12 or not isinstance(value, dict):
+        raise WorkflowError(f"Workflow node {node_id} contains an invalid condition.")
+    for key in ("all", "any"):
+        if key in value:
+            items = value.get(key)
+            if not isinstance(items, list) or not items:
+                raise WorkflowError(f"Workflow node {node_id} condition {key} requires a non-empty array.")
+            return {key: [_normalize_condition(item, node_id, depth + 1) for item in items]}
+    if "not" in value:
+        child = _normalize_condition(value.get("not"), node_id, depth + 1)
+        if child is None:
+            raise WorkflowError(f"Workflow node {node_id} condition not requires a child condition.")
+        return {"not": child}
+    source = _text(value.get("source") or value.get("path"), 500)
+    operator = _text(value.get("operator"), 40) or "truthy"
+    if not source:
+        raise WorkflowError(f"Workflow node {node_id} condition requires a source path.")
+    if not (source.startswith("run.inputs") or source.startswith("run.context") or source.startswith("nodes.")):
+        raise WorkflowError(f"Workflow node {node_id} condition source must begin with run.inputs, run.context, or nodes.")
+    if operator not in CONDITION_OPERATORS:
+        raise WorkflowError(f"Workflow node {node_id} condition operator is unsupported: {operator}")
+    condition = {"source": source, "operator": operator}
+    if "value" in value:
+        condition["value"] = copy.deepcopy(value.get("value"))
+    return condition
+
+
+def _condition_result(condition: dict[str, Any] | None, run_inputs: dict[str, Any], run_context: dict[str, Any], node_rows: dict[str, sqlite3.Row]) -> tuple[bool, dict[str, Any]]:
+    if not condition:
+        return True, {"matched": True, "reason": "no-condition"}
+    if "all" in condition:
+        children = [_condition_result(item, run_inputs, run_context, node_rows) for item in condition["all"]]
+        return all(item[0] for item in children), {"operator": "all", "children": [item[1] for item in children]}
+    if "any" in condition:
+        children = [_condition_result(item, run_inputs, run_context, node_rows) for item in condition["any"]]
+        return any(item[0] for item in children), {"operator": "any", "children": [item[1] for item in children]}
+    if "not" in condition:
+        matched, detail = _condition_result(condition["not"], run_inputs, run_context, node_rows)
+        return (not matched), {"operator": "not", "child": detail}
+    nodes: dict[str, Any] = {}
+    for node_id, row in node_rows.items():
+        nodes[node_id] = {
+            "status": row["status"],
+            "result": json.loads(row["result_json"]) if row["result_json"] else None,
+            "skipReason": row["skip_reason"] if "skip_reason" in row.keys() else None,
+        }
+    root = {"run": {"inputs": run_inputs, "context": run_context}, "nodes": nodes}
+    source = condition["source"]
+    exists = True
+    try:
+        actual = _deep_get(root, source)
+    except WorkflowError:
+        exists = False
+        actual = None
+    operator = condition["operator"]
+    expected = condition.get("value")
+    if operator == "exists": matched = exists
+    elif operator == "truthy": matched = bool(actual) if exists else False
+    elif operator == "falsy": matched = not bool(actual) if exists else True
+    elif operator == "equals": matched = exists and actual == expected
+    elif operator == "notEquals": matched = (not exists) or actual != expected
+    elif operator == "greaterThan": matched = exists and actual > expected
+    elif operator == "greaterThanOrEqual": matched = exists and actual >= expected
+    elif operator == "lessThan": matched = exists and actual < expected
+    elif operator == "lessThanOrEqual": matched = exists and actual <= expected
+    elif operator == "in": matched = exists and isinstance(expected, (list, tuple, set)) and actual in expected
+    elif operator == "notIn": matched = (not exists) or not isinstance(expected, (list, tuple, set)) or actual not in expected
+    elif operator == "contains": matched = exists and isinstance(actual, (list, tuple, set, str, dict)) and expected in actual
+    else: matched = False
+    return matched, {"source": source, "operator": operator, "exists": exists, "actual": actual, "expected": expected, "matched": matched}
+
+
 def policies(max_nodes: int = 100, max_runs: int = 5000) -> dict[str, Any]:
     return {
         "ok": True,
         "version": VERSION,
-        "architecture": "typed-scientific-workflow-dag-orchestrator",
+        "architecture": "checkpoint-aware-conditional-scientific-workflow-orchestrator",
         "definitions": {
             "typedNodes": True,
             "acyclicGraphsRequired": True,
             "immutableRunSnapshots": True,
+            "declarativeConditions": True,
+            "arbitraryConditionCode": False,
             "maximumNodes": max_nodes,
         },
         "execution": {
@@ -102,12 +183,23 @@ def policies(max_nodes: int = 100, max_runs: int = 5000) -> dict[str, Any]:
             "parallelReadyNodes": True,
             "nodeRetriesDelegatedToDispatcher": True,
             "automaticDownstreamBlocking": True,
+            "conditionalSkipping": True,
+            "checkpointResumeContext": True,
             "manualReconciliation": True,
+        },
+        "recovery": {
+            "partialRunRecovery": True,
+            "newRunForRecovery": True,
+            "completedNodeReuse": True,
+            "checkpointReuse": True,
+            "downstreamClosure": True,
+            "operatorAuditTrail": True,
         },
         "handoffs": {
             "resultBindings": True,
             "artifactInputs": True,
             "dependencyArtifactPropagation": True,
+            "checkpointArtifacts": True,
             "arbitraryCode": False,
             "arbitraryCallbackUrls": False,
         },
@@ -116,6 +208,8 @@ def policies(max_nodes: int = 100, max_runs: int = 5000) -> dict[str, Any]:
             "runTimeline": True,
             "queueIdentifiers": True,
             "nodeResults": True,
+            "checkpointHistory": True,
+            "recoveryLineage": True,
         },
         "limits": {"workflowRuns": max_runs},
     }
@@ -164,12 +258,13 @@ def normalize_workflow(payload: dict[str, Any], max_nodes: int = 100) -> dict[st
                 raise WorkflowError(f"Workflow node {node_id} binding source {from_node} must also be listed in dependsOn.")
             bindings.append({"fromNode": from_node, "sourcePath": source_path, "targetPath": target_path})
         nodes.append({
-            "schema": "sc-lab-workflow-node/0.32.0",
+            "schema": "sc-lab-workflow-node/0.32.1",
             "id": node_id,
             "title": _text(raw.get("title"), 300) or node_id.replace("-", " ").replace("_", " ").title(),
             "method": method,
             "dependsOn": depends_on,
             "bindings": bindings,
+            "condition": _normalize_condition(raw.get("condition") or raw.get("when"), node_id),
             "request": copy.deepcopy(raw.get("request")) if isinstance(raw.get("request"), dict) else {},
             "priority": _int(raw.get("priority"), 50, 0, 100),
             "maxAttempts": _int(raw.get("maxAttempts"), 3, 1, 20),
@@ -285,7 +380,34 @@ class WorkflowOrchestrator:
               created_at TEXT NOT NULL
             );
             CREATE INDEX IF NOT EXISTS idx_workflow_events_run ON workflow_events(run_id, id DESC);
+            CREATE TABLE IF NOT EXISTS workflow_checkpoints(
+              id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES workflow_runs(id) ON DELETE CASCADE,
+              node_id TEXT NOT NULL, sequence INTEGER NOT NULL, queue_id TEXT, artifact_id TEXT,
+              progress REAL, message TEXT, state_json TEXT NOT NULL, source TEXT NOT NULL,
+              created_at TEXT NOT NULL, UNIQUE(run_id,node_id,sequence)
+            );
+            CREATE INDEX IF NOT EXISTS idx_workflow_checkpoints_node ON workflow_checkpoints(run_id,node_id,sequence DESC);
             """)
+            run_columns = {row["name"] for row in con.execute("PRAGMA table_info(workflow_runs)").fetchall()}
+            for name, ddl in {
+                "recovery_of_run_id": "TEXT",
+                "recovery_generation": "INTEGER NOT NULL DEFAULT 0",
+                "recovery_policy_json": "TEXT",
+            }.items():
+                if name not in run_columns:
+                    con.execute(f"ALTER TABLE workflow_runs ADD COLUMN {name} {ddl}")
+            node_columns = {row["name"] for row in con.execute("PRAGMA table_info(workflow_node_runs)").fetchall()}
+            for name, ddl in {
+                "skip_reason": "TEXT",
+                "latest_checkpoint_id": "TEXT",
+                "checkpoint_json": "TEXT",
+                "checkpoint_at": "TEXT",
+                "recovery_source_run_id": "TEXT",
+                "recovery_source_node_id": "TEXT",
+                "recovery_generation": "INTEGER NOT NULL DEFAULT 0",
+            }.items():
+                if name not in node_columns:
+                    con.execute(f"ALTER TABLE workflow_node_runs ADD COLUMN {name} {ddl}")
             con.execute("INSERT INTO workflow_meta(key,value) VALUES('schema_version',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (str(DB_SCHEMA_VERSION),))
 
     @staticmethod
@@ -379,6 +501,128 @@ class WorkflowOrchestrator:
         visit(result)
         return found[:100]
 
+    @staticmethod
+    def _extract_checkpoint(value: Any) -> dict[str, Any] | None:
+        if not isinstance(value, dict):
+            return None
+        candidates: list[dict[str, Any]] = []
+        artifact_id = value.get("checkpointArtifactId")
+        for key in ("latestCheckpoint", "checkpoint", "resumeCheckpoint"):
+            child = value.get(key)
+            if isinstance(child, dict):
+                candidate = copy.deepcopy(child)
+                if isinstance(artifact_id, str) and artifact_id:
+                    candidate.setdefault("artifactId", artifact_id)
+                candidates.append(candidate)
+        if isinstance(artifact_id, str) and artifact_id and not candidates:
+            candidates.append({"artifactId": artifact_id})
+        for child in value.values():
+            if isinstance(child, dict):
+                nested = WorkflowOrchestrator._extract_checkpoint(child)
+                if nested:
+                    candidates.append(nested)
+        if not candidates:
+            return None
+        checkpoint = candidates[0]
+        checkpoint.setdefault("capturedAt", _now())
+        return checkpoint
+
+    @staticmethod
+    def _node_succeeded(row: sqlite3.Row) -> bool:
+        if row["status"] in SUCCESS_NODE_STATES:
+            return True
+        return row["status"] == "skipped" and row["skip_reason"] == "condition-false"
+
+    def _capture_checkpoint(
+        self,
+        con: sqlite3.Connection,
+        run_id: str,
+        node_id: str,
+        checkpoint: dict[str, Any],
+        queue_id: str | None = None,
+        source: str = "dispatcher-result",
+        progress: float | None = None,
+        message: str = "",
+    ) -> dict[str, Any]:
+        existing_hash = _hash(checkpoint)
+        previous = con.execute(
+            "SELECT * FROM workflow_checkpoints WHERE run_id=? AND node_id=? ORDER BY sequence DESC LIMIT 1",
+            (run_id, node_id),
+        ).fetchone()
+        if previous and _hash(self._loads(previous["state_json"])) == existing_hash:
+            return self._checkpoint_item(previous)
+        sequence = int(previous["sequence"]) + 1 if previous else 1
+        checkpoint_id = f"workflow-checkpoint-{secrets.token_hex(10)}"
+        artifact_id = _text(checkpoint.get("artifactId") or checkpoint.get("checkpointArtifactId"), 220) or None
+        created_at = _now()
+        con.execute(
+            """INSERT INTO workflow_checkpoints(id,run_id,node_id,sequence,queue_id,artifact_id,progress,message,state_json,source,created_at)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?)""",
+            (checkpoint_id, run_id, node_id, sequence, queue_id, artifact_id, progress, _text(message, 1000), _stable(checkpoint), _text(source, 120) or "manual", created_at),
+        )
+        con.execute(
+            "UPDATE workflow_node_runs SET latest_checkpoint_id=?,checkpoint_json=?,checkpoint_at=?,updated_at=? WHERE run_id=? AND node_id=?",
+            (checkpoint_id, _stable(checkpoint), created_at, created_at, run_id, node_id),
+        )
+        self._event(con, run_id, node_id, "checkpoint-recorded", {"checkpointId": checkpoint_id, "sequence": sequence, "artifactId": artifact_id, "source": source})
+        row = con.execute("SELECT * FROM workflow_checkpoints WHERE id=?", (checkpoint_id,)).fetchone()
+        return self._checkpoint_item(row)
+
+    def _checkpoint_item(self, row: sqlite3.Row) -> dict[str, Any]:
+        return {
+            "schema": CHECKPOINT_SCHEMA,
+            "id": row["id"],
+            "runId": row["run_id"],
+            "nodeId": row["node_id"],
+            "sequence": int(row["sequence"]),
+            "queueId": row["queue_id"],
+            "artifactId": row["artifact_id"],
+            "progress": row["progress"],
+            "message": row["message"],
+            "state": self._loads(row["state_json"]) or {},
+            "source": row["source"],
+            "createdAt": row["created_at"],
+        }
+
+    def record_checkpoint(self, run_id: str, node_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload = payload if isinstance(payload, dict) else {}
+        state = payload.get("state") if isinstance(payload.get("state"), dict) else payload.get("checkpoint")
+        if not isinstance(state, dict):
+            state = {}
+        artifact_id = _text(payload.get("artifactId") or payload.get("checkpointArtifactId"), 220)
+        if artifact_id:
+            state = copy.deepcopy(state)
+            state["artifactId"] = artifact_id
+        if not state:
+            raise WorkflowError("A checkpoint requires state data or an artifact ID.")
+        with self._connect() as con:
+            con.execute("BEGIN IMMEDIATE")
+            run = con.execute("SELECT id FROM workflow_runs WHERE id=?", (_text(run_id, 180),)).fetchone()
+            node = con.execute("SELECT * FROM workflow_node_runs WHERE run_id=? AND node_id=?", (_text(run_id, 180), _text(node_id, 180))).fetchone()
+            if not run or not node:
+                con.execute("ROLLBACK")
+                raise WorkflowError("Workflow run or node was not found.", 404)
+            item = self._capture_checkpoint(
+                con, run["id"], node["node_id"], state, node["queue_id"],
+                _text(payload.get("source"), 120) or "operator",
+                float(payload["progress"]) if isinstance(payload.get("progress"), (int, float)) else None,
+                _text(payload.get("message"), 1000),
+            )
+            con.execute("COMMIT")
+        return {"ok": True, "checkpoint": item}
+
+    def checkpoints(self, run_id: str, node_id: str = "", limit: int = 100) -> dict[str, Any]:
+        limit = max(1, min(1000, int(limit)))
+        with self._connect() as con:
+            if not con.execute("SELECT id FROM workflow_runs WHERE id=?", (_text(run_id, 180),)).fetchone():
+                raise WorkflowError("Workflow run was not found.", 404)
+            if node_id:
+                rows = con.execute("SELECT * FROM workflow_checkpoints WHERE run_id=? AND node_id=? ORDER BY sequence DESC LIMIT ?", (_text(run_id, 180), _text(node_id, 180), limit)).fetchall()
+            else:
+                rows = con.execute("SELECT * FROM workflow_checkpoints WHERE run_id=? ORDER BY created_at DESC LIMIT ?", (_text(run_id, 180), limit)).fetchall()
+        items = [self._checkpoint_item(row) for row in rows]
+        return {"ok": True, "runId": run_id, "nodeId": node_id or None, "count": len(items), "checkpoints": items}
+
     def _workload_for_node(self, run: sqlite3.Row, definition: dict[str, Any], node: dict[str, Any], node_rows: dict[str, sqlite3.Row]) -> dict[str, Any]:
         request = copy.deepcopy(node["request"])
         dependency_results: dict[str, Any] = {}
@@ -399,6 +643,12 @@ class WorkflowOrchestrator:
         request.setdefault("workflowContext", {})
         if not isinstance(request["workflowContext"], dict):
             raise WorkflowError(f"Workflow node {node['id']} request.workflowContext must be an object.")
+        current_row = node_rows[node["id"]]
+        resume_checkpoint = self._loads(current_row["checkpoint_json"])
+        if isinstance(resume_checkpoint, dict):
+            artifact_id = _text(resume_checkpoint.get("artifactId") or resume_checkpoint.get("checkpointArtifactId"), 220)
+            if artifact_id and not any(item.get("artifactId") == artifact_id for item in artifact_inputs if isinstance(item, dict)):
+                artifact_inputs.append({"artifactId": artifact_id, "sourceNodeId": node["id"], "role": "workflow-checkpoint"})
         request["workflowContext"].update({
             "workflowId": run["workflow_id"],
             "workflowRunId": run["id"],
@@ -409,6 +659,9 @@ class WorkflowOrchestrator:
             "dependencyArtifactIds": dependency_artifacts,
             "runInputs": self._loads(run["inputs_json"]) or {},
             "runContext": self._loads(run["context_json"]) or {},
+            "resumeCheckpoint": resume_checkpoint,
+            "recoveryGeneration": int(run["recovery_generation"] or 0),
+            "recoveryOfRunId": run["recovery_of_run_id"],
         })
         return {
             "id": f"{run['id']}-{node['id']}",
@@ -434,27 +687,47 @@ class WorkflowOrchestrator:
         rows = self._node_records(con, run["id"])
         by_id = {row["node_id"]: row for row in rows}
         scheduled = 0
+        run_inputs = self._loads(run["inputs_json"]) or {}
+        run_context = self._loads(run["context_json"]) or {}
         for node_id in definition["topologicalOrder"]:
             row = by_id[node_id]
             if row["status"] != "waiting":
                 continue
             node = self._definition_node(definition, node_id)
-            dependency_states = [by_id[dep]["status"] for dep in node["dependsOn"]]
-            if any(state in {"failed", "cancelled", "skipped"} for state in dependency_states):
+            dependency_rows = [by_id[dep] for dep in node["dependsOn"]]
+            if any(dep["status"] in {"failed", "cancelled"} or (dep["status"] == "skipped" and dep["skip_reason"] != "condition-false") for dep in dependency_rows):
                 now = _now()
-                con.execute("UPDATE workflow_node_runs SET status='skipped',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", ("A dependency did not complete successfully.", now, now, run["id"], node_id))
-                self._event(con, run["id"], node_id, "skipped", {"dependencyStates": dependency_states})
+                con.execute("UPDATE workflow_node_runs SET status='skipped',skip_reason='upstream-failure',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", ("A dependency did not complete successfully.", now, now, run["id"], node_id))
+                self._event(con, run["id"], node_id, "skipped", {"reason": "upstream-failure", "dependencyStates": [dep["status"] for dep in dependency_rows]})
+                by_id[node_id] = con.execute("SELECT * FROM workflow_node_runs WHERE run_id=? AND node_id=?", (run["id"], node_id)).fetchone()
                 continue
-            if not all(state == "completed" for state in dependency_states):
+            if not all(self._node_succeeded(dep) for dep in dependency_rows):
                 continue
+            try:
+                matched, condition_detail = _condition_result(node.get("condition"), run_inputs, run_context, by_id)
+            except (TypeError, ValueError) as exc:
+                now = _now()
+                con.execute("UPDATE workflow_node_runs SET status='failed',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_text(f"Condition evaluation failed: {exc}", 2000), now, now, run["id"], node_id))
+                self._event(con, run["id"], node_id, "condition-error", {"error": str(exc)})
+                by_id[node_id] = con.execute("SELECT * FROM workflow_node_runs WHERE run_id=? AND node_id=?", (run["id"], node_id)).fetchone()
+                continue
+            if not matched:
+                now = _now()
+                result = {"conditionMatched": False, "condition": condition_detail}
+                con.execute("UPDATE workflow_node_runs SET status='skipped',skip_reason='condition-false',result_json=?,error_text=NULL,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_stable(result), now, now, run["id"], node_id))
+                self._event(con, run["id"], node_id, "condition-skipped", condition_detail)
+                by_id[node_id] = con.execute("SELECT * FROM workflow_node_runs WHERE run_id=? AND node_id=?", (run["id"], node_id)).fetchone()
+                continue
+            if node.get("condition"):
+                self._event(con, run["id"], node_id, "condition-matched", condition_detail)
             workload = self._workload_for_node(run, definition, node, by_id)
             try:
                 queued = self.dispatcher.enqueue(workload)["queueItem"]
             except DispatcherError as exc:
                 raise WorkflowError(str(exc)) from exc
             now = _now()
-            con.execute("UPDATE workflow_node_runs SET status='queued',queue_id=?,started_at=COALESCE(started_at,?),updated_at=? WHERE run_id=? AND node_id=?", (queued["id"], now, now, run["id"], node_id))
-            self._event(con, run["id"], node_id, "queued", {"queueId": queued["id"], "workloadHash": queued["workload"].get("workloadHash")})
+            con.execute("UPDATE workflow_node_runs SET status='queued',queue_id=?,skip_reason=NULL,started_at=COALESCE(started_at,?),updated_at=? WHERE run_id=? AND node_id=?", (queued["id"], now, now, run["id"], node_id))
+            self._event(con, run["id"], node_id, "queued", {"queueId": queued["id"], "workloadHash": queued["workload"].get("workloadHash"), "checkpointId": row["latest_checkpoint_id"]})
             by_id[node_id] = con.execute("SELECT * FROM workflow_node_runs WHERE run_id=? AND node_id=?", (run["id"], node_id)).fetchone()
             scheduled += 1
         return scheduled
@@ -478,12 +751,12 @@ class WorkflowOrchestrator:
             inputs = payload.get("inputs") if isinstance(payload.get("inputs"), dict) else {}
             context = payload.get("context") if isinstance(payload.get("context"), dict) else {}
             con.execute(
-                "INSERT INTO workflow_runs(id,workflow_id,definition_hash,project_id,status,definition_json,inputs_json,context_json,created_at,started_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO workflow_runs(id,workflow_id,definition_hash,project_id,status,definition_json,inputs_json,context_json,recovery_generation,created_at,started_at,updated_at) VALUES(?,?,?,?,?,?,?,?,0,?,?,?)",
                 (run_id, workflow["id"], workflow["definitionHash"], workflow["projectId"], "running", _stable(workflow), _stable(inputs), _stable(context), now, now, now),
             )
             for node in workflow["nodes"]:
                 con.execute(
-                    "INSERT INTO workflow_node_runs(run_id,node_id,status,payload_json,created_at,updated_at) VALUES(?,?, 'waiting',?,?,?)",
+                    "INSERT INTO workflow_node_runs(run_id,node_id,status,payload_json,recovery_generation,created_at,updated_at) VALUES(?,?, 'waiting',?,0,?,?)",
                     (run_id, node["id"], _stable(node), now, now),
                 )
             self._event(con, run_id, None, "run-started", {"workflowId": workflow["id"], "definitionHash": workflow["definitionHash"]})
@@ -503,17 +776,20 @@ class WorkflowOrchestrator:
                 continue
             queue_status = queue_item["status"]
             now = _now()
+            checkpoint = self._extract_checkpoint(queue_item.get("result"))
+            if checkpoint:
+                self._capture_checkpoint(con, run["id"], row["node_id"], checkpoint, row["queue_id"], "dispatcher-result")
             if queue_status in {"leased", "running"} and row["status"] != "running":
                 con.execute("UPDATE workflow_node_runs SET status='running',started_at=COALESCE(started_at,?),updated_at=? WHERE run_id=? AND node_id=?", (now, now, run["id"], row["node_id"]))
                 self._event(con, run["id"], row["node_id"], "running", {"queueId": row["queue_id"], "workerId": queue_item.get("workerId")})
                 changed += 1
             elif queue_status == "completed" and row["status"] != "completed":
-                con.execute("UPDATE workflow_node_runs SET status='completed',result_json=?,error_text=NULL,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_stable(queue_item.get("result")), now, now, run["id"], row["node_id"]))
+                con.execute("UPDATE workflow_node_runs SET status='completed',result_json=?,error_text=NULL,skip_reason=NULL,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_stable(queue_item.get("result")), now, now, run["id"], row["node_id"]))
                 self._event(con, run["id"], row["node_id"], "completed", {"queueId": row["queue_id"], "resultHash": _hash(queue_item.get("result"))})
                 changed += 1
             elif queue_status in {"failed", "dead-lettered", "cancelled"} and row["status"] not in TERMINAL_NODE_STATES:
-                con.execute("UPDATE workflow_node_runs SET status='failed',result_json=?,error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_stable(queue_item.get("result")), _text(queue_item.get("error") or f"Dispatcher status: {queue_status}", 2000), now, now, run["id"], row["node_id"]))
-                self._event(con, run["id"], row["node_id"], "failed", {"queueId": row["queue_id"], "queueStatus": queue_status, "failure": queue_item.get("failure")})
+                con.execute("UPDATE workflow_node_runs SET status='failed',result_json=?,error_text=?,skip_reason=NULL,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (_stable(queue_item.get("result")), _text(queue_item.get("error") or f"Dispatcher status: {queue_status}", 2000), now, now, run["id"], row["node_id"]))
+                self._event(con, run["id"], row["node_id"], "failed", {"queueId": row["queue_id"], "queueStatus": queue_status, "failure": queue_item.get("failure"), "checkpointAvailable": bool(checkpoint)})
                 changed += 1
         return changed
 
@@ -533,20 +809,17 @@ class WorkflowOrchestrator:
             run = con.execute("SELECT * FROM workflow_runs WHERE id=?", (run_id,)).fetchone()
             scheduled = self._schedule_ready(con, run, definition)
             rows = self._node_records(con, run_id)
-            statuses = [row["status"] for row in rows]
             now = _now()
-            if any(status == "failed" for status in statuses):
-                run_status = "failed"
-                error = "One or more workflow nodes failed."
+            if any(row["status"] == "failed" for row in rows):
                 for row in rows:
                     if row["status"] == "waiting":
-                        con.execute("UPDATE workflow_node_runs SET status='skipped',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", ("Workflow stopped after an upstream node failure.", now, now, run_id, row["node_id"]))
+                        con.execute("UPDATE workflow_node_runs SET status='skipped',skip_reason='upstream-failure',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", ("Workflow stopped after an upstream node failure.", now, now, run_id, row["node_id"]))
                         self._event(con, run_id, row["node_id"], "skipped", {"reason": "upstream-failure"})
-                con.execute("UPDATE workflow_runs SET status=?,error_text=?,completed_at=?,updated_at=? WHERE id=?", (run_status, error, now, now, run_id))
+                con.execute("UPDATE workflow_runs SET status='failed',error_text=?,completed_at=?,updated_at=? WHERE id=?", ("One or more workflow nodes failed.", now, now, run_id))
                 self._event(con, run_id, None, "run-failed", {"failedNodes": [row["node_id"] for row in rows if row["status"] == "failed"]})
-            elif statuses and all(status == "completed" for status in statuses):
-                con.execute("UPDATE workflow_runs SET status='completed',completed_at=?,updated_at=? WHERE id=?", (now, now, run_id))
-                self._event(con, run_id, None, "run-completed", {"nodeCount": len(rows)})
+            elif rows and all(self._node_succeeded(row) for row in rows):
+                con.execute("UPDATE workflow_runs SET status='completed',error_text=NULL,completed_at=?,updated_at=? WHERE id=?", (now, now, run_id))
+                self._event(con, run_id, None, "run-completed", {"nodeCount": len(rows), "conditionSkipped": [row["node_id"] for row in rows if row["status"] == "skipped"]})
             else:
                 con.execute("UPDATE workflow_runs SET status='running',updated_at=? WHERE id=?", (now, run_id))
             con.execute("COMMIT")
@@ -573,6 +846,13 @@ class WorkflowOrchestrator:
                 "definition": self._loads(row["payload_json"]),
                 "result": self._loads(row["result_json"]),
                 "error": row["error_text"],
+                "skipReason": row["skip_reason"],
+                "latestCheckpointId": row["latest_checkpoint_id"],
+                "latestCheckpoint": self._loads(row["checkpoint_json"]),
+                "checkpointAt": row["checkpoint_at"],
+                "recoverySourceRunId": row["recovery_source_run_id"],
+                "recoverySourceNodeId": row["recovery_source_node_id"],
+                "recoveryGeneration": int(row["recovery_generation"] or 0),
                 "createdAt": row["created_at"],
                 "startedAt": row["started_at"],
                 "completedAt": row["completed_at"],
@@ -595,6 +875,9 @@ class WorkflowOrchestrator:
                 "inputs": self._loads(run["inputs_json"]),
                 "context": self._loads(run["context_json"]),
                 "error": run["error_text"],
+                "recoveryOfRunId": run["recovery_of_run_id"],
+                "recoveryGeneration": int(run["recovery_generation"] or 0),
+                "recoveryPolicy": self._loads(run["recovery_policy_json"]),
                 "createdAt": run["created_at"],
                 "startedAt": run["started_at"],
                 "completedAt": run["completed_at"],
@@ -631,12 +914,152 @@ class WorkflowOrchestrator:
             "definitionHash": row["definition_hash"],
             "status": row["status"],
             "error": row["error_text"],
+            "recoveryOfRunId": row["recovery_of_run_id"],
+            "recoveryGeneration": int(row["recovery_generation"] or 0),
             "createdAt": row["created_at"],
             "startedAt": row["started_at"],
             "completedAt": row["completed_at"],
             "updatedAt": row["updated_at"],
         } for row in rows]
         return {"ok": True, "count": len(items), "runs": items}
+
+    def _descendants(self, definition: dict[str, Any], seeds: set[str]) -> set[str]:
+        downstream: dict[str, set[str]] = {node["id"]: set() for node in definition["nodes"]}
+        for node in definition["nodes"]:
+            for dependency in node["dependsOn"]:
+                downstream[dependency].add(node["id"])
+        result = set(seeds)
+        queue = list(seeds)
+        while queue:
+            current = queue.pop(0)
+            for child in downstream.get(current, set()):
+                if child not in result:
+                    result.add(child)
+                    queue.append(child)
+        return result
+
+    def recovery_plan(self, run_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload = payload if isinstance(payload, dict) else {}
+        with self._connect() as con:
+            run = con.execute("SELECT * FROM workflow_runs WHERE id=?", (_text(run_id, 180),)).fetchone()
+            if not run:
+                raise WorkflowError("Workflow run was not found.", 404)
+            rows = self._node_records(con, run["id"])
+            definition = self._loads(run["definition_json"])
+        known = {row["node_id"] for row in rows}
+        explicit = payload.get("restartNodes") if isinstance(payload.get("restartNodes"), list) else []
+        seeds = {_text(item, 180) for item in explicit if _text(item, 180)}
+        unknown = sorted(seeds - known)
+        if unknown:
+            raise WorkflowError(f"Unknown recovery node IDs: {', '.join(unknown)}")
+        if not seeds:
+            seeds = {row["node_id"] for row in rows if row["status"] in {"failed", "cancelled"} or (row["status"] == "skipped" and row["skip_reason"] == "upstream-failure")}
+        if not seeds:
+            raise WorkflowError("No failed nodes were found. Provide restartNodes to recover a completed run.")
+        include_downstream = payload.get("includeDownstream", True) is not False
+        restart = self._descendants(definition, seeds) if include_downstream else set(seeds)
+        reusable: list[str] = []
+        checkpoints: list[dict[str, Any]] = []
+        blocked: list[str] = []
+        for row in rows:
+            if row["node_id"] in restart:
+                if row["checkpoint_json"]:
+                    checkpoints.append({"nodeId": row["node_id"], "checkpointId": row["latest_checkpoint_id"], "checkpoint": self._loads(row["checkpoint_json"])})
+                continue
+            if self._node_succeeded(row):
+                reusable.append(row["node_id"])
+            else:
+                restart.add(row["node_id"])
+                blocked.append(row["node_id"])
+        return {
+            "ok": True,
+            "plan": {
+                "schema": RECOVERY_SCHEMA,
+                "sourceRunId": run["id"],
+                "workflowId": run["workflow_id"],
+                "sourceStatus": run["status"],
+                "sourceRecoveryGeneration": int(run["recovery_generation"] or 0),
+                "restartSeedNodes": sorted(seeds),
+                "restartNodes": [node_id for node_id in definition["topologicalOrder"] if node_id in restart],
+                "reuseNodes": [node_id for node_id in definition["topologicalOrder"] if node_id in reusable],
+                "checkpointCandidates": checkpoints,
+                "forcedRestartNodes": blocked,
+                "includeDownstream": include_downstream,
+                "resumeFromCheckpoints": payload.get("resumeFromCheckpoints", True) is not False,
+                "createdAt": _now(),
+            },
+        }
+
+    def recover(self, run_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload = payload if isinstance(payload, dict) else {}
+        plan = self.recovery_plan(run_id, payload)["plan"]
+        now = _now()
+        new_run_id = _text(payload.get("id"), 180) or f"workflow-recovery-{secrets.token_hex(10)}"
+        if not ID_RE.match(new_run_id):
+            raise WorkflowError("Recovery run ID is invalid.")
+        operator = _text(payload.get("operatorId"), 180) or "operator"
+        reason = _text(payload.get("reason"), 1000) or "partial workflow recovery"
+        resume = plan["resumeFromCheckpoints"]
+        restart = set(plan["restartNodes"])
+        reuse = set(plan["reuseNodes"])
+        with self._connect() as con:
+            con.execute("BEGIN IMMEDIATE")
+            source_run = con.execute("SELECT * FROM workflow_runs WHERE id=?", (_text(run_id, 180),)).fetchone()
+            if not source_run:
+                con.execute("ROLLBACK")
+                raise WorkflowError("Workflow run was not found.", 404)
+            if source_run["status"] not in {"completed", "failed", "cancelled"}:
+                con.execute("ROLLBACK")
+                raise WorkflowError("Only terminal workflow runs can be recovered. Cancel or finish the source run first.", 409)
+            if con.execute("SELECT id FROM workflow_runs WHERE id=?", (new_run_id,)).fetchone():
+                con.execute("ROLLBACK")
+                raise WorkflowError("Recovery run ID already exists.", 409)
+            generation = int(source_run["recovery_generation"] or 0) + 1
+            definition = self._loads(source_run["definition_json"])
+            policy = {"operatorId": operator, "reason": reason, **plan}
+            con.execute(
+                """INSERT INTO workflow_runs(id,workflow_id,definition_hash,project_id,status,definition_json,inputs_json,context_json,error_text,
+                recovery_of_run_id,recovery_generation,recovery_policy_json,created_at,started_at,updated_at)
+                VALUES(?,?,?,?, 'running',?,?,?,?,?,?,?,?,?,?)""",
+                (new_run_id, source_run["workflow_id"], source_run["definition_hash"], source_run["project_id"], source_run["definition_json"], source_run["inputs_json"], source_run["context_json"], None, source_run["id"], generation, _stable(policy), now, now, now),
+            )
+            source_rows = {row["node_id"]: row for row in self._node_records(con, source_run["id"])}
+            for node in definition["nodes"]:
+                source = source_rows[node["id"]]
+                if node["id"] in reuse:
+                    status = "skipped" if source["status"] == "skipped" else "reused"
+                    con.execute(
+                        """INSERT INTO workflow_node_runs(run_id,node_id,status,queue_id,payload_json,result_json,error_text,skip_reason,
+                        latest_checkpoint_id,checkpoint_json,checkpoint_at,recovery_source_run_id,recovery_source_node_id,recovery_generation,
+                        created_at,started_at,completed_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (new_run_id, node["id"], status, None, source["payload_json"], source["result_json"], None, source["skip_reason"], source["latest_checkpoint_id"], source["checkpoint_json"], source["checkpoint_at"], source_run["id"], source["node_id"], generation, now, now, now, now),
+                    )
+                    self._event(con, new_run_id, node["id"], "node-reused", {"sourceRunId": source_run["id"], "sourceNodeId": source["node_id"], "sourceStatus": source["status"]})
+                else:
+                    checkpoint_json = source["checkpoint_json"] if resume and node["id"] in restart else None
+                    checkpoint_id = source["latest_checkpoint_id"] if checkpoint_json else None
+                    checkpoint_at = source["checkpoint_at"] if checkpoint_json else None
+                    con.execute(
+                        """INSERT INTO workflow_node_runs(run_id,node_id,status,payload_json,latest_checkpoint_id,checkpoint_json,checkpoint_at,
+                        recovery_source_run_id,recovery_source_node_id,recovery_generation,created_at,updated_at)
+                        VALUES(?,?, 'waiting',?,?,?,?,?,?,?,?,?)""",
+                        (new_run_id, node["id"], source["payload_json"], checkpoint_id, checkpoint_json, checkpoint_at, source_run["id"], source["node_id"], generation, now, now),
+                    )
+                    if checkpoint_json:
+                        self._event(con, new_run_id, node["id"], "checkpoint-reused", {"sourceRunId": source_run["id"], "checkpointId": checkpoint_id})
+            self._event(con, new_run_id, None, "run-recovered", {"sourceRunId": source_run["id"], "generation": generation, "restartNodes": plan["restartNodes"], "reuseNodes": plan["reuseNodes"], "operatorId": operator, "reason": reason})
+            new_run = con.execute("SELECT * FROM workflow_runs WHERE id=?", (new_run_id,)).fetchone()
+            scheduled = self._schedule_ready(con, new_run, definition)
+            con.execute("COMMIT")
+        result = self.run(new_run_id, reconcile=False)
+        result["recovery"] = {"plan": plan, "scheduledNodes": scheduled}
+        return result
+
+    def restart_node(self, run_id: str, node_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        payload = copy.deepcopy(payload) if isinstance(payload, dict) else {}
+        payload["restartNodes"] = [node_id]
+        payload.setdefault("includeDownstream", True)
+        return self.recover(run_id, payload)
 
     def cancel(self, run_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
         payload = payload if isinstance(payload, dict) else {}
@@ -660,7 +1083,7 @@ class WorkflowOrchestrator:
                         self.dispatcher.cancel_queue_item(row["queue_id"], {"operatorId": operator, "reason": reason})
                     except DispatcherError:
                         pass
-                con.execute("UPDATE workflow_node_runs SET status='cancelled',error_text=?,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (reason, now, now, run["id"], row["node_id"]))
+                con.execute("UPDATE workflow_node_runs SET status='cancelled',error_text=?,skip_reason=NULL,completed_at=?,updated_at=? WHERE run_id=? AND node_id=?", (reason, now, now, run["id"], row["node_id"]))
                 self._event(con, run["id"], row["node_id"], "cancelled", {"operatorId": operator, "reason": reason})
             con.execute("UPDATE workflow_runs SET status='cancelled',error_text=?,completed_at=?,updated_at=? WHERE id=?", (reason, now, now, run["id"]))
             self._event(con, run["id"], None, "run-cancelled", {"operatorId": operator, "reason": reason})
@@ -691,6 +1114,10 @@ class WorkflowOrchestrator:
             definitions = con.execute("SELECT COUNT(*) FROM workflow_definitions").fetchone()[0]
             runs = con.execute("SELECT COUNT(*) FROM workflow_runs").fetchone()[0]
             active = con.execute("SELECT COUNT(*) FROM workflow_runs WHERE status IN ('pending','running')").fetchone()[0]
+            recoveries = con.execute("SELECT COUNT(*) FROM workflow_runs WHERE recovery_of_run_id IS NOT NULL").fetchone()[0]
+            checkpoints = con.execute("SELECT COUNT(*) FROM workflow_checkpoints").fetchone()[0]
+            conditional = con.execute("SELECT COUNT(*) FROM workflow_node_runs WHERE skip_reason='condition-false'").fetchone()[0]
+            reused = con.execute("SELECT COUNT(*) FROM workflow_node_runs WHERE status='reused'").fetchone()[0]
             nodes = con.execute("SELECT status,COUNT(*) n FROM workflow_node_runs GROUP BY status").fetchall()
             schema = con.execute("SELECT value FROM workflow_meta WHERE key='schema_version'").fetchone()
         counts = {state: 0 for state in NODE_STATES}
@@ -699,7 +1126,7 @@ class WorkflowOrchestrator:
             "ok": integrity == "ok",
             "status": "ready" if integrity == "ok" else "degraded",
             "version": VERSION,
-            "architecture": "typed-scientific-workflow-dag-orchestrator",
+            "architecture": "checkpoint-aware-conditional-scientific-workflow-orchestrator",
             "storage": "sqlite-wal",
             "schemaVersion": int(schema["value"]) if schema else DB_SCHEMA_VERSION,
             "databasePath": self.db_path,
@@ -707,12 +1134,20 @@ class WorkflowOrchestrator:
             "definitionCount": definitions,
             "runCount": runs,
             "activeRunCount": active,
+            "recoveryRunCount": recoveries,
+            "checkpointCount": checkpoints,
+            "conditionalSkipCount": conditional,
+            "reusedNodeCount": reused,
             "nodeCounts": counts,
             "dagValidation": True,
             "dependencyAwareScheduling": True,
             "parallelReadyNodes": True,
+            "declarativeConditions": True,
+            "checkpointHistory": True,
+            "partialRecovery": True,
             "resultBindings": True,
             "artifactHandoffs": True,
             "dispatcherBacked": True,
             "integrityCheck": integrity,
         }
+

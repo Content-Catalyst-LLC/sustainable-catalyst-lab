@@ -174,7 +174,7 @@ def test_fastapi_workflow_routes(monkeypatch, tmp_path: Path):
 
     health = client.get("/v1/workflows/health", headers=headers)
     assert health.status_code == 200
-    assert health.json()["version"] == "0.32.0"
+    assert health.json()["version"] == "0.32.1"
     assert client.get("/v1/workflows/policies", headers=headers).json()["execution"]["dependencyAwareScheduling"] is True
     assert client.post("/v1/workflows/validate", json=definition(), headers=headers).json()["valid"] is True
     saved = client.post("/v1/workflows", json=definition(), headers=headers)

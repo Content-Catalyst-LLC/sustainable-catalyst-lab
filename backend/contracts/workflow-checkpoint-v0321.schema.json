@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-workflow-checkpoint-v0321.schema.json",
+  "title": "Sustainable Catalyst Lab Workflow Checkpoint 0.32.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "runId",
+    "nodeId",
+    "sequence",
+    "checkpointHash",
+    "checkpoint",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workflow-checkpoint/0.32.1"
+    },
+    "version": {
+      "const": "0.32.1"
+    },
+    "recordType": {
+      "const": "workflow-checkpoint"
+    },
+    "id": {
+      "type": "string"
+    },
+    "runId": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "checkpointHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checkpoint": {},
+    "artifactIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

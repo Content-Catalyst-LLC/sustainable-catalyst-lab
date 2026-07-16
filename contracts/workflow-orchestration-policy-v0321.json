@@ -1,0 +1,46 @@
+{
+  "schema": "sc-lab-workflow-policy/0.32.1",
+  "version": "0.32.1",
+  "architecture": "checkpoint-aware-conditional-scientific-workflow-orchestrator",
+  "definitions": {
+    "typedNodes": true,
+    "acyclicGraphsRequired": true,
+    "immutableRunSnapshots": true,
+    "declarativeConditions": true,
+    "arbitraryConditionCode": false,
+    "maximumNodes": 100
+  },
+  "execution": {
+    "dependencyAwareScheduling": true,
+    "parallelReadyNodes": true,
+    "dispatcherBackedNodes": true,
+    "nodeRetriesDelegatedToDispatcher": true,
+    "manualReconciliation": true,
+    "conditionalExecution": true,
+    "conditionalSkipping": true,
+    "checkpointResumeContext": true
+  },
+  "recovery": {
+    "partialRunRecovery": true,
+    "newRunForRecovery": true,
+    "completedNodeReuse": true,
+    "checkpointReuse": true,
+    "downstreamClosure": true,
+    "operatorAuditTrail": true
+  },
+  "handoffs": {
+    "resultBindings": true,
+    "dependencyArtifactPropagation": true,
+    "checkpointArtifacts": true,
+    "arbitraryCode": false,
+    "arbitraryCallbackUrls": false
+  },
+  "provenance": {
+    "definitionHash": "sha256",
+    "runTimeline": true,
+    "queueIdentifiers": true,
+    "nodeResults": true,
+    "checkpointHistory": true,
+    "recoveryLineage": true
+  }
+}

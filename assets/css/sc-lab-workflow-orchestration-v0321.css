@@ -1,0 +1,14 @@
+.sc-wf0321{--wf-border:rgba(148,163,184,.28);--wf-panel:rgba(15,23,42,.72)}
+.sc-wf0321-status{padding:.75rem 1rem;border:1px solid var(--wf-border);border-radius:.7rem;background:rgba(15,23,42,.5)}
+.sc-wf0321-status[data-tone="error"]{border-color:rgba(248,113,113,.7)}.sc-wf0321-status[data-tone="warning"]{border-color:rgba(251,191,36,.7)}
+.sc-wf0321-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin:1rem 0}
+.sc-wf0321-metrics article{padding:.85rem;border:1px solid var(--wf-border);border-radius:.75rem;background:var(--wf-panel)}
+.sc-wf0321-metrics span,.sc-wf0321-metrics strong{display:block}.sc-wf0321-metrics strong{font-size:1.25rem;margin-top:.25rem}
+.sc-wf0321-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:1rem}
+.sc-wf0321-card{padding:1rem;border:1px solid var(--wf-border);border-radius:.85rem;background:var(--wf-panel)}.sc-wf0321-card.is-wide{grid-column:1/-1}
+.sc-wf0321 textarea{width:100%;min-height:10rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.45}.sc-wf0321 textarea[data-wf-v0321-definition]{min-height:25rem}
+.sc-wf0321 input,.sc-wf0321 select{width:100%}.sc-wf0321-check{display:flex;align-items:center;gap:.55rem}.sc-wf0321-check input{width:auto}
+.sc-wf0321-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem}.sc-wf0321-output{max-height:38rem;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.sc-wf0321-badge{display:inline-flex;padding:.2rem .5rem;border:1px solid var(--wf-border);border-radius:999px;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.sc-wf0321-badge[data-status="completed"],.sc-wf0321-badge[data-status="reused"]{border-color:rgba(74,222,128,.65)}.sc-wf0321-badge[data-status="failed"],.sc-wf0321-badge[data-status="cancelled"]{border-color:rgba(248,113,113,.65)}.sc-wf0321-badge[data-status="running"],.sc-wf0321-badge[data-status="queued"]{border-color:rgba(96,165,250,.65)}
+@media(max-width:900px){.sc-wf0321-grid{grid-template-columns:1fr}}

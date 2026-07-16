@@ -1,8 +1,23 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.32.0 — Scientific Workflow Orchestration and Dependency Graphs**
+**Current release: v0.32.1 — Workflow Checkpoints, Conditional Execution, and Partial Recovery**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, and lineage-preserving partial recovery.
+
+## v0.32.1 highlights
+
+- Declarative workflow conditions over run inputs, run context, and prior node state/results
+- Safe `all`, `any`, and `not` composition with a bounded allowlist of comparison operators
+- Explicit skipped-node outcomes and condition-evaluation timeline records
+- Persistent node checkpoint history with deduplication and latest-checkpoint pointers
+- Automatic capture of worker/dispatcher checkpoints and checkpoint artifact identifiers
+- Resume context propagated into recovered dispatcher workloads
+- Recovery planning for failed, cancelled, skipped, completed, or operator-selected branches
+- Lineage-preserving recovery runs that reuse successful nodes and restart only selected branches plus downstream dependents
+- Recovery generations, source-run/source-node links, operator reasons, and auditable recovery events
+- Administrator workflow recovery, node restart, checkpoint inspection, and manual-checkpoint controls
+- In-place workflow database migration from schema version 1 to schema version 2
+- Direct cumulative installer bridge from v0.31.0 through v0.32.0
 
 ## v0.32.0 highlights
 

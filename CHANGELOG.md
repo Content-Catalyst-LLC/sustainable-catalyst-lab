@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.32.1 — Workflow Checkpoints, Conditional Execution, and Partial Recovery
+
+- Added non-executable declarative conditions over run inputs, run context, and prior node states/results.
+- Added `all`, `any`, and `not` composition plus bounded existence, truthiness, equality, ordering, membership, and containment operators.
+- Added persisted condition decisions, explicit skip reasons, and condition timeline events.
+- Added durable workflow checkpoint history, deduplication, latest-checkpoint pointers, artifact references, and manual checkpoint capture.
+- Added checkpoint extraction from dispatcher results and resume context in recovered node workloads.
+- Added recovery-plan generation with explicit restart seeds, downstream closure, reusable nodes, checkpoint candidates, and forced restarts.
+- Added lineage-preserving partial recovery runs that reuse successful nodes while restarting failed or operator-selected branches.
+- Added recovery generations, source run/node relationships, operator reasons, node restart helpers, and administrator-only recovery/checkpoint routes.
+- Added in-place workflow database migration to schema version 2 and v0.32.1 contracts, tests, interface assets, documentation, and release metadata.
+- Preserved 61 Lab panels while expanding the Scientific Workflows panel with recovery and checkpoint operations.
+
 ## 0.32.0 — Scientific Workflow Orchestration and Dependency Graphs
 
 - Added typed workflow definitions and SHA-256 definition fingerprints.

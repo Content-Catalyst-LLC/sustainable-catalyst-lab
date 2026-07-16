@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab Python Compute Core v0.32.0
+# Sustainable Catalyst Lab Python Compute Core v0.32.1
 
-The v0.32.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, and dead-letter operations while adding typed scientific workflow orchestration and dependency graphs.
+The v0.32.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, and dead-letter operations while adding checkpoint-aware workflow execution, declarative conditions, and partial-run recovery.
 
 ## Solver governance
 
@@ -115,3 +115,12 @@ SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED=0
 
 Core routes include workflow validation and saving, definition listing, run creation, run reconciliation, cancellation, timelines, policies, and health. WordPress workflow creation and operator actions require `manage_options`.
 
+
+
+## Workflow checkpoints and partial recovery v0.32.1
+
+Workflow nodes may declare bounded, non-executable conditions over `run.inputs`, `run.context`, or earlier `nodes.<id>` state and results. Conditions use an allowlisted expression tree (`all`, `any`, `not`) and registered comparison operators; arbitrary code is never evaluated.
+
+The workflow registry stores checkpoint history separately from final results. Checkpoints may be captured from dispatcher results or recorded by an authenticated operator. Recovery creates a new run with immutable lineage: successful nodes are reused, failed or selected nodes are restarted, downstream dependents are included by default, and eligible checkpoints are passed to the resumed workload.
+
+Additional routes provide recovery planning, recovery-run creation, single-node branch restart, and checkpoint listing/recording. WordPress mutations remain restricted to administrators with `manage_options`.

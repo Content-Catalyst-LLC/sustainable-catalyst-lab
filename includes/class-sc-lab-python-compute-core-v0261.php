@@ -113,6 +113,13 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/reconcile', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_reconcile'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/recovery-plan', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_recovery_plan'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/recover', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_recover'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/nodes/(?P<node>[A-Za-z0-9._-]{1,180})/restart', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_restart_node'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/nodes/(?P<node>[A-Za-z0-9._-]{1,180})/checkpoints', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_checkpoints'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_record_checkpoint'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -444,6 +451,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function workflow_reconcile(WP_REST_Request $request){return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/reconcile','POST',array(),8388608);}
     public static function workflow_cancel(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/cancel','POST',$clean,8388608);}
     public static function workflow_timeline(WP_REST_Request $request){$limit=max(1,min(2000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/timeline?limit='.$limit);}
+    public static function workflow_recovery_plan(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/recovery-plan','POST',$clean,8388608);}
+    public static function workflow_recover(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/recover','POST',$clean,8388608);}
+    public static function workflow_restart_node(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/nodes/'.rawurlencode($request['node']).'/restart','POST',$clean,8388608);}
+    public static function workflow_checkpoints(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/nodes/'.rawurlencode($request['node']).'/checkpoints?limit='.$limit);}
+    public static function workflow_record_checkpoint(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/nodes/'.rawurlencode($request['node']).'/checkpoints','POST',$clean,8388608);}
 
 
 }

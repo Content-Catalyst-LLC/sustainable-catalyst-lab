@@ -1539,15 +1539,15 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 
 
 
-      <section class="sc-lab-panel sc-wf0320" data-lab-module="workflow-orchestration" data-module-panel="workflow-orchestration" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW ORCHESTRATION / v0.32.0</p><h3>Scientific Workflow Orchestration and Dependency Graphs</h3><p>Define typed scientific workflows as validated directed acyclic graphs, schedule independent nodes in parallel through the distributed dispatcher, bind upstream results into downstream requests, propagate governed artifacts, and preserve node-level execution provenance.</p></header>
-        <p class="sc-wf0320-status" data-wf-v0320-status role="status" aria-live="polite">Workflow orchestration loading…</p>
-        <div class="sc-wf0320-metrics" data-wf-v0320-metrics></div>
-        <div class="sc-wf0320-grid">
-          <div class="sc-wf0320-card">
+      <section class="sc-lab-panel sc-wf0321" data-lab-module="workflow-orchestration" data-module-panel="workflow-orchestration" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW ORCHESTRATION / v0.32.1</p><h3>Workflow Checkpoints, Conditional Execution, and Partial Recovery</h3><p>Build dependency-aware scientific workflows with safe declarative conditions, durable checkpoint history, resumable node context, and lineage-preserving recovery runs that reuse successful work while restarting only affected branches.</p></header>
+        <p class="sc-wf0321-status" data-wf-v0321-status role="status" aria-live="polite">Workflow recovery loading…</p>
+        <div class="sc-wf0321-metrics" data-wf-v0321-metrics></div>
+        <div class="sc-wf0321-grid">
+          <div class="sc-wf0321-card">
             <h4>Workflow definition</h4>
-            <p>Definitions are validated for unique node IDs, known dependencies, binding integrity, and cycles before execution.</p>
-            <textarea data-wf-v0320-definition aria-label="Scientific workflow JSON">{
+            <p>Conditions are declarative data only. Arbitrary Python, shell code, JavaScript, and callback URLs are rejected.</p>
+            <textarea data-wf-v0321-definition aria-label="Scientific workflow JSON">{
   "id": "calibration-pipeline",
   "title": "Calibration pipeline",
   "projectId": "default",
@@ -1562,26 +1562,41 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
       "id": "calibrate-model",
       "method": "model.calibrate",
       "dependsOn": ["profile-dataset"],
+      "condition": {"source": "run.inputs.runCalibration", "operator": "equals", "value": true},
       "bindings": [
         {"fromNode": "profile-dataset", "sourcePath": "result.profile", "targetPath": "inputs.datasetProfile"}
       ],
       "request": {"inputs": {"model": "linear"}},
+      "checkpointingRequired": true,
       "artifactOutputs": [{"kind": "result", "name": "calibration-result"}]
     }
   ]
 }</textarea>
-            <div class="sc-wf0320-actions"><button type="button" class="sc-lab-button" data-wf-v0320-validate>Validate graph</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0320-save>Save definition</button></div>
+            <div class="sc-wf0321-actions"><button type="button" class="sc-lab-button" data-wf-v0321-validate>Validate graph</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0321-save>Save definition</button></div>
           </div>
-          <div class="sc-wf0320-card">
+          <div class="sc-wf0321-card">
             <h4>Run controls</h4>
-            <label>Workflow ID <input data-wf-v0320-workflowid value="calibration-pipeline"></label>
-            <label>Run inputs <textarea data-wf-v0320-inputs aria-label="Workflow run inputs">{}</textarea></label>
-            <label>Workflow run ID <input data-wf-v0320-runid placeholder="workflow-run-…"></label>
-            <label>Operator reason <input data-wf-v0320-reason value="operator action from Lab workflow panel"></label>
-            <div class="sc-wf0320-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0320-start>Start run</button><button type="button" class="sc-lab-button" data-wf-v0320-inspect>Reconcile and inspect</button><button type="button" class="sc-lab-button" data-wf-v0320-cancel>Cancel run</button><button type="button" class="sc-lab-button" data-wf-v0320-refresh>Refresh</button></div>
+            <label>Workflow ID <input data-wf-v0321-workflowid value="calibration-pipeline"></label>
+            <label>Run inputs <textarea data-wf-v0321-inputs aria-label="Workflow run inputs">{"runCalibration":true}</textarea></label>
+            <label>Workflow run ID <input data-wf-v0321-runid placeholder="workflow-run-…"></label>
+            <label>Operator reason <input data-wf-v0321-reason value="operator action from Lab workflow panel"></label>
+            <div class="sc-wf0321-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0321-start>Start run</button><button type="button" class="sc-lab-button" data-wf-v0321-inspect>Reconcile and inspect</button><button type="button" class="sc-lab-button" data-wf-v0321-cancel>Cancel run</button><button type="button" class="sc-lab-button" data-wf-v0321-refresh>Refresh</button></div>
           </div>
-          <div class="sc-wf0320-card is-wide"><h4>Workflow runs</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Run</th><th>Workflow</th><th>Project</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead><tbody data-wf-v0320-runs></tbody></table></div></div>
-          <div class="sc-wf0320-card is-wide"><h4>Definition, run state, and timeline</h4><pre class="sc-wf0320-output" data-wf-v0320-output>No response yet.</pre></div>
+          <div class="sc-wf0321-card">
+            <h4>Partial recovery</h4>
+            <label>Restart node IDs <input data-wf-v0321-restartnodes placeholder="calibrate-model, publish-report"></label>
+            <label class="sc-wf0321-check"><input type="checkbox" checked data-wf-v0321-downstream> Include downstream dependents</label>
+            <label class="sc-wf0321-check"><input type="checkbox" checked data-wf-v0321-resume> Reuse latest checkpoints</label>
+            <div class="sc-wf0321-actions"><button type="button" class="sc-lab-button" data-wf-v0321-plan>Preview recovery</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0321-recover>Start recovery run</button></div>
+          </div>
+          <div class="sc-wf0321-card">
+            <h4>Checkpoint controls</h4>
+            <label>Node ID <input data-wf-v0321-nodeid placeholder="calibrate-model"></label>
+            <label>Checkpoint payload <textarea data-wf-v0321-checkpoint aria-label="Checkpoint payload">{"state":{"iteration":1},"progress":0.1,"message":"operator checkpoint"}</textarea></label>
+            <div class="sc-wf0321-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0321-recordcheckpoint>Record checkpoint</button><button type="button" class="sc-lab-button" data-wf-v0321-listcheckpoints>List checkpoints</button></div>
+          </div>
+          <div class="sc-wf0321-card is-wide"><h4>Workflow runs</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Run</th><th>Workflow</th><th>Project</th><th>Status</th><th>Recovery generation</th><th>Updated</th><th>Action</th></tr></thead><tbody data-wf-v0321-runs></tbody></table></div></div>
+          <div class="sc-wf0321-card is-wide"><h4>Definition, run state, checkpoints, and timeline</h4><pre class="sc-wf0321-output" data-wf-v0321-output>No response yet.</pre></div>
         </div>
       </section>
 

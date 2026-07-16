@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-workflow-recovery-plan-v0321.schema.json",
+  "title": "Sustainable Catalyst Lab Workflow Recovery Plan 0.32.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "sourceRunId",
+    "workflowId",
+    "sourceStatus",
+    "restartNodes",
+    "reuseNodes",
+    "includeDownstream",
+    "resumeFromCheckpoints",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workflow-recovery-plan/0.32.1"
+    },
+    "sourceRunId": {
+      "type": "string"
+    },
+    "workflowId": {
+      "type": "string"
+    },
+    "sourceStatus": {
+      "enum": [
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "sourceRecoveryGeneration": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "restartSeedNodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "restartNodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "reuseNodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "checkpointCandidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "forcedRestartNodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "includeDownstream": {
+      "type": "boolean"
+    },
+    "resumeFromCheckpoints": {
+      "type": "boolean"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}
