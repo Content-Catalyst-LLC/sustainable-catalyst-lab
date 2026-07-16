@@ -1,3 +1,9 @@
+## 0.29.0 — Evidence, Sources, and Research Provenance
+
+- Added structured project source, evidence, assumption, limitation, and provenance records.
+- Added Harvard author-date citation metadata and portable provenance bundles.
+- Added governed Python normalization, verification, and provenance endpoints.
+
 ## 0.28.2 — Reproducible Computational Runs
 
 - Adds frozen computational run manifests, environment fingerprints, integrity verification, rerun-and-compare, histories, and portable bundles.

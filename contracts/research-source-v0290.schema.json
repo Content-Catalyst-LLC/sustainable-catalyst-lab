@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Source",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "sourceType"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-research-source/0.29.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "year": {
+      "type": [
+        "string",
+        "integer",
+        "null"
+      ]
+    },
+    "doi": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    }
+  }
+}

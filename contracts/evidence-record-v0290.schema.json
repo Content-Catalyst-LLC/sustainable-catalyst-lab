@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "sourceId",
+    "excerpt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-evidence-record/0.29.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "sourceId": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim": {
+      "type": "string"
+    },
+    "locator": {
+      "type": "string"
+    },
+    "strength": {
+      "enum": [
+        "supporting",
+        "contradicting",
+        "contextual",
+        "uncertain"
+      ]
+    }
+  }
+}

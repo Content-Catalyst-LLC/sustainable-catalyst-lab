@@ -1,0 +1,11 @@
+<?php
+/** Sustainable Catalyst Lab v0.29.0 Evidence, Sources, and Research Provenance. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Research_Provenance_V0290 {
+ const VERSION='0.29.0'; private static $initialized=false;
+ public static function init(){if(self::$initialized)return;self::$initialized=true;add_action('rest_api_init',array(__CLASS__,'routes'));add_filter('sc_lab_module_aliases_v02631',array(__CLASS__,'aliases'));}
+ public static function aliases($a){$a=is_array($a)?$a:array();foreach(array('research-provenance','evidence-sources','sources','evidence') as $x){$a[$x]='research-provenance';}return $a;}
+ public static function routes(){register_rest_route('sc-lab/v1','/research-provenance/v0290/health',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));register_rest_route('sc-lab/v1','/research-provenance/v0290/schema',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'schema'),'permission_callback'=>'__return_true'));}
+ public static function schema(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'sourceSchema'=>'sc-lab-research-source/0.29.0','evidenceSchema'=>'sc-lab-evidence-record/0.29.0','provenanceSchema'=>'sc-lab-research-provenance/0.29.0','citationStyle'=>'harvard-author-date','collections'=>array('researchSources','evidenceRecords','assumptionRecords','limitationRecords','researchProvenance'),'knowledgeLibraryHandoff'=>true,'researchLibrarianHandoff'=>true,'serverBackedRegistry'=>false));}
+ public static function health(){ $req=array('assets/js/modules/research-provenance-v0290.js','assets/css/sc-lab-research-provenance-v0290.css','contracts/research-source-v0290.schema.json','contracts/evidence-record-v0290.schema.json','contracts/research-provenance-v0290.schema.json','contracts/research-provenance-policy-v0290.json');$files=array();$ok=true;foreach($req as $r){$e=is_file(SC_LAB_DIR.$r);$files[$r]=array('exists'=>$e,'sha256'=>$e?hash_file('sha256',SC_LAB_DIR.$r):null);$ok=$ok&&$e;}return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'ready':'incomplete','version'=>self::VERSION,'release'=>SC_LAB_VERSION,'architecture'=>'browser-project-evidence-registry-with-python-verification','files'=>$files,'time'=>gmdate('c')));}
+}

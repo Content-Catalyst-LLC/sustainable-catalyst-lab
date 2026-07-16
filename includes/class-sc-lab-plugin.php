@@ -41,6 +41,7 @@ final class SC_Lab_Plugin {
         add_shortcode('sc_lab_numerical_visualization', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_project_workspace', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_reproducible_runs', array($this, 'shortcode_focus'));
+        add_shortcode('sc_lab_research_provenance', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_dataset_registry', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_materials', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_earth_systems', array($this, 'shortcode_focus'));
@@ -70,10 +71,11 @@ final class SC_Lab_Plugin {
         wp_enqueue_style('sc-lab-numerical-visualization-v0274', SC_LAB_URL . 'assets/css/sc-lab-numerical-visualization-v0274.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-visualization-v0274.css'));
         wp_enqueue_style('sc-lab-project-workspace-v0280', SC_LAB_URL . 'assets/css/sc-lab-project-workspace-v0280.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-project-workspace-v0280.css'));
         wp_enqueue_style('sc-lab-dataset-registry-v0281', SC_LAB_URL . 'assets/css/sc-lab-dataset-registry-v0281.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-dataset-registry-v0281.css'));
+        wp_enqueue_style('sc-lab-research-provenance-v0290', SC_LAB_URL . 'assets/css/sc-lab-research-provenance-v0290.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-provenance-v0290.css'));
         wp_enqueue_style('sc-lab-reproducible-runs-v0282', SC_LAB_URL . 'assets/css/sc-lab-reproducible-runs-v0282.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-reproducible-runs-v0282.css'));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        $modules = array('core','projects','project-workspace-v0280','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','dataset-registry-v0281','reproducible-runs-v0282','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
+        $modules = array('core','projects','project-workspace-v0280','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','dataset-registry-v0281','reproducible-runs-v0282','research-provenance-v0290','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
         foreach ($modules as $module) {
             // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
             // Preserve the legacy key for compatibility tests,
@@ -168,6 +170,7 @@ final class SC_Lab_Plugin {
                 'registeredMethodCount' => 12,
             ),
             'governance' => array('version'=>'0.27.3','policiesUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0273/policies')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/numerical/v0273/health')),'profiles'=>4),
+            'researchProvenance' => array('version'=>'0.29.0','schemaUrl'=>esc_url_raw(rest_url('sc-lab/v1/research-provenance/v0290/schema')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/research-provenance/v0290/health')),'citationStyle'=>'harvard-author-date','storageMode'=>'browser-local-project-records','pythonVerification'=>true),
             'reproducibility' => array('version'=>'0.28.2','schemaUrl'=>esc_url_raw(rest_url('sc-lab/v1/reproducibility/v0282/schema')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/reproducibility/v0282/health')),'storageMode'=>'browser-local-project-records','pythonVerification'=>true),
             'datasetRegistry' => array('version'=>'0.28.1','schemaUrl'=>esc_url_raw(rest_url('sc-lab/v1/datasets/v0281/schema')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/datasets/v0281/health')),'formatsUrl'=>esc_url_raw(rest_url('sc-lab/v1/datasets/v0281/formats')),'storageMode'=>'browser-local','serverBacked'=>false),
             'workspaceArchitecture' => array('version'=>'0.28.0','schemaUrl'=>esc_url_raw(rest_url('sc-lab/v1/workspace/v0280/schema')),'healthUrl'=>esc_url_raw(rest_url('sc-lab/v1/workspace/v0280/health')),'storageMode'=>'browser-local','serverBacked'=>false),
@@ -212,6 +215,7 @@ final class SC_Lab_Plugin {
             'sc_lab_numerical_visualization' => 'numerical-visualization',
             'sc_lab_project_workspace' => 'project-workspace',
             'sc_lab_reproducible_runs' => 'reproducible-runs',
+            'sc_lab_research_provenance' => 'research-provenance',
             'sc_lab_dataset_registry' => 'dataset-registry',
             'sc_lab_materials' => 'materials',
             'sc_lab_earth_systems' => 'earth-systems',

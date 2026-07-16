@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Provenance",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "subjectId"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-research-provenance/0.29.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "subjectId": {
+      "type": "string"
+    },
+    "sourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array"
+    },
+    "limitations": {
+      "type": "array"
+    }
+  }
+}

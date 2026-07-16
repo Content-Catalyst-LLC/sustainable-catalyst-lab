@@ -1,0 +1,13 @@
+{
+  "version": "0.29.0",
+  "citationStyle": "harvard-author-date",
+  "maxExcerptCharacters": 12000,
+  "requireSourceForEvidence": true,
+  "arbitraryRemoteFetch": false,
+  "allowedStrengths": [
+    "supporting",
+    "contradicting",
+    "contextual",
+    "uncertain"
+  ]
+}

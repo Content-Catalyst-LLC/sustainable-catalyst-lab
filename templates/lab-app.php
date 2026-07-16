@@ -46,6 +46,7 @@
           'project-workspace' => 'Project architecture',
           'dataset-registry' => 'Dataset registry',
           'reproducible-runs' => 'Reproducible runs',
+          'research-provenance' => 'Evidence & provenance',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -200,6 +201,17 @@
       </section>
 
 
+
+      <section class="sc-lab-panel sc-lab-provenance-v0290" data-lab-module="research-provenance" data-module-panel="research-provenance" hidden>
+        <header><p class="sc-lab-eyebrow">Project governance</p><h2>Evidence, Sources, and Research Provenance</h2><p>Capture sources, quotations, assumptions, limitations, citations, and evidence links as durable project records.</p><div data-prov-v0290-status role="status">Loading provenance workspace…</div></header>
+        <div class="sc-lab-prov-metrics" data-prov-v0290-metrics></div>
+        <div class="sc-lab-prov-grid"><article class="sc-lab-prov-card"><h3>Add source</h3><label>Title<input data-prov-v0290-title></label><label>Authors, separated by semicolons<input data-prov-v0290-authors></label><label>Year<input data-prov-v0290-year></label><label>Type<select data-prov-v0290-type><option>journal-article</option><option>book</option><option>report</option><option>dataset</option><option>website</option><option>other</option></select></label><label>Publisher<input data-prov-v0290-publisher></label><label>DOI<input data-prov-v0290-doi></label><label>URL<input data-prov-v0290-url></label><label>License<input data-prov-v0290-license></label><button type="button" class="sc-lab-button" data-prov-v0290-add-source>Save source</button></article>
+        <article class="sc-lab-prov-card"><h3>Capture evidence</h3><label>Source<select data-prov-v0290-source></select></label><label>Evidence excerpt<textarea rows="5" data-prov-v0290-excerpt></textarea></label><label>Locator<input data-prov-v0290-locator placeholder="p. 42, table 3, section 2"></label><label>Claim supported or challenged<textarea rows="3" data-prov-v0290-claim></textarea></label><label>Strength<select data-prov-v0290-strength><option>supporting</option><option>contradicting</option><option>contextual</option><option>uncertain</option></select></label><button type="button" class="sc-lab-button" data-prov-v0290-add-evidence>Capture evidence</button></article>
+        <article class="sc-lab-prov-card"><h3>Assumptions and limitations</h3><label>Assumption<textarea rows="3" data-prov-v0290-assumption></textarea></label><button type="button" class="sc-lab-button" data-prov-v0290-add-assumption>Add assumption</button><label>Limitation<textarea rows="3" data-prov-v0290-limitation></textarea></label><button type="button" class="sc-lab-button" data-prov-v0290-add-limitation>Add limitation</button></article>
+        <article class="sc-lab-prov-card"><h3>Link evidence to a project record</h3><label>Subject record ID<input data-prov-v0290-subject></label><label>Sources<select multiple size="5" data-prov-v0290-link-sources></select></label><label>Evidence<select multiple size="5" data-prov-v0290-link-evidence></select></label><button type="button" class="sc-lab-button" data-prov-v0290-link>Create provenance link</button><button type="button" class="sc-lab-button" data-prov-v0290-export>Export provenance bundle</button></article></div>
+        <div class="sc-lab-prov-table"><h3>Sources</h3><table><thead><tr><th>Title</th><th>Authors</th><th>Year</th><th>In-text citation</th></tr></thead><tbody data-prov-v0290-sources></tbody></table></div>
+        <div class="sc-lab-prov-table"><h3>Evidence</h3><table><thead><tr><th>Source</th><th>Claim</th><th>Locator</th><th>Strength</th></tr></thead><tbody data-prov-v0290-evidence></tbody></table></div>
+      </section>
       <section class="sc-lab-panel sc-lab-repro-v0282" data-lab-module="reproducible-runs" data-module-panel="reproducible-runs" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/REPRODUCIBILITY</span><h3>Reproducible Computational Runs</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.28.2</span></div>
         <p>Freeze governed requests, outputs, environments, package versions, checksums, warnings, and failure histories into portable project records.</p>

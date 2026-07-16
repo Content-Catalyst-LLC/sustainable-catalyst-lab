@@ -20,6 +20,7 @@ from .precision import policy_catalog, recommend
 from .visualization import VisualizationInputError, build_spec as build_visualization_spec, catalog as visualization_catalog, csv_text as visualization_csv
 from .datasets import DatasetProfileError, health as dataset_health_payload, profile_dataset
 from .reproducibility import ReproducibilityError, build_manifest as build_reproducibility_manifest, compare_manifests, environment_fingerprint, health as reproducibility_health_payload, verify_manifest
+from .research_provenance import ProvenanceError, health as research_provenance_health, normalize_source, normalize_evidence, verify_record as verify_provenance_record, build_provenance
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -106,6 +107,7 @@ def health():
         "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
+        "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -277,6 +279,31 @@ def reproducibility_compare(payload: dict[str, Any], auth: dict[str, str] = Depe
     del auth
     try: return compare_manifests(payload)
     except ReproducibilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/research-provenance/health")
+def research_provenance_health_route():
+    body=research_provenance_health(); body["serviceVersion"]=settings.version; return body
+
+@app.post("/v1/research-provenance/sources/normalize")
+def research_source_normalize(payload: dict[str, Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"source":normalize_source(payload)}
+    except ProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/research-provenance/evidence/normalize")
+def research_evidence_normalize(payload: dict[str, Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"evidence":normalize_evidence(payload)}
+    except ProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/research-provenance/verify")
+def research_provenance_verify_route(payload: dict[str, Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return verify_provenance_record(payload)
+
+@app.post("/v1/research-provenance/build")
+def research_provenance_build_route(payload: dict[str, Any], auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return {"ok":True,"provenance":build_provenance(payload)}
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])
 def methods():
