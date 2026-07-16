@@ -47,6 +47,7 @@
           'dataset-registry' => 'Dataset registry',
           'reproducible-runs' => 'Reproducible runs',
           'research-provenance' => 'Evidence & provenance',
+          'method-review' => 'Method review',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -212,6 +213,40 @@
         <div class="sc-lab-prov-table"><h3>Sources</h3><table><thead><tr><th>Title</th><th>Authors</th><th>Year</th><th>In-text citation</th></tr></thead><tbody data-prov-v0290-sources></tbody></table></div>
         <div class="sc-lab-prov-table"><h3>Evidence</h3><table><thead><tr><th>Source</th><th>Claim</th><th>Locator</th><th>Strength</th></tr></thead><tbody data-prov-v0290-evidence></tbody></table></div>
       </section>
+      <section class="sc-lab-panel sc-lab-quality-v0291" data-lab-module="method-review" data-module-panel="method-review" hidden>
+        <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/RESEARCH-QUALITY</span><h3>Research Quality and Method Review</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.29.1</span></div>
+        <p>Review scientific and computational methods against benchmark coverage, validation evidence, reproducibility, provenance, calibration, limitations, and documented reviewer decisions.</p>
+        <div class="sc-quality0291-statusline" data-quality-v0291-status role="status" aria-live="polite">Loading method-review registry…</div>
+        <div class="sc-quality0291-metrics" data-quality-v0291-metrics></div>
+        <div class="sc-quality0291-grid">
+          <section class="sc-quality0291-card"><h4>Method and review scope</h4><div class="sc-quality0291-form">
+            <label class="is-wide">Existing project method<select data-quality-v0291-candidate><option value="">Choose existing method record</option></select></label>
+            <label>Method ID<input data-quality-v0291-method-id placeholder="numerical.root.bracketed_polynomial"></label><label>Method title<input data-quality-v0291-title></label>
+            <label>Method version<input data-quality-v0291-method-version></label><label>Domain<input data-quality-v0291-domain></label>
+            <label>Method owner<input data-quality-v0291-owner></label><label>Risk tier<select data-quality-v0291-risk><option value="exploratory">Exploratory</option><option value="standard" selected>Standard</option><option value="high-consequence">High consequence</option></select></label>
+            <label>Review status<select data-quality-v0291-review-status><option value="draft">Draft</option><option value="under-review">Under review</option><option value="changes-requested">Changes requested</option><option value="conditionally-approved">Conditionally approved</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="deprecated">Deprecated</option></select></label>
+          </div></section>
+          <section class="sc-quality0291-card"><h4>Coverage and evidence</h4><div class="sc-quality0291-form">
+            <label>Benchmarks passed<input type="number" min="0" value="0" data-quality-v0291-bench-passed></label><label>Benchmarks total<input type="number" min="0" value="0" data-quality-v0291-bench-total></label>
+            <label class="is-wide">Benchmark IDs<textarea rows="3" data-quality-v0291-bench-ids placeholder="One benchmark ID per line"></textarea></label>
+            <label>Validation evidence<select multiple data-quality-v0291-validation-evidence></select></label><label>Research sources<select multiple data-quality-v0291-sources></select></label>
+            <label>Evidence records<select multiple data-quality-v0291-evidence></select></label><label>Reproducible runs<select multiple data-quality-v0291-runs></select></label>
+            <label class="is-wide">Provenance records<select multiple data-quality-v0291-provenance></select></label>
+          </div></section>
+          <section class="sc-quality0291-card"><h4>Limitations, calibration, and reviewer</h4><div class="sc-quality0291-form">
+            <label>Assumptions<textarea rows="4" data-quality-v0291-assumptions placeholder="One per line"></textarea></label><label>Known limitations<textarea rows="4" data-quality-v0291-limitations placeholder="One per line"></textarea></label>
+            <label class="is-wide">Known issues<textarea rows="3" data-quality-v0291-issues placeholder="One per line"></textarea></label>
+            <label>Calibration status<select data-quality-v0291-calibration><option value="not-required">Not required</option><option value="uncalibrated">Uncalibrated</option><option value="calibrated">Calibrated</option><option value="due">Due</option><option value="expired">Expired</option></select></label><label>Calibration reference<input data-quality-v0291-calibration-reference></label>
+            <label>Last calibrated<input type="date" data-quality-v0291-calibrated-at></label><label>Calibration due<input type="date" data-quality-v0291-calibration-due></label>
+            <label>Reviewer name<input data-quality-v0291-reviewer></label><label>Reviewer role<input data-quality-v0291-reviewer-role></label><label class="sc-quality0291-check is-wide"><input type="checkbox" data-quality-v0291-independent> Independent reviewer</label>
+            <label class="is-wide">Reviewer notes<textarea rows="5" data-quality-v0291-notes></textarea></label>
+          </div><div class="sc-quality0291-actions"><button type="button" class="sc-lab-button" data-quality-v0291-new>New review</button><button type="button" class="sc-lab-button" data-quality-v0291-evaluate>Evaluate</button><button type="button" class="sc-lab-button" data-quality-v0291-save>Save draft</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-quality-v0291-submit>Submit for review</button></div></section>
+          <section class="sc-quality0291-card"><h4>Policy evaluation</h4><div class="sc-quality0291-evaluation" data-quality-v0291-evaluation>Run an evaluation to see policy readiness.</div><h4>Reviewer decision</h4><div class="sc-quality0291-form"><label>Decision<select data-quality-v0291-decision><option value="no-decision">No decision</option><option value="approve">Approve</option><option value="conditional-approval">Conditional approval</option><option value="request-changes">Request changes</option><option value="reject">Reject</option><option value="deprecate">Deprecate</option></select></label><label class="is-wide">Rationale<textarea rows="4" data-quality-v0291-rationale></textarea></label></div><div class="sc-quality0291-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-quality-v0291-record-decision>Record decision</button><button type="button" class="sc-lab-button" data-quality-v0291-compare>Compare latest revisions</button><button type="button" class="sc-lab-button" data-quality-v0291-export>Export review bundle</button></div></section>
+          <section class="sc-quality0291-card is-wide"><h4>Method-review registry</h4><div class="sc-quality0291-table-wrap"><table class="sc-quality0291-table"><thead><tr><th>Method</th><th>Risk</th><th>Benchmarks</th><th>Status</th><th>Score</th><th>Updated</th></tr></thead><tbody data-quality-v0291-rows></tbody></table></div></section>
+          <section class="sc-quality0291-card is-wide"><h4>Selected review or comparison</h4><pre class="sc-quality0291-detail" data-quality-v0291-detail>No review selected.</pre></section>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-lab-repro-v0282" data-lab-module="reproducible-runs" data-module-panel="reproducible-runs" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/REPRODUCIBILITY</span><h3>Reproducible Computational Runs</h3></div><span class="sc-lab-status-dot is-ready">Schema 0.28.2</span></div>
         <p>Freeze governed requests, outputs, environments, package versions, checksums, warnings, and failure histories into portable project records.</p>

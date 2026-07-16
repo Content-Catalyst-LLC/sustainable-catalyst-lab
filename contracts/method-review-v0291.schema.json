@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/method-review-v0291.schema.json",
+  "title": "Sustainable Catalyst Lab Method Review",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "recordType",
+    "id",
+    "methodId",
+    "title",
+    "riskTier",
+    "status",
+    "benchmarkCoverage",
+    "calibration",
+    "createdAt",
+    "updatedAt",
+    "sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-method-review/0.29.1"
+    },
+    "version": {
+      "const": "0.29.1"
+    },
+    "recordType": {
+      "const": "method-review"
+    },
+    "collection": {
+      "const": "methodReviewRecords"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "projectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "methodId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "methodVersion": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "domain": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "owner": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "riskTier": {
+      "enum": [
+        "exploratory",
+        "standard",
+        "high-consequence"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "under-review",
+        "changes-requested",
+        "conditionally-approved",
+        "approved",
+        "rejected",
+        "deprecated"
+      ]
+    },
+    "benchmarkCoverage": {
+      "type": "object",
+      "required": [
+        "passed",
+        "total",
+        "percent",
+        "complete"
+      ],
+      "properties": {
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "benchmarkIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validationEvidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reproducibleRunIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenanceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "knownIssues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "calibration": {
+      "type": "object"
+    },
+    "reviewer": {
+      "type": "object"
+    },
+    "reviewerNotes": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "decisionRationale": {
+      "type": "string"
+    },
+    "history": {
+      "type": "array"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/method-review-bundle-v0291.schema.json",
+  "title": "Method Review Bundle",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "exportedAt",
+    "projectId",
+    "reviews",
+    "decisions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-method-review-bundle/0.29.1"
+    },
+    "version": {
+      "const": "0.29.1"
+    },
+    "exportedAt": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reviews": {
+      "type": "array"
+    },
+    "decisions": {
+      "type": "array"
+    },
+    "deprecations": {
+      "type": "array"
+    },
+    "comparisons": {
+      "type": "array"
+    }
+  }
+}

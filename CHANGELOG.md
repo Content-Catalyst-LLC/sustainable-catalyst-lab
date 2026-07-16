@@ -1,3 +1,9 @@
+## 0.29.1 — Research Quality and Method Review
+
+- Added project-scoped method reviews, evidence and benchmark coverage, calibration tracking, approval decisions, deprecation history, and governed Python quality evaluation.
+- Synchronized functional-health coverage to all 51 current Lab panels.
+- Preserved the v0.29.0.1 integrity-manifest and route repairs.
+
 ## 0.29.0.1 — WordPress Integrity Manifest and Evidence Route Repair
 
 - Rebuilt the WordPress integrity manifest in the runtime-compatible schema.

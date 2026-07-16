@@ -398,3 +398,8 @@ Use `[sc_lab_dataset_registry]` or open **Project → Dataset registry** to regi
 ## v0.28.2 reproducible computational runs
 
 Use **Project → Reproducible runs** or `[sc_lab_reproducible_runs]` to freeze completed requests and results, verify checksums, rerun and compare within tolerances, and export portable reproducibility bundles.
+
+
+## v0.29.1 Research Quality and Method Review
+
+The Lab now stores benchmark coverage, validation evidence, calibration state, reviewer decisions, approval status, and deprecation history as project-scoped method-review records.

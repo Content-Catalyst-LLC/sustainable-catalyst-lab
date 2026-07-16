@@ -1,0 +1,62 @@
+{
+  "schema": "sc-lab-method-review-policy/0.29.1",
+  "version": "0.29.1",
+  "statuses": [
+    "draft",
+    "under-review",
+    "changes-requested",
+    "conditionally-approved",
+    "approved",
+    "rejected",
+    "deprecated"
+  ],
+  "riskTiers": [
+    "exploratory",
+    "standard",
+    "high-consequence"
+  ],
+  "calibrationStatuses": [
+    "not-required",
+    "uncalibrated",
+    "calibrated",
+    "due",
+    "expired"
+  ],
+  "decisions": [
+    "no-decision",
+    "approve",
+    "conditional-approval",
+    "request-changes",
+    "reject",
+    "deprecate"
+  ],
+  "requirements": {
+    "exploratory": {
+      "minimumBenchmarks": 0,
+      "minimumValidationEvidence": 0,
+      "requireLimitations": false,
+      "requireReproducibleRun": false,
+      "requireProvenance": false,
+      "requireIndependentReviewer": false,
+      "minimumScore": 45
+    },
+    "standard": {
+      "minimumBenchmarks": 1,
+      "minimumValidationEvidence": 1,
+      "requireLimitations": true,
+      "requireReproducibleRun": true,
+      "requireProvenance": true,
+      "requireIndependentReviewer": false,
+      "minimumScore": 70
+    },
+    "high-consequence": {
+      "minimumBenchmarks": 2,
+      "minimumValidationEvidence": 2,
+      "requireLimitations": true,
+      "requireReproducibleRun": true,
+      "requireProvenance": true,
+      "requireIndependentReviewer": true,
+      "minimumScore": 85
+    }
+  }
+}

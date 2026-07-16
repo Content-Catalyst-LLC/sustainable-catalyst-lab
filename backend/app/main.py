@@ -21,6 +21,7 @@ from .visualization import VisualizationInputError, build_spec as build_visualiz
 from .datasets import DatasetProfileError, health as dataset_health_payload, profile_dataset
 from .reproducibility import ReproducibilityError, build_manifest as build_reproducibility_manifest, compare_manifests, environment_fingerprint, health as reproducibility_health_payload, verify_manifest
 from .research_provenance import ProvenanceError, health as research_provenance_health, normalize_source, normalize_evidence, verify_record as verify_provenance_record, build_provenance
+from .research_quality import QualityReviewError, compare_reviews as compare_quality_reviews, evaluate_review as evaluate_quality_review, health as research_quality_health, normalize_review as normalize_quality_review, policies as research_quality_policies, verify_review as verify_quality_review
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -108,6 +109,7 @@ def health():
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
+        "researchQuality": {"version":"0.29.1","methodReview":True,"benchmarkCoverage":True,"calibration":True,"approvalWorkflow":True,"deprecationHistory":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -171,6 +173,7 @@ def capabilities():
         "projectWorkspace": {"version": "0.28.0", "projectContextAccepted": True, "serverBackedStorage": False},
         "datasetRegistry": {"version": "0.28.1", "profileEndpoint": True, "dataDictionary": True, "unitMetadata": True, "lineage": True, "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "frozenManifests": True, "environmentFingerprint": True, "verification": True, "comparison": True, "portableBundles": True, "serverBackedRegistry": False},
+        "researchQuality": {"version":"0.29.1","reviewNormalization":True,"policyEvaluation":True,"hashVerification":True,"revisionComparison":True,"serverBackedRegistry":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -304,6 +307,54 @@ def research_provenance_verify_route(payload: dict[str, Any], auth: dict[str,str
 @app.post("/v1/research-provenance/build")
 def research_provenance_build_route(payload: dict[str, Any], auth: dict[str,str]=Depends(require_compute_auth)):
     del auth; return {"ok":True,"provenance":build_provenance(payload)}
+
+
+@app.get("/v1/research-quality/health")
+def research_quality_health_route():
+    body = research_quality_health()
+    body["serviceVersion"] = settings.version
+    return body
+
+
+@app.get("/v1/research-quality/policies")
+def research_quality_policies_route():
+    body = research_quality_policies()
+    body["serviceVersion"] = settings.version
+    return body
+
+
+@app.post("/v1/research-quality/reviews/normalize")
+def research_quality_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return {"ok": True, "review": normalize_quality_review(payload)}
+    except QualityReviewError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/research-quality/reviews/evaluate")
+def research_quality_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return evaluate_quality_review(payload)
+    except QualityReviewError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/v1/research-quality/reviews/verify")
+def research_quality_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return verify_quality_review(payload)
+
+
+@app.post("/v1/research-quality/reviews/compare")
+def research_quality_compare_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return compare_quality_reviews(payload)
+    except QualityReviewError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
 
 @app.get("/v1/methods", dependencies=[Depends(require_compute_auth)])
 def methods():

@@ -30,6 +30,12 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/manifest', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_manifest'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_verify'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'reproducibility_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/health', array('methods'=>'GET','callback'=>array(__CLASS__,'research_quality_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'research_quality_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/evaluate', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_evaluate'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_verify'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/research-quality/reviews/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'research_quality_compare'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -255,6 +261,14 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function reproducibility_manifest(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/manifest','POST',$p,8388608);}
     public static function reproducibility_verify(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/verify','POST',$p,8388608);}
     public static function reproducibility_compare(WP_REST_Request $request){$p=self::reproducibility_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/reproducibility/compare','POST',$p,8388608);}
+
+    public static function research_quality_health(){return self::proxy('/v1/research-quality/health');}
+    public static function research_quality_policies(){return self::proxy('/v1/research-quality/policies');}
+    private static function research_quality_payload(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_research_quality_payload','A JSON method-review payload is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);return is_wp_error($clean)?$clean:$clean;}
+    public static function research_quality_normalize(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/normalize','POST',$p,8388608);}
+    public static function research_quality_evaluate(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/evaluate','POST',$p,8388608);}
+    public static function research_quality_verify(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/verify','POST',$p,8388608);}
+    public static function research_quality_compare(WP_REST_Request $request){$p=self::research_quality_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/research-quality/reviews/compare','POST',$p,8388608);}
 
 
 

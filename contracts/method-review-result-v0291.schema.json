@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/method-review-result-v0291.schema.json",
+  "title": "Method Review Evaluation",
+  "type": "object",
+  "required": [
+    "ok",
+    "version",
+    "review",
+    "evaluation"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "version": {
+      "const": "0.29.1"
+    },
+    "review": {
+      "$ref": "method-review-v0291.schema.json"
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "readyForApproval",
+        "score",
+        "minimumScore",
+        "recommendation",
+        "issues",
+        "warnings"
+      ],
+      "properties": {
+        "readyForApproval": {
+          "type": "boolean"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "minimumScore": {
+          "type": "number"
+        },
+        "recommendation": {
+          "type": "string"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
