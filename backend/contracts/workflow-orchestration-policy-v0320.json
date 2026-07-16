@@ -1,0 +1,31 @@
+{
+  "schema": "sc-lab-workflow-policy/0.32.0",
+  "version": "0.32.0",
+  "architecture": "typed-scientific-workflow-dag-orchestrator",
+  "definitions": {
+    "typedNodes": true,
+    "acyclicGraphsRequired": true,
+    "immutableRunSnapshots": true,
+    "maximumNodes": 100
+  },
+  "execution": {
+    "dependencyAwareScheduling": true,
+    "parallelReadyNodes": true,
+    "dispatcherBackedNodes": true,
+    "nodeRetriesDelegatedToDispatcher": true,
+    "manualReconciliation": true,
+    "conditionalExecution": false
+  },
+  "handoffs": {
+    "resultBindings": true,
+    "dependencyArtifactPropagation": true,
+    "arbitraryCode": false,
+    "arbitraryCallbackUrls": false
+  },
+  "provenance": {
+    "definitionHash": "sha256",
+    "runTimeline": true,
+    "queueIdentifiers": true,
+    "nodeResults": true
+  }
+}

@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab Python Compute Core v0.31.4
+# Sustainable Catalyst Lab Python Compute Core v0.32.0
 
-The v0.31.4 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves the 23-method registry, fourteen known-answer benchmarks, persistent SQLite WAL queue, checkpoints, retries, cache, and thirteen domain extensions while adding numerical precision profiles and solver governance.
+The v0.32.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, and dead-letter operations while adding typed scientific workflow orchestration and dependency graphs.
 
 ## Solver governance
 
@@ -96,3 +96,22 @@ SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS=900
 ```
 
 Backend operations routes require the compute API key. WordPress recovery and operator routes require an authenticated administrator with `manage_options`. Dead-letter replay preserves the earlier failure and operator history instead of deleting it.
+
+## Scientific workflow orchestration v0.32.0
+
+The compute core stores validated workflow definitions and immutable run snapshots in SQLite WAL storage. A workflow is a directed acyclic graph of registered methods. Independent nodes enter the persistent dispatcher together, while dependent nodes are scheduled only after every upstream dependency completes successfully.
+
+Workflow nodes can bind selected upstream result paths into downstream request paths. Artifact identifiers found in completed dependency results are also propagated as lease-governed artifact inputs. The orchestrator does not evaluate arbitrary code or call arbitrary callback URLs.
+
+Coordinator settings:
+
+```bash
+SC_LAB_WORKFLOW_DB_PATH=/app/data/sc-lab-workflows.sqlite3
+SC_LAB_WORKFLOW_MAX_NODES=100
+SC_LAB_WORKFLOW_MAX_RUNS=5000
+SC_LAB_WORKFLOW_HISTORY_LIMIT=20000
+SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED=0
+```
+
+Core routes include workflow validation and saving, definition listing, run creation, run reconciliation, cancellation, timelines, policies, and health. WordPress workflow creation and operator actions require `manage_options`.
+

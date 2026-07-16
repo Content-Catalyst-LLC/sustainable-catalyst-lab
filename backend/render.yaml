@@ -64,3 +64,13 @@ services:
         value: "0"
       - key: SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES
         value: "262144"
+      - key: SC_LAB_WORKFLOW_DB_PATH
+        value: /app/data/sc-lab-workflows.sqlite3
+      - key: SC_LAB_WORKFLOW_MAX_NODES
+        value: "100"
+      - key: SC_LAB_WORKFLOW_MAX_RUNS
+        value: "5000"
+      - key: SC_LAB_WORKFLOW_HISTORY_LIMIT
+        value: "20000"
+      - key: SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED
+        value: "0"

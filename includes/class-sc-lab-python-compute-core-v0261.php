@@ -102,6 +102,17 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/artifacts/list', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_list'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/artifacts/uploads', array('methods'=>'GET','callback'=>array(__CLASS__,'artifact_uploads'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/artifacts/cleanup', array('methods'=>'POST','callback'=>array(__CLASS__,'artifact_cleanup'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/health', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_validate'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/save', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_save'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/list', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_list'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/definitions/(?P<workflow>[A-Za-z0-9._-]{1,180})/runs', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_start'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_runs'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_run'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/reconcile', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_reconcile'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/workflows/runs/(?P<run>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -421,6 +432,18 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function artifact_list(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/artifacts?limit='.$limit);}
     public static function artifact_uploads(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/artifacts/uploads?limit='.$limit);}
     public static function artifact_cleanup(){return self::proxy('/v1/artifacts/cleanup','POST',array(),8388608);}
+    private static function workflow_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_workflow_payload','A JSON workflow payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:$clean;}
+    public static function workflow_health(){return self::proxy('/v1/workflows/health');}
+    public static function workflow_policies(){return self::proxy('/v1/workflows/policies');}
+    public static function workflow_validate(WP_REST_Request $request){$p=self::workflow_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/workflows/validate','POST',$p,8388608);}
+    public static function workflow_save(WP_REST_Request $request){$p=self::workflow_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/workflows','POST',$p,8388608);}
+    public static function workflow_list(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));$project=sanitize_text_field($request->get_param('projectId')?:'');$query='limit='.$limit.($project?'&projectId='.rawurlencode($project):'');return self::proxy('/v1/workflows?'.$query);}
+    public static function workflow_start(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflows/'.rawurlencode($request['workflow']).'/runs','POST',$clean,8388608);}
+    public static function workflow_runs(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));$workflow=sanitize_text_field($request->get_param('workflowId')?:'');$project=sanitize_text_field($request->get_param('projectId')?:'');$status=sanitize_key($request->get_param('status')?:'');$parts=array('limit='.$limit);if($workflow){$parts[]='workflowId='.rawurlencode($workflow);}if($project){$parts[]='projectId='.rawurlencode($project);}if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/workflow-runs?'.implode('&',$parts));}
+    public static function workflow_run(WP_REST_Request $request){$reconcile=$request->get_param('reconcile');$value=($reconcile===false||$reconcile==='false'||$reconcile==='0')?'false':'true';return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'?reconcile='.$value);}
+    public static function workflow_reconcile(WP_REST_Request $request){return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/reconcile','POST',array(),8388608);}
+    public static function workflow_cancel(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/cancel','POST',$clean,8388608);}
+    public static function workflow_timeline(WP_REST_Request $request){$limit=max(1,min(2000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/workflow-runs/'.rawurlencode($request['run']).'/timeline?limit='.$limit);}
 
 
 }

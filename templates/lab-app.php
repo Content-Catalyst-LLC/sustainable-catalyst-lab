@@ -52,6 +52,7 @@
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
+          'workflow-orchestration' => 'Scientific workflows',
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
           'dispatcher-operations' => 'Dispatcher operations',
@@ -1536,6 +1537,53 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
       </section>
 
 
+
+
+      <section class="sc-lab-panel sc-wf0320" data-lab-module="workflow-orchestration" data-module-panel="workflow-orchestration" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW ORCHESTRATION / v0.32.0</p><h3>Scientific Workflow Orchestration and Dependency Graphs</h3><p>Define typed scientific workflows as validated directed acyclic graphs, schedule independent nodes in parallel through the distributed dispatcher, bind upstream results into downstream requests, propagate governed artifacts, and preserve node-level execution provenance.</p></header>
+        <p class="sc-wf0320-status" data-wf-v0320-status role="status" aria-live="polite">Workflow orchestration loading…</p>
+        <div class="sc-wf0320-metrics" data-wf-v0320-metrics></div>
+        <div class="sc-wf0320-grid">
+          <div class="sc-wf0320-card">
+            <h4>Workflow definition</h4>
+            <p>Definitions are validated for unique node IDs, known dependencies, binding integrity, and cycles before execution.</p>
+            <textarea data-wf-v0320-definition aria-label="Scientific workflow JSON">{
+  "id": "calibration-pipeline",
+  "title": "Calibration pipeline",
+  "projectId": "default",
+  "nodes": [
+    {
+      "id": "profile-dataset",
+      "method": "dataset.profile",
+      "request": {"inputs": {"records": []}},
+      "priority": 70
+    },
+    {
+      "id": "calibrate-model",
+      "method": "model.calibrate",
+      "dependsOn": ["profile-dataset"],
+      "bindings": [
+        {"fromNode": "profile-dataset", "sourcePath": "result.profile", "targetPath": "inputs.datasetProfile"}
+      ],
+      "request": {"inputs": {"model": "linear"}},
+      "artifactOutputs": [{"kind": "result", "name": "calibration-result"}]
+    }
+  ]
+}</textarea>
+            <div class="sc-wf0320-actions"><button type="button" class="sc-lab-button" data-wf-v0320-validate>Validate graph</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0320-save>Save definition</button></div>
+          </div>
+          <div class="sc-wf0320-card">
+            <h4>Run controls</h4>
+            <label>Workflow ID <input data-wf-v0320-workflowid value="calibration-pipeline"></label>
+            <label>Run inputs <textarea data-wf-v0320-inputs aria-label="Workflow run inputs">{}</textarea></label>
+            <label>Workflow run ID <input data-wf-v0320-runid placeholder="workflow-run-…"></label>
+            <label>Operator reason <input data-wf-v0320-reason value="operator action from Lab workflow panel"></label>
+            <div class="sc-wf0320-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wf-v0320-start>Start run</button><button type="button" class="sc-lab-button" data-wf-v0320-inspect>Reconcile and inspect</button><button type="button" class="sc-lab-button" data-wf-v0320-cancel>Cancel run</button><button type="button" class="sc-lab-button" data-wf-v0320-refresh>Refresh</button></div>
+          </div>
+          <div class="sc-wf0320-card is-wide"><h4>Workflow runs</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Run</th><th>Workflow</th><th>Project</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead><tbody data-wf-v0320-runs></tbody></table></div></div>
+          <div class="sc-wf0320-card is-wide"><h4>Definition, run state, and timeline</h4><pre class="sc-wf0320-output" data-wf-v0320-output>No response yet.</pre></div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-pq0311" data-lab-module="persistent-queue" data-module-panel="persistent-queue" hidden>
         <h2>Persistent Queue Infrastructure</h2>

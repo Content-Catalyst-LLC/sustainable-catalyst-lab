@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.31.4"
+    version: str = "0.32.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -69,6 +69,11 @@ class Settings:
     artifact_retention_seconds: int = _int("SC_LAB_ARTIFACT_RETENTION_SECONDS", 2592000, 3600, 31536000)
     worker_result_artifact_threshold_bytes: int = _int("SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES", 262144, 1024, 16777216)
     artifact_persistent_disk_mounted: bool = os.getenv("SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    workflow_db_path: str = os.getenv("SC_LAB_WORKFLOW_DB_PATH", "./data/sc-lab-workflows.sqlite3").strip()
+    workflow_max_nodes: int = _int("SC_LAB_WORKFLOW_MAX_NODES", 100, 1, 1000)
+    workflow_max_runs: int = _int("SC_LAB_WORKFLOW_MAX_RUNS", 5000, 100, 100000)
+    workflow_history_limit: int = _int("SC_LAB_WORKFLOW_HISTORY_LIMIT", 20000, 100, 1000000)
+    workflow_persistent_disk_mounted: bool = os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

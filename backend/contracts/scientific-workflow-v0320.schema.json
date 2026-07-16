@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-scientific-workflow-v0320.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Workflow",
+  "type": "object",
+  "required": ["schema", "version", "id", "projectId", "nodes", "topologicalOrder", "definitionHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-workflow/0.32.0"},
+    "version": {"const": "0.32.0"},
+    "recordType": {"const": "scientific-workflow"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 300},
+    "description": {"type": "string", "maxLength": 4000},
+    "projectId": {"type": "string", "minLength": 1, "maxLength": 180},
+    "definitionHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "entryNodes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "terminalNodes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "topologicalOrder": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["id", "method", "dependsOn", "request", "maxAttempts"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$"},
+          "title": {"type": "string", "maxLength": 300},
+          "method": {"type": "string", "minLength": 1, "maxLength": 180},
+          "dependsOn": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "bindings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["fromNode", "sourcePath", "targetPath"],
+              "properties": {
+                "fromNode": {"type": "string"},
+                "sourcePath": {"type": "string"},
+                "targetPath": {"type": "string"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "request": {"type": "object"},
+          "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+          "maxAttempts": {"type": "integer", "minimum": 1, "maximum": 20},
+          "timeoutSeconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+          "leaseSeconds": {"type": "integer", "minimum": 30, "maximum": 3600},
+          "artifactInputs": {"type": "array", "maxItems": 100, "items": {"type": "object"}},
+          "artifactOutputs": {"type": "array", "maxItems": 100, "items": {"type": "object"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "metadata": {"type": "object"},
+    "createdAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

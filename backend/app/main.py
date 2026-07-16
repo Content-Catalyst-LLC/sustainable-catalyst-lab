@@ -31,6 +31,7 @@ from .distributed_dispatcher import DispatcherError, policies as distributed_dis
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
 from .artifact_transport import ArtifactStore, ArtifactTransportError
+from .workflow_orchestration import WorkflowError, WorkflowOrchestrator, policies as workflow_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -39,6 +40,7 @@ from .security import require_compute_auth
 jobs = PersistentJobQueue()
 dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit, settings.dispatcher_retry_base_delay_seconds, settings.dispatcher_retry_max_delay_seconds)
 artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, settings.artifact_max_bytes, settings.artifact_chunk_bytes, settings.artifact_upload_ttl_seconds, settings.artifact_retention_seconds)
+workflows = WorkflowOrchestrator(settings.workflow_db_path, dispatcher, settings.workflow_max_nodes, settings.workflow_max_runs, settings.workflow_history_limit)
 
 
 @asynccontextmanager
@@ -128,9 +130,10 @@ def health():
         "modelCalibration": {"version":"0.30.2","parameterFitting":True,"holdoutValidation":True,"confidenceIntervals":True,"residualDiagnostics":True,"modelComparison":True},
         "distributedDispatcher": {"version":"0.31.0","capabilityDiscovery":True,"workloadRouting":True,"signedDispatchContracts":True,"leases":True},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True},
-        "secureWorkerAgent": {"version":"0.31.4","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.32.0","pullBased":True,"workerScopedCredentials":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumable":True,"sha256Verification":True,"resultArtifacts":True,"checkpointArtifacts":True,"retentionControls":True},
         "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
+        "workflowOrchestration": {"version":"0.32.0","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -201,8 +204,9 @@ def capabilities():
         "experimentFramework": {"version":"0.30.0","protocolNormalization":True,"readinessValidation":True,"runManifests":True,"replicationComparison":True,"reportBuilder":True,"serverBackedRegistry":False},
         "designStudies": {"version":"0.30.1","designGeneration":True,"responseSurfaceAnalysis":True,"sensitivityRanking":True,"optimalDesignRecommendation":True,"queueBatchPlans":True,"serverBackedRegistry":False},
         "persistentQueueInfrastructure": {"version":"0.31.1","storage":"sqlite-wal","persistentWorkerRegistry":True,"persistentWorkloadQueue":True,"leaseRecovery":True,"horizontalCoordinatorSafeClaims":True,"centralHistory":True},
-        "secureWorkerAgent": {"version":"0.31.4","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
+        "secureWorkerAgent": {"version":"0.32.0","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumableChunks":True,"sha256Verification":True,"deduplication":True,"inputMaterialization":True,"resultExternalization":True,"checkpointTransport":True,"retentionControls":True},
+        "workflowOrchestration": {"version":"0.32.0","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"serverBackedRegistry":True},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1313,3 +1317,112 @@ def worker_agent_revoke_route(worker_id: str, payload: dict[str, Any], auth: dic
     except DispatcherError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+
+# v0.32.0 Scientific Workflow Orchestration and Dependency Graphs
+
+def _workflow_http_error(exc: WorkflowError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/workflows/health")
+def workflow_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = workflows.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.workflow_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.workflow_persistent_disk_mounted else "Workflow records are instance-local unless a persistent disk is mounted."
+    return body
+
+
+@app.get("/v1/workflows/policies")
+def workflow_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflow_policies(settings.workflow_max_nodes, settings.workflow_max_runs)
+
+
+@app.post("/v1/workflows/validate")
+def workflow_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.validate(payload)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflows")
+def workflow_save_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.save(payload)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.get("/v1/workflows")
+def workflow_list_route(project_id: str = Query("", alias="projectId"), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflows.list(project_id, limit)
+
+
+@app.get("/v1/workflows/{workflow_id}")
+def workflow_get_route(workflow_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.get(workflow_id)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflows/{workflow_id}/runs")
+def workflow_start_run_route(workflow_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.start_run(workflow_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-runs")
+def workflow_runs_route(workflow_id: str = Query("", alias="workflowId"), project_id: str = Query("", alias="projectId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.runs(workflow_id, project_id, status, limit)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-runs/{run_id}")
+def workflow_run_route(run_id: str, reconcile: bool = Query(True), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.run(run_id, reconcile=reconcile)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/reconcile")
+def workflow_reconcile_route(run_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.reconcile(run_id)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-runs/{run_id}/cancel")
+def workflow_cancel_route(run_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.cancel(run_id, payload or {})
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-runs/{run_id}/timeline")
+def workflow_timeline_route(run_id: str, limit: int = Query(500, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflows.timeline(run_id, limit)
+    except WorkflowError as exc:
+        raise _workflow_http_error(exc) from exc

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.32.0 — Scientific Workflow Orchestration and Dependency Graphs
+
+- Added typed workflow definitions and SHA-256 definition fingerprints.
+- Added directed acyclic graph validation, topological ordering, entry/terminal-node discovery, and cycle rejection.
+- Added persistent workflow definitions, immutable run snapshots, node-run records, and workflow event timelines in SQLite WAL storage.
+- Added dependency-aware dispatcher scheduling with parallel ready-node execution.
+- Added upstream-result bindings and automatic dependency artifact propagation into downstream workloads.
+- Added workflow reconciliation, completion/failure derivation, downstream blocking, and operator cancellation.
+- Added authenticated FastAPI workflow routes and administrator-only WordPress proxies.
+- Added the 61st Lab panel, Scientific Workflows, plus v0.32.0 contracts, tests, deployment variables, documentation, and release metadata.
+
 ## 0.31.4 — Dispatcher Operations, Dead-Letter Recovery, and Observability
 
 - Added normalized dispatcher failure classification with explicit retryability and severity policies.

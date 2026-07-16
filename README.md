@@ -1,8 +1,24 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.31.4 — Dispatcher Operations, Dead-Letter Recovery, and Observability**
+**Current release: v0.32.0 — Scientific Workflow Orchestration and Dependency Graphs**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, and verified artifact transport.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration.
+
+## v0.32.0 highlights
+
+- Typed scientific workflow definitions with stable SHA-256 definition fingerprints
+- Directed acyclic graph validation with duplicate, unknown-dependency, self-dependency, binding, and cycle checks
+- Dependency-aware node scheduling through the persistent distributed dispatcher
+- Parallel scheduling of independent root and newly ready nodes
+- Immutable workflow-definition snapshots attached to every run
+- Node-level queue IDs, states, results, errors, timestamps, and execution timeline events
+- Safe result bindings from completed upstream nodes into downstream registered-method requests
+- Automatic propagation of upstream artifact IDs into downstream artifact inputs
+- Dispatcher-managed node retry and dead-letter behavior
+- Workflow cancellation that also cancels active dispatcher queue items
+- Persistent SQLite WAL workflow registry and run store
+- Administrator-only WordPress Scientific Workflows panel and compute proxies
+- Direct cumulative installer bridge from v0.31.0 through v0.31.4
 
 ## v0.31.4 highlights
 
