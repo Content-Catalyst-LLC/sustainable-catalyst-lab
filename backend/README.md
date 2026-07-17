@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab Python Compute Core
 
-**Current release: v0.35.2 — Version History, Branching, Merge, and Conflict Resolution**
+**Current release: v0.36.0 — Scientific Artifact Repository and Data Federation**
 
 The v0.34.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
 
@@ -225,3 +225,15 @@ The `/v1/workspace-reviews` and workspace-scoped review routes store append-only
 The `/v1/workspace-versions` service shares the governed team-workspace SQLite WAL database and migrates it in place to schema version 3. It stores immutable snapshots, named branches, merge requests, conflict resolutions, and hashed version events.
 
 Snapshots contain canonical JSON trees and SHA-256 identities. Branch heads use optimistic checks. Three-way merges retain base, source, and target values for every conflict. Restoring an earlier snapshot creates a new descendant snapshot; history is never rewritten. Protected branch finalization requires an attached v0.35.1 approval request in `signed` state with an immutable scientific sign-off.
+
+
+## Scientific Artifact Repository and Data Federation — v0.36.0
+
+The authenticated `/v1/artifact-repository/*` and workspace-scoped artifact routes store governed collection metadata, immutable artifact version records, registered federation nodes, manifest synchronization runs, tombstones, conflicts, and hashed timelines in a dedicated SQLite WAL database. Artifact bytes remain in the existing content-addressed transport store; repository records can bind to a verified `transportArtifactId` or describe a remote artifact through its SHA-256 identity.
+
+Federation is manifest-driven. Lab does not automatically call arbitrary submitted endpoints. External nodes send or export canonical `sc-lab-federation-manifest/0.36.0` documents through authenticated routes.
+
+```bash
+SC_LAB_ARTIFACT_REPOSITORY_DB_PATH=/app/data/sc-lab-artifact-repository.sqlite3
+SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED=0
+```

@@ -20,7 +20,7 @@ ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$")
 ROLES = {"viewer": 10, "reviewer": 30, "contributor": 50, "editor": 70, "administrator": 90, "owner": 100}
 RESOURCE_TYPES = {
     "project", "dataset", "workflow", "workflow-run", "experiment", "campaign",
-    "model", "surrogate", "ensemble", "artifact", "notebook", "source", "evidence", "report",
+    "model", "surrogate", "ensemble", "artifact", "artifact-collection", "federated-source", "notebook", "source", "evidence", "report",
 }
 WORKSPACE_STATUSES = {"active", "archived"}
 

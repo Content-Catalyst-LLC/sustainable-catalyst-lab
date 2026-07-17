@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/federation-manifest-v0360.schema.json",
+  "title": "Artifact Federation Manifest v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "nodeId",
+    "generatedAt",
+    "artifacts",
+    "manifestHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-federation-manifest/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "cursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "remoteId",
+          "artifactVersion",
+          "sha256",
+          "sizeBytes"
+        ],
+        "properties": {
+          "remoteId": {
+            "type": "string"
+          },
+          "artifactVersion": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "manifestHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

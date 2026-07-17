@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/federated-source-v0360.schema.json",
+  "title": "Federated Source v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "nodeId",
+    "sourceType",
+    "trustMode",
+    "conflictPolicy",
+    "sourceHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-federated-source/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "sourceType": {
+      "enum": [
+        "sc-lab-node",
+        "institutional-repository",
+        "object-store",
+        "manifest-feed"
+      ]
+    },
+    "trustMode": {
+      "enum": [
+        "strict",
+        "hash-verified",
+        "manual-review"
+      ]
+    },
+    "conflictPolicy": {
+      "enum": [
+        "reject",
+        "retain-both",
+        "prefer-newer"
+      ]
+    },
+    "sourceHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

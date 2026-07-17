@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.35.2"
+    version: str = "0.36.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -116,6 +116,12 @@ class Settings:
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)
     team_workspace_persistent_disk_mounted: bool = os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    artifact_repository_db_path: str = os.getenv("SC_LAB_ARTIFACT_REPOSITORY_DB_PATH", "./data/sc-lab-artifact-repository.sqlite3").strip()
+    artifact_repository_max_collections: int = _int("SC_LAB_ARTIFACT_REPOSITORY_MAX_COLLECTIONS", 5000, 1, 100000)
+    artifact_repository_max_records: int = _int("SC_LAB_ARTIFACT_REPOSITORY_MAX_RECORDS", 250000, 100, 5000000)
+    artifact_repository_max_manifest_records: int = _int("SC_LAB_ARTIFACT_REPOSITORY_MAX_MANIFEST_RECORDS", 10000, 1, 100000)
+    artifact_repository_history_limit: int = _int("SC_LAB_ARTIFACT_REPOSITORY_HISTORY_LIMIT", 100000, 100, 2000000)
+    artifact_repository_persistent_disk_mounted: bool = os.getenv("SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

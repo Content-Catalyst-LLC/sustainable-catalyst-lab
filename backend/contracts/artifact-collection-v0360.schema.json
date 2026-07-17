@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/artifact-collection-v0360.schema.json",
+  "title": "Scientific Artifact Collection v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "title",
+    "visibility",
+    "status",
+    "collectionHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-artifact-collection/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 180
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "visibility": {
+      "enum": [
+        "private",
+        "workspace",
+        "public"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ]
+    },
+    "collectionHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

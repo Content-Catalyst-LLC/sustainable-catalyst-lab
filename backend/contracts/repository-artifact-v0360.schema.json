@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/repository-artifact-v0360.schema.json",
+  "title": "Repository Artifact v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "collectionId",
+    "workspaceId",
+    "artifactType",
+    "artifactVersion",
+    "sha256",
+    "sizeBytes",
+    "recordHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-repository-artifact/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "collectionId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "artifactType": {
+      "type": "string"
+    },
+    "artifactVersion": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sizeBytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recordHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

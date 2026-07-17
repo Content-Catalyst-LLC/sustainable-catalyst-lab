@@ -1945,6 +1945,55 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+      <section class="sc-lab-panel sc-ar0360" data-lab-module="artifact-repository" data-module-panel="artifact-repository" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / ARTIFACT GOVERNANCE / v0.36.0</p><h3>Scientific Artifact Repository and Data Federation</h3><p>Organize immutable scientific artifacts into governed collections, verify content identities, exchange hashed manifests with trusted institutional nodes, preserve tombstones, and resolve federation conflicts without enabling unrestricted remote execution.</p></header>
+        <div data-ar-v0360-status>Connecting to the artifact repository…</div>
+        <div class="sc-ar0360-metrics" data-ar-v0360-metrics></div>
+        <div class="sc-ar0360-grid">
+          <div class="sc-ar0360-card"><h4>Workspace and collection</h4><label>Workspace ID<input data-ar-v0360-workspace value="climate-team"></label><label>Collection ID<input data-ar-v0360-collection value="climate-artifacts"></label><label>Node ID<input data-ar-v0360-node value="sustainable-catalyst-primary"></label><textarea data-ar-v0360-collection-json>{
+  "id": "climate-artifacts",
+  "title": "Climate Research Artifacts",
+  "description": "Governed datasets, model outputs, reports, and provenance records.",
+  "visibility": "workspace",
+  "metadata": {"discipline": "climate-science"}
+}</textarea><div class="sc-ar0360-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ar-v0360-action="create-collection">Create collection</button><button type="button" class="sc-lab-button" data-ar-v0360-action="collections">List collections</button><button type="button" class="sc-lab-button" data-ar-v0360-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-ar-v0360-action="manifest">Export manifest</button></div><textarea data-ar-v0360-archive-json>{"reason":"collection superseded by an approved research release"}</textarea><button type="button" class="sc-lab-button" data-ar-v0360-action="archive">Archive collection</button></div>
+          <div class="sc-ar0360-card"><h4>Register and verify artifact</h4><label>Repository artifact ID<input data-ar-v0360-artifact value="climate-observations-v1"></label><textarea data-ar-v0360-artifact-json>{
+  "id": "climate-observations-v1",
+  "title": "Regional Climate Observations",
+  "artifactType": "dataset",
+  "artifactVersion": "1.0.0",
+  "mediaType": "application/json",
+  "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "sizeBytes": 1024,
+  "canonicalUri": "urn:sc-lab:climate-observations:1.0.0",
+  "provenance": {"method": "validated-observation-import"},
+  "metadata": {"license": "CC-BY-4.0"}
+}</textarea><div class="sc-ar0360-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ar-v0360-action="register">Register artifact</button><button type="button" class="sc-lab-button" data-ar-v0360-action="verify">Verify integrity</button></div><p class="sc-ar0360-note">Use <code>transportArtifactId</code> to bind a repository record to bytes already verified by Lab’s content-addressed artifact transport.</p></div>
+          <div class="sc-ar0360-card"><h4>Federated source</h4><label>Source ID<input data-ar-v0360-source value="institution-west"></label><textarea data-ar-v0360-source-json>{
+  "id": "institution-west",
+  "title": "Western Research Node",
+  "nodeId": "node-west",
+  "sourceType": "institutional-repository",
+  "endpointUrl": "https://example.org/sc-lab/federation",
+  "trustMode": "strict",
+  "conflictPolicy": "reject",
+  "metadata": {"institution": "Example University"}
+}</textarea><div class="sc-ar0360-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ar-v0360-action="create-source">Register source</button><button type="button" class="sc-lab-button" data-ar-v0360-action="sources">List sources</button><button type="button" class="sc-lab-button" data-ar-v0360-action="sync-history">Sync history</button></div></div>
+          <div class="sc-ar0360-card"><h4>Manifest synchronization</h4><textarea data-ar-v0360-manifest-json>{
+  "schema": "sc-lab-federation-manifest/0.36.0",
+  "version": "0.36.0",
+  "nodeId": "node-west",
+  "generatedAt": "2026-07-17T20:00:00Z",
+  "cursor": "1",
+  "collection": {"id": "remote-climate", "title": "Remote Climate"},
+  "artifacts": [],
+  "manifestHash": "replace-with-canonical-manifest-hash"
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-ar-v0360-action="sync">Synchronize manifest</button><p class="sc-ar0360-note"><strong>Federation boundary:</strong> synchronization accepts explicit manifests through authenticated Lab routes. The coordinator does not make arbitrary callbacks to submitted URLs.</p></div>
+          <div class="sc-ar0360-card"><h4>Conflict resolution</h4><label>Conflict ID<input data-ar-v0360-conflict value="conflict-id"></label><textarea data-ar-v0360-resolution-json>{"resolution":"retain-both"}</textarea><div class="sc-ar0360-actions"><button type="button" class="sc-lab-button" data-ar-v0360-action="conflicts">Open conflicts</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ar-v0360-action="resolve">Resolve conflict</button><button type="button" class="sc-lab-button" data-ar-v0360-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-ar-v0360-action="refresh">Refresh</button></div></div>
+          <div class="sc-ar0360-card is-wide"><h4>Collections, artifacts, sources, sync runs, conflicts, and integrity records</h4><pre class="sc-ar0360-output" data-ar-v0360-output>No response yet.</pre></div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
         <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>

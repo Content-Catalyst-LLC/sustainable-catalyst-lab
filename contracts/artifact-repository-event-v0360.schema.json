@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/artifact-repository-event-v0360.schema.json",
+  "title": "Artifact Repository Event v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "workspaceId",
+    "entityType",
+    "entityId",
+    "eventType",
+    "eventHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-artifact-repository-event/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

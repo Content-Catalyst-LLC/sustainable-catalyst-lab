@@ -1,0 +1,20 @@
+{
+  "schema": "sc-lab-artifact-repository-policy/0.36.0",
+  "version": "0.36.0",
+  "contentAddressedReferences": true,
+  "immutableVersionRecords": true,
+  "workspaceGovernance": true,
+  "manifestFederation": true,
+  "automaticRemoteCallbacks": false,
+  "hardDelete": false,
+  "conflictPolicies": [
+    "reject",
+    "retain-both",
+    "prefer-newer"
+  ],
+  "trustModes": [
+    "strict",
+    "hash-verified",
+    "manual-review"
+  ]
+}

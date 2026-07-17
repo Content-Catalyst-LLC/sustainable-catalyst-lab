@@ -1,5 +1,15 @@
 # Sustainable Catalyst Lab Changelog
 
+## v0.36.0 — Scientific Artifact Repository and Data Federation
+
+- Added workspace-governed artifact collections and immutable scientific artifact version records.
+- Added optional binding to v0.31.3 content-addressed transport records for byte-level SHA-256 and size verification.
+- Added registered federation sources with strict, hash-verified, and manual-review trust modes.
+- Added canonical collection manifests, authenticated manifest synchronization, idempotent imports, and tombstones.
+- Added retained federation conflicts with governed keep-local, accept-remote, retain-both, and dismiss resolutions.
+- Added dedicated SQLite WAL persistence, hashed sync runs and timelines, authenticated FastAPI routes, WordPress proxies, eight public contracts, and the 71st Lab panel.
+- Preserved all v0.35.x workspace, review, sign-off, branching, and merge contracts.
+
 ## v0.35.2 — Version History, Branching, Merge, and Conflict Resolution
 
 - Added immutable workspace research snapshots with stable tree hashes.

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/federation-sync-v0360.schema.json",
+  "title": "Federation Sync Run v0.36.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "sourceId",
+    "manifestHash",
+    "status",
+    "runHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-federation-sync/0.36.0"
+    },
+    "version": {
+      "const": "0.36.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "sourceId": {
+      "type": "string"
+    },
+    "manifestHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "completed-with-conflicts",
+        "failed"
+      ]
+    },
+    "runHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

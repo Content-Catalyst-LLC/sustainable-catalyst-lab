@@ -7,7 +7,7 @@ client=TestClient(app)
 def test_health():
     response=client.get('/health')
     assert response.status_code==200
-    assert response.json()['version']=='0.35.2'
+    assert response.json()['version']=='0.36.0'
     assert response.json()['architecture']=='python-compute-core'
 
 

@@ -1,0 +1,65 @@
+{
+  "collection": {
+    "artifactCount": 3,
+    "id": "climate-evidence"
+  },
+  "exportedManifest": {
+    "artifactCount": 1,
+    "manifestHash": "46ab32d01a2b527007220240ac24f1a61f522a8fe694eab785d5d13c5ec4f39f",
+    "nodeId": "sustainable-catalyst-central"
+  },
+  "federation": {
+    "conflictHash": "617886fd8667ec3be7c0c97f1b20bd9469d6a285ff096a838081f2883dddbec0",
+    "conflictSync": {
+      "conflicts": 1,
+      "imported": 0,
+      "runHash": "06cd96bc6ce97c6fd58d949a85a79eb72c5cab41dfde3c2cf739edff76e6978a",
+      "tombstoned": 0,
+      "unchanged": 0,
+      "updated": 0
+    },
+    "firstSync": {
+      "conflicts": 0,
+      "imported": 1,
+      "runHash": "a68789d6d5a60554085b3858af05a4ae3538f7cf424b3d1554b13595a8496ad7",
+      "tombstoned": 0,
+      "unchanged": 0,
+      "updated": 0
+    },
+    "idempotentSync": {
+      "conflicts": 0,
+      "imported": 0,
+      "runHash": "1a9b899baa5fb3d1dd2ff6e57d213c7390a41b120c1657cd635a0c8388ddbb83",
+      "tombstoned": 0,
+      "unchanged": 1,
+      "updated": 0
+    },
+    "resolution": "retain-both",
+    "sourceId": "regional-node"
+  },
+  "generatedAt": "2026-07-17T19:51:06.901726+00:00",
+  "integrity": {
+    "allEventHashesValid": true,
+    "allRunHashesValid": true,
+    "databaseSchemaVersion": 1,
+    "syncRunCount": 3,
+    "timelineEventCount": 8
+  },
+  "localArtifact": {
+    "repositoryId": "local-observation-v1",
+    "sha256": "34295004c25a44b7ddcb9cfadbb4571168954ba3dd51fab9725e319ef7d34ed9",
+    "transportArtifactId": "artifact-34295004c25a44b7ddcb-e6838949",
+    "verificationHash": "e47d33bba64e429f27dad43b9254cb4779cd72bbc2b074225cb8b9a18af55cdb",
+    "verified": true
+  },
+  "proofHash": "85e63229e16568c17b859e713d49f759db542ab8182466e8f314ccc88335dd82",
+  "release": "0.36.0",
+  "scenario": "transport-backed local artifact plus strict manifest federation, idempotency, conflict detection, governed retain-both resolution, and hashed audit history",
+  "schema": "sc-lab-v0360-live-proof/1.0.0",
+  "workspace": {
+    "contributor": "carol",
+    "id": "federated-climate-lab",
+    "owner": "alice",
+    "reviewer": "bob"
+  }
+}

@@ -41,6 +41,7 @@ from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderMan
 from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
+from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -59,6 +60,7 @@ surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, mod
 team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
+artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
 
 
 @asynccontextmanager
@@ -172,6 +174,7 @@ def health():
         "sharedResearchWorkspaces": {"version":"0.35.0","roleBasedMembership":True,"singleUseInvitations":True,"governedResourceLinks":True,"ownershipTransfer":True,"archiveWithoutDeletion":True},
         "workspaceReviewSignoff": {"version":"0.35.1","appendOnlyComments":True,"reviewAssignments":True,"approvalGates":True,"optimisticConcurrency":True,"immutableDecisions":True,"immutableScientificSignoff":True},
         "workspaceVersionControl": {"version":"0.35.2","immutableSnapshots":True,"namedBranches":True,"threeWayMerge":True,"pathLevelConflicts":True,"protectedBranches":True,"signedApprovalGate":True,"historyRewrite":False},
+        "scientificArtifactRepository": {"version":"0.36.0","governedCollections":True,"immutableArtifactVersions":True,"transportIntegrityBinding":True,"manifestFederation":True,"deltaSync":True,"tombstones":True,"conflictResolution":True,"automaticRemoteCallbacks":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2358,6 +2361,111 @@ def workspace_version_timeline_route(workspace_id: str, limit: int = Query(500, 
     actor, _ = _team_workspace_actor(auth)
     try: return workspace_versions.timeline(workspace_id, actor, limit)
     except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+# v0.36.0 Scientific Artifact Repository and Data Federation
+
+def _artifact_repository_http_error(exc: ArtifactRepositoryError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/artifact-repository/health")
+def artifact_repository_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = artifact_repository.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.artifact_repository_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.artifact_repository_persistent_disk_mounted else "Artifact repository metadata is instance-local unless a persistent disk is mounted."
+    return body
+
+@app.get("/v1/artifact-repository/policies")
+def artifact_repository_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = artifact_repository_policies(settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records)
+    body["serviceVersion"] = settings.version
+    return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/artifact-collections")
+def artifact_repository_collections_route(workspace_id: str, status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.list_collections(workspace_id, actor, status, limit)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/artifact-collections")
+def artifact_repository_collection_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.create_collection(workspace_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/artifact-collections/{collection_id}")
+def artifact_repository_collection_get_route(workspace_id: str, collection_id: str, include_artifacts: bool = Query(True, alias="includeArtifacts"), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.get_collection(workspace_id, collection_id, actor, include_artifacts)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/artifact-collections/{collection_id}/archive")
+def artifact_repository_collection_archive_route(workspace_id: str, collection_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.archive_collection(workspace_id, collection_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/artifact-collections/{collection_id}/artifacts")
+def artifact_repository_register_route(workspace_id: str, collection_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.register_artifact(workspace_id, collection_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/repository-artifacts/{artifact_id}/verify")
+def artifact_repository_verify_route(workspace_id: str, artifact_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.verify_artifact(workspace_id, artifact_id, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/artifact-collections/{collection_id}/manifest")
+def artifact_repository_manifest_route(workspace_id: str, collection_id: str, node_id: str = Query("local-node", alias="nodeId"), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.export_manifest(workspace_id, collection_id, actor, node_id)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/federated-sources")
+def artifact_repository_sources_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.list_sources(workspace_id, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/federated-sources")
+def artifact_repository_source_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.register_source(workspace_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/federated-sources/{source_id}/sync/{collection_id}")
+def artifact_repository_sync_route(workspace_id: str, source_id: str, collection_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.sync_manifest(workspace_id, source_id, collection_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/federation-sync-runs")
+def artifact_repository_sync_history_route(workspace_id: str, source_id: str = Query("", alias="sourceId"), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.sync_history(workspace_id, actor, source_id, limit)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/federation-conflicts")
+def artifact_repository_conflicts_route(workspace_id: str, status: str = Query("open"), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.list_conflicts(workspace_id, actor, status)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/federation-conflicts/{conflict_id}/resolve")
+def artifact_repository_conflict_resolve_route(workspace_id: str, conflict_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.resolve_conflict(workspace_id, conflict_id, payload, actor)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/artifact-repository-timeline")
+def artifact_repository_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return artifact_repository.timeline(workspace_id, actor, limit)
+    except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

@@ -112,7 +112,7 @@ def test_result_cache_returns_completed_job():
     cached = cached_response.json()
     assert cached["status"] == "completed"
     assert cached["cacheHit"] is True
-    assert cached["result"]["provenance"]["service_version"] == "0.35.2"
+    assert cached["result"]["provenance"]["service_version"] == "0.36.0"
     cache_status = client.get("/v1/cache/status").json()
     assert cache_status["records"] >= 1
     assert cache_status["hits"] >= 1
