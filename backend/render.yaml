@@ -74,3 +74,15 @@ services:
         value: "20000"
       - key: SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED
         value: "0"
+      - key: SC_LAB_WORKFLOW_SCHEDULE_DB_PATH
+        value: /app/data/sc-lab-workflow-schedules.sqlite3
+      - key: SC_LAB_WORKFLOW_SCHEDULER_POLL_SECONDS
+        value: "30"
+      - key: SC_LAB_WORKFLOW_SCHEDULER_MAX_CATCH_UP_RUNS
+        value: "10"
+      - key: SC_LAB_WORKFLOW_SCHEDULER_HISTORY_LIMIT
+        value: "20000"
+      - key: SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS
+        value: "300"
+      - key: SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED
+        value: "0"

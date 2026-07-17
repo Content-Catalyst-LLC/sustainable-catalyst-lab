@@ -1,6 +1,6 @@
-# Sustainable Catalyst Lab Python Compute Core v0.32.1
+# Sustainable Catalyst Lab Python Compute Core v0.32.2
 
-The v0.32.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, and dead-letter operations while adding checkpoint-aware workflow execution, declarative conditions, and partial-run recovery.
+The v0.32.2 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, and partial recovery while adding durable scheduled and authenticated event-driven research runs.
 
 ## Solver governance
 
@@ -124,3 +124,20 @@ Workflow nodes may declare bounded, non-executable conditions over `run.inputs`,
 The workflow registry stores checkpoint history separately from final results. Checkpoints may be captured from dispatcher results or recorded by an authenticated operator. Recovery creates a new run with immutable lineage: successful nodes are reused, failed or selected nodes are restarted, downstream dependents are included by default, and eligible checkpoints are passed to the resumed workload.
 
 Additional routes provide recovery planning, recovery-run creation, single-node branch restart, and checkpoint listing/recording. WordPress mutations remain restricted to administrators with `manage_options`.
+
+## Scheduled and event-driven research runs v0.32.2
+
+The workflow automation service stores interval, UTC cron, one-time, and event trigger definitions in a separate SQLite WAL database. It preserves next-fire timestamps across restarts, records every started or skipped firing, links automation to workflow-run provenance, and reconciles firing status with the workflow orchestrator.
+
+```bash
+SC_LAB_WORKFLOW_SCHEDULE_DB_PATH=/app/data/sc-lab-workflow-schedules.sqlite3
+SC_LAB_WORKFLOW_SCHEDULER_POLL_SECONDS=30
+SC_LAB_WORKFLOW_SCHEDULER_MAX_CATCH_UP_RUNS=10
+SC_LAB_WORKFLOW_SCHEDULER_HISTORY_LIMIT=20000
+SC_LAB_WORKFLOW_EVENT_SECRET=<optional-separate-hmac-secret>
+SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS=300
+SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED=0
+```
+
+Cron expressions contain five fields and are evaluated in UTC. Event ingestion always requires normal compute authentication. When `SC_LAB_WORKFLOW_EVENT_SECRET` is configured, events must additionally include `X-SC-Lab-Event-Timestamp` and `X-SC-Lab-Event-Signature`, where the signature is HMAC-SHA256 over `<timestamp>.<canonical-json-payload>`. Arbitrary callbacks and executable trigger expressions are not accepted.
+

@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.32.1"
+    version: str = "0.32.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -74,6 +74,13 @@ class Settings:
     workflow_max_runs: int = _int("SC_LAB_WORKFLOW_MAX_RUNS", 5000, 100, 100000)
     workflow_history_limit: int = _int("SC_LAB_WORKFLOW_HISTORY_LIMIT", 20000, 100, 1000000)
     workflow_persistent_disk_mounted: bool = os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    workflow_schedule_db_path: str = os.getenv("SC_LAB_WORKFLOW_SCHEDULE_DB_PATH", "./data/sc-lab-workflow-schedules.sqlite3").strip()
+    workflow_scheduler_poll_seconds: float = max(1.0, min(3600.0, float(os.getenv("SC_LAB_WORKFLOW_SCHEDULER_POLL_SECONDS", "30"))))
+    workflow_scheduler_max_catch_up_runs: int = _int("SC_LAB_WORKFLOW_SCHEDULER_MAX_CATCH_UP_RUNS", 10, 1, 100)
+    workflow_scheduler_history_limit: int = _int("SC_LAB_WORKFLOW_SCHEDULER_HISTORY_LIMIT", 20000, 100, 1000000)
+    workflow_event_secret: str = os.getenv("SC_LAB_WORKFLOW_EVENT_SECRET", "").strip()
+    workflow_event_signature_tolerance_seconds: int = _int("SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS", 300, 30, 3600)
+    workflow_schedule_persistent_disk_mounted: bool = os.getenv("SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

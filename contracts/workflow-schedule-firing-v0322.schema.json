@@ -1,0 +1,67 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/workflow-schedule-firing-v0322.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "eventId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "occurrenceAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scheduleId": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-workflow-schedule-firing/0.32.2"
+    },
+    "source": {
+      "enum": [
+        "schedule",
+        "event",
+        "manual"
+      ]
+    },
+    "status": {
+      "enum": [
+        "started",
+        "completed",
+        "failed",
+        "cancelled",
+        "skipped"
+      ]
+    },
+    "workflowRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "scheduleId",
+    "occurrenceAt",
+    "source",
+    "status"
+  ],
+  "title": "Workflow Schedule Firing v0.32.2",
+  "type": "object"
+}

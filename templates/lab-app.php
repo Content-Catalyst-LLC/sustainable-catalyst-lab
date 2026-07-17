@@ -53,6 +53,7 @@
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
           'workflow-orchestration' => 'Scientific workflows',
+          'workflow-automation' => 'Scheduled & event-driven runs',
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
           'dispatcher-operations' => 'Dispatcher operations',
@@ -1597,6 +1598,33 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           </div>
           <div class="sc-wf0321-card is-wide"><h4>Workflow runs</h4><div class="sc-lab-table-wrap"><table><thead><tr><th>Run</th><th>Workflow</th><th>Project</th><th>Status</th><th>Recovery generation</th><th>Updated</th><th>Action</th></tr></thead><tbody data-wf-v0321-runs></tbody></table></div></div>
           <div class="sc-wf0321-card is-wide"><h4>Definition, run state, checkpoints, and timeline</h4><pre class="sc-wf0321-output" data-wf-v0321-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+
+      <section class="sc-lab-panel sc-wa0322" data-lab-module="workflow-automation" data-module-panel="workflow-automation" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW AUTOMATION / v0.32.2</p><h3>Scheduled and Event-Driven Research Runs</h3><p>Run saved scientific workflows from durable UTC schedules or authenticated external events, with missed-run recovery, duplicate-event protection, concurrency policies, firing history, and direct workflow-run provenance.</p></header>
+        <p class="sc-wa0322-status" data-wa-v0322-status role="status" aria-live="polite">Workflow automation loading…</p>
+        <div class="sc-wa0322-metrics" data-wa-v0322-metrics></div>
+        <div class="sc-wa0322-grid">
+          <div class="sc-wa0322-card"><h4>Schedule definition</h4><textarea data-wa-v0322-schedule aria-label="Workflow schedule JSON">{
+  "id": "daily-calibration",
+  "workflowId": "calibration-pipeline",
+  "title": "Daily calibration",
+  "trigger": {"type": "cron", "expression": "0 13 * * 1-5", "timezone": "UTC"},
+  "run": {
+    "inputs": {"runCalibration": true},
+    "misfirePolicy": "catch-up-one",
+    "misfireGraceSeconds": 900,
+    "concurrencyPolicy": "forbid",
+    "maxConcurrentRuns": 1
+  }
+}</textarea><div class="sc-wa0322-actions"><button type="button" class="sc-lab-button" data-wa-v0322-validate>Validate</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wa-v0322-save>Save schedule</button></div></div>
+          <div class="sc-wa0322-card"><h4>Manual and scheduler controls</h4><label>Schedule ID<input data-wa-v0322-scheduleid value="daily-calibration"></label><label>Run override JSON<textarea data-wa-v0322-override>{}</textarea></label><div class="sc-wa0322-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wa-v0322-trigger>Trigger now</button><button type="button" class="sc-lab-button" data-wa-v0322-tick>Run scheduler tick</button><button type="button" class="sc-lab-button" data-wa-v0322-refresh>Refresh</button></div></div>
+          <div class="sc-wa0322-card"><h4>Event ingestion</h4><p>Backend event routes require normal compute authentication. Deployments may additionally require an HMAC event signature.</p><textarea data-wa-v0322-event aria-label="Workflow event JSON">{"id":"dataset-created-001","type":"dataset.created","payload":{"projectId":"default","datasetId":"dataset-001"}}</textarea><div class="sc-wa0322-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wa-v0322-ingest>Ingest event</button></div></div>
+          <div class="sc-wa0322-card is-wide"><h4>Saved schedules</h4><div class="sc-lab-table-wrap"><table class="sc-wa0322-table"><thead><tr><th>Schedule</th><th>Workflow</th><th>Trigger</th><th>Status</th><th>Next fire</th><th>Actions</th></tr></thead><tbody data-wa-v0322-schedules></tbody></table></div></div>
+          <div class="sc-wa0322-card is-wide"><h4>Automation state, firings, and event receipts</h4><pre class="sc-wa0322-output" data-wa-v0322-output>No response yet.</pre></div>
         </div>
       </section>
 

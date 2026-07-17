@@ -1,0 +1,167 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/workflow-schedule-v0322.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "definitionHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$",
+      "type": "string"
+    },
+    "run": {
+      "properties": {
+        "concurrencyPolicy": {
+          "enum": [
+            "allow",
+            "forbid",
+            "replace"
+          ]
+        },
+        "context": {
+          "type": "object"
+        },
+        "inputs": {
+          "type": "object"
+        },
+        "maxCatchUpRuns": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "maxConcurrentRuns": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "misfireGraceSeconds": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "misfirePolicy": {
+          "enum": [
+            "skip",
+            "catch-up-one",
+            "catch-up-all"
+          ]
+        }
+      },
+      "required": [
+        "inputs",
+        "context",
+        "misfirePolicy",
+        "misfireGraceSeconds",
+        "maxCatchUpRuns",
+        "concurrencyPolicy",
+        "maxConcurrentRuns"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-workflow-schedule/0.32.2"
+    },
+    "trigger": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "anchorAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "everySeconds": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "type": {
+              "const": "interval"
+            }
+          },
+          "required": [
+            "type",
+            "everySeconds",
+            "anchorAt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expression": {
+              "type": "string"
+            },
+            "timezone": {
+              "const": "UTC"
+            },
+            "type": {
+              "const": "cron"
+            }
+          },
+          "required": [
+            "type",
+            "expression",
+            "timezone"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "at": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "type": {
+              "const": "once"
+            }
+          },
+          "required": [
+            "type",
+            "at"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "eventType": {
+              "type": "string"
+            },
+            "filters": {
+              "type": "object"
+            },
+            "type": {
+              "const": "event"
+            }
+          },
+          "required": [
+            "type",
+            "eventType",
+            "filters"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "version": {
+      "const": "0.32.2"
+    },
+    "workflowId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "workflowId",
+    "enabled",
+    "trigger",
+    "run",
+    "definitionHash"
+  ],
+  "title": "Sustainable Catalyst Lab Workflow Schedule v0.32.2",
+  "type": "object"
+}

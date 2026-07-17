@@ -1,0 +1,32 @@
+{
+  "architecture": "durable-scheduled-and-event-driven-workflow-automation",
+  "concurrencyPolicies": [
+    "allow",
+    "forbid",
+    "replace"
+  ],
+  "misfirePolicies": [
+    "skip",
+    "catch-up-one",
+    "catch-up-all"
+  ],
+  "provenance": {
+    "definitionHashes": true,
+    "eventReceipts": true,
+    "firingHistory": true,
+    "workflowRunLinkage": true
+  },
+  "schema": "sc-lab-workflow-scheduling-policy/0.32.2",
+  "security": {
+    "arbitraryCallbacks": false,
+    "arbitraryCode": false,
+    "computeAuthenticationRequired": true,
+    "eventHmacOptional": true
+  },
+  "timeModel": {
+    "cronTimezone": "UTC",
+    "intervals": true,
+    "oneTime": true
+  },
+  "version": "0.32.2"
+}

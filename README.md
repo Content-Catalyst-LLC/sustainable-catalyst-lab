@@ -1,8 +1,24 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.32.1 — Workflow Checkpoints, Conditional Execution, and Partial Recovery**
+**Current release: v0.32.2 — Scheduled and Event-Driven Research Runs**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, and lineage-preserving partial recovery.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, and authenticated event-driven research runs.
+
+
+## v0.32.2 highlights
+
+- Durable interval, UTC cron, one-time, and event-triggered workflow schedules
+- Persistent next-fire timestamps and startup missed-run recovery
+- `skip`, `catch-up-one`, and bounded `catch-up-all` misfire policies
+- `allow`, `forbid`, and `replace` workflow concurrency controls
+- Authenticated event ingestion with optional HMAC event signatures
+- Idempotent external-event receipts and duplicate-event protection
+- Declarative event filters without executable expressions or callbacks
+- Schedule firings linked directly to workflow run IDs and automation context
+- Background scheduler lifecycle plus administrator-operated manual ticks
+- Separate SQLite WAL schedule, firing, and event-receipt store
+- New Scheduled & Event-Driven Runs operations panel
+- Direct cumulative installer bridge from v0.31.0 through v0.32.1
 
 ## v0.32.1 highlights
 

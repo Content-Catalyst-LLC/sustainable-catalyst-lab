@@ -1,0 +1,35 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/workflow-trigger-event-v0322.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "occurredAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-workflow-trigger-event/0.32.2"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "type",
+    "occurredAt",
+    "payload"
+  ],
+  "title": "Workflow Trigger Event v0.32.2",
+  "type": "object"
+}

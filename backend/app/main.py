@@ -32,6 +32,7 @@ from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
 from .artifact_transport import ArtifactStore, ArtifactTransportError
 from .workflow_orchestration import WorkflowError, WorkflowOrchestrator, policies as workflow_policies
+from .workflow_scheduling import WorkflowScheduleError, WorkflowScheduler, policies as workflow_scheduling_policies, verify_event_signature
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -41,6 +42,7 @@ jobs = PersistentJobQueue()
 dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settings.dispatcher_worker_stale_seconds, settings.dispatcher_default_lease_seconds, settings.dispatcher_max_workers, settings.dispatcher_max_queue_records, settings.dispatcher_max_attempts, settings.dispatcher_history_limit, settings.dispatcher_retry_base_delay_seconds, settings.dispatcher_retry_max_delay_seconds)
 artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, settings.artifact_max_bytes, settings.artifact_chunk_bytes, settings.artifact_upload_ttl_seconds, settings.artifact_retention_seconds)
 workflows = WorkflowOrchestrator(settings.workflow_db_path, dispatcher, settings.workflow_max_nodes, settings.workflow_max_runs, settings.workflow_history_limit)
+workflow_automation = WorkflowScheduler(settings.workflow_schedule_db_path, workflows, settings.workflow_scheduler_poll_seconds, settings.workflow_scheduler_max_catch_up_runs, settings.workflow_scheduler_history_limit)
 
 
 @asynccontextmanager
@@ -51,7 +53,9 @@ async def lifespan(application: FastAPI):
         else {"loaded": [], "failed": {}}
     )
     jobs.start()
+    workflow_automation.start()
     yield
+    workflow_automation.stop()
     jobs.stop()
 
 
@@ -134,6 +138,7 @@ def health():
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumable":True,"sha256Verification":True,"resultArtifacts":True,"checkpointArtifacts":True,"retentionControls":True},
         "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
+        "workflowAutomation": {"version":"0.32.2","intervalSchedules":True,"cronUtc":True,"oneTimeSchedules":True,"authenticatedEvents":True,"eventDeduplication":True,"misfireRecovery":True,"concurrencyControls":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -1471,3 +1476,138 @@ def workflow_timeline_route(run_id: str, limit: int = Query(500, ge=1, le=2000),
         return workflows.timeline(run_id, limit)
     except WorkflowError as exc:
         raise _workflow_http_error(exc) from exc
+
+# v0.32.2 Scheduled and Event-Driven Research Runs
+
+def _workflow_schedule_http_error(exc: WorkflowScheduleError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/workflow-automation/health")
+def workflow_automation_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = workflow_automation.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.workflow_schedule_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.workflow_schedule_persistent_disk_mounted else "Workflow schedules and event receipts are instance-local unless a persistent disk is mounted."
+    body["eventHmacConfigured"] = bool(settings.workflow_event_secret)
+    return body
+
+
+@app.get("/v1/workflow-automation/policies")
+def workflow_automation_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflow_scheduling_policies(settings.workflow_scheduler_max_catch_up_runs)
+
+
+@app.post("/v1/workflow-automation/schedules/validate")
+def workflow_schedule_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.validate(payload)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-automation/schedules")
+def workflow_schedule_save_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.save(payload)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-automation/schedules")
+def workflow_schedule_list_route(workflow_id: str = Query("", alias="workflowId"), enabled: bool | None = Query(None), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflow_automation.list(workflow_id, enabled, limit)
+
+
+@app.get("/v1/workflow-automation/schedules/{schedule_id}")
+def workflow_schedule_get_route(schedule_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.get(schedule_id)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.delete("/v1/workflow-automation/schedules/{schedule_id}")
+def workflow_schedule_delete_route(schedule_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.delete(schedule_id)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-automation/schedules/{schedule_id}/enable")
+def workflow_schedule_enable_route(schedule_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.set_enabled(schedule_id, True)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-automation/schedules/{schedule_id}/disable")
+def workflow_schedule_disable_route(schedule_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.set_enabled(schedule_id, False)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-automation/schedules/{schedule_id}/trigger")
+def workflow_schedule_trigger_route(schedule_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.trigger(schedule_id, payload or {})
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.post("/v1/workflow-automation/tick")
+def workflow_schedule_tick_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflow_automation.tick()
+
+
+@app.get("/v1/workflow-automation/firings")
+def workflow_schedule_firings_route(schedule_id: str = Query("", alias="scheduleId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return workflow_automation.firings(schedule_id, status, limit)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+
+
+@app.get("/v1/workflow-automation/events")
+def workflow_events_list_route(event_type: str = Query("", alias="eventType"), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return workflow_automation.events(event_type, limit)
+
+
+@app.post("/v1/workflow-automation/events")
+async def workflow_event_ingest_route(
+    request: Request,
+    x_sc_lab_event_timestamp: str | None = Header(default=None),
+    x_sc_lab_event_signature: str | None = Header(default=None),
+    auth: dict[str, str] = Depends(require_compute_auth),
+):
+    del auth
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="A JSON event payload is required.") from exc
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=422, detail="Event payload must be a JSON object.")
+    if settings.workflow_event_secret and not verify_event_signature(payload, x_sc_lab_event_timestamp or "", x_sc_lab_event_signature or "", settings.workflow_event_secret, settings.workflow_event_signature_tolerance_seconds):
+        raise HTTPException(status_code=401, detail="Invalid or expired workflow event signature.")
+    try:
+        return workflow_automation.ingest_event(payload)
+    except WorkflowScheduleError as exc:
+        raise _workflow_schedule_http_error(exc) from exc
+

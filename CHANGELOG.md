@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.32.2 — Scheduled and Event-Driven Research Runs
+
+- Added durable interval, UTC cron, one-time, and authenticated event triggers for saved scientific workflows.
+- Added persistent next-fire timestamps, automatic scheduler startup, manual ticks, and missed-run recovery.
+- Added `skip`, `catch-up-one`, and bounded `catch-up-all` misfire policies with explicit skipped-firing records.
+- Added `allow`, `forbid`, and `replace` concurrency policies plus maximum concurrent-run controls.
+- Added event filters, event receipt persistence, payload hashes, duplicate-event protection, and optional HMAC event signatures.
+- Added firing records linked to workflow run IDs, schedule definition hashes, event IDs, inputs, context, reasons, and terminal run status.
+- Added authenticated FastAPI automation routes and administrator-only WordPress proxies.
+- Added the 62nd Lab panel, Scheduled & Event-Driven Runs, plus v0.32.2 contracts, tests, deployment variables, documentation, and release metadata.
+
 ## 0.32.1 — Workflow Checkpoints, Conditional Execution, and Partial Recovery
 
 - Added non-executable declarative conditions over run inputs, run context, and prior node states/results.
@@ -136,7 +147,6 @@
 - Added uncertainty histograms, sensitivity tornado charts, parameter sweeps, spectra, convergence plots, and heatmaps.
 - Added a dedicated WordPress Scientific Visualization workspace and backend visualization API.
 
-# Changelog
 
 ## 0.27.3 — Numerical Precision and Solver Governance
 
@@ -194,7 +204,6 @@
 - Added reduced-motion, increased-contrast, forced-colors, and print reliability.
 - Added Settings → Lab Interface Health with phone, tablet, and desktop audits and exportable `sc-lab-interface-health/1.0` reports.
 
-# Changelog
 
 ## 0.26.4 — Cross-Laboratory Functional Validation
 
@@ -236,7 +245,6 @@
 - Adds route checks for Marine Biology, Climate Maps, and Evidence & Decisions.
 - Adds explicit rollback guidance and idempotent installer recovery.
 
-# Changelog
 
 ## 0.26.3.1 — Panel Alias and Compatibility Routing Repair
 
@@ -461,7 +469,6 @@
 - Added project, notebook, visualization, and audit records.
 - Added responsive presentation and responsible-use boundaries.
 
-# Changelog
 
 ## 0.20.0
 
@@ -663,14 +670,6 @@
 - Added an optional GNU `prlimit` command wrapper on Linux workers.
 - Retained subprocess timeouts, isolated temporary directories, restricted environments, output limits, and Render container boundaries.
 - Added a regression test covering FastAPI and in-memory threaded job execution.
-
-## 0.27.1 — Numerical Validation and Benchmark Library
-
-- Added fourteen known-answer numerical benchmarks.
-- Added benchmark, suite, and convergence endpoints to Python Compute Core.
-- Added the Numerical Validation Library panel and shortcode.
-- Added analytic/browser references, tolerance controls, unit assertions, residual checks, and exportable reports.
-
 
 ## v0.31.0 — Distributed Compute Dispatcher
 
