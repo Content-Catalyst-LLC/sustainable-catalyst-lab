@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-invitation-v0350.schema.json",
+  "title": "Lab Workspace Invitation v0.35.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "role",
+    "status",
+    "createdBy",
+    "createdAt",
+    "expiresAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-invitation/0.35.0"
+    },
+    "version": {
+      "const": "0.35.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "inviteeActorId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inviteeLabel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "role": {
+      "enum": [
+        "viewer",
+        "reviewer",
+        "contributor",
+        "editor",
+        "administrator"
+      ]
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "accepted",
+        "revoked",
+        "expired"
+      ]
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "token": {
+      "type": "string",
+      "description": "Returned once at invitation creation and never persisted in plaintext."
+    },
+    "tokenNotice": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

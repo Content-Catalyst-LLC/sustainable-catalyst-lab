@@ -220,6 +220,29 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/predict', array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_predict'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/register', array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_register'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/health', array('methods'=>'GET','callback'=>array(__CLASS__,'team_workspace_health'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'team_workspace_policies'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'team_workspace_list'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/invitations/accept', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_accept'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'team_workspace_get'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'PATCH','callback'=>array(__CLASS__,'team_workspace_update'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/archive', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_archive'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/invitations', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_invite'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/members/(?P<member>[A-Za-z0-9._:-]{1,180})', array(
+            array('methods'=>'PATCH','callback'=>array(__CLASS__,'team_workspace_member_role'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'DELETE','callback'=>array(__CLASS__,'team_workspace_remove_member'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/ownership', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_transfer'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/resources', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_link_resource'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/resources/(?P<link>[A-Za-z0-9._:-]{1,180})', array('methods'=>'DELETE','callback'=>array(__CLASS__,'team_workspace_unlink_resource'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/authorize', array('methods'=>'POST','callback'=>array(__CLASS__,'team_workspace_authorize'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'team_workspace_timeline'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -260,6 +283,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function signed_headers($path, $method, $body, $settings = null) {
         $settings = is_array($settings) ? $settings : self::settings();
         $headers = array('Accept'=>'application/json','Content-Type'=>'application/json','X-SC-Lab-Client'=>isset($settings['compute_client_id']) ? $settings['compute_client_id'] : 'sustainable-catalyst-wordpress');
+        $user = function_exists('wp_get_current_user') ? wp_get_current_user() : null;
+        $actor_id = ($user && !empty($user->ID)) ? 'wp-user-' . absint($user->ID) : 'wordpress-system';
+        $actor_name = ($user && !empty($user->display_name)) ? sanitize_text_field($user->display_name) : 'WordPress system';
+        $headers['X-SC-Lab-Actor'] = $actor_id;
+        $headers['X-SC-Lab-Actor-Name'] = $actor_name;
         if (!empty($settings['compute_api_key'])) { $headers['X-SC-Lab-Key'] = $settings['compute_api_key']; }
         if (!empty($settings['compute_signing_secret'])) {
             $timestamp = (string) time();
@@ -320,6 +348,10 @@ final class SC_Lab_Python_Compute_Core_V0261 {
 
     public static function operations_permission() {
         return current_user_can('manage_options');
+    }
+
+    public static function collaboration_permission() {
+        return is_user_logged_in();
     }
 
     public static function health() { return self::proxy('/health'); }
@@ -634,6 +666,24 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function ensemble_cancel(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/cancel','POST',$p,8388608);}
     public static function ensemble_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/timeline?limit='.$limit);}
     public static function ensemble_record_result(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/evaluations/'.rawurlencode($request['evaluation']).'/result','POST',$p,8388608);}
+
+    private static function team_workspace_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,20000,12);return is_wp_error($clean)?$clean:$clean;}
+    public static function team_workspace_health(){return self::proxy('/v1/team-workspaces/health');}
+    public static function team_workspace_policies(){return self::proxy('/v1/team-workspaces/policies');}
+    public static function team_workspace_create(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces','POST',$p,4194304);}
+    public static function team_workspace_list(WP_REST_Request $request){$parts=array('limit='.max(1,min(1000,intval($request->get_param('limit')?:100))));$status=sanitize_key($request->get_param('status')?:'');if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/team-workspaces?'.implode('&',$parts));}
+    public static function team_workspace_accept(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/invitations/accept','POST',$p,4194304);}
+    public static function team_workspace_get(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']));}
+    public static function team_workspace_update(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']),'PATCH',$p,4194304);}
+    public static function team_workspace_archive(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/archive','POST',$p,4194304);}
+    public static function team_workspace_invite(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/invitations','POST',$p,4194304);}
+    public static function team_workspace_member_role(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/members/'.rawurlencode($request['member']),'PATCH',$p,4194304);}
+    public static function team_workspace_remove_member(WP_REST_Request $request){$reason=sanitize_text_field($request->get_param('reason')?:'');return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/members/'.rawurlencode($request['member']).'?reason='.rawurlencode($reason),'DELETE',null,4194304);}
+    public static function team_workspace_transfer(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/ownership','POST',$p,4194304);}
+    public static function team_workspace_link_resource(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/resources','POST',$p,4194304);}
+    public static function team_workspace_unlink_resource(WP_REST_Request $request){$reason=sanitize_text_field($request->get_param('reason')?:'');return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/resources/'.rawurlencode($request['link']).'?reason='.rawurlencode($reason),'DELETE',null,4194304);}
+    public static function team_workspace_authorize(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/authorize','POST',$p,4194304);}
+    public static function team_workspace_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/timeline?limit='.$limit);}
 
     private static function surrogate_rom_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_surrogate_rom_payload','A JSON surrogate or reduced-order payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,500000,16);return is_wp_error($clean)?$clean:$clean;}
     public static function surrogate_rom_health(){return self::proxy('/v1/surrogate-rom/health');}

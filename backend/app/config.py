@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.34.2"
+    version: str = "0.35.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -111,6 +111,11 @@ class Settings:
     surrogate_rom_max_snapshot_dimensions: int = _int("SC_LAB_SURROGATE_ROM_MAX_SNAPSHOT_DIMENSIONS", 5000, 2, 100000)
     surrogate_rom_history_limit: int = _int("SC_LAB_SURROGATE_ROM_HISTORY_LIMIT", 50000, 100, 1000000)
     surrogate_rom_persistent_disk_mounted: bool = os.getenv("SC_LAB_SURROGATE_ROM_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    team_workspace_db_path: str = os.getenv("SC_LAB_TEAM_WORKSPACE_DB_PATH", "./data/sc-lab-team-workspaces.sqlite3").strip()
+    team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
+    team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
+    team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)
+    team_workspace_persistent_disk_mounted: bool = os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

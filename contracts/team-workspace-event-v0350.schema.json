@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-event-v0350.schema.json",
+  "title": "Lab Workspace Event v0.35.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "workspaceId",
+    "eventType",
+    "actorId",
+    "details",
+    "eventHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-event/0.35.0"
+    },
+    "version": {
+      "const": "0.35.0"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

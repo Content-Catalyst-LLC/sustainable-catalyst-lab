@@ -31,9 +31,11 @@ async def require_compute_auth(
     x_sc_lab_timestamp: str | None = Header(default=None),
     x_sc_lab_signature: str | None = Header(default=None),
     x_sc_lab_client: str | None = Header(default=None),
+    x_sc_lab_actor: str | None = Header(default=None),
+    x_sc_lab_actor_name: str | None = Header(default=None),
 ) -> dict[str, str]:
     if settings.auth_mode == "open-development":
-        return {"mode": settings.auth_mode, "client": x_sc_lab_client or "local-development"}
+        return {"mode": settings.auth_mode, "client": x_sc_lab_client or "local-development", "actor": x_sc_lab_actor or x_sc_lab_client or "local-development", "actorName": x_sc_lab_actor_name or "Local development"}
 
     if settings.signing_secret:
         if not x_sc_lab_timestamp or not x_sc_lab_signature:
@@ -47,8 +49,8 @@ async def require_compute_auth(
         body = await request.body()
         if not verify_signature(settings.signing_secret, x_sc_lab_timestamp, request.method, request.url.path, body, x_sc_lab_signature):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid compute signature.")
-        return {"mode": "hmac-sha256", "client": x_sc_lab_client or "wordpress"}
+        return {"mode": "hmac-sha256", "client": x_sc_lab_client or "wordpress", "actor": x_sc_lab_actor or x_sc_lab_client or "wordpress", "actorName": x_sc_lab_actor_name or "WordPress user"}
 
     if not x_sc_lab_key or not hmac.compare_digest(x_sc_lab_key, settings.api_key):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid compute API key.")
-    return {"mode": "api-key", "client": x_sc_lab_client or "wordpress"}
+    return {"mode": "api-key", "client": x_sc_lab_client or "wordpress", "actor": x_sc_lab_actor or x_sc_lab_client or "wordpress", "actorName": x_sc_lab_actor_name or "WordPress user"}

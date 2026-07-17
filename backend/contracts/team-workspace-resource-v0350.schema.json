@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-resource-v0350.schema.json",
+  "title": "Lab Workspace Resource Link v0.35.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "resourceType",
+    "resourceId",
+    "minimumRole",
+    "metadata",
+    "linkedBy",
+    "linkedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-resource-link/0.35.0"
+    },
+    "version": {
+      "const": "0.35.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "resourceType": {
+      "enum": [
+        "project",
+        "dataset",
+        "workflow",
+        "workflow-run",
+        "experiment",
+        "campaign",
+        "model",
+        "surrogate",
+        "ensemble",
+        "artifact",
+        "notebook",
+        "source",
+        "evidence",
+        "report"
+      ]
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "minimumRole": {
+      "enum": [
+        "viewer",
+        "reviewer",
+        "contributor",
+        "editor",
+        "administrator"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "linkedBy": {
+      "type": "string"
+    },
+    "linkedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

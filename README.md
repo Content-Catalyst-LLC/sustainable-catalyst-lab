@@ -1,8 +1,21 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.34.2 — Surrogate Models and Reduced-Order Analysis**
+**Current release: v0.35.0 — Shared Research Projects and Team Workspaces**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, and proper-orthogonal-decomposition reduced-order models.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, and private role-governed team workspaces for shared research projects.
+
+
+## v0.35.0 highlights
+
+- Private shared research workspaces with stable workspace identities and primary-project links.
+- Owner, administrator, editor, contributor, reviewer, and viewer roles with backend-enforced permissions.
+- Single-use invitation tokens retained only as SHA-256 digests, with bounded expiry and optional target actors.
+- Governed links to projects, datasets, workflows, runs, campaigns, models, artifacts, notebooks, sources, evidence, and reports.
+- Per-resource minimum roles and durable hashed access decisions.
+- Ownership transfer that preserves the previous owner as an administrator.
+- Archive-without-deletion semantics and a complete hashed collaboration event timeline.
+- New Shared Research Projects and Team Workspaces panel, bringing Lab to 68 registered panels.
+- Comments, review threads, approvals, and scientific sign-off remain reserved for v0.35.1.
 
 
 ## v0.34.2 highlights

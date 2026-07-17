@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-v0350.schema.json",
+  "title": "Sustainable Catalyst Lab Team Workspace v0.35.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "title",
+    "ownerId",
+    "status",
+    "settings",
+    "workspaceHash",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-team-workspace/0.35.0"
+    },
+    "version": {
+      "const": "0.35.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 4000
+    },
+    "ownerId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ]
+    },
+    "primaryProjectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "settings": {
+      "type": "object"
+    },
+    "workspaceHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "archivedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "currentMembership": {
+      "oneOf": [
+        {
+          "$ref": "team-workspace-membership-v0350.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "$ref": "team-workspace-membership-v0350.schema.json"
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "team-workspace-resource-v0350.schema.json"
+      }
+    }
+  },
+  "additionalProperties": true
+}

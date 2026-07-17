@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-access-decision-v0350.schema.json",
+  "title": "Lab Workspace Access Decision v0.35.0",
+  "type": "object",
+  "required": [
+    "workspaceId",
+    "actorId",
+    "role",
+    "action",
+    "requiredRole",
+    "allowed",
+    "workspaceStatus",
+    "decidedAt",
+    "decisionHash"
+  ],
+  "properties": {
+    "workspaceId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "requiredRole": {
+      "type": "string"
+    },
+    "resourceMinimumRole": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "workspaceStatus": {
+      "enum": [
+        "active",
+        "archived"
+      ]
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

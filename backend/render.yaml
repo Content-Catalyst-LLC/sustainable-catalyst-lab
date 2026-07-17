@@ -144,3 +144,14 @@ services:
     value: '50000'
   - key: SC_LAB_SURROGATE_ROM_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_TEAM_WORKSPACE_DB_PATH
+    value: /app/data/sc-lab-team-workspaces.sqlite3
+  - key: SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES
+    value: '5000'
+  - key: SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS
+    value: '100000'
+  - key: SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT
+    value: '100000'
+  - key: SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED
+    value: '0'
+

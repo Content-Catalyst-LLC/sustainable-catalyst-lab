@@ -38,6 +38,7 @@ from .closed_loop_campaigns import ClosedLoopError, ClosedLoopCampaignManager, p
 from .model_registry import ModelRegistryError, ScientificModelRegistry, capture_environment, policies as model_registry_policies
 from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies as ensemble_policies
 from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderManager, policies as surrogate_rom_policies
+from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -53,6 +54,7 @@ closed_loop_campaigns = ClosedLoopCampaignManager(settings.closed_loop_db_path, 
 model_registry = ScientificModelRegistry(settings.model_registry_db_path, settings.model_registry_max_models, settings.model_registry_max_versions, settings.model_registry_history_limit)
 ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_registry, dispatcher, settings.ensemble_max_studies, settings.ensemble_max_evaluations, settings.ensemble_history_limit)
 surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, model_registry, settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_history_limit)
+team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
 
 
 @asynccontextmanager
@@ -84,7 +86,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[],
     allow_credentials=False,
-    allow_methods=["GET", "POST", "DELETE"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -163,6 +165,7 @@ def health():
         "scientificModelRegistry": {"version":"0.34.0","immutableVersions":True,"environmentCapture":True,"dependencyLocking":True,"reproductionManifests":True,"promotionWorkflow":True,"deprecationHistory":True},
         "ensembleSimulation": {"version":"0.34.1","registeredModelMembers":True,"weightedEnsembles":True,"monteCarlo":True,"latinHypercube":True,"sobolDesign":True,"globalSensitivity":True,"uncertaintyIntervals":True},
         "surrogateReducedOrder": {"version":"0.34.2","surrogateTraining":True,"gaussianProcess":True,"polynomialRidge":True,"radialBasis":True,"properOrthogonalDecomposition":True,"hybridRom":True,"validationMetrics":True,"modelRegistryIntegration":True},
+        "sharedResearchWorkspaces": {"version":"0.35.0","roleBasedMembership":True,"singleUseInvitations":True,"governedResourceLinks":True,"ownershipTransfer":True,"archiveWithoutDeletion":True,"reviewComments":False,"scientificApprovals":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2012,6 +2015,108 @@ def surrogate_rom_timeline_route(study_id: str, limit: int = Query(500, ge=1, le
     del auth
     try: return surrogate_rom.timeline(study_id, limit)
     except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+# v0.35.0 Shared Research Projects and Team Workspaces
+
+def _team_workspace_actor(auth: dict[str, str]) -> tuple[str, str]:
+    return (auth.get("actor") or auth.get("subject") or auth.get("client") or "operator", auth.get("actorName") or auth.get("client") or "Workspace member")
+
+def _team_workspace_http_error(exc: TeamWorkspaceError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/team-workspaces/health")
+def team_workspace_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = team_workspaces.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.team_workspace_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.team_workspace_persistent_disk_mounted else "Shared workspace records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/team-workspaces/policies")
+def team_workspace_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = team_workspace_policies(); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/team-workspaces")
+def team_workspace_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, name = _team_workspace_actor(auth)
+    try: return team_workspaces.create(payload, actor, name)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces")
+def team_workspace_list_route(status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.list(actor, status or None, limit)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/invitations/accept")
+def team_workspace_accept_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, name = _team_workspace_actor(auth)
+    try: return team_workspaces.accept_invitation(payload, actor, name)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}")
+def team_workspace_get_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.get(workspace_id, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}")
+def team_workspace_update_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.update(workspace_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/archive")
+def team_workspace_archive_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.archive(workspace_id, actor, str(payload.get("reason") or ""))
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/invitations")
+def team_workspace_invite_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.invite(workspace_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/members/{member_id}")
+def team_workspace_member_role_route(workspace_id: str, member_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.set_member_role(workspace_id, member_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.delete("/v1/team-workspaces/{workspace_id}/members/{member_id}")
+def team_workspace_remove_member_route(workspace_id: str, member_id: str, reason: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.remove_member(workspace_id, member_id, actor, reason)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/ownership")
+def team_workspace_transfer_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.transfer_ownership(workspace_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/resources")
+def team_workspace_link_resource_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.link_resource(workspace_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.delete("/v1/team-workspaces/{workspace_id}/resources/{link_id}")
+def team_workspace_unlink_resource_route(workspace_id: str, link_id: str, reason: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.unlink_resource(workspace_id, link_id, actor, reason)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/authorize")
+def team_workspace_authorize_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.authorize(workspace_id, payload, actor)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/timeline")
+def team_workspace_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return team_workspaces.timeline(workspace_id, actor, limit)
+    except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

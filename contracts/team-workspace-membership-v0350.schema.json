@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/team-workspace-membership-v0350.schema.json",
+  "title": "Lab Workspace Membership v0.35.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "actorId",
+    "role",
+    "status",
+    "joinedAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-membership/0.35.0"
+    },
+    "version": {
+      "const": "0.35.0"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "role": {
+      "enum": [
+        "viewer",
+        "reviewer",
+        "contributor",
+        "editor",
+        "administrator",
+        "owner"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "removed"
+      ]
+    },
+    "invitedBy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "joinedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

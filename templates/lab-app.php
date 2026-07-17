@@ -55,6 +55,7 @@
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
+          'team-workspaces' => 'Shared projects & team workspaces',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
@@ -1797,6 +1798,50 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 }</textarea><div class="sc-sr0342-actions"><button type="button" class="sc-lab-button" data-sr-v0342-action="register">Register immutable version</button></div></div>
           <div class="sc-sr0342-card is-wide"><h4>Saved surrogate and ROM studies</h4><div class="sc-sr0342-table-wrap"><table class="sc-sr0342-table"><thead><tr><th>Study</th><th>Mode</th><th>Status</th><th>Model hash</th><th>Action</th></tr></thead><tbody data-sr-v0342-studies></tbody></table></div></div>
           <div class="sc-sr0342-card is-wide"><h4>Training, validation, prediction, reduced basis, registry, and provenance records</h4><pre class="sc-sr0342-output" data-sr-v0342-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-tw0350" data-lab-module="team-workspaces" data-module-panel="team-workspaces" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / COLLABORATION / v0.35.0</p><h3>Shared Research Projects and Team Workspaces</h3><p>Create private research workspaces with explicit membership roles, single-use invitations, governed links to Lab resources, ownership continuity, durable access decisions, and a complete collaboration timeline.</p></header>
+        <p data-tw-v0350-status role="status" aria-live="polite">Shared workspace service loading…</p>
+        <div class="sc-tw0350-metrics" data-tw-v0350-metrics></div>
+        <div class="sc-tw0350-grid">
+          <div class="sc-tw0350-card is-wide"><h4>Workspace definition</h4><textarea data-tw-v0350-definition aria-label="Shared research workspace JSON">{
+  "id": "climate-resilience-team",
+  "title": "Climate Resilience Research Team",
+  "description": "Shared workspace for datasets, workflows, models, evidence, and reports.",
+  "primaryProjectId": "climate-resilience-2026",
+  "settings": {"resourceDefaultRole": "viewer", "invitationExpiryHours": 168}
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-tw-v0350-action="create">Create workspace</button><button type="button" class="sc-lab-button" data-tw-v0350-action="update">Update</button><button type="button" class="sc-lab-button" data-tw-v0350-action="refresh">Refresh</button></div><p class="sc-tw0350-note"><strong>Boundary:</strong> v0.35.0 governs membership and shared resource access. Comments, review threads, approvals, and scientific sign-off are intentionally reserved for v0.35.1.</p></div>
+          <div class="sc-tw0350-card"><h4>Workspace controls</h4><label>Workspace ID<input data-tw-v0350-workspaceid value="climate-resilience-team"></label><label>Operator reason<input data-tw-v0350-reason value="Recorded collaboration governance action."></label><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-tw-v0350-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-tw-v0350-action="archive">Archive</button></div></div>
+          <div class="sc-tw0350-card"><h4>Invite member</h4><textarea data-tw-v0350-invite aria-label="Workspace invitation JSON">{
+  "inviteeActorId": "wp-user-2",
+  "inviteeLabel": "Research collaborator",
+  "role": "contributor",
+  "expiresHours": 168
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-tw-v0350-action="invite">Create single-use invitation</button></div></div>
+          <div class="sc-tw0350-card"><h4>Accept invitation</h4><p class="sc-tw0350-note sc-tw0350-secret">Invitation tokens are returned only once. Send the token through an appropriate private channel.</p><label>Invitation token<input data-tw-v0350-token autocomplete="off"></label><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="accept">Accept for current user</button></div></div>
+          <div class="sc-tw0350-card"><h4>Member governance</h4><textarea data-tw-v0350-member aria-label="Workspace member role JSON">{
+  "actorId": "wp-user-2",
+  "role": "editor"
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="member-role">Change role</button><button type="button" class="sc-lab-button" data-tw-v0350-action="remove-member">Remove member</button></div></div>
+          <div class="sc-tw0350-card"><h4>Transfer ownership</h4><textarea data-tw-v0350-transfer aria-label="Workspace ownership transfer JSON">{
+  "newOwnerId": "wp-user-2",
+  "reason": "Principal investigator responsibility transferred."
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="transfer">Transfer ownership</button></div></div>
+          <div class="sc-tw0350-card"><h4>Link governed Lab resource</h4><textarea data-tw-v0350-resource aria-label="Workspace resource link JSON">{
+  "resourceType": "dataset",
+  "resourceId": "climate-observations-2026",
+  "title": "Climate observations dataset",
+  "minimumRole": "contributor",
+  "metadata": {"purpose": "shared analysis input"}
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-tw-v0350-action="link">Link resource</button><button type="button" class="sc-lab-button" data-tw-v0350-action="unlink">Unlink by linkId</button></div></div>
+          <div class="sc-tw0350-card"><h4>Access decision</h4><textarea data-tw-v0350-access aria-label="Workspace access decision JSON">{
+  "action": "resources.read",
+  "resourceLinkId": "replace-with-link-id"
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="authorize">Evaluate current user</button></div></div>
+          <div class="sc-tw0350-card is-wide"><h4>Accessible team workspaces</h4><div class="sc-tw0350-table-wrap"><table class="sc-tw0350-table"><thead><tr><th>Workspace</th><th>Your role</th><th>Status</th><th>Primary project</th><th>Action</th></tr></thead><tbody data-tw-v0350-workspaces></tbody></table></div></div>
+          <div class="sc-tw0350-card is-wide"><h4>Workspace, membership, invitation, resource, access, and activity records</h4><pre class="sc-tw0350-output" data-tw-v0350-output>No response yet.</pre></div>
         </div>
       </section>
 

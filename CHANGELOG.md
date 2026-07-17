@@ -1,3 +1,14 @@
+## 0.35.0 — Shared Research Projects and Team Workspaces
+
+- Added durable private research workspaces with explicit owners and primary-project links.
+- Added six backend-enforced collaboration roles and stable WordPress actor propagation.
+- Added single-use, expiring invitation tokens stored only as SHA-256 digests.
+- Added member role changes, governed removal, and lineage-preserving ownership transfer.
+- Added collaboration-safe links to Lab projects, datasets, workflows, models, artifacts, evidence, and reports.
+- Added per-resource minimum roles, hashed access decisions, archive-only lifecycle controls, and immutable activity timelines.
+- Added authenticated FastAPI routes, logged-in WordPress proxies, seven public contracts, deployment settings, and the 68th Lab panel.
+- Reserved comments, review threads, approvals, and scientific sign-off for v0.35.1.
+
 ## 0.34.2 — Surrogate Models and Reduced-Order Analysis
 
 - Added immutable surrogate and reduced-order study definitions with canonical SHA-256 identities.

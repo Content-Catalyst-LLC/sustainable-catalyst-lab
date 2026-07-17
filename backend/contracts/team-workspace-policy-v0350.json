@@ -1,0 +1,38 @@
+{
+  "schema": "sc-lab-team-workspace-policy/0.35.0",
+  "version": "0.35.0",
+  "roles": [
+    "viewer",
+    "reviewer",
+    "contributor",
+    "editor",
+    "administrator",
+    "owner"
+  ],
+  "invitationTokens": {
+    "singleUse": true,
+    "storedAs": "sha256-digest",
+    "defaultExpiryHours": 168
+  },
+  "resourceTypes": [
+    "project",
+    "dataset",
+    "workflow",
+    "workflow-run",
+    "experiment",
+    "campaign",
+    "model",
+    "surrogate",
+    "ensemble",
+    "artifact",
+    "notebook",
+    "source",
+    "evidence",
+    "report"
+  ],
+  "hardDelete": false,
+  "archiveOnly": true,
+  "reviewComments": false,
+  "scientificApprovals": false,
+  "arbitraryCode": false
+}
