@@ -1,9 +1,18 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.33.1 — Bayesian Optimization, Active Learning, and Resource-Aware Search**
+**Current release: v0.33.2 — Closed-Loop Simulation and Instrument Campaigns**
 
 Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, and workflow-backed trial provenance.
 
+
+## v0.33.2 highlights
+
+- Closed-loop simulation, instrument, and hybrid campaigns above the adaptive campaign engine.
+- Reviewable command envelopes with operator approval instead of direct device execution.
+- Signed measurement ingestion, canonical hashes, deduplication, and objective reconciliation.
+- Signal and parameter limits, maximum step deltas, emergency-stop signals, and bounded failure handling.
+- Durable cycles, commands, measurements, safety decisions, and complete campaign/workflow provenance.
+- A dedicated Closed-Loop Campaigns workspace, bringing Lab to 64 registered panels.
 
 ## v0.33.1 highlights
 

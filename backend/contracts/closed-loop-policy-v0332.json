@@ -1,0 +1,33 @@
+{
+  "adapterProtocols": [
+    "simulation-workflow-v1",
+    "signed-envelope-v1",
+    "manual-envelope-v1"
+  ],
+  "governance": {
+    "arbitraryCallbacks": false,
+    "arbitraryCode": false,
+    "outboundNetworkDeviceControl": false,
+    "registeredWorkflowMethodsOnly": true
+  },
+  "integrity": {
+    "canonicalSha256": true,
+    "measurementDeduplication": true,
+    "optionalHmacSha256": true
+  },
+  "modes": [
+    "simulation",
+    "instrument",
+    "hybrid"
+  ],
+  "safety": {
+    "directDeviceExecution": false,
+    "emergencyStop": true,
+    "maxStepDelta": true,
+    "operatorApproval": true,
+    "parameterLimits": true,
+    "signalLimits": true
+  },
+  "schema": "sc-lab-closed-loop-policy/0.33.2",
+  "version": "0.33.2"
+}

@@ -98,3 +98,15 @@ services:
     value: '30000'
   - key: SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_CLOSED_LOOP_DB_PATH
+    value: /app/data/sc-lab-closed-loop-campaigns.sqlite3
+  - key: SC_LAB_CLOSED_LOOP_POLL_SECONDS
+    value: '30'
+  - key: SC_LAB_CLOSED_LOOP_MAX_LOOPS
+    value: '1000'
+  - key: SC_LAB_CLOSED_LOOP_MAX_CYCLES
+    value: '100000'
+  - key: SC_LAB_CLOSED_LOOP_HISTORY_LIMIT
+    value: '30000'
+  - key: SC_LAB_CLOSED_LOOP_PERSISTENT_DISK_MOUNTED
+    value: '0'

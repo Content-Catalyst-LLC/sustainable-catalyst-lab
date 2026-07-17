@@ -55,6 +55,7 @@
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
+          'closed-loop-campaigns' => 'Closed-loop campaigns',
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
           'dispatcher-operations' => 'Dispatcher operations',
@@ -1680,6 +1681,41 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 }</textarea><div class="sc-ec0331-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0331-observe>Record observation</button></div><p class="sc-ec0331-note"><strong>Safety:</strong> the surrogate proposes only typed parameter values. It cannot execute arbitrary code, shell commands, callback URLs, or unregistered methods.</p></div>
           <div class="sc-ec0331-card is-wide"><h4>Saved campaigns</h4><div class="sc-lab-table-wrap"><table class="sc-ec0331-table"><thead><tr><th>Campaign</th><th>Workflow</th><th>Strategy</th><th>Status</th><th>Completed / budget</th><th>Best objective</th><th>Cost</th><th>Surrogate</th><th>Actions</th></tr></thead><tbody data-ec-v0331-campaigns></tbody></table></div></div>
           <div class="sc-ec0331-card is-wide"><h4>Campaign, surrogate, prediction, acquisition, trial, and timeline records</h4><pre class="sc-ec0331-output" data-ec-v0331-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
+        <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>
+        <div class="sc-cl0332-metrics" data-cl-v0332-metrics></div>
+        <div class="sc-cl0332-grid">
+          <div class="sc-cl0332-card is-wide"><h4>Loop definition</h4><textarea data-cl-v0332-definition aria-label="Closed-loop campaign JSON">{
+  "id": "reactor-optimization-loop",
+  "title": "Bench reactor optimization loop",
+  "projectId": "default",
+  "campaignId": "bayesian-calibration-campaign",
+  "mode": "instrument",
+  "adapter": {"gatewayId": "bench-gateway-1", "protocol": "signed-envelope-v1", "capabilities": ["temperature", "flow", "yield"]},
+  "safety": {
+    "signalLimits": {"temperature": {"min": 10, "max": 90}},
+    "parameterLimits": {"temperature": {"min": 20, "max": 80, "maxStepDelta": 10}, "flow": {"min": 0.5, "max": 5}},
+    "emergencyStopSignals": ["emergencyStop"],
+    "requireCommandApproval": true,
+    "maxConsecutiveFailures": 3
+  },
+  "observation": {"objectivePath": "objectiveValue", "parameterPath": "parameters", "signalsPath": "signals", "requireSignature": false},
+  "control": {"autoAdvance": true, "maxCycles": 25, "stopOnCampaignCompletion": true}
+}</textarea><div class="sc-cl0332-actions"><button type="button" class="sc-lab-button" data-cl-v0332-action="validate">Validate</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-cl-v0332-action="save">Save loop</button></div></div>
+          <div class="sc-cl0332-card"><h4>Loop controls</h4><label>Loop ID<input data-cl-v0332-loopid value="reactor-optimization-loop"></label><label>Operator reason<input data-cl-v0332-reason value="operator action from Lab closed-loop panel"></label><div class="sc-cl0332-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-cl-v0332-action="start">Start</button><button type="button" class="sc-lab-button" data-cl-v0332-action="issue">Issue next command</button><button type="button" class="sc-lab-button" data-cl-v0332-action="reconcile">Reconcile</button><button type="button" class="sc-lab-button" data-cl-v0332-action="pause">Pause</button><button type="button" class="sc-lab-button" data-cl-v0332-action="resume">Resume</button><button type="button" class="sc-lab-button" data-cl-v0332-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-cl-v0332-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-cl-v0332-action="refresh">Refresh</button><button type="button" class="sc-lab-button" data-cl-v0332-action="emergency-stop">Emergency stop</button><button type="button" class="sc-lab-button" data-cl-v0332-action="cancel">Cancel</button></div><p class="sc-cl0332-note"><strong>Safety boundary:</strong> Lab emits reviewable command envelopes only. It does not open arbitrary callbacks or directly control physical devices.</p></div>
+          <div class="sc-cl0332-card"><h4>Measurement ingestion</h4><textarea data-cl-v0332-measurement aria-label="Closed-loop measurement JSON">{
+  "id": "measurement-example-1",
+  "gatewayId": "bench-gateway-1",
+  "commandId": "replace-with-issued-command-id",
+  "parameters": {"temperature": 40, "flow": 2},
+  "signals": {"temperature": 41.2, "yield": 0.82, "emergencyStop": false},
+  "objectiveValue": 0.18
+}</textarea><div class="sc-cl0332-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-cl-v0332-action="measurement">Ingest measurement</button></div></div>
+          <div class="sc-cl0332-card is-wide"><h4>Loop, command, measurement, safety, cycle, and provenance records</h4><pre class="sc-cl0332-output" data-cl-v0332-output>No response yet.</pre></div>
         </div>
       </section>
 

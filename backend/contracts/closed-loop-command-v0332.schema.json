@@ -1,0 +1,61 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/closed-loop-command-v0332.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "issuedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "loopId": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "parametersHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "safety": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-closed-loop-command/0.33.2"
+    },
+    "sequence": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "pending-approval",
+        "ready",
+        "dispatched",
+        "acknowledged",
+        "rejected",
+        "cancelled"
+      ]
+    },
+    "version": {
+      "const": "0.33.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "loopId",
+    "sequence",
+    "parameters",
+    "parametersHash",
+    "status",
+    "safety",
+    "issuedAt"
+  ],
+  "title": "Sustainable Catalyst Lab Closed-Loop Command v0.33.2",
+  "type": "object"
+}

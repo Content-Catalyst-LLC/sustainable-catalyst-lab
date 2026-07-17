@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.33.1"
+    version: str = "0.33.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -87,6 +87,13 @@ class Settings:
     experiment_campaign_max_trials: int = _int("SC_LAB_EXPERIMENT_CAMPAIGN_MAX_TRIALS", 10000, 1, 1000000)
     experiment_campaign_history_limit: int = _int("SC_LAB_EXPERIMENT_CAMPAIGN_HISTORY_LIMIT", 30000, 100, 1000000)
     experiment_campaign_persistent_disk_mounted: bool = os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    closed_loop_db_path: str = os.getenv("SC_LAB_CLOSED_LOOP_DB_PATH", "./data/sc-lab-closed-loop-campaigns.sqlite3").strip()
+    closed_loop_poll_seconds: float = max(1.0, min(3600.0, float(os.getenv("SC_LAB_CLOSED_LOOP_POLL_SECONDS", "30"))))
+    closed_loop_max_loops: int = _int("SC_LAB_CLOSED_LOOP_MAX_LOOPS", 1000, 1, 100000)
+    closed_loop_max_cycles: int = _int("SC_LAB_CLOSED_LOOP_MAX_CYCLES", 100000, 1, 1000000)
+    closed_loop_history_limit: int = _int("SC_LAB_CLOSED_LOOP_HISTORY_LIMIT", 30000, 100, 1000000)
+    closed_loop_measurement_secret: str = os.getenv("SC_LAB_CLOSED_LOOP_MEASUREMENT_SECRET", "").strip()
+    closed_loop_persistent_disk_mounted: bool = os.getenv("SC_LAB_CLOSED_LOOP_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

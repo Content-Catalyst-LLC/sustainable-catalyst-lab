@@ -1,0 +1,113 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/closed-loop-campaign-v0332.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter": {
+      "additionalProperties": true,
+      "properties": {
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "directNetworkCallbacks": {
+          "const": false
+        },
+        "gatewayId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "protocol": {
+          "enum": [
+            "simulation-workflow-v1",
+            "signed-envelope-v1",
+            "manual-envelope-v1"
+          ]
+        },
+        "type": {
+          "enum": [
+            "simulation-workflow",
+            "instrument-gateway"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "protocol",
+        "directNetworkCallbacks"
+      ],
+      "type": "object"
+    },
+    "campaignId": {
+      "type": "string"
+    },
+    "control": {
+      "required": [
+        "autoAdvance",
+        "maxCycles",
+        "settlingSeconds",
+        "stopOnCampaignCompletion"
+      ],
+      "type": "object"
+    },
+    "definitionHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "simulation",
+        "instrument",
+        "hybrid"
+      ]
+    },
+    "observation": {
+      "required": [
+        "objectivePath",
+        "parameterPath",
+        "signalsPath",
+        "requireSignature"
+      ],
+      "type": "object"
+    },
+    "safety": {
+      "required": [
+        "signalLimits",
+        "parameterLimits",
+        "requireCommandApproval",
+        "maxConsecutiveFailures",
+        "staleMeasurementSeconds",
+        "rejectOutOfRange"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-closed-loop-campaign/0.33.2"
+    },
+    "version": {
+      "const": "0.33.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "campaignId",
+    "mode",
+    "adapter",
+    "safety",
+    "observation",
+    "control",
+    "definitionHash"
+  ],
+  "title": "Sustainable Catalyst Lab Closed-Loop Campaign v0.33.2",
+  "type": "object"
+}

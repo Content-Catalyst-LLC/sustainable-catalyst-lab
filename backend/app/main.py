@@ -34,6 +34,7 @@ from .artifact_transport import ArtifactStore, ArtifactTransportError
 from .workflow_orchestration import WorkflowError, WorkflowOrchestrator, policies as workflow_policies
 from .workflow_scheduling import WorkflowScheduleError, WorkflowScheduler, policies as workflow_scheduling_policies, verify_event_signature
 from .experiment_campaigns import ExperimentCampaignError, ExperimentCampaignManager, policies as experiment_campaign_policies
+from .closed_loop_campaigns import ClosedLoopError, ClosedLoopCampaignManager, policies as closed_loop_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -45,6 +46,7 @@ artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, set
 workflows = WorkflowOrchestrator(settings.workflow_db_path, dispatcher, settings.workflow_max_nodes, settings.workflow_max_runs, settings.workflow_history_limit)
 workflow_automation = WorkflowScheduler(settings.workflow_schedule_db_path, workflows, settings.workflow_scheduler_poll_seconds, settings.workflow_scheduler_max_catch_up_runs, settings.workflow_scheduler_history_limit)
 experiment_campaigns = ExperimentCampaignManager(settings.experiment_campaign_db_path, workflows, settings.experiment_campaign_poll_seconds, settings.experiment_campaign_max_campaigns, settings.experiment_campaign_max_trials, settings.experiment_campaign_history_limit)
+closed_loop_campaigns = ClosedLoopCampaignManager(settings.closed_loop_db_path, experiment_campaigns, settings.closed_loop_poll_seconds, settings.closed_loop_max_loops, settings.closed_loop_max_cycles, settings.closed_loop_history_limit, settings.closed_loop_measurement_secret)
 
 
 @asynccontextmanager
@@ -57,7 +59,9 @@ async def lifespan(application: FastAPI):
     jobs.start()
     workflow_automation.start()
     experiment_campaigns.start()
+    closed_loop_campaigns.start()
     yield
+    closed_loop_campaigns.stop()
     experiment_campaigns.stop()
     workflow_automation.stop()
     jobs.stop()
@@ -144,6 +148,7 @@ def health():
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "workflowAutomation": {"version":"0.32.2","intervalSchedules":True,"cronUtc":True,"oneTimeSchedules":True,"authenticatedEvents":True,"eventDeduplication":True,"misfireRecovery":True,"concurrencyControls":True},
         "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"gaussianProcessSurrogate":True,"predictiveUncertainty":True,"activeLearning":True,"resourceAwareSearch":True,"costAdjustedAcquisition":True},
+        "closedLoopCampaigns": {"version":"0.33.2","simulationLoops":True,"instrumentMeasurementIngestion":True,"hybridCampaigns":True,"safetyInterlocks":True,"operatorCommandApproval":True,"checkpointedCycles":True,"directDeviceExecution":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -217,6 +222,8 @@ def capabilities():
         "secureWorkerAgent": {"version":"0.32.1","pullBased":True,"workerScopedCredentials":True,"credentialRotation":True,"credentialRevocation":True,"signedContractVerification":True,"registeredMethodsOnly":True,"leaseRenewal":True,"completionReceipts":True,"artifactTransport":True},
         "artifactTransport": {"version":"0.31.3","contentAddressed":True,"resumableChunks":True,"sha256Verification":True,"deduplication":True,"inputMaterialization":True,"resultExternalization":True,"checkpointTransport":True,"retentionControls":True},
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"serverBackedRegistry":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
+        "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"gaussianProcessSurrogate":True,"activeLearning":True,"resourceAwareSearch":True},
+        "closedLoopCampaigns": {"version":"0.33.2","simulation":True,"instrument":True,"hybrid":True,"signedMeasurements":True,"safetyInterlocks":True,"operatorApproval":True,"directDeviceExecution":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1780,4 +1787,131 @@ def experiment_campaign_timeline_route(campaign_id: str, limit: int = Query(500,
 def experiment_campaign_tick_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return experiment_campaigns.tick()
+
+
+# v0.33.2 Closed-Loop Simulation and Instrument Campaigns
+
+@app.get("/v1/closed-loop-campaigns/health")
+def closed_loop_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = closed_loop_campaigns.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.closed_loop_persistent_disk_mounted else "instance-local"; return body
+
+@app.get("/v1/closed-loop-campaigns/policies")
+def closed_loop_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = closed_loop_policies(settings.closed_loop_max_loops, settings.closed_loop_max_cycles); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/closed-loop-campaigns/validate")
+def closed_loop_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.validate(payload)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns")
+def closed_loop_save_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.save(payload)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.get("/v1/closed-loop-campaigns")
+def closed_loop_list_route(project_id: str = Query("", alias="projectId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.list(project_id, status, limit)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.get("/v1/closed-loop-campaigns/{loop_id}")
+def closed_loop_get_route(loop_id: str, reconcile: bool = Query(False), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.get(loop_id, reconcile)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/start")
+def closed_loop_start_route(loop_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.start_loop(loop_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/pause")
+def closed_loop_pause_route(loop_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.pause(loop_id, str((payload or {}).get("reason") or "operator pause"))
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/resume")
+def closed_loop_resume_route(loop_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.resume(loop_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/reconcile")
+def closed_loop_reconcile_route(loop_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.reconcile(loop_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/cancel")
+def closed_loop_cancel_route(loop_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.cancel(loop_id, str((payload or {}).get("reason") or "operator cancellation"))
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/emergency-stop")
+def closed_loop_emergency_stop_route(loop_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.emergency_stop(loop_id, str((payload or {}).get("reason") or "operator emergency stop"))
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/commands/preview")
+def closed_loop_preview_route(loop_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.preview_command(loop_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/commands/issue")
+def closed_loop_issue_route(loop_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.issue_next_command(loop_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.get("/v1/closed-loop-campaigns/{loop_id}/commands")
+def closed_loop_commands_route(loop_id: str, status: str = Query(""), limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.commands(loop_id, status, limit)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/commands/{command_id}/approve")
+def closed_loop_approve_route(loop_id: str, command_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = payload or {}
+    try: return closed_loop_campaigns.approve_command(loop_id, command_id, str(body.get("operator") or "operator"), str(body.get("reason") or "approved"))
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/commands/{command_id}/dispatch")
+def closed_loop_dispatch_route(loop_id: str, command_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.dispatch_command(loop_id, command_id)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/{loop_id}/measurements")
+def closed_loop_measurement_route(loop_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.ingest_measurement(loop_id, payload)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.get("/v1/closed-loop-campaigns/{loop_id}/measurements")
+def closed_loop_measurements_route(loop_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.measurements(loop_id, limit)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.get("/v1/closed-loop-campaigns/{loop_id}/timeline")
+def closed_loop_timeline_route(loop_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return closed_loop_campaigns.timeline(loop_id, limit)
+    except ClosedLoopError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/closed-loop-campaigns/tick")
+def closed_loop_tick_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return closed_loop_campaigns.tick()
 

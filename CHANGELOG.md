@@ -1,3 +1,12 @@
+## 0.33.2 — Closed-Loop Simulation and Instrument Campaigns
+
+- Added durable simulation, instrument, and hybrid closed-loop campaign coordination.
+- Added typed command envelopes, operator approval, dispatch acknowledgements, signed measurement ingestion, and measurement deduplication.
+- Added signal and setpoint interlocks, maximum step deltas, emergency-stop signals, and bounded failure shutdown.
+- Added campaign observation reconciliation, simulation-cycle import, command/measurement/cycle lineage, and SQLite WAL persistence.
+- Added authenticated backend routes, administrator-only WordPress proxies, five public contracts, and a 64th Lab panel.
+- Preserved v0.33.1 Bayesian optimization, active learning, and resource-aware search contracts and behavior.
+
 # Changelog
 
 ## 0.33.1 — Bayesian Optimization, Active Learning, and Resource-Aware Search

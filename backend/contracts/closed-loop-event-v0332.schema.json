@@ -1,0 +1,46 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/closed-loop-event-v0332.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "entityId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "loopId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-closed-loop-event/0.33.2"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "version": {
+      "const": "0.33.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "loopId",
+    "eventType",
+    "payload",
+    "createdAt"
+  ],
+  "title": "Sustainable Catalyst Lab Closed-Loop Event v0.33.2",
+  "type": "object"
+}
