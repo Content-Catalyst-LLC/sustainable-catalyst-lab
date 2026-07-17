@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab Approval Decision v0.35.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "approvalId",
+    "reviewerId",
+    "decision",
+    "rationale",
+    "decisionHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-approval-decision/0.35.1"
+    },
+    "version": {
+      "const": "0.35.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "approvalId": {
+      "type": "string"
+    },
+    "reviewerId": {
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "approve",
+        "reject",
+        "request-changes",
+        "abstain"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

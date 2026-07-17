@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab Review Thread v0.35.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "title",
+    "status",
+    "revision"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-review-thread/0.35.1"
+    },
+    "version": {
+      "const": "0.35.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "resourceLinkId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "resolved",
+        "locked"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "comments": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

@@ -39,6 +39,7 @@ from .model_registry import ModelRegistryError, ScientificModelRegistry, capture
 from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies as ensemble_policies
 from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderManager, policies as surrogate_rom_policies
 from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
+from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -55,6 +56,7 @@ model_registry = ScientificModelRegistry(settings.model_registry_db_path, settin
 ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_registry, dispatcher, settings.ensemble_max_studies, settings.ensemble_max_evaluations, settings.ensemble_history_limit)
 surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, model_registry, settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_history_limit)
 team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
+workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 
 
 @asynccontextmanager
@@ -165,7 +167,8 @@ def health():
         "scientificModelRegistry": {"version":"0.34.0","immutableVersions":True,"environmentCapture":True,"dependencyLocking":True,"reproductionManifests":True,"promotionWorkflow":True,"deprecationHistory":True},
         "ensembleSimulation": {"version":"0.34.1","registeredModelMembers":True,"weightedEnsembles":True,"monteCarlo":True,"latinHypercube":True,"sobolDesign":True,"globalSensitivity":True,"uncertaintyIntervals":True},
         "surrogateReducedOrder": {"version":"0.34.2","surrogateTraining":True,"gaussianProcess":True,"polynomialRidge":True,"radialBasis":True,"properOrthogonalDecomposition":True,"hybridRom":True,"validationMetrics":True,"modelRegistryIntegration":True},
-        "sharedResearchWorkspaces": {"version":"0.35.0","roleBasedMembership":True,"singleUseInvitations":True,"governedResourceLinks":True,"ownershipTransfer":True,"archiveWithoutDeletion":True,"reviewComments":False,"scientificApprovals":False},
+        "sharedResearchWorkspaces": {"version":"0.35.0","roleBasedMembership":True,"singleUseInvitations":True,"governedResourceLinks":True,"ownershipTransfer":True,"archiveWithoutDeletion":True},
+        "workspaceReviewSignoff": {"version":"0.35.1","appendOnlyComments":True,"reviewAssignments":True,"approvalGates":True,"optimisticConcurrency":True,"immutableDecisions":True,"immutableScientificSignoff":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2117,6 +2120,127 @@ def team_workspace_timeline_route(workspace_id: str, limit: int = Query(500, ge=
     actor, _ = _team_workspace_actor(auth)
     try: return team_workspaces.timeline(workspace_id, actor, limit)
     except TeamWorkspaceError as exc: raise _team_workspace_http_error(exc) from exc
+
+
+# v0.35.1 Review, Comments, Approvals, and Scientific Sign-Off
+def _workspace_review_http_error(exc: WorkspaceReviewError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/workspace-reviews/health")
+def workspace_review_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = workspace_reviews.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.team_workspace_persistent_disk_mounted else "instance-local"; return body
+
+@app.get("/v1/workspace-reviews/policies")
+def workspace_review_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = workspace_review_policies(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/review-threads")
+def workspace_review_threads_list_route(workspace_id: str, status: str = Query(""), resourceLinkId: str = Query(""), limit: int = Query(200, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.list_threads(workspace_id, actor, status or None, resourceLinkId or None, limit)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-threads")
+def workspace_review_thread_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.create_thread(workspace_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/review-threads/{thread_id}")
+def workspace_review_thread_get_route(workspace_id: str, thread_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.get_thread(workspace_id, thread_id, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-threads/{thread_id}/comments")
+def workspace_review_comment_create_route(workspace_id: str, thread_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.add_comment(workspace_id, thread_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-comments/{comment_id}/withdraw")
+def workspace_review_comment_withdraw_route(workspace_id: str, comment_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.withdraw_comment(workspace_id, comment_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-threads/{thread_id}/resolve")
+def workspace_review_thread_resolve_route(workspace_id: str, thread_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.set_thread_status(workspace_id, thread_id, payload, actor, "resolved")
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-threads/{thread_id}/reopen")
+def workspace_review_thread_reopen_route(workspace_id: str, thread_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.set_thread_status(workspace_id, thread_id, payload, actor, "open")
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/review-assignments")
+def workspace_review_assignments_list_route(workspace_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.list_assignments(workspace_id, actor, status or None)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/review-assignments")
+def workspace_review_assignment_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.create_assignment(workspace_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/review-assignments/{assignment_id}")
+def workspace_review_assignment_update_route(workspace_id: str, assignment_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.update_assignment(workspace_id, assignment_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/approval-requests")
+def workspace_review_approval_list_route(workspace_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.list_approvals(workspace_id, actor, status or None)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/approval-requests")
+def workspace_review_approval_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.create_approval(workspace_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/approval-requests/{approval_id}")
+def workspace_review_approval_get_route(workspace_id: str, approval_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.get_approval(workspace_id, approval_id, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/approval-requests/{approval_id}/evaluate")
+def workspace_review_approval_evaluate_route(workspace_id: str, approval_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.evaluate_approval(workspace_id, approval_id, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/approval-requests/{approval_id}/decisions")
+def workspace_review_decision_create_route(workspace_id: str, approval_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.decide(workspace_id, approval_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/approval-requests/{approval_id}/cancel")
+def workspace_review_approval_cancel_route(workspace_id: str, approval_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.cancel_approval(workspace_id, approval_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/approval-requests/{approval_id}/signoff")
+def workspace_review_signoff_route(workspace_id: str, approval_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.signoff(workspace_id, approval_id, payload, actor)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/review-timeline")
+def workspace_review_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_reviews.timeline(workspace_id, actor, limit)
+    except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

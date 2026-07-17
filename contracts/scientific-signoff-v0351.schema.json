@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab Scientific Sign-Off v0.35.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "approvalId",
+    "workspaceId",
+    "resourceLinkId",
+    "signedBy",
+    "statement",
+    "record",
+    "signoffHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-signoff/0.35.1"
+    },
+    "version": {
+      "const": "0.35.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "approvalId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "resourceLinkId": {
+      "type": "string"
+    },
+    "signedBy": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string"
+    },
+    "record": {
+      "type": "object"
+    },
+    "signoffHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "sc-lab-workspace-review-policy/0.35.1",
+  "version": "0.35.1",
+  "appendOnlyComments": true,
+  "reviewAssignments": true,
+  "approvalGates": true,
+  "optimisticConcurrency": true,
+  "immutableDecisions": true,
+  "immutableScientificSignoff": true,
+  "hardDelete": false,
+  "arbitraryCode": false,
+  "decisions": [
+    "approve",
+    "reject",
+    "request-changes",
+    "abstain"
+  ]
+}

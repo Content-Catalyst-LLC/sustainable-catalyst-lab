@@ -158,7 +158,7 @@ class TeamWorkspaceManager:
                 CREATE INDEX IF NOT EXISTS idx_events_workspace ON events(workspace_id, sequence);
                 """
             )
-            con.execute("INSERT OR REPLACE INTO meta(key,value) VALUES('schema_version','1')")
+            con.execute("INSERT OR IGNORE INTO meta(key,value) VALUES('schema_version','1')")
 
     def _event(self, con: sqlite3.Connection, workspace_id: str, event_type: str, actor_id: str, details: dict[str, Any]) -> None:
         created_at = _now()

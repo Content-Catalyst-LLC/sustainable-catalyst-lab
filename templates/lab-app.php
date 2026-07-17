@@ -56,6 +56,7 @@
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
           'team-workspaces' => 'Shared projects & team workspaces',
+          'workspace-review' => 'Review, approvals & sign-off',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
@@ -1812,7 +1813,7 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
   "description": "Shared workspace for datasets, workflows, models, evidence, and reports.",
   "primaryProjectId": "climate-resilience-2026",
   "settings": {"resourceDefaultRole": "viewer", "invitationExpiryHours": 168}
-}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-tw-v0350-action="create">Create workspace</button><button type="button" class="sc-lab-button" data-tw-v0350-action="update">Update</button><button type="button" class="sc-lab-button" data-tw-v0350-action="refresh">Refresh</button></div><p class="sc-tw0350-note"><strong>Boundary:</strong> v0.35.0 governs membership and shared resource access. Comments, review threads, approvals, and scientific sign-off are intentionally reserved for v0.35.1.</p></div>
+}</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-tw-v0350-action="create">Create workspace</button><button type="button" class="sc-lab-button" data-tw-v0350-action="update">Update</button><button type="button" class="sc-lab-button" data-tw-v0350-action="refresh">Refresh</button></div><p class="sc-tw0350-note"><strong>Integration:</strong> v0.35.0 governs membership and shared resource access; v0.35.1 adds review, approvals, and sign-off in the adjacent workspace.</p></div>
           <div class="sc-tw0350-card"><h4>Workspace controls</h4><label>Workspace ID<input data-tw-v0350-workspaceid value="climate-resilience-team"></label><label>Operator reason<input data-tw-v0350-reason value="Recorded collaboration governance action."></label><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-tw-v0350-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-tw-v0350-action="archive">Archive</button></div></div>
           <div class="sc-tw0350-card"><h4>Invite member</h4><textarea data-tw-v0350-invite aria-label="Workspace invitation JSON">{
   "inviteeActorId": "wp-user-2",
@@ -1842,6 +1843,55 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 }</textarea><div class="sc-tw0350-actions"><button type="button" class="sc-lab-button" data-tw-v0350-action="authorize">Evaluate current user</button></div></div>
           <div class="sc-tw0350-card is-wide"><h4>Accessible team workspaces</h4><div class="sc-tw0350-table-wrap"><table class="sc-tw0350-table"><thead><tr><th>Workspace</th><th>Your role</th><th>Status</th><th>Primary project</th><th>Action</th></tr></thead><tbody data-tw-v0350-workspaces></tbody></table></div></div>
           <div class="sc-tw0350-card is-wide"><h4>Workspace, membership, invitation, resource, access, and activity records</h4><pre class="sc-tw0350-output" data-tw-v0350-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-wr0351" data-lab-module="workspace-review" data-module-panel="workspace-review" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / COLLABORATION GOVERNANCE / v0.35.1</p><h3>Review, Comments, Approvals, and Scientific Sign-Off</h3><p>Run append-only scientific discussions, assign reviewers, enforce explicit approval gates, prevent stale concurrent updates, and create immutable sign-off records for governed workspace resources.</p></header>
+        <p data-wr-v0351-status role="status" aria-live="polite">Review and sign-off service loading…</p>
+        <div class="sc-wr0351-metrics" data-wr-v0351-metrics></div>
+        <div class="sc-wr0351-grid">
+          <div class="sc-wr0351-card"><h4>Workspace context</h4><label>Workspace ID<input data-wr-v0351-workspace value="climate-team"></label><label>Thread ID<input data-wr-v0351-thread value="methods-review"></label><label>Comment ID<input data-wr-v0351-comment value="comment-1"></label><label>Assignment ID<input data-wr-v0351-assignment value="assignment-1"></label><label>Approval ID<input data-wr-v0351-approval value="approval-1"></label><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button" data-wr-v0351-action="refresh">Refresh health</button><button type="button" class="sc-lab-button" data-wr-v0351-action="threads">List threads</button><button type="button" class="sc-lab-button" data-wr-v0351-action="timeline">Review timeline</button></div></div>
+          <div class="sc-wr0351-card"><h4>Create review thread</h4><textarea data-wr-v0351-thread-json>{
+  "id": "methods-review",
+  "title": "Methods and evidence review",
+  "resourceLinkId": "replace-with-link-id"
+}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="create-thread">Create thread</button></div></div>
+          <div class="sc-wr0351-card"><h4>Append-only comment</h4><textarea data-wr-v0351-comment-json>{
+  "body": "Please document the uncertainty assumptions and validation evidence.",
+  "parentCommentId": null
+}</textarea><textarea data-wr-v0351-withdraw-json>{"reason":"Superseded by a corrected comment."}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="comment">Add comment</button><button type="button" class="sc-lab-button" data-wr-v0351-action="withdraw-comment">Withdraw comment</button></div></div>
+          <div class="sc-wr0351-card"><h4>Resolve or reopen thread</h4><textarea data-wr-v0351-thread-state-json>{
+  "expectedRevision": 1,
+  "resolution": "The requested evidence was added and verified."
+}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button" data-wr-v0351-action="resolve">Resolve</button><button type="button" class="sc-lab-button" data-wr-v0351-action="reopen">Reopen</button></div></div>
+          <div class="sc-wr0351-card"><h4>Review assignment</h4><textarea data-wr-v0351-assignment-json>{
+  "id": "assignment-1",
+  "resourceLinkId": "replace-with-link-id",
+  "reviewerId": "wp-user-2",
+  "instructions": "Review methods, evidence, and uncertainty claims."
+}</textarea><textarea data-wr-v0351-assignment-state-json>{"expectedRevision":1,"status":"in-review"}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="assign">Assign reviewer</button><button type="button" class="sc-lab-button" data-wr-v0351-action="update-assignment">Update assignment</button></div></div>
+          <div class="sc-wr0351-card"><h4>Approval request</h4><textarea data-wr-v0351-approval-json>{
+  "id": "approval-1",
+  "resourceLinkId": "replace-with-link-id",
+  "title": "Scientific publication approval",
+  "requiredApprovals": 1,
+  "requireNoOpenThreads": true,
+  "requireAssignmentsComplete": true,
+  "signoffMinimumRole": "administrator"
+}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="create-approval">Create approval</button><button type="button" class="sc-lab-button" data-wr-v0351-action="inspect-approval">Inspect</button><button type="button" class="sc-lab-button" data-wr-v0351-action="evaluate">Evaluate gates</button></div></div>
+          <div class="sc-wr0351-card"><h4>Immutable decision</h4><textarea data-wr-v0351-decision-json>{
+  "expectedRevision": 1,
+  "decision": "approve",
+  "rationale": "The methods and evidence satisfy the declared review standard.",
+  "evidence": [{"type":"dataset","id":"observations-2026"}]
+}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="decide">Record decision</button></div></div>
+          <div class="sc-wr0351-card"><h4>Scientific sign-off</h4><textarea data-wr-v0351-signoff-json>{
+  "expectedRevision": 2,
+  "statement": "I approve this governed resource for scientific publication."
+}</textarea><textarea data-wr-v0351-cancel-json>{"expectedRevision":1,"reason":"Approval request superseded."}</textarea><div class="sc-wr0351-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wr-v0351-action="signoff">Create immutable sign-off</button><button type="button" class="sc-lab-button" data-wr-v0351-action="cancel">Cancel request</button></div></div>
+          <div class="sc-wr0351-card is-wide"><h4>Review, approval, decision, sign-off, and event records</h4><p class="sc-wr0351-note">Revision-bearing updates reject stale clients with HTTP 409. Decisions and sign-offs are append-only and cannot be edited or deleted.</p><pre class="sc-wr0351-output" data-wr-v0351-output>No response yet.</pre></div>
         </div>
       </section>
 

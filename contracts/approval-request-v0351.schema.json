@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab Approval Request v0.35.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "resourceLinkId",
+    "status",
+    "requiredApprovals",
+    "revision",
+    "requestHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-approval-request/0.35.1"
+    },
+    "version": {
+      "const": "0.35.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "resourceLinkId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "changes-requested",
+        "approved",
+        "rejected",
+        "cancelled",
+        "signed"
+      ]
+    },
+    "requiredApprovals": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "requestHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

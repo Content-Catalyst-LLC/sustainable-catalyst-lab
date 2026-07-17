@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab Review Event v0.35.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "workspaceId",
+    "eventType",
+    "actorId",
+    "details",
+    "eventHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-review-event/0.35.1"
+    },
+    "version": {
+      "const": "0.35.1"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

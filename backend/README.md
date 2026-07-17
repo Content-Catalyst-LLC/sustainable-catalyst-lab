@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab Python Compute Core
 
-**Current release: v0.35.0 — Shared Research Projects and Team Workspaces** v0.34.1
+**Current release: v0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off**
 
 The v0.34.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
 
@@ -206,10 +206,15 @@ The compute core exposes authenticated `/v1/surrogate-rom/*` routes for immutabl
 
 The `/v1/team-workspaces` service stores private shared workspaces, memberships, invitation digests, resource links, access decisions, and event history in SQLite WAL. Every request is authenticated through the normal compute gateway and carries a stable actor identity in `X-SC-Lab-Actor`. Direct clients should set that header to their institutionally governed subject identifier.
 
-The service does not execute code or grant access to linked resources by itself. It produces authoritative membership and resource-access decisions that other Lab components can consume. Comments, approvals, and scientific sign-off are not part of v0.35.0.
+The v0.35.0 service does not execute code or grant access to linked resources by itself. v0.35.1 adds a separate review service over the same governed workspace database.
 
 ```bash
 SC_LAB_TEAM_WORKSPACE_DB_PATH=/app/data/sc-lab-team-workspaces.sqlite3
 SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED=0
 ```
 
+
+
+## Review, Comments, Approvals, and Scientific Sign-Off — v0.35.1
+
+The `/v1/workspace-reviews` and workspace-scoped review routes store append-only comments, reviewer assignments, approval requests, immutable decisions, and immutable scientific sign-off records in the shared workspace SQLite WAL database. State-changing review operations use `expectedRevision` and return HTTP 409 on stale updates.

@@ -1,9 +1,19 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.35.0 — Shared Research Projects and Team Workspaces**
+**Current release: v0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, and private role-governed team workspaces for shared research projects.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, and immutable sign-off records.
 
+
+## v0.35.1 highlights
+
+- Resource-scoped, append-only review threads and nested comments with withdrawal records.
+- Reviewer assignments with due dates, explicit states, and optimistic-concurrency revisions.
+- Approval gates for required decisions, open threads, completed assignments, and signatory roles.
+- Immutable approve, reject, request-changes, and abstain decisions with rationale and evidence.
+- Immutable scientific sign-off records binding workspace, resource, approval, decisions, signatory, and statement.
+- In-place workspace database migration to schema version 2.
+- New Review, Approvals & Sign-Off panel, bringing Lab to 69 registered panels.
 
 ## v0.35.0 highlights
 
@@ -15,7 +25,7 @@ Sustainable Catalyst Lab is now a governed scientific research and compute platf
 - Ownership transfer that preserves the previous owner as an administrator.
 - Archive-without-deletion semantics and a complete hashed collaboration event timeline.
 - New Shared Research Projects and Team Workspaces panel, bringing Lab to 68 registered panels.
-- Comments, review threads, approvals, and scientific sign-off remain reserved for v0.35.1.
+- The v0.35.1 review and sign-off layer now builds on these workspace records without changing their original contracts.
 
 
 ## v0.34.2 highlights

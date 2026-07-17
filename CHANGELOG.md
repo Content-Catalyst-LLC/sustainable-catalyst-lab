@@ -1,3 +1,14 @@
+## 0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off
+
+- Added append-only nested review comments with withdrawal reasons and retained hashes.
+- Added resource-scoped review threads with revision-safe resolve and reopen operations.
+- Added reviewer assignments with explicit states, due dates, and conflict-safe updates.
+- Added approval requests with configurable approval, unresolved-thread, assignment-completion, and signatory-role gates.
+- Added immutable reviewer decisions with rationale, evidence references, timestamps, and SHA-256 identities.
+- Added immutable scientific sign-off records binding workspace, resource, approval, decisions, signatory, and statement.
+- Migrated the shared workspace database in place to schema version 2.
+- Added authenticated backend routes, logged-in WordPress proxies, eight public contracts, and the 69th Lab panel.
+
 ## 0.35.0 — Shared Research Projects and Team Workspaces
 
 - Added durable private research workspaces with explicit owners and primary-project links.
