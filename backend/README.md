@@ -1,6 +1,20 @@
-# Sustainable Catalyst Lab Python Compute Core v0.32.2
+# Sustainable Catalyst Lab Python Compute Core v0.33.0
 
-The v0.32.2 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, and partial recovery while adding durable scheduled and authenticated event-driven research runs.
+The v0.33.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, partial recovery, and durable workflow automation while adding adaptive experiment campaigns and sequential design.
+
+## v0.33.0 adaptive experiment campaigns
+
+Experiment campaigns are durable, workflow-backed sequences of scientific trials. A campaign declares a typed parameter space, binds each parameter to a workflow input path, selects a proposal policy, declares an objective result path and goal, and applies explicit trial, failure, concurrency, patience, target, and improvement controls.
+
+Supported proposal policies are:
+
+- `random` for seeded exploratory sampling
+- `grid` for deterministic enumeration of bounded parameter domains
+- `adaptive-explore-exploit` for seeded exploration followed by best-neighborhood exploitation
+
+Each proposed parameter set receives a canonical fingerprint so duplicate designs are not launched. Every trial creates an immutable workflow run carrying campaign, trial, sequence, proposal, and parameter provenance. Completed workflow results are reconciled into objective observations, best-known designs, stopping decisions, and a durable campaign timeline. Operators may pause, resume, cancel, advance, reconcile, or add a manual observation without bypassing provenance.
+
+The campaign store uses SQLite WAL at `SC_LAB_EXPERIMENT_CAMPAIGN_DB_PATH`. Set `SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED=1` only when that path is actually backed by durable storage.
 
 ## Solver governance
 
@@ -28,6 +42,23 @@ The response records effective tolerances, solver recommendation and selection, 
 - `POST /v1/governance/recommend`
 - `POST /v1/governance/compare`
 - persistent jobs, checkpoints, cache, workers, and benchmark endpoints from v0.27.2
+
+- `GET /v1/experiment-campaigns/health`
+- `GET /v1/experiment-campaigns/policies`
+- `POST /v1/experiment-campaigns/validate`
+- `POST /v1/experiment-campaigns`
+- `GET /v1/experiment-campaigns`
+- `GET /v1/experiment-campaigns/{campaignId}`
+- `POST /v1/experiment-campaigns/{campaignId}/start`
+- `POST /v1/experiment-campaigns/{campaignId}/pause`
+- `POST /v1/experiment-campaigns/{campaignId}/resume`
+- `POST /v1/experiment-campaigns/{campaignId}/advance`
+- `POST /v1/experiment-campaigns/{campaignId}/reconcile`
+- `POST /v1/experiment-campaigns/{campaignId}/cancel`
+- `POST /v1/experiment-campaigns/{campaignId}/observations`
+- `GET /v1/experiment-campaigns/{campaignId}/trials`
+- `GET /v1/experiment-campaigns/{campaignId}/timeline`
+- `POST /v1/experiment-campaigns/tick`
 
 ## Run
 

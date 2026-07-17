@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
- * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, scientific workflow orchestration, dependency graphs, declarative workflow conditions, checkpoint history, partial recovery, durable schedules, authenticated event triggers, missed-run recovery, concurrency controls, and data-connected documentation.
- * Version: 0.32.2
+ * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, scientific workflow orchestration, dependency graphs, declarative workflow conditions, checkpoint history, partial recovery, durable schedules, authenticated event triggers, missed-run recovery, concurrency controls, adaptive experiment campaigns, sequential design, budget-aware trial orchestration, and data-connected documentation.
+ * Version: 0.33.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.32.2');
+define('SC_LAB_VERSION', '0.33.0');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -160,6 +160,10 @@ SC_Lab_Workflow_Orchestration_V0320::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-workflow-automation-v0322.php';
 SC_Lab_Workflow_Automation_V0322::init();
+
+// v0.33.0 Adaptive Experiment Campaigns and Sequential Design.
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-experiment-campaigns-v0330.php';
+SC_Lab_Experiment_Campaigns_V0330::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-python-compute-core-v0261.php';
 SC_Lab_Python_Compute_Core_V0261::init();

@@ -1,0 +1,283 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/experiment-campaign-v0330.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "budget": {
+      "additionalProperties": false,
+      "properties": {
+        "maxConcurrentTrials": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "maxFailures": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "maxTrials": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "maxTrials",
+        "maxFailures",
+        "maxConcurrentTrials"
+      ],
+      "type": "object"
+    },
+    "definitionHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "description": {
+      "maxLength": 4000,
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$",
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "objective": {
+      "additionalProperties": false,
+      "properties": {
+        "goal": {
+          "enum": [
+            "minimize",
+            "maximize"
+          ]
+        },
+        "path": {
+          "pattern": "^(nodes|run)\\.",
+          "type": "string"
+        },
+        "target": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "path",
+        "goal"
+      ],
+      "type": "object"
+    },
+    "parameterSpace": {
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "max": {
+                "type": "number"
+              },
+              "min": {
+                "type": "number"
+              },
+              "precision": {
+                "maximum": 15,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": {
+                "const": "continuous"
+              }
+            },
+            "required": [
+              "type",
+              "min",
+              "max",
+              "precision"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "max": {
+                "type": "integer"
+              },
+              "min": {
+                "type": "integer"
+              },
+              "step": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "type": {
+                "const": "integer"
+              }
+            },
+            "required": [
+              "type",
+              "min",
+              "max",
+              "step"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "categorical"
+              },
+              "values": {
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "maxItems": 1000,
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "type",
+              "values"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "maxProperties": 100,
+      "minProperties": 1,
+      "type": "object"
+    },
+    "projectId": {
+      "maxLength": 180,
+      "type": "string"
+    },
+    "recordType": {
+      "const": "experiment-campaign"
+    },
+    "run": {
+      "additionalProperties": false,
+      "properties": {
+        "autoAdvance": {
+          "type": "boolean"
+        },
+        "baseContext": {
+          "type": "object"
+        },
+        "baseInputs": {
+          "type": "object"
+        },
+        "parameterInputPath": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "baseInputs",
+        "baseContext",
+        "parameterInputPath",
+        "autoAdvance"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-experiment-campaign/0.33.0"
+    },
+    "stopping": {
+      "additionalProperties": false,
+      "properties": {
+        "minImprovement": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "patience": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "target": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "patience",
+        "minImprovement"
+      ],
+      "type": "object"
+    },
+    "strategy": {
+      "additionalProperties": false,
+      "properties": {
+        "explorationRate": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "gridLevels": {
+          "maximum": 100,
+          "minimum": 2,
+          "type": "integer"
+        },
+        "initialRandomTrials": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "neighborhoodScale": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "randomSeed": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "type": {
+          "enum": [
+            "random",
+            "grid",
+            "adaptive-explore-exploit"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "initialRandomTrials",
+        "explorationRate",
+        "neighborhoodScale",
+        "gridLevels",
+        "randomSeed"
+      ],
+      "type": "object"
+    },
+    "title": {
+      "maxLength": 300,
+      "type": "string"
+    },
+    "version": {
+      "const": "0.33.0"
+    },
+    "workflowId": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "recordType",
+    "id",
+    "workflowId",
+    "projectId",
+    "parameterSpace",
+    "objective",
+    "strategy",
+    "budget",
+    "stopping",
+    "run",
+    "definitionHash"
+  ],
+  "title": "Sustainable Catalyst Lab Experiment Campaign v0.33.0",
+  "type": "object"
+}

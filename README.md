@@ -1,9 +1,23 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.32.2 — Scheduled and Event-Driven Research Runs**
+**Current release: v0.33.0 — Adaptive Experiment Campaigns and Sequential Design**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, and authenticated event-driven research runs.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, and workflow-backed trial provenance.
 
+
+## v0.33.0 highlights
+
+- Durable adaptive experiment campaigns backed by the existing scientific workflow engine
+- Typed continuous, integer, and categorical parameter spaces with explicit workflow input bindings
+- Deterministic random, grid, and adaptive explore/exploit proposal policies
+- Duplicate-design prevention through canonical parameter fingerprints
+- Objective extraction from declared workflow result paths with minimize/maximize goals
+- Trial, failure, concurrency, patience, target, and minimum-improvement stopping controls
+- Campaign pause, resume, cancellation, manual observations, and operator-driven advancement
+- Immutable workflow-run provenance for campaign, trial, proposal, parameter, and objective lineage
+- Separate SQLite WAL campaign, trial, and event store with background reconciliation
+- New Adaptive Experiment Campaigns operations panel
+- Direct cumulative installer bridge from v0.31.0 through v0.32.2
 
 ## v0.32.2 highlights
 

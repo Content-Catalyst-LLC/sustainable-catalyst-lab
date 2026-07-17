@@ -54,6 +54,7 @@
           'model-calibration' => 'Model calibration',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
+          'experiment-campaigns' => 'Adaptive experiment campaigns',
           'distributed-dispatcher' => 'Compute dispatcher',
           'persistent-queue' => 'Persistent queue',
           'dispatcher-operations' => 'Dispatcher operations',
@@ -1625,6 +1626,39 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <div class="sc-wa0322-card"><h4>Event ingestion</h4><p>Backend event routes require normal compute authentication. Deployments may additionally require an HMAC event signature.</p><textarea data-wa-v0322-event aria-label="Workflow event JSON">{"id":"dataset-created-001","type":"dataset.created","payload":{"projectId":"default","datasetId":"dataset-001"}}</textarea><div class="sc-wa0322-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wa-v0322-ingest>Ingest event</button></div></div>
           <div class="sc-wa0322-card is-wide"><h4>Saved schedules</h4><div class="sc-lab-table-wrap"><table class="sc-wa0322-table"><thead><tr><th>Schedule</th><th>Workflow</th><th>Trigger</th><th>Status</th><th>Next fire</th><th>Actions</th></tr></thead><tbody data-wa-v0322-schedules></tbody></table></div></div>
           <div class="sc-wa0322-card is-wide"><h4>Automation state, firings, and event receipts</h4><pre class="sc-wa0322-output" data-wa-v0322-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-ec0330" data-lab-module="experiment-campaigns" data-module-panel="experiment-campaigns" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / ADAPTIVE EXPERIMENTS / v0.33.0</p><h3>Adaptive Experiment Campaigns and Sequential Design</h3><p>Turn a saved scientific workflow into a governed campaign that explores a parameter space, learns from each objective result, proposes the next trial, respects explicit budgets, and stops when the target or no-improvement rule is reached.</p></header>
+        <p class="sc-ec0330-status" data-ec-v0330-status role="status" aria-live="polite">Adaptive campaign engine loading…</p>
+        <div class="sc-ec0330-metrics" data-ec-v0330-metrics></div>
+        <div class="sc-ec0330-grid">
+          <div class="sc-ec0330-card is-wide"><h4>Campaign definition</h4><textarea data-ec-v0330-definition aria-label="Experiment campaign JSON">{
+  "id": "adaptive-calibration-campaign",
+  "title": "Adaptive calibration campaign",
+  "workflowId": "calibration-pipeline",
+  "projectId": "default",
+  "parameterSpace": {
+    "learningRate": {"type": "continuous", "min": 0.001, "max": 0.1, "precision": 6},
+    "iterations": {"type": "integer", "min": 50, "max": 500, "step": 50},
+    "solver": {"type": "categorical", "values": ["least-squares", "robust"]}
+  },
+  "objective": {"path": "nodes.calibrate-model.result.metrics.rmse", "goal": "minimize", "target": 0.05},
+  "strategy": {"type": "adaptive-explore-exploit", "initialRandomTrials": 4, "explorationRate": 0.3, "neighborhoodScale": 0.2, "randomSeed": 3300},
+  "budget": {"maxTrials": 25, "maxFailures": 5, "maxConcurrentTrials": 1},
+  "stopping": {"patience": 6, "minImprovement": 0.001, "target": 0.05},
+  "run": {"parameterInputPath": "campaign.parameters", "baseInputs": {"runCalibration": true}, "autoAdvance": true}
+}</textarea><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button" data-ec-v0330-validate>Validate definition</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-save>Save campaign</button></div></div>
+          <div class="sc-ec0330-card"><h4>Campaign controls</h4><label>Campaign ID<input data-ec-v0330-campaignid value="adaptive-calibration-campaign"></label><label>Trials to propose<input type="number" min="1" max="100" value="1" data-ec-v0330-count></label><label>Operator reason<input data-ec-v0330-reason value="operator action from Lab campaign panel"></label><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-start>Start</button><button type="button" class="sc-lab-button" data-ec-v0330-pause>Pause</button><button type="button" class="sc-lab-button" data-ec-v0330-resume>Resume</button><button type="button" class="sc-lab-button" data-ec-v0330-advance>Propose next</button><button type="button" class="sc-lab-button" data-ec-v0330-reconcile>Reconcile</button><button type="button" class="sc-lab-button" data-ec-v0330-inspect>Inspect</button><button type="button" class="sc-lab-button" data-ec-v0330-tick>Run campaign tick</button><button type="button" class="sc-lab-button" data-ec-v0330-refresh>Refresh</button><button type="button" class="sc-lab-button" data-ec-v0330-cancel>Cancel</button></div></div>
+          <div class="sc-ec0330-card"><h4>Manual observation</h4><p>Record an externally completed or instrument-run trial while preserving the same campaign objective and provenance model.</p><textarea data-ec-v0330-observation aria-label="Manual observation JSON">{
+  "parameters": {"learningRate": 0.01, "iterations": 200, "solver": "least-squares"},
+  "objectiveValue": 0.082,
+  "source": "instrument bench run",
+  "result": {"notes": "Imported observation"}
+}</textarea><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-observe>Record observation</button></div></div>
+          <div class="sc-ec0330-card is-wide"><h4>Saved campaigns</h4><div class="sc-lab-table-wrap"><table class="sc-ec0330-table"><thead><tr><th>Campaign</th><th>Workflow</th><th>Strategy</th><th>Status</th><th>Completed / budget</th><th>Best objective</th><th>Actions</th></tr></thead><tbody data-ec-v0330-campaigns></tbody></table></div></div>
+          <div class="sc-ec0330-card is-wide"><h4>Campaign state, trials, proposals, and timeline</h4><pre class="sc-ec0330-output" data-ec-v0330-output>No response yet.</pre></div>
         </div>
       </section>
 

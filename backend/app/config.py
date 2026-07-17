@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.32.2"
+    version: str = "0.33.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -81,6 +81,12 @@ class Settings:
     workflow_event_secret: str = os.getenv("SC_LAB_WORKFLOW_EVENT_SECRET", "").strip()
     workflow_event_signature_tolerance_seconds: int = _int("SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS", 300, 30, 3600)
     workflow_schedule_persistent_disk_mounted: bool = os.getenv("SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    experiment_campaign_db_path: str = os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_DB_PATH", "./data/sc-lab-experiment-campaigns.sqlite3").strip()
+    experiment_campaign_poll_seconds: float = max(1.0, min(3600.0, float(os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_POLL_SECONDS", "30"))))
+    experiment_campaign_max_campaigns: int = _int("SC_LAB_EXPERIMENT_CAMPAIGN_MAX_CAMPAIGNS", 1000, 1, 100000)
+    experiment_campaign_max_trials: int = _int("SC_LAB_EXPERIMENT_CAMPAIGN_MAX_TRIALS", 10000, 1, 1000000)
+    experiment_campaign_history_limit: int = _int("SC_LAB_EXPERIMENT_CAMPAIGN_HISTORY_LIMIT", 30000, 100, 1000000)
+    experiment_campaign_persistent_disk_mounted: bool = os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

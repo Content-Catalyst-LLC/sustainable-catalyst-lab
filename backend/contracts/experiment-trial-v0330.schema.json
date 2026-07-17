@@ -1,0 +1,118 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/experiment-trial-v0330.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "campaignId": {
+      "type": "string"
+    },
+    "completedAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "objective": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "objectiveValue": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "parametersHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "proposal": {
+      "required": [
+        "strategy",
+        "source"
+      ],
+      "type": "object"
+    },
+    "recordType": {
+      "const": "experiment-trial"
+    },
+    "result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-experiment-trial/0.33.0"
+    },
+    "sequence": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "startedAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "updatedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "version": {
+      "const": "0.33.0"
+    },
+    "workflowRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "recordType",
+    "id",
+    "campaignId",
+    "sequence",
+    "status",
+    "parameters",
+    "parametersHash",
+    "proposal",
+    "createdAt",
+    "updatedAt"
+  ],
+  "title": "Sustainable Catalyst Lab Experiment Trial v0.33.0",
+  "type": "object"
+}

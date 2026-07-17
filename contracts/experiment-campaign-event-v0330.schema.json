@@ -1,0 +1,43 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/experiment-campaign-event-v0330.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "campaignId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "id": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-experiment-campaign-event/0.33.0"
+    },
+    "trialId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "campaignId",
+    "type",
+    "payload",
+    "createdAt"
+  ],
+  "title": "Sustainable Catalyst Lab Experiment Campaign Event v0.33.0",
+  "type": "object"
+}

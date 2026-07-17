@@ -33,6 +33,7 @@ from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_pol
 from .artifact_transport import ArtifactStore, ArtifactTransportError
 from .workflow_orchestration import WorkflowError, WorkflowOrchestrator, policies as workflow_policies
 from .workflow_scheduling import WorkflowScheduleError, WorkflowScheduler, policies as workflow_scheduling_policies, verify_event_signature
+from .experiment_campaigns import ExperimentCampaignError, ExperimentCampaignManager, policies as experiment_campaign_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -43,6 +44,7 @@ dispatcher = PersistentDistributedDispatcher(settings.dispatcher_db_path, settin
 artifacts = ArtifactStore(settings.artifact_root, settings.artifact_db_path, settings.artifact_max_bytes, settings.artifact_chunk_bytes, settings.artifact_upload_ttl_seconds, settings.artifact_retention_seconds)
 workflows = WorkflowOrchestrator(settings.workflow_db_path, dispatcher, settings.workflow_max_nodes, settings.workflow_max_runs, settings.workflow_history_limit)
 workflow_automation = WorkflowScheduler(settings.workflow_schedule_db_path, workflows, settings.workflow_scheduler_poll_seconds, settings.workflow_scheduler_max_catch_up_runs, settings.workflow_scheduler_history_limit)
+experiment_campaigns = ExperimentCampaignManager(settings.experiment_campaign_db_path, workflows, settings.experiment_campaign_poll_seconds, settings.experiment_campaign_max_campaigns, settings.experiment_campaign_max_trials, settings.experiment_campaign_history_limit)
 
 
 @asynccontextmanager
@@ -54,7 +56,9 @@ async def lifespan(application: FastAPI):
     )
     jobs.start()
     workflow_automation.start()
+    experiment_campaigns.start()
     yield
+    experiment_campaigns.stop()
     workflow_automation.stop()
     jobs.stop()
 
@@ -139,6 +143,7 @@ def health():
         "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "workflowAutomation": {"version":"0.32.2","intervalSchedules":True,"cronUtc":True,"oneTimeSchedules":True,"authenticatedEvents":True,"eventDeduplication":True,"misfireRecovery":True,"concurrencyControls":True},
+        "experimentCampaigns": {"version":"0.33.0","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"exploreExploit":True,"budgetControls":True,"stoppingRules":True,"manualObservations":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -1610,4 +1615,151 @@ async def workflow_event_ingest_route(
         return workflow_automation.ingest_event(payload)
     except WorkflowScheduleError as exc:
         raise _workflow_schedule_http_error(exc) from exc
+
+# v0.33.0 Adaptive Experiment Campaigns and Sequential Design
+
+def _experiment_campaign_http_error(exc: ExperimentCampaignError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/experiment-campaigns/health")
+def experiment_campaign_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = experiment_campaigns.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.experiment_campaign_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.experiment_campaign_persistent_disk_mounted else "Experiment campaigns and trial histories are instance-local unless a persistent disk is mounted."
+    return body
+
+
+@app.get("/v1/experiment-campaigns/policies")
+def experiment_campaign_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return experiment_campaign_policies(settings.experiment_campaign_max_trials, settings.experiment_campaign_max_campaigns)
+
+
+@app.post("/v1/experiment-campaigns/validate")
+def experiment_campaign_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.validate(payload)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns")
+def experiment_campaign_save_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.save(payload)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.get("/v1/experiment-campaigns")
+def experiment_campaign_list_route(project_id: str = Query("", alias="projectId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.list(project_id, status, limit)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.get("/v1/experiment-campaigns/{campaign_id}")
+def experiment_campaign_get_route(campaign_id: str, reconcile: bool = Query(False), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.get(campaign_id, reconcile=reconcile)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/start")
+def experiment_campaign_start_route(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.start_campaign(campaign_id)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/pause")
+def experiment_campaign_pause_route(campaign_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.pause(campaign_id, str((payload or {}).get("reason") or "operator pause"))
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/resume")
+def experiment_campaign_resume_route(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.resume(campaign_id)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/advance")
+def experiment_campaign_advance_route(campaign_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        count = (payload or {}).get("count")
+        return experiment_campaigns.advance(campaign_id, int(count) if count is not None else None)
+    except (ExperimentCampaignError, ValueError) as exc:
+        if isinstance(exc, ExperimentCampaignError):
+            raise _experiment_campaign_http_error(exc) from exc
+        raise HTTPException(status_code=422, detail="count must be an integer") from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/reconcile")
+def experiment_campaign_reconcile_route(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.reconcile(campaign_id, auto_advance=True)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/cancel")
+def experiment_campaign_cancel_route(campaign_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.cancel(campaign_id, str((payload or {}).get("reason") or "operator cancellation"))
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/observations")
+def experiment_campaign_observe_route(campaign_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.observe(campaign_id, payload)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.get("/v1/experiment-campaigns/{campaign_id}/trials")
+def experiment_campaign_trials_route(campaign_id: str, status: str = Query(""), limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.trials(campaign_id, status, limit)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.get("/v1/experiment-campaigns/{campaign_id}/timeline")
+def experiment_campaign_timeline_route(campaign_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.timeline(campaign_id, limit)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/tick")
+def experiment_campaign_tick_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return experiment_campaigns.tick()
 

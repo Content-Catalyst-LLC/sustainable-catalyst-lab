@@ -136,6 +136,24 @@ final class SC_Lab_Python_Compute_Core_V0261 {
             array('methods'=>'GET','callback'=>array(__CLASS__,'workflow_automation_events'),'permission_callback'=>array(__CLASS__,'operations_permission')),
             array('methods'=>'POST','callback'=>array(__CLASS__,'workflow_automation_ingest'),'permission_callback'=>array(__CLASS__,'operations_permission')),
         ));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/health', array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_validate'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_list'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_save'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/tick', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_tick'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})', array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_get'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/start', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_start'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/pause', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_pause'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/resume', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_resume'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/advance', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_advance'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/reconcile', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_reconcile'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/observations', array('methods'=>'POST','callback'=>array(__CLASS__,'experiment_campaign_observe'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/trials', array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_trials'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/experiment-campaigns/(?P<campaign>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'experiment_campaign_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -485,6 +503,24 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function workflow_automation_firings(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/workflow-automation/firings?limit='.$limit);}
     public static function workflow_automation_events(WP_REST_Request $request){$limit=max(1,min(1000,intval($request->get_param('limit')?:100)));return self::proxy('/v1/workflow-automation/events?limit='.$limit);}
     public static function workflow_automation_ingest(WP_REST_Request $request){$p=self::workflow_automation_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/workflow-automation/events','POST',$p,8388608);}
+
+    private static function experiment_campaign_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes);return is_wp_error($clean)?$clean:$clean;}
+    public static function experiment_campaign_health(){return self::proxy('/v1/experiment-campaigns/health');}
+    public static function experiment_campaign_policies(){return self::proxy('/v1/experiment-campaigns/policies');}
+    public static function experiment_campaign_validate(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns/validate','POST',$p,8388608);}
+    public static function experiment_campaign_save(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns','POST',$p,8388608);}
+    public static function experiment_campaign_list(WP_REST_Request $request){$parts=array('limit='.max(1,min(1000,intval($request->get_param('limit')?:100))));$project=sanitize_text_field($request->get_param('projectId')?:'');$status=sanitize_key($request->get_param('status')?:'');if($project){$parts[]='projectId='.rawurlencode($project);}if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/experiment-campaigns?'.implode('&',$parts));}
+    public static function experiment_campaign_get(WP_REST_Request $request){$reconcile=$request->get_param('reconcile');$value=($reconcile===true||$reconcile==='true'||$reconcile==='1')?'true':'false';return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'?reconcile='.$value);}
+    public static function experiment_campaign_start(WP_REST_Request $request){return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/start','POST',array(),8388608);}
+    public static function experiment_campaign_pause(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/pause','POST',$p,8388608);}
+    public static function experiment_campaign_resume(WP_REST_Request $request){return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/resume','POST',array(),8388608);}
+    public static function experiment_campaign_advance(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/advance','POST',$p,8388608);}
+    public static function experiment_campaign_reconcile(WP_REST_Request $request){return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/reconcile','POST',array(),8388608);}
+    public static function experiment_campaign_cancel(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/cancel','POST',$p,8388608);}
+    public static function experiment_campaign_observe(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/observations','POST',$p,8388608);}
+    public static function experiment_campaign_trials(WP_REST_Request $request){$parts=array('limit='.max(1,min(5000,intval($request->get_param('limit')?:500))));$status=sanitize_key($request->get_param('status')?:'');if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/trials?'.implode('&',$parts));}
+    public static function experiment_campaign_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/experiment-campaigns/'.rawurlencode($request['campaign']).'/timeline?limit='.$limit);}
+    public static function experiment_campaign_tick(){return self::proxy('/v1/experiment-campaigns/tick','POST',array(),8388608);}
 
 
 }

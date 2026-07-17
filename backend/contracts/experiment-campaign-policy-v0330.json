@@ -1,0 +1,28 @@
+{
+  "arbitraryCallbacks": false,
+  "arbitraryCode": false,
+  "automaticAdvance": true,
+  "automaticReconciliation": true,
+  "deterministicSeeds": true,
+  "duplicateParameterPrevention": true,
+  "manualObservations": true,
+  "parameterTypes": [
+    "continuous",
+    "integer",
+    "categorical"
+  ],
+  "schema": "sc-lab-experiment-campaign-policy/0.33.0",
+  "stoppingRules": [
+    "trial-budget",
+    "failure-budget",
+    "target-objective",
+    "no-improvement-patience"
+  ],
+  "strategies": [
+    "random",
+    "grid",
+    "adaptive-explore-exploit"
+  ],
+  "version": "0.33.0",
+  "workflowBackedTrials": true
+}

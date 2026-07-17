@@ -1,88 +1,100 @@
 services:
-  - type: web
-    name: sustainable-catalyst-lab-python-compute-core
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    healthCheckPath: /health
-    autoDeploy: true
-    envVars:
-      - key: SC_LAB_ENVIRONMENT
-        value: production
-      - key: SC_LAB_COMPUTE_API_KEY
-        generateValue: true
-      - key: SC_LAB_COMPUTE_SIGNING_SECRET
-        generateValue: true
-      - key: SC_LAB_DISPATCHER_CONTRACT_SECRET
-        generateValue: true
-      - key: SC_LAB_WORKER_ENROLLMENT_TOKEN
-        generateValue: true
-      - key: SC_LAB_LOAD_LEGACY_EXTENSIONS
-        value: "1"
-      - key: SC_LAB_JOB_DB_PATH
-        value: /app/data/sc-lab-compute-jobs.sqlite3
-      - key: SC_LAB_JOB_WORKERS
-        value: "2"
-      - key: SC_LAB_MAX_QUEUED_JOBS
-        value: "100"
-      - key: SC_LAB_DEFAULT_JOB_TIMEOUT_SECONDS
-        value: "60"
-      - key: SC_LAB_DEFAULT_JOB_ATTEMPTS
-        value: "2"
-      - key: SC_LAB_DISPATCHER_DB_PATH
-        value: /app/data/sc-lab-dispatcher.sqlite3
-      - key: SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED
-        value: "0"
-      - key: SC_LAB_DISPATCHER_WORKER_STALE_SECONDS
-        value: "120"
-      - key: SC_LAB_DISPATCHER_DEFAULT_LEASE_SECONDS
-        value: "300"
-      - key: SC_LAB_DISPATCHER_MAX_WORKERS
-        value: "500"
-      - key: SC_LAB_DISPATCHER_MAX_QUEUE_RECORDS
-        value: "5000"
-      - key: SC_LAB_DISPATCHER_MAX_ATTEMPTS
-        value: "5"
-      - key: SC_LAB_DISPATCHER_HISTORY_LIMIT
-        value: "10000"
-      - key: SC_LAB_DISPATCHER_RETRY_BASE_DELAY_SECONDS
-        value: "15"
-      - key: SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS
-        value: "900"
-      - key: SC_LAB_ARTIFACT_ROOT
-        value: /app/data/artifacts
-      - key: SC_LAB_ARTIFACT_DB_PATH
-        value: /app/data/sc-lab-artifacts.sqlite3
-      - key: SC_LAB_ARTIFACT_MAX_BYTES
-        value: "268435456"
-      - key: SC_LAB_ARTIFACT_CHUNK_BYTES
-        value: "1048576"
-      - key: SC_LAB_ARTIFACT_UPLOAD_TTL_SECONDS
-        value: "86400"
-      - key: SC_LAB_ARTIFACT_RETENTION_SECONDS
-        value: "2592000"
-      - key: SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED
-        value: "0"
-      - key: SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES
-        value: "262144"
-      - key: SC_LAB_WORKFLOW_DB_PATH
-        value: /app/data/sc-lab-workflows.sqlite3
-      - key: SC_LAB_WORKFLOW_MAX_NODES
-        value: "100"
-      - key: SC_LAB_WORKFLOW_MAX_RUNS
-        value: "5000"
-      - key: SC_LAB_WORKFLOW_HISTORY_LIMIT
-        value: "20000"
-      - key: SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED
-        value: "0"
-      - key: SC_LAB_WORKFLOW_SCHEDULE_DB_PATH
-        value: /app/data/sc-lab-workflow-schedules.sqlite3
-      - key: SC_LAB_WORKFLOW_SCHEDULER_POLL_SECONDS
-        value: "30"
-      - key: SC_LAB_WORKFLOW_SCHEDULER_MAX_CATCH_UP_RUNS
-        value: "10"
-      - key: SC_LAB_WORKFLOW_SCHEDULER_HISTORY_LIMIT
-        value: "20000"
-      - key: SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS
-        value: "300"
-      - key: SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED
-        value: "0"
+- type: web
+  name: sustainable-catalyst-lab-python-compute-core
+  runtime: docker
+  dockerfilePath: ./Dockerfile
+  healthCheckPath: /health
+  autoDeploy: true
+  envVars:
+  - key: SC_LAB_ENVIRONMENT
+    value: production
+  - key: SC_LAB_COMPUTE_API_KEY
+    generateValue: true
+  - key: SC_LAB_COMPUTE_SIGNING_SECRET
+    generateValue: true
+  - key: SC_LAB_DISPATCHER_CONTRACT_SECRET
+    generateValue: true
+  - key: SC_LAB_WORKER_ENROLLMENT_TOKEN
+    generateValue: true
+  - key: SC_LAB_LOAD_LEGACY_EXTENSIONS
+    value: '1'
+  - key: SC_LAB_JOB_DB_PATH
+    value: /app/data/sc-lab-compute-jobs.sqlite3
+  - key: SC_LAB_JOB_WORKERS
+    value: '2'
+  - key: SC_LAB_MAX_QUEUED_JOBS
+    value: '100'
+  - key: SC_LAB_DEFAULT_JOB_TIMEOUT_SECONDS
+    value: '60'
+  - key: SC_LAB_DEFAULT_JOB_ATTEMPTS
+    value: '2'
+  - key: SC_LAB_DISPATCHER_DB_PATH
+    value: /app/data/sc-lab-dispatcher.sqlite3
+  - key: SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED
+    value: '0'
+  - key: SC_LAB_DISPATCHER_WORKER_STALE_SECONDS
+    value: '120'
+  - key: SC_LAB_DISPATCHER_DEFAULT_LEASE_SECONDS
+    value: '300'
+  - key: SC_LAB_DISPATCHER_MAX_WORKERS
+    value: '500'
+  - key: SC_LAB_DISPATCHER_MAX_QUEUE_RECORDS
+    value: '5000'
+  - key: SC_LAB_DISPATCHER_MAX_ATTEMPTS
+    value: '5'
+  - key: SC_LAB_DISPATCHER_HISTORY_LIMIT
+    value: '10000'
+  - key: SC_LAB_DISPATCHER_RETRY_BASE_DELAY_SECONDS
+    value: '15'
+  - key: SC_LAB_DISPATCHER_RETRY_MAX_DELAY_SECONDS
+    value: '900'
+  - key: SC_LAB_ARTIFACT_ROOT
+    value: /app/data/artifacts
+  - key: SC_LAB_ARTIFACT_DB_PATH
+    value: /app/data/sc-lab-artifacts.sqlite3
+  - key: SC_LAB_ARTIFACT_MAX_BYTES
+    value: '268435456'
+  - key: SC_LAB_ARTIFACT_CHUNK_BYTES
+    value: '1048576'
+  - key: SC_LAB_ARTIFACT_UPLOAD_TTL_SECONDS
+    value: '86400'
+  - key: SC_LAB_ARTIFACT_RETENTION_SECONDS
+    value: '2592000'
+  - key: SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED
+    value: '0'
+  - key: SC_LAB_WORKER_RESULT_ARTIFACT_THRESHOLD_BYTES
+    value: '262144'
+  - key: SC_LAB_WORKFLOW_DB_PATH
+    value: /app/data/sc-lab-workflows.sqlite3
+  - key: SC_LAB_WORKFLOW_MAX_NODES
+    value: '100'
+  - key: SC_LAB_WORKFLOW_MAX_RUNS
+    value: '5000'
+  - key: SC_LAB_WORKFLOW_HISTORY_LIMIT
+    value: '20000'
+  - key: SC_LAB_WORKFLOW_PERSISTENT_DISK_MOUNTED
+    value: '0'
+  - key: SC_LAB_WORKFLOW_SCHEDULE_DB_PATH
+    value: /app/data/sc-lab-workflow-schedules.sqlite3
+  - key: SC_LAB_WORKFLOW_SCHEDULER_POLL_SECONDS
+    value: '30'
+  - key: SC_LAB_WORKFLOW_SCHEDULER_MAX_CATCH_UP_RUNS
+    value: '10'
+  - key: SC_LAB_WORKFLOW_SCHEDULER_HISTORY_LIMIT
+    value: '20000'
+  - key: SC_LAB_WORKFLOW_EVENT_SIGNATURE_TOLERANCE_SECONDS
+    value: '300'
+  - key: SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED
+    value: '0'
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_DB_PATH
+    value: /app/data/sc-lab-experiment-campaigns.sqlite3
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_POLL_SECONDS
+    value: '30'
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_MAX_CAMPAIGNS
+    value: '1000'
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_MAX_TRIALS
+    value: '10000'
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_HISTORY_LIMIT
+    value: '30000'
+  - key: SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED
+    value: '0'

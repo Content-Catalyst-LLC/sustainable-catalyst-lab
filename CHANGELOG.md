@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.33.0 — Adaptive Experiment Campaigns and Sequential Design
+
+- Added durable workflow-backed experiment campaign definitions, trials, observations, and event timelines.
+- Added typed continuous, integer, and categorical parameter spaces with declared workflow input bindings.
+- Added seeded random, deterministic grid, and adaptive explore/exploit proposal policies.
+- Added canonical parameter fingerprints and duplicate-design prevention.
+- Added objective extraction from declared workflow result paths with minimize and maximize goals.
+- Added explicit trial, failure, concurrency, target, patience, and minimum-improvement stopping controls.
+- Added campaign start, pause, resume, advance, reconcile, cancel, manual-observation, and background-tick operations.
+- Added immutable campaign and trial provenance to every workflow run.
+- Added the Adaptive Experiment Campaigns WordPress operations panel and administrator-only compute proxies.
+- Added v0.33.0 campaign, trial, event, and policy contracts.
+- Advanced the public release to 63 registered Lab panels.
+- Added cumulative direct installation from v0.31.0 through v0.32.2.
+
+
 ## 0.32.2 — Scheduled and Event-Driven Research Runs
 
 - Added durable interval, UTC cron, one-time, and authenticated event triggers for saved scientific workflows.
