@@ -1,0 +1,39 @@
+{
+  "capabilities": {
+    "arbitraryCode": false,
+    "crossFormatRendering": true,
+    "embeddedRestrictedData": false,
+    "hardDelete": false,
+    "immutableSealedAssemblies": true,
+    "outputOnlyNotebooks": true,
+    "reusableSections": true,
+    "revisionLineage": true,
+    "structuredMethodsNarrative": true
+  },
+  "documentTypes": [
+    "manuscript",
+    "report",
+    "notebook",
+    "methods-supplement",
+    "research-dossier"
+  ],
+  "formats": [
+    "markdown",
+    "html",
+    "jats-lite",
+    "jupyter-notebook",
+    "json",
+    "bibtex",
+    "methods-markdown"
+  ],
+  "schema": "sc-lab-manuscript-assembly-policy/0.37.1",
+  "templates": [
+    "imrad",
+    "technical-report",
+    "methods-supplement",
+    "reproducibility-dossier",
+    "notebook-narrative",
+    "custom"
+  ],
+  "version": "0.37.1"
+}

@@ -1,3 +1,14 @@
+# Changelog
+
+## 0.37.1 — Manuscript, Report, Notebook, and Methods Assembly
+
+- Added reusable section libraries and revision snapshots.
+- Added structured methods generation from sealed reproducibility packages.
+- Added manuscript, report, methods supplement, dossier, and output-only notebook assemblies.
+- Added Markdown, escaped HTML, JATS-lite, Jupyter, BibTeX, methods, and JSON rendering.
+- Added validation, immutable sealing, render hashes, and revision lineage.
+- Added the 75th Lab panel and administrator/workspace proxy routes.
+
 # Sustainable Catalyst Lab Changelog
 
 ## 0.37.0 — Reproducibility Packages and Research Publication Studio
@@ -108,8 +119,6 @@
 - Added campaign observation reconciliation, simulation-cycle import, command/measurement/cycle lineage, and SQLite WAL persistence.
 - Added authenticated backend routes, administrator-only WordPress proxies, five public contracts, and a 64th Lab panel.
 - Preserved v0.33.1 Bayesian optimization, active learning, and resource-aware search contracts and behavior.
-
-# Changelog
 
 ## 0.33.1 — Bayesian Optimization, Active Learning, and Resource-Aware Search
 

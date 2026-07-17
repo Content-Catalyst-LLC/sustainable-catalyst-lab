@@ -1,0 +1,73 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/research-assembly-v0371.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assemblyHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "documentType": {
+      "enum": [
+        "manuscript",
+        "report",
+        "notebook",
+        "methods-supplement",
+        "research-dossier"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-research-assembly/0.37.1"
+    },
+    "sections": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "sealed",
+        "withdrawn"
+      ]
+    },
+    "template": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.37.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "title",
+    "documentType",
+    "template",
+    "status",
+    "sections"
+  ],
+  "title": "Research Assembly",
+  "type": "object"
+}

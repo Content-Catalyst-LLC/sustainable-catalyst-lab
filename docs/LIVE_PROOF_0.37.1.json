@@ -1,0 +1,61 @@
+{
+  "assembly": {
+    "assemblyHash": "07e900f1e5132e64213eaa6a7dbbc0f4a81c7274615e9c773536be245722d0c1",
+    "documentType": "manuscript",
+    "id": "wetland-manuscript-v1",
+    "sectionCount": 4,
+    "status": "sealed",
+    "template": "imrad"
+  },
+  "export": {
+    "exportHash": "6add49d700cd325c4d7cabead95bd4785f019ec7b87b1172e32c33dee47ad180",
+    "fileHashes": {
+      "assembly.json": "b58342e447e799d413f3b86f6de70e83badbda72e5ae40b2fdb6c00e97b72ecd",
+      "manuscript.md": "18493df68e7571aa697d4b64840d033300134e58041cc3f7dd3245ba42ee4a4c",
+      "manuscript.xml": "452b1ba754bcc1cc55e82d92488cebeb4ee9ce61f305a3c8d161c4106b9f35b3",
+      "methods.md": "6e13b92645cef5832509a3a49dd4f3e466fa41c3b5c2ff06489bb6fb11971b3f",
+      "notebook.ipynb": "09a7f6d10930fc4d0be89f22d86c05fa4e64364cca3ee40ceba9266f05a1eb3f",
+      "references.bib": "8e5e75d76cf65be7fd1f3caa1de934e52601f02c4bba349643a88d88b4d1c5dd",
+      "report.html": "41c63497ea47218af27d5d0ef0d5c42f2aad6965d1ec0f23ff37e34f212d2e11"
+    },
+    "formats": [
+      "assembly.json",
+      "export-manifest.json",
+      "manuscript.md",
+      "manuscript.xml",
+      "methods.md",
+      "notebook.ipynb",
+      "references.bib",
+      "report.html"
+    ],
+    "notebookOutputOnly": true
+  },
+  "generatedMethods": {
+    "registeredMethods": [
+      "statistics.descriptive"
+    ],
+    "sourceHash": "d887a4e391f5d48365d79c9c64ffbe5594532a3fa145092a344b04b7c2a09778"
+  },
+  "packageHash": "8fd3306dd344a6f7985037a6ed13eecc40191c3e325e9deff19cb77056e327c1",
+  "packageId": "wetland-study-v1",
+  "proof": "manuscript-report-notebook-methods-assembly",
+  "release": "0.37.1",
+  "revision": {
+    "id": "wetland-manuscript-v2",
+    "parentAssemblyHash": "07e900f1e5132e64213eaa6a7dbbc0f4a81c7274615e9c773536be245722d0c1",
+    "parentAssemblyId": "wetland-manuscript-v1",
+    "status": "draft"
+  },
+  "section": {
+    "contentHash": "74cd4c246127e7e445aac59994fe5f61bb31dfcfd8903679b0660381a142113f",
+    "id": "wetland-introduction",
+    "revision": 1
+  },
+  "timelineEvents": 7,
+  "validation": {
+    "issues": [],
+    "ok": true,
+    "validationHash": "805ba7a7adff57f4236aa99d61bc3c0b958a9a1bdfa8a4fe0c5a2976ba2fabe4"
+  },
+  "workspaceId": "publication-team"
+}

@@ -1,0 +1,55 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/assembly-event-v0371.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "actorId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "eventHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-assembly-event/0.37.1"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "version": {
+      "const": "0.37.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "workspaceId",
+    "entityType",
+    "entityId",
+    "eventType",
+    "actorId",
+    "eventHash",
+    "createdAt"
+  ],
+  "title": "Assembly Event",
+  "type": "object"
+}

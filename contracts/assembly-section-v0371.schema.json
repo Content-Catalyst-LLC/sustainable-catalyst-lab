@@ -1,0 +1,65 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/assembly-section-v0371.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "content": {
+      "type": "object"
+    },
+    "contentHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "title",
+        "abstract",
+        "introduction",
+        "background",
+        "methods",
+        "results",
+        "discussion",
+        "conclusion",
+        "references",
+        "appendix",
+        "figure",
+        "table",
+        "notebook-markdown",
+        "notebook-output",
+        "custom"
+      ]
+    },
+    "revision": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schema": {
+      "const": "sc-lab-assembly-section/0.37.1"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.37.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "title",
+    "kind",
+    "content",
+    "revision",
+    "contentHash"
+  ],
+  "title": "Assembly Section",
+  "type": "object"
+}

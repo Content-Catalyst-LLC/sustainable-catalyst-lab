@@ -1,3 +1,19 @@
+# Sustainable Catalyst Python Compute Core
+
+**Current release: v0.37.1 — Manuscript, Report, Notebook, and Methods Assembly**
+
+The v0.37.1 service preserves the complete governed scientific-compute, federation, collaboration, reproducibility, and publication stack while adding structured research-document assembly. It creates safe document outputs and output-only notebooks; it does not execute manuscript content or notebook code.
+
+## Manuscript assembly configuration
+
+```text
+SC_LAB_MANUSCRIPT_ASSEMBLY_DB_PATH=/app/data/sc-lab-manuscript-assembly.sqlite3
+SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_ASSEMBLIES=5000
+SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_SECTIONS=20000
+SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_SECTIONS_PER_ASSEMBLY=500
+SC_LAB_MANUSCRIPT_ASSEMBLY_PERSISTENT_DISK_MOUNTED=0
+```
+
 # Sustainable Catalyst Lab Python Compute Core
 
 **Current release: v0.37.0 — Reproducibility Packages and Research Publication Studio**

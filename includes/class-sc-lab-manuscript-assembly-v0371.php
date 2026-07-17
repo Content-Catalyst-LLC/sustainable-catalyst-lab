@@ -1,0 +1,12 @@
+<?php
+/** Sustainable Catalyst Lab v0.37.1 Manuscript, Report, Notebook, and Methods Assembly. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Manuscript_Assembly_V0371 {
+ const VERSION='0.37.1'; private static $initialized=false;
+ public static function init(){if(self::$initialized){return;}self::$initialized=true;add_action('rest_api_init',array(__CLASS__,'routes'));}
+ public static function routes(){register_rest_route('sc-lab/v1','/manuscript-assembly/schema',array('methods'=>'GET','callback'=>array(__CLASS__,'schema'),'permission_callback'=>'__return_true'));register_rest_route('sc-lab/v1','/manuscript-assembly/integrity',array('methods'=>'GET','callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));}
+ private static function state($relative){$path=SC_LAB_DIR.$relative;return array('exists'=>is_file($path),'sha256'=>is_file($path)?hash_file('sha256',$path):null);}
+ public static function schema(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'assemblySchema'=>'sc-lab-research-assembly/0.37.1','sectionSchema'=>'sc-lab-assembly-section/0.37.1','exportSchema'=>'sc-lab-assembly-export/0.37.1','eventSchema'=>'sc-lab-assembly-event/0.37.1','outputOnlyNotebooks'=>true,'arbitraryCode'=>false));}
+ public static function health(){$required=array('backend/app/manuscript_assembly.py','assets/js/modules/manuscript-assembly-v0371.js','assets/css/sc-lab-manuscript-assembly-v0371.css','contracts/manuscript-assembly-policy-v0371.json','contracts/assembly-section-v0371.schema.json','contracts/research-assembly-v0371.schema.json','contracts/assembly-export-v0371.schema.json','contracts/assembly-event-v0371.schema.json','includes/class-sc-lab-manuscript-assembly-v0371.php');$files=array();$ok=true;foreach($required as $relative){$files[$relative]=self::state($relative);if(empty($files[$relative]['exists'])){$ok=false;}}return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'ready':'incomplete','version'=>self::VERSION,'release'=>defined('SC_LAB_VERSION')?SC_LAB_VERSION:null,'architecture'=>'workspace-governed-manuscript-report-notebook-and-methods-assembly','databaseSchemaVersion'=>1,'reusableSections'=>true,'structuredMethodsNarrative'=>true,'outputOnlyNotebooks'=>true,'crossFormatRendering'=>true,'arbitraryCode'=>false,'hardDelete'=>false,'files'=>$files,'time'=>gmdate('c')));}
+}
+SC_Lab_Manuscript_Assembly_V0371::init();

@@ -52,6 +52,7 @@
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
+          'manuscript-assembly' => 'Manuscript, report & notebook assembly',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2112,6 +2113,35 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
   "canonicalUri": "https://sustainablecatalyst.com/research/wetland-study"
 }</textarea><div class="sc-pub0370-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pub-v0370-action="publish">Publish signed release</button><button type="button" class="sc-lab-button" data-pub-v0370-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-pub-v0370-action="health">Refresh health</button></div><p class="sc-edge0362-note">Publication requires a verified sealed package, a completed approval, and an immutable scientific sign-off bound to the same workspace resource.</p></div>
           <div class="sc-pub0370-card is-wide"><h4>Packages, verification receipts, publication outputs, and provenance</h4><pre class="sc-pub0370-output" data-pub-v0370-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-ma0371" data-lab-module="manuscript-assembly" data-module-panel="manuscript-assembly" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / RESEARCH ASSEMBLY / v0.37.1</p><h3>Manuscript, Report, Notebook &amp; Methods Assembly</h3><p>Build structured research documents from reusable sections and sealed reproducibility packages, generate methods narratives, render safe output-only notebooks, and preserve immutable revision lineage.</p></header>
+        <p data-ma-v0371-status role="status" aria-live="polite">Connecting to the assembly studio…</p>
+        <div class="sc-ma0371-grid">
+          <div class="sc-ma0371-card"><h4>Workspace and section library</h4><label>Workspace ID<input data-ma-v0371-workspace value="publication-team"></label><label>Section ID<input data-ma-v0371-section value="wetland-introduction"></label><textarea data-ma-v0371-section-json>{
+  "id": "wetland-introduction",
+  "title": "Introduction",
+  "kind": "introduction",
+  "content": {"body": "Wetland monitoring provides evidence for ecological change."}
+}</textarea><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ma-v0371-action="section-create">Create section</button><button type="button" class="sc-lab-button" data-ma-v0371-action="section-update">Revise section</button><button type="button" class="sc-lab-button" data-ma-v0371-action="sections">List sections</button></div></div>
+          <div class="sc-ma0371-card"><h4>Research assembly</h4><label>Assembly ID<input data-ma-v0371-assembly value="wetland-manuscript-v1"></label><textarea data-ma-v0371-assembly-json>{
+  "id": "wetland-manuscript-v1",
+  "title": "Wetland Monitoring Study",
+  "documentType": "manuscript",
+  "template": "imrad",
+  "packageId": "wetland-study-v1",
+  "citationStyle": "Harvard",
+  "metadata": {"authors":[{"name":"Tariq Ahmad"}],"citations":[]},
+  "sections": [
+    {"id":"abstract","kind":"abstract","title":"Abstract","body":"A reproducible wetland monitoring study."},
+    {"librarySectionId":"wetland-introduction"}
+  ]
+}</textarea><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ma-v0371-action="assembly-create">Create assembly</button><button type="button" class="sc-lab-button" data-ma-v0371-action="assembly-update">Update draft</button><button type="button" class="sc-lab-button" data-ma-v0371-action="assemblies">List assemblies</button></div></div>
+          <div class="sc-ma0371-card"><h4>Methods and outputs</h4><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button" data-ma-v0371-action="methods">Generate methods</button><button type="button" class="sc-lab-button" data-ma-v0371-action="validate">Validate</button><button type="button" class="sc-lab-button" data-ma-v0371-action="render">Render formats</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ma-v0371-action="seal">Seal assembly</button></div><p class="sc-ma0371-note">Notebook exports contain narrative and stored result cells only. They never contain executable code.</p></div>
+          <div class="sc-ma0371-card"><h4>Revision lineage</h4><textarea data-ma-v0371-revise-json>{"id":"wetland-manuscript-v2","title":"Wetland Monitoring Study — Revision 2"}</textarea><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button" data-ma-v0371-action="revise">Create revision</button><button type="button" class="sc-lab-button" data-ma-v0371-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-ma-v0371-action="health">Refresh health</button></div></div>
+          <div class="sc-ma0371-card is-wide"><h4>Assembly records, validation, renders, and lineage</h4><pre class="sc-ma0371-output" data-ma-v0371-output>No response yet.</pre></div>
         </div>
       </section>
 

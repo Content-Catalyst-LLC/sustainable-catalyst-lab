@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.37.0"
+    version: str = "0.37.1"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -143,6 +143,12 @@ class Settings:
     publication_studio_max_resources: int = _int("SC_LAB_PUBLICATION_STUDIO_MAX_RESOURCES", 1000, 1, 10000)
     publication_studio_history_limit: int = _int("SC_LAB_PUBLICATION_STUDIO_HISTORY_LIMIT", 100000, 100, 2000000)
     publication_studio_persistent_disk_mounted: bool = os.getenv("SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    manuscript_assembly_db_path: str = os.getenv("SC_LAB_MANUSCRIPT_ASSEMBLY_DB_PATH", "./data/sc-lab-manuscript-assembly.sqlite3").strip()
+    manuscript_assembly_max_assemblies: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_ASSEMBLIES", 5000, 1, 100000)
+    manuscript_assembly_max_sections: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_SECTIONS", 20000, 1, 500000)
+    manuscript_assembly_max_sections_per_assembly: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_SECTIONS_PER_ASSEMBLY", 500, 1, 5000)
+    manuscript_assembly_history_limit: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_HISTORY_LIMIT", 100000, 100, 2000000)
+    manuscript_assembly_persistent_disk_mounted: bool = os.getenv("SC_LAB_MANUSCRIPT_ASSEMBLY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

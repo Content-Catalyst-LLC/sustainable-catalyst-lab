@@ -1,0 +1,43 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/assembly-export-v0371.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assemblyId": {
+      "type": "string"
+    },
+    "exportHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "fileHashes": {
+      "additionalProperties": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-assembly-export/0.37.1"
+    },
+    "version": {
+      "const": "0.37.1"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "assemblyId",
+    "files",
+    "fileHashes",
+    "exportHash"
+  ],
+  "title": "Assembly Export",
+  "type": "object"
+}

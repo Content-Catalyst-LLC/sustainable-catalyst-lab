@@ -45,6 +45,7 @@ from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepo
 from .institutional_node_federation import InstitutionalNodeError, InstitutionalNodeFederation, policies as institutional_node_policies
 from .offline_edge_sync import EdgeSyncError, OfflineEdgeSyncManager, policies as edge_sync_policies
 from .publication_studio import PublicationStudioError, ReproducibilityPublicationStudio, policies as publication_studio_policies
+from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStudio, policies as manuscript_assembly_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -67,6 +68,7 @@ artifact_repository = ScientificArtifactRepository(settings.artifact_repository_
 institutional_nodes = InstitutionalNodeFederation(settings.institutional_node_db_path, team_workspaces, resolve, settings.institutional_node_coordinator_secret, settings.institutional_node_max_nodes, settings.institutional_node_max_data_assets, settings.institutional_node_max_requests, settings.institutional_node_history_limit)
 edge_sync = OfflineEdgeSyncManager(settings.edge_sync_db_path, team_workspaces, institutional_nodes, settings.edge_sync_max_devices, settings.edge_sync_max_packages, settings.edge_sync_max_changes, settings.edge_sync_max_batch, settings.edge_sync_history_limit)
 publication_studio = ReproducibilityPublicationStudio(settings.publication_studio_db_path, team_workspaces, settings.publication_studio_max_packages, settings.publication_studio_max_publications, settings.publication_studio_max_resources, settings.publication_studio_history_limit, workspace_reviews)
+manuscript_assembly = ManuscriptAssemblyStudio(settings.manuscript_assembly_db_path, team_workspaces, publication_studio, settings.manuscript_assembly_max_assemblies, settings.manuscript_assembly_max_sections, settings.manuscript_assembly_max_sections_per_assembly, settings.manuscript_assembly_history_limit)
 
 
 @asynccontextmanager
@@ -182,6 +184,7 @@ def health():
         "workspaceVersionControl": {"version":"0.35.2","immutableSnapshots":True,"namedBranches":True,"threeWayMerge":True,"pathLevelConflicts":True,"protectedBranches":True,"signedApprovalGate":True,"historyRewrite":False},
         "scientificArtifactRepository": {"version":"0.36.0","governedCollections":True,"immutableArtifactVersions":True,"transportIntegrityBinding":True,"manifestFederation":True,"deltaSync":True,"tombstones":True,"conflictResolution":True,"automaticRemoteCallbacks":False},
         "reproducibilityPublicationStudio": {"version":"0.37.0","immutablePackages":True,"logicalBundles":True,"manifestVerification":True,"citationCff":True,"markdownHtmlJson":True,"scientificSignoffGate":True,"embeddedRestrictedData":False},
+        "manuscriptAssemblyStudio": {"version":"0.37.1","reusableSections":True,"structuredMethodsNarrative":True,"outputOnlyNotebooks":True,"markdownHtmlJats":True,"bibtex":True,"immutableAssemblies":True,"revisionLineage":True,"arbitraryCode":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2780,6 +2783,99 @@ def publication_timeline_route(workspace_id: str,limit: int=Query(500,ge=1,le=50
     actor,_=_team_workspace_actor(auth)
     try:return publication_studio.timeline(workspace_id,actor,limit)
     except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+# v0.37.1 Manuscript, Report, Notebook, and Methods Assembly
+
+def _manuscript_assembly_http_error(exc: ManuscriptAssemblyError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/manuscript-assembly/health")
+def manuscript_assembly_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = manuscript_assembly.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.manuscript_assembly_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.manuscript_assembly_persistent_disk_mounted else "Assembly sections, drafts, and renders are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/manuscript-assembly/policies")
+def manuscript_assembly_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = manuscript_assembly_policies(settings.manuscript_assembly_max_assemblies, settings.manuscript_assembly_max_sections, settings.manuscript_assembly_max_sections_per_assembly); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/assembly-sections")
+def assembly_sections_list_route(workspace_id: str, kind: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.list_sections(workspace_id, actor, kind, limit)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/assembly-sections")
+def assembly_section_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.create_section(workspace_id, payload, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/assembly-sections/{section_id}")
+def assembly_section_update_route(workspace_id: str, section_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.update_section(workspace_id, section_id, payload, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-assemblies")
+def research_assemblies_list_route(workspace_id: str, status: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.list_assemblies(workspace_id, actor, status, limit)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies")
+def research_assembly_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.create_assembly(workspace_id, payload, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}")
+def research_assembly_get_route(workspace_id: str, assembly_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.get_assembly(workspace_id, assembly_id, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}")
+def research_assembly_update_route(workspace_id: str, assembly_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.update_assembly(workspace_id, assembly_id, payload, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}/methods")
+def research_assembly_methods_route(workspace_id: str, assembly_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.generate_methods(workspace_id, assembly_id, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}/validate")
+def research_assembly_validate_route(workspace_id: str, assembly_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.validate(workspace_id, assembly_id, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}/render")
+def research_assembly_render_route(workspace_id: str, assembly_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.render(workspace_id, assembly_id, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}/seal")
+def research_assembly_seal_route(workspace_id: str, assembly_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.seal(workspace_id, assembly_id, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-assemblies/{assembly_id}/revise")
+def research_assembly_revise_route(workspace_id: str, assembly_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.revise(workspace_id, assembly_id, payload, actor)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/assembly-timeline")
+def research_assembly_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return manuscript_assembly.timeline(workspace_id, actor, limit)
+    except ManuscriptAssemblyError as exc: raise _manuscript_assembly_http_error(exc) from exc
 
 def _edge_sync_http_error(exc: EdgeSyncError) -> HTTPException:
     return HTTPException(status_code=exc.status_code, detail=exc.detail)

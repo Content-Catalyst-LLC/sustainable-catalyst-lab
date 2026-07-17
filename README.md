@@ -1,11 +1,15 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.37.0 — Reproducibility Packages and Research Publication Studio**
+**Current release: v0.37.1 — Manuscript, Report, Notebook, and Methods Assembly**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution, plus governed scientific artifact collections, immutable version records, transport-bound integrity checks, hashed federation manifests, delta synchronization, tombstones, explicit conflict resolution, registered institutional compute nodes, signed local-execution envelopes, restricted-data locality controls, and node-attested aggregate results.
+## v0.37.1 highlights
 
-
-
+- Reusable, revisioned section library with immutable snapshots inside assemblies.
+- Manuscript, technical report, methods supplement, research dossier, and output-only notebook document types.
+- Structured methods narratives generated from sealed v0.37.0 reproducibility packages.
+- Cross-format Markdown, escaped HTML, JATS-lite XML, Jupyter notebook, BibTeX, methods, and JSON exports.
+- Validation, immutable sealing, render hashes, and parent-revision lineage.
+- New `Manuscript, Report, Notebook & Methods Assembly` Lab workspace.
 
 ## v0.37.0 highlights
 
