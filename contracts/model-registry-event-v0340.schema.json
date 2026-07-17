@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Model Registry Event v0.34.0",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["model_id", "event_type", "details", "created_at"],
+  "properties": {
+    "sequence": {"type": "integer"},
+    "model_id": {"type": "string"},
+    "model_version": {"type": ["string", "null"]},
+    "event_type": {"type": "string"},
+    "actor": {"type": ["string", "null"]},
+    "reason": {"type": ["string", "null"]},
+    "details": {"type": "object"},
+    "created_at": {"type": "string"}
+  }
+}

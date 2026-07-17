@@ -34,6 +34,7 @@ def test_atomic_claim_prevents_double_lease():
 def test_fastapi_persistent_queue_routes(monkeypatch,tmp_path):
  monkeypatch.setenv('SC_LAB_DISPATCHER_DB_PATH',str(tmp_path/'api.sqlite3'))
  import importlib,app.config,app.main
- importlib.reload(app.config); m=importlib.reload(app.main); client=TestClient(m.app)
+ importlib.reload(app.config); m=importlib.reload(app.main)
  headers={'X-SC-Lab-API-Key':m.settings.api_key} if m.settings.api_key else {}
- assert client.get('/v1/dispatcher/queue/status',headers=headers).status_code==200
+ with TestClient(m.app) as client:
+  assert client.get('/v1/dispatcher/queue/status',headers=headers).status_code==200

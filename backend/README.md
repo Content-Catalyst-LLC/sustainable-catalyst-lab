@@ -1,7 +1,17 @@
-# Sustainable Catalyst Lab Python Compute Core v0.33.2
+# Sustainable Catalyst Lab Python Compute Core v0.34.0
 
-The v0.33.2 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, partial recovery, durable workflow automation, and adaptive campaigns while adding Bayesian optimization, active learning, predictive uncertainty, and resource-aware search.
+The v0.34.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while adding immutable scientific model registration and reproducible environment governance.
 
+## v0.34.0 scientific model registry
+
+- Register immutable semantic model versions backed by SHA-256 identity hashes.
+- Capture runtime, system, architecture, container, dependency, source-revision, and build environments.
+- Deduplicate scientifically identical environments using stable lock hashes.
+- Promote versions through candidate, production, and archive channels.
+- Deprecate versions with required reasons and retained event history.
+- Generate and verify portable reproduction manifests.
+- Compare environments for dependency, runtime, system, and container drift.
+- Persist records in SQLite WAL storage with explicit deployment-durability reporting.
 
 ## v0.33.2 closed-loop campaigns
 

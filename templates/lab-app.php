@@ -52,6 +52,7 @@
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
+          'model-registry' => 'Scientific model registry',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
@@ -1681,6 +1682,51 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 }</textarea><div class="sc-ec0331-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0331-observe>Record observation</button></div><p class="sc-ec0331-note"><strong>Safety:</strong> the surrogate proposes only typed parameter values. It cannot execute arbitrary code, shell commands, callback URLs, or unregistered methods.</p></div>
           <div class="sc-ec0331-card is-wide"><h4>Saved campaigns</h4><div class="sc-lab-table-wrap"><table class="sc-ec0331-table"><thead><tr><th>Campaign</th><th>Workflow</th><th>Strategy</th><th>Status</th><th>Completed / budget</th><th>Best objective</th><th>Cost</th><th>Surrogate</th><th>Actions</th></tr></thead><tbody data-ec-v0331-campaigns></tbody></table></div></div>
           <div class="sc-ec0331-card is-wide"><h4>Campaign, surrogate, prediction, acquisition, trial, and timeline records</h4><pre class="sc-ec0331-output" data-ec-v0331-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-mr0340" data-lab-module="model-registry" data-module-panel="model-registry" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL GOVERNANCE / v0.34.0</p><h3>Scientific Model Registry and Environment Reproduction</h3><p>Register immutable scientific model versions, lock runtime and dependency environments, promote reviewed versions, preserve deprecation history, and export portable reproduction manifests with cryptographic verification.</p></header>
+        <p data-mr-v0340-status role="status" aria-live="polite">Scientific model registry loading…</p>
+        <div class="sc-mr0340-metrics" data-mr-v0340-metrics></div>
+        <div class="sc-mr0340-grid">
+          <div class="sc-mr0340-card is-wide"><h4>Register model version</h4><textarea data-mr-v0340-definition aria-label="Scientific model definition JSON">{
+  "id": "heat-transfer-surrogate",
+  "modelVersion": "1.0.0",
+  "title": "Heat-transfer surrogate",
+  "projectId": "default",
+  "type": "registered-method",
+  "methodId": "simulation.parameter_sweep",
+  "sourceRevision": "replace-with-git-commit",
+  "artifactIds": ["replace-with-model-artifact-id"],
+  "defaultInputs": {"temperature": 350},
+  "parameters": {"tolerance": 1e-8},
+  "environment": {
+    "id": "heat-transfer-python-312",
+    "title": "Python 3.12 scientific environment",
+    "runtime": {"pythonVersion": "3.12.12"},
+    "container": {"image": "sc-lab-compute", "digest": "sha256:replace-with-digest"},
+    "dependencies": [
+      {"name": "numpy", "version": "2.2.0", "hashes": ["sha256:replace-with-wheel-hash"]},
+      {"name": "scipy", "version": "1.15.0", "hashes": ["sha256:replace-with-wheel-hash"]}
+    ]
+  },
+  "provenance": {"author": "Sustainable Catalyst Lab"}
+}</textarea><div class="sc-mr0340-actions"><button type="button" class="sc-lab-button" data-mr-v0340-action="validate">Validate</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-mr-v0340-action="register">Register immutable version</button><button type="button" class="sc-lab-button" data-mr-v0340-action="refresh">Refresh</button></div></div>
+          <div class="sc-mr0340-card"><h4>Version governance</h4><label>Model ID<input data-mr-v0340-modelid value="heat-transfer-surrogate"></label><label>Version or alias<input data-mr-v0340-version value="1.0.0"></label><label>Operator reason<input data-mr-v0340-reason value="Reviewed and validated for production use."></label><div class="sc-mr0340-actions"><button type="button" class="sc-lab-button" data-mr-v0340-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-mr-v0340-action="candidate">Promote candidate</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-mr-v0340-action="production">Promote production</button><button type="button" class="sc-lab-button" data-mr-v0340-action="archived">Archive</button><button type="button" class="sc-lab-button" data-mr-v0340-action="deprecate">Deprecate</button><button type="button" class="sc-lab-button" data-mr-v0340-action="timeline">Timeline</button></div><p class="sc-mr0340-note"><strong>Integrity rule:</strong> registered versions are immutable. Any change to model content, dependencies, artifacts, or execution parameters requires a new semantic version.</p></div>
+          <div class="sc-mr0340-card"><h4>Capture environment</h4><textarea data-mr-v0340-environment aria-label="Environment capture JSON">{
+  "id": "local-python-312",
+  "title": "Local Python environment",
+  "dependencies": [
+    {"name": "numpy", "version": "2.2.0"},
+    {"name": "scipy", "version": "1.15.0"}
+  ],
+  "sourceRevision": "replace-with-git-commit"
+}</textarea><div class="sc-mr0340-actions"><button type="button" class="sc-lab-button" data-mr-v0340-action="capture">Capture environment lock</button></div></div>
+          <div class="sc-mr0340-card is-wide"><h4>Registered model versions</h4><div class="sc-mr0340-table-wrap"><table class="sc-mr0340-table"><thead><tr><th>Model</th><th>Version</th><th>Type</th><th>Channel</th><th>Action</th></tr></thead><tbody data-mr-v0340-models></tbody></table></div></div>
+          <div class="sc-mr0340-card"><h4>Reproduction manifest</h4><div class="sc-mr0340-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mr-v0340-action="reproduction">Build manifest</button><button type="button" class="sc-lab-button" data-mr-v0340-action="verify">Verify manifest</button></div><textarea data-mr-v0340-manifest aria-label="Model reproduction manifest JSON">{}</textarea></div>
+          <div class="sc-mr0340-card"><h4>Registry, environment, promotion, and verification records</h4><pre class="sc-mr0340-output" data-mr-v0340-output>No response yet.</pre></div>
         </div>
       </section>
 

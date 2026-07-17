@@ -1,0 +1,12 @@
+{
+  "schema": "sc-lab-model-registry-policy/0.34.0",
+  "version": "0.34.0",
+  "architecture": "scientific-model-registry-environment-reproduction",
+  "immutableVersions": true,
+  "semanticVersioning": true,
+  "channels": ["draft", "candidate", "production", "deprecated", "archived"],
+  "environmentCapture": {"runtime": true, "system": true, "containerDigest": true, "dependencyHashes": true, "sourceRevision": true},
+  "reproduction": {"portableManifest": true, "modelHashVerification": true, "environmentLockVerification": true, "artifactSetVerification": true},
+  "security": {"arbitraryCode": false, "registeredMethodsOnly": true, "externalCallbacks": false},
+  "retention": {"hardDeleteExposed": false, "deprecationHistory": true}
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Reproduction Environment v0.34.0",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "version", "id", "runtime", "system", "dependencies", "lockHash", "recordHash", "capturedAt"],
+  "properties": {
+    "schema": {"const": "sc-lab-reproduction-environment/0.34.0"},
+    "version": {"const": "0.34.0"},
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "runtime": {"type": "object"},
+    "system": {"type": "object"},
+    "container": {"type": "object"},
+    "dependencies": {"type": "array", "items": {"type": "object"}},
+    "environmentVariables": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "sourceRevision": {"type": ["string", "null"]},
+    "buildId": {"type": ["string", "null"]},
+    "lockHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "recordHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "capturedAt": {"type": "string"}
+  }
+}

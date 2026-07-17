@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.33.2"
+    version: str = "0.34.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -94,6 +94,11 @@ class Settings:
     closed_loop_history_limit: int = _int("SC_LAB_CLOSED_LOOP_HISTORY_LIMIT", 30000, 100, 1000000)
     closed_loop_measurement_secret: str = os.getenv("SC_LAB_CLOSED_LOOP_MEASUREMENT_SECRET", "").strip()
     closed_loop_persistent_disk_mounted: bool = os.getenv("SC_LAB_CLOSED_LOOP_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    model_registry_db_path: str = os.getenv("SC_LAB_MODEL_REGISTRY_DB_PATH", "./data/sc-lab-model-registry.sqlite3").strip()
+    model_registry_max_models: int = _int("SC_LAB_MODEL_REGISTRY_MAX_MODELS", 5000, 1, 100000)
+    model_registry_max_versions: int = _int("SC_LAB_MODEL_REGISTRY_MAX_VERSIONS", 50000, 1, 1000000)
+    model_registry_history_limit: int = _int("SC_LAB_MODEL_REGISTRY_HISTORY_LIMIT", 50000, 100, 1000000)
+    model_registry_persistent_disk_mounted: bool = os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

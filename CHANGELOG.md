@@ -1,3 +1,14 @@
+## 0.34.0 — Scientific Model Registry and Environment Reproduction
+
+- Added immutable semantic model versions with canonical SHA-256 model identity hashes.
+- Added SQLite-WAL registries for models, versions, environments, aliases, and operator events.
+- Added runtime, system, architecture, container, dependency, source-revision, and build environment capture.
+- Added stable environment lock hashes, dependency-hash retention, environment deduplication, and drift comparison.
+- Added candidate, production, archived, and deprecated governance channels with alias updates and required deprecation reasons.
+- Added portable reproduction manifests with model, environment, source, artifact-set, and manifest-hash verification.
+- Added authenticated backend routes, administrator-only WordPress proxies, five public contracts, and a 65th Lab panel.
+- Preserved all v0.33.2 closed-loop campaign safety and provenance behavior.
+
 ## 0.33.2 — Closed-Loop Simulation and Instrument Campaigns
 
 - Added durable simulation, instrument, and hybrid closed-loop campaign coordination.

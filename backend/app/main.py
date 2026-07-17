@@ -35,6 +35,7 @@ from .workflow_orchestration import WorkflowError, WorkflowOrchestrator, policie
 from .workflow_scheduling import WorkflowScheduleError, WorkflowScheduler, policies as workflow_scheduling_policies, verify_event_signature
 from .experiment_campaigns import ExperimentCampaignError, ExperimentCampaignManager, policies as experiment_campaign_policies
 from .closed_loop_campaigns import ClosedLoopError, ClosedLoopCampaignManager, policies as closed_loop_policies
+from .model_registry import ModelRegistryError, ScientificModelRegistry, capture_environment, policies as model_registry_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -47,6 +48,7 @@ workflows = WorkflowOrchestrator(settings.workflow_db_path, dispatcher, settings
 workflow_automation = WorkflowScheduler(settings.workflow_schedule_db_path, workflows, settings.workflow_scheduler_poll_seconds, settings.workflow_scheduler_max_catch_up_runs, settings.workflow_scheduler_history_limit)
 experiment_campaigns = ExperimentCampaignManager(settings.experiment_campaign_db_path, workflows, settings.experiment_campaign_poll_seconds, settings.experiment_campaign_max_campaigns, settings.experiment_campaign_max_trials, settings.experiment_campaign_history_limit)
 closed_loop_campaigns = ClosedLoopCampaignManager(settings.closed_loop_db_path, experiment_campaigns, settings.closed_loop_poll_seconds, settings.closed_loop_max_loops, settings.closed_loop_max_cycles, settings.closed_loop_history_limit, settings.closed_loop_measurement_secret)
+model_registry = ScientificModelRegistry(settings.model_registry_db_path, settings.model_registry_max_models, settings.model_registry_max_versions, settings.model_registry_history_limit)
 
 
 @asynccontextmanager
@@ -149,6 +151,7 @@ def health():
         "workflowAutomation": {"version":"0.32.2","intervalSchedules":True,"cronUtc":True,"oneTimeSchedules":True,"authenticatedEvents":True,"eventDeduplication":True,"misfireRecovery":True,"concurrencyControls":True},
         "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"gaussianProcessSurrogate":True,"predictiveUncertainty":True,"activeLearning":True,"resourceAwareSearch":True,"costAdjustedAcquisition":True},
         "closedLoopCampaigns": {"version":"0.33.2","simulationLoops":True,"instrumentMeasurementIngestion":True,"hybridCampaigns":True,"safetyInterlocks":True,"operatorCommandApproval":True,"checkpointedCycles":True,"directDeviceExecution":False},
+        "scientificModelRegistry": {"version":"0.34.0","immutableVersions":True,"environmentCapture":True,"dependencyLocking":True,"reproductionManifests":True,"promotionWorkflow":True,"deprecationHistory":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -224,6 +227,7 @@ def capabilities():
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"serverBackedRegistry":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"gaussianProcessSurrogate":True,"activeLearning":True,"resourceAwareSearch":True},
         "closedLoopCampaigns": {"version":"0.33.2","simulation":True,"instrument":True,"hybrid":True,"signedMeasurements":True,"safetyInterlocks":True,"operatorApproval":True,"directDeviceExecution":False},
+        "scientificModelRegistry": {"version":"0.34.0","modelVersioning":True,"environmentCapture":True,"dependencyLocks":True,"reproductionVerification":True,"promotionChannels":["candidate","production","archived"],"arbitraryCode":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1788,6 +1792,93 @@ def experiment_campaign_tick_route(auth: dict[str, str] = Depends(require_comput
     del auth
     return experiment_campaigns.tick()
 
+
+# v0.34.0 Scientific Model Registry and Environment Reproduction
+def _model_registry_http_error(exc: ModelRegistryError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+def _validate_model_registry_reference(payload: dict[str, Any]) -> None:
+    source = payload.get("model") if isinstance(payload.get("model"), dict) else payload
+    model_type = str(source.get("type") or "registered-method")
+    if model_type == "registered-method":
+        method_id = str(source.get("methodId") or "").strip()
+        try:
+            resolve(method_id)
+        except KeyError as exc:
+            raise ModelRegistryError(str(exc), 422) from exc
+    elif model_type == "workflow":
+        workflow_id = str(source.get("workflowId") or "").strip()
+        try:
+            workflows.get(workflow_id)
+        except WorkflowError as exc:
+            raise ModelRegistryError(f"Unknown registered workflow: {workflow_id}", 422) from exc
+
+@app.get("/v1/model-registry/health")
+def model_registry_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = model_registry.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.model_registry_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.model_registry_persistent_disk_mounted else "Model registry records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/model-registry/policies")
+def model_registry_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = model_registry_policies(settings.model_registry_max_models, settings.model_registry_max_versions); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/model-registry/environments/capture")
+def model_registry_capture_environment_route(payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return {"ok": True, "environment": capture_environment(payload or {})}
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/environments/compare")
+def model_registry_compare_environment_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.compare_environments(payload)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/validate")
+def model_registry_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        _validate_model_registry_reference(payload)
+        return model_registry.validate(payload)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/models")
+def model_registry_register_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        _validate_model_registry_reference(payload)
+        return model_registry.register(payload, auth.get("subject", "operator"))
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.get("/v1/model-registry/models")
+def model_registry_list_route(project_id: str = Query("", alias="projectId"), channel: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.list(project_id, channel, limit)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.get("/v1/model-registry/models/{model_id}")
+def model_registry_get_route(model_id: str, version: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.get(model_id, version)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/models/{model_id}/{model_version}/promote")
+def model_registry_promote_route(model_id: str, model_version: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.promote(model_id, model_version, str(payload.get("channel") or "candidate"), auth.get("subject", "operator"), str(payload.get("reason") or ""))
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/models/{model_id}/{model_version}/deprecate")
+def model_registry_deprecate_route(model_id: str, model_version: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.deprecate(model_id, model_version, auth.get("subject", "operator"), str(payload.get("reason") or ""))
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.get("/v1/model-registry/models/{model_id}/reproduction")
+def model_registry_reproduction_route(model_id: str, version: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.reproduction_manifest(model_id, version)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.post("/v1/model-registry/reproduction/verify")
+def model_registry_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return model_registry.verify_reproduction(payload)
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
+
+@app.get("/v1/model-registry/models/{model_id}/timeline")
+def model_registry_timeline_route(model_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    return model_registry.timeline(model_id, limit)
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

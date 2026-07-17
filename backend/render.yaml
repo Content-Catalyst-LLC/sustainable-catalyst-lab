@@ -110,3 +110,13 @@ services:
     value: '30000'
   - key: SC_LAB_CLOSED_LOOP_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_MODEL_REGISTRY_DB_PATH
+    value: /app/data/sc-lab-model-registry.sqlite3
+  - key: SC_LAB_MODEL_REGISTRY_MAX_MODELS
+    value: '5000'
+  - key: SC_LAB_MODEL_REGISTRY_MAX_VERSIONS
+    value: '50000'
+  - key: SC_LAB_MODEL_REGISTRY_HISTORY_LIMIT
+    value: '50000'
+  - key: SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED
+    value: '0'

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Model Reproduction Manifest v0.34.0",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "version", "id", "model", "environment", "artifacts", "inputs", "createdAt", "execution", "manifestHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-model-reproduction-manifest/0.34.0"},
+    "version": {"const": "0.34.0"},
+    "id": {"type": "string"},
+    "model": {"type": "object"},
+    "environment": {"$ref": "reproduction-environment-v0340.schema.json"},
+    "artifacts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "inputs": {"type": "object"},
+    "sourceRevision": {"type": ["string", "null"]},
+    "provenance": {"type": "object"},
+    "createdAt": {"type": "string"},
+    "execution": {"type": "object"},
+    "manifestHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

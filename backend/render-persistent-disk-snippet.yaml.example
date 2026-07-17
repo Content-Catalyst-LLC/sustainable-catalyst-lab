@@ -18,3 +18,8 @@ envVars:
     value: /app/data/sc-lab-artifacts.sqlite3
   - key: SC_LAB_ARTIFACT_PERSISTENT_DISK_MOUNTED
     value: "1"
+  - key: SC_LAB_MODEL_REGISTRY_DB_PATH
+    value: /app/data/sc-lab-model-registry.sqlite3
+  - key: SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED
+    value: "1"
+

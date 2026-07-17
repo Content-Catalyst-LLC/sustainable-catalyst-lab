@@ -1,8 +1,19 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.33.2 — Closed-Loop Simulation and Instrument Campaigns**
+**Current release: v0.34.0 — Scientific Model Registry and Environment Reproduction**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, and workflow-backed trial provenance.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, and reproducible environment locks.
+
+
+## v0.34.0 highlights
+
+- Durable scientific model, model-version, environment, alias, and event registries.
+- Immutable semantic versions with canonical SHA-256 model hashes.
+- Runtime, operating-system, architecture, container, dependency, source-revision, and build capture.
+- Stable environment lock hashes and dependency-drift comparison.
+- Draft, candidate, production, deprecated, and archived governance channels.
+- Portable reproduction manifests with model, environment, artifact, source, and manifest verification.
+- Administrator-only Scientific Model Registry workspace, bringing Lab to 65 registered panels.
 
 
 ## v0.33.2 highlights
