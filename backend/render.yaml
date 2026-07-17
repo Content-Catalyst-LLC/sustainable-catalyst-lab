@@ -168,3 +168,17 @@ services:
     value: '100000'
   - key: SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_INSTITUTIONAL_NODE_DB_PATH
+    value: /app/data/sc-lab-institutional-nodes.sqlite3
+  - key: SC_LAB_INSTITUTIONAL_NODE_COORDINATOR_SECRET
+    generateValue: true
+  - key: SC_LAB_INSTITUTIONAL_NODE_MAX_NODES
+    value: '1000'
+  - key: SC_LAB_INSTITUTIONAL_NODE_MAX_DATA_ASSETS
+    value: '100000'
+  - key: SC_LAB_INSTITUTIONAL_NODE_MAX_REQUESTS
+    value: '250000'
+  - key: SC_LAB_INSTITUTIONAL_NODE_HISTORY_LIMIT
+    value: '100000'
+  - key: SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED
+    value: '0'

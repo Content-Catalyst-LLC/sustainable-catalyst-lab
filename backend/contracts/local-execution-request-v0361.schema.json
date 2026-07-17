@@ -1,0 +1,76 @@
+{
+  "$id": "sc-lab-local-execution-request/0.36.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "coordinatorSignature": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "dataAssetIds": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "envelope": {
+      "type": "object"
+    },
+    "envelopeHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "methodId": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "outputPolicy": {
+      "enum": [
+        "aggregate-only",
+        "summary-only",
+        "artifact-allowed"
+      ]
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-local-execution-request/0.36.1"
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "claimed",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "version": {
+      "const": "0.36.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "nodeId",
+    "methodId",
+    "dataAssetIds",
+    "outputPolicy",
+    "status",
+    "envelopeHash",
+    "coordinatorSignature"
+  ],
+  "title": "Local Execution Request",
+  "type": "object"
+}

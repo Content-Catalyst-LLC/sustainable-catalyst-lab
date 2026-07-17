@@ -1,0 +1,70 @@
+{
+  "$id": "sc-lab-local-execution-receipt/0.36.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "artifactRefs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "attestationSignature": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "dataAccessDigest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "environmentHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "receiptHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "requestId": {
+      "type": "string"
+    },
+    "resultHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "resultSummary": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-local-execution-receipt/0.36.1"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "failed"
+      ]
+    },
+    "version": {
+      "const": "0.36.1"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "requestId",
+    "nodeId",
+    "status",
+    "resultHash",
+    "dataAccessDigest",
+    "environmentHash",
+    "receiptHash"
+  ],
+  "title": "Local Execution Receipt",
+  "type": "object"
+}

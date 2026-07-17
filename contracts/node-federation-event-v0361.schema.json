@@ -1,0 +1,50 @@
+{
+  "$id": "sc-lab-node-federation-event/0.36.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "actorId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "eventHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-node-federation-event/0.36.1"
+    },
+    "version": {
+      "const": "0.36.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "entityType",
+    "entityId",
+    "eventType",
+    "actorId",
+    "eventHash",
+    "createdAt"
+  ],
+  "title": "Node Federation Event",
+  "type": "object"
+}

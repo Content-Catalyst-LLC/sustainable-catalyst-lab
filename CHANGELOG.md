@@ -1,5 +1,15 @@
 # Sustainable Catalyst Lab Changelog
 
+## 0.36.1 — Institutional Node Federation and Local-Data Execution
+
+- Added workspace-governed institutional compute nodes and local-data asset records.
+- Added signed registered-method execution envelopes and node-authenticated claims.
+- Added confidential/restricted data locality and aggregate-only export enforcement.
+- Added node-attested result receipts with result, data-access, environment, and receipt hashes.
+- Added cancellation, node status controls, health metrics, durable timelines, schemas, WordPress operations, and deployment configuration.
+- Added the 72nd Lab panel.
+
+
 ## v0.36.0 — Scientific Artifact Repository and Data Federation
 
 - Added workspace-governed artifact collections and immutable scientific artifact version records.

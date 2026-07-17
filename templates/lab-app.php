@@ -1994,6 +1994,45 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+      <section class="sc-lab-panel sc-inf0361" data-lab-module="institutional-nodes" data-module-panel="institutional-nodes" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / INSTITUTIONAL FEDERATION / v0.36.1</p><h3>Institutional Node Federation and Local-Data Execution</h3><p>Register governed institutional compute nodes, describe data that must remain local, issue signed registered-method envelopes, and retain attested aggregate results without centralizing confidential or restricted datasets.</p></header>
+        <div data-inf-v0361-status role="status" aria-live="polite">Connecting to institutional federation…</div>
+        <div class="sc-inf0361-metrics" data-inf-v0361-metrics></div>
+        <div class="sc-inf0361-grid">
+          <div class="sc-inf0361-card"><h4>Institutional node</h4><label>Workspace ID<input data-inf-v0361-workspace value="health-team"></label><label>Node ID<input data-inf-v0361-node value="hospital-node"></label><textarea data-inf-v0361-node-json>{
+  "id": "hospital-node",
+  "title": "Hospital Secure Compute Node",
+  "institution": "Example Hospital",
+  "endpointUrl": "https://hospital.example/sc-lab-node",
+  "allowedMethods": ["statistics.descriptive"],
+  "classifications": ["public", "internal", "confidential", "restricted"],
+  "maxConcurrent": 2,
+  "capabilities": {"localExecution": true, "resultAttestation": true}
+}</textarea><div class="sc-inf0361-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-inf-v0361-action="register-node">Register node</button><button type="button" class="sc-lab-button" data-inf-v0361-action="nodes">List nodes</button><button type="button" class="sc-lab-button" data-inf-v0361-action="refresh">Refresh</button></div><textarea data-inf-v0361-status-json>{"status":"suspended","reason":"operator maintenance window"}</textarea><button type="button" class="sc-lab-button" data-inf-v0361-action="node-status">Change node status</button><p class="sc-inf0361-note">The node secret is returned once during registration. Store it only in the institutional node runtime, never in WordPress or a browser.</p></div>
+          <div class="sc-inf0361-card"><h4>Local data asset</h4><textarea data-inf-v0361-data-json>{
+  "id": "local-cohort",
+  "title": "Restricted Outcomes Cohort",
+  "classification": "restricted",
+  "exportPolicy": "aggregate-only",
+  "schemaHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contentHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "rowCount": 2500,
+  "metadata": {"custodian": "clinical-research-office", "fields": ["age", "outcome"]}
+}</textarea><div class="sc-inf0361-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-inf-v0361-action="register-data">Register local data</button><button type="button" class="sc-lab-button" data-inf-v0361-action="data-assets">List local assets</button></div><p class="sc-inf0361-note">Only metadata, schema hashes, classifications, and policy records are centralized. Restricted data bytes stay on the institutional node.</p></div>
+          <div class="sc-inf0361-card"><h4>Governed local execution</h4><textarea data-inf-v0361-execution-json>{
+  "id": "local-analysis-1",
+  "nodeId": "hospital-node",
+  "methodId": "statistics.descriptive",
+  "dataAssetIds": ["local-cohort"],
+  "parameters": {"column": "outcome"},
+  "outputPolicy": "aggregate-only",
+  "priority": 70
+}</textarea><div class="sc-inf0361-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-inf-v0361-action="execute">Create signed request</button><button type="button" class="sc-lab-button" data-inf-v0361-action="executions">List executions</button><button type="button" class="sc-lab-button" data-inf-v0361-action="timeline">Timeline</button></div><p class="sc-inf0361-note"><strong>Execution boundary:</strong> requests reference registered Lab methods and local data IDs. Arbitrary Python, shell commands, executable expressions, and unrestricted callbacks are rejected.</p></div>
+          <div class="sc-inf0361-card"><h4>Cancel local execution</h4><label>Execution request ID<input data-inf-v0361-request value="local-analysis-1"></label><textarea data-inf-v0361-cancel-json>{"reason":"research protocol changed before execution"}</textarea><button type="button" class="sc-lab-button" data-inf-v0361-action="cancel">Cancel request</button><p class="sc-inf0361-note">Completed results require a node-authenticated attestation containing the result hash, data-access digest, environment hash, and policy-approved summary.</p></div>
+          <div class="sc-inf0361-card is-wide"><h4>Nodes, local data assets, execution envelopes, attestations, and federation history</h4><pre class="sc-inf0361-output" data-inf-v0361-output>No response yet.</pre></div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
         <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>

@@ -42,6 +42,7 @@ from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies 
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
+from .institutional_node_federation import InstitutionalNodeError, InstitutionalNodeFederation, policies as institutional_node_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -61,6 +62,7 @@ team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
+institutional_nodes = InstitutionalNodeFederation(settings.institutional_node_db_path, team_workspaces, resolve, settings.institutional_node_coordinator_secret, settings.institutional_node_max_nodes, settings.institutional_node_max_data_assets, settings.institutional_node_max_requests, settings.institutional_node_history_limit)
 
 
 @asynccontextmanager
@@ -2466,6 +2468,94 @@ def artifact_repository_timeline_route(workspace_id: str, limit: int = Query(500
     actor, _ = _team_workspace_actor(auth)
     try: return artifact_repository.timeline(workspace_id, actor, limit)
     except ArtifactRepositoryError as exc: raise _artifact_repository_http_error(exc) from exc
+
+
+# v0.36.1 Institutional Node Federation and Local-Data Execution
+
+def _institutional_node_http_error(exc: InstitutionalNodeError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/institutional-nodes/health")
+def institutional_node_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = institutional_nodes.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.institutional_node_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.institutional_node_persistent_disk_mounted else "Institutional node and local-execution records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/institutional-nodes/policies")
+def institutional_node_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = institutional_node_policies(settings.institutional_node_max_nodes, settings.institutional_node_max_data_assets, settings.institutional_node_max_requests); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/institutional-nodes")
+def institutional_node_list_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.list_nodes(workspace_id, actor)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/institutional-nodes")
+def institutional_node_register_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.register_node(workspace_id, payload, actor)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/institutional-nodes/{node_id}/status")
+def institutional_node_status_route(workspace_id: str, node_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.set_node_status(workspace_id, node_id, str(payload.get("status") or ""), actor, str(payload.get("reason") or ""))
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/institutional-nodes/{node_id}/data-assets")
+def institutional_node_data_list_route(workspace_id: str, node_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.list_data_assets(workspace_id, node_id, actor)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/institutional-nodes/{node_id}/data-assets")
+def institutional_node_data_register_route(workspace_id: str, node_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.register_data_asset(workspace_id, node_id, payload, actor)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/local-executions")
+def institutional_execution_list_route(workspace_id: str, node_id: str = Query("", alias="nodeId"), status: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.list_executions(workspace_id, actor, node_id, status, limit)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/local-executions")
+def institutional_execution_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.create_execution(workspace_id, payload, actor)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/local-executions/{request_id}/cancel")
+def institutional_execution_cancel_route(workspace_id: str, request_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.cancel_execution(workspace_id, request_id, actor, str(payload.get("reason") or ""))
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/institutional-nodes/{node_id}/executions/claim")
+def institutional_execution_claim_route(node_id: str, x_sc_lab_node_secret: str = Header("", alias="X-SC-Lab-Node-Secret"), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return institutional_nodes.claim_execution(node_id, x_sc_lab_node_secret)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/institutional-nodes/{node_id}/executions/{request_id}/complete")
+def institutional_execution_complete_route(node_id: str, request_id: str, payload: dict[str, Any], x_sc_lab_node_secret: str = Header("", alias="X-SC-Lab-Node-Secret"), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return institutional_nodes.complete_execution(node_id, request_id, payload, x_sc_lab_node_secret)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.post("/v1/institutional-nodes/verify-envelope")
+def institutional_execution_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return institutional_nodes.verify_envelope(payload)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/institutional-node-timeline")
+def institutional_node_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return institutional_nodes.timeline(workspace_id, actor, limit)
+    except InstitutionalNodeError as exc: raise _institutional_node_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

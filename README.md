@@ -1,8 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.36.0 — Scientific Artifact Repository and Data Federation**
+**Current release: v0.36.1 — Institutional Node Federation and Local-Data Execution**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution, plus governed scientific artifact collections, immutable version records, transport-bound integrity checks, hashed federation manifests, delta synchronization, tombstones, and explicit conflict resolution.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution, plus governed scientific artifact collections, immutable version records, transport-bound integrity checks, hashed federation manifests, delta synchronization, tombstones, explicit conflict resolution, registered institutional compute nodes, signed local-execution envelopes, restricted-data locality controls, and node-attested aggregate results.
+
+
+## v0.36.1 highlights
+
+- Workspace-governed institutional node registration with one-time node credentials and explicit status controls.
+- Local data asset records that centralize only schema, classification, hashes, and export policy—not restricted data bytes.
+- Signed execution envelopes restricted to registered Lab methods and node allowlists.
+- Node-authenticated request claiming with concurrency limits.
+- HMAC-attested completion receipts containing result, data-access, and environment hashes.
+- Automatic rejection of raw artifact export for confidential or restricted datasets.
+- Durable execution, cancellation, receipt, and node timelines.
+- New Institutional Node Federation and Local-Data Execution panel, bringing Lab to 72 registered panels.
 
 
 ## v0.36.0 highlights

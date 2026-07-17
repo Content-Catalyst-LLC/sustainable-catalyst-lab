@@ -1,0 +1,76 @@
+{
+  "$id": "sc-lab-institutional-node/0.36.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "allowedMethods": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "classifications": {
+      "items": {
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted"
+        ]
+      },
+      "type": "array"
+    },
+    "endpointUrl": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "institution": {
+      "type": "string"
+    },
+    "maxConcurrent": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "nodeHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-institutional-node/0.36.1"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "suspended",
+        "retired"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.36.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "institution",
+    "status",
+    "nodeHash"
+  ],
+  "title": "Institutional Node",
+  "type": "object"
+}

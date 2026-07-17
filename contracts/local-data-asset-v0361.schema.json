@@ -1,0 +1,74 @@
+{
+  "$id": "sc-lab-local-data-asset/0.36.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "assetHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "classification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "contentHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "exportPolicy": {
+      "enum": [
+        "aggregate-only",
+        "summary-only",
+        "artifact-allowed"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "nodeId": {
+      "type": "string"
+    },
+    "rowCount": {
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-local-data-asset/0.36.1"
+    },
+    "schemaHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "version": {
+      "const": "0.36.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "nodeId",
+    "workspaceId",
+    "classification",
+    "exportPolicy",
+    "schemaHash",
+    "assetHash"
+  ],
+  "title": "Local Data Asset",
+  "type": "object"
+}

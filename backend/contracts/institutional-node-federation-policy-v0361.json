@@ -1,0 +1,27 @@
+{
+  "capabilities": {
+    "aggregateResultReturn": true,
+    "arbitraryCode": false,
+    "automaticRemoteCallbacks": false,
+    "hardDelete": false,
+    "localDataExecution": true,
+    "nodeAttestations": true,
+    "rawRestrictedDataExport": false,
+    "restrictedDataStaysLocal": true,
+    "signedExecutionEnvelopes": true,
+    "workspaceGovernance": true
+  },
+  "classifications": [
+    "public",
+    "internal",
+    "confidential",
+    "restricted"
+  ],
+  "exportPolicies": [
+    "aggregate-only",
+    "summary-only",
+    "artifact-allowed"
+  ],
+  "schema": "sc-lab-institutional-node-federation-policy/0.36.1",
+  "version": "0.36.1"
+}
