@@ -143,7 +143,7 @@ def health():
         "dispatcherOperations": {"version":"0.31.4","failureClassification":True,"boundedRetries":True,"deadLetterRecovery":True,"operatorReplay":True,"queueMetrics":True,"databaseDiagnostics":True},
         "workflowOrchestration": {"version":"0.32.1","typedDefinitions":True,"dagValidation":True,"dependencyAwareScheduling":True,"parallelReadyNodes":True,"resultBindings":True,"artifactHandoffs":True,"runProvenance":True,"declarativeConditions":True,"checkpointHistory":True,"partialRecovery":True,"recoveryLineage":True},
         "workflowAutomation": {"version":"0.32.2","intervalSchedules":True,"cronUtc":True,"oneTimeSchedules":True,"authenticatedEvents":True,"eventDeduplication":True,"misfireRecovery":True,"concurrencyControls":True},
-        "experimentCampaigns": {"version":"0.33.0","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"exploreExploit":True,"budgetControls":True,"stoppingRules":True,"manualObservations":True},
+        "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"gaussianProcessSurrogate":True,"predictiveUncertainty":True,"activeLearning":True,"resourceAwareSearch":True,"costAdjustedAcquisition":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -1616,7 +1616,7 @@ async def workflow_event_ingest_route(
     except WorkflowScheduleError as exc:
         raise _workflow_schedule_http_error(exc) from exc
 
-# v0.33.0 Adaptive Experiment Campaigns and Sequential Design
+# v0.33.1 Bayesian Optimization, Active Learning, and Resource-Aware Search
 
 def _experiment_campaign_http_error(exc: ExperimentCampaignError) -> HTTPException:
     return HTTPException(status_code=exc.status_code, detail=exc.detail)
@@ -1736,6 +1736,24 @@ def experiment_campaign_observe_route(campaign_id: str, payload: dict[str, Any],
     del auth
     try:
         return experiment_campaigns.observe(campaign_id, payload)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.get("/v1/experiment-campaigns/{campaign_id}/surrogate")
+def experiment_campaign_surrogate_route(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.surrogate(campaign_id)
+    except ExperimentCampaignError as exc:
+        raise _experiment_campaign_http_error(exc) from exc
+
+
+@app.post("/v1/experiment-campaigns/{campaign_id}/proposal-preview")
+def experiment_campaign_proposal_preview_route(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return experiment_campaigns.preview_proposal(campaign_id)
     except ExperimentCampaignError as exc:
         raise _experiment_campaign_http_error(exc) from exc
 

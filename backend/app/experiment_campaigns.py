@@ -14,17 +14,25 @@ import threading
 from typing import Any
 
 from .workflow_orchestration import WorkflowError
+from .bayesian_optimization import (
+    BayesianOptimizationError,
+    estimate_cost,
+    normalize_resource_model,
+    normalize_strategy as normalize_bayesian_strategy,
+    propose as propose_bayesian,
+)
 
-VERSION = "0.33.0"
-CAMPAIGN_SCHEMA = "sc-lab-experiment-campaign/0.33.0"
-TRIAL_SCHEMA = "sc-lab-experiment-trial/0.33.0"
-EVENT_SCHEMA = "sc-lab-experiment-campaign-event/0.33.0"
-DB_SCHEMA_VERSION = 1
+VERSION = "0.33.1"
+CAMPAIGN_SCHEMA = "sc-lab-experiment-campaign/0.33.1"
+TRIAL_SCHEMA = "sc-lab-experiment-trial/0.33.1"
+EVENT_SCHEMA = "sc-lab-experiment-campaign-event/0.33.1"
+SURROGATE_SCHEMA = "sc-lab-experiment-surrogate/0.33.1"
+DB_SCHEMA_VERSION = 2
 CAMPAIGN_STATES = {"draft", "running", "paused", "completed", "failed", "cancelled"}
 TRIAL_STATES = {"proposed", "queued", "running", "completed", "failed", "cancelled"}
 TERMINAL_TRIAL_STATES = {"completed", "failed", "cancelled"}
 PARAMETER_TYPES = {"continuous", "integer", "categorical"}
-STRATEGIES = {"random", "grid", "adaptive-explore-exploit"}
+STRATEGIES = {"random", "grid", "adaptive-explore-exploit", "bayesian-optimization", "active-learning", "resource-aware-bayesian"}
 GOALS = {"minimize", "maximize"}
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$")
 
@@ -158,17 +166,26 @@ def normalize_campaign(payload: dict[str, Any], max_trials_limit: int = 10000) -
         objective["target"] = _float(objective_raw.get("target"), 0.0, -1e300, 1e300)
 
     strategy_raw = source.get("strategy") if isinstance(source.get("strategy"), dict) else {}
-    strategy_type = _text(strategy_raw.get("type"), 80) or "adaptive-explore-exploit"
+    strategy_type = _text(strategy_raw.get("type"), 80) or "bayesian-optimization"
     if strategy_type not in STRATEGIES:
         raise ExperimentCampaignError(f"Unsupported campaign strategy: {strategy_type}")
-    strategy = {
-        "type": strategy_type,
-        "initialRandomTrials": _int(strategy_raw.get("initialRandomTrials"), max(3, min(8, len(parameter_space) * 2)), 1, 1000),
-        "explorationRate": _float(strategy_raw.get("explorationRate"), 0.30, 0.0, 1.0),
-        "neighborhoodScale": _float(strategy_raw.get("neighborhoodScale"), 0.20, 0.001, 1.0),
-        "gridLevels": _int(strategy_raw.get("gridLevels"), 5, 2, 100),
-        "randomSeed": _int(strategy_raw.get("randomSeed"), 3300, 0, 2147483647),
-    }
+    if strategy_type in {"bayesian-optimization", "active-learning", "resource-aware-bayesian"}:
+        try:
+            strategy = normalize_bayesian_strategy({**strategy_raw, "type": strategy_type}, len(parameter_space))
+        except BayesianOptimizationError as exc:
+            raise ExperimentCampaignError(str(exc)) from exc
+    else:
+        strategy = {
+            "type": strategy_type,
+            "initialRandomTrials": _int(strategy_raw.get("initialRandomTrials"), max(3, min(8, len(parameter_space) * 2)), 1, 1000),
+            "explorationRate": _float(strategy_raw.get("explorationRate"), 0.30, 0.0, 1.0),
+            "neighborhoodScale": _float(strategy_raw.get("neighborhoodScale"), 0.20, 0.001, 1.0),
+            "gridLevels": _int(strategy_raw.get("gridLevels"), 5, 2, 100),
+            "randomSeed": _int(strategy_raw.get("randomSeed"), 3300, 0, 2147483647),
+        }
+    resource_model = normalize_resource_model(source.get("resourceModel"), parameter_space)
+    if strategy_type == "resource-aware-bayesian":
+        resource_model["enabled"] = True
 
     budget_raw = source.get("budget") if isinstance(source.get("budget"), dict) else {}
     max_trials = _int(budget_raw.get("maxTrials"), 25, 1, max_trials_limit)
@@ -213,6 +230,7 @@ def normalize_campaign(payload: dict[str, Any], max_trials_limit: int = 10000) -
         "strategy": strategy,
         "budget": budget,
         "stopping": stopping,
+        "resourceModel": resource_model,
         "run": run,
         "metadata": copy.deepcopy(source.get("metadata")) if isinstance(source.get("metadata"), dict) else {},
     }
@@ -240,6 +258,19 @@ def policies(max_trials: int = 10000, max_campaigns: int = 1000) -> dict[str, An
             "bestPointNeighborhoodSearch": True,
             "configurableExplorationRate": True,
             "sequentialObjectiveUpdates": True,
+            "gaussianProcessSurrogate": True,
+            "mixedParameterEncoding": True,
+            "predictiveUncertainty": True,
+            "activeLearning": True,
+            "acquisitionPolicies": ["expected-improvement", "probability-improvement", "confidence-bound", "max-variance"],
+        },
+        "resourceAwareness": {
+            "parameterCostModel": True,
+            "categoricalCostModel": True,
+            "perTrialCostLimit": True,
+            "totalCostBudget": True,
+            "costAdjustedAcquisition": True,
+            "observedCostExtraction": True,
         },
         "execution": {
             "workflowBackedTrials": True,
@@ -296,6 +327,7 @@ class ExperimentCampaignManager:
               title TEXT NOT NULL, status TEXT NOT NULL, definition_hash TEXT NOT NULL,
               definition_json TEXT NOT NULL, best_trial_id TEXT, best_objective REAL,
               no_improvement_count INTEGER NOT NULL DEFAULT 0, stop_reason TEXT,
+              cumulative_cost REAL NOT NULL DEFAULT 0, model_json TEXT,
               created_at TEXT NOT NULL, started_at TEXT, completed_at TEXT, updated_at TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS experiment_trials(
@@ -303,6 +335,8 @@ class ExperimentCampaignManager:
               status TEXT NOT NULL, parameters_hash TEXT NOT NULL, parameters_json TEXT NOT NULL,
               proposal_json TEXT NOT NULL, workflow_run_id TEXT, objective_value REAL,
               objective_json TEXT, result_json TEXT, error_text TEXT,
+              predicted_mean REAL, predicted_std REAL, acquisition_value REAL,
+              estimated_cost REAL, observed_cost REAL, resource_json TEXT,
               created_at TEXT NOT NULL, started_at TEXT, completed_at TEXT, updated_at TEXT NOT NULL,
               FOREIGN KEY(campaign_id) REFERENCES experiment_campaigns(id) ON DELETE CASCADE,
               UNIQUE(campaign_id, sequence_no), UNIQUE(campaign_id, parameters_hash)
@@ -316,6 +350,24 @@ class ExperimentCampaignManager:
             CREATE INDEX IF NOT EXISTS idx_trial_campaign_status ON experiment_trials(campaign_id,status,sequence_no);
             CREATE INDEX IF NOT EXISTS idx_campaign_event ON experiment_campaign_events(campaign_id,id);
             """)
+            campaign_columns = {row[1] for row in con.execute("PRAGMA table_info(experiment_campaigns)")}
+            for column, ddl in {
+                "cumulative_cost": "ALTER TABLE experiment_campaigns ADD COLUMN cumulative_cost REAL NOT NULL DEFAULT 0",
+                "model_json": "ALTER TABLE experiment_campaigns ADD COLUMN model_json TEXT",
+            }.items():
+                if column not in campaign_columns:
+                    con.execute(ddl)
+            trial_columns = {row[1] for row in con.execute("PRAGMA table_info(experiment_trials)")}
+            for column, ddl in {
+                "predicted_mean": "ALTER TABLE experiment_trials ADD COLUMN predicted_mean REAL",
+                "predicted_std": "ALTER TABLE experiment_trials ADD COLUMN predicted_std REAL",
+                "acquisition_value": "ALTER TABLE experiment_trials ADD COLUMN acquisition_value REAL",
+                "estimated_cost": "ALTER TABLE experiment_trials ADD COLUMN estimated_cost REAL",
+                "observed_cost": "ALTER TABLE experiment_trials ADD COLUMN observed_cost REAL",
+                "resource_json": "ALTER TABLE experiment_trials ADD COLUMN resource_json TEXT",
+            }.items():
+                if column not in trial_columns:
+                    con.execute(ddl)
             con.execute("INSERT OR REPLACE INTO experiment_campaign_meta(key,value) VALUES('schema_version',?)", (str(DB_SCHEMA_VERSION),))
 
     def start(self) -> None:
@@ -400,6 +452,9 @@ class ExperimentCampaignManager:
             "parametersHash": row["parameters_hash"], "proposal": self._loads(row["proposal_json"]),
             "workflowRunId": row["workflow_run_id"], "objectiveValue": row["objective_value"],
             "objective": self._loads(row["objective_json"]), "result": self._loads(row["result_json"]),
+            "prediction": ({"mean": row["predicted_mean"], "standardDeviation": row["predicted_std"]} if row["predicted_mean"] is not None else None),
+            "acquisitionValue": row["acquisition_value"], "estimatedCost": row["estimated_cost"],
+            "observedCost": row["observed_cost"], "resource": self._loads(row["resource_json"]),
             "error": row["error_text"], "createdAt": row["created_at"], "startedAt": row["started_at"],
             "completedAt": row["completed_at"], "updatedAt": row["updated_at"],
         }
@@ -418,6 +473,8 @@ class ExperimentCampaignManager:
             "status": row["status"], "bestTrialId": row["best_trial_id"], "bestObjective": row["best_objective"],
             "bestTrial": best, "noImprovementCount": int(row["no_improvement_count"] or 0),
             "stopReason": row["stop_reason"], "trialCounts": counts,
+            "cumulativeCost": float(row["cumulative_cost"] or 0.0),
+            "surrogate": self._loads(row["model_json"]),
             "createdAt": row["created_at"], "startedAt": row["started_at"], "completedAt": row["completed_at"], "updatedAt": row["updated_at"],
         }
         if include_trials:
@@ -505,17 +562,52 @@ class ExperimentCampaignManager:
                 result[name] = round(proposed, int(spec.get("precision", 8)))
         return result, "exploit-best-neighborhood"
 
-    def _proposal(self, con: sqlite3.Connection, campaign: sqlite3.Row, sequence: int) -> tuple[dict[str, Any], dict[str, Any]]:
+    def _completed_observations(self, con: sqlite3.Connection, campaign_id: str) -> list[dict[str, Any]]:
+        rows = con.execute("SELECT parameters_json,objective_value,observed_cost,estimated_cost FROM experiment_trials WHERE campaign_id=? AND status='completed' AND objective_value IS NOT NULL ORDER BY sequence_no", (campaign_id,)).fetchall()
+        return [
+            {
+                "parameters": self._loads(row["parameters_json"]),
+                "objective": float(row["objective_value"]),
+                "cost": float(row["observed_cost"] if row["observed_cost"] is not None else (row["estimated_cost"] or 0.0)),
+            }
+            for row in rows
+        ]
+
+    def _best_parameters(self, con: sqlite3.Connection, campaign: sqlite3.Row) -> dict[str, Any] | None:
+        if not campaign["best_trial_id"]:
+            return None
+        row = con.execute("SELECT parameters_json FROM experiment_trials WHERE id=?", (campaign["best_trial_id"],)).fetchone()
+        return self._loads(row["parameters_json"]) if row else None
+
+    def _proposal(self, con: sqlite3.Connection, campaign: sqlite3.Row, sequence: int) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any] | None]:
         definition = self._loads(campaign["definition_json"])
         existing = {row["parameters_hash"] for row in con.execute("SELECT parameters_hash FROM experiment_trials WHERE campaign_id=?", (campaign["id"],))}
         completed = con.execute("SELECT * FROM experiment_trials WHERE campaign_id=? AND status='completed' ORDER BY sequence_no", (campaign["id"],)).fetchall()
-        best_parameters = None
-        if campaign["best_trial_id"]:
-            row = con.execute("SELECT parameters_json FROM experiment_trials WHERE id=?", (campaign["best_trial_id"],)).fetchone()
-            best_parameters = self._loads(row["parameters_json"]) if row else None
+        best_parameters = self._best_parameters(con, campaign)
         seed = int(definition["strategy"]["randomSeed"]) + sequence * 104729
         rng = random.Random(seed)
         policy = definition["strategy"]["type"]
+        if policy in {"bayesian-optimization", "active-learning", "resource-aware-bayesian"}:
+            try:
+                parameters, bayesian_proposal, diagnostics = propose_bayesian(
+                    definition["parameterSpace"],
+                    self._completed_observations(con, campaign["id"]),
+                    definition["strategy"],
+                    definition.get("resourceModel") or normalize_resource_model({}, definition["parameterSpace"]),
+                    definition["objective"]["goal"],
+                    seed,
+                    existing,
+                    best_parameters,
+                )
+            except BayesianOptimizationError as exc:
+                raise ExperimentCampaignError(str(exc), 409) from exc
+            proposal = {
+                "strategy": policy,
+                "seed": seed,
+                "proposedAt": _now(),
+                **bayesian_proposal,
+            }
+            return parameters, proposal, diagnostics
         for attempt in range(200):
             if policy == "grid":
                 parameters = self._grid_parameters(definition, sequence + attempt)
@@ -527,8 +619,34 @@ class ExperimentCampaignManager:
                 parameters, source = self._adaptive_parameters(definition, best_parameters, rng)
             parameter_hash = _hash(parameters)
             if parameter_hash not in existing:
-                return parameters, {"strategy": policy, "source": source, "seed": seed, "attempt": attempt, "proposedAt": _now()}
+                estimated_cost = estimate_cost(definition.get("resourceModel") or normalize_resource_model({}, definition["parameterSpace"]), definition["parameterSpace"], parameters)
+                return parameters, {"strategy": policy, "source": source, "seed": seed, "attempt": attempt, "proposedAt": _now(), "estimatedCost": estimated_cost}, None
         raise ExperimentCampaignError("The parameter space is exhausted or no unique proposal could be generated.", 409)
+
+    def preview_proposal(self, campaign_id: str) -> dict[str, Any]:
+        with self._connect() as con:
+            campaign = self._campaign_row(con, campaign_id)
+            sequence = int(con.execute("SELECT COALESCE(MAX(sequence_no),0)+1 FROM experiment_trials WHERE campaign_id=?", (campaign_id,)).fetchone()[0])
+            parameters, proposal, diagnostics = self._proposal(con, campaign, sequence)
+        return {"ok": True, "campaignId": campaign_id, "sequence": sequence, "parameters": parameters, "parametersHash": _hash(parameters), "proposal": proposal, "surrogate": diagnostics}
+
+    def surrogate(self, campaign_id: str) -> dict[str, Any]:
+        with self._connect() as con:
+            campaign = self._campaign_row(con, campaign_id)
+            definition = self._loads(campaign["definition_json"])
+            observations = self._completed_observations(con, campaign_id)
+            model = self._loads(campaign["model_json"])
+        return {
+            "ok": True,
+            "schema": SURROGATE_SCHEMA,
+            "version": VERSION,
+            "campaignId": campaign_id,
+            "strategy": definition["strategy"],
+            "resourceModel": definition.get("resourceModel"),
+            "observationCount": len(observations),
+            "observations": observations,
+            "model": model,
+        }
 
     def _build_run_payload(self, definition: dict[str, Any], trial_id: str, sequence: int, parameters: dict[str, Any], proposal: dict[str, Any]) -> dict[str, Any]:
         inputs = copy.deepcopy(definition["run"]["baseInputs"])
@@ -555,10 +673,23 @@ class ExperimentCampaignManager:
                 con.execute("ROLLBACK")
                 raise ExperimentCampaignError("Campaign trial budget is exhausted.", 409)
             sequence = int(con.execute("SELECT COALESCE(MAX(sequence_no),0)+1 FROM experiment_trials WHERE campaign_id=?", (campaign_id,)).fetchone()[0])
-            parameters, proposal = self._proposal(con, campaign, sequence)
+            parameters, proposal, diagnostics = self._proposal(con, campaign, sequence)
+            estimated_cost = float(proposal.get("estimatedCost") or estimate_cost(definition.get("resourceModel") or normalize_resource_model({}, definition["parameterSpace"]), definition["parameterSpace"], parameters))
+            reserved_cost = float(con.execute(
+                "SELECT COALESCE(SUM(estimated_cost),0) FROM experiment_trials WHERE campaign_id=? AND status IN ('proposed','queued','running')",
+                (campaign_id,),
+            ).fetchone()[0] or 0.0)
+            projected_cost = float(campaign["cumulative_cost"] or 0.0) + reserved_cost + estimated_cost
+            if projected_cost > float((definition.get("resourceModel") or {}).get("maxTotalCost", 1e15)):
+                con.execute("ROLLBACK")
+                raise ExperimentCampaignError("Campaign resource budget would be exceeded by active reservations and the next proposal.", 409)
+            prediction = proposal.get("prediction") if isinstance(proposal.get("prediction"), dict) else {}
+            acquisition = proposal.get("acquisition") if isinstance(proposal.get("acquisition"), dict) else {}
             trial_id = f"trial-{campaign_id}-{sequence:06d}"
-            con.execute("INSERT INTO experiment_trials(id,campaign_id,sequence_no,status,parameters_hash,parameters_json,proposal_json,created_at,updated_at) VALUES(?,?,?, 'proposed',?,?,?,?,?)", (trial_id, campaign_id, sequence, _hash(parameters), _stable(parameters), _stable(proposal), now, now))
-            self._event(con, campaign_id, trial_id, "trial-proposed", {"sequence": sequence, "parameters": parameters, "proposal": proposal})
+            con.execute("INSERT INTO experiment_trials(id,campaign_id,sequence_no,status,parameters_hash,parameters_json,proposal_json,predicted_mean,predicted_std,acquisition_value,estimated_cost,resource_json,created_at,updated_at) VALUES(?,?,?, 'proposed',?,?,?,?,?,?,?,?,?,?)", (trial_id, campaign_id, sequence, _hash(parameters), _stable(parameters), _stable(proposal), prediction.get("mean"), prediction.get("standardDeviation"), acquisition.get("costAdjustedValue", acquisition.get("rawValue")), estimated_cost, _stable({"estimatedCost": estimated_cost, "modelHash": proposal.get("modelHash")}), now, now))
+            if diagnostics:
+                con.execute("UPDATE experiment_campaigns SET model_json=?,updated_at=? WHERE id=?", (_stable(diagnostics), now, campaign_id))
+            self._event(con, campaign_id, trial_id, "trial-proposed", {"sequence": sequence, "parameters": parameters, "proposal": proposal, "surrogate": diagnostics})
             con.execute("COMMIT")
         try:
             run_payload = self._build_run_payload(definition, trial_id, sequence, parameters, proposal)
@@ -588,6 +719,24 @@ class ExperimentCampaignManager:
             raise ExperimentCampaignError("The extracted objective is not finite.")
         return numeric, {"path": definition["objective"]["path"], "goal": definition["objective"]["goal"], "value": numeric, "extractedAt": _now()}
 
+    def _extract_resource_cost(self, definition: dict[str, Any], run: dict[str, Any], estimated: float | None) -> tuple[float, dict[str, Any]]:
+        resource = definition.get("resourceModel") if isinstance(definition.get("resourceModel"), dict) else {}
+        path = str(resource.get("resultCostPath") or "").strip()
+        source = "estimated"
+        value = estimated if estimated is not None else float(resource.get("baseCost", 1.0))
+        if path:
+            found, extracted = _deep_get_optional(self._objective_root(run), path)
+            if found:
+                try:
+                    candidate = float(extracted)
+                except (TypeError, ValueError):
+                    candidate = value
+                if math.isfinite(candidate) and candidate >= 0:
+                    value = candidate
+                    source = "workflow-result"
+        numeric = max(0.0, float(value or 0.0))
+        return numeric, {"value": numeric, "source": source, "path": path or None, "extractedAt": _now()}
+
     @staticmethod
     def _is_better(goal: str, candidate: float, best: float | None, minimum: float) -> bool:
         if best is None:
@@ -616,6 +765,8 @@ class ExperimentCampaignManager:
                 status, reason = "completed", "target-objective-reached"
             elif failures >= definition["budget"]["maxFailures"]:
                 status, reason = "failed", "failure-budget-exhausted"
+            elif float(campaign["cumulative_cost"] or 0.0) >= float((definition.get("resourceModel") or {}).get("maxTotalCost", 1e15)) and active == 0:
+                status, reason = "completed", "resource-budget-exhausted"
             elif total >= definition["budget"]["maxTrials"] and active == 0:
                 status, reason = "completed", "trial-budget-exhausted"
             elif completed > 0 and campaign["no_improvement_count"] >= definition["stopping"]["patience"] and active == 0:
@@ -650,12 +801,13 @@ class ExperimentCampaignManager:
                         con.execute("BEGIN IMMEDIATE")
                         campaign = self._campaign_row(con, campaign_id)
                         better = self._is_better(definition["objective"]["goal"], objective, campaign["best_objective"], definition["stopping"]["minImprovement"])
-                        con.execute("UPDATE experiment_trials SET status='completed',objective_value=?,objective_json=?,result_json=?,error_text=NULL,completed_at=?,updated_at=? WHERE id=?", (objective, _stable(objective_record), _stable(run), _now(), _now(), trial_row["id"]))
+                        observed_cost, resource_record = self._extract_resource_cost(definition, run, trial_row["estimated_cost"])
+                        con.execute("UPDATE experiment_trials SET status='completed',objective_value=?,objective_json=?,result_json=?,observed_cost=?,resource_json=?,error_text=NULL,completed_at=?,updated_at=? WHERE id=?", (objective, _stable(objective_record), _stable(run), observed_cost, _stable(resource_record), _now(), _now(), trial_row["id"]))
                         if better:
-                            con.execute("UPDATE experiment_campaigns SET best_trial_id=?,best_objective=?,no_improvement_count=0,updated_at=? WHERE id=?", (trial_row["id"], objective, _now(), campaign_id))
+                            con.execute("UPDATE experiment_campaigns SET best_trial_id=?,best_objective=?,no_improvement_count=0,cumulative_cost=cumulative_cost+?,updated_at=? WHERE id=?", (trial_row["id"], objective, observed_cost, _now(), campaign_id))
                         else:
-                            con.execute("UPDATE experiment_campaigns SET no_improvement_count=no_improvement_count+1,updated_at=? WHERE id=?", (_now(), campaign_id))
-                        self._event(con, campaign_id, trial_row["id"], "trial-completed", {"objective": objective_record, "improvedBest": better, "workflowRunId": run["id"]})
+                            con.execute("UPDATE experiment_campaigns SET no_improvement_count=no_improvement_count+1,cumulative_cost=cumulative_cost+?,updated_at=? WHERE id=?", (observed_cost, _now(), campaign_id))
+                        self._event(con, campaign_id, trial_row["id"], "trial-completed", {"objective": objective_record, "resource": resource_record, "improvedBest": better, "workflowRunId": run["id"]})
                         self._refresh_campaign_state(con, campaign_id)
                         con.execute("COMMIT")
                 except ExperimentCampaignError as exc:
@@ -697,16 +849,27 @@ class ExperimentCampaignManager:
                     slots = min(slots, max(0, int(count) - len(launched)))
             if slots <= 0:
                 break
+            launch_blocked = False
             for _ in range(slots):
                 try:
                     launched.append(self._launch_one(campaign_id))
                 except ExperimentCampaignError as exc:
-                    if exc.status_code == 409:
+                    detail_lower = exc.detail.lower()
+                    if exc.status_code == 409 and (
+                        "parameter space is exhausted" in detail_lower
+                        or "no unique proposal" in detail_lower
+                    ):
                         with self._connect() as con:
                             con.execute("UPDATE experiment_campaigns SET status='completed',stop_reason='parameter-space-exhausted',completed_at=?,updated_at=? WHERE id=?", (_now(), _now(), campaign_id))
                             self._event(con, campaign_id, None, "campaign-stopped", {"status": "completed", "reason": "parameter-space-exhausted"})
+                        launch_blocked = True
+                        break
+                    if exc.status_code == 409 and "active reservations" in detail_lower:
+                        launch_blocked = True
                         break
                     raise
+            if launch_blocked:
+                break
             if count is not None and len(launched) >= count:
                 break
             if slots == 0:
@@ -792,19 +955,29 @@ class ExperimentCampaignManager:
             sequence = int(con.execute("SELECT COALESCE(MAX(sequence_no),0)+1 FROM experiment_trials WHERE campaign_id=?", (campaign_id,)).fetchone()[0])
             trial_id = _text(payload.get("id"), 180) or f"trial-{campaign_id}-{sequence:06d}"
             now = _now()
-            proposal = {"strategy": "manual-observation", "source": _text(payload.get("source"), 300) or "operator", "observedAt": now}
-            objective_record = {"path": "manual", "goal": definition["objective"]["goal"], "value": objective, "extractedAt": now}
+            estimated_cost = estimate_cost(definition.get("resourceModel") or normalize_resource_model({}, definition["parameterSpace"]), definition["parameterSpace"], normalized_parameters)
             try:
-                con.execute("INSERT INTO experiment_trials(id,campaign_id,sequence_no,status,parameters_hash,parameters_json,proposal_json,objective_value,objective_json,result_json,created_at,started_at,completed_at,updated_at) VALUES(?,?,?, 'completed',?,?,?,?,?,?,?,?,?,?)", (trial_id, campaign_id, sequence, _hash(normalized_parameters), _stable(normalized_parameters), _stable(proposal), objective, _stable(objective_record), _stable(payload.get("result") if isinstance(payload.get("result"), dict) else {}), now, now, now, now))
+                observed_cost = float(payload.get("costValue")) if payload.get("costValue") is not None else estimated_cost
+            except (TypeError, ValueError) as exc:
+                con.execute("ROLLBACK")
+                raise ExperimentCampaignError("Manual observation costValue must be numeric.") from exc
+            if not math.isfinite(observed_cost) or observed_cost < 0:
+                con.execute("ROLLBACK")
+                raise ExperimentCampaignError("Manual observation costValue must be finite and non-negative.")
+            proposal = {"strategy": "manual-observation", "source": _text(payload.get("source"), 300) or "operator", "observedAt": now, "estimatedCost": estimated_cost}
+            objective_record = {"path": "manual", "goal": definition["objective"]["goal"], "value": objective, "extractedAt": now}
+            resource_record = {"value": observed_cost, "source": "manual-observation", "estimatedCost": estimated_cost, "recordedAt": now}
+            try:
+                con.execute("INSERT INTO experiment_trials(id,campaign_id,sequence_no,status,parameters_hash,parameters_json,proposal_json,objective_value,objective_json,result_json,estimated_cost,observed_cost,resource_json,created_at,started_at,completed_at,updated_at) VALUES(?,?,?, 'completed',?,?,?,?,?,?,?,?,?,?,?,?,?)", (trial_id, campaign_id, sequence, _hash(normalized_parameters), _stable(normalized_parameters), _stable(proposal), objective, _stable(objective_record), _stable(payload.get("result") if isinstance(payload.get("result"), dict) else {}), estimated_cost, observed_cost, _stable(resource_record), now, now, now, now))
             except sqlite3.IntegrityError as exc:
                 con.execute("ROLLBACK")
                 raise ExperimentCampaignError("That parameter set or trial ID already exists.", 409) from exc
             better = self._is_better(definition["objective"]["goal"], objective, campaign["best_objective"], definition["stopping"]["minImprovement"])
             if better:
-                con.execute("UPDATE experiment_campaigns SET best_trial_id=?,best_objective=?,no_improvement_count=0,updated_at=? WHERE id=?", (trial_id, objective, now, campaign_id))
+                con.execute("UPDATE experiment_campaigns SET best_trial_id=?,best_objective=?,no_improvement_count=0,cumulative_cost=cumulative_cost+?,updated_at=? WHERE id=?", (trial_id, objective, observed_cost, now, campaign_id))
             else:
-                con.execute("UPDATE experiment_campaigns SET no_improvement_count=no_improvement_count+1,updated_at=? WHERE id=?", (now, campaign_id))
-            self._event(con, campaign_id, trial_id, "manual-observation-recorded", {"objective": objective_record, "improvedBest": better})
+                con.execute("UPDATE experiment_campaigns SET no_improvement_count=no_improvement_count+1,cumulative_cost=cumulative_cost+?,updated_at=? WHERE id=?", (observed_cost, now, campaign_id))
+            self._event(con, campaign_id, trial_id, "manual-observation-recorded", {"objective": objective_record, "resource": resource_record, "improvedBest": better})
             self._refresh_campaign_state(con, campaign_id)
             con.execute("COMMIT")
         return {"ok": True, "trial": self.trial(trial_id)["trial"], "campaign": self.get(campaign_id)["campaign"]}
@@ -854,10 +1027,15 @@ class ExperimentCampaignManager:
             trial_counts = {row["status"]: int(row["count"]) for row in con.execute("SELECT status,COUNT(*) count FROM experiment_trials GROUP BY status")}
             integrity = con.execute("PRAGMA integrity_check").fetchone()[0]
             schema_version = con.execute("SELECT value FROM experiment_campaign_meta WHERE key='schema_version'").fetchone()[0]
+            surrogate_count = int(con.execute("SELECT COUNT(*) FROM experiment_campaigns WHERE model_json IS NOT NULL").fetchone()[0])
+            total_cost = float(con.execute("SELECT COALESCE(SUM(cumulative_cost),0) FROM experiment_campaigns").fetchone()[0])
         return {
             "ok": integrity == "ok", "status": "ready" if integrity == "ok" else "degraded", "version": VERSION,
             "schemaVersion": int(schema_version), "storage": "sqlite-wal", "databasePath": self.db_path,
             "campaignCounts": campaign_counts, "trialCounts": trial_counts,
+            "surrogateCount": surrogate_count, "cumulativeObservedCost": total_cost,
+            "gaussianProcessSurrogate": True, "predictiveUncertainty": True,
+            "activeLearning": True, "resourceAwareSearch": True,
             "campaignThreadActive": bool(self._thread and self._thread.is_alive()), "pollSeconds": self.poll_seconds,
             "databaseIntegrity": integrity,
         }

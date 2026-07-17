@@ -1,0 +1,45 @@
+{
+  "acquisitionPolicies": [
+    "expected-improvement",
+    "probability-improvement",
+    "confidence-bound",
+    "max-variance"
+  ],
+  "arbitraryCallbacks": false,
+  "arbitraryCode": false,
+  "costAdjustedAcquisition": true,
+  "deterministicSeeds": true,
+  "duplicateParameterPrevention": true,
+  "gaussianProcessSurrogate": true,
+  "kernels": [
+    "rbf",
+    "matern32",
+    "matern52"
+  ],
+  "mixedParameterEncoding": true,
+  "parameterTypes": [
+    "continuous",
+    "integer",
+    "categorical"
+  ],
+  "predictiveUncertainty": true,
+  "resourceAwareSearch": true,
+  "schema": "sc-lab-experiment-campaign-policy/0.33.1",
+  "stoppingRules": [
+    "trial-budget",
+    "failure-budget",
+    "target-objective",
+    "no-improvement-patience",
+    "resource-budget"
+  ],
+  "strategies": [
+    "random",
+    "grid",
+    "adaptive-explore-exploit",
+    "bayesian-optimization",
+    "active-learning",
+    "resource-aware-bayesian"
+  ],
+  "version": "0.33.1",
+  "workflowBackedTrials": true
+}

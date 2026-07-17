@@ -1,0 +1,164 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/experiment-trial-v0331.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "acquisitionValue": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "campaignId": {
+      "type": "string"
+    },
+    "completedAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "estimatedCost": {
+      "minimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "objective": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "objectiveValue": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "observedCost": {
+      "minimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "parametersHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "prediction": {
+      "properties": {
+        "mean": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "standardDeviation": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "proposal": {
+      "required": [
+        "strategy",
+        "source"
+      ],
+      "type": "object"
+    },
+    "recordType": {
+      "const": "experiment-trial"
+    },
+    "resource": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-experiment-trial/0.33.1"
+    },
+    "sequence": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "startedAt": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "updatedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "version": {
+      "const": "0.33.1"
+    },
+    "workflowRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "recordType",
+    "id",
+    "campaignId",
+    "sequence",
+    "status",
+    "parameters",
+    "parametersHash",
+    "proposal",
+    "createdAt",
+    "updatedAt"
+  ],
+  "title": "Sustainable Catalyst Lab Experiment Trial v0.33.1",
+  "type": "object"
+}

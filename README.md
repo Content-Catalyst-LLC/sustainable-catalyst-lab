@@ -1,9 +1,19 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.33.0 — Adaptive Experiment Campaigns and Sequential Design**
+**Current release: v0.33.1 — Bayesian Optimization, Active Learning, and Resource-Aware Search**
 
 Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, and workflow-backed trial provenance.
 
+
+## v0.33.1 highlights
+
+- Gaussian-process surrogates with RBF, Matérn 3/2, and Matérn 5/2 kernels.
+- Expected improvement, probability of improvement, confidence-bound, and maximum-variance acquisition.
+- Mixed continuous, integer, and categorical parameter encoding.
+- Predictive mean, uncertainty, model condition diagnostics, and reproducible model hashes.
+- Resource-aware candidate scoring, per-trial limits, total-cost budgets, and observed-cost provenance.
+- Non-mutating proposal previews and inspectable surrogate records.
+- In-place migration of existing v0.33.0 campaign stores to schema version 2.
 
 ## v0.33.0 highlights
 

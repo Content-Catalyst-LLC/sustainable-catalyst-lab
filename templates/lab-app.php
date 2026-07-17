@@ -1629,14 +1629,14 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
-      <section class="sc-lab-panel sc-ec0330" data-lab-module="experiment-campaigns" data-module-panel="experiment-campaigns" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / ADAPTIVE EXPERIMENTS / v0.33.0</p><h3>Adaptive Experiment Campaigns and Sequential Design</h3><p>Turn a saved scientific workflow into a governed campaign that explores a parameter space, learns from each objective result, proposes the next trial, respects explicit budgets, and stops when the target or no-improvement rule is reached.</p></header>
-        <p class="sc-ec0330-status" data-ec-v0330-status role="status" aria-live="polite">Adaptive campaign engine loading…</p>
-        <div class="sc-ec0330-metrics" data-ec-v0330-metrics></div>
-        <div class="sc-ec0330-grid">
-          <div class="sc-ec0330-card is-wide"><h4>Campaign definition</h4><textarea data-ec-v0330-definition aria-label="Experiment campaign JSON">{
-  "id": "adaptive-calibration-campaign",
-  "title": "Adaptive calibration campaign",
+      <section class="sc-lab-panel sc-ec0331" data-lab-module="experiment-campaigns" data-module-panel="experiment-campaigns" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / ADAPTIVE EXPERIMENTS / v0.33.1</p><h3>Bayesian Optimization, Active Learning, and Resource-Aware Search</h3><p>Fit an inspectable Gaussian-process surrogate to completed workflow trials, quantify predictive uncertainty, select the next experiment with governed acquisition policies, and trade expected scientific value against explicit resource costs.</p></header>
+        <p class="sc-ec0331-status" data-ec-v0331-status role="status" aria-live="polite">Bayesian campaign engine loading…</p>
+        <div class="sc-ec0331-metrics" data-ec-v0331-metrics></div>
+        <div class="sc-ec0331-grid">
+          <div class="sc-ec0331-card is-wide"><h4>Campaign definition</h4><textarea data-ec-v0331-definition aria-label="Bayesian experiment campaign JSON">{
+  "id": "bayesian-calibration-campaign",
+  "title": "Resource-aware Bayesian calibration",
   "workflowId": "calibration-pipeline",
   "projectId": "default",
   "parameterSpace": {
@@ -1645,20 +1645,41 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
     "solver": {"type": "categorical", "values": ["least-squares", "robust"]}
   },
   "objective": {"path": "nodes.calibrate-model.result.metrics.rmse", "goal": "minimize", "target": 0.05},
-  "strategy": {"type": "adaptive-explore-exploit", "initialRandomTrials": 4, "explorationRate": 0.3, "neighborhoodScale": 0.2, "randomSeed": 3300},
-  "budget": {"maxTrials": 25, "maxFailures": 5, "maxConcurrentTrials": 1},
-  "stopping": {"patience": 6, "minImprovement": 0.001, "target": 0.05},
+  "strategy": {
+    "type": "resource-aware-bayesian",
+    "initialRandomTrials": 6,
+    "kernel": "matern52",
+    "acquisition": "expected-improvement",
+    "candidatePoolSize": 512,
+    "lengthScale": 0.35,
+    "observationNoise": 0.000001,
+    "improvementThreshold": 0.001,
+    "costExponent": 1.0,
+    "randomSeed": 3310
+  },
+  "resourceModel": {
+    "enabled": true,
+    "baseCost": 1,
+    "parameterWeights": {"iterations": 4},
+    "categoricalCosts": {"solver": {"robust": 2}},
+    "resultCostPath": "nodes.calibrate-model.result.metrics.computeCost",
+    "maxEstimatedCostPerTrial": 10,
+    "maxTotalCost": 100
+  },
+  "budget": {"maxTrials": 40, "maxFailures": 6, "maxConcurrentTrials": 1},
+  "stopping": {"patience": 10, "minImprovement": 0.001, "target": 0.05},
   "run": {"parameterInputPath": "campaign.parameters", "baseInputs": {"runCalibration": true}, "autoAdvance": true}
-}</textarea><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button" data-ec-v0330-validate>Validate definition</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-save>Save campaign</button></div></div>
-          <div class="sc-ec0330-card"><h4>Campaign controls</h4><label>Campaign ID<input data-ec-v0330-campaignid value="adaptive-calibration-campaign"></label><label>Trials to propose<input type="number" min="1" max="100" value="1" data-ec-v0330-count></label><label>Operator reason<input data-ec-v0330-reason value="operator action from Lab campaign panel"></label><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-start>Start</button><button type="button" class="sc-lab-button" data-ec-v0330-pause>Pause</button><button type="button" class="sc-lab-button" data-ec-v0330-resume>Resume</button><button type="button" class="sc-lab-button" data-ec-v0330-advance>Propose next</button><button type="button" class="sc-lab-button" data-ec-v0330-reconcile>Reconcile</button><button type="button" class="sc-lab-button" data-ec-v0330-inspect>Inspect</button><button type="button" class="sc-lab-button" data-ec-v0330-tick>Run campaign tick</button><button type="button" class="sc-lab-button" data-ec-v0330-refresh>Refresh</button><button type="button" class="sc-lab-button" data-ec-v0330-cancel>Cancel</button></div></div>
-          <div class="sc-ec0330-card"><h4>Manual observation</h4><p>Record an externally completed or instrument-run trial while preserving the same campaign objective and provenance model.</p><textarea data-ec-v0330-observation aria-label="Manual observation JSON">{
+}</textarea><div class="sc-ec0331-actions"><button type="button" class="sc-lab-button" data-ec-v0331-validate>Validate definition</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0331-save>Save campaign</button></div></div>
+          <div class="sc-ec0331-card"><h4>Campaign and model controls</h4><label>Campaign ID<input data-ec-v0331-campaignid value="bayesian-calibration-campaign"></label><label>Trials to propose<input type="number" min="1" max="100" value="1" data-ec-v0331-count></label><label>Operator reason<input data-ec-v0331-reason value="operator action from Lab Bayesian campaign panel"></label><div class="sc-ec0331-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0331-start>Start</button><button type="button" class="sc-lab-button" data-ec-v0331-preview>Preview proposal</button><button type="button" class="sc-lab-button" data-ec-v0331-surrogate>Inspect surrogate</button><button type="button" class="sc-lab-button" data-ec-v0331-pause>Pause</button><button type="button" class="sc-lab-button" data-ec-v0331-resume>Resume</button><button type="button" class="sc-lab-button" data-ec-v0331-advance>Propose next</button><button type="button" class="sc-lab-button" data-ec-v0331-reconcile>Reconcile</button><button type="button" class="sc-lab-button" data-ec-v0331-inspect>Inspect</button><button type="button" class="sc-lab-button" data-ec-v0331-tick>Run campaign tick</button><button type="button" class="sc-lab-button" data-ec-v0331-refresh>Refresh</button><button type="button" class="sc-lab-button" data-ec-v0331-cancel>Cancel</button></div></div>
+          <div class="sc-ec0331-card"><h4>Manual observation</h4><p>Import an external, simulation, or instrument observation with both objective and resource cost so it can train the same surrogate.</p><textarea data-ec-v0331-observation aria-label="Manual Bayesian observation JSON">{
   "parameters": {"learningRate": 0.01, "iterations": 200, "solver": "least-squares"},
   "objectiveValue": 0.082,
+  "costValue": 2.4,
   "source": "instrument bench run",
   "result": {"notes": "Imported observation"}
-}</textarea><div class="sc-ec0330-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0330-observe>Record observation</button></div></div>
-          <div class="sc-ec0330-card is-wide"><h4>Saved campaigns</h4><div class="sc-lab-table-wrap"><table class="sc-ec0330-table"><thead><tr><th>Campaign</th><th>Workflow</th><th>Strategy</th><th>Status</th><th>Completed / budget</th><th>Best objective</th><th>Actions</th></tr></thead><tbody data-ec-v0330-campaigns></tbody></table></div></div>
-          <div class="sc-ec0330-card is-wide"><h4>Campaign state, trials, proposals, and timeline</h4><pre class="sc-ec0330-output" data-ec-v0330-output>No response yet.</pre></div>
+}</textarea><div class="sc-ec0331-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ec-v0331-observe>Record observation</button></div><p class="sc-ec0331-note"><strong>Safety:</strong> the surrogate proposes only typed parameter values. It cannot execute arbitrary code, shell commands, callback URLs, or unregistered methods.</p></div>
+          <div class="sc-ec0331-card is-wide"><h4>Saved campaigns</h4><div class="sc-lab-table-wrap"><table class="sc-ec0331-table"><thead><tr><th>Campaign</th><th>Workflow</th><th>Strategy</th><th>Status</th><th>Completed / budget</th><th>Best objective</th><th>Cost</th><th>Surrogate</th><th>Actions</th></tr></thead><tbody data-ec-v0331-campaigns></tbody></table></div></div>
+          <div class="sc-ec0331-card is-wide"><h4>Campaign, surrogate, prediction, acquisition, trial, and timeline records</h4><pre class="sc-ec0331-output" data-ec-v0331-output>No response yet.</pre></div>
         </div>
       </section>
 

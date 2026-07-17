@@ -1,0 +1,68 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/experiment-surrogate-v0331.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "campaignId": {
+      "type": "string"
+    },
+    "model": {
+      "properties": {
+        "conditionNumber": {
+          "type": "number"
+        },
+        "featureCount": {
+          "type": "integer"
+        },
+        "kernel": {
+          "enum": [
+            "rbf",
+            "matern32",
+            "matern52"
+          ]
+        },
+        "modelHash": {
+          "type": "string"
+        },
+        "observationCount": {
+          "type": "integer"
+        },
+        "trained": {
+          "type": "boolean"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "observationCount": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "observations": {
+      "type": "array"
+    },
+    "resourceModel": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-experiment-surrogate/0.33.1"
+    },
+    "strategy": {
+      "type": "object"
+    },
+    "version": {
+      "const": "0.33.1"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "campaignId",
+    "observationCount",
+    "observations"
+  ],
+  "title": "Sustainable Catalyst Lab Experiment Surrogate v0.33.1",
+  "type": "object"
+}

@@ -1,6 +1,10 @@
-# Sustainable Catalyst Lab Python Compute Core v0.33.0
+# Sustainable Catalyst Lab Python Compute Core v0.33.1
 
-The v0.33.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, partial recovery, and durable workflow automation while adding adaptive experiment campaigns and sequential design.
+The v0.33.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, partial recovery, durable workflow automation, and adaptive campaigns while adding Bayesian optimization, active learning, predictive uncertainty, and resource-aware search.
+
+## v0.33.1 Bayesian optimization and active learning
+
+Campaigns can fit Gaussian-process surrogates, preview deterministic candidate proposals, choose expected-improvement, probability-improvement, confidence-bound, or maximum-variance acquisitions, and adjust scientific value by estimated resource cost. Existing v0.33.0 deterministic random, grid, and explore/exploit strategies remain available.
 
 ## v0.33.0 adaptive experiment campaigns
 

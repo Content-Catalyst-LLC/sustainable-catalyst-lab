@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.33.1 — Bayesian Optimization, Active Learning, and Resource-Aware Search
+
+- Added Gaussian-process surrogate modeling for mixed continuous, integer, and categorical parameter spaces.
+- Added expected improvement, probability of improvement, confidence-bound, and maximum-variance acquisition policies.
+- Added deterministic candidate pools, local candidate generation, predictive mean and uncertainty, and inspectable model diagnostics.
+- Added resource-aware acquisition with parameter and categorical cost models, per-trial limits, total campaign budgets, and observed workflow cost extraction.
+- Added proposal preview and surrogate diagnostics endpoints without reserving trials.
+- Added campaign database schema v2 with prediction, acquisition, resource, cumulative-cost, and surrogate-model records.
+- Upgraded the Adaptive Experiment Campaigns panel to v0.33.1 while retaining all v0.33.0 contracts for compatibility.
+
 ## 0.33.0 — Adaptive Experiment Campaigns and Sequential Design
 
 - Added durable workflow-backed experiment campaign definitions, trials, observations, and event timelines.
