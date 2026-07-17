@@ -40,6 +40,7 @@ from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies 
 from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderManager, policies as surrogate_rom_policies
 from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
+from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -57,6 +58,7 @@ ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_r
 surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, model_registry, settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_history_limit)
 team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
+workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 
 
 @asynccontextmanager
@@ -169,6 +171,7 @@ def health():
         "surrogateReducedOrder": {"version":"0.34.2","surrogateTraining":True,"gaussianProcess":True,"polynomialRidge":True,"radialBasis":True,"properOrthogonalDecomposition":True,"hybridRom":True,"validationMetrics":True,"modelRegistryIntegration":True},
         "sharedResearchWorkspaces": {"version":"0.35.0","roleBasedMembership":True,"singleUseInvitations":True,"governedResourceLinks":True,"ownershipTransfer":True,"archiveWithoutDeletion":True},
         "workspaceReviewSignoff": {"version":"0.35.1","appendOnlyComments":True,"reviewAssignments":True,"approvalGates":True,"optimisticConcurrency":True,"immutableDecisions":True,"immutableScientificSignoff":True},
+        "workspaceVersionControl": {"version":"0.35.2","immutableSnapshots":True,"namedBranches":True,"threeWayMerge":True,"pathLevelConflicts":True,"protectedBranches":True,"signedApprovalGate":True,"historyRewrite":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2241,6 +2244,120 @@ def workspace_review_timeline_route(workspace_id: str, limit: int = Query(500, g
     actor, _ = _team_workspace_actor(auth)
     try: return workspace_reviews.timeline(workspace_id, actor, limit)
     except WorkspaceReviewError as exc: raise _workspace_review_http_error(exc) from exc
+
+# v0.35.2 Version History, Branching, Merge, and Conflict Resolution
+def _workspace_version_http_error(exc: WorkspaceVersionError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/workspace-versions/health")
+def workspace_version_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = workspace_versions.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.team_workspace_persistent_disk_mounted else "instance-local"; return body
+
+@app.get("/v1/workspace-versions/policies")
+def workspace_version_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = workspace_version_policies(); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/team-workspaces/{workspace_id}/versions/bootstrap")
+def workspace_version_bootstrap_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.bootstrap(workspace_id, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/branches")
+def workspace_version_branches_list_route(workspace_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.list_branches(workspace_id, actor, status or None)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/branches")
+def workspace_version_branch_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.create_branch(workspace_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/branches/{branch_ref:path}")
+def workspace_version_branch_update_route(workspace_id: str, branch_ref: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.set_branch(workspace_id, branch_ref, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/branches/{branch_ref:path}/snapshots")
+def workspace_version_snapshots_list_route(workspace_id: str, branch_ref: str, limit: int = Query(200, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.list_snapshots(workspace_id, branch_ref, actor, limit)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/branches/{branch_ref:path}/snapshots")
+def workspace_version_snapshot_create_route(workspace_id: str, branch_ref: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.create_snapshot(workspace_id, branch_ref, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/branches/{branch_ref:path}/restore/{snapshot_id}")
+def workspace_version_restore_route(workspace_id: str, branch_ref: str, snapshot_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.restore_snapshot(workspace_id, branch_ref, snapshot_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/snapshots/{snapshot_id}")
+def workspace_version_snapshot_get_route(workspace_id: str, snapshot_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.get_snapshot(workspace_id, snapshot_id, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/version-compare")
+def workspace_version_compare_route(workspace_id: str, fromSnapshotId: str = Query(""), toSnapshotId: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.compare(workspace_id, fromSnapshotId or None, toSnapshotId or None, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/merge-requests")
+def workspace_version_merges_list_route(workspace_id: str, status: str = Query(""), limit: int = Query(200, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.list_merge_requests(workspace_id, actor, status or None, limit)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/merge-requests")
+def workspace_version_merge_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.create_merge_request(workspace_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/merge-requests/{merge_id}")
+def workspace_version_merge_get_route(workspace_id: str, merge_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.get_merge_request(workspace_id, merge_id, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/merge-requests/{merge_id}/conflicts/{conflict_id}/resolve")
+def workspace_version_conflict_resolve_route(workspace_id: str, merge_id: str, conflict_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.resolve_conflict(workspace_id, merge_id, conflict_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/merge-requests/{merge_id}/approval")
+def workspace_version_approval_attach_route(workspace_id: str, merge_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.attach_approval(workspace_id, merge_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/merge-requests/{merge_id}/finalize")
+def workspace_version_merge_finalize_route(workspace_id: str, merge_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.finalize_merge(workspace_id, merge_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/merge-requests/{merge_id}/cancel")
+def workspace_version_merge_cancel_route(workspace_id: str, merge_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.cancel_merge(workspace_id, merge_id, payload, actor)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/version-timeline")
+def workspace_version_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return workspace_versions.timeline(workspace_id, actor, limit)
+    except WorkspaceVersionError as exc: raise _workspace_version_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

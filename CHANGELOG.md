@@ -1,3 +1,14 @@
+# Sustainable Catalyst Lab Changelog
+
+## v0.35.2 — Version History, Branching, Merge, and Conflict Resolution
+
+- Added immutable workspace research snapshots with stable tree hashes.
+- Added named branches, protected branches, optimistic branch-head checks, and non-destructive restore.
+- Added three-way merges, path-level conflicts, explicit resolution records, and merge timelines.
+- Added signed scientific approval gates for protected branch merges.
+- Added the Workspace Version History WordPress operations panel and REST proxy surface.
+- Migrated the shared workspace database to schema version 3 without deleting v0.35.0 or v0.35.1 records.
+
 ## 0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off
 
 - Added append-only nested review comments with withdrawal reasons and retained hashes.

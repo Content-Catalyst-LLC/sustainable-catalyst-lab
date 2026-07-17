@@ -1,0 +1,72 @@
+{
+  "schema": "sc-lab-workspace-version-policy/0.35.2",
+  "version": "0.35.2",
+  "capabilities": {
+    "immutableSnapshots": true,
+    "namedBranches": true,
+    "threeWayMerge": true,
+    "pathLevelConflicts": true,
+    "conflictResolutionRecords": true,
+    "protectedBranches": true,
+    "signedApprovalGate": true,
+    "restoreCreatesNewSnapshot": true,
+    "optimisticHeadChecks": true,
+    "hardDelete": false,
+    "historyRewrite": false,
+    "arbitraryCode": false
+  },
+  "roles": {
+    "read": [
+      "viewer",
+      "reviewer",
+      "contributor",
+      "editor",
+      "administrator",
+      "owner"
+    ],
+    "snapshot": [
+      "contributor",
+      "editor",
+      "administrator",
+      "owner"
+    ],
+    "branch": [
+      "editor",
+      "administrator",
+      "owner"
+    ],
+    "reviewMerge": [
+      "reviewer",
+      "editor",
+      "administrator",
+      "owner"
+    ],
+    "merge": [
+      "editor",
+      "administrator",
+      "owner"
+    ],
+    "protect": [
+      "administrator",
+      "owner"
+    ]
+  },
+  "branchStatuses": [
+    "active",
+    "archived",
+    "merged"
+  ],
+  "mergeStatuses": [
+    "cancelled",
+    "conflicted",
+    "merged",
+    "open",
+    "ready"
+  ],
+  "resolutions": [
+    "base",
+    "custom",
+    "source",
+    "target"
+  ]
+}

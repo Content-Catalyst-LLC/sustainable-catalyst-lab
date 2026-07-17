@@ -1895,6 +1895,56 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+      <section class="sc-lab-panel sc-wv0352" data-lab-module="workspace-versioning" data-module-panel="workspace-versioning" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / COLLABORATION GOVERNANCE / v0.35.2</p><h3>Version History, Branching, Merge, and Conflict Resolution</h3><p>Preserve immutable research states, develop changes on named branches, compare snapshots, resolve path-level conflicts, and merge approved work without rewriting scientific history.</p></header>
+        <p data-wv-v0352-status role="status" aria-live="polite">Workspace version-control service loading…</p>
+        <div class="sc-wv0352-metrics" data-wv-v0352-metrics></div>
+        <div class="sc-wv0352-grid">
+          <div class="sc-wv0352-card"><h4>Workspace context</h4><label>Workspace ID<input data-wv-v0352-workspace value="climate-team"></label><label>Branch ID<input data-wv-v0352-branch value="replace-with-branch-id"></label><label>Snapshot ID<input data-wv-v0352-snapshot value="replace-with-snapshot-id"></label><label>Merge request ID<input data-wv-v0352-merge value="replace-with-merge-id"></label><label>Conflict ID<input data-wv-v0352-conflict value="replace-with-conflict-id"></label><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button" data-wv-v0352-action="refresh">Refresh health</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="bootstrap">Initialize main branch</button><button type="button" class="sc-lab-button" data-wv-v0352-action="branches">List branches</button><button type="button" class="sc-lab-button" data-wv-v0352-action="timeline">Version timeline</button></div></div>
+          <div class="sc-wv0352-card"><h4>Create branch</h4><textarea data-wv-v0352-branch-json>{
+  "name": "methods/uncertainty-review",
+  "sourceBranch": "main",
+  "protected": false
+}</textarea><textarea data-wv-v0352-branch-state-json>{"expectedRevision":1,"protected":false,"status":"active"}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="create-branch">Create branch</button><button type="button" class="sc-lab-button" data-wv-v0352-action="update-branch">Update branch</button></div></div>
+          <div class="sc-wv0352-card is-wide"><h4>Create immutable snapshot</h4><textarea data-wv-v0352-snapshot-json>{
+  "expectedHeadSnapshotId": null,
+  "message": "Capture the governed research baseline",
+  "tree": {
+    "reports/climate.json": {"version": 1, "status": "draft"},
+    "datasets/observations.json": {"datasetId": "observations-2026"}
+  },
+  "metadata": {"purpose": "research-state checkpoint"}
+}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="snapshot">Create snapshot</button><button type="button" class="sc-lab-button" data-wv-v0352-action="snapshots">List branch history</button><button type="button" class="sc-lab-button" data-wv-v0352-action="get-snapshot">Inspect snapshot</button></div></div>
+          <div class="sc-wv0352-card"><h4>Compare or restore</h4><textarea data-wv-v0352-compare-json>{
+  "fromSnapshotId": "replace-with-base-snapshot",
+  "toSnapshotId": "replace-with-new-snapshot"
+}</textarea><textarea data-wv-v0352-restore-json>{
+  "expectedHeadSnapshotId": "replace-with-current-head",
+  "message": "Restore the approved baseline without rewriting history"
+}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button" data-wv-v0352-action="compare">Compare snapshots</button><button type="button" class="sc-lab-button" data-wv-v0352-action="restore">Restore as new snapshot</button></div></div>
+          <div class="sc-wv0352-card"><h4>Open merge request</h4><textarea data-wv-v0352-merge-json>{
+  "sourceBranch": "replace-with-source-branch-id",
+  "targetBranch": "main",
+  "title": "Merge reviewed uncertainty methods",
+  "description": "Three-way merge against the shared research baseline."
+}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="create-merge">Create merge request</button><button type="button" class="sc-lab-button" data-wv-v0352-action="merges">List merges</button><button type="button" class="sc-lab-button" data-wv-v0352-action="get-merge">Inspect merge</button></div></div>
+          <div class="sc-wv0352-card"><h4>Resolve conflict</h4><textarea data-wv-v0352-resolution-json>{
+  "expectedRevision": 1,
+  "resolution": "custom",
+  "value": {"decision": "reviewed combined value"}
+}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="resolve">Record resolution</button></div><p class="sc-wv0352-note">Reviewers may resolve path-level conflicts. Every resolution retains the base, source, target, actor, timestamp, and conflict hash.</p></div>
+          <div class="sc-wv0352-card"><h4>Protected-branch approval</h4><textarea data-wv-v0352-approval-json>{
+  "expectedRevision": 1,
+  "approvalRequestId": "replace-with-signed-approval-id"
+}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button" data-wv-v0352-action="approval">Attach scientific approval</button></div><p class="sc-wv0352-note">Protected targets require a signed v0.35.1 scientific approval before finalization.</p></div>
+          <div class="sc-wv0352-card"><h4>Finalize or cancel merge</h4><textarea data-wv-v0352-finalize-json>{
+  "expectedRevision": 2,
+  "message": "Merge signed scientific release candidate"
+}</textarea><textarea data-wv-v0352-cancel-json>{"expectedRevision":1,"reason":"Superseded by a revised branch."}</textarea><div class="sc-wv0352-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-wv-v0352-action="finalize">Finalize merge</button><button type="button" class="sc-lab-button" data-wv-v0352-action="cancel">Cancel merge</button></div></div>
+          <div class="sc-wv0352-card is-wide"><h4>Branches, snapshots, comparisons, conflicts, approvals, and history</h4><p class="sc-wv0352-note">Snapshots and merge records are immutable. Rollback creates a new snapshot. Branch heads and merge revisions reject stale clients with HTTP 409.</p><pre class="sc-wv0352-output" data-wv-v0352-output>No response yet.</pre></div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
         <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>

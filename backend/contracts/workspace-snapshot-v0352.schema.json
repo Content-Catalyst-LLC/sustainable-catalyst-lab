@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/workspace-snapshot-v0352.schema.json",
+  "title": "Workspace Snapshot v0.35.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "branchId",
+    "message",
+    "treeHash",
+    "authorId",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-snapshot/0.35.2"
+    },
+    "version": {
+      "const": "0.35.2"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "branchId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "parentSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "mergeParentSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "tree": {
+      "type": "object",
+      "maxProperties": 10000
+    },
+    "treeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authorId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/workspace-version-compare-v0352.schema.json",
+  "title": "Workspace Version Comparison v0.35.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "added",
+    "removed",
+    "changed",
+    "differenceCount",
+    "compareHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-version-compare/0.35.2"
+    },
+    "version": {
+      "const": "0.35.2"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "fromSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "toSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "added": {
+      "type": "array"
+    },
+    "removed": {
+      "type": "array"
+    },
+    "changed": {
+      "type": "array"
+    },
+    "unchangedPathCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "differenceCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "compareHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

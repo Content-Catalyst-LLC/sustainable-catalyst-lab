@@ -1,0 +1,69 @@
+{
+  "baseSnapshot": {
+    "id": "snapshot-baseline",
+    "treeHash": "e0f058924e145dd8051eb500130966c84656e744c174252066b1f0bfe90a5da0"
+  },
+  "comparison": {
+    "added": 0,
+    "changed": 1,
+    "differenceCount": 1,
+    "removed": 0
+  },
+  "databaseSchemaVersion": 3,
+  "mergeRequest": {
+    "approvalRequestId": "approval-publication-v2",
+    "conflictCount": 1,
+    "id": "merge-publication-v2",
+    "resolvedConflictId": "conflict-affd6959511c2ac5753b",
+    "revision": 4,
+    "status": "merged"
+  },
+  "mergedSnapshot": {
+    "id": "snapshot-90002c7962f1431ed3ddcb3a",
+    "mergeParentSnapshotId": "snapshot-4ed81784418c84975cd729ad",
+    "parentSnapshotId": "snapshot-354e209269b479a8ebce7816",
+    "resolvedModel": "ensemble-reviewed",
+    "treeHash": "5e05f5f44c14f07520ebf26bb8bffdbd57ad11c5d3105960ce5c8acd0d04c503"
+  },
+  "proof": "protected branch conflict resolution and signed scientific merge",
+  "releaseVersion": "0.35.2",
+  "reviewEventCount": 4,
+  "reviewEventTypes": [
+    "approval-decision-recorded",
+    "approval-requested",
+    "review-assigned",
+    "scientific-signoff-recorded"
+  ],
+  "scientificReview": {
+    "approvalId": "approval-publication-v2",
+    "approvalStatus": "signed",
+    "assignmentId": "review-publication-v2",
+    "signoffHash": "606515dc964b5c91338bce17bc3cbd4f57d4713c3e32c55f440abb46d5a71c56",
+    "signoffId": "signoff-e6d467c84e69e3f5"
+  },
+  "sourceSnapshot": {
+    "id": "snapshot-4ed81784418c84975cd729ad",
+    "treeHash": "8d94fd03db176e3f6a134ac3edd8b20050d116e464bf08d32e7e2cab68fa67c4"
+  },
+  "targetSnapshot": {
+    "id": "snapshot-354e209269b479a8ebce7816",
+    "treeHash": "cb2c81ded6b102c44f69e7b8d7659db4705e6efffd3166e04fd1105c77b5325b"
+  },
+  "verification": {
+    "historyPreserved": true,
+    "mergeCompleted": true,
+    "protectedApprovalAttached": true,
+    "signoffHashLength": 64,
+    "treeHashLength": 64
+  },
+  "versionEventCount": 9,
+  "versionEventTypes": [
+    "branch-created",
+    "merge-approval-attached",
+    "merge-conflict-resolved",
+    "merge-finalized",
+    "merge-request-created",
+    "snapshot-created"
+  ],
+  "workspaceId": "coastal-resilience"
+}

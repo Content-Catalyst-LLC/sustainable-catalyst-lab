@@ -1,9 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off**
+**Current release: v0.35.2 — Version History, Branching, Merge, and Conflict Resolution**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, and immutable sign-off records.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution.
 
+
+## v0.35.2 highlights
+
+- Immutable workspace snapshots with canonical JSON trees and SHA-256 identities.
+- Named research branches with optimistic branch-head and revision checks.
+- Three-way merge with durable path-level base, source, and target conflict records.
+- Reviewer conflict resolution and editor-controlled merge finalization.
+- Protected branch merges gated by signed v0.35.1 scientific approvals.
+- Non-destructive restore that creates a new snapshot instead of rewriting history.
+- In-place workspace database migration to schema version 3.
+- New Version History, Branching, Merge, and Conflict Resolution panel, bringing Lab to 70 registered panels.
 
 ## v0.35.1 highlights
 

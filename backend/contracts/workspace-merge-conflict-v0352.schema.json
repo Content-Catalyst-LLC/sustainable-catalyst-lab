@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/workspace-merge-conflict-v0352.schema.json",
+  "title": "Workspace Merge Conflict v0.35.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "mergeRequestId",
+    "workspaceId",
+    "path",
+    "status",
+    "conflictHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-merge-conflict/0.35.2"
+    },
+    "version": {
+      "const": "0.35.2"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "mergeRequestId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "base": {},
+    "source": {},
+    "target": {},
+    "status": {
+      "enum": [
+        "open",
+        "resolved"
+      ]
+    },
+    "resolution": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "base",
+        "custom",
+        "source",
+        "target",
+        null
+      ]
+    },
+    "resolvedValue": {},
+    "conflictHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "resolvedBy": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "resolvedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/workspace-merge-request-v0352.schema.json",
+  "title": "Workspace Merge Request v0.35.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "sourceBranchId",
+    "targetBranchId",
+    "status",
+    "revision"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-merge-request/0.35.2"
+    },
+    "version": {
+      "const": "0.35.2"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "sourceBranchId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "targetBranchId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+    },
+    "baseSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sourceSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "targetSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "resultSnapshotId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "open",
+        "conflicted",
+        "ready",
+        "merged",
+        "cancelled"
+      ]
+    },
+    "approvalRequestId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "$ref": "workspace-merge-conflict-v0352.schema.json"
+      }
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": true
+}

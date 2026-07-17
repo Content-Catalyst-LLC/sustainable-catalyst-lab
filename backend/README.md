@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab Python Compute Core
 
-**Current release: v0.35.1 — Review, Comments, Approvals, and Scientific Sign-Off**
+**Current release: v0.35.2 — Version History, Branching, Merge, and Conflict Resolution**
 
 The v0.34.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
 
@@ -218,3 +218,10 @@ SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED=0
 ## Review, Comments, Approvals, and Scientific Sign-Off — v0.35.1
 
 The `/v1/workspace-reviews` and workspace-scoped review routes store append-only comments, reviewer assignments, approval requests, immutable decisions, and immutable scientific sign-off records in the shared workspace SQLite WAL database. State-changing review operations use `expectedRevision` and return HTTP 409 on stale updates.
+
+
+## Version History, Branching, Merge, and Conflict Resolution — v0.35.2
+
+The `/v1/workspace-versions` service shares the governed team-workspace SQLite WAL database and migrates it in place to schema version 3. It stores immutable snapshots, named branches, merge requests, conflict resolutions, and hashed version events.
+
+Snapshots contain canonical JSON trees and SHA-256 identities. Branch heads use optimistic checks. Three-way merges retain base, source, and target values for every conflict. Restoring an earlier snapshot creates a new descendant snapshot; history is never rewritten. Protected branch finalization requires an attached v0.35.1 approval request in `signed` state with an immutable scientific sign-off.
