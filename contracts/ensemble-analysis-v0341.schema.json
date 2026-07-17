@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/ensemble-analysis-v0341.schema.json",
+  "title": "Sustainable Catalyst Lab Ensemble Analysis v0.34.1",
+  "type": "object",
+  "required": ["schema", "version", "studyId", "definitionHash", "uncertainty", "sensitivity", "analysisHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-ensemble-analysis/0.34.1"},
+    "version": {"const": "0.34.1"},
+    "studyId": {"type": "string"},
+    "definitionHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "completedEvaluations": {"type": "integer", "minimum": 1},
+    "completeEnsembleSamples": {"type": "integer", "minimum": 1},
+    "memberCount": {"type": "integer", "minimum": 1},
+    "uncertainty": {"type": "object"},
+    "members": {"type": "array"},
+    "sensitivity": {"type": "object"},
+    "analysisHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

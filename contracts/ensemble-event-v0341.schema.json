@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/ensemble-event-v0341.schema.json",
+  "title": "Sustainable Catalyst Lab Ensemble Event v0.34.1",
+  "type": "object",
+  "required": ["schema", "version", "sequence", "studyId", "eventType", "actor", "details", "createdAt"],
+  "properties": {
+    "schema": {"const": "sc-lab-ensemble-event/0.34.1"},
+    "version": {"const": "0.34.1"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "studyId": {"type": "string"},
+    "eventType": {"type": "string"},
+    "actor": {"type": "string"},
+    "details": {"type": "object"},
+    "createdAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

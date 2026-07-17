@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.34.0"
+    version: str = "0.34.1"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -99,6 +99,11 @@ class Settings:
     model_registry_max_versions: int = _int("SC_LAB_MODEL_REGISTRY_MAX_VERSIONS", 50000, 1, 1000000)
     model_registry_history_limit: int = _int("SC_LAB_MODEL_REGISTRY_HISTORY_LIMIT", 50000, 100, 1000000)
     model_registry_persistent_disk_mounted: bool = os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    ensemble_study_db_path: str = os.getenv("SC_LAB_ENSEMBLE_STUDY_DB_PATH", "./data/sc-lab-ensemble-studies.sqlite3").strip()
+    ensemble_max_studies: int = _int("SC_LAB_ENSEMBLE_MAX_STUDIES", 2000, 1, 100000)
+    ensemble_max_evaluations: int = _int("SC_LAB_ENSEMBLE_MAX_EVALUATIONS", 200000, 100, 2000000)
+    ensemble_history_limit: int = _int("SC_LAB_ENSEMBLE_HISTORY_LIMIT", 50000, 100, 1000000)
+    ensemble_persistent_disk_mounted: bool = os.getenv("SC_LAB_ENSEMBLE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

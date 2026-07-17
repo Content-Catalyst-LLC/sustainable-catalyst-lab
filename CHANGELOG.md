@@ -1,3 +1,13 @@
+## 0.34.1 — Ensemble Simulation, Global Sensitivity, and Uncertainty
+
+- Added immutable weighted ensembles of v0.34.0 registered model versions.
+- Added Monte Carlo, Latin hypercube, Sobol, and Saltelli-Sobol study designs.
+- Added independent uniform, normal, lognormal, triangular, and discrete inputs.
+- Added dispatcher-backed ensemble evaluation persistence and reconciliation.
+- Added uncertainty distributions, confidence intervals, quantiles, and threshold probabilities.
+- Added correlation, standardized regression, and first/total Sobol sensitivity measures.
+- Added administrator-only ensemble operations and the 66th Lab panel.
+
 ## 0.34.0 — Scientific Model Registry and Environment Reproduction
 
 - Added immutable semantic model versions with canonical SHA-256 model identity hashes.

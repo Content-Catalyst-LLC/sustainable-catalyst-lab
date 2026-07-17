@@ -195,6 +195,19 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-registry/models/(?P<model>[A-Za-z0-9._-]{1,180})/reproduction', array('methods'=>'GET','callback'=>array(__CLASS__,'model_registry_reproduction'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/model-registry/models/(?P<model>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'model_registry_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/model-registry/reproduction/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'model_registry_verify'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/health', array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_validate'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_list'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_create'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})', array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_get'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/start', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_start'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/reconcile', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_reconcile'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/evaluations/(?P<evaluation>[A-Za-z0-9._-]{1,220})/result', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_record_result'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -597,6 +610,18 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_registry_reproduction(WP_REST_Request $request){$version=sanitize_text_field($request->get_param('version')?:'');$suffix=$version?'?version='.rawurlencode($version):'';return self::proxy('/v1/model-registry/models/'.rawurlencode($request['model']).'/reproduction'.$suffix);}
     public static function model_registry_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/model-registry/models/'.rawurlencode($request['model']).'/timeline?limit='.$limit);}
     public static function model_registry_verify(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-registry/reproduction/verify','POST',$p,8388608);}
+
+    public static function ensemble_health(){return self::proxy('/v1/ensemble-studies/health');}
+    public static function ensemble_policies(){return self::proxy('/v1/ensemble-studies/policies');}
+    public static function ensemble_validate(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/validate','POST',$p,8388608);}
+    public static function ensemble_create(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies','POST',$p,8388608);}
+    public static function ensemble_list(WP_REST_Request $request){$parts=array('limit='.max(1,min(1000,intval($request->get_param('limit')?:100))));$project=sanitize_text_field($request->get_param('projectId')?:'');$status=sanitize_key($request->get_param('status')?:'');if($project){$parts[]='projectId='.rawurlencode($project);}if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/ensemble-studies?'.implode('&',$parts));}
+    public static function ensemble_get(WP_REST_Request $request){$reconcile=$request->get_param('reconcile');$value=($reconcile===false||$reconcile==='false'||$reconcile==='0')?'false':'true';$limit=max(1,min(200000,intval($request->get_param('evaluationLimit')?:5000)));return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'?reconcile='.$value.'&evaluationLimit='.$limit);}
+    public static function ensemble_start(WP_REST_Request $request){return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/start','POST',array(),8388608);}
+    public static function ensemble_reconcile(WP_REST_Request $request){return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/reconcile','POST',array(),8388608);}
+    public static function ensemble_cancel(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/cancel','POST',$p,8388608);}
+    public static function ensemble_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/timeline?limit='.$limit);}
+    public static function ensemble_record_result(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/evaluations/'.rawurlencode($request['evaluation']).'/result','POST',$p,8388608);}
 
 
 }

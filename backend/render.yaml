@@ -120,3 +120,13 @@ services:
     value: '50000'
   - key: SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_ENSEMBLE_STUDY_DB_PATH
+    value: /app/data/sc-lab-ensemble-studies.sqlite3
+  - key: SC_LAB_ENSEMBLE_MAX_STUDIES
+    value: '2000'
+  - key: SC_LAB_ENSEMBLE_MAX_EVALUATIONS
+    value: '200000'
+  - key: SC_LAB_ENSEMBLE_HISTORY_LIMIT
+    value: '50000'
+  - key: SC_LAB_ENSEMBLE_PERSISTENT_DISK_MOUNTED
+    value: '0'

@@ -36,6 +36,7 @@ from .workflow_scheduling import WorkflowScheduleError, WorkflowScheduler, polic
 from .experiment_campaigns import ExperimentCampaignError, ExperimentCampaignManager, policies as experiment_campaign_policies
 from .closed_loop_campaigns import ClosedLoopError, ClosedLoopCampaignManager, policies as closed_loop_policies
 from .model_registry import ModelRegistryError, ScientificModelRegistry, capture_environment, policies as model_registry_policies
+from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies as ensemble_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -49,6 +50,7 @@ workflow_automation = WorkflowScheduler(settings.workflow_schedule_db_path, work
 experiment_campaigns = ExperimentCampaignManager(settings.experiment_campaign_db_path, workflows, settings.experiment_campaign_poll_seconds, settings.experiment_campaign_max_campaigns, settings.experiment_campaign_max_trials, settings.experiment_campaign_history_limit)
 closed_loop_campaigns = ClosedLoopCampaignManager(settings.closed_loop_db_path, experiment_campaigns, settings.closed_loop_poll_seconds, settings.closed_loop_max_loops, settings.closed_loop_max_cycles, settings.closed_loop_history_limit, settings.closed_loop_measurement_secret)
 model_registry = ScientificModelRegistry(settings.model_registry_db_path, settings.model_registry_max_models, settings.model_registry_max_versions, settings.model_registry_history_limit)
+ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_registry, dispatcher, settings.ensemble_max_studies, settings.ensemble_max_evaluations, settings.ensemble_history_limit)
 
 
 @asynccontextmanager
@@ -152,6 +154,7 @@ def health():
         "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"workflowBackedTrials":True,"gaussianProcessSurrogate":True,"predictiveUncertainty":True,"activeLearning":True,"resourceAwareSearch":True,"costAdjustedAcquisition":True},
         "closedLoopCampaigns": {"version":"0.33.2","simulationLoops":True,"instrumentMeasurementIngestion":True,"hybridCampaigns":True,"safetyInterlocks":True,"operatorCommandApproval":True,"checkpointedCycles":True,"directDeviceExecution":False},
         "scientificModelRegistry": {"version":"0.34.0","immutableVersions":True,"environmentCapture":True,"dependencyLocking":True,"reproductionManifests":True,"promotionWorkflow":True,"deprecationHistory":True},
+        "ensembleSimulation": {"version":"0.34.1","registeredModelMembers":True,"weightedEnsembles":True,"monteCarlo":True,"latinHypercube":True,"sobolDesign":True,"globalSensitivity":True,"uncertaintyIntervals":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -228,6 +231,7 @@ def capabilities():
         "experimentCampaigns": {"version":"0.33.1","adaptiveSequentialDesign":True,"gaussianProcessSurrogate":True,"activeLearning":True,"resourceAwareSearch":True},
         "closedLoopCampaigns": {"version":"0.33.2","simulation":True,"instrument":True,"hybrid":True,"signedMeasurements":True,"safetyInterlocks":True,"operatorApproval":True,"directDeviceExecution":False},
         "scientificModelRegistry": {"version":"0.34.0","modelVersioning":True,"environmentCapture":True,"dependencyLocks":True,"reproductionVerification":True,"promotionChannels":["candidate","production","archived"],"arbitraryCode":False},
+        "ensembleSimulation": {"version":"0.34.1","weightedRegisteredModels":True,"samplingDesigns":["monte-carlo","latin-hypercube","sobol","saltelli-sobol"],"uncertaintyPropagation":True,"globalSensitivity":True,"arbitraryCode":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1879,6 +1883,71 @@ def model_registry_verify_route(payload: dict[str, Any], auth: dict[str, str] = 
 @app.get("/v1/model-registry/models/{model_id}/timeline")
 def model_registry_timeline_route(model_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
     return model_registry.timeline(model_id, limit)
+
+# v0.34.1 Ensemble Simulation, Global Sensitivity, and Uncertainty
+def _ensemble_http_error(exc: EnsembleError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/ensemble-studies/health")
+def ensemble_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = ensemble_studies.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.ensemble_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.ensemble_persistent_disk_mounted else "Ensemble study records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/ensemble-studies/policies")
+def ensemble_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = ensemble_policies(settings.ensemble_max_studies, settings.ensemble_max_evaluations); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/ensemble-studies/validate")
+def ensemble_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return ensemble_studies.validate(payload)
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.post("/v1/ensemble-studies")
+def ensemble_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return ensemble_studies.create(payload, auth.get("subject", "operator"))
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.get("/v1/ensemble-studies")
+def ensemble_list_route(project_id: str = Query("", alias="projectId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return ensemble_studies.list(project_id, status, limit)
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.get("/v1/ensemble-studies/{study_id}")
+def ensemble_get_route(study_id: str, reconcile: bool = Query(True), evaluation_limit: int = Query(5000, alias="evaluationLimit", ge=1, le=200000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return ensemble_studies.get(study_id, reconcile, evaluation_limit)
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.post("/v1/ensemble-studies/{study_id}/start")
+def ensemble_start_route(study_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return ensemble_studies.start(study_id, auth.get("subject", "operator"))
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.post("/v1/ensemble-studies/{study_id}/reconcile")
+def ensemble_reconcile_route(study_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return ensemble_studies.reconcile(study_id)
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.post("/v1/ensemble-studies/{study_id}/evaluations/{evaluation_id}/result")
+def ensemble_record_result_route(study_id: str, evaluation_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return ensemble_studies.record_result(study_id, evaluation_id, payload, auth.get("subject", "operator"))
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.post("/v1/ensemble-studies/{study_id}/cancel")
+def ensemble_cancel_route(study_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    body = payload or {}
+    try: return ensemble_studies.cancel(study_id, auth.get("subject", "operator"), str(body.get("reason") or "operator cancellation"))
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+@app.get("/v1/ensemble-studies/{study_id}/timeline")
+def ensemble_timeline_route(study_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return ensemble_studies.timeline(study_id, limit)
+    except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

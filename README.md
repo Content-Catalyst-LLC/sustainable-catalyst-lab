@@ -1,9 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.34.0 — Scientific Model Registry and Environment Reproduction**
+**Current release: v0.34.1 — Ensemble Simulation, Global Sensitivity, and Uncertainty**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, and reproducible environment locks.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, and governed uncertainty quantification.
 
+
+## v0.34.1 highlights
+
+- Immutable weighted ensembles of registered scientific model versions.
+- Monte Carlo, Latin hypercube, Sobol, and Saltelli-Sobol sampling.
+- Uniform, normal, lognormal, triangular, and discrete uncertainty inputs.
+- Dispatcher-backed sample/member evaluations with existing worker security and retry controls.
+- Output distributions, confidence intervals, threshold probabilities, and member comparisons.
+- Pearson, Spearman, standardized-regression, and Sobol global sensitivity measures.
+- Durable ensemble studies, evaluations, analysis hashes, and event timelines.
+- New Ensemble Simulation, Global Sensitivity, and Uncertainty Lab workspace.
 
 ## v0.34.0 highlights
 

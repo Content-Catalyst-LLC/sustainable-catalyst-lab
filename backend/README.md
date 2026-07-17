@@ -1,6 +1,10 @@
-# Sustainable Catalyst Lab Python Compute Core v0.34.0
+# Sustainable Catalyst Lab Python Compute Core v0.34.1
 
-The v0.34.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while adding immutable scientific model registration and reproducible environment governance.
+The v0.34.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
+
+## v0.34.1 ensemble simulation and uncertainty
+
+The compute core now stores immutable ensemble studies that reference registered-method model versions, generates governed sampling designs, dispatches sample/member evaluations, reconciles numeric results, and computes weighted uncertainty and global-sensitivity summaries. Study records use SQLite WAL and preserve model, environment, dispatcher, sample, result, and analysis hashes.
 
 ## v0.34.0 scientific model registry
 

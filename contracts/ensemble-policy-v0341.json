@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-ensemble-policy/0.34.1",
+  "version": "0.34.1",
+  "architecture": "ensemble-simulation-global-sensitivity-uncertainty",
+  "registeredModelsOnly": true,
+  "immutableModelVersions": true,
+  "weightedModelEnsembles": true,
+  "samplingDesigns": ["monte-carlo", "latin-hypercube", "sobol", "saltelli-sobol"],
+  "distributions": ["uniform", "normal", "lognormal", "triangular", "discrete"],
+  "globalSensitivity": ["pearson", "spearman", "standardized-regression", "saltelli-sobol"],
+  "uncertaintyOutputs": ["moments", "quantiles", "confidence-intervals", "threshold-probabilities"],
+  "arbitraryCode": false,
+  "directExternalCallbacks": false,
+  "limits": {"members": 32, "variables": 50, "samples": 10000, "evaluations": 200000}
+}

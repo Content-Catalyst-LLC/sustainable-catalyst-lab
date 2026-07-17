@@ -1,3 +1,6 @@
+import importlib
+
+import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.distributed_dispatcher import DistributedDispatcher, normalize_worker, normalize_workload
@@ -35,8 +38,18 @@ def test_heartbeat_updates_worker_load():
     d=DistributedDispatcher(); d.register(worker()); out=d.heartbeat("local-1",{"load":{"activeJobs":1,"queuedJobs":3}})
     assert out["worker"]["load"]=={"activeJobs":1,"queuedJobs":3}
 
-def test_fastapi_dispatcher_routes():
-    with TestClient(app) as client:
+def test_fastapi_dispatcher_routes(tmp_path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("SC_LAB_DISPATCHER_DB_PATH", str(tmp_path / "dispatcher.sqlite3"))
+    monkeypatch.setenv("SC_LAB_JOB_DB_PATH", str(tmp_path / "jobs.sqlite3"))
+    monkeypatch.setenv("SC_LAB_ARTIFACT_ROOT", str(tmp_path / "artifacts"))
+    monkeypatch.setenv("SC_LAB_MODEL_REGISTRY_DB_PATH", str(tmp_path / "models.sqlite3"))
+    monkeypatch.setenv("SC_LAB_ENSEMBLE_STUDY_DB_PATH", str(tmp_path / "ensembles.sqlite3"))
+    monkeypatch.setenv("SC_LAB_LOAD_LEGACY_EXTENSIONS", "0")
+    import app.config as config_module
+    import app.main as main_module
+    importlib.reload(config_module)
+    main_module = importlib.reload(main_module)
+    with TestClient(main_module.app) as client:
         assert client.get('/v1/dispatcher/health').json()["version"]=="0.31.4"
         reg=client.post('/v1/dispatcher/workers/register',json=worker("api-worker")); assert reg.status_code==200
         route=client.post('/v1/dispatcher/route',json=workload()); assert route.status_code==200 and route.json()["ok"]

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/ensemble-evaluation-v0341.schema.json",
+  "title": "Sustainable Catalyst Lab Ensemble Evaluation v0.34.1",
+  "type": "object",
+  "required": ["schema", "version", "id", "studyId", "designIndex", "role", "memberIndex", "modelId", "modelVersion", "sampleValues", "status"],
+  "properties": {
+    "schema": {"const": "sc-lab-ensemble-evaluation/0.34.1"},
+    "version": {"const": "0.34.1"},
+    "id": {"type": "string"},
+    "studyId": {"type": "string"},
+    "designIndex": {"type": "integer", "minimum": 0},
+    "role": {"enum": ["sample", "A", "B", "AB"]},
+    "baseIndex": {"type": "integer", "minimum": 0},
+    "parameterName": {"type": ["string", "null"]},
+    "memberIndex": {"type": "integer", "minimum": 0},
+    "modelId": {"type": "string"},
+    "modelVersion": {"type": "string"},
+    "memberWeight": {"type": "number", "exclusiveMinimum": 0},
+    "sampleValues": {"type": "object"},
+    "queueId": {"type": ["string", "null"]},
+    "status": {"enum": ["queued", "running", "completed", "failed", "cancelled"]},
+    "outputValue": {"type": ["number", "null"]},
+    "error": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

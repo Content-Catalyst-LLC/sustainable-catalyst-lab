@@ -53,6 +53,7 @@
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
           'model-registry' => 'Scientific model registry',
+          'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
@@ -1727,6 +1728,35 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <div class="sc-mr0340-card is-wide"><h4>Registered model versions</h4><div class="sc-mr0340-table-wrap"><table class="sc-mr0340-table"><thead><tr><th>Model</th><th>Version</th><th>Type</th><th>Channel</th><th>Action</th></tr></thead><tbody data-mr-v0340-models></tbody></table></div></div>
           <div class="sc-mr0340-card"><h4>Reproduction manifest</h4><div class="sc-mr0340-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mr-v0340-action="reproduction">Build manifest</button><button type="button" class="sc-lab-button" data-mr-v0340-action="verify">Verify manifest</button></div><textarea data-mr-v0340-manifest aria-label="Model reproduction manifest JSON">{}</textarea></div>
           <div class="sc-mr0340-card"><h4>Registry, environment, promotion, and verification records</h4><pre class="sc-mr0340-output" data-mr-v0340-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-eu0341" data-lab-module="ensemble-uncertainty" data-module-panel="ensemble-uncertainty" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL ANALYSIS / v0.34.1</p><h3>Ensemble Simulation, Global Sensitivity, and Uncertainty</h3><p>Run immutable registered-model ensembles through governed workers, propagate uncertain inputs, compare weighted model members, and quantify output distributions and global parameter influence.</p></header>
+        <p data-eu-v0341-status role="status" aria-live="polite">Ensemble and uncertainty engine loading…</p>
+        <div class="sc-eu0341-metrics" data-eu-v0341-metrics></div>
+        <div class="sc-eu0341-grid">
+          <div class="sc-eu0341-card is-wide"><h4>Ensemble study definition</h4><textarea data-eu-v0341-definition aria-label="Ensemble study JSON">{
+  "id": "thermal-model-ensemble",
+  "title": "Thermal model uncertainty study",
+  "projectId": "default",
+  "members": [
+    {"modelId": "heat-transfer-surrogate", "modelVersion": "production", "weight": 0.7},
+    {"modelId": "heat-transfer-physics", "modelVersion": "1.0.0", "weight": 0.3}
+  ],
+  "variables": [
+    {"name": "temperature", "path": "temperature", "distribution": "normal", "mean": 350, "stdDev": 8},
+    {"name": "conductivity", "path": "conductivity", "distribution": "uniform", "low": 0.4, "high": 0.8}
+  ],
+  "design": {"method": "latin-hypercube", "samples": 128, "seed": 2026},
+  "output": {"path": "result.value", "label": "Heat flux", "unit": "W/m2"},
+  "analysis": {"confidence": 0.95, "thresholds": [100, 150]},
+  "execution": {"priority": 60, "maxAttempts": 3, "timeoutSeconds": 900}
+}</textarea><div class="sc-eu0341-actions"><button type="button" class="sc-lab-button" data-eu-v0341-action="validate">Validate design</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-eu-v0341-action="save">Save immutable study</button></div><p class="sc-eu0341-note"><strong>Governance:</strong> members must be immutable registered-method model versions. Lab never executes arbitrary Python, shell commands, or callbacks from a study definition.</p></div>
+          <div class="sc-eu0341-card"><h4>Study controls</h4><label>Study ID<input data-eu-v0341-studyid value="thermal-model-ensemble"></label><label>Operator reason<input data-eu-v0341-reason value="operator action from ensemble analysis panel"></label><div class="sc-eu0341-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-eu-v0341-action="start">Start evaluations</button><button type="button" class="sc-lab-button" data-eu-v0341-action="reconcile">Reconcile</button><button type="button" class="sc-lab-button" data-eu-v0341-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-eu-v0341-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-eu-v0341-action="refresh">Refresh</button><button type="button" class="sc-lab-button" data-eu-v0341-action="cancel">Cancel</button></div></div>
+          <div class="sc-eu0341-card"><h4>Operator-recorded result</h4><p class="sc-eu0341-note">Use only for validated external results or test fixtures. Normal studies reconcile results automatically from the dispatcher.</p><label>Evaluation ID<input data-eu-v0341-evaluation placeholder="ensemble-eval-..."></label><label>Numeric output value<input data-eu-v0341-value type="number" step="any"></label><div class="sc-eu0341-actions"><button type="button" class="sc-lab-button" data-eu-v0341-action="result">Record result</button></div></div>
+          <div class="sc-eu0341-card is-wide"><h4>Saved studies</h4><div class="sc-eu0341-table-wrap"><table class="sc-eu0341-table"><thead><tr><th>Study</th><th>Status</th><th>Project</th><th>Definition</th><th>Action</th></tr></thead><tbody data-eu-v0341-studies></tbody></table></div></div>
+          <div class="sc-eu0341-card is-wide"><h4>Study, evaluation, uncertainty, sensitivity, and provenance records</h4><pre class="sc-eu0341-output" data-eu-v0341-output>No response yet.</pre></div>
         </div>
       </section>
 
