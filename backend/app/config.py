@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.37.1"
+    version: str = "0.37.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -149,6 +149,13 @@ class Settings:
     manuscript_assembly_max_sections_per_assembly: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_MAX_SECTIONS_PER_ASSEMBLY", 500, 1, 5000)
     manuscript_assembly_history_limit: int = _int("SC_LAB_MANUSCRIPT_ASSEMBLY_HISTORY_LIMIT", 100000, 100, 2000000)
     manuscript_assembly_persistent_disk_mounted: bool = os.getenv("SC_LAB_MANUSCRIPT_ASSEMBLY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    public_reproduction_db_path: str = os.getenv("SC_LAB_PUBLIC_REPRODUCTION_DB_PATH", "./data/sc-lab-public-reproduction.sqlite3").strip()
+    public_reproduction_receipt_secret: str = os.getenv("SC_LAB_PUBLIC_REPRODUCTION_RECEIPT_SECRET", os.getenv("SC_LAB_COMPUTE_SIGNING_SECRET", "")).strip()
+    public_reproduction_max_records: int = _int("SC_LAB_PUBLIC_REPRODUCTION_MAX_RECORDS", 10000, 1, 200000)
+    public_reproduction_max_challenges: int = _int("SC_LAB_PUBLIC_REPRODUCTION_MAX_CHALLENGES", 250000, 100, 5000000)
+    public_reproduction_challenge_ttl_seconds: int = _int("SC_LAB_PUBLIC_REPRODUCTION_CHALLENGE_TTL_SECONDS", 86400, 300, 604800)
+    public_reproduction_history_limit: int = _int("SC_LAB_PUBLIC_REPRODUCTION_HISTORY_LIMIT", 200000, 100, 5000000)
+    public_reproduction_persistent_disk_mounted: bool = os.getenv("SC_LAB_PUBLIC_REPRODUCTION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

@@ -1,0 +1,68 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/public-reproduction-receipt-v0372.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "challengeId": {
+      "type": "string"
+    },
+    "evidenceHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "expectedHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "mismatches": {
+      "type": "array"
+    },
+    "receiptHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "recordId": {
+      "type": "string"
+    },
+    "recordSlug": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-reproduction-verification-receipt/0.37.2"
+    },
+    "signature": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verified": {
+      "type": "boolean"
+    },
+    "verifiedAt": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.37.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "challengeId",
+    "recordId",
+    "verified",
+    "mismatches",
+    "evidenceHash",
+    "expectedHash",
+    "receiptHash",
+    "verifiedAt"
+  ],
+  "title": "Public Reproduction Verification Receipt",
+  "type": "object"
+}

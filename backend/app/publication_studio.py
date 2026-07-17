@@ -207,6 +207,13 @@ class ReproducibilityPublicationStudio:
             if visibility not in {"private","workspace","public"}: raise PublicationStudioError("Unsupported publication visibility.")
             now=_now(); title=_text(payload.get("title"),300) or package["title"]; abstract=_text(payload.get("abstract"),10000); core={"id":pub_id,"workspaceId":workspace_id,"packageId":package_id,"title":title,"subtitle":_text(payload.get("subtitle"),300),"abstract":abstract,"authors":authors,"sections":sections,"figures":figures,"tables":tables,"citations":citations,"license":license_id,"visibility":visibility,"createdBy":actor_id,"createdAt":now}; publication_hash=_hash(core)
             con.execute("INSERT INTO publications VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(pub_id,workspace_id,package_id,title,core["subtitle"],abstract,_stable(authors),_stable(sections),_stable(figures),_stable(tables),_stable(citations),license_id,"draft",visibility,"{}","{}",publication_hash,None,actor_id,now,now,None,None,None)); self._event(con,workspace_id,"publication",pub_id,"publication-created",actor_id,{"packageId":package_id,"publicationHash":publication_hash}); return {"ok":True,"publication":self._publication_record(con.execute("SELECT * FROM publications WHERE id=?",(pub_id,)).fetchone())}
+    def get_publication(self, workspace_id, publication_id, actor_id):
+        workspace_id,publication_id,actor_id=_id(workspace_id,"workspace ID"),_id(publication_id,"publication ID"),_id(actor_id,"actor ID"); self._workspace(workspace_id,actor_id)
+        with self._connect() as con:
+            row=con.execute("SELECT * FROM publications WHERE id=? AND workspace_id=?",(publication_id,workspace_id)).fetchone()
+            if not row: raise PublicationStudioError("Publication not found.",404)
+            return {"ok":True,"publication":self._publication_record(row)}
+
     def list_publications(self, workspace_id, actor_id, status="", limit=100):
         workspace_id,actor_id=_id(workspace_id,"workspace ID"),_id(actor_id,"actor ID"); self._workspace(workspace_id,actor_id); args=[workspace_id]; where="workspace_id=?"
         if status:

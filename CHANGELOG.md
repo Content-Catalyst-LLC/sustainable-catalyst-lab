@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.37.2 — Public Reproduction and Verification Portal
+
+- Added safe immutable public reproduction records derived from published packages and sealed assemblies.
+- Added public manifests, nonce-bound challenges, evidence comparison, and immutable verification receipts.
+- Added optional signed receipts, withdrawal tombstones, integrity checks, workspace governance, and the 76th Lab panel.
+
 ## 0.37.1 — Manuscript, Report, Notebook, and Methods Assembly
 
 - Added reusable section libraries and revision snapshots.

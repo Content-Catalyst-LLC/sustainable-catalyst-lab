@@ -46,6 +46,7 @@ from .institutional_node_federation import InstitutionalNodeError, Institutional
 from .offline_edge_sync import EdgeSyncError, OfflineEdgeSyncManager, policies as edge_sync_policies
 from .publication_studio import PublicationStudioError, ReproducibilityPublicationStudio, policies as publication_studio_policies
 from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStudio, policies as manuscript_assembly_policies
+from .public_reproduction_portal import PublicReproductionError, PublicReproductionPortal, policies as public_reproduction_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -69,6 +70,7 @@ institutional_nodes = InstitutionalNodeFederation(settings.institutional_node_db
 edge_sync = OfflineEdgeSyncManager(settings.edge_sync_db_path, team_workspaces, institutional_nodes, settings.edge_sync_max_devices, settings.edge_sync_max_packages, settings.edge_sync_max_changes, settings.edge_sync_max_batch, settings.edge_sync_history_limit)
 publication_studio = ReproducibilityPublicationStudio(settings.publication_studio_db_path, team_workspaces, settings.publication_studio_max_packages, settings.publication_studio_max_publications, settings.publication_studio_max_resources, settings.publication_studio_history_limit, workspace_reviews)
 manuscript_assembly = ManuscriptAssemblyStudio(settings.manuscript_assembly_db_path, team_workspaces, publication_studio, settings.manuscript_assembly_max_assemblies, settings.manuscript_assembly_max_sections, settings.manuscript_assembly_max_sections_per_assembly, settings.manuscript_assembly_history_limit)
+public_reproduction = PublicReproductionPortal(settings.public_reproduction_db_path, team_workspaces, publication_studio, manuscript_assembly, settings.public_reproduction_receipt_secret, settings.public_reproduction_max_records, settings.public_reproduction_max_challenges, settings.public_reproduction_challenge_ttl_seconds, settings.public_reproduction_history_limit)
 
 
 @asynccontextmanager
@@ -185,6 +187,7 @@ def health():
         "scientificArtifactRepository": {"version":"0.36.0","governedCollections":True,"immutableArtifactVersions":True,"transportIntegrityBinding":True,"manifestFederation":True,"deltaSync":True,"tombstones":True,"conflictResolution":True,"automaticRemoteCallbacks":False},
         "reproducibilityPublicationStudio": {"version":"0.37.0","immutablePackages":True,"logicalBundles":True,"manifestVerification":True,"citationCff":True,"markdownHtmlJson":True,"scientificSignoffGate":True,"embeddedRestrictedData":False},
         "manuscriptAssemblyStudio": {"version":"0.37.1","reusableSections":True,"structuredMethodsNarrative":True,"outputOnlyNotebooks":True,"markdownHtmlJats":True,"bibtex":True,"immutableAssemblies":True,"revisionLineage":True,"arbitraryCode":False},
+        "publicReproductionPortal": {"version":"0.37.2","publicVerificationRecords":True,"safeManifestViews":True,"nonceChallenges":True,"signedReceipts":True,"tamperDetection":True,"publicCodeExecution":False,"embeddedRestrictedData":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2978,3 +2981,83 @@ def edge_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000
     actor, _ = _team_workspace_actor(auth)
     try: return edge_sync.timeline(workspace_id, actor, limit)
     except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+
+# v0.37.2 Public Reproduction and Verification Portal
+def _public_reproduction_http_error(exc: PublicReproductionError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/public-reproduction/health")
+def public_reproduction_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = public_reproduction.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.public_reproduction_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.public_reproduction_persistent_disk_mounted else "Public records and verification receipts are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/public-reproduction/policies")
+def public_reproduction_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = public_reproduction_policies(settings.public_reproduction_max_records, settings.public_reproduction_max_challenges, settings.public_reproduction_challenge_ttl_seconds); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/public-reproduction-records")
+def public_reproduction_records_list_route(workspace_id: str, status: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.list_records(workspace_id, actor, status, limit)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/public-reproduction-records")
+def public_reproduction_record_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.create_record(workspace_id, payload, actor)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/public-reproduction-records/{record_id}")
+def public_reproduction_record_get_route(workspace_id: str, record_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.get_record(workspace_id, record_id, actor)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/public-reproduction-records/{record_id}/publish")
+def public_reproduction_record_publish_route(workspace_id: str, record_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.publish_record(workspace_id, record_id, actor)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/public-reproduction-records/{record_id}/withdraw")
+def public_reproduction_record_withdraw_route(workspace_id: str, record_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.withdraw_record(workspace_id, record_id, payload, actor)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/public-reproduction-records/{record_id}/challenges")
+def public_reproduction_challenges_list_route(workspace_id: str, record_id: str, limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.list_challenges(workspace_id, record_id, actor, limit)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/public-reproduction-timeline")
+def public_reproduction_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return public_reproduction.timeline(workspace_id, actor, limit)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/public/reproduction/{slug}")
+def public_reproduction_public_record_route(slug: str):
+    try: return public_reproduction.public_record(slug)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/public/reproduction/{slug}/manifest")
+def public_reproduction_public_manifest_route(slug: str):
+    try: return public_reproduction.public_manifest(slug)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.post("/v1/public/reproduction/{slug}/challenges")
+def public_reproduction_issue_challenge_route(slug: str, payload: dict[str, Any] | None = None):
+    try: return public_reproduction.issue_challenge(slug, payload or {})
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.post("/v1/public/reproduction/challenges/{challenge_id}/submit")
+def public_reproduction_submit_challenge_route(challenge_id: str, payload: dict[str, Any]):
+    try: return public_reproduction.submit_challenge(challenge_id, payload)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+@app.get("/v1/public/reproduction/receipts/{receipt_hash}")
+def public_reproduction_receipt_route(receipt_hash: str):
+    try: return public_reproduction.public_receipt(receipt_hash)
+    except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc

@@ -1,6 +1,6 @@
 # Sustainable Catalyst Python Compute Core
 
-**Current release: v0.37.1 — Manuscript, Report, Notebook, and Methods Assembly**
+**Current release: v0.37.2 — Manuscript, Report, Notebook, and Methods Assembly**
 
 The v0.37.1 service preserves the complete governed scientific-compute, federation, collaboration, reproducibility, and publication stack while adding structured research-document assembly. It creates safe document outputs and output-only notebooks; it does not execute manuscript content or notebook code.
 
@@ -304,3 +304,8 @@ Federation is manifest-driven. Lab does not automatically call arbitrary submitt
 SC_LAB_ARTIFACT_REPOSITORY_DB_PATH=/app/data/sc-lab-artifact-repository.sqlite3
 SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED=0
 ```
+
+
+## v0.37.2 Public Reproduction and Verification Portal
+
+Publishes safe immutable reproduction records, nonce-bound verification challenges, and signed receipts without exposing private workspace data, executable code, credentials, callbacks, or restricted dataset bytes.

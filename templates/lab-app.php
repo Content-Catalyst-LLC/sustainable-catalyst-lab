@@ -53,6 +53,7 @@
           'design-studies' => 'Design studies',
           'model-calibration' => 'Model calibration',
           'manuscript-assembly' => 'Manuscript, report & notebook assembly',
+          'public-reproduction' => 'Public reproduction & verification',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2142,6 +2143,38 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <div class="sc-ma0371-card"><h4>Methods and outputs</h4><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button" data-ma-v0371-action="methods">Generate methods</button><button type="button" class="sc-lab-button" data-ma-v0371-action="validate">Validate</button><button type="button" class="sc-lab-button" data-ma-v0371-action="render">Render formats</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ma-v0371-action="seal">Seal assembly</button></div><p class="sc-ma0371-note">Notebook exports contain narrative and stored result cells only. They never contain executable code.</p></div>
           <div class="sc-ma0371-card"><h4>Revision lineage</h4><textarea data-ma-v0371-revise-json>{"id":"wetland-manuscript-v2","title":"Wetland Monitoring Study — Revision 2"}</textarea><div class="sc-ma0371-actions"><button type="button" class="sc-lab-button" data-ma-v0371-action="revise">Create revision</button><button type="button" class="sc-lab-button" data-ma-v0371-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-ma-v0371-action="health">Refresh health</button></div></div>
           <div class="sc-ma0371-card is-wide"><h4>Assembly records, validation, renders, and lineage</h4><pre class="sc-ma0371-output" data-ma-v0371-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-pr0372" data-lab-module="public-reproduction" data-module-panel="public-reproduction" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / PUBLIC VERIFICATION / v0.37.2</p><h3>Public Reproduction &amp; Verification Portal</h3><p>Publish safe immutable reproduction records, expose public manifests, issue nonce challenges, and verify independent hash evidence without executing submitted code or centralizing restricted data.</p></header>
+        <p class="sc-pr0372-status" data-pr-v0372-status role="status" aria-live="polite">Connecting to the public verification portal…</p>
+        <div class="sc-pr0372-grid">
+          <div class="sc-pr0372-card"><h4>Workspace record</h4><label>Workspace ID<input data-pr-v0372-workspace value="publication-team"></label><label>Record ID<input data-pr-v0372-record value="wetland-public-verification"></label><label>Public slug<input data-pr-v0372-slug value="wetland-public-verification"></label><textarea data-pr-v0372-record-json>{
+  "id": "wetland-public-verification",
+  "slug": "wetland-public-verification",
+  "publicationId": "wetland-publication-v1",
+  "assemblyId": "wetland-manuscript-v1",
+  "title": "Wetland Monitoring Reproduction Record",
+  "summary": "Independent verification record for the sealed publication package.",
+  "visibility": "public",
+  "publicMetadata": {"field":"ecology","release":"1.0.0"}
+}</textarea><div class="sc-pr0372-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pr-v0372-action="create">Create record</button><button type="button" class="sc-lab-button" data-pr-v0372-action="publish">Publish</button><button type="button" class="sc-lab-button" data-pr-v0372-action="records">List records</button></div></div>
+          <div class="sc-pr0372-card"><h4>Public manifest and challenge</h4><textarea data-pr-v0372-challenge-json>{"submitterLabel":"Independent verifier"}</textarea><div class="sc-pr0372-actions"><button type="button" class="sc-lab-button" data-pr-v0372-action="public-record">Public record</button><button type="button" class="sc-lab-button" data-pr-v0372-action="manifest">Manifest</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-pr-v0372-action="issue">Issue challenge</button></div><p class="sc-pr0372-note">The public view excludes workspace member identities, secrets, executable content, and restricted dataset bytes.</p></div>
+          <div class="sc-pr0372-card is-wide"><h4>Independent verification evidence</h4><label>Challenge ID<input data-pr-v0372-challenge value="challenge-id"></label><textarea data-pr-v0372-evidence-json>{
+  "nonce": "replace-with-issued-nonce",
+  "recordHash": "replace-with-record-hash",
+  "snapshotHash": "replace-with-snapshot-hash",
+  "manifestHash": "replace-with-manifest-hash",
+  "publicationHash": "replace-with-publication-hash",
+  "packageHash": "replace-with-package-hash",
+  "assemblyHash": "replace-with-assembly-hash",
+  "resourceHashes": {},
+  "environment": {"platform":"independent-verifier"}
+}</textarea><div class="sc-pr0372-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pr-v0372-action="submit">Submit evidence</button><button type="button" class="sc-lab-button" data-pr-v0372-action="challenges">Workspace challenges</button><button type="button" class="sc-lab-button" data-pr-v0372-action="timeline">Timeline</button></div></div>
+          <div class="sc-pr0372-card"><h4>Receipt lookup</h4><label>Receipt SHA-256<input data-pr-v0372-receipt value="receipt-hash"></label><button type="button" class="sc-lab-button" data-pr-v0372-action="receipt">Verify receipt</button></div>
+          <div class="sc-pr0372-card"><h4>Withdrawal</h4><textarea data-pr-v0372-withdraw-json>{"reason":"Superseded by a corrected public record."}</textarea><button type="button" class="sc-lab-button" data-pr-v0372-action="withdraw">Withdraw record</button><p class="sc-pr0372-note">Withdrawal preserves a public tombstone and complete verification history; it does not hard-delete the record.</p></div>
+          <div class="sc-pr0372-card is-wide"><h4>Records, manifests, challenges, receipts, and provenance</h4><pre class="sc-pr0372-output" data-pr-v0372-output>No response yet.</pre></div>
         </div>
       </section>
 

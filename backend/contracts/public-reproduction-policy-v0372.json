@@ -1,0 +1,31 @@
+{
+  "capabilities": {
+    "embeddedRestrictedData": false,
+    "hardDelete": false,
+    "independentHashVerification": true,
+    "nonceChallenges": true,
+    "publicCodeExecution": false,
+    "publicVerificationRecords": true,
+    "safeManifestViews": true,
+    "signedReceipts": true,
+    "tamperDetection": true,
+    "unrestrictedCallbacks": false
+  },
+  "challengeStatuses": [
+    "issued",
+    "verified",
+    "failed",
+    "expired"
+  ],
+  "recordStatuses": [
+    "draft",
+    "published",
+    "withdrawn"
+  ],
+  "schema": "sc-lab-public-reproduction-policy/0.37.2",
+  "version": "0.37.2",
+  "visibilities": [
+    "public",
+    "unlisted"
+  ]
+}

@@ -246,5 +246,5 @@ def test_fastapi_closed_loop_routes(monkeypatch, tmp_path: Path):
         assert client.post(f"/v1/closed-loop-campaigns/reactor-loop/commands/{command['id']}/dispatch", headers=headers).status_code == 200
         health = client.get("/v1/closed-loop-campaigns/health", headers=headers).json()
         assert health["version"] == "0.33.2"
-        assert health["serviceVersion"] == "0.37.1"
+        assert health["serviceVersion"] == "0.37.2"
         assert client.get("/health").json()["closedLoopCampaigns"]["version"] == "0.33.2"

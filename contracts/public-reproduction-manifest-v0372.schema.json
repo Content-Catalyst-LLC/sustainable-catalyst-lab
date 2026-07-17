@@ -1,0 +1,56 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/public-reproduction-manifest-v0372.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assembly": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "manifestHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "package": {
+      "type": "object"
+    },
+    "publication": {
+      "type": "object"
+    },
+    "recordHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "recordId": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-public-reproduction-manifest/0.37.2"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "snapshotHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "version": {
+      "const": "0.37.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "recordId",
+    "slug",
+    "recordHash",
+    "snapshotHash",
+    "manifestHash",
+    "publication",
+    "package"
+  ],
+  "title": "Public Reproduction Manifest",
+  "type": "object"
+}

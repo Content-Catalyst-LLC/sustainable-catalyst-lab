@@ -1,0 +1,79 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/public-reproduction-record-v0372.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assemblyId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonicalUri": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": "string"
+    },
+    "publicationId": {
+      "type": "string"
+    },
+    "recordHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-public-reproduction-record/0.37.2"
+    },
+    "slug": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,118}[a-z0-9]$",
+      "type": "string"
+    },
+    "snapshot": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "published",
+        "withdrawn"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.37.2"
+    },
+    "visibility": {
+      "enum": [
+        "public",
+        "unlisted"
+      ]
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "slug",
+    "publicationId",
+    "packageId",
+    "title",
+    "status",
+    "visibility",
+    "recordHash",
+    "canonicalUri"
+  ],
+  "title": "Public Reproduction Record",
+  "type": "object"
+}

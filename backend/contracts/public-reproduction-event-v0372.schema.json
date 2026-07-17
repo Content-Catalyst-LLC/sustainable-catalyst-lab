@@ -1,0 +1,57 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/public-reproduction-event-v0372.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "actorId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "eventHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-public-reproduction-event/0.37.2"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "version": {
+      "const": "0.37.2"
+    },
+    "workspaceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "entityType",
+    "entityId",
+    "eventType",
+    "actorId",
+    "details",
+    "eventHash",
+    "createdAt"
+  ],
+  "title": "Public Reproduction Event",
+  "type": "object"
+}

@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.37.1 — Manuscript, Report, Notebook, and Methods Assembly**
+**Current release: v0.37.2 — Manuscript, Report, Notebook, and Methods Assembly**
 
 ## v0.37.1 highlights
 
@@ -649,3 +649,8 @@ Project-scoped calibration and validation for registered scientific model forms,
 ## v0.31.0 — Distributed Compute Dispatcher
 
 Adds worker capability discovery, governed workload routing, signed leases, heartbeat/load tracking, project-aware dispatch records, and browser/Render/local/Raspberry Pi/institutional worker profiles.
+
+
+## v0.37.2 Public Reproduction and Verification Portal
+
+Publishes safe immutable reproduction records, nonce-bound verification challenges, and signed receipts without exposing private workspace data, executable code, credentials, callbacks, or restricted dataset bytes.

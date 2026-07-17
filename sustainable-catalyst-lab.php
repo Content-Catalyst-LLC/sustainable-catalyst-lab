@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, scientific workflow orchestration, dependency graphs, declarative workflow conditions, checkpoint history, partial recovery, durable schedules, authenticated event triggers, missed-run recovery, concurrency controls, adaptive experiment campaigns, sequential design, Gaussian-process surrogate modeling, Bayesian optimization, active learning, predictive uncertainty, resource-aware trial search, budget-aware orchestration, closed-loop simulation and instrument campaigns, signed measurement ingestion, safety interlocks, operator-approved setpoints, shared research projects, role-governed team workspaces, single-use invitations, collaboration-safe resource linking, append-only review discussions, review assignments, approval gates, immutable scientific sign-off, immutable workspace version history, named research branches, three-way merge, conflict resolution, protected-branch approval gates, institutional node federation, local-data execution, signed execution envelopes, node attestations, offline field research, sealed work packages, resumable edge synchronization, conflict-safe reconciliation, field-device provenance, reproducibility packages, research publication rendering, citation exports, verification manifests, scientific publication sign-off, and data-connected documentation.
- * Version: 0.37.1
+ * Version: 0.37.2
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_VERSION', '0.37.1');
+define('SC_LAB_VERSION', '0.37.2');
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-urban-planning-spatial.php';
@@ -209,6 +209,8 @@ SC_Lab_Offline_Edge_Sync_V0362::init();
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-publication-studio-v0370.php';
 // v0.37.1 Manuscript, Report, Notebook, and Methods Assembly.
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-manuscript-assembly-v0371.php';
+// v0.37.2 Public Reproduction and Verification Portal.
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-public-reproduction-v0372.php';
 SC_Lab_Publication_Studio_V0370::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-python-compute-core-v0261.php';

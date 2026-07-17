@@ -1,0 +1,47 @@
+{
+  "manifest": {
+    "manifestHash": "6eeb9ba62f08888e7a7d24047d38ad068108ed9383562090973af3456418a32e",
+    "resourceCount": 0
+  },
+  "mismatchChallenge": {
+    "challengeId": "challenge-319456382cd967642973f3bb",
+    "mismatches": [
+      {
+        "expected": "c7fdd62093b80b92565abf99824fdb1c5074571546840f43510aa93c72d3aeae",
+        "field": "packageHash",
+        "observed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    ],
+    "receiptHash": "2427372fdea05b5aed33aa4305f1607d33cebce09227507326e780b2837c90ed",
+    "verified": false
+  },
+  "record": {
+    "id": "wetland-verification",
+    "recordHash": "01d20941f3451cf6fb52bfa1ef72368811178ebffb9d9b43598a113d760089f7",
+    "slug": "wetland-verification",
+    "snapshotHash": "88703d89a2f428b5e08280e75f0c1270fa2601ea4292586d6a559a3987e2c9b3",
+    "status": "published"
+  },
+  "release": "0.37.2",
+  "safety": {
+    "embeddedRestrictedData": false,
+    "hardDelete": false,
+    "independentHashVerification": true,
+    "nonceChallenges": true,
+    "publicCodeExecution": false,
+    "publicVerificationRecords": true,
+    "safeManifestViews": true,
+    "signedReceipts": true,
+    "tamperDetection": true,
+    "unrestrictedCallbacks": false
+  },
+  "successfulChallenge": {
+    "challengeId": "challenge-4ae44f0dedaecf7c46511898",
+    "receiptHash": "8119cd23a83bc64f3e03708bd263a7d23488fa3e9e3ad33276f627fbfdb40993",
+    "receiptHashValid": true,
+    "signatureValid": true,
+    "signed": true,
+    "verified": true
+  },
+  "title": "Public Reproduction and Verification Portal live proof"
+}

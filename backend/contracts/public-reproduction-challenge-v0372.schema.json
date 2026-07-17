@@ -1,0 +1,64 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/public-reproduction-challenge-v0372.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "challengeHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "expected": {
+      "type": "object"
+    },
+    "expiresAt": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "receiptHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recordId": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-reproduction-challenge/0.37.2"
+    },
+    "status": {
+      "enum": [
+        "issued",
+        "verified",
+        "failed",
+        "expired"
+      ]
+    },
+    "version": {
+      "const": "0.37.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "recordId",
+    "nonce",
+    "status",
+    "expected",
+    "challengeHash",
+    "createdAt",
+    "expiresAt"
+  ],
+  "title": "Public Reproduction Verification Challenge",
+  "type": "object"
+}
