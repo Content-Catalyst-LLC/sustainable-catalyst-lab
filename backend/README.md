@@ -1,9 +1,37 @@
 # Sustainable Catalyst Lab Python Compute Core
 
-**Current release: v0.36.2 — Offline Field Research and Edge Synchronization**
+**Current release: v0.37.0 — Reproducibility Packages and Research Publication Studio**
 
-The v0.36.2 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
+The v0.37.0 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
 
+
+
+## Reproducibility Packages and Research Publication Studio — v0.37.0
+
+The compute service now stores workspace-governed reproducibility packages, seals canonical manifests, verifies package integrity, renders Markdown/HTML/JSON/CITATION.cff outputs, and publishes only after a signed v0.35.1 scientific approval is verified. Package records contain references and hashes rather than executable code or restricted data bytes.
+
+Key settings:
+
+```text
+SC_LAB_PUBLICATION_STUDIO_DB_PATH=/app/data/sc-lab-publication-studio.sqlite3
+SC_LAB_PUBLICATION_STUDIO_MAX_PACKAGES=5000
+SC_LAB_PUBLICATION_STUDIO_MAX_PUBLICATIONS=5000
+SC_LAB_PUBLICATION_STUDIO_MAX_RESOURCES=1000
+SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED=0
+```
+
+Key endpoints:
+
+- `GET /v1/publication-studio/health`
+- `GET /v1/publication-studio/policies`
+- `GET|POST /v1/team-workspaces/{workspaceId}/reproducibility-packages`
+- `GET|PATCH /v1/team-workspaces/{workspaceId}/reproducibility-packages/{packageId}`
+- `POST /v1/team-workspaces/{workspaceId}/reproducibility-packages/{packageId}/seal`
+- `POST /v1/team-workspaces/{workspaceId}/reproducibility-packages/{packageId}/verify`
+- `GET|POST /v1/team-workspaces/{workspaceId}/research-publications`
+- `POST /v1/team-workspaces/{workspaceId}/research-publications/{publicationId}/render`
+- `POST /v1/team-workspaces/{workspaceId}/research-publications/{publicationId}/ready`
+- `POST /v1/team-workspaces/{workspaceId}/research-publications/{publicationId}/publish`
 
 ## Offline Field Research and Edge Synchronization — v0.36.2
 

@@ -27,3 +27,9 @@ envVars:
 # Offline field and edge synchronization
 # SC_LAB_EDGE_SYNC_DB_PATH=/app/data/sc-lab-edge-sync.sqlite3
 # SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED=1
+
+  - key: SC_LAB_PUBLICATION_STUDIO_DB_PATH
+    value: /app/data/sc-lab-publication-studio.sqlite3
+  - key: SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED
+    value: "1"
+

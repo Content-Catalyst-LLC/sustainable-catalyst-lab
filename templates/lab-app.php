@@ -2066,6 +2066,55 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+
+      <section class="sc-lab-panel sc-pub0370" data-lab-module="publication-studio" data-module-panel="publication-studio" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / REPRODUCIBILITY &amp; PUBLICATION / v0.37.0</p><h3>Reproducibility Packages &amp; Research Publication Studio</h3><p>Assemble workspace-governed research bundles, verify immutable manifests, render publication-ready outputs, and publish only after scientific sign-off.</p></header>
+        <p class="sc-pub0370-status" data-pub-v0370-status role="status" aria-live="polite">Connecting to the publication studio…</p>
+        <div class="sc-pub0370-grid">
+          <div class="sc-pub0370-card"><h4>Reproducibility package</h4><label>Workspace ID<input data-pub-v0370-workspace value="publication-team"></label><label>Package ID<input data-pub-v0370-package value="wetland-study-v1"></label><textarea data-pub-v0370-package-json>{
+  "id": "wetland-study-v1",
+  "title": "Wetland Biodiversity Study",
+  "description": "Reproducible research package for the field campaign.",
+  "packageVersion": "1.0.0",
+  "license": "CC-BY-4.0",
+  "resources": [
+    {"id":"dataset-summary","type":"dataset","sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","title":"Verified aggregate dataset"},
+    {"id":"analysis-workflow","type":"workflow","sha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","title":"Registered analysis workflow"}
+  ],
+  "methods": {"registeredMethods":["statistics.descriptive"]},
+  "environment": {"python":"3.12","dependencies":{"numpy":"locked"}},
+  "authors": [{"name":"Research Team","role":"author"}],
+  "citations": [{"id":"source-1","title":"Field protocol","type":"report"}],
+  "provenance": {"workspace":"publication-team","study":"wetland-monitoring"}
+}</textarea><div class="sc-pub0370-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pub-v0370-action="package-create">Create package</button><button type="button" class="sc-lab-button" data-pub-v0370-action="package-update">Update draft</button><button type="button" class="sc-lab-button" data-pub-v0370-action="seal">Seal</button><button type="button" class="sc-lab-button" data-pub-v0370-action="verify">Verify</button><button type="button" class="sc-lab-button" data-pub-v0370-action="packages">List packages</button></div><p class="sc-edge0362-note">Sealed packages are immutable. Raw restricted data, executable code, shell commands, secrets, and unrestricted callbacks are rejected.</p></div>
+          <div class="sc-pub0370-card"><h4>Research publication</h4><label>Publication ID<input data-pub-v0370-publication value="wetland-study-article"></label><textarea data-pub-v0370-publication-json>{
+  "id": "wetland-study-article",
+  "packageId": "wetland-study-v1",
+  "title": "Wetland Biodiversity Monitoring Results",
+  "subtitle": "A reproducible field-research report",
+  "abstract": "This report summarizes the governed field campaign and its verified results.",
+  "authors": [{"name":"Research Team","affiliation":"Sustainable Catalyst"}],
+  "sections": [
+    {"id":"methods","title":"Methods","body":"Registered methods and verified field protocols were used."},
+    {"id":"results","title":"Results","body":"Aggregate findings are reported with package provenance."}
+  ],
+  "citations": [{"id":"source-1","title":"Field protocol","author":"Research Team","year":2026}],
+  "license": "CC-BY-4.0",
+  "visibility": "workspace"
+}</textarea><div class="sc-pub0370-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pub-v0370-action="publication-create">Create publication</button><button type="button" class="sc-lab-button" data-pub-v0370-action="publications">List publications</button><button type="button" class="sc-lab-button" data-pub-v0370-action="render">Render outputs</button><button type="button" class="sc-lab-button" data-pub-v0370-action="ready">Mark ready</button></div></div>
+          <div class="sc-pub0370-card"><h4>Scientific publication gate</h4><textarea data-pub-v0370-publish-json>{
+  "approvalId": "publication-approval-id",
+  "scientificSignoff": {
+    "id": "scientific-signoff-id",
+    "approvalId": "publication-approval-id",
+    "signoffHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "canonicalUri": "https://sustainablecatalyst.com/research/wetland-study"
+}</textarea><div class="sc-pub0370-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pub-v0370-action="publish">Publish signed release</button><button type="button" class="sc-lab-button" data-pub-v0370-action="timeline">Timeline</button><button type="button" class="sc-lab-button" data-pub-v0370-action="health">Refresh health</button></div><p class="sc-edge0362-note">Publication requires a verified sealed package, a completed approval, and an immutable scientific sign-off bound to the same workspace resource.</p></div>
+          <div class="sc-pub0370-card is-wide"><h4>Packages, verification receipts, publication outputs, and provenance</h4><pre class="sc-pub0370-output" data-pub-v0370-output>No response yet.</pre></div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
         <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>

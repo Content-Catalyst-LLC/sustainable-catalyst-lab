@@ -44,6 +44,7 @@ from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
 from .institutional_node_federation import InstitutionalNodeError, InstitutionalNodeFederation, policies as institutional_node_policies
 from .offline_edge_sync import EdgeSyncError, OfflineEdgeSyncManager, policies as edge_sync_policies
+from .publication_studio import PublicationStudioError, ReproducibilityPublicationStudio, policies as publication_studio_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -65,6 +66,7 @@ workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, se
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
 institutional_nodes = InstitutionalNodeFederation(settings.institutional_node_db_path, team_workspaces, resolve, settings.institutional_node_coordinator_secret, settings.institutional_node_max_nodes, settings.institutional_node_max_data_assets, settings.institutional_node_max_requests, settings.institutional_node_history_limit)
 edge_sync = OfflineEdgeSyncManager(settings.edge_sync_db_path, team_workspaces, institutional_nodes, settings.edge_sync_max_devices, settings.edge_sync_max_packages, settings.edge_sync_max_changes, settings.edge_sync_max_batch, settings.edge_sync_history_limit)
+publication_studio = ReproducibilityPublicationStudio(settings.publication_studio_db_path, team_workspaces, settings.publication_studio_max_packages, settings.publication_studio_max_publications, settings.publication_studio_max_resources, settings.publication_studio_history_limit, workspace_reviews)
 
 
 @asynccontextmanager
@@ -179,6 +181,7 @@ def health():
         "workspaceReviewSignoff": {"version":"0.35.1","appendOnlyComments":True,"reviewAssignments":True,"approvalGates":True,"optimisticConcurrency":True,"immutableDecisions":True,"immutableScientificSignoff":True},
         "workspaceVersionControl": {"version":"0.35.2","immutableSnapshots":True,"namedBranches":True,"threeWayMerge":True,"pathLevelConflicts":True,"protectedBranches":True,"signedApprovalGate":True,"historyRewrite":False},
         "scientificArtifactRepository": {"version":"0.36.0","governedCollections":True,"immutableArtifactVersions":True,"transportIntegrityBinding":True,"manifestFederation":True,"deltaSync":True,"tombstones":True,"conflictResolution":True,"automaticRemoteCallbacks":False},
+        "reproducibilityPublicationStudio": {"version":"0.37.0","immutablePackages":True,"logicalBundles":True,"manifestVerification":True,"citationCff":True,"markdownHtmlJson":True,"scientificSignoffGate":True,"embeddedRestrictedData":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -2686,6 +2689,97 @@ def closed_loop_tick_route(auth: dict[str, str] = Depends(require_compute_auth))
     return closed_loop_campaigns.tick()
 
 
+
+def _publication_http_error(exc: PublicationStudioError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/publication-studio/health")
+def publication_studio_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body=publication_studio.health(); body["serviceVersion"]=settings.version; body["deploymentDurability"]="persistent-disk" if settings.publication_studio_persistent_disk_mounted else "instance-local"; body["durabilityWarning"]=None if settings.publication_studio_persistent_disk_mounted else "Reproducibility packages and publication records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/publication-studio/policies")
+def publication_studio_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body=publication_studio_policies(settings.publication_studio_max_packages,settings.publication_studio_max_publications,settings.publication_studio_max_resources); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/reproducibility-packages")
+def publication_packages_list_route(workspace_id: str,status: str=Query(""),limit: int=Query(100,ge=1,le=1000),auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.list_packages(workspace_id,actor,status,limit)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/reproducibility-packages")
+def publication_package_create_route(workspace_id: str,payload: dict[str,Any],auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.create_package(workspace_id,payload,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/reproducibility-packages/{package_id}")
+def publication_package_get_route(workspace_id: str,package_id: str,auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.get_package(workspace_id,package_id,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/reproducibility-packages/{package_id}")
+def publication_package_update_route(workspace_id: str,package_id: str,payload: dict[str,Any],auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.update_package(workspace_id,package_id,payload,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/reproducibility-packages/{package_id}/seal")
+def publication_package_seal_route(workspace_id: str,package_id: str,auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.seal_package(workspace_id,package_id,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/reproducibility-packages/{package_id}/verify")
+def publication_package_verify_route(workspace_id: str,package_id: str,auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.verify_package(workspace_id,package_id,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-publications")
+def publications_list_route(workspace_id: str,status: str=Query(""),limit: int=Query(100,ge=1,le=1000),auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.list_publications(workspace_id,actor,status,limit)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-publications")
+def publication_create_route(workspace_id: str,payload: dict[str,Any],auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.create_publication(workspace_id,payload,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/research-publications/{publication_id}")
+def publication_update_route(workspace_id: str,publication_id: str,payload: dict[str,Any],auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.update_publication(workspace_id,publication_id,payload,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-publications/{publication_id}/render")
+def publication_render_route(workspace_id: str,publication_id: str,auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.render_publication(workspace_id,publication_id,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-publications/{publication_id}/ready")
+def publication_ready_route(workspace_id: str,publication_id: str,auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.mark_ready(workspace_id,publication_id,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-publications/{publication_id}/publish")
+def publication_publish_route(workspace_id: str,publication_id: str,payload: dict[str,Any],auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.publish(workspace_id,publication_id,payload,actor)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/publication-timeline")
+def publication_timeline_route(workspace_id: str,limit: int=Query(500,ge=1,le=5000),auth: dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return publication_studio.timeline(workspace_id,actor,limit)
+    except PublicationStudioError as exc:raise _publication_http_error(exc) from exc
 
 def _edge_sync_http_error(exc: EdgeSyncError) -> HTTPException:
     return HTTPException(status_code=exc.status_code, detail=exc.detail)

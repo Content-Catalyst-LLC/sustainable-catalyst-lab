@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.36.2"
+    version: str = "0.37.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -136,6 +136,13 @@ class Settings:
     edge_sync_max_batch: int = _int("SC_LAB_EDGE_SYNC_MAX_BATCH", 500, 1, 5000)
     edge_sync_history_limit: int = _int("SC_LAB_EDGE_SYNC_HISTORY_LIMIT", 200000, 100, 5000000)
     edge_sync_persistent_disk_mounted: bool = os.getenv("SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+
+    publication_studio_db_path: str = os.getenv("SC_LAB_PUBLICATION_STUDIO_DB_PATH", "./data/sc-lab-publication-studio.sqlite3").strip()
+    publication_studio_max_packages: int = _int("SC_LAB_PUBLICATION_STUDIO_MAX_PACKAGES", 5000, 1, 100000)
+    publication_studio_max_publications: int = _int("SC_LAB_PUBLICATION_STUDIO_MAX_PUBLICATIONS", 5000, 1, 100000)
+    publication_studio_max_resources: int = _int("SC_LAB_PUBLICATION_STUDIO_MAX_RESOURCES", 1000, 1, 10000)
+    publication_studio_history_limit: int = _int("SC_LAB_PUBLICATION_STUDIO_HISTORY_LIMIT", 100000, 100, 2000000)
+    publication_studio_persistent_disk_mounted: bool = os.getenv("SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

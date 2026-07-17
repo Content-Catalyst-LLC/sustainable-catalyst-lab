@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-reproducibility-verification/0.37.0",
+  "title": "sc-lab-reproducibility-verification/0.37.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "packageId",
+    "ok",
+    "receiptHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-reproducibility-verification/0.37.0"
+    },
+    "version": {
+      "const": "0.37.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": "string"
+    },
+    "publicationId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "packageHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "publicationHash": {
+      "type": "string"
+    },
+    "receiptHash": {
+      "type": "string"
+    },
+    "exportHash": {
+      "type": "string"
+    },
+    "eventHash": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "ok": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

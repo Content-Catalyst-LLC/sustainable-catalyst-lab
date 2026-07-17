@@ -1,5 +1,14 @@
 # Sustainable Catalyst Lab Changelog
 
+## 0.37.0 — Reproducibility Packages and Research Publication Studio
+
+- Added workspace-governed reproducibility packages with immutable sealed manifests.
+- Added package verification receipts and stable SHA-256 identities for resources, manifests, and exports.
+- Added publication-ready Markdown, escaped HTML, JSON, and CITATION.cff rendering.
+- Added reviewer readiness and signed scientific-approval publication gates.
+- Added authenticated FastAPI routes, logged-in WordPress proxies, six public contracts, deployment settings, and the 74th Lab panel.
+- Preserved all v0.36.x federation, institutional-node, and offline-edge contracts.
+
 ## 0.36.2 — Offline Field Research and Edge Synchronization
 
 - Added sealed offline work packages and edge-device enrollment.

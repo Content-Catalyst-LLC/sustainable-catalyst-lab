@@ -1,0 +1,16 @@
+{
+  "schema": "sc-lab-publication-studio-policy/0.37.0",
+  "version": "0.37.0",
+  "immutableSealedPackages": true,
+  "portableLogicalBundles": true,
+  "formats": [
+    "json",
+    "markdown",
+    "html",
+    "citation-cff"
+  ],
+  "scientificSignoffGate": true,
+  "embeddedRestrictedData": false,
+  "arbitraryCode": false,
+  "hardDelete": false
+}

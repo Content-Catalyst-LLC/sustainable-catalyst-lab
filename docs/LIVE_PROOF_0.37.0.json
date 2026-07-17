@@ -1,0 +1,93 @@
+{
+  "export": {
+    "exportHash": "91c7f926a6c797bb65674bdc2f743dbbdded5ff99de66aab999fdc7b6aff9beb",
+    "fileHashes": {
+      "CITATION.cff": "c533e888ce2bfdaecda2a971d80ddc761b5e512c16a9f2bd6eae5762f1d1a1b2",
+      "README.md": "9de0eded44c9debd55424d69e69bdb6d5df1b693c7dd051d6360ce02faf79ca8",
+      "environment.json": "e1ed775d4455aff64503e8d5c832177e70cc020550d362b4d5888b18fca9d1fb",
+      "manifest.json": "f936ea9a01afb2c5d5fad1e464fa5b470a31f873c695fbe8bf51fd33a8d09b26",
+      "methods.json": "fae5796b8c36db6d4b01433ce02ac3a98845c0a60cdf1b869f1ce17d190f3c55",
+      "provenance.json": "acc64f0acc1275e26566a9dc50eab9b7f81448f224bc53a4cee6ac1a5d7920ec",
+      "publication.html": "ae5e69412873da6c1372428ce75e297ad6aee57950951f7fc5e9f3b41e702438",
+      "publication.json": "2f59546abdeba3c71741dde2042ed271bfe375810ce7b0e89bf1a95ca20a0282",
+      "publication.md": "9de0eded44c9debd55424d69e69bdb6d5df1b693c7dd051d6360ce02faf79ca8"
+    },
+    "files": [
+      "CITATION.cff",
+      "README.md",
+      "environment.json",
+      "manifest.json",
+      "methods.json",
+      "provenance.json",
+      "publication.html",
+      "publication.json",
+      "publication.md"
+    ],
+    "schema": "sc-lab-publication-export/0.37.0"
+  },
+  "ok": true,
+  "package": {
+    "id": "wetland-repro-v1",
+    "packageHash": "8f7d738471458ba7028d7faf43fb6fd55204b07e3ca1905ee1c5ba100d95ca3f",
+    "status": "sealed"
+  },
+  "publication": {
+    "canonicalUri": "https://sustainablecatalyst.com/research/wetland-publication-v1",
+    "id": "wetland-publication-v1",
+    "publicationHash": "d9c92fa990bca91d0f68f6454d0921ba15f09eebc966fa5ec1dd739d440b13f0",
+    "status": "published"
+  },
+  "release": "0.37.0",
+  "review": {
+    "approvalId": "publication-approval",
+    "approvalStatus": "signed",
+    "assignmentId": "publication-review",
+    "signoffHash": "8a4bf55907847e8a7635d8df36e1077f4e3a11c5f05ee1a46f5e50c4f1af6c5c",
+    "signoffId": "publication-signoff"
+  },
+  "security": {
+    "arbitraryCode": false,
+    "embeddedRestrictedData": false,
+    "scientificSignoffVerified": true,
+    "workspaceGoverned": true
+  },
+  "timelineEventTypes": [
+    "publication-published",
+    "publication-ready",
+    "publication-rendered",
+    "publication-created",
+    "package-verified",
+    "package-sealed",
+    "package-updated",
+    "package-created"
+  ],
+  "verification": {
+    "checks": {
+      "manifestHash": {
+        "actual": "f936ea9a01afb2c5d5fad1e464fa5b470a31f873c695fbe8bf51fd33a8d09b26",
+        "expected": "f936ea9a01afb2c5d5fad1e464fa5b470a31f873c695fbe8bf51fd33a8d09b26",
+        "ok": true
+      },
+      "packageHash": {
+        "actual": "8f7d738471458ba7028d7faf43fb6fd55204b07e3ca1905ee1c5ba100d95ca3f",
+        "expected": "8f7d738471458ba7028d7faf43fb6fd55204b07e3ca1905ee1c5ba100d95ca3f",
+        "ok": true
+      },
+      "resourceHashes": {
+        "ok": true
+      },
+      "sealed": {
+        "ok": true
+      }
+    },
+    "ok": true,
+    "packageId": "wetland-repro-v1",
+    "receiptHash": "1c6d988957b4fc98763ffddf28b6ad47755c5a949b97c1700d99b31b152726b8",
+    "schema": "sc-lab-reproducibility-verification/0.37.0",
+    "verifiedAt": "2026-07-17T22:05:34.231548Z",
+    "verifiedBy": "bob",
+    "version": "0.37.0",
+    "workspaceId": "publication-team"
+  },
+  "workspaceId": "publication-team"
+}

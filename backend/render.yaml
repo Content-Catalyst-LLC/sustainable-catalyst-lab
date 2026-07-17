@@ -197,3 +197,16 @@ services:
     value: "200000"
   - key: SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED
     value: "0"
+
+  - key: SC_LAB_PUBLICATION_STUDIO_DB_PATH
+    value: /app/data/sc-lab-publication-studio.sqlite3
+  - key: SC_LAB_PUBLICATION_STUDIO_MAX_PACKAGES
+    value: "5000"
+  - key: SC_LAB_PUBLICATION_STUDIO_MAX_PUBLICATIONS
+    value: "5000"
+  - key: SC_LAB_PUBLICATION_STUDIO_MAX_RESOURCES
+    value: "1000"
+  - key: SC_LAB_PUBLICATION_STUDIO_HISTORY_LIMIT
+    value: "100000"
+  - key: SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED
+    value: "0"

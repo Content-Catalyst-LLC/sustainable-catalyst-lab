@@ -1,10 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.36.2 — Offline Field Research and Edge Synchronization**
+**Current release: v0.37.0 — Reproducibility Packages and Research Publication Studio**
 
 Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution, plus governed scientific artifact collections, immutable version records, transport-bound integrity checks, hashed federation manifests, delta synchronization, tombstones, explicit conflict resolution, registered institutional compute nodes, signed local-execution envelopes, restricted-data locality controls, and node-attested aggregate results.
 
 
+
+
+## v0.37.0 highlights
+
+- Workspace-governed reproducibility packages with immutable sealed manifests and SHA-256 identities.
+- Logical research bundles containing methods, environment locks, citations, provenance, resources, and verification receipts.
+- Publication-ready Markdown, escaped HTML, JSON, and `CITATION.cff` outputs.
+- Reviewer readiness gates and publication restricted to an existing signed scientific workspace approval.
+- No arbitrary code, shell commands, secrets, raw restricted data bytes, or unrestricted callbacks.
+- New Reproducibility Packages and Research Publication Studio panel, bringing Lab to 74 registered panels.
 
 ## v0.36.2 highlights
 
