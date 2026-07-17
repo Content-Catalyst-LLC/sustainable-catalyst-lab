@@ -1,0 +1,59 @@
+{
+  "$id": "sc-lab-edge-sync-conflict/0.36.2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "edgeHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "localHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "packageId": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-edge-sync-conflict/0.36.2"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "resolved"
+      ]
+    },
+    "version": {
+      "const": "0.36.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "packageId",
+    "entityType",
+    "entityId",
+    "edgeHash",
+    "status"
+  ],
+  "title": "Offline Edge Sync Conflict",
+  "type": "object"
+}

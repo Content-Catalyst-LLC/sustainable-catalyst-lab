@@ -1,0 +1,22 @@
+{
+  "capabilities": {
+    "arbitraryCode": false,
+    "automaticRemoteCallbacks": false,
+    "conflictSafeReconciliation": true,
+    "cursorBasedDeltaExchange": true,
+    "fieldDeviceProvenance": true,
+    "hardDelete": false,
+    "offlineWorkPackages": true,
+    "restrictedDataBytesInPackage": false,
+    "resumableSynchronization": true,
+    "signedChangeBatches": true
+  },
+  "limits": {
+    "batchChanges": 500,
+    "changes": 1000000,
+    "devices": 10000,
+    "packages": 100000
+  },
+  "schema": "sc-lab-offline-edge-sync-policy/0.36.2",
+  "version": "0.36.2"
+}

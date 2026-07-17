@@ -336,6 +336,24 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/local-executions/(?P<request>[A-Za-z0-9._:-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_nodes_execution_cancel'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/institutional-node-timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_nodes_timeline'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
 
+        register_rest_route(self::NAMESPACE, '/compute/core/edge-sync/health', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_health'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/edge-sync/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_policies'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-devices', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_devices'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_device_enroll'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-devices/(?P<device>[A-Za-z0-9._:-]{1,180})/status', array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_device_status'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/offline-packages', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_packages'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_package_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/offline-packages/(?P<package>[A-Za-z0-9._:-]{1,180})/seal', array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_package_seal'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/offline-packages/(?P<package>[A-Za-z0-9._:-]{1,180})/assign/(?P<device>[A-Za-z0-9._:-]{1,180})', array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_package_assign'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-sessions', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_sessions'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-conflicts', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_conflicts'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-conflicts/(?P<conflict>[A-Za-z0-9._:-]{1,180})/resolve', array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_conflict_resolve'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_timeline'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -851,6 +869,20 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function institutional_nodes_execution_create(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/local-executions','POST',$p,4194304);}
     public static function institutional_nodes_execution_cancel(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/local-executions/'.rawurlencode($request['request']).'/cancel','POST',$p,4194304);}
     public static function institutional_nodes_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/institutional-node-timeline?limit='.$limit);}
+
+    public static function edge_sync_health(){return self::proxy('/v1/edge-sync/health');}
+    public static function edge_sync_policies(){return self::proxy('/v1/edge-sync/policies');}
+    public static function edge_sync_devices(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-devices');}
+    public static function edge_sync_device_enroll(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-devices','POST',$p,8388608);}
+    public static function edge_sync_device_status(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-devices/'.rawurlencode($request['device']).'/status','POST',$p,4194304);}
+    public static function edge_sync_packages(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/offline-packages');}
+    public static function edge_sync_package_create(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/offline-packages','POST',$p,8388608);}
+    public static function edge_sync_package_seal(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/offline-packages/'.rawurlencode($request['package']).'/seal','POST',array(),4194304);}
+    public static function edge_sync_package_assign(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/offline-packages/'.rawurlencode($request['package']).'/assign/'.rawurlencode($request['device']),'POST',array(),4194304);}
+    public static function edge_sync_sessions(WP_REST_Request $request){$limit=max(1,min(2000,intval($request->get_param('limit')?:200)));return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-sync-sessions?limit='.$limit);}
+    public static function edge_sync_conflicts(WP_REST_Request $request){$status=sanitize_key($request->get_param('status')?:'open');return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-sync-conflicts?status='.rawurlencode($status));}
+    public static function edge_sync_conflict_resolve(WP_REST_Request $request){$p=self::team_workspace_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-sync-conflicts/'.rawurlencode($request['conflict']).'/resolve','POST',$p,4194304);}
+    public static function edge_sync_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/edge-sync-timeline?limit='.$limit);}
 
     private static function surrogate_rom_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_surrogate_rom_payload','A JSON surrogate or reduced-order payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,500000,16);return is_wp_error($clean)?$clean:$clean;}
     public static function surrogate_rom_health(){return self::proxy('/v1/surrogate-rom/health');}

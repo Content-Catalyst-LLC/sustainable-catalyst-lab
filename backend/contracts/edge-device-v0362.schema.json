@@ -1,0 +1,70 @@
+{
+  "$id": "sc-lab-edge-device/0.36.2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "appVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "deviceHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "lastPullCursor": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "lastPushCursor": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "nodeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "platform": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-edge-device/0.36.2"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "suspended",
+        "revoked",
+        "retired"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.36.2"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "status",
+    "deviceHash"
+  ],
+  "title": "Sustainable Catalyst Lab Edge Device",
+  "type": "object"
+}

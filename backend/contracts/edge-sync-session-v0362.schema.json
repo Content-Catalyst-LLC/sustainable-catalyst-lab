@@ -1,0 +1,57 @@
+{
+  "$id": "sc-lab-edge-sync-session/0.36.2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseCursor": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "direction": {
+      "enum": [
+        "push",
+        "pull",
+        "bidirectional"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-edge-sync-session/0.36.2"
+    },
+    "serverCursor": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "completed",
+        "cancelled",
+        "expired"
+      ]
+    },
+    "version": {
+      "const": "0.36.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "packageId",
+    "deviceId",
+    "status",
+    "baseCursor",
+    "serverCursor"
+  ],
+  "title": "Offline Edge Sync Session",
+  "type": "object"
+}

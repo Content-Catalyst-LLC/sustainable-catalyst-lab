@@ -2033,6 +2033,39 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+      <section class="sc-lab-panel sc-edge0362" data-lab-module="offline-edge-sync" data-module-panel="offline-edge-sync" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / FIELD RESEARCH / v0.36.2</p><h3>Offline Field Research and Edge Synchronization</h3><p>Create sealed field-work packages, enroll governed edge devices, synchronize observations after disconnected work, and resolve concurrent edits without moving restricted institutional data into the browser or field package.</p></header>
+        <div data-edge-v0362-status role="status" aria-live="polite">Connecting to offline field synchronization…</div>
+        <div class="sc-edge0362-metrics" data-edge-v0362-metrics></div>
+        <div class="sc-edge0362-grid">
+          <div class="sc-edge0362-card"><h4>Edge device</h4><label>Workspace ID<input data-edge-v0362-workspace value="field-team"></label><label>Device ID<input data-edge-v0362-device value="tablet-1"></label><textarea data-edge-v0362-device-json>{
+  "id": "tablet-1",
+  "title": "Wetland Field Tablet",
+  "nodeId": "field-hub",
+  "platform": "ios",
+  "appVersion": "1.0",
+  "capabilities": {"offlineForms": true, "camera": true, "localEncryption": true}
+}</textarea><div class="sc-edge0362-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-edge-v0362-action="enroll">Enroll device</button><button type="button" class="sc-lab-button" data-edge-v0362-action="devices">List devices</button><button type="button" class="sc-lab-button" data-edge-v0362-action="refresh">Refresh</button></div><textarea data-edge-v0362-status-json>{"status":"suspended","reason":"device under review"}</textarea><button type="button" class="sc-lab-button" data-edge-v0362-action="device-status">Change device status</button><p class="sc-edge0362-note">The device secret is shown once and belongs only in the encrypted edge runtime. It is never stored in WordPress or exposed to browser-side synchronization.</p></div>
+          <div class="sc-edge0362-card"><h4>Offline work package</h4><label>Package ID<input data-edge-v0362-package value="wetland-survey"></label><textarea data-edge-v0362-package-json>{
+  "id": "wetland-survey",
+  "title": "Wetland Biodiversity Survey",
+  "nodeId": "field-hub",
+  "definition": {
+    "methods": ["statistics.descriptive"],
+    "forms": [{"id":"observation","fields":["plot","species","count","notes"]}],
+    "protocols": [{"id":"wetland-count-v1","revision":"1.0"}],
+    "dataAssetRefs": ["local-wetland-index"],
+    "artifactRefs": [],
+    "constraints": {"rawRestrictedDataExport": false, "locationPrecision":"coarse-or-none"},
+    "metadata": {"study":"wetland-monitoring"}
+  }
+}</textarea><div class="sc-edge0362-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-edge-v0362-action="create-package">Create package</button><button type="button" class="sc-lab-button" data-edge-v0362-action="seal">Seal package</button><button type="button" class="sc-lab-button" data-edge-v0362-action="assign">Assign device</button><button type="button" class="sc-lab-button" data-edge-v0362-action="packages">List packages</button></div><p class="sc-edge0362-note">Packages contain protocols, forms, method IDs, hashes, and references—not restricted data bytes, arbitrary code, shell commands, or callback URLs.</p></div>
+          <div class="sc-edge0362-card"><h4>Synchronization oversight</h4><div class="sc-edge0362-actions"><button type="button" class="sc-lab-button" data-edge-v0362-action="sessions">Sync sessions</button><button type="button" class="sc-lab-button" data-edge-v0362-action="conflicts">Open conflicts</button><button type="button" class="sc-lab-button" data-edge-v0362-action="timeline">Timeline</button></div><p class="sc-edge0362-note">Edge runtimes use signed batches, cursor-based deltas, one-time resume tokens, duplicate change IDs, and immutable device provenance. Browser controls provide oversight only.</p></div>
+          <div class="sc-edge0362-card"><h4>Conflict resolution</h4><label>Conflict ID<input data-edge-v0362-conflict value="conflict-id"></label><textarea data-edge-v0362-resolution-json>{"resolution":"retain-both"}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-edge-v0362-action="resolve">Resolve conflict</button><p class="sc-edge0362-note">Available resolutions preserve local, accept edge, retain both, or dismiss the conflict. Reconciliation creates a new event rather than silently rewriting field history.</p></div>
+          <div class="sc-edge0362-card is-wide"><h4>Devices, packages, synchronization sessions, conflicts, and field provenance</h4><pre class="sc-edge0362-output" data-edge-v0362-output>No response yet.</pre></div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-cl0332" data-lab-module="closed-loop-campaigns" data-module-panel="closed-loop-campaigns" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXPERIMENT CONTROL / v0.33.2</p><h3>Closed-Loop Simulation and Instrument Campaigns</h3><p>Connect adaptive campaigns to repeated simulation cycles or signed instrument measurements while preserving operator review, safety interlocks, measurement integrity, and complete campaign/workflow/command provenance.</p></header>
         <p data-cl-v0332-status role="status" aria-live="polite">Closed-loop campaign engine loading…</p>

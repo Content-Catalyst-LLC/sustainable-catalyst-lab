@@ -1,0 +1,55 @@
+{
+  "$id": "sc-lab-offline-work-package/0.36.2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseCursor": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "definition": {
+      "type": "object"
+    },
+    "id": {
+      "type": "string"
+    },
+    "nodeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "packageHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-offline-work-package/0.36.2"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "sealed",
+        "archived",
+        "expired"
+      ]
+    },
+    "version": {
+      "const": "0.36.2"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "status",
+    "definition",
+    "packageHash"
+  ],
+  "title": "Offline Field Work Package",
+  "type": "object"
+}

@@ -23,3 +23,7 @@ envVars:
   - key: SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED
     value: "1"
 
+
+# Offline field and edge synchronization
+# SC_LAB_EDGE_SYNC_DB_PATH=/app/data/sc-lab-edge-sync.sqlite3
+# SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED=1

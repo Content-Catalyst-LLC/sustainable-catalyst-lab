@@ -138,7 +138,7 @@ def test_fastapi_node_routes_use_workspace_actor(tmp_path: Path, monkeypatch):
     with TestClient(main.app) as client:
         health = client.get("/v1/institutional-nodes/health", headers=headers)
         assert health.status_code == 200
-        assert health.json()["serviceVersion"] == "0.36.1"
+        assert health.json()["serviceVersion"] == "0.36.2"
         nodes = client.get("/v1/team-workspaces/health-team/institutional-nodes", headers=headers)
         assert nodes.status_code == 200 and len(nodes.json()["nodes"]) == 1
         created = client.post("/v1/team-workspaces/health-team/local-executions", headers=headers, json={"id": "api-run", "nodeId": "hospital-node", "methodId": "statistics.descriptive", "dataAssetIds": ["local-cohort"]})

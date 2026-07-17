@@ -43,6 +43,7 @@ from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, pol
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
 from .institutional_node_federation import InstitutionalNodeError, InstitutionalNodeFederation, policies as institutional_node_policies
+from .offline_edge_sync import EdgeSyncError, OfflineEdgeSyncManager, policies as edge_sync_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -63,6 +64,7 @@ workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, sett
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
 institutional_nodes = InstitutionalNodeFederation(settings.institutional_node_db_path, team_workspaces, resolve, settings.institutional_node_coordinator_secret, settings.institutional_node_max_nodes, settings.institutional_node_max_data_assets, settings.institutional_node_max_requests, settings.institutional_node_history_limit)
+edge_sync = OfflineEdgeSyncManager(settings.edge_sync_db_path, team_workspaces, institutional_nodes, settings.edge_sync_max_devices, settings.edge_sync_max_packages, settings.edge_sync_max_changes, settings.edge_sync_max_batch, settings.edge_sync_history_limit)
 
 
 @asynccontextmanager
@@ -2683,3 +2685,106 @@ def closed_loop_tick_route(auth: dict[str, str] = Depends(require_compute_auth))
     del auth
     return closed_loop_campaigns.tick()
 
+
+
+def _edge_sync_http_error(exc: EdgeSyncError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/edge-sync/health")
+def edge_sync_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = edge_sync.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.edge_sync_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.edge_sync_persistent_disk_mounted else "Offline package, device, synchronization, and conflict records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/edge-sync/policies")
+def edge_sync_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = edge_sync_policies(settings.edge_sync_max_devices, settings.edge_sync_max_packages, settings.edge_sync_max_changes, settings.edge_sync_max_batch); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/edge-devices")
+def edge_device_list_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.list_devices(workspace_id, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/edge-devices")
+def edge_device_enroll_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.enroll_device(workspace_id, payload, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/edge-devices/{device_id}/status")
+def edge_device_status_route(workspace_id: str, device_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.set_device_status(workspace_id, device_id, str(payload.get("status") or ""), actor, str(payload.get("reason") or ""))
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/offline-packages")
+def edge_package_list_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.list_packages(workspace_id, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/offline-packages")
+def edge_package_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.create_package(workspace_id, payload, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/offline-packages/{package_id}/seal")
+def edge_package_seal_route(workspace_id: str, package_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.seal_package(workspace_id, package_id, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/offline-packages/{package_id}/assign/{device_id}")
+def edge_package_assign_route(workspace_id: str, package_id: str, device_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.assign_package(workspace_id, package_id, device_id, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/edge-devices/{device_id}/offline-packages/{package_id}")
+def edge_package_pull_route(device_id: str, package_id: str, x_sc_lab_edge_secret: str = Header("", alias="X-SC-Lab-Edge-Secret"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return edge_sync.pull_package(device_id, package_id, x_sc_lab_edge_secret)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/edge-devices/{device_id}/offline-packages/{package_id}/sync-sessions")
+def edge_sync_begin_route(device_id: str, package_id: str, payload: dict[str, Any], x_sc_lab_edge_secret: str = Header("", alias="X-SC-Lab-Edge-Secret"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return edge_sync.begin_sync(device_id, package_id, payload, x_sc_lab_edge_secret)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/edge-devices/{device_id}/sync-sessions/{session_id}/changes")
+def edge_sync_push_route(device_id: str, session_id: str, payload: dict[str, Any], x_sc_lab_edge_secret: str = Header("", alias="X-SC-Lab-Edge-Secret"), x_sc_lab_sync_token: str = Header("", alias="X-SC-Lab-Sync-Token"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return edge_sync.push_changes(device_id, session_id, payload, x_sc_lab_edge_secret, x_sc_lab_sync_token)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/edge-devices/{device_id}/sync-sessions/{session_id}/changes")
+def edge_sync_pull_route(device_id: str, session_id: str, since: int = Query(0, ge=0), limit: int = Query(500, ge=1, le=5000), x_sc_lab_edge_secret: str = Header("", alias="X-SC-Lab-Edge-Secret"), x_sc_lab_sync_token: str = Header("", alias="X-SC-Lab-Sync-Token"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return edge_sync.pull_changes(device_id, session_id, since, x_sc_lab_edge_secret, x_sc_lab_sync_token, limit)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/edge-devices/{device_id}/sync-sessions/{session_id}/complete")
+def edge_sync_complete_route(device_id: str, session_id: str, payload: dict[str, Any], x_sc_lab_edge_secret: str = Header("", alias="X-SC-Lab-Edge-Secret"), x_sc_lab_sync_token: str = Header("", alias="X-SC-Lab-Sync-Token"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return edge_sync.complete_sync(device_id, session_id, payload, x_sc_lab_edge_secret, x_sc_lab_sync_token)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/edge-sync-conflicts")
+def edge_conflict_list_route(workspace_id: str, status: str = Query("open"), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.list_conflicts(workspace_id, actor, status)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/edge-sync-conflicts/{conflict_id}/resolve")
+def edge_conflict_resolve_route(workspace_id: str, conflict_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.resolve_conflict(workspace_id, conflict_id, payload, actor)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/edge-sync-sessions")
+def edge_session_list_route(workspace_id: str, limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.list_sessions(workspace_id, actor, limit)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/edge-sync-timeline")
+def edge_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return edge_sync.timeline(workspace_id, actor, limit)
+    except EdgeSyncError as exc: raise _edge_sync_http_error(exc) from exc

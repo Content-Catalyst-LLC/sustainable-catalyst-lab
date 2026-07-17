@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.36.1"
+    version: str = "0.36.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -129,6 +129,13 @@ class Settings:
     institutional_node_max_requests: int = _int("SC_LAB_INSTITUTIONAL_NODE_MAX_REQUESTS", 250000, 100, 5000000)
     institutional_node_history_limit: int = _int("SC_LAB_INSTITUTIONAL_NODE_HISTORY_LIMIT", 100000, 100, 2000000)
     institutional_node_persistent_disk_mounted: bool = os.getenv("SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    edge_sync_db_path: str = os.getenv("SC_LAB_EDGE_SYNC_DB_PATH", "./data/sc-lab-edge-sync.sqlite3").strip()
+    edge_sync_max_devices: int = _int("SC_LAB_EDGE_SYNC_MAX_DEVICES", 10000, 1, 1000000)
+    edge_sync_max_packages: int = _int("SC_LAB_EDGE_SYNC_MAX_PACKAGES", 100000, 1, 2000000)
+    edge_sync_max_changes: int = _int("SC_LAB_EDGE_SYNC_MAX_CHANGES", 1000000, 100, 10000000)
+    edge_sync_max_batch: int = _int("SC_LAB_EDGE_SYNC_MAX_BATCH", 500, 1, 5000)
+    edge_sync_history_limit: int = _int("SC_LAB_EDGE_SYNC_HISTORY_LIMIT", 200000, 100, 5000000)
+    edge_sync_persistent_disk_mounted: bool = os.getenv("SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

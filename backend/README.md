@@ -1,8 +1,16 @@
 # Sustainable Catalyst Lab Python Compute Core
 
-**Current release: v0.36.1 — Institutional Node Federation and Local-Data Execution**
+**Current release: v0.36.2 — Offline Field Research and Edge Synchronization**
 
-The v0.36.1 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
+The v0.36.2 service is the governed scientific-compute plane for Sustainable Catalyst Lab. It preserves registered methods, benchmark validation, persistent jobs, distributed dispatch, secure workers, artifact transport, dead-letter operations, checkpoint-aware workflows, workflow automation, adaptive campaigns, and closed-loop research while extending the scientific model registry with immutable registered-model ensembles, dispatcher-backed uncertainty studies, and global sensitivity analysis.
+
+
+## Offline Field Research and Edge Synchronization — v0.36.2
+
+- Sealed offline work packages with protocols, forms, registered methods, hashes, and references.
+- One-time edge-device credentials and workspace-governed enrollment.
+- Signed resumable synchronization, cursor-based delta exchange, duplicate suppression, and conflict-safe reconciliation.
+- Restricted institutional data bytes remain outside field packages and browser controls.
 
 ## Institutional Node Federation and Local-Data Execution — v0.36.1
 
@@ -14,6 +22,8 @@ Key settings:
 SC_LAB_INSTITUTIONAL_NODE_DB_PATH=/app/data/sc-lab-institutional-nodes.sqlite3
 SC_LAB_INSTITUTIONAL_NODE_COORDINATOR_SECRET=<generated secret>
 SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED=0
+SC_LAB_EDGE_SYNC_DB_PATH=/app/data/sc-lab-edge-sync.sqlite3
+SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED=0
 ```
 
 

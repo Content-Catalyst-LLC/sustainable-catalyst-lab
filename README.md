@@ -1,9 +1,18 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.36.1 — Institutional Node Federation and Local-Data Execution**
+**Current release: v0.36.2 — Offline Field Research and Edge Synchronization**
 
 Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, proper-orthogonal-decomposition reduced-order models, private role-governed team workspaces for shared research projects, append-only scientific review discussions, approval gates, immutable sign-off records, immutable workspace snapshots, named research branches, three-way merge, protected-branch approval gates, and path-level conflict resolution, plus governed scientific artifact collections, immutable version records, transport-bound integrity checks, hashed federation manifests, delta synchronization, tombstones, explicit conflict resolution, registered institutional compute nodes, signed local-execution envelopes, restricted-data locality controls, and node-attested aggregate results.
 
+
+
+## v0.36.2 highlights
+
+- Sealed offline work packages for disconnected field research.
+- One-time edge-device credentials and workspace-governed enrollment.
+- Signed, resumable synchronization sessions with cursor-based deltas.
+- Duplicate suppression, conflict records, explicit reconciliation, and hashed field provenance.
+- Institutional data remains local; field packages contain references, forms, protocols, and hashes rather than restricted data bytes.
 
 ## v0.36.1 highlights
 

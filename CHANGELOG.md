@@ -1,5 +1,13 @@
 # Sustainable Catalyst Lab Changelog
 
+## 0.36.2 — Offline Field Research and Edge Synchronization
+
+- Added sealed offline work packages and edge-device enrollment.
+- Added signed, resumable cursor-based synchronization sessions.
+- Added duplicate change suppression and field-device provenance.
+- Added conflict-safe reconciliation and immutable synchronization timelines.
+- Added a dedicated WordPress operations workspace and cumulative V20 installer.
+
 ## 0.36.1 — Institutional Node Federation and Local-Data Execution
 
 - Added workspace-governed institutional compute nodes and local-data asset records.

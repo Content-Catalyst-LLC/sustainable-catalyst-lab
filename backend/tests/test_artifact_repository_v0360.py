@@ -179,7 +179,7 @@ def test_fastapi_repository_routes_use_workspace_actor(tmp_path: Path, monkeypat
     with TestClient(main.app) as client:
         health = client.get("/v1/artifact-repository/health", headers=headers)
         assert health.status_code == 200
-        assert health.json()["serviceVersion"] == "0.36.1"
+        assert health.json()["serviceVersion"] == "0.36.2"
         created = client.post("/v1/team-workspaces/climate-team/artifact-collections", headers=headers, json={"id": "api-artifacts", "title": "API Artifacts"})
         assert created.status_code == 200, created.text
         registered = client.post("/v1/team-workspaces/climate-team/artifact-collections/api-artifacts/artifacts", headers=headers, json={"id": "api-record", "title": "API Dataset", "artifactType": "dataset", "artifactVersion": "1.0.0", "sha256": "9" * 64, "sizeBytes": 5, "canonicalUri": "urn:api:dataset"})

@@ -182,3 +182,18 @@ services:
     value: '100000'
   - key: SC_LAB_INSTITUTIONAL_NODE_PERSISTENT_DISK_MOUNTED
     value: '0'
+
+  - key: SC_LAB_EDGE_SYNC_DB_PATH
+    value: /app/data/sc-lab-edge-sync.sqlite3
+  - key: SC_LAB_EDGE_SYNC_MAX_DEVICES
+    value: "10000"
+  - key: SC_LAB_EDGE_SYNC_MAX_PACKAGES
+    value: "100000"
+  - key: SC_LAB_EDGE_SYNC_MAX_CHANGES
+    value: "1000000"
+  - key: SC_LAB_EDGE_SYNC_MAX_BATCH
+    value: "500"
+  - key: SC_LAB_EDGE_SYNC_HISTORY_LIMIT
+    value: "200000"
+  - key: SC_LAB_EDGE_SYNC_PERSISTENT_DISK_MOUNTED
+    value: "0"

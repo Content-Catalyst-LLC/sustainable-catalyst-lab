@@ -1,0 +1,65 @@
+{
+  "$id": "sc-lab-edge-change/0.36.2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "changeId": {
+      "type": "string"
+    },
+    "contentHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "upsert",
+        "delete",
+        "append"
+      ]
+    },
+    "packageId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-edge-change/0.36.2"
+    },
+    "sequence": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "version": {
+      "const": "0.36.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "changeId",
+    "packageId",
+    "deviceId",
+    "entityType",
+    "entityId",
+    "operation",
+    "contentHash"
+  ],
+  "title": "Offline Edge Change",
+  "type": "object"
+}
