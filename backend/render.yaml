@@ -130,3 +130,17 @@ services:
     value: '50000'
   - key: SC_LAB_ENSEMBLE_PERSISTENT_DISK_MOUNTED
     value: '0'
+  - key: SC_LAB_SURROGATE_ROM_DB_PATH
+    value: /app/data/sc-lab-surrogate-rom.sqlite3
+  - key: SC_LAB_SURROGATE_ROM_MAX_REQUEST_BYTES
+    value: '16777216'
+  - key: SC_LAB_SURROGATE_ROM_MAX_STUDIES
+    value: '2000'
+  - key: SC_LAB_SURROGATE_ROM_MAX_TRAINING_ROWS
+    value: '50000'
+  - key: SC_LAB_SURROGATE_ROM_MAX_SNAPSHOT_DIMENSIONS
+    value: '5000'
+  - key: SC_LAB_SURROGATE_ROM_HISTORY_LIMIT
+    value: '50000'
+  - key: SC_LAB_SURROGATE_ROM_PERSISTENT_DISK_MOUNTED
+    value: '0'

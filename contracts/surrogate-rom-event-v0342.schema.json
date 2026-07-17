@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/surrogate-rom-event-v0342.schema.json",
+  "title": "Sustainable Catalyst Lab Surrogate and ROM Event v0.34.2",
+  "type": "object",
+  "required": [
+    "study_id",
+    "event_type",
+    "created_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-surrogate-rom-event/0.34.2"
+    },
+    "version": {
+      "const": "0.34.2"
+    },
+    "study_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "surrogate-study-trained",
+        "surrogate-model-registered"
+      ]
+    },
+    "actor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "details": {
+      "type": "object"
+    },
+    "created_at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

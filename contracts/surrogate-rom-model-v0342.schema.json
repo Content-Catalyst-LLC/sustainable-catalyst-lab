@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/surrogate-rom-model-v0342.schema.json",
+  "title": "Sustainable Catalyst Lab Surrogate and ROM Model v0.34.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "studyId",
+    "mode",
+    "definitionHash",
+    "validation",
+    "modelHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-surrogate-rom-model/0.34.2"
+    },
+    "version": {
+      "const": "0.34.2"
+    },
+    "studyId": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "surrogate",
+        "reduced-order",
+        "hybrid-rom"
+      ]
+    },
+    "definitionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "surrogate": {
+      "type": "object"
+    },
+    "reducedOrder": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "const": "pod-svd"
+        },
+        "retainedRank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "retainedEnergy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "basisHash": {
+          "type": "string"
+        }
+      }
+    },
+    "coefficientSurrogates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "passed",
+        "metrics"
+      ],
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "metrics": {
+          "type": "object"
+        }
+      }
+    },
+    "modelHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

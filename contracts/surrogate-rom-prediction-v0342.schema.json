@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/surrogate-rom-prediction-v0342.schema.json",
+  "title": "Sustainable Catalyst Lab Surrogate and ROM Prediction v0.34.2",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "studyId",
+    "modelHash",
+    "prediction",
+    "predictionHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-surrogate-rom-prediction/0.34.2"
+    },
+    "version": {
+      "const": "0.34.2"
+    },
+    "studyId": {
+      "type": "string"
+    },
+    "modelHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "prediction": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "standardDeviation": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "state": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "coefficients": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "predictionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

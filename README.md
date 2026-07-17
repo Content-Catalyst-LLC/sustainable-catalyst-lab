@@ -1,8 +1,20 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.34.1 — Ensemble Simulation, Global Sensitivity, and Uncertainty**
+**Current release: v0.34.2 — Surrogate Models and Reduced-Order Analysis**
 
-Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, and governed uncertainty quantification.
+Sustainable Catalyst Lab is now a governed scientific research and compute platform spanning domain laboratories, projects, datasets, reproducible runs, evidence, experiment protocols, design studies, model calibration, registered numerical methods, persistent jobs, distributed dispatch, secure pull-based worker execution, verified artifact transport, and typed scientific workflow orchestration, checkpoint-aware execution, declarative conditions, lineage-preserving partial recovery, durable schedules, authenticated event-driven research runs, and adaptive experiment campaigns with sequential design, explicit budgets, stopping rules, workflow-backed trial provenance, immutable scientific model versioning, reproducible environment locks, registered-model ensembles, global sensitivity analysis, governed uncertainty quantification, reproducible surrogate training, and proper-orthogonal-decomposition reduced-order models.
+
+
+## v0.34.2 highlights
+
+- Immutable surrogate and reduced-order training studies with canonical definition and model hashes.
+- Polynomial-ridge, radial-basis, and Gaussian-process surrogate algorithms.
+- Seeded holdout validation with RMSE, normalized RMSE, MAE, maximum error, and R².
+- Proper orthogonal decomposition using centered SVD, retained-energy targets, and basis hashes.
+- Hybrid ROM training that maps declared parameters to reduced coefficients and reconstructed states.
+- Predictive uncertainty for Gaussian-process models and durable prediction hashes.
+- Publication of validated surrogate versions into the Scientific Model Registry.
+- New Surrogate Models and Reduced-Order Analysis workspace, bringing Lab to 67 registered panels.
 
 
 ## v0.34.1 highlights

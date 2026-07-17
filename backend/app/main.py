@@ -37,6 +37,7 @@ from .experiment_campaigns import ExperimentCampaignError, ExperimentCampaignMan
 from .closed_loop_campaigns import ClosedLoopError, ClosedLoopCampaignManager, policies as closed_loop_policies
 from .model_registry import ModelRegistryError, ScientificModelRegistry, capture_environment, policies as model_registry_policies
 from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies as ensemble_policies
+from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderManager, policies as surrogate_rom_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -51,6 +52,7 @@ experiment_campaigns = ExperimentCampaignManager(settings.experiment_campaign_db
 closed_loop_campaigns = ClosedLoopCampaignManager(settings.closed_loop_db_path, experiment_campaigns, settings.closed_loop_poll_seconds, settings.closed_loop_max_loops, settings.closed_loop_max_cycles, settings.closed_loop_history_limit, settings.closed_loop_measurement_secret)
 model_registry = ScientificModelRegistry(settings.model_registry_db_path, settings.model_registry_max_models, settings.model_registry_max_versions, settings.model_registry_history_limit)
 ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_registry, dispatcher, settings.ensemble_max_studies, settings.ensemble_max_evaluations, settings.ensemble_history_limit)
+surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, model_registry, settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_history_limit)
 
 
 @asynccontextmanager
@@ -91,7 +93,12 @@ app.add_middleware(
 async def request_limits(request: Request, call_next):
     if request.method in {"POST", "PUT", "PATCH"}:
         body = await request.body()
-        limit = settings.artifact_chunk_bytes if "/artifacts/uploads/" in request.url.path and request.url.path.endswith("/chunks") else settings.max_request_bytes
+        if "/artifacts/uploads/" in request.url.path and request.url.path.endswith("/chunks"):
+            limit = settings.artifact_chunk_bytes
+        elif request.url.path.startswith("/v1/surrogate-rom/"):
+            limit = settings.surrogate_rom_max_request_bytes
+        else:
+            limit = settings.max_request_bytes
         if len(body) > limit:
             return JSONResponse(
                 status_code=413,
@@ -155,6 +162,7 @@ def health():
         "closedLoopCampaigns": {"version":"0.33.2","simulationLoops":True,"instrumentMeasurementIngestion":True,"hybridCampaigns":True,"safetyInterlocks":True,"operatorCommandApproval":True,"checkpointedCycles":True,"directDeviceExecution":False},
         "scientificModelRegistry": {"version":"0.34.0","immutableVersions":True,"environmentCapture":True,"dependencyLocking":True,"reproductionManifests":True,"promotionWorkflow":True,"deprecationHistory":True},
         "ensembleSimulation": {"version":"0.34.1","registeredModelMembers":True,"weightedEnsembles":True,"monteCarlo":True,"latinHypercube":True,"sobolDesign":True,"globalSensitivity":True,"uncertaintyIntervals":True},
+        "surrogateReducedOrder": {"version":"0.34.2","surrogateTraining":True,"gaussianProcess":True,"polynomialRidge":True,"radialBasis":True,"properOrthogonalDecomposition":True,"hybridRom":True,"validationMetrics":True,"modelRegistryIntegration":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -232,6 +240,7 @@ def capabilities():
         "closedLoopCampaigns": {"version":"0.33.2","simulation":True,"instrument":True,"hybrid":True,"signedMeasurements":True,"safetyInterlocks":True,"operatorApproval":True,"directDeviceExecution":False},
         "scientificModelRegistry": {"version":"0.34.0","modelVersioning":True,"environmentCapture":True,"dependencyLocks":True,"reproductionVerification":True,"promotionChannels":["candidate","production","archived"],"arbitraryCode":False},
         "ensembleSimulation": {"version":"0.34.1","weightedRegisteredModels":True,"samplingDesigns":["monte-carlo","latin-hypercube","sobol","saltelli-sobol"],"uncertaintyPropagation":True,"globalSensitivity":True,"arbitraryCode":False},
+        "surrogateReducedOrder": {"version":"0.34.2","algorithms":["polynomial-ridge","radial-basis","gaussian-process"],"properOrthogonalDecomposition":True,"hybridReducedOrderModels":True,"holdoutValidation":True,"errorBounds":True,"registryPublication":True,"arbitraryCode":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -1948,6 +1957,61 @@ def ensemble_timeline_route(study_id: str, limit: int = Query(500, ge=1, le=5000
     del auth
     try: return ensemble_studies.timeline(study_id, limit)
     except EnsembleError as exc: raise _ensemble_http_error(exc) from exc
+
+# v0.34.2 Surrogate Models and Reduced-Order Analysis
+
+def _surrogate_rom_http_error(exc: SurrogateROMError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/surrogate-rom/health")
+def surrogate_rom_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = surrogate_rom.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.surrogate_rom_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.surrogate_rom_persistent_disk_mounted else "Surrogate and ROM records are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/surrogate-rom/policies")
+def surrogate_rom_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = surrogate_rom_policies(settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_max_request_bytes); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/surrogate-rom/validate")
+def surrogate_rom_validate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return surrogate_rom.validate(payload)
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.post("/v1/surrogate-rom/studies")
+def surrogate_rom_train_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return surrogate_rom.train(payload, auth.get("subject", "operator"))
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.get("/v1/surrogate-rom/studies")
+def surrogate_rom_list_route(project_id: str = Query("", alias="projectId"), status: str = Query(""), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return surrogate_rom.list(project_id, status, limit)
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.get("/v1/surrogate-rom/studies/{study_id}")
+def surrogate_rom_get_route(study_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return surrogate_rom.get(study_id)
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.post("/v1/surrogate-rom/studies/{study_id}/predict")
+def surrogate_rom_predict_route(study_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return surrogate_rom.predict(study_id, payload)
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.post("/v1/surrogate-rom/studies/{study_id}/register")
+def surrogate_rom_register_route(study_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return surrogate_rom.register_model(study_id, payload, auth.get("subject", "operator"))
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
+
+@app.get("/v1/surrogate-rom/studies/{study_id}/timeline")
+def surrogate_rom_timeline_route(study_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return surrogate_rom.timeline(study_id, limit)
+    except SurrogateROMError as exc: raise _surrogate_rom_http_error(exc) from exc
 
 # v0.33.2 Closed-Loop Simulation and Instrument Campaigns
 

@@ -195,3 +195,7 @@ SC_LAB_WORKFLOW_SCHEDULE_PERSISTENT_DISK_MOUNTED=0
 
 Cron expressions contain five fields and are evaluated in UTC. Event ingestion always requires normal compute authentication. When `SC_LAB_WORKFLOW_EVENT_SECRET` is configured, events must additionally include `X-SC-Lab-Event-Timestamp` and `X-SC-Lab-Event-Signature`, where the signature is HMAC-SHA256 over `<timestamp>.<canonical-json-payload>`. Arbitrary callbacks and executable trigger expressions are not accepted.
 
+
+## v0.34.2 surrogate and reduced-order service
+
+The compute core exposes authenticated `/v1/surrogate-rom/*` routes for immutable surrogate training, POD/SVD reduced-order analysis, prediction or state reconstruction, Scientific Model Registry publication, and audit timelines. Configure `SC_LAB_SURROGATE_ROM_DB_PATH` for the SQLite WAL store. Set `SC_LAB_SURROGATE_ROM_PERSISTENT_DISK_MOUNTED=1` only when that path is actually backed by a durable disk.

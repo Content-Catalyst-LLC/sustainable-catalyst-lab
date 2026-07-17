@@ -208,6 +208,18 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/cancel', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_cancel'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'ensemble_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/ensemble-studies/(?P<study>[A-Za-z0-9._-]{1,180})/evaluations/(?P<evaluation>[A-Za-z0-9._-]{1,220})/result', array('methods'=>'POST','callback'=>array(__CLASS__,'ensemble_record_result'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/health', array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/validate', array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_validate'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_list'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_train'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})', array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_get'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/predict', array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_predict'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/register', array('methods'=>'POST','callback'=>array(__CLASS__,'surrogate_rom_register'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/surrogate-rom/studies/(?P<study>[A-Za-z0-9._-]{1,180})/timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'surrogate_rom_timeline'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -274,9 +286,9 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         return new WP_REST_Response($decoded,$status);
     }
 
-    private static function sanitize_tree($value, $depth = 0, &$nodes = 0) {
+    private static function sanitize_tree($value, $depth = 0, &$nodes = 0, $max_nodes = 5000, $max_depth = 10) {
         $nodes++;
-        if ($nodes > 5000 || $depth > 10) { return new WP_Error('compute_payload_too_complex','The compute payload is too complex.',array('status'=>422)); }
+        if ($nodes > $max_nodes || $depth > $max_depth) { return new WP_Error('compute_payload_too_complex','The compute payload is too complex.',array('status'=>422)); }
         if (is_null($value) || is_bool($value)) { return $value; }
         if (is_int($value) || is_float($value)) { return is_finite((float)$value) ? $value : null; }
         if (is_string($value)) { return substr(wp_strip_all_tags($value,true),0,2048); }
@@ -286,7 +298,7 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         foreach ($value as $key=>$item) {
             $clean_key=is_int($key)?$key:substr(preg_replace('/[^A-Za-z0-9._-]/','',(string)$key),0,128);
             if ($clean_key==='') { continue; }
-            $child=self::sanitize_tree($item,$depth+1,$nodes); if(is_wp_error($child)){return $child;} $clean[$clean_key]=$child;
+            $child=self::sanitize_tree($item,$depth+1,$nodes,$max_nodes,$max_depth); if(is_wp_error($child)){return $child;} $clean[$clean_key]=$child;
         }
         return $clean;
     }
@@ -622,6 +634,17 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function ensemble_cancel(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/cancel','POST',$p,8388608);}
     public static function ensemble_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/timeline?limit='.$limit);}
     public static function ensemble_record_result(WP_REST_Request $request){$p=self::experiment_campaign_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/ensemble-studies/'.rawurlencode($request['study']).'/evaluations/'.rawurlencode($request['evaluation']).'/result','POST',$p,8388608);}
+
+    private static function surrogate_rom_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_surrogate_rom_payload','A JSON surrogate or reduced-order payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,500000,16);return is_wp_error($clean)?$clean:$clean;}
+    public static function surrogate_rom_health(){return self::proxy('/v1/surrogate-rom/health');}
+    public static function surrogate_rom_policies(){return self::proxy('/v1/surrogate-rom/policies');}
+    public static function surrogate_rom_validate(WP_REST_Request $request){$p=self::surrogate_rom_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/surrogate-rom/validate','POST',$p,16777216);}
+    public static function surrogate_rom_train(WP_REST_Request $request){$p=self::surrogate_rom_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/surrogate-rom/studies','POST',$p,16777216);}
+    public static function surrogate_rom_list(WP_REST_Request $request){$parts=array('limit='.max(1,min(1000,intval($request->get_param('limit')?:100))));$project=sanitize_text_field($request->get_param('projectId')?:'');$status=sanitize_key($request->get_param('status')?:'');if($project){$parts[]='projectId='.rawurlencode($project);}if($status){$parts[]='status='.rawurlencode($status);}return self::proxy('/v1/surrogate-rom/studies?'.implode('&',$parts));}
+    public static function surrogate_rom_get(WP_REST_Request $request){return self::proxy('/v1/surrogate-rom/studies/'.rawurlencode($request['study']));}
+    public static function surrogate_rom_predict(WP_REST_Request $request){$p=self::surrogate_rom_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/surrogate-rom/studies/'.rawurlencode($request['study']).'/predict','POST',$p,16777216);}
+    public static function surrogate_rom_register(WP_REST_Request $request){$p=self::surrogate_rom_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/surrogate-rom/studies/'.rawurlencode($request['study']).'/register','POST',$p,16777216);}
+    public static function surrogate_rom_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/surrogate-rom/studies/'.rawurlencode($request['study']).'/timeline?limit='.$limit);}
 
 
 }

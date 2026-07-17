@@ -1,0 +1,24 @@
+{
+  "schema": "sc-lab-surrogate-rom-policy/0.34.2",
+  "version": "0.34.2",
+  "architecture": "surrogate-models-reduced-order-analysis",
+  "modes": [
+    "surrogate",
+    "reduced-order",
+    "hybrid-rom"
+  ],
+  "surrogateAlgorithms": [
+    "polynomial-ridge",
+    "radial-basis",
+    "gaussian-process"
+  ],
+  "reducedOrderMethods": [
+    "pod-svd"
+  ],
+  "immutableTrainingRecords": true,
+  "holdoutValidation": true,
+  "errorBounds": true,
+  "modelRegistryIntegration": true,
+  "arbitraryCode": false,
+  "registeredModelsOnly": true
+}

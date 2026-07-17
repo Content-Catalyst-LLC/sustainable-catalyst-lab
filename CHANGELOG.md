@@ -1,3 +1,14 @@
+## 0.34.2 — Surrogate Models and Reduced-Order Analysis
+
+- Added immutable surrogate and reduced-order study definitions with canonical SHA-256 identities.
+- Added polynomial-ridge, radial-basis, and Gaussian-process surrogate training.
+- Added seeded holdout validation, predictive uncertainty, and reproducible error metrics.
+- Added proper orthogonal decomposition with retained-energy selection, reduced coordinates, reconstruction, and basis hashes.
+- Added hybrid parameter-to-ROM coefficient surrogates and full-state reconstruction.
+- Added durable SQLite WAL study records, predictions, registry publication, and event timelines.
+- Added administrator-only backend proxies, five public contracts, deployment settings, and the 67th Lab panel.
+- Preserved all v0.34.1 ensemble, sensitivity, and uncertainty contracts and behavior.
+
 ## 0.34.1 — Ensemble Simulation, Global Sensitivity, and Uncertainty
 
 - Added immutable weighted ensembles of v0.34.0 registered model versions.

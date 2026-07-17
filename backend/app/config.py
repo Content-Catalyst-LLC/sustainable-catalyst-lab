@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.34.1"
+    version: str = "0.34.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -104,6 +104,13 @@ class Settings:
     ensemble_max_evaluations: int = _int("SC_LAB_ENSEMBLE_MAX_EVALUATIONS", 200000, 100, 2000000)
     ensemble_history_limit: int = _int("SC_LAB_ENSEMBLE_HISTORY_LIMIT", 50000, 100, 1000000)
     ensemble_persistent_disk_mounted: bool = os.getenv("SC_LAB_ENSEMBLE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    surrogate_rom_db_path: str = os.getenv("SC_LAB_SURROGATE_ROM_DB_PATH", "./data/sc-lab-surrogate-rom.sqlite3").strip()
+    surrogate_rom_max_request_bytes: int = _int("SC_LAB_SURROGATE_ROM_MAX_REQUEST_BYTES", 16777216, 262144, 67108864)
+    surrogate_rom_max_studies: int = _int("SC_LAB_SURROGATE_ROM_MAX_STUDIES", 2000, 1, 100000)
+    surrogate_rom_max_training_rows: int = _int("SC_LAB_SURROGATE_ROM_MAX_TRAINING_ROWS", 50000, 4, 1000000)
+    surrogate_rom_max_snapshot_dimensions: int = _int("SC_LAB_SURROGATE_ROM_MAX_SNAPSHOT_DIMENSIONS", 5000, 2, 100000)
+    surrogate_rom_history_limit: int = _int("SC_LAB_SURROGATE_ROM_HISTORY_LIMIT", 50000, 100, 1000000)
+    surrogate_rom_persistent_disk_mounted: bool = os.getenv("SC_LAB_SURROGATE_ROM_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MODEL_REGISTRY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

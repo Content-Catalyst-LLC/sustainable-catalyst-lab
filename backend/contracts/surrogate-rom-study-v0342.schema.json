@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/surrogate-rom-study-v0342.schema.json",
+  "title": "Sustainable Catalyst Lab Surrogate and ROM Study v0.34.2",
+  "type": "object",
+  "required": [
+    "id",
+    "mode",
+    "data"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-surrogate-rom-study/0.34.2"
+    },
+    "version": {
+      "const": "0.34.2"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "surrogate",
+        "reduced-order",
+        "hybrid-rom"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "stateLabels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "training": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "polynomial-ridge",
+            "radial-basis",
+            "gaussian-process"
+          ]
+        },
+        "degree": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "ridge": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "kernel": {
+          "enum": [
+            "rbf",
+            "matern32",
+            "matern52"
+          ]
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "holdoutFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5
+        },
+        "maximumNormalizedRmse": {
+          "type": "number",
+          "minimum": 0
+        },
+        "minimumR2": {
+          "type": "number",
+          "maximum": 1
+        }
+      }
+    },
+    "reducedOrder": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "const": "pod-svd"
+        },
+        "energyThreshold": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1
+        },
+        "maxRank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "center": {
+          "type": "boolean"
+        }
+      }
+    },
+    "definitionHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

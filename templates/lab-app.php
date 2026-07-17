@@ -54,6 +54,7 @@
           'model-calibration' => 'Model calibration',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
+          'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
@@ -1757,6 +1758,45 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <div class="sc-eu0341-card"><h4>Operator-recorded result</h4><p class="sc-eu0341-note">Use only for validated external results or test fixtures. Normal studies reconcile results automatically from the dispatcher.</p><label>Evaluation ID<input data-eu-v0341-evaluation placeholder="ensemble-eval-..."></label><label>Numeric output value<input data-eu-v0341-value type="number" step="any"></label><div class="sc-eu0341-actions"><button type="button" class="sc-lab-button" data-eu-v0341-action="result">Record result</button></div></div>
           <div class="sc-eu0341-card is-wide"><h4>Saved studies</h4><div class="sc-eu0341-table-wrap"><table class="sc-eu0341-table"><thead><tr><th>Study</th><th>Status</th><th>Project</th><th>Definition</th><th>Action</th></tr></thead><tbody data-eu-v0341-studies></tbody></table></div></div>
           <div class="sc-eu0341-card is-wide"><h4>Study, evaluation, uncertainty, sensitivity, and provenance records</h4><pre class="sc-eu0341-output" data-eu-v0341-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-sr0342" data-lab-module="surrogate-reduced-order" data-module-panel="surrogate-reduced-order" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL ACCELERATION / v0.34.2</p><h3>Surrogate Models and Reduced-Order Analysis</h3><p>Train reproducible surrogate models, compress high-dimensional simulation states with proper orthogonal decomposition, validate approximation error, reconstruct reduced states, and publish immutable surrogate versions into the Scientific Model Registry.</p></header>
+        <p data-sr-v0342-status role="status" aria-live="polite">Surrogate and reduced-order engine loading…</p>
+        <div class="sc-sr0342-metrics" data-sr-v0342-metrics></div>
+        <div class="sc-sr0342-grid">
+          <div class="sc-sr0342-card is-wide"><h4>Training definition</h4><textarea data-sr-v0342-definition aria-label="Surrogate or reduced-order study JSON">{
+  "id": "thermal-response-surrogate",
+  "title": "Thermal response surrogate",
+  "projectId": "default",
+  "mode": "surrogate",
+  "data": {
+    "features": ["temperature", "flow"],
+    "inputs": [[300, 1], [320, 1.5], [340, 2], [360, 2.5], [380, 3], [400, 3.5]],
+    "outputs": [42.0, 46.5, 51.0, 55.5, 60.0, 64.5]
+  },
+  "training": {"algorithm": "polynomial-ridge", "degree": 2, "ridge": 1e-8},
+  "validation": {"holdoutFraction": 0.2, "randomSeed": 3420, "maximumNormalizedRmse": 0.25, "minimumR2": 0.0},
+  "reducedOrder": {"method": "pod-svd", "energyThreshold": 0.99, "maxRank": 20, "center": true},
+  "provenance": {"datasetId": "replace-with-training-dataset-id"}
+}</textarea><div class="sc-sr0342-actions"><button type="button" class="sc-lab-button" data-sr-v0342-action="validate">Validate definition</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-sr-v0342-action="train">Train immutable study</button><button type="button" class="sc-lab-button" data-sr-v0342-action="refresh">Refresh</button></div><p class="sc-sr0342-note"><strong>Modes:</strong> use <code>surrogate</code> for scalar response approximation, <code>reduced-order</code> for POD/SVD state compression, or <code>hybrid-rom</code> to learn parameter-to-reduced-state mappings. Definitions cannot execute arbitrary Python, shell commands, or callbacks.</p></div>
+          <div class="sc-sr0342-card"><h4>Study controls</h4><label>Study ID<input data-sr-v0342-studyid value="thermal-response-surrogate"></label><div class="sc-sr0342-actions"><button type="button" class="sc-lab-button" data-sr-v0342-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-sr-v0342-action="timeline">Timeline</button></div></div>
+          <div class="sc-sr0342-card"><h4>Prediction or reconstruction</h4><textarea data-sr-v0342-prediction aria-label="Prediction request JSON">{
+  "inputs": {"temperature": 350, "flow": 2.2}
+}</textarea><div class="sc-sr0342-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-sr-v0342-action="predict">Predict</button></div></div>
+          <div class="sc-sr0342-card"><h4>Publish to model registry</h4><textarea data-sr-v0342-registration aria-label="Model registry publication JSON">{
+  "id": "thermal-response-surrogate",
+  "modelVersion": "1.0.0",
+  "channel": "candidate",
+  "sourceRevision": "replace-with-git-commit",
+  "environment": {
+    "id": "surrogate-rom-python-312",
+    "dependencies": [{"name": "numpy", "version": "2.x"}, {"name": "scipy", "version": "1.x"}]
+  }
+}</textarea><div class="sc-sr0342-actions"><button type="button" class="sc-lab-button" data-sr-v0342-action="register">Register immutable version</button></div></div>
+          <div class="sc-sr0342-card is-wide"><h4>Saved surrogate and ROM studies</h4><div class="sc-sr0342-table-wrap"><table class="sc-sr0342-table"><thead><tr><th>Study</th><th>Mode</th><th>Status</th><th>Model hash</th><th>Action</th></tr></thead><tbody data-sr-v0342-studies></tbody></table></div></div>
+          <div class="sc-sr0342-card is-wide"><h4>Training, validation, prediction, reduced basis, registry, and provenance records</h4><pre class="sc-sr0342-output" data-sr-v0342-output>No response yet.</pre></div>
         </div>
       </section>
 
