@@ -222,3 +222,13 @@ services:
     value: "100000"
   - key: SC_LAB_PUBLIC_REPRODUCTION_PERSISTENT_DISK_MOUNTED
     value: "0"
+  - key: SC_LAB_INTEROPERABILITY_DB_PATH
+    value: /app/data/sc-lab-research-interoperability.sqlite3
+  - key: SC_LAB_INTEROPERABILITY_MAX_PROFILES
+    value: "5000"
+  - key: SC_LAB_INTEROPERABILITY_MAX_HANDOFFS
+    value: "250000"
+  - key: SC_LAB_INTEROPERABILITY_HISTORY_LIMIT
+    value: "250000"
+  - key: SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED
+    value: "0"

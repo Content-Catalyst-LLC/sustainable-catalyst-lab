@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.38.0 — Sustainable Catalyst Research Interoperability Layer
+
+- Added workspace-governed product interoperability profiles and supported-contract catalogs.
+- Added canonical typed research handoff envelopes with SHA-256 resource and envelope identities.
+- Added contract-version and capability negotiation, compatibility records, and safety declarations.
+- Added hash-verified idempotent imports, signed acceptance/rejection receipts, withdrawals, and immutable timelines.
+- Added authenticated FastAPI routes, logged-in WordPress proxies, seven public contracts, deployment settings, and the 77th Lab panel.
+- Preserved all v0.31.x–v0.37.x compute, collaboration, federation, publication, and public-verification contracts.
+
 ## 0.37.2 — Public Reproduction and Verification Portal
 
 - Added safe immutable public reproduction records derived from published packages and sealed assemblies.

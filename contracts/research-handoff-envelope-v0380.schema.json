@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/research-handoff-envelope-v0380.schema.json",
+  "title": "Canonical Research Handoff Envelope",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "sourceProduct",
+    "targetProduct",
+    "entityType",
+    "contractVersion",
+    "resource",
+    "provenance",
+    "safety"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-handoff-envelope/0.38.0"
+    },
+    "version": {
+      "const": "0.38.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "sourceProduct": {
+      "type": "string"
+    },
+    "targetProduct": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "contractVersion": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._/-]+/[0-9]+\\.[0-9]+$"
+    },
+    "resource": {
+      "type": "object",
+      "required": [
+        "id",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "requiredCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "arbitraryCode",
+        "embeddedRestrictedData",
+        "directRemoteCallbacks"
+      ],
+      "properties": {
+        "arbitraryCode": {
+          "const": false
+        },
+        "embeddedRestrictedData": {
+          "const": false
+        },
+        "directRemoteCallbacks": {
+          "const": false
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

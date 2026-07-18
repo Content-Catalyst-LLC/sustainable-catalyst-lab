@@ -47,6 +47,7 @@ from .offline_edge_sync import EdgeSyncError, OfflineEdgeSyncManager, policies a
 from .publication_studio import PublicationStudioError, ReproducibilityPublicationStudio, policies as publication_studio_policies
 from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStudio, policies as manuscript_assembly_policies
 from .public_reproduction_portal import PublicReproductionError, PublicReproductionPortal, policies as public_reproduction_policies
+from .research_interoperability import InteroperabilityError, ResearchInteroperabilityLayer, policies as research_interoperability_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -71,6 +72,7 @@ edge_sync = OfflineEdgeSyncManager(settings.edge_sync_db_path, team_workspaces, 
 publication_studio = ReproducibilityPublicationStudio(settings.publication_studio_db_path, team_workspaces, settings.publication_studio_max_packages, settings.publication_studio_max_publications, settings.publication_studio_max_resources, settings.publication_studio_history_limit, workspace_reviews)
 manuscript_assembly = ManuscriptAssemblyStudio(settings.manuscript_assembly_db_path, team_workspaces, publication_studio, settings.manuscript_assembly_max_assemblies, settings.manuscript_assembly_max_sections, settings.manuscript_assembly_max_sections_per_assembly, settings.manuscript_assembly_history_limit)
 public_reproduction = PublicReproductionPortal(settings.public_reproduction_db_path, team_workspaces, publication_studio, manuscript_assembly, settings.public_reproduction_receipt_secret, settings.public_reproduction_max_records, settings.public_reproduction_max_challenges, settings.public_reproduction_challenge_ttl_seconds, settings.public_reproduction_history_limit)
+research_interoperability = ResearchInteroperabilityLayer(settings.interoperability_db_path, team_workspaces, settings.interoperability_receipt_secret, settings.interoperability_max_profiles, settings.interoperability_max_handoffs, settings.interoperability_history_limit)
 
 
 @asynccontextmanager
@@ -188,6 +190,7 @@ def health():
         "reproducibilityPublicationStudio": {"version":"0.37.0","immutablePackages":True,"logicalBundles":True,"manifestVerification":True,"citationCff":True,"markdownHtmlJson":True,"scientificSignoffGate":True,"embeddedRestrictedData":False},
         "manuscriptAssemblyStudio": {"version":"0.37.1","reusableSections":True,"structuredMethodsNarrative":True,"outputOnlyNotebooks":True,"markdownHtmlJats":True,"bibtex":True,"immutableAssemblies":True,"revisionLineage":True,"arbitraryCode":False},
         "publicReproductionPortal": {"version":"0.37.2","publicVerificationRecords":True,"safeManifestViews":True,"nonceChallenges":True,"signedReceipts":True,"tamperDetection":True,"publicCodeExecution":False,"embeddedRestrictedData":False},
+        "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3061,3 +3064,94 @@ def public_reproduction_submit_challenge_route(challenge_id: str, payload: dict[
 def public_reproduction_receipt_route(receipt_hash: str):
     try: return public_reproduction.public_receipt(receipt_hash)
     except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
+
+
+# v0.38.0 Sustainable Catalyst Research Interoperability Layer
+def _research_interoperability_http_error(exc: InteroperabilityError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/research-interoperability/health")
+def research_interoperability_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = research_interoperability.health(); body["serviceVersion"] = settings.version; body["deploymentDurability"] = "persistent-disk" if settings.interoperability_persistent_disk_mounted else "instance-local"; body["durabilityWarning"] = None if settings.interoperability_persistent_disk_mounted else "Interoperability profiles, handoffs, and receipts are instance-local unless a persistent disk is mounted."; return body
+
+@app.get("/v1/research-interoperability/policies")
+def research_interoperability_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = research_interoperability_policies(settings.interoperability_max_profiles, settings.interoperability_max_handoffs); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/team-workspaces/{workspace_id}/interoperability-profiles")
+def research_interoperability_profiles_list_route(workspace_id: str, status: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.list_profiles(workspace_id, actor, status, limit)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/interoperability-profiles")
+def research_interoperability_profile_register_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.register_profile(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/interoperability-negotiate")
+def research_interoperability_negotiate_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.negotiate(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-handoffs")
+def research_interoperability_handoffs_list_route(workspace_id: str, status: str = Query(""), direction: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.list_handoffs(workspace_id, actor, status, direction, limit)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-handoffs")
+def research_interoperability_handoff_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.create_handoff(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-handoffs/{handoff_id}")
+def research_interoperability_handoff_get_route(workspace_id: str, handoff_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.get_handoff(workspace_id, handoff_id, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-handoffs/{handoff_id}/seal")
+def research_interoperability_handoff_seal_route(workspace_id: str, handoff_id: str, payload: dict[str, Any] | None = None, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.seal_handoff(workspace_id, handoff_id, payload or {}, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-handoffs/{handoff_id}/bundle")
+def research_interoperability_handoff_bundle_route(workspace_id: str, handoff_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.export_bundle(workspace_id, handoff_id, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-handoffs/import")
+def research_interoperability_import_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.import_envelope(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-handoffs/{handoff_id}/receipts")
+def research_interoperability_receipt_route(workspace_id: str, handoff_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.record_receipt(workspace_id, handoff_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/research-handoff-receipts/{receipt_hash}")
+def research_interoperability_receipt_verify_route(workspace_id: str, receipt_hash: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.verify_receipt(workspace_id, receipt_hash, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-handoffs/{handoff_id}/withdraw")
+def research_interoperability_withdraw_route(workspace_id: str, handoff_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.withdraw(workspace_id, handoff_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/interoperability-timeline")
+def research_interoperability_timeline_route(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return research_interoperability.timeline(workspace_id, actor, limit)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc

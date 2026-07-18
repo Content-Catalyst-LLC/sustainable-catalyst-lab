@@ -33,3 +33,8 @@ envVars:
   - key: SC_LAB_PUBLICATION_STUDIO_PERSISTENT_DISK_MOUNTED
     value: "1"
 
+# v0.38.0 interoperability storage
+# - key: SC_LAB_INTEROPERABILITY_DB_PATH
+#   value: /app/data/sc-lab-research-interoperability.sqlite3
+# - key: SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED
+#   value: "1"

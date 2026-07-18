@@ -54,6 +54,7 @@
           'model-calibration' => 'Model calibration',
           'manuscript-assembly' => 'Manuscript, report & notebook assembly',
           'public-reproduction' => 'Public reproduction & verification',
+          'research-interoperability' => 'Research interoperability',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2175,6 +2176,41 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <div class="sc-pr0372-card"><h4>Receipt lookup</h4><label>Receipt SHA-256<input data-pr-v0372-receipt value="receipt-hash"></label><button type="button" class="sc-lab-button" data-pr-v0372-action="receipt">Verify receipt</button></div>
           <div class="sc-pr0372-card"><h4>Withdrawal</h4><textarea data-pr-v0372-withdraw-json>{"reason":"Superseded by a corrected public record."}</textarea><button type="button" class="sc-lab-button" data-pr-v0372-action="withdraw">Withdraw record</button><p class="sc-pr0372-note">Withdrawal preserves a public tombstone and complete verification history; it does not hard-delete the record.</p></div>
           <div class="sc-pr0372-card is-wide"><h4>Records, manifests, challenges, receipts, and provenance</h4><pre class="sc-pr0372-output" data-pr-v0372-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-ri0380" data-lab-module="research-interoperability" data-module-panel="research-interoperability" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / PLATFORM EXCHANGE / v0.38.0</p><h3>Sustainable Catalyst Research Interoperability Layer</h3><p>Negotiate typed contracts, create canonical cross-product research handoffs, import compatible envelopes idempotently, and preserve signed delivery receipts without arbitrary callbacks or embedded restricted data.</p></header>
+        <p class="sc-ri0380-status" data-ri-v0380-status role="status" aria-live="polite">Connecting to the research interoperability layer…</p>
+        <div class="sc-ri0380-metrics" data-ri-v0380-metrics></div>
+        <div class="sc-ri0380-grid">
+          <div class="sc-ri0380-card"><h4>Workspace and product profile</h4><label>Workspace ID<input data-ri-v0380-workspace value="research-team"></label><textarea data-ri-v0380-profile-json>{
+  "id": "lab-profile",
+  "productId": "sustainable-catalyst-lab",
+  "displayName": "Sustainable Catalyst Lab",
+  "supportedContracts": ["sc-research-dataset/1.0", "sc-research-workflow/1.0"],
+  "capabilities": ["sha256-resources", "provenance", "workspace-governance"]
+}</textarea><div class="sc-ri0380-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ri-v0380-action="register-profile">Register profile</button><button type="button" class="sc-lab-button" data-ri-v0380-action="profiles">List profiles</button></div></div>
+          <div class="sc-ri0380-card"><h4>Compatibility negotiation</h4><textarea data-ri-v0380-negotiate-json>{
+  "sourceProfileId": "lab-profile",
+  "targetProfileId": "decision-profile",
+  "requestedContracts": ["sc-research-dataset/1.0"],
+  "requiredCapabilities": ["sha256-resources", "provenance"]
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-ri-v0380-action="negotiate">Negotiate compatibility</button><p class="sc-ri0380-note">Profiles declare supported contract versions and capabilities. The coordinator selects only shared, active contracts.</p></div>
+          <div class="sc-ri0380-card is-wide"><h4>Canonical research handoff</h4><label>Handoff ID<input data-ri-v0380-handoff value="wetland-dataset-handoff"></label><textarea data-ri-v0380-handoff-json>{
+  "id": "wetland-dataset-handoff",
+  "sourceProduct": "sustainable-catalyst-lab",
+  "targetProduct": "decision-studio",
+  "entityType": "dataset",
+  "contractVersion": "sc-research-dataset/1.0",
+  "resource": {"id":"wetland-dataset-v1","title":"Wetland observations","sha256":"1111111111111111111111111111111111111111111111111111111111111111","mediaType":"text/csv","metadata":{"rows":42}},
+  "provenance": {"runIds":["run-1"],"workspaceSnapshot":"2222222222222222222222222222222222222222222222222222222222222222"},
+  "requiredCapabilities": ["sha256-resources", "provenance"]
+}</textarea><textarea data-ri-v0380-seal-json>{"sourceProfileId":"lab-profile","targetProfileId":"decision-profile"}</textarea><div class="sc-ri0380-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ri-v0380-action="create">Create handoff</button><button type="button" class="sc-lab-button" data-ri-v0380-action="seal">Seal</button><button type="button" class="sc-lab-button" data-ri-v0380-action="bundle">Export bundle</button><button type="button" class="sc-lab-button" data-ri-v0380-action="inspect">Inspect</button><button type="button" class="sc-lab-button" data-ri-v0380-action="handoffs">List handoffs</button></div></div>
+          <div class="sc-ri0380-card"><h4>Import compatible envelope</h4><textarea data-ri-v0380-import-json>{"importId":"incoming-handoff","envelope":{},"envelopeHash":"replace-with-exported-envelope-hash"}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-ri-v0380-action="import">Import envelope</button><p class="sc-ri0380-note">Imports are canonical-hash verified and idempotent. Duplicate envelopes return the original receipt rather than creating another record.</p></div>
+          <div class="sc-ri0380-card"><h4>Receipt and withdrawal</h4><textarea data-ri-v0380-receipt-json>{"id":"receipt-example","decision":"accepted","details":{"importedResourceId":"decision-resource-1"}}</textarea><label>Receipt SHA-256<input data-ri-v0380-receipt value="receipt-hash"></label><textarea data-ri-v0380-withdraw-json>{"reason":"Superseded by a corrected handoff."}</textarea><div class="sc-ri0380-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ri-v0380-action="receipt">Record receipt</button><button type="button" class="sc-lab-button" data-ri-v0380-action="verify-receipt">Verify receipt</button><button type="button" class="sc-lab-button" data-ri-v0380-action="withdraw">Withdraw</button><button type="button" class="sc-lab-button" data-ri-v0380-action="timeline">Timeline</button></div></div>
+          <div class="sc-ri0380-card is-wide"><h4>Profiles, negotiations, handoffs, receipts, and provenance</h4><pre class="sc-ri0380-output" data-ri-v0380-output>No response yet.</pre></div>
         </div>
       </section>
 

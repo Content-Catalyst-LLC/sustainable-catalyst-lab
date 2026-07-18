@@ -1,0 +1,56 @@
+{
+  "release": "0.38.0",
+  "proof": "typed-cross-product-research-handoff",
+  "profiles": {
+    "source": {
+      "productId": "sustainable-catalyst-lab",
+      "profileHash": "3480862397834797ec3d1d86b614ebeee1da2d70ba79175aecd738809d26b56c"
+    },
+    "target": {
+      "productId": "decision-studio",
+      "profileHash": "aee534ddbb2ee15ca9917dd20fd7c85e4b842d4da46ef0d585e678340e39813d"
+    }
+  },
+  "negotiation": {
+    "compatible": true,
+    "selectedContract": "sc-research-dataset/1.0",
+    "negotiationHash": "a36d90f8b15d452b3ee08b3f4dd7b1d3923e6eb0e429e03e4724e673f2f3a944"
+  },
+  "handoff": {
+    "id": "wetland-dataset-handoff",
+    "statusAfterSeal": "sealed",
+    "envelopeHash": "76fa65dc2c991dc744f80ab5b319b7a5891badecad428b137ca98a45bc64e53a",
+    "bundleHash": "22157d090fd8082e8c689021b22fb4f5deb496280e7170559879dcac4f4eb162"
+  },
+  "import": {
+    "idempotent": false,
+    "status": "received",
+    "direction": "import"
+  },
+  "receipt": {
+    "decision": "accepted",
+    "receiptHash": "5cf38901b3000048231e3b66b627fde1b412089308a72c50de4371be7c9fddb1",
+    "signatureMethod": "hmac-sha256",
+    "integrity": {
+      "hashValid": true,
+      "signatureValid": true
+    }
+  },
+  "timeline": {
+    "events": 7,
+    "eventTypes": [
+      "profile-registered",
+      "profile-registered",
+      "handoff-created",
+      "handoff-sealed",
+      "handoff-exported",
+      "handoff-imported",
+      "handoff-receipt-recorded"
+    ]
+  },
+  "safety": {
+    "arbitraryCode": false,
+    "embeddedRestrictedData": false,
+    "directRemoteCallbacks": false
+  }
+}

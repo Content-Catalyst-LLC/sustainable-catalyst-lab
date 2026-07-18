@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/research-interoperability-event-v0380.schema.json",
+  "title": "Research Interoperability Event",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "entityType",
+    "entityId",
+    "eventType",
+    "actorId",
+    "details",
+    "eventHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-interoperability-event/0.38.0"
+    },
+    "version": {
+      "const": "0.38.0"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

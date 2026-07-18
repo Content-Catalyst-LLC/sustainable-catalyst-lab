@@ -1,0 +1,17 @@
+{
+  "schema": "sc-research-interoperability-policy/0.38.0",
+  "version": "0.38.0",
+  "capabilities": {
+    "typedCrossProductHandoffs": true,
+    "canonicalExchangeEnvelopes": true,
+    "contractVersionNegotiation": true,
+    "capabilityNegotiation": true,
+    "idempotentImports": true,
+    "signedReceipts": true,
+    "workspaceGovernance": true,
+    "directRemoteCallbacks": false,
+    "arbitraryCode": false,
+    "embeddedRestrictedData": false,
+    "hardDelete": false
+  }
+}

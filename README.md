@@ -1,6 +1,17 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.37.2 — Manuscript, Report, Notebook, and Methods Assembly**
+**Current release: v0.38.0 — Sustainable Catalyst Research Interoperability Layer**
+
+
+## v0.38.0 highlights
+
+- Workspace-governed interoperability profiles for Sustainable Catalyst products and institutional systems.
+- Canonical typed research handoff envelopes with resource hashes, provenance, safety declarations, and stable identities.
+- Contract-version and capability negotiation between source and target profiles.
+- Hash-verified, idempotent imports with immutable delivery and acceptance receipts.
+- Optional HMAC-SHA256 receipt signing and retained interoperability timelines.
+- No arbitrary code, embedded restricted data, browser-held credentials, or unrestricted remote callbacks.
+- New Sustainable Catalyst Research Interoperability Layer workspace, bringing Lab to 77 registered panels.
 
 ## v0.37.1 highlights
 

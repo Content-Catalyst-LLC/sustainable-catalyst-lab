@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/research-handoff-bundle-v0380.schema.json",
+  "title": "Research Handoff Bundle",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "envelope",
+    "envelopeHash",
+    "compatibility",
+    "exportedAt",
+    "bundleHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-handoff-bundle/0.38.0"
+    },
+    "version": {
+      "const": "0.38.0"
+    },
+    "envelope": {
+      "$ref": "research-handoff-envelope-v0380.schema.json"
+    },
+    "envelopeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "compatibility": {
+      "type": "object"
+    },
+    "exportedAt": {
+      "type": "string"
+    },
+    "bundleHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

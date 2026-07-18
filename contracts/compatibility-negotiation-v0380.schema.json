@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/compatibility-negotiation-v0380.schema.json",
+  "title": "Research Compatibility Negotiation",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sourceProfile",
+    "targetProfile",
+    "compatibleContracts",
+    "sharedCapabilities",
+    "compatible",
+    "negotiationHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-compatibility-negotiation/0.38.0"
+    },
+    "version": {
+      "const": "0.38.0"
+    },
+    "sourceProfile": {
+      "type": "object"
+    },
+    "targetProfile": {
+      "type": "object"
+    },
+    "compatibleContracts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sharedCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missingCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compatible": {
+      "type": "boolean"
+    },
+    "negotiationHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

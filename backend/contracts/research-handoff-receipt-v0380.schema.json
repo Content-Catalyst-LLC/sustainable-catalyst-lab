@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/research-handoff-receipt-v0380.schema.json",
+  "title": "Research Handoff Receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "handoffId",
+    "workspaceId",
+    "envelopeHash",
+    "decision",
+    "details",
+    "actorId",
+    "createdAt",
+    "receiptHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-handoff-receipt/0.38.0"
+    },
+    "version": {
+      "const": "0.38.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "handoffId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "envelopeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "decision": {
+      "enum": [
+        "accepted",
+        "rejected",
+        "needs-changes"
+      ]
+    },
+    "details": {
+      "type": "object"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "receiptHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

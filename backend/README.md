@@ -1,6 +1,21 @@
 # Sustainable Catalyst Python Compute Core
 
-**Current release: v0.37.2 — Manuscript, Report, Notebook, and Methods Assembly**
+**Current release: v0.38.0 — Sustainable Catalyst Research Interoperability Layer**
+
+
+The v0.38.0 service preserves the full governed scientific-compute, collaboration, federation, publication, and verification stack while adding typed cross-product research exchange. Interoperability is envelope-driven and hash-verified; the coordinator does not execute submitted code or call arbitrary remote endpoints.
+
+## Research interoperability configuration
+
+```text
+SC_LAB_INTEROPERABILITY_DB_PATH=/app/data/sc-lab-research-interoperability.sqlite3
+SC_LAB_INTEROPERABILITY_RECEIPT_SECRET=
+SC_LAB_INTEROPERABILITY_MAX_PROFILES=5000
+SC_LAB_INTEROPERABILITY_MAX_HANDOFFS=250000
+SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED=0
+```
+
+Key authenticated endpoints begin at `/v1/research-interoperability` and `/v1/team-workspaces/{workspaceId}/research-handoffs`.
 
 The v0.37.1 service preserves the complete governed scientific-compute, federation, collaboration, reproducibility, and publication stack while adding structured research-document assembly. It creates safe document outputs and output-only notebooks; it does not execute manuscript content or notebook code.
 
