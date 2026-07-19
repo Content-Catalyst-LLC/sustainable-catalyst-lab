@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-research-embed-manifest/0.38.2",
+  "title": "Research Embed Manifest",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "view",
+    "resource",
+    "metadata",
+    "theme",
+    "title",
+    "issuedAt",
+    "expiresAt",
+    "manifestHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-embed-manifest/0.38.2"
+    },
+    "version": {
+      "const": "0.38.2"
+    },
+    "workspaceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "view": {
+      "enum": [
+        "handoff",
+        "publication",
+        "reproduction",
+        "artifact",
+        "dataset",
+        "research-brief"
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "mediaType": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "theme": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "manifestHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

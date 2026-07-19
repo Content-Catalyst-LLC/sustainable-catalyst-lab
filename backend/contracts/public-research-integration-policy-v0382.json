@@ -1,0 +1,33 @@
+{
+  "schema": "sc-public-research-integration-policy/0.38.2",
+  "version": "0.38.2",
+  "apiVersion": "v1",
+  "authentication": {
+    "header": "X-SC-Lab-API-Key",
+    "scopes": [
+      "research:read",
+      "research:write",
+      "webhooks:read",
+      "webhooks:write",
+      "webhooks:emit",
+      "embeds:write"
+    ]
+  },
+  "webhooks": {
+    "httpsOnly": true,
+    "ssrfProtection": true,
+    "signature": "HMAC-SHA256(timestamp + '.' + canonical JSON)",
+    "secretStorage": "deterministic derivation from server master secret",
+    "defaultDeliveryMode": "signed-queue"
+  },
+  "embeds": {
+    "signed": true,
+    "expiring": true,
+    "maxTtlSeconds": 604800,
+    "referencesOnly": true
+  },
+  "sdk": {
+    "python": "sdk/python",
+    "typescript": "sdk/typescript"
+  }
+}

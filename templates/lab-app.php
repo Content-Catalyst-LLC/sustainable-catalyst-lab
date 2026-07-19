@@ -56,6 +56,7 @@
           'public-reproduction' => 'Public reproduction & verification',
           'research-interoperability' => 'Research interoperability',
           'typed-cross-product-handoffs' => 'Typed product handoffs',
+          'public-research-integrations' => 'Public API & integrations',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2181,6 +2182,35 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
       </section>
 
 
+
+      <section class="sc-lab-panel sc-pri0382" data-lab-module="public-research-integrations" data-module-panel="public-research-integrations" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXTERNAL INTEGRATIONS / v0.38.2</p><h3>Public API, Webhooks, Embeds, and Research SDK</h3><p>Operate the stable research API surface, create scoped HTTPS webhook subscriptions, issue signed public-reference embeds, and inspect the dependency-light Python, TypeScript, and browser SDK packages.</p></header>
+        <p class="sc-pri0382-status" data-pri-v0382-status role="status" aria-live="polite">Connecting to the public research integration service…</p>
+        <div class="sc-pri0382-metrics" data-pri-v0382-metrics></div>
+        <div class="sc-pri0382-grid">
+          <div class="sc-pri0382-card"><h4>API and SDK discovery</h4><label>Workspace ID<input data-pri-v0382-workspace value="research-team"></label><div class="sc-pri0382-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pri-v0382-action="catalog">API catalog</button><button type="button" class="sc-lab-button" data-pri-v0382-action="policies">Policies</button><button type="button" class="sc-lab-button" data-pri-v0382-action="sdk">SDK manifest</button><button type="button" class="sc-lab-button" data-pri-v0382-action="refresh">Health</button></div><p class="sc-pri0382-note">The public catalog and SDK manifest describe stable <code>/v1</code> routes. Protected operations remain workspace- and scope-governed.</p></div>
+          <div class="sc-pri0382-card"><h4>Register an HTTPS webhook</h4><textarea data-pri-v0382-webhook-json>{
+  "id": "decision-studio-hook",
+  "url": "https://example.org/hooks/sustainable-catalyst",
+  "events": ["research.handoff.sealed", "research.dataset.updated"],
+  "description": "Decision Studio research intake"
+}</textarea><div class="sc-pri0382-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pri-v0382-action="register-webhook">Register webhook</button><button type="button" class="sc-lab-button" data-pri-v0382-action="webhooks">List webhooks</button></div><p class="sc-pri0382-note">The signing secret is shown only once. Store it outside WordPress and browser code.</p></div>
+          <div class="sc-pri0382-card"><h4>Webhook lifecycle and delivery</h4><label>Subscription ID<input data-pri-v0382-subscription value="decision-studio-hook"></label><textarea data-pri-v0382-webhook-update-json>{"status":"paused","description":"Paused for maintenance"}</textarea><label>Delivery ID<input data-pri-v0382-delivery value="delivery-id"></label><div class="sc-pri0382-actions"><button type="button" class="sc-lab-button" data-pri-v0382-action="update-webhook">Update webhook</button><button type="button" class="sc-lab-button" data-pri-v0382-action="deliveries">List deliveries</button><button type="button" class="sc-lab-button" data-pri-v0382-action="dispatch">Dispatch delivery</button></div><p class="sc-pri0382-note">Outbound network delivery is disabled by default and must be explicitly enabled in the backend environment.</p></div>
+          <div class="sc-pri0382-card"><h4>Emit a governed research event</h4><textarea data-pri-v0382-event-json>{
+  "id": "wetland-dataset-updated",
+  "eventType": "research.dataset.updated",
+  "subject": "dataset:wetland-observations-v1",
+  "data": {"datasetId":"wetland-observations-v1","sha256":"1111111111111111111111111111111111111111111111111111111111111111"}
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-pri-v0382-action="emit">Sign and queue event</button><p class="sc-pri0382-note">Events contain references, hashes, and policy-approved metadata—not secrets, executable payloads, or restricted dataset bytes.</p></div>
+          <div class="sc-pri0382-card"><h4>Create a signed research embed</h4><textarea data-pri-v0382-embed-json>{
+  "view": "publication",
+  "resource": {"id":"wetland-report-v1","title":"Wetland Research Report","sha256":"2222222222222222222222222222222222222222222222222222222222222222"},
+  "metadata": {"summary":"Public research reference"},
+  "ttlSeconds": 3600
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-pri-v0382-action="embed">Create signed embed</button><p class="sc-pri0382-note">Embed manifests expire and expose public references only. The browser SDK verifies and renders the returned manifest path.</p></div>
+          <div class="sc-pri0382-card is-wide"><h4>Integration response</h4><pre class="sc-pri0382-output" data-pri-v0382-output>No response yet.</pre></div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-th0381" data-lab-module="typed-cross-product-handoffs" data-module-panel="typed-cross-product-handoffs" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / PRODUCT ROUTING / v0.38.1</p><h3>Typed Cross-Product Research Handoffs</h3><p>Plan, validate, normalize, and create governed research handoffs through executable product adapters. Every route is contract-bound, target-aware, hash-identified, and delivered through the existing workspace-governed interoperability layer.</p></header>

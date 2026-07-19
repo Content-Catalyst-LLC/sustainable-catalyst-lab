@@ -1,0 +1,47 @@
+{
+  "release": "0.38.2",
+  "title": "Public API, Webhooks, Embeds, and Research SDK",
+  "generatedAt": "2026-07-19T05:21:43.703339+00:00",
+  "api": {
+    "version": "v1",
+    "catalogHash": "463caba410805dcbfc1610f394db50b3bec47040a3e9a564ff3ebfbe921d3c7d",
+    "endpointCount": 12
+  },
+  "sdk": {
+    "manifestHash": "54d563d15345c7427ac037182109062b9e968f9b50f3cd5047326366744ba3f8",
+    "packages": [
+      "python",
+      "typescript",
+      "browser"
+    ]
+  },
+  "webhook": {
+    "subscriptionId": "proof-hook",
+    "secretFingerprint": "2fcb01fe19a0ea26",
+    "secretDisclosedOnce": true,
+    "eventHash": "c72575c2fe59fda3c6a66ab06c34b9e06f2b981f2e2848acc78a76386b2c65b0",
+    "deliveryId": "del-867a01696b5b183a9f18f700",
+    "envelopeHash": "be58cc90ef2e0051d6be36d98def88f950ebd663d35f3d1fc6cc2157be6c7ff8",
+    "signatureLength": 64,
+    "deliveryMode": "signed-queue",
+    "idempotentRetry": true,
+    "sameDeliveryOnRetry": true
+  },
+  "embed": {
+    "view": "dataset",
+    "manifestHash": "29cdc5f7c4fde81b68cb3f9e3a00cad991ebc4e76d6f95b88a329878affd6af2",
+    "verified": true,
+    "expiresAt": "2026-07-19T05:26:43.706707+00:00"
+  },
+  "safety": {
+    "httpsOnly": true,
+    "ssrfProtected": true,
+    "outboundDeliveryDefault": false,
+    "restrictedFieldRejected": true,
+    "secretsIncluded": false,
+    "credentialsIncluded": false,
+    "restrictedDatasetBytesIncluded": false,
+    "arbitraryCodeIncluded": false
+  },
+  "proofHash": "dcf372339fb666132af062685c908a0299bc3bbc45cd572b1b282accaf636c4a"
+}

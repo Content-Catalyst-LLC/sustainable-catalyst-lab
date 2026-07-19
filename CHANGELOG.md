@@ -1,3 +1,11 @@
+# v0.38.2 — Public API, Webhooks, Embeds, and Research SDK
+
+- Added the stable v1 public research API catalog and scoped integration authentication.
+- Added HTTPS-only, SSRF-resistant webhook subscriptions, signed events, and retained delivery queues.
+- Added signed expiring embed manifests restricted to references and public metadata.
+- Added dependency-light Python and TypeScript SDK source packages.
+- Added a WordPress Public Research Integration Studio and health/catalog routes.
+
 # Changelog
 
 ## 0.38.1 — Typed Cross-Product Research Handoffs

@@ -49,6 +49,7 @@ from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStud
 from .public_reproduction_portal import PublicReproductionError, PublicReproductionPortal, policies as public_reproduction_policies
 from .research_interoperability import InteroperabilityError, ResearchInteroperabilityLayer, policies as research_interoperability_policies
 from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
+from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -75,6 +76,7 @@ manuscript_assembly = ManuscriptAssemblyStudio(settings.manuscript_assembly_db_p
 public_reproduction = PublicReproductionPortal(settings.public_reproduction_db_path, team_workspaces, publication_studio, manuscript_assembly, settings.public_reproduction_receipt_secret, settings.public_reproduction_max_records, settings.public_reproduction_max_challenges, settings.public_reproduction_challenge_ttl_seconds, settings.public_reproduction_history_limit)
 research_interoperability = ResearchInteroperabilityLayer(settings.interoperability_db_path, team_workspaces, settings.interoperability_receipt_secret, settings.interoperability_max_profiles, settings.interoperability_max_handoffs, settings.interoperability_history_limit)
 typed_cross_product_handoffs = TypedCrossProductHandoffs(research_interoperability)
+public_research_integrations = PublicResearchIntegrationGateway(settings.public_integration_db_path, team_workspaces, settings.webhook_signing_secret, settings.webhook_delivery_enabled, settings.public_integration_persistent_disk_mounted, settings.public_integration_max_subscriptions, settings.public_integration_max_deliveries)
 
 
 @asynccontextmanager
@@ -194,6 +196,7 @@ def health():
         "publicReproductionPortal": {"version":"0.37.2","publicVerificationRecords":True,"safeManifestViews":True,"nonceChallenges":True,"signedReceipts":True,"tamperDetection":True,"publicCodeExecution":False,"embeddedRestrictedData":False},
         "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
         "typedCrossProductResearchHandoffs": {"version":"0.38.1","executableAdapterRegistry":True,"productPairRoutePlanning":True,"contractInference":True,"profileAwareSealing":True,"remoteCallbacks":False,"embeddedRestrictedData":False},
+        "publicResearchIntegrations": {"version":"0.38.2","stableApiCatalog":True,"scopedAuthentication":True,"signedWebhooks":True,"ssrfProtection":True,"signedExpiringEmbeds":True,"pythonSdk":True,"typescriptSdk":True,"browserEmbedSdk":True,"outboundDeliveryEnabled":settings.webhook_delivery_enabled},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3069,6 +3072,91 @@ def public_reproduction_receipt_route(receipt_hash: str):
     except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
 
 
+
+
+# v0.38.2 Public API, Webhooks, Embeds, and Research SDK
+def _public_research_http_error(exc: IntegrationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+def require_public_integration_auth(
+    x_sc_lab_api_key: str = Header("", alias="X-SC-Lab-API-Key"),
+    x_sc_lab_key: str = Header("", alias="X-SC-Lab-Key"),
+    x_sc_lab_actor: str = Header("integration-client", alias="X-SC-Lab-Actor"),
+) -> dict[str, Any]:
+    key = settings.public_api_key
+    if not key:
+        raise HTTPException(status_code=503, detail="Protected research integrations require SC_LAB_PUBLIC_API_KEY or SC_LAB_COMPUTE_API_KEY configuration.")
+    supplied_key = x_sc_lab_api_key or x_sc_lab_key
+    if not hmac.compare_digest(supplied_key, key):
+        raise HTTPException(status_code=401, detail="A valid Sustainable Catalyst Lab integration API key is required.")
+    scopes = {item.strip() for item in settings.public_api_scopes.split(",") if item.strip()}
+    return {"actor_id": x_sc_lab_actor.strip() or "integration-client", "scopes": scopes}
+
+def _require_scope(auth: dict[str, Any], scope: str):
+    if scope not in auth.get("scopes", set()): raise HTTPException(status_code=403, detail=f"The {scope} integration scope is required.")
+
+@app.get("/v1/public-research-api")
+def public_research_api_catalog_route():
+    body = public_api_catalog(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/research-integrations/sdk")
+def public_research_sdk_route():
+    return public_research_sdk_manifest()
+
+@app.get("/v1/research-integrations/health")
+def public_research_integrations_health_route(auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "research:read"); body = public_research_integrations.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/research-integrations/policies")
+def public_research_integrations_policies_route():
+    return public_research_integration_policies(settings.webhook_delivery_enabled, settings.public_integration_persistent_disk_mounted)
+
+@app.get("/v1/team-workspaces/{workspace_id}/webhooks")
+def public_research_webhooks_list_route(workspace_id: str, status: str = Query(""), auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:read")
+    try: return public_research_integrations.list_webhooks(workspace_id, auth["actor_id"], status)
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/webhooks")
+def public_research_webhook_register_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:write")
+    try: return public_research_integrations.register_webhook(workspace_id, payload, auth["actor_id"])
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.patch("/v1/team-workspaces/{workspace_id}/webhooks/{subscription_id}")
+def public_research_webhook_update_route(workspace_id: str, subscription_id: str, payload: dict[str, Any], auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:write")
+    try: return public_research_integrations.update_webhook(workspace_id, subscription_id, payload, auth["actor_id"])
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/webhook-events")
+def public_research_webhook_emit_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:emit")
+    try: return public_research_integrations.emit_event(workspace_id, payload, auth["actor_id"])
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.get("/v1/team-workspaces/{workspace_id}/webhook-deliveries")
+def public_research_webhook_deliveries_route(workspace_id: str, status: str = Query(""), limit: int = Query(200, ge=1, le=2000), auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:read")
+    try: return public_research_integrations.list_deliveries(workspace_id, auth["actor_id"], status, limit)
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/webhook-deliveries/{delivery_id}/dispatch")
+def public_research_webhook_dispatch_route(workspace_id: str, delivery_id: str, auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "webhooks:emit")
+    try: return public_research_integrations.dispatch_delivery(workspace_id, delivery_id, auth["actor_id"])
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/research-embeds")
+def public_research_embed_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, Any] = Depends(require_public_integration_auth)):
+    _require_scope(auth, "embeds:write")
+    try: return public_research_integrations.create_embed(workspace_id, payload, auth["actor_id"])
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+@app.get("/v1/public/research-embeds/{token}")
+def public_research_embed_verify_route(token: str):
+    try: return public_research_integrations.verify_embed(token)
+    except IntegrationError as exc: raise _public_research_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")

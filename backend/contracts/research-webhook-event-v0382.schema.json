@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-research-webhook-event/0.38.2",
+  "title": "Research Webhook Event",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "eventType",
+    "occurredAt",
+    "actorId",
+    "data",
+    "eventHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-webhook-event/0.38.2"
+    },
+    "version": {
+      "const": "0.38.2"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "eventType": {
+      "enum": [
+        "research.handoff.created",
+        "research.handoff.sealed",
+        "research.handoff.accepted",
+        "research.handoff.rejected",
+        "research.handoff.needs_changes",
+        "research.handoff.withdrawn",
+        "research.publication.published",
+        "research.reproduction.verified",
+        "research.artifact.registered",
+        "research.workflow.completed",
+        "research.experiment.completed",
+        "research.dataset.updated"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actorId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "data": {
+      "type": "object"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

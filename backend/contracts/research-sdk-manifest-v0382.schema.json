@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-research-sdk-manifest/0.38.2",
+  "title": "Research SDK Manifest",
+  "type": "object",
+  "required": [
+    "ok",
+    "schema",
+    "version",
+    "apiVersion",
+    "packages",
+    "capabilities",
+    "manifestHash"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "schema": {
+      "const": "sc-research-sdk-manifest/0.38.2"
+    },
+    "version": {
+      "const": "0.38.2"
+    },
+    "apiVersion": {
+      "const": "v1"
+    },
+    "packages": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "language",
+          "package",
+          "path",
+          "minimum",
+          "runtimeDependencies"
+        ],
+        "properties": {
+          "language": {
+            "enum": [
+              "python",
+              "typescript",
+              "browser"
+            ]
+          },
+          "package": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "minimum": {
+            "type": "string"
+          },
+          "runtimeDependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "manifestHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

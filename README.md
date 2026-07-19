@@ -1,7 +1,17 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.38.1 — Typed Cross-Product Research Handoffs**
+**Current release: v0.38.2 — Public API, Webhooks, Embeds, and Research SDK**
 
+
+## v0.38.2 highlights
+
+- Stable, versioned `/v1` public research API catalog and OpenAPI discovery.
+- Scoped integration authentication for protected research, webhook, and embed operations.
+- HTTPS-only webhook subscriptions with SSRF safeguards, one-time secrets, HMAC-SHA256 signatures, delivery queues, and guarded dispatch.
+- Signed, expiring research embed manifests limited to public references and policy-approved metadata.
+- Dependency-light Python and TypeScript SDKs plus a browser research-embed loader.
+- WordPress Public Research Integration Studio for API, webhook, delivery, SDK, and embed operations.
+- Outbound webhook delivery remains disabled by default.
 
 ## v0.38.1 highlights
 
@@ -674,3 +684,8 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 ## v0.37.2 Public Reproduction and Verification Portal
 
 Publishes safe immutable reproduction records, nonce-bound verification challenges, and signed receipts without exposing private workspace data, executable code, credentials, callbacks, or restricted dataset bytes.
+
+
+## v0.38.2 research integrations
+
+Discover the API at `/v1/public-research-api`. Configure `SC_LAB_PUBLIC_API_KEY` and `SC_LAB_WEBHOOK_SIGNING_SECRET` before enabling institutional integrations. SDK source is included under `sdk/python` and `sdk/typescript`.

@@ -49,5 +49,5 @@ def test_benchmark_endpoints_with_open_development_auth():
 def test_health_exposes_benchmark_count():
     with TestClient(app) as client:
         body = client.get("/health").json()
-        assert body["version"] == "0.38.1"
+        assert body["version"] == "0.38.2"
         assert body["benchmarkCount"] == 14

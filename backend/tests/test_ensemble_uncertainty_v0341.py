@@ -207,5 +207,5 @@ def test_fastapi_routes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         assert listed.status_code == 200
         assert listed.json()["count"] == 1
         service_health = client.get("/health").json()
-        assert service_health["version"] == "0.38.1"
+        assert service_health["version"] == "0.38.2"
         assert service_health["ensembleSimulation"]["version"] == "0.34.1"

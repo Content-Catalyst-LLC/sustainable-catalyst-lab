@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.38.1"
+    version: str = "0.38.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -162,6 +162,14 @@ class Settings:
     interoperability_max_handoffs: int = _int("SC_LAB_INTEROPERABILITY_MAX_HANDOFFS", 250000, 100, 5000000)
     interoperability_history_limit: int = _int("SC_LAB_INTEROPERABILITY_HISTORY_LIMIT", 250000, 100, 5000000)
     interoperability_persistent_disk_mounted: bool = os.getenv("SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    public_integration_db_path: str = os.getenv("SC_LAB_PUBLIC_INTEGRATION_DB_PATH", "./data/sc-lab-public-research-integrations.sqlite3").strip()
+    public_api_key: str = os.getenv("SC_LAB_PUBLIC_API_KEY", os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", ""))).strip()
+    public_api_scopes: str = os.getenv("SC_LAB_PUBLIC_API_SCOPES", "research:read,research:write,webhooks:read,webhooks:write,webhooks:emit,embeds:write").strip()
+    webhook_signing_secret: str = os.getenv("SC_LAB_WEBHOOK_SIGNING_SECRET", os.getenv("SC_LAB_INTEROPERABILITY_RECEIPT_SECRET", os.getenv("SC_LAB_COMPUTE_SIGNING_SECRET", ""))).strip()
+    webhook_delivery_enabled: bool = os.getenv("SC_LAB_WEBHOOK_DELIVERY_ENABLED", "0").lower() in {"1", "true", "yes"}
+    public_integration_max_subscriptions: int = _int("SC_LAB_PUBLIC_INTEGRATION_MAX_SUBSCRIPTIONS", 5000, 1, 100000)
+    public_integration_max_deliveries: int = _int("SC_LAB_PUBLIC_INTEGRATION_MAX_DELIVERIES", 250000, 100, 5000000)
+    public_integration_persistent_disk_mounted: bool = os.getenv("SC_LAB_PUBLIC_INTEGRATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

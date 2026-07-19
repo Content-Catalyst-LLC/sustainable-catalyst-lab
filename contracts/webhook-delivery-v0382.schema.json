@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-research-webhook-delivery/0.38.2",
+  "title": "Research Webhook Delivery",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "subscriptionId",
+    "eventId",
+    "eventType",
+    "status",
+    "attempt",
+    "envelope",
+    "envelopeHash",
+    "signature",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-webhook-delivery/0.38.2"
+    },
+    "version": {
+      "const": "0.38.2"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "subscriptionId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "eventType": {
+      "enum": [
+        "research.handoff.created",
+        "research.handoff.sealed",
+        "research.handoff.accepted",
+        "research.handoff.rejected",
+        "research.handoff.needs_changes",
+        "research.handoff.withdrawn",
+        "research.publication.published",
+        "research.reproduction.verified",
+        "research.artifact.registered",
+        "research.workflow.completed",
+        "research.experiment.completed",
+        "research.dataset.updated"
+      ]
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "delivering",
+        "delivered",
+        "failed",
+        "dead-letter"
+      ]
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "envelope": {
+      "type": "object",
+      "required": [
+        "event",
+        "deliveryId",
+        "subscriptionId",
+        "timestamp"
+      ],
+      "properties": {
+        "event": {
+          "type": "object"
+        },
+        "deliveryId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "subscriptionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "timestamp": {
+          "type": "string",
+          "pattern": "^[0-9]{10,13}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "envelopeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "responseCode": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 100,
+      "maximum": 599
+    },
+    "responseExcerpt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 4096
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "eventId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    }
+  },
+  "additionalProperties": false
+}

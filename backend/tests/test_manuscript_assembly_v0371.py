@@ -119,7 +119,7 @@ def test_fastapi_routes_use_workspace_actor(tmp_path, monkeypatch):
     headers = {"X-SC-Lab-Actor": "cory", "X-SC-Lab-Actor-Name": "Cory"}
     with TestClient(main.app) as client:
         health = client.get("/v1/manuscript-assembly/health", headers=headers)
-        assert health.status_code == 200 and health.json()["serviceVersion"] == "0.38.1"
+        assert health.status_code == 200 and health.json()["serviceVersion"] == "0.38.2"
         created = client.post("/v1/team-workspaces/research-team/research-assemblies", headers=headers, json={"id": "api-paper", "title": "API paper", "packageId": package["id"], "sections": [{"id": "abstract", "kind": "abstract", "body": "Summary"}]})
         assert created.status_code == 200
         rendered = client.post("/v1/team-workspaces/research-team/research-assemblies/api-paper/render", headers=headers)

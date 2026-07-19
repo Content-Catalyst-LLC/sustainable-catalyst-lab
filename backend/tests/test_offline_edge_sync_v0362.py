@@ -155,7 +155,7 @@ def test_fastapi_edge_routes_use_workspace_actor(tmp_path: Path, monkeypatch):
     with TestClient(main.app) as client:
         health = client.get("/v1/edge-sync/health", headers=headers)
         assert health.status_code == 200
-        assert health.json()["serviceVersion"] == "0.38.1"
+        assert health.json()["serviceVersion"] == "0.38.2"
         devices = client.get("/v1/team-workspaces/field-team/edge-devices", headers=headers)
         assert devices.status_code == 200 and len(devices.json()["devices"]) == 2
         package = client.get("/v1/edge-devices/tablet-1/offline-packages/wetland-survey", headers={**headers, "X-SC-Lab-Edge-Secret": dev1["deviceSecret"]})

@@ -1,7 +1,20 @@
 # Sustainable Catalyst Python Compute Core
 
-**Current release: v0.38.1 — Typed Cross-Product Research Handoffs**
+**Current release: v0.38.2 — Public API, Webhooks, Embeds, and Research SDK**
 
+
+The v0.38.2 service exposes the governed interoperability stack through a stable `/v1` catalog, scoped integration authentication, SSRF-resistant signed webhooks, expiring reference-only embeds, and Python, TypeScript, and browser SDK packages. Outbound webhook delivery is disabled by default and must be explicitly enabled.
+
+## Public research integration configuration
+
+```text
+SC_LAB_PUBLIC_INTEGRATION_DB_PATH=/app/data/sc-lab-public-research-integrations.sqlite3
+SC_LAB_PUBLIC_API_KEY=<strong-random-key>
+SC_LAB_PUBLIC_API_SCOPES=research:read,research:write,webhooks:read,webhooks:write,webhooks:emit,embeds:write
+SC_LAB_WEBHOOK_SIGNING_SECRET=<strong-random-secret>
+SC_LAB_WEBHOOK_DELIVERY_ENABLED=0
+SC_LAB_PUBLIC_INTEGRATION_PERSISTENT_DISK_MOUNTED=1
+```
 
 The v0.38.1 service adds executable typed product adapters and deterministic route planning over the v0.38.0 governed interoperability engine. The v0.38.0 service preserves the full governed scientific-compute, collaboration, federation, publication, and verification stack while adding typed cross-product research exchange. Interoperability is envelope-driven and hash-verified; the coordinator does not execute submitted code or call arbitrary remote endpoints.
 

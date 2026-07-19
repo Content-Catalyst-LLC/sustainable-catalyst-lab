@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-research-webhook-subscription/0.38.2",
+  "title": "Research Webhook Subscription",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "url",
+    "status",
+    "events",
+    "description",
+    "secretFingerprint",
+    "createdBy",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-research-webhook-subscription/0.38.2"
+    },
+    "version": {
+      "const": "0.38.2"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "revoked"
+      ]
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "research.handoff.created",
+          "research.handoff.sealed",
+          "research.handoff.accepted",
+          "research.handoff.rejected",
+          "research.handoff.needs_changes",
+          "research.handoff.withdrawn",
+          "research.publication.published",
+          "research.reproduction.verified",
+          "research.artifact.registered",
+          "research.workflow.completed",
+          "research.experiment.completed",
+          "research.dataset.updated"
+        ]
+      }
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "secretFingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{16}$"
+    },
+    "createdBy": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}
