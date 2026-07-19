@@ -55,6 +55,7 @@
           'manuscript-assembly' => 'Manuscript, report & notebook assembly',
           'public-reproduction' => 'Public reproduction & verification',
           'research-interoperability' => 'Research interoperability',
+          'typed-cross-product-handoffs' => 'Typed product handoffs',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2179,6 +2180,30 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+
+
+      <section class="sc-lab-panel sc-th0381" data-lab-module="typed-cross-product-handoffs" data-module-panel="typed-cross-product-handoffs" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / PRODUCT ROUTING / v0.38.1</p><h3>Typed Cross-Product Research Handoffs</h3><p>Plan, validate, normalize, and create governed research handoffs through executable product adapters. Every route is contract-bound, target-aware, hash-identified, and delivered through the existing workspace-governed interoperability layer.</p></header>
+        <p class="sc-th0381-status" data-th0381-status role="status" aria-live="polite">Loading typed product adapters…</p>
+        <div class="sc-th0381-metrics" data-th0381-metrics></div>
+        <div class="sc-th0381-grid">
+          <div class="sc-th0381-card"><h4>Typed handoff request</h4><label>Workspace ID<input data-th0381-workspace value="research-team"></label><textarea data-th0381-json aria-label="Typed research handoff JSON">{
+  "id": "wetland-decision-handoff",
+  "sourceProduct": "sustainable-catalyst-lab",
+  "targetProduct": "decision-studio",
+  "entityType": "dataset",
+  "resource": {
+    "id": "wetland-observations-v1",
+    "title": "Wetland observations",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "mediaType": "text/csv",
+    "metadata": {"rows": 42}
+  },
+  "provenance": {"runIds": ["run-1"]}
+}</textarea><div class="sc-th0381-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-th0381-action="plan">Validate and plan</button><button type="button" class="sc-lab-button" data-th0381-action="create">Create governed handoff</button><button type="button" class="sc-lab-button" data-th0381-action="routes">Resolve route</button><button type="button" class="sc-lab-button" data-th0381-action="catalog">Adapter catalog</button><button type="button" class="sc-lab-button" data-th0381-action="refresh">Health</button></div><p class="sc-th0381-note">Add both <code>sourceProfileId</code> and <code>targetProfileId</code> to create and seal the handoff in one editor-authorized operation.</p></div>
+          <div class="sc-th0381-card"><h4>Adapter, route, plan, and handoff output</h4><pre class="sc-th0381-output" data-th0381-output>No response yet.</pre></div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-ri0380" data-lab-module="research-interoperability" data-module-panel="research-interoperability" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / PLATFORM EXCHANGE / v0.38.0</p><h3>Sustainable Catalyst Research Interoperability Layer</h3><p>Negotiate typed contracts, create canonical cross-product research handoffs, import compatible envelopes idempotently, and preserve signed delivery receipts without arbitrary callbacks or embedded restricted data.</p></header>

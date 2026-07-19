@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/typed-research-adapter-v0381.schema.json",
+  "title": "Typed Research Product Adapter v0.38.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "productId",
+    "displayName",
+    "role",
+    "accepts",
+    "emits",
+    "defaultBinding",
+    "capabilities",
+    "contracts",
+    "adapterHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-typed-research-adapter/0.38.1"
+    },
+    "version": {
+      "const": "0.38.1"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "accepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "emits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "defaultBinding": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contracts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "adapterHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

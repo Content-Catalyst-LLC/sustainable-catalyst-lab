@@ -1,0 +1,61 @@
+{
+  "release": "0.38.1",
+  "title": "Typed Cross-Product Research Handoffs live proof",
+  "adapterCount": 13,
+  "labOutboundRouteCount": 83,
+  "route": {
+    "schema": "sc-typed-research-route/0.38.1",
+    "version": "0.38.1",
+    "id": "sustainable-catalyst-lab--dataset--decision-studio",
+    "sourceProduct": "sustainable-catalyst-lab",
+    "targetProduct": "decision-studio",
+    "entityType": "dataset",
+    "contractVersion": "sc-research-dataset/1.0",
+    "targetBinding": "decision-evidence-input",
+    "requiredCapabilities": [
+      "sha256-resources",
+      "provenance",
+      "workspace-governance",
+      "typed-route-plan"
+    ],
+    "targetCapabilities": [
+      "decision-packets",
+      "scenarios",
+      "evidence-linking"
+    ],
+    "mapping": {
+      "resource.id": "resource.id",
+      "resource.title": "resource.title",
+      "resource.sha256": "resource.sha256",
+      "resource.mediaType": "resource.mediaType",
+      "resource.metadata": "resource.metadata",
+      "provenance": "provenance"
+    },
+    "delivery": {
+      "mode": "governed-envelope",
+      "automaticRemoteDelivery": false,
+      "requiresReceipt": true
+    },
+    "routeHash": "5778805516a70ca5fe63766e6ef6c7d65d4b5579444063a728217e04ed6f5c9a"
+  },
+  "planHash": "1f0da7c23876b10ab6f75b53ab2ccacce69432e35bedceed3598fa43a53afda7",
+  "handoff": {
+    "id": "wetland-dataset-decision-handoff",
+    "status": "sealed",
+    "contractVersion": "sc-research-dataset/1.0",
+    "envelopeHash": "099f852932776f229c967aabdc0d1c88d8fc6212380aa7f116d358d25758df65",
+    "targetBinding": "decision-evidence-input"
+  },
+  "bundle": {
+    "schema": "sc-research-handoff-bundle/0.38.0",
+    "bundleHash": "90f5642715021fa8e5f9d135a11b40282811cbda5b2b33c7116f766e67bcbf5b",
+    "envelopeHash": "099f852932776f229c967aabdc0d1c88d8fc6212380aa7f116d358d25758df65"
+  },
+  "safety": {
+    "containsSecrets": false,
+    "containsCredentials": false,
+    "containsExecutablePayloads": false,
+    "automaticRemoteCallbacks": false,
+    "embeddedRestrictedData": false
+  }
+}

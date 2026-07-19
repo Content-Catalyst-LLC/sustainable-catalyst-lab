@@ -1,9 +1,9 @@
 # Sustainable Catalyst Python Compute Core
 
-**Current release: v0.38.0 — Sustainable Catalyst Research Interoperability Layer**
+**Current release: v0.38.1 — Typed Cross-Product Research Handoffs**
 
 
-The v0.38.0 service preserves the full governed scientific-compute, collaboration, federation, publication, and verification stack while adding typed cross-product research exchange. Interoperability is envelope-driven and hash-verified; the coordinator does not execute submitted code or call arbitrary remote endpoints.
+The v0.38.1 service adds executable typed product adapters and deterministic route planning over the v0.38.0 governed interoperability engine. The v0.38.0 service preserves the full governed scientific-compute, collaboration, federation, publication, and verification stack while adding typed cross-product research exchange. Interoperability is envelope-driven and hash-verified; the coordinator does not execute submitted code or call arbitrary remote endpoints.
 
 ## Research interoperability configuration
 

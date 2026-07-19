@@ -1,0 +1,26 @@
+{
+  "schema": "sc-typed-cross-product-handoff-policy/0.38.1",
+  "version": "0.38.1",
+  "adapterRegistry": "deterministic-built-in",
+  "routePlanning": "local-and-side-effect-free",
+  "handoffPersistence": "v0.38.0-governed-interoperability-layer",
+  "profileAwareSealing": true,
+  "remoteCallbacks": false,
+  "arbitraryCode": false,
+  "embeddedRestrictedData": false,
+  "supportedProducts": [
+    "sustainable-catalyst-lab",
+    "decision-studio",
+    "catalyst-data",
+    "catalyst-analytics-r",
+    "catalyst-canvas",
+    "sustainable-catalyst-workbench",
+    "site-intelligence",
+    "knowledge-library",
+    "research-librarian",
+    "catalyst-finance",
+    "catalyst-grit",
+    "catalyst-narrative-risk",
+    "global-impact-catalyst"
+  ]
+}

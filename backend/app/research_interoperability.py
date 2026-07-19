@@ -32,7 +32,7 @@ ENTITY_TYPES = {
 DEFAULT_PRODUCTS = {
     "sustainable-catalyst-lab", "decision-studio", "knowledge-library", "research-librarian",
     "sustainable-catalyst-workbench", "site-intelligence", "catalyst-data", "catalyst-canvas",
-    "catalyst-finance", "catalyst-grit", "catalyst-narrative-risk", "global-impact-catalyst",
+    "catalyst-finance", "catalyst-grit", "catalyst-narrative-risk", "global-impact-catalyst", "catalyst-analytics-r",
 }
 FORBIDDEN_KEYS = {
     "code", "sourcecode", "shell", "command", "callback", "callbackurl", "webhook", "executable", "script",

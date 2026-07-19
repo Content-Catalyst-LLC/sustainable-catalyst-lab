@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/typed-research-route-v0381.schema.json",
+  "title": "Typed Research Route v0.38.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "sourceProduct",
+    "targetProduct",
+    "entityType",
+    "contractVersion",
+    "targetBinding",
+    "routeHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-typed-research-route/0.38.1"
+    },
+    "version": {
+      "const": "0.38.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "sourceProduct": {
+      "type": "string"
+    },
+    "targetProduct": {
+      "type": "string"
+    },
+    "entityType": {
+      "type": "string"
+    },
+    "contractVersion": {
+      "type": "string"
+    },
+    "targetBinding": {
+      "type": "string"
+    },
+    "routeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

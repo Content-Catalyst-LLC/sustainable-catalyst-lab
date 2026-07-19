@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/typed-research-handoff-plan-v0381.schema.json",
+  "title": "Typed Research Handoff Plan v0.38.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "valid",
+    "errors",
+    "warnings",
+    "route",
+    "handoff",
+    "planHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-typed-research-handoff-plan/0.38.1"
+    },
+    "version": {
+      "const": "0.38.1"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "route": {
+      "$ref": "typed-research-route-v0381.schema.json"
+    },
+    "handoff": {
+      "type": "object"
+    },
+    "planHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

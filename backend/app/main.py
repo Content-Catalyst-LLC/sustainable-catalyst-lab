@@ -48,6 +48,7 @@ from .publication_studio import PublicationStudioError, ReproducibilityPublicati
 from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStudio, policies as manuscript_assembly_policies
 from .public_reproduction_portal import PublicReproductionError, PublicReproductionPortal, policies as public_reproduction_policies
 from .research_interoperability import InteroperabilityError, ResearchInteroperabilityLayer, policies as research_interoperability_policies
+from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -73,6 +74,7 @@ publication_studio = ReproducibilityPublicationStudio(settings.publication_studi
 manuscript_assembly = ManuscriptAssemblyStudio(settings.manuscript_assembly_db_path, team_workspaces, publication_studio, settings.manuscript_assembly_max_assemblies, settings.manuscript_assembly_max_sections, settings.manuscript_assembly_max_sections_per_assembly, settings.manuscript_assembly_history_limit)
 public_reproduction = PublicReproductionPortal(settings.public_reproduction_db_path, team_workspaces, publication_studio, manuscript_assembly, settings.public_reproduction_receipt_secret, settings.public_reproduction_max_records, settings.public_reproduction_max_challenges, settings.public_reproduction_challenge_ttl_seconds, settings.public_reproduction_history_limit)
 research_interoperability = ResearchInteroperabilityLayer(settings.interoperability_db_path, team_workspaces, settings.interoperability_receipt_secret, settings.interoperability_max_profiles, settings.interoperability_max_handoffs, settings.interoperability_history_limit)
+typed_cross_product_handoffs = TypedCrossProductHandoffs(research_interoperability)
 
 
 @asynccontextmanager
@@ -191,6 +193,7 @@ def health():
         "manuscriptAssemblyStudio": {"version":"0.37.1","reusableSections":True,"structuredMethodsNarrative":True,"outputOnlyNotebooks":True,"markdownHtmlJats":True,"bibtex":True,"immutableAssemblies":True,"revisionLineage":True,"arbitraryCode":False},
         "publicReproductionPortal": {"version":"0.37.2","publicVerificationRecords":True,"safeManifestViews":True,"nonceChallenges":True,"signedReceipts":True,"tamperDetection":True,"publicCodeExecution":False,"embeddedRestrictedData":False},
         "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
+        "typedCrossProductResearchHandoffs": {"version":"0.38.1","executableAdapterRegistry":True,"productPairRoutePlanning":True,"contractInference":True,"profileAwareSealing":True,"remoteCallbacks":False,"embeddedRestrictedData":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3065,6 +3068,38 @@ def public_reproduction_receipt_route(receipt_hash: str):
     try: return public_reproduction.public_receipt(receipt_hash)
     except PublicReproductionError as exc: raise _public_reproduction_http_error(exc) from exc
 
+
+
+# v0.38.1 Typed Cross-Product Research Handoffs
+@app.get("/v1/typed-cross-product-handoffs/health")
+def typed_cross_product_handoffs_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = typed_cross_product_handoffs.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/typed-cross-product-handoffs/policies")
+def typed_cross_product_handoffs_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = typed_cross_product_handoff_policies(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/typed-cross-product-handoffs/adapters")
+def typed_cross_product_handoffs_adapters_route(product_id: str = Query("", alias="productId"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return typed_cross_product_handoffs.catalog(product_id)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.get("/v1/typed-cross-product-handoffs/routes")
+def typed_cross_product_handoffs_routes_route(source_product: str = Query("", alias="sourceProduct"), target_product: str = Query("", alias="targetProduct"), entity_type: str = Query("", alias="entityType"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return typed_cross_product_handoffs.route_catalog(source_product, target_product, entity_type)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/typed-research-handoffs/plan")
+def typed_cross_product_handoff_plan_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return typed_cross_product_handoffs.plan(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+@app.post("/v1/team-workspaces/{workspace_id}/typed-research-handoffs")
+def typed_cross_product_handoff_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor = auth.get("actor_id") or auth.get("actor") or "system"
+    try: return typed_cross_product_handoffs.create(workspace_id, payload, actor)
+    except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
 
 # v0.38.0 Sustainable Catalyst Research Interoperability Layer
 def _research_interoperability_http_error(exc: InteroperabilityError) -> HTTPException:

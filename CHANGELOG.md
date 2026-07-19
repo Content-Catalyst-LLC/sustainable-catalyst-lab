@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.38.1 — Typed Cross-Product Research Handoffs
+
+- Added an executable product-adapter registry for 13 connected research products.
+- Added deterministic route catalogs, contract inference, target binding normalization, and route-plan hashes.
+- Added dry-run planning and governed handoff creation over the v0.38.0 interoperability engine.
+- Added profile-aware create-and-seal support and a Product Handoff Studio.
+- Added typed adapter, route, plan, and policy contracts plus focused integration tests.
+
+
 ## 0.38.0 — Sustainable Catalyst Research Interoperability Layer
 
 - Added workspace-governed product interoperability profiles and supported-contract catalogs.

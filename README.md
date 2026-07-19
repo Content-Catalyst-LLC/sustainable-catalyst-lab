@@ -1,7 +1,16 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.38.0 — Sustainable Catalyst Research Interoperability Layer**
+**Current release: v0.38.1 — Typed Cross-Product Research Handoffs**
 
+
+## v0.38.1 highlights
+
+- Executable typed adapters for 13 Sustainable Catalyst products.
+- Deterministic product-pair route planning with contract inference and target bindings.
+- Dry-run validation, SHA-256 route and plan identities, and governed handoff creation.
+- Optional profile-aware create-and-seal operations.
+- New WordPress Product Handoff Studio and authenticated FastAPI routes.
+- No arbitrary callbacks, executable code, credentials, or embedded restricted dataset bytes.
 
 ## v0.38.0 highlights
 
