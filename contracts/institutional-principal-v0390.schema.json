@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-institutional-principal/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "institutionId",
+    "principalType",
+    "displayName",
+    "status",
+    "metadata",
+    "principalHash",
+    "createdBy",
+    "createdAt",
+    "updatedAt",
+    "credentialsStored"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-institutional-principal/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "principalType": {
+      "enum": [
+        "human",
+        "service"
+      ]
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "externalSubject": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "suspended",
+        "disabled"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "principalHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "credentialsStored": {
+      "const": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,9 +1,25 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.38.2 — Public API, Webhooks, Embeds, and Research SDK**
+**Current release: v0.39.0 — Institutional Administration, Identity, and Governance**
 
+Sustainable Catalyst Lab v0.39.0 adds an institutional control plane over the connected scientific research platform. Institutions can define organizational units, register human and credential-free service principals, assign scoped roles, classify workspaces, evaluate governed actions, administer retention references, and require auditable approval quorums. Credential issuance, SSO, key rotation, encryption hardening, and advanced secret custody remain intentionally deferred to v0.39.1.
 
-## v0.38.2 highlights
+## v0.39.0 highlights
+
+- Institution and organizational-unit registry
+- Human and credential-free service principals
+- Institution, unit, and workspace role bindings
+- Public, internal, confidential, and restricted classifications
+- Deterministic policy evaluation for research actions
+- Retention-policy references without destructive automation
+- Quorum-based governance approvals and immutable decisions
+- Hash-chained governance timelines and dashboards
+- WordPress Institutional Governance Console
+- Python and TypeScript SDK governance clients
+
+## Prior release: v0.38.2
+
+### v0.38.2 highlights
 
 - Stable, versioned `/v1` public research API catalog and OpenAPI discovery.
 - Scoped integration authentication for protected research, webhook, and embed operations.

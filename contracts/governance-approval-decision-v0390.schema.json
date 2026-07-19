@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-governance-approval-decision/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "requestId",
+    "actorId",
+    "decision",
+    "decisionHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-governance-approval-decision/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "requestId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "approve",
+        "reject",
+        "request-changes"
+      ]
+    },
+    "rationale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

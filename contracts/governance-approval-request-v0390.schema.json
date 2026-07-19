@@ -1,0 +1,154 @@
+{
+  "$defs": {
+    "decision": {
+      "additionalProperties": true,
+      "properties": {
+        "actorId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "approve",
+            "reject"
+          ]
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "institutionId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "requestId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "workspaceId": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "requestId",
+        "institutionId",
+        "workspaceId",
+        "actorId",
+        "decision",
+        "createdAt"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "sc-lab-governance-approval-request/0.39.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/decision"
+      },
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "request": {
+      "type": "object"
+    },
+    "requestHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "requestType": {
+      "type": "string"
+    },
+    "requestedBy": {
+      "type": "string"
+    },
+    "requiredDecisions": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "resolvedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resourceClassification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "resourceType": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-governance-approval-request/0.39.0"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "changes-requested",
+        "cancelled"
+      ]
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "workspaceId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "workspaceId",
+    "institutionId",
+    "requestType",
+    "action",
+    "resourceType",
+    "resourceId",
+    "resourceClassification",
+    "status",
+    "requiredDecisions",
+    "request",
+    "requestHash",
+    "requestedBy",
+    "createdAt",
+    "updatedAt",
+    "decisions"
+  ],
+  "type": "object"
+}

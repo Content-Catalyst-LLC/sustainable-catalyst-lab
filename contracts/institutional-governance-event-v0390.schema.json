@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-institutional-governance-event/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sequence",
+    "institutionId",
+    "eventType",
+    "actorId",
+    "details",
+    "eventHash",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-institutional-governance-event/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "sequence": {
+      "type": "integer"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "previousHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

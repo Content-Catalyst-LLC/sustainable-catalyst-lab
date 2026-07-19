@@ -50,6 +50,7 @@ from .public_reproduction_portal import PublicReproductionError, PublicReproduct
 from .research_interoperability import InteroperabilityError, ResearchInteroperabilityLayer, policies as research_interoperability_policies
 from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
+from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -77,6 +78,7 @@ public_reproduction = PublicReproductionPortal(settings.public_reproduction_db_p
 research_interoperability = ResearchInteroperabilityLayer(settings.interoperability_db_path, team_workspaces, settings.interoperability_receipt_secret, settings.interoperability_max_profiles, settings.interoperability_max_handoffs, settings.interoperability_history_limit)
 typed_cross_product_handoffs = TypedCrossProductHandoffs(research_interoperability)
 public_research_integrations = PublicResearchIntegrationGateway(settings.public_integration_db_path, team_workspaces, settings.webhook_signing_secret, settings.webhook_delivery_enabled, settings.public_integration_persistent_disk_mounted, settings.public_integration_max_subscriptions, settings.public_integration_max_deliveries)
+institutional_governance = InstitutionalGovernanceManager(settings.institutional_governance_db_path, team_workspaces, settings.institutional_governance_persistent_disk_mounted, settings.institutional_governance_max_institutions, settings.institutional_governance_max_principals, settings.institutional_governance_history_limit)
 
 
 @asynccontextmanager
@@ -197,6 +199,7 @@ def health():
         "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
         "typedCrossProductResearchHandoffs": {"version":"0.38.1","executableAdapterRegistry":True,"productPairRoutePlanning":True,"contractInference":True,"profileAwareSealing":True,"remoteCallbacks":False,"embeddedRestrictedData":False},
         "publicResearchIntegrations": {"version":"0.38.2","stableApiCatalog":True,"scopedAuthentication":True,"signedWebhooks":True,"ssrfProtection":True,"signedExpiringEmbeds":True,"pythonSdk":True,"typescriptSdk":True,"browserEmbedSdk":True,"outboundDeliveryEnabled":settings.webhook_delivery_enabled},
+        "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":False,"singleSignOn":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3278,3 +3281,191 @@ def research_interoperability_timeline_route(workspace_id: str, limit: int = Que
     actor = auth.get("actor_id") or auth.get("actor") or "system"
     try: return research_interoperability.timeline(workspace_id, actor, limit)
     except InteroperabilityError as exc: raise _research_interoperability_http_error(exc) from exc
+
+
+# v0.39.0 Institutional Administration, Identity, and Governance
+
+def _institutional_governance_http_error(exc: InstitutionalGovernanceError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+def _institutional_actor(auth: dict[str, str]) -> str:
+    return auth.get("actor_id") or auth.get("actor") or "system"
+
+
+@app.get("/v1/institutional-governance/health")
+def institutional_governance_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = institutional_governance.health()
+    body["serviceVersion"] = settings.version
+    body["deploymentDurability"] = "persistent-disk" if settings.institutional_governance_persistent_disk_mounted else "instance-local"
+    body["durabilityWarning"] = None if settings.institutional_governance_persistent_disk_mounted else "Institutional governance records are instance-local unless a persistent disk is mounted."
+    return body
+
+
+@app.get("/v1/institutional-governance/policies")
+def institutional_governance_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = institutional_governance_policies(settings.institutional_governance_persistent_disk_mounted)
+    body["serviceVersion"] = settings.version
+    return body
+
+
+@app.get("/v1/institutions")
+def institutional_governance_institutions_list_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_institutions(_institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/institutions")
+def institutional_governance_institution_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.create_institution(payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}")
+def institutional_governance_institution_get_route(institution_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.get_institution(institution_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/units")
+def institutional_governance_units_list_route(institution_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_units(institution_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/units")
+def institutional_governance_unit_create_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.create_unit(institution_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/principals")
+def institutional_governance_principals_list_route(institution_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_principals(institution_id, _institutional_actor(auth), status)
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/principals")
+def institutional_governance_principal_create_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.register_principal(institution_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/role-bindings")
+def institutional_governance_bindings_list_route(institution_id: str, principal_id: str = Query("", alias="principalId"), workspace_id: str = Query("", alias="workspaceId"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_bindings(institution_id, _institutional_actor(auth), principal_id, workspace_id)
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/role-bindings")
+def institutional_governance_binding_create_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.grant_role(institution_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.delete("/v1/institutions/{institution_id}/role-bindings/{binding_id}")
+def institutional_governance_binding_revoke_route(institution_id: str, binding_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.revoke_role(institution_id, binding_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/retention-policies")
+def institutional_governance_retention_list_route(institution_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_retention_policies(institution_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/retention-policies")
+def institutional_governance_retention_create_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.create_retention_policy(institution_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/team-workspaces/{workspace_id}/institutional-governance")
+def institutional_governance_workspace_get_route(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.get_workspace_governance(workspace_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/team-workspaces/{workspace_id}/institutional-governance")
+def institutional_governance_workspace_configure_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.govern_workspace(workspace_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/team-workspaces/{workspace_id}/institutional-governance/evaluate")
+def institutional_governance_evaluate_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.evaluate(workspace_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/team-workspaces/{workspace_id}/governance-approvals")
+def institutional_governance_approvals_list_route(workspace_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.list_approvals(workspace_id, _institutional_actor(auth), status)
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/team-workspaces/{workspace_id}/governance-approvals")
+def institutional_governance_approval_create_route(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.create_approval(workspace_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.post("/v1/team-workspaces/{workspace_id}/governance-approvals/{request_id}/decisions")
+def institutional_governance_approval_decide_route(workspace_id: str, request_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.decide_approval(workspace_id, request_id, payload, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/governance-dashboard")
+def institutional_governance_dashboard_route(institution_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.dashboard(institution_id, _institutional_actor(auth))
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/governance-timeline")
+def institutional_governance_timeline_route(institution_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return institutional_governance.timeline(institution_id, _institutional_actor(auth), limit)
+    except InstitutionalGovernanceError as exc:
+        raise _institutional_governance_http_error(exc) from exc

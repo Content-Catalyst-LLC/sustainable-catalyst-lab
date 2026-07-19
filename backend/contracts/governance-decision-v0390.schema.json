@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-governance-decision/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "actorId",
+    "action",
+    "resourceType",
+    "allowed",
+    "requiresApproval",
+    "reasons",
+    "institutionRoles",
+    "effectiveClassification",
+    "evaluatedAt",
+    "decisionHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-governance-decision/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "resourceType": {
+      "type": "string"
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "requiresApproval": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "institutionRoles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "effectiveClassification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "approvalQuorum": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evaluatedAt": {
+      "type": "string"
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

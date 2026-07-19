@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.38.2"
+    version: str = "0.39.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -170,6 +170,11 @@ class Settings:
     public_integration_max_subscriptions: int = _int("SC_LAB_PUBLIC_INTEGRATION_MAX_SUBSCRIPTIONS", 5000, 1, 100000)
     public_integration_max_deliveries: int = _int("SC_LAB_PUBLIC_INTEGRATION_MAX_DELIVERIES", 250000, 100, 5000000)
     public_integration_persistent_disk_mounted: bool = os.getenv("SC_LAB_PUBLIC_INTEGRATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    institutional_governance_db_path: str = os.getenv("SC_LAB_INSTITUTIONAL_GOVERNANCE_DB_PATH", "./data/sc-lab-institutional-governance.sqlite3").strip()
+    institutional_governance_max_institutions: int = _int("SC_LAB_INSTITUTIONAL_GOVERNANCE_MAX_INSTITUTIONS", 1000, 1, 100000)
+    institutional_governance_max_principals: int = _int("SC_LAB_INSTITUTIONAL_GOVERNANCE_MAX_PRINCIPALS", 250000, 100, 5000000)
+    institutional_governance_history_limit: int = _int("SC_LAB_INSTITUTIONAL_GOVERNANCE_HISTORY_LIMIT", 250000, 100, 5000000)
+    institutional_governance_persistent_disk_mounted: bool = os.getenv("SC_LAB_INSTITUTIONAL_GOVERNANCE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

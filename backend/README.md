@@ -1,3 +1,23 @@
+# Sustainable Catalyst Lab Python Compute Core
+
+**Current release: v0.39.0 — Institutional Administration, Identity, and Governance**
+
+The v0.39.0 service adds the institutional identity and governance control plane while retaining the complete v0.38.2 public integration and scientific-compute stack. It records authority and governance decisions but does not issue credentials, store service-account secrets, or perform SSO token exchange.
+
+## Institutional governance configuration
+
+```text
+SC_LAB_INSTITUTIONAL_GOVERNANCE_DB_PATH=/app/data/sc-lab-institutional-governance.sqlite3
+SC_LAB_INSTITUTIONAL_GOVERNANCE_MAX_INSTITUTIONS=5000
+SC_LAB_INSTITUTIONAL_GOVERNANCE_MAX_PRINCIPALS=250000
+SC_LAB_INSTITUTIONAL_GOVERNANCE_HISTORY_LIMIT=250000
+SC_LAB_INSTITUTIONAL_GOVERNANCE_PERSISTENT_DISK_MOUNTED=1
+```
+
+Key authenticated endpoints begin at `/v1/institutional-governance`, `/v1/institutions`, and `/v1/team-workspaces/{workspaceId}/institutional-governance`.
+
+## Prior release: v0.38.2
+
 # Sustainable Catalyst Python Compute Core
 
 **Current release: v0.38.2 — Public API, Webhooks, Embeds, and Research SDK**

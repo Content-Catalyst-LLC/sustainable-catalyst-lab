@@ -34,6 +34,7 @@ class LabClient:
             headers["Content-Type"] = "application/json"
         if self.api_key:
             headers["X-SC-Lab-API-Key"] = self.api_key
+            headers["X-SC-Lab-Key"] = self.api_key
         try:
             with urlopen(Request(self.base_url + path, data=body, headers=headers, method=method), timeout=self.timeout) as response:
                 return json.loads(response.read())
@@ -91,6 +92,80 @@ class LabClient:
 
     def read_embed(self, token: str):
         return self.request("GET", f"/v1/public/research-embeds/{_segment(token)}")
+
+    def governance_health(self):
+        return self.request("GET", "/v1/institutional-governance/health")
+
+    def governance_policies(self):
+        return self.request("GET", "/v1/institutional-governance/policies")
+
+    def list_institutions(self):
+        return self.request("GET", "/v1/institutions")
+
+    def create_institution(self, payload: Any):
+        return self.request("POST", "/v1/institutions", payload)
+
+    def get_institution(self, institution_id: str):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}")
+
+    def list_units(self, institution_id: str):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/units")
+
+    def create_unit(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/units", payload)
+
+    def list_principals(self, institution_id: str, status: str = ""):
+        query = f"?status={_segment(status)}" if status else ""
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/principals{query}")
+
+    def create_principal(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/principals", payload)
+
+    def list_role_bindings(self, institution_id: str, principal_id: str = "", workspace_id: str = ""):
+        params = []
+        if principal_id:
+            params.append(f"principalId={_segment(principal_id)}")
+        if workspace_id:
+            params.append(f"workspaceId={_segment(workspace_id)}")
+        query = "?" + "&".join(params) if params else ""
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/role-bindings{query}")
+
+    def grant_role(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/role-bindings", payload)
+
+    def revoke_role(self, institution_id: str, binding_id: str):
+        return self.request("DELETE", f"/v1/institutions/{_segment(institution_id)}/role-bindings/{_segment(binding_id)}")
+
+    def list_retention_policies(self, institution_id: str):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/retention-policies")
+
+    def create_retention_policy(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/retention-policies", payload)
+
+    def get_workspace_governance(self, workspace_id: str):
+        return self.request("GET", f"/v1/team-workspaces/{_segment(workspace_id)}/institutional-governance")
+
+    def configure_workspace_governance(self, workspace_id: str, payload: Any):
+        return self.request("POST", f"/v1/team-workspaces/{_segment(workspace_id)}/institutional-governance", payload)
+
+    def evaluate_governance(self, workspace_id: str, payload: Any):
+        return self.request("POST", f"/v1/team-workspaces/{_segment(workspace_id)}/institutional-governance/evaluate", payload)
+
+    def list_governance_approvals(self, workspace_id: str, status: str = ""):
+        query = f"?status={_segment(status)}" if status else ""
+        return self.request("GET", f"/v1/team-workspaces/{_segment(workspace_id)}/governance-approvals{query}")
+
+    def create_governance_approval(self, workspace_id: str, payload: Any):
+        return self.request("POST", f"/v1/team-workspaces/{_segment(workspace_id)}/governance-approvals", payload)
+
+    def decide_governance_approval(self, workspace_id: str, request_id: str, payload: Any):
+        return self.request("POST", f"/v1/team-workspaces/{_segment(workspace_id)}/governance-approvals/{_segment(request_id)}/decisions", payload)
+
+    def governance_dashboard(self, institution_id: str):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/governance-dashboard")
+
+    def governance_timeline(self, institution_id: str, limit: int = 500):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/governance-timeline?limit={max(1, min(int(limit), 5000))}")
 
 
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:

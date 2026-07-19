@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-retention-policy/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "institutionId",
+    "title",
+    "retentionDays",
+    "reviewIntervalDays",
+    "disposition",
+    "legalHold",
+    "metadata",
+    "policyHash",
+    "createdBy",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-retention-policy/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "retentionDays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "reviewIntervalDays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "disposition": {
+      "enum": [
+        "retain",
+        "archive",
+        "review",
+        "delete-reference"
+      ]
+    },
+    "legalHold": {
+      "type": "boolean"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "policyHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

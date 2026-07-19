@@ -11,7 +11,7 @@ export class LabClient {
 
   async request<T>(method: string, path: string, payload?: unknown): Promise<T> {
     const headers: Record<string, string> = { Accept: "application/json", "X-SC-Lab-Actor": this.actorId };
-    if (this.apiKey) headers["X-SC-Lab-API-Key"] = this.apiKey;
+    if (this.apiKey) { headers["X-SC-Lab-API-Key"] = this.apiKey; headers["X-SC-Lab-Key"] = this.apiKey; }
     if (payload !== undefined) headers["Content-Type"] = "application/json";
     const response = await fetch(this.baseUrl + path, { method, headers, body: payload === undefined ? undefined : JSON.stringify(payload) });
     const body = await response.json().catch(() => ({ detail: response.statusText }));
@@ -37,6 +37,35 @@ export class LabClient {
   dispatchWebhook(workspaceId: string, deliveryId: string) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/webhook-deliveries/${segment(deliveryId)}/dispatch`, {}); }
   createEmbed(workspaceId: string, payload: unknown) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/research-embeds`, payload); }
   readEmbed(token: string) { return this.request("GET", `/v1/public/research-embeds/${segment(token)}`); }
+  governanceHealth() { return this.request("GET", "/v1/institutional-governance/health"); }
+  governancePolicies() { return this.request("GET", "/v1/institutional-governance/policies"); }
+  listInstitutions() { return this.request("GET", "/v1/institutions"); }
+  createInstitution(payload: unknown) { return this.request("POST", "/v1/institutions", payload); }
+  getInstitution(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}`); }
+  listUnits(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/units`); }
+  createUnit(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/units`, payload); }
+  listPrincipals(institutionId: string, status = "") { return this.request("GET", `/v1/institutions/${segment(institutionId)}/principals${status ? `?status=${segment(status)}` : ""}`); }
+  createPrincipal(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/principals`, payload); }
+  listRoleBindings(institutionId: string, principalId = "", workspaceId = "") {
+    const params = new URLSearchParams();
+    if (principalId) params.set("principalId", principalId);
+    if (workspaceId) params.set("workspaceId", workspaceId);
+    const query = params.toString();
+    return this.request("GET", `/v1/institutions/${segment(institutionId)}/role-bindings${query ? `?${query}` : ""}`);
+  }
+  grantRole(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/role-bindings`, payload); }
+  revokeRole(institutionId: string, bindingId: string) { return this.request("DELETE", `/v1/institutions/${segment(institutionId)}/role-bindings/${segment(bindingId)}`); }
+  listRetentionPolicies(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/retention-policies`); }
+  createRetentionPolicy(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/retention-policies`, payload); }
+  getWorkspaceGovernance(workspaceId: string) { return this.request("GET", `/v1/team-workspaces/${segment(workspaceId)}/institutional-governance`); }
+  configureWorkspaceGovernance(workspaceId: string, payload: unknown) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/institutional-governance`, payload); }
+  evaluateGovernance(workspaceId: string, payload: unknown) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/institutional-governance/evaluate`, payload); }
+  listGovernanceApprovals(workspaceId: string, status = "") { return this.request("GET", `/v1/team-workspaces/${segment(workspaceId)}/governance-approvals${status ? `?status=${segment(status)}` : ""}`); }
+  createGovernanceApproval(workspaceId: string, payload: unknown) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/governance-approvals`, payload); }
+  decideGovernanceApproval(workspaceId: string, requestId: string, payload: unknown) { return this.request("POST", `/v1/team-workspaces/${segment(workspaceId)}/governance-approvals/${segment(requestId)}/decisions`, payload); }
+  governanceDashboard(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/governance-dashboard`); }
+  governanceTimeline(institutionId: string, limit = 500) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/governance-timeline?limit=${Math.max(1, Math.min(Math.trunc(limit), 5000))}`); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

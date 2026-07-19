@@ -114,7 +114,7 @@ def test_health_and_fastapi_routes(tmp_path, monkeypatch):
     headers = {"X-SC-Lab-Key": "test-key", "X-SC-Lab-Actor": "alice"}
     assert client.post("/v1/team-workspaces", headers=headers, json={"id":"route-team","title":"Route Team"}).status_code == 200
     health = client.get("/v1/typed-cross-product-handoffs/health", headers=headers)
-    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.38.2"
+    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.39.0"
     catalog = client.get("/v1/typed-cross-product-handoffs/adapters", headers=headers)
     assert catalog.status_code == 200 and catalog.json()["count"] == 13
     plan = client.post("/v1/team-workspaces/route-team/typed-research-handoffs/plan", headers=headers, json=payload())

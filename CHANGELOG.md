@@ -1,3 +1,13 @@
+# Changelog
+
+## 0.39.0 — Institutional Administration, Identity, and Governance
+
+- Added institutional, organizational-unit, human-principal, and credential-free service-principal registries.
+- Added scoped role bindings with final-owner protection.
+- Added workspace classifications, retention references, deterministic policy evaluation, and quorum approvals.
+- Added hash-chained governance events, dashboards, WordPress administration, API routes, and SDK methods.
+- Preserved v0.39.1 boundaries for secrets, credentials, SSO, encryption, and security hardening.
+
 # v0.38.2 — Public API, Webhooks, Embeds, and Research SDK
 
 - Added the stable v1 public research API catalog and scoped integration authentication.

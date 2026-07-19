@@ -419,6 +419,43 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/webhook-deliveries/(?P<delivery>[A-Za-z0-9._:-]{1,180})/dispatch', array('methods'=>'POST','callback'=>array(__CLASS__,'public_research_webhook_dispatch'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/research-embeds', array('methods'=>'POST','callback'=>array(__CLASS__,'public_research_embed_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
 
+        register_rest_route(self::NAMESPACE, '/compute/core/institutional-governance/health', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_health'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutional-governance/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_policies'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_institutions'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_institution_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_institution_get'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/units', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_units'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_unit_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/principals', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_principals'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_principal_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/role-bindings', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_bindings'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_binding_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/role-bindings/(?P<binding>[A-Za-z0-9._:-]{1,180})', array('methods'=>'DELETE','callback'=>array(__CLASS__,'institutional_governance_binding_revoke'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/retention-policies', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_retention'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_retention_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/governance-dashboard', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_dashboard'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/institutions/(?P<institution>[A-Za-z0-9._:-]{1,180})/governance-timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_timeline'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/institutional-governance', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_workspace'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_workspace_configure'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/institutional-governance/evaluate', array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_evaluate'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/governance-approvals', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'institutional_governance_approvals'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_approval_create'),'permission_callback'=>array(__CLASS__,'collaboration_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/governance-approvals/(?P<approval>[A-Za-z0-9._:-]{1,180})/decisions', array('methods'=>'POST','callback'=>array(__CLASS__,'institutional_governance_approval_decide'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
+
         register_rest_route(self::NAMESPACE, '/compute/core/research-interoperability/health', array('methods'=>'GET','callback'=>array(__CLASS__,'research_interoperability_health'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/research-interoperability/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'research_interoperability_policies'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/interoperability-profiles', array(
@@ -1058,6 +1095,30 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function public_research_webhook_deliveries(WP_REST_Request $request){$status=sanitize_key($request->get_param('status')?:'');$limit=max(1,min(2000,intval($request->get_param('limit')?:200)));$q='?limit='.$limit.($status?'&status='.rawurlencode($status):'');return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/webhook-deliveries'.$q);}
     public static function public_research_webhook_dispatch(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/webhook-deliveries/'.rawurlencode($request['delivery']).'/dispatch','POST',array(),1048576);}
     public static function public_research_embed_create(WP_REST_Request $request){$p=self::public_research_integrations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/research-embeds','POST',$p,2097152);}
+
+    private static function institutional_governance_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,160000,16);return is_wp_error($clean)?$clean:$clean;}
+    public static function institutional_governance_health(){return self::proxy('/v1/institutional-governance/health');}
+    public static function institutional_governance_policies(){return self::proxy('/v1/institutional-governance/policies');}
+    public static function institutional_governance_institutions(){return self::proxy('/v1/institutions');}
+    public static function institutional_governance_institution_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/institutions','POST',$p,2097152);}
+    public static function institutional_governance_institution_get(WP_REST_Request $request){return self::proxy('/v1/institutions/'.rawurlencode($request['institution']));}
+    public static function institutional_governance_units(WP_REST_Request $request){return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/units');}
+    public static function institutional_governance_unit_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/units','POST',$p,2097152);}
+    public static function institutional_governance_principals(WP_REST_Request $request){$status=sanitize_key($request->get_param('status')?:'');$q=$status?'?status='.rawurlencode($status):'';return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/principals'.$q);}
+    public static function institutional_governance_principal_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/principals','POST',$p,2097152);}
+    public static function institutional_governance_bindings(WP_REST_Request $request){$parts=array();$principal=sanitize_text_field($request->get_param('principalId')?:'');$workspace=sanitize_text_field($request->get_param('workspaceId')?:'');if($principal){$parts[]='principalId='.rawurlencode($principal);}if($workspace){$parts[]='workspaceId='.rawurlencode($workspace);}$q=$parts?'?'.implode('&',$parts):'';return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/role-bindings'.$q);}
+    public static function institutional_governance_binding_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/role-bindings','POST',$p,2097152);}
+    public static function institutional_governance_binding_revoke(WP_REST_Request $request){return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/role-bindings/'.rawurlencode($request['binding']),'DELETE',array(),1048576);}
+    public static function institutional_governance_retention(WP_REST_Request $request){return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/retention-policies');}
+    public static function institutional_governance_retention_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/retention-policies','POST',$p,2097152);}
+    public static function institutional_governance_dashboard(WP_REST_Request $request){return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/governance-dashboard');}
+    public static function institutional_governance_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/institutions/'.rawurlencode($request['institution']).'/governance-timeline?limit='.$limit);}
+    public static function institutional_governance_workspace(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/institutional-governance');}
+    public static function institutional_governance_workspace_configure(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/institutional-governance','POST',$p,2097152);}
+    public static function institutional_governance_evaluate(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/institutional-governance/evaluate','POST',$p,2097152);}
+    public static function institutional_governance_approvals(WP_REST_Request $request){$status=sanitize_key($request->get_param('status')?:'');$q=$status?'?status='.rawurlencode($status):'';return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/governance-approvals'.$q);}
+    public static function institutional_governance_approval_create(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/governance-approvals','POST',$p,2097152);}
+    public static function institutional_governance_approval_decide(WP_REST_Request $request){$p=self::institutional_governance_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/governance-approvals/'.rawurlencode($request['approval']).'/decisions','POST',$p,2097152);}
 
     private static function research_interoperability_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,160000,16);return is_wp_error($clean)?$clean:$clean;}
     public static function research_interoperability_health(){return self::proxy('/v1/research-interoperability/health');}

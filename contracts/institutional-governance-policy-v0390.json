@@ -1,0 +1,27 @@
+{
+  "schema": "sc-lab-institutional-governance-policy/0.39.0",
+  "version": "0.39.0",
+  "institutionRoles": [
+    "institution-viewer",
+    "researcher",
+    "steward",
+    "approver",
+    "auditor",
+    "institution-admin",
+    "institution-owner"
+  ],
+  "principalTypes": [
+    "human",
+    "service"
+  ],
+  "classifications": [
+    "public",
+    "internal",
+    "confidential",
+    "restricted"
+  ],
+  "credentialStorage": false,
+  "singleSignOn": false,
+  "automaticDestructiveDeletion": false,
+  "notes": "Identity records, scoped authority, retention references, approvals, and policy decisions are governed. Secret storage and SSO authentication are deferred to v0.39.1."
+}

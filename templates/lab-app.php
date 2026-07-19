@@ -57,6 +57,7 @@
           'research-interoperability' => 'Research interoperability',
           'typed-cross-product-handoffs' => 'Typed product handoffs',
           'public-research-integrations' => 'Public API & integrations',
+          'institutional-governance-v0390' => 'Institutional governance',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2182,6 +2183,71 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
       </section>
 
 
+
+      <section class="sc-lab-panel sc-ig0390" data-lab-module="institutional-governance-v0390" data-module-panel="institutional-governance-v0390" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">INSTITUTION / CONTROL PLANE / v0.39.0</p><h3>Institutional Administration, Identity, and Governance</h3><p>Administer institutions, organizational units, credential-free human and service principals, role bindings, workspace classifications, retention policies, approval gates, and hash-chained governance decisions.</p></header>
+        <p class="sc-ig0390-status" data-ig-v0390-status role="status" aria-live="polite">Connecting to the institutional governance service…</p>
+        <div class="sc-ig0390-metrics" data-ig-v0390-metrics></div>
+        <div class="sc-ig0390-grid">
+          <div class="sc-ig0390-card"><h4>Institution and governance context</h4><label>Institution ID<input data-ig-v0390-institution value="catalyst-institute"></label><label>Workspace ID<input data-ig-v0390-workspace value="research-team"></label><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="dashboard">Dashboard</button><button type="button" class="sc-lab-button" data-ig-v0390-action="institutions">Institutions</button><button type="button" class="sc-lab-button" data-ig-v0390-action="policies">Policies</button><button type="button" class="sc-lab-button" data-ig-v0390-action="refresh">Health</button><button type="button" class="sc-lab-button" data-ig-v0390-action="timeline">Audit timeline</button></div><p class="sc-ig0390-note">This release stores identity and authority records, not passwords, API secrets, or SSO tokens. Credential hardening is reserved for v0.39.1.</p></div>
+          <div class="sc-ig0390-card"><h4>Create an institution</h4><textarea data-ig-v0390-institution-json>{
+  "id": "catalyst-institute",
+  "name": "Catalyst Institute",
+  "description": "Institutional research governance workspace",
+  "domains": ["example.org"]
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="create-institution">Create institution</button></div>
+          <div class="sc-ig0390-card"><h4>Organizational units</h4><textarea data-ig-v0390-unit-json>{
+  "id": "climate-lab",
+  "title": "Climate Lab",
+  "code": "CLIM"
+}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="create-unit">Create unit</button><button type="button" class="sc-lab-button" data-ig-v0390-action="units">List units</button></div></div>
+          <div class="sc-ig0390-card"><h4>Human and service principals</h4><textarea data-ig-v0390-principal-json>{
+  "id": "compute-agent",
+  "principalType": "service",
+  "displayName": "Compute Agent",
+  "externalSubject": "service:compute-agent"
+}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="create-principal">Register principal</button><button type="button" class="sc-lab-button" data-ig-v0390-action="principals">List principals</button></div><p class="sc-ig0390-note">Service principals are credential-free identity records in v0.39.0.</p></div>
+          <div class="sc-ig0390-card"><h4>Institutional role bindings</h4><textarea data-ig-v0390-binding-json>{
+  "principalId": "compute-agent",
+  "role": "researcher",
+  "workspaceId": "research-team",
+  "unitId": "climate-lab",
+  "rationale": "Approved compute automation"
+}</textarea><label>Binding ID to revoke<input data-ig-v0390-binding value="binding-id"></label><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="grant">Grant role</button><button type="button" class="sc-lab-button" data-ig-v0390-action="bindings">List bindings</button><button type="button" class="sc-lab-button" data-ig-v0390-action="revoke">Revoke binding</button></div></div>
+          <div class="sc-ig0390-card"><h4>Retention policy</h4><textarea data-ig-v0390-retention-json>{
+  "id": "research-ten-years",
+  "title": "Research Ten Years",
+  "retentionDays": 3650,
+  "reviewIntervalDays": 365,
+  "disposition": "review",
+  "legalHold": false
+}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="create-retention">Create policy</button><button type="button" class="sc-lab-button" data-ig-v0390-action="retention">List policies</button></div></div>
+          <div class="sc-ig0390-card"><h4>Workspace governance profile</h4><textarea data-ig-v0390-governance-json>{
+  "institutionId": "catalyst-institute",
+  "unitId": "climate-lab",
+  "classification": "confidential",
+  "retentionPolicyId": "research-ten-years",
+  "approvalActions": ["research.publish", "research.share"],
+  "approvalQuorum": 1,
+  "externalSharing": true
+}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="govern">Configure workspace</button><button type="button" class="sc-lab-button" data-ig-v0390-action="workspace">Inspect profile</button></div></div>
+          <div class="sc-ig0390-card"><h4>Policy evaluation</h4><textarea data-ig-v0390-evaluate-json>{
+  "action": "research.share",
+  "resourceType": "dataset",
+  "resourceId": "wetland-observations-v1",
+  "classification": "confidential"
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="evaluate">Evaluate action</button></div>
+          <div class="sc-ig0390-card"><h4>Approval request and decision</h4><textarea data-ig-v0390-approval-json>{
+  "id": "wetland-share-approval",
+  "requestType": "research-action",
+  "action": "research.share",
+  "resourceType": "dataset",
+  "resourceId": "wetland-observations-v1",
+  "request": {"summary":"Share aggregate indicators"}
+}</textarea><label>Approval request ID<input data-ig-v0390-approval value="wetland-share-approval"></label><textarea data-ig-v0390-decision-json>{"decision":"approve","rationale":"Aggregate public-interest data only"}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="request-approval">Request approval</button><button type="button" class="sc-lab-button" data-ig-v0390-action="approvals">List approvals</button><button type="button" class="sc-lab-button" data-ig-v0390-action="decide">Record decision</button></div></div>
+          <div class="sc-ig0390-card is-wide"><h4>Institutional governance response</h4><pre class="sc-ig0390-output" data-ig-v0390-output>No response yet.</pre></div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-pri0382" data-lab-module="public-research-integrations" data-module-panel="public-research-integrations" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / EXTERNAL INTEGRATIONS / v0.38.2</p><h3>Public API, Webhooks, Embeds, and Research SDK</h3><p>Operate the stable research API surface, create scoped HTTPS webhook subscriptions, issue signed public-reference embeds, and inspect the dependency-light Python, TypeScript, and browser SDK packages.</p></header>

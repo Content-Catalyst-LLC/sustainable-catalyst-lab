@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-07-19T16:59:38.855633+00:00",
+  "schema": "sc-lab-institutional-governance-live-proof/0.39.0",
+  "securityBoundary": {
+    "credentialsIssued": false,
+    "destructiveDeletionAutomated": false,
+    "serviceSecretsStored": false,
+    "ssoTokensExchanged": false
+  },
+  "status": "passed",
+  "steps": [
+    "institution-created",
+    "organizational-unit-created",
+    "human-principal-registered",
+    "credential-free-service-principal-registered",
+    "scoped-role-binding-granted",
+    "workspace-governance-configured",
+    "restricted-action-evaluated",
+    "approval-request-created",
+    "quorum-decisions-recorded",
+    "hash-chained-timeline-verified"
+  ],
+  "version": "0.39.0"
+}

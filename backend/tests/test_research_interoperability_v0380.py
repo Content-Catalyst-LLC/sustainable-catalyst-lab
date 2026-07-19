@@ -169,6 +169,6 @@ def test_health_timeline_and_fastapi_routes(tmp_path, monkeypatch):
     profile = client.post("/v1/team-workspaces/route-team/interoperability-profiles", headers=headers, json={"id": "route-lab", "productId": "sustainable-catalyst-lab", "supportedContracts": ["sc-research-dataset/1.0"], "capabilities": ["provenance"]})
     assert profile.status_code == 200
     health = client.get("/v1/research-interoperability/health", headers=headers)
-    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.38.2"
+    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.39.0"
     timeline = client.get("/v1/team-workspaces/route-team/interoperability-timeline", headers=headers)
     assert timeline.status_code == 200 and timeline.json()["count"] >= 1

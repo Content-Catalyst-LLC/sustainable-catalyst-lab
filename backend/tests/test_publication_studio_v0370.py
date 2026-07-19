@@ -65,6 +65,6 @@ def test_fastapi_routes_use_workspace_actor(tmp_path, monkeypatch):
     ws,s=setup(tmp_path); monkeypatch.setattr(main,'team_workspaces',ws); monkeypatch.setattr(main,'publication_studio',s)
     headers={'X-SC-Lab-Actor':'dana','X-SC-Lab-Actor-Name':'Dana'}
     with TestClient(main.app) as client:
-        health=client.get('/v1/publication-studio/health',headers=headers); assert health.status_code==200 and health.json()['serviceVersion']=='0.38.2'
+        health=client.get('/v1/publication-studio/health',headers=headers); assert health.status_code==200 and health.json()['serviceVersion']=='0.39.0'
         created=client.post('/v1/team-workspaces/research-team/reproducibility-packages',headers=headers,json={'id':'api-package','title':'API package'}); assert created.status_code==200
         listed=client.get('/v1/team-workspaces/research-team/reproducibility-packages',headers=headers); assert listed.status_code==200 and len(listed.json()['packages'])==1

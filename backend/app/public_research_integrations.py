@@ -146,7 +146,7 @@ def sdk_manifest() -> dict[str, Any]:
             {"language": "typescript", "package": "@sustainable-catalyst/lab-sdk", "path": "sdk/typescript", "minimum": "ES2022", "runtimeDependencies": []},
             {"language": "browser", "package": "SustainableCatalystResearchEmbed", "path": "sdk/embed", "minimum": "ES2020", "runtimeDependencies": []},
         ],
-        "capabilities": ["typed-handoff-planning", "typed-handoff-creation", "webhook-administration", "webhook-event-emission", "signed-embed-manifests"],
+        "capabilities": ["typed-handoff-planning", "typed-handoff-creation", "webhook-administration", "webhook-event-emission", "signed-embed-manifests", "institutional-governance", "governance-policy-evaluation", "governance-approvals"],
     }
     body["manifestHash"] = _hash(body)
     return body
@@ -166,6 +166,17 @@ def public_api_catalog() -> dict[str, Any]:
         {"method":"POST","path":"/v1/team-workspaces/{workspaceId}/webhook-deliveries/{deliveryId}/dispatch","auth":"integration-key","scope":"webhooks:emit"},
         {"method":"POST","path":"/v1/team-workspaces/{workspaceId}/research-embeds","auth":"integration-key","scope":"embeds:write"},
         {"method":"GET","path":"/v1/public/research-embeds/{token}","auth":"signed-token"},
+        {"method":"GET","path":"/v1/institutional-governance/health","auth":"compute-key","purpose":"Institutional governance service health and durability."},
+        {"method":"GET","path":"/v1/institutional-governance/policies","auth":"compute-key","purpose":"Roles, classifications, actions, approval rules, and release boundaries."},
+        {"method":"GET","path":"/v1/institutions","auth":"compute-key"},
+        {"method":"POST","path":"/v1/institutions","auth":"compute-key"},
+        {"method":"GET","path":"/v1/institutions/{institutionId}/principals","auth":"compute-key"},
+        {"method":"POST","path":"/v1/institutions/{institutionId}/principals","auth":"compute-key"},
+        {"method":"GET","path":"/v1/institutions/{institutionId}/role-bindings","auth":"compute-key"},
+        {"method":"POST","path":"/v1/institutions/{institutionId}/role-bindings","auth":"compute-key"},
+        {"method":"POST","path":"/v1/team-workspaces/{workspaceId}/institutional-governance/evaluate","auth":"compute-key"},
+        {"method":"GET","path":"/v1/team-workspaces/{workspaceId}/governance-approvals","auth":"compute-key"},
+        {"method":"POST","path":"/v1/team-workspaces/{workspaceId}/governance-approvals","auth":"compute-key"},
     ]
     body = {"ok": True, "version": VERSION, "apiVersion": "v1", "schemas": [POLICY_SCHEMA, WEBHOOK_SCHEMA, DELIVERY_SCHEMA, EVENT_SCHEMA, EMBED_SCHEMA, SDK_SCHEMA], "endpoints": endpoints}
     body["catalogHash"] = _hash(body)

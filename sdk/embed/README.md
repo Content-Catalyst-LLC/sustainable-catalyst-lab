@@ -1,4 +1,4 @@
-# Sustainable Catalyst Research Embed v0.38.2
+# Sustainable Catalyst Research Embed v0.39.0
 
 ```html
 <div id="research-record"></div>

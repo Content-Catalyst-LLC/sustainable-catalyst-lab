@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-institutional-role-binding/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "institutionId",
+    "principalId",
+    "role",
+    "status",
+    "grantedBy",
+    "createdAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-institutional-role-binding/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "principalId": {
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "institution-viewer",
+        "researcher",
+        "steward",
+        "approver",
+        "auditor",
+        "institution-admin",
+        "institution-owner"
+      ]
+    },
+    "unitId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "workspaceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "revoked"
+      ]
+    },
+    "grantedBy": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "revokedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

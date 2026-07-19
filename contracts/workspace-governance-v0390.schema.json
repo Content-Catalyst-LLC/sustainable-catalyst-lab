@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-workspace-governance/0.39.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "workspaceId",
+    "institutionId",
+    "classification",
+    "approvalActions",
+    "approvalQuorum",
+    "externalSharing",
+    "status",
+    "metadata",
+    "governanceHash",
+    "configuredBy",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-workspace-governance/0.39.0"
+    },
+    "version": {
+      "const": "0.39.0"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "unitId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "retentionPolicyId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approvalActions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "approvalQuorum": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "externalSharing": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "governanceHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "configuredBy": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
