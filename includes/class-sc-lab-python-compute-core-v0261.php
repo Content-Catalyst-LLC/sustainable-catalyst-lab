@@ -546,6 +546,7 @@ final class SC_Lab_Python_Compute_Core_V0261 {
             $canonical = $timestamp . "\n" . strtoupper($method) . "\n" . $path . "\n" . $digest;
             $headers['X-SC-Lab-Timestamp'] = $timestamp;
             $headers['X-SC-Lab-Signature'] = hash_hmac('sha256', $canonical, $settings['compute_signing_secret']);
+            $headers['X-SC-Lab-Nonce'] = wp_generate_password(32, false, false);
         }
         return $headers;
     }

@@ -1,3 +1,7 @@
+## 0.39.1 — Security, Privacy, Secrets, and Audit Hardening
+
+- Added encrypted secrets, one-time credentials, replay protection, signed audits, and privacy operations.
+
 # Changelog
 
 ## 0.39.0 — Institutional Administration, Identity, and Governance

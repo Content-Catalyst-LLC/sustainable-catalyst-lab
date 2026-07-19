@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Privacy Request v0.39.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "institutionId",
+    "requestType",
+    "subjectReference",
+    "status",
+    "requestedBy",
+    "requestedAt",
+    "dueAt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-privacy-request/0.39.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "requestType": {
+      "enum": [
+        "access",
+        "correction",
+        "deletion",
+        "restriction",
+        "portability",
+        "objection"
+      ]
+    },
+    "subjectReference": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "completed",
+        "denied",
+        "cancelled"
+      ]
+    },
+    "requestedBy": {
+      "type": "string"
+    },
+    "requestedAt": {
+      "type": "string"
+    },
+    "dueAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

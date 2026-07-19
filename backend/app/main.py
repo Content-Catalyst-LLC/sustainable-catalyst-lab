@@ -51,6 +51,7 @@ from .research_interoperability import InteroperabilityError, ResearchInteropera
 from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
+from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -79,6 +80,7 @@ research_interoperability = ResearchInteroperabilityLayer(settings.interoperabil
 typed_cross_product_handoffs = TypedCrossProductHandoffs(research_interoperability)
 public_research_integrations = PublicResearchIntegrationGateway(settings.public_integration_db_path, team_workspaces, settings.webhook_signing_secret, settings.webhook_delivery_enabled, settings.public_integration_persistent_disk_mounted, settings.public_integration_max_subscriptions, settings.public_integration_max_deliveries)
 institutional_governance = InstitutionalGovernanceManager(settings.institutional_governance_db_path, team_workspaces, settings.institutional_governance_persistent_disk_mounted, settings.institutional_governance_max_institutions, settings.institutional_governance_max_principals, settings.institutional_governance_history_limit)
+security_privacy = SecurityPrivacyManager(settings.security_privacy_db_path, settings.secret_master_key, settings.secret_previous_master_keys, settings.audit_signing_secret, settings.security_privacy_persistent_disk_mounted, settings.security_privacy_max_secrets, settings.security_privacy_max_credentials, settings.security_privacy_history_limit, settings.service_credential_ttl_days)
 
 
 @asynccontextmanager
@@ -106,6 +108,18 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan,
 )
+
+@app.middleware("http")
+async def security_response_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "no-referrer")
+    response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+    response.headers.setdefault("Cache-Control", "no-store")
+    response.headers.setdefault("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
+    return response
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[],
@@ -199,7 +213,8 @@ def health():
         "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
         "typedCrossProductResearchHandoffs": {"version":"0.38.1","executableAdapterRegistry":True,"productPairRoutePlanning":True,"contractInference":True,"profileAwareSealing":True,"remoteCallbacks":False,"embeddedRestrictedData":False},
         "publicResearchIntegrations": {"version":"0.38.2","stableApiCatalog":True,"scopedAuthentication":True,"signedWebhooks":True,"ssrfProtection":True,"signedExpiringEmbeds":True,"pythonSdk":True,"typescriptSdk":True,"browserEmbedSdk":True,"outboundDeliveryEnabled":settings.webhook_delivery_enabled},
-        "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":False,"singleSignOn":False},
+        "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":True,"singleSignOn":False},
+        "securityPrivacyHardening": {"version":"0.39.1","aes256GcmSecrets":True,"credentialHashing":True,"requestNonceReplayProtection":True,"signedAuditChains":True,"privacyScanning":True,"privacyRequests":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3469,3 +3484,129 @@ def institutional_governance_timeline_route(institution_id: str, limit: int = Qu
         return institutional_governance.timeline(institution_id, _institutional_actor(auth), limit)
     except InstitutionalGovernanceError as exc:
         raise _institutional_governance_http_error(exc) from exc
+
+
+# v0.39.1 Security, Privacy, Secrets, and Audit Hardening
+
+def _security_privacy_http_error(exc: SecurityHardeningError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/security-privacy/health")
+def security_privacy_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = security_privacy.health()
+    body["serviceVersion"] = settings.version
+    return body
+
+
+@app.get("/v1/security-privacy/policies")
+def security_privacy_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return security_privacy_policies(settings.security_privacy_persistent_disk_mounted, security_privacy.vault_locked)
+
+
+@app.post("/v1/security-privacy/privacy-scan")
+def security_privacy_scan_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return privacy_scan(payload)
+
+
+@app.post("/v1/security-privacy/privacy-redact")
+def security_privacy_redact_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return {"ok": True, "version": "0.39.1", "redacted": privacy_redact(payload), "scan": privacy_scan(payload)}
+
+
+@app.get("/v1/institutions/{institution_id}/secrets")
+def security_privacy_secrets_list_route(institution_id: str, name: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.list_secrets(institution_id, _institutional_actor(auth), name)
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/secrets")
+def security_privacy_secret_put_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.put_secret(institution_id, payload, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/secrets/{name}/verify")
+def security_privacy_secret_verify_route(institution_id: str, name: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.verify_secret(institution_id, name, str(payload.get("candidate") or ""), _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/service-credentials")
+def security_privacy_credentials_list_route(institution_id: str, principal_id: str = Query("", alias="principalId"), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.list_credentials(institution_id, _institutional_actor(auth), principal_id)
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/principals/{principal_id}/service-credentials")
+def security_privacy_credential_issue_route(institution_id: str, principal_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.issue_credential(institution_id, principal_id, payload, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.delete("/v1/institutions/{institution_id}/service-credentials/{credential_id}")
+def security_privacy_credential_revoke_route(institution_id: str, credential_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.revoke_credential(institution_id, credential_id, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/service-credentials/verify")
+def security_privacy_credential_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return security_privacy.verify_credential(str(payload.get("token") or ""), str(payload.get("requiredScope") or ""))
+
+
+@app.get("/v1/institutions/{institution_id}/privacy-requests")
+def security_privacy_requests_list_route(institution_id: str, status: str = Query(""), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.list_privacy_requests(institution_id, _institutional_actor(auth), status)
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/privacy-requests")
+def security_privacy_request_create_route(institution_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.create_privacy_request(institution_id, payload, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.post("/v1/institutions/{institution_id}/privacy-requests/{request_id}/resolve")
+def security_privacy_request_resolve_route(institution_id: str, request_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.resolve_privacy_request(institution_id, request_id, payload, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/security-audit")
+def security_privacy_audit_route(institution_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.audit_timeline(institution_id, _institutional_actor(auth), limit)
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc
+
+
+@app.get("/v1/institutions/{institution_id}/security-audit/verify")
+def security_privacy_audit_verify_route(institution_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return security_privacy.verify_audit_chain(institution_id, _institutional_actor(auth))
+    except SecurityHardeningError as exc:
+        raise _security_privacy_http_error(exc) from exc

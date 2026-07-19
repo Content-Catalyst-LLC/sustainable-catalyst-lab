@@ -167,6 +167,45 @@ class LabClient:
     def governance_timeline(self, institution_id: str, limit: int = 500):
         return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/governance-timeline?limit={max(1, min(int(limit), 5000))}")
 
+    def security_privacy_health(self):
+        return self.request("GET", "/v1/security-privacy/health")
+
+    def security_privacy_policies(self):
+        return self.request("GET", "/v1/security-privacy/policies")
+
+    def list_secrets(self, institution_id: str, name: str = ""):
+        query = f"?name={_segment(name)}" if name else ""
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/secrets{query}")
+
+    def put_secret(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/secrets", payload)
+
+    def list_service_credentials(self, institution_id: str, principal_id: str = ""):
+        query = f"?principalId={_segment(principal_id)}" if principal_id else ""
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/service-credentials{query}")
+
+    def issue_service_credential(self, institution_id: str, principal_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/principals/{_segment(principal_id)}/service-credentials", payload)
+
+    def revoke_service_credential(self, institution_id: str, credential_id: str):
+        return self.request("DELETE", f"/v1/institutions/{_segment(institution_id)}/service-credentials/{_segment(credential_id)}")
+
+    def privacy_scan(self, payload: Any):
+        return self.request("POST", "/v1/security-privacy/privacy-scan", payload)
+
+    def privacy_redact(self, payload: Any):
+        return self.request("POST", "/v1/security-privacy/privacy-redact", payload)
+
+    def list_privacy_requests(self, institution_id: str, status: str = ""):
+        query = f"?status={_segment(status)}" if status else ""
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/privacy-requests{query}")
+
+    def create_privacy_request(self, institution_id: str, payload: Any):
+        return self.request("POST", f"/v1/institutions/{_segment(institution_id)}/privacy-requests", payload)
+
+    def verify_security_audit(self, institution_id: str):
+        return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/security-audit/verify")
+
 
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()

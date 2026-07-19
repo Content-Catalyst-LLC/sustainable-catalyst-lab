@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.39.0"
+    version: str = "0.39.1"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -175,6 +175,17 @@ class Settings:
     institutional_governance_max_principals: int = _int("SC_LAB_INSTITUTIONAL_GOVERNANCE_MAX_PRINCIPALS", 250000, 100, 5000000)
     institutional_governance_history_limit: int = _int("SC_LAB_INSTITUTIONAL_GOVERNANCE_HISTORY_LIMIT", 250000, 100, 5000000)
     institutional_governance_persistent_disk_mounted: bool = os.getenv("SC_LAB_INSTITUTIONAL_GOVERNANCE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    security_privacy_db_path: str = os.getenv("SC_LAB_SECURITY_PRIVACY_DB_PATH", "./data/sc-lab-security-privacy.sqlite3").strip()
+    secret_master_key: str = os.getenv("SC_LAB_SECRET_MASTER_KEY", "").strip()
+    secret_previous_master_keys: str = os.getenv("SC_LAB_SECRET_PREVIOUS_MASTER_KEYS", "").strip()
+    audit_signing_secret: str = os.getenv("SC_LAB_AUDIT_SIGNING_SECRET", os.getenv("SC_LAB_COMPUTE_SIGNING_SECRET", "")).strip()
+    security_privacy_max_secrets: int = _int("SC_LAB_SECURITY_PRIVACY_MAX_SECRETS", 100000, 1, 2000000)
+    security_privacy_max_credentials: int = _int("SC_LAB_SECURITY_PRIVACY_MAX_CREDENTIALS", 250000, 1, 5000000)
+    security_privacy_history_limit: int = _int("SC_LAB_SECURITY_PRIVACY_HISTORY_LIMIT", 500000, 100, 10000000)
+    service_credential_ttl_days: int = _int("SC_LAB_SERVICE_CREDENTIAL_TTL_DAYS", 90, 1, 365)
+    security_require_request_nonce: bool = os.getenv("SC_LAB_REQUIRE_REQUEST_NONCE", "1").lower() not in {"0", "false", "no"}
+    security_replay_db_path: str = os.getenv("SC_LAB_SECURITY_REPLAY_DB_PATH", "./data/sc-lab-request-replay.sqlite3").strip()
+    security_privacy_persistent_disk_mounted: bool = os.getenv("SC_LAB_SECURITY_PRIVACY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INSTITUTIONAL_GOVERNANCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

@@ -1,0 +1,18 @@
+{
+  "schema": "sc-lab-security-privacy-policy/0.39.1",
+  "version": "0.39.1",
+  "secretEncryption": "AES-256-GCM",
+  "credentialHash": "scrypt",
+  "requestReplayProtection": "nonce-and-timestamp",
+  "auditIntegrity": "SHA-256 hash chain with optional HMAC-SHA256",
+  "privacyControls": [
+    "recursive scan",
+    "deterministic redaction",
+    "subject request workflow"
+  ],
+  "boundaries": {
+    "singleSignOn": false,
+    "externalKeyManagement": false,
+    "backupAndDisasterRecovery": "v0.39.2"
+  }
+}

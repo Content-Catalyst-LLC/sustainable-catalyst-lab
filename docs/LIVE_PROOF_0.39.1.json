@@ -1,0 +1,44 @@
+{
+  "schema": "sc-lab-security-privacy-live-proof/0.39.1",
+  "version": "0.39.1",
+  "release": "Security, Privacy, Secrets, and Audit Hardening",
+  "vault": {
+    "locked": false,
+    "secretId": "secret-8f3e6b6a98c9eae78b15ceba",
+    "secretVersion": 1,
+    "keyId": "7fd5ec4df87e140d",
+    "valueDigest": "a3ea777ecb2eaf8056baec24f021fbdba38d04a12ff2ad5425abde4659ab5576",
+    "valueDisclosed": false
+  },
+  "credential": {
+    "id": "credential-3d368f19143e9e976be331e2",
+    "tokenPrefix": "492a0e79",
+    "scopes": [
+      "research:read"
+    ],
+    "tokenDisclosure": "one-time",
+    "tokenExportedInProof": false
+  },
+  "privacy": {
+    "findingCount": 2,
+    "redacted": {
+      "email": "[EMAIL]",
+      "api_key": "[REDACTED]"
+    },
+    "requestId": "privacy-proof",
+    "requestStatus": "open"
+  },
+  "audit": {
+    "ok": true,
+    "valid": true,
+    "eventCount": 3,
+    "headHash": "8f9c317469c4a7cfea4b3ac6add4b18179a4d3bf00e426c3199abe672f6d107c",
+    "signed": true,
+    "verifiedBy": "auditor"
+  },
+  "safety": {
+    "containsSecretValues": false,
+    "containsCredentialTokens": false,
+    "containsPersonalEmail": false
+  }
+}

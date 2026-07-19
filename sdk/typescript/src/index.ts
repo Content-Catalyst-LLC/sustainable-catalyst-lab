@@ -66,6 +66,19 @@ export class LabClient {
   governanceDashboard(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/governance-dashboard`); }
   governanceTimeline(institutionId: string, limit = 500) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/governance-timeline?limit=${Math.max(1, Math.min(Math.trunc(limit), 5000))}`); }
 
+  securityPrivacyHealth() { return this.request("GET", "/v1/security-privacy/health"); }
+  securityPrivacyPolicies() { return this.request("GET", "/v1/security-privacy/policies"); }
+  listSecrets(institutionId: string, name = "") { return this.request("GET", `/v1/institutions/${segment(institutionId)}/secrets${name ? `?name=${segment(name)}` : ""}`); }
+  putSecret(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/secrets`, payload); }
+  listServiceCredentials(institutionId: string, principalId = "") { return this.request("GET", `/v1/institutions/${segment(institutionId)}/service-credentials${principalId ? `?principalId=${segment(principalId)}` : ""}`); }
+  issueServiceCredential(institutionId: string, principalId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/principals/${segment(principalId)}/service-credentials`, payload); }
+  revokeServiceCredential(institutionId: string, credentialId: string) { return this.request("DELETE", `/v1/institutions/${segment(institutionId)}/service-credentials/${segment(credentialId)}`); }
+  privacyScan(payload: unknown) { return this.request("POST", "/v1/security-privacy/privacy-scan", payload); }
+  privacyRedact(payload: unknown) { return this.request("POST", "/v1/security-privacy/privacy-redact", payload); }
+  listPrivacyRequests(institutionId: string, status = "") { return this.request("GET", `/v1/institutions/${segment(institutionId)}/privacy-requests${status ? `?status=${segment(status)}` : ""}`); }
+  createPrivacyRequest(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/privacy-requests`, payload); }
+  verifySecurityAudit(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/security-audit/verify`); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

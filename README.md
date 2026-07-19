@@ -1,6 +1,6 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.39.0 — Institutional Administration, Identity, and Governance**
+**Current release: v0.39.1 — Institutional Administration, Identity, and Governance**
 
 Sustainable Catalyst Lab v0.39.0 adds an institutional control plane over the connected scientific research platform. Institutions can define organizational units, register human and credential-free service principals, assign scoped roles, classify workspaces, evaluate governed actions, administer retention references, and require auditable approval quorums. Credential issuance, SSO, key rotation, encryption hardening, and advanced secret custody remain intentionally deferred to v0.39.1.
 
