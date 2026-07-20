@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "recordHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "releaseVersion": {
+      "const": "1.0.0"
+    },
+    "schema": {
+      "const": "sc-lab-incident-readiness/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "releaseVersion",
+    "checks",
+    "status",
+    "blockers",
+    "recordHash"
+  ],
+  "title": "sc-lab-incident-readiness/1.0.0",
+  "type": "object"
+}

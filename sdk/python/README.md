@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab Python SDK v0.40.2
+# Sustainable Catalyst Lab Python SDK v1.0.0
 
 A standard-library-only client for typed research handoffs, webhooks, embeds, institutional governance, security operations, and multi-instance recovery.
 

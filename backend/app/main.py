@@ -57,6 +57,7 @@ from .performance_chaos_validation import PerformanceChaosManager, ValidationErr
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
 from .public_release_hardening import PublicReleaseHardeningManager, PublicReleaseHardeningError, policies as public_release_hardening_policies
+from .connected_platform import ConnectedScientificPlatform, ConnectedPlatformError, policies as connected_platform_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -124,6 +125,7 @@ multi_instance_operations = MultiInstanceOperationsManager(
         "platform-beta": settings.platform_beta_db_path,
         "interface-finalization": settings.interface_finalization_db_path,
         "public-release-hardening": settings.public_release_hardening_db_path,
+        "connected-platform": settings.stable_platform_db_path,
     },
     settings.artifact_root,
     settings.multi_instance_max_backups,
@@ -161,6 +163,11 @@ public_release_hardening = PublicReleaseHardeningManager(
     settings.public_release_hardening_persistent_disk_mounted,
     settings.public_release_migration_execution_enabled,
     settings.public_release_hardening_history_limit,
+)
+connected_platform = ConnectedScientificPlatform(
+    settings.stable_platform_db_path,
+    settings.stable_platform_persistent_disk_mounted,
+    settings.stable_platform_history_limit,
 )
 
 
@@ -301,6 +308,7 @@ def health():
         "connectedScientificResearchPlatformBeta": {"version":"0.40.0","releaseStage":"beta","institutionalCohorts":True,"guidedResearchProjects":True,"privacyMinimizedTelemetry":True,"feedbackOperations":True,"knownLimitations":True,"supportPathways":True,"releaseReadinessGate":True,"generalAvailabilityClaim":False},
         "accessibilityMobileOfflineInterfaceFinalization": {"version":"0.40.1","responsiveAudits":True,"accessibilityPreferences":True,"browserLocalSnapshots":True,"idempotentOfflineQueue":True,"explicitConflictReconciliation":True,"optInOfflineShell":True,"restrictedDataMayBeCached":False},
         "migrationCompatibilityPublicReleaseHardening": {"version":"0.40.2","upgradeAssessment":True,"compatibilityMatrices":True,"deprecationRegistry":True,"cleanInstallCertification":True,"rollbackEvidence":True,"releaseCandidateGate":True,"forcePushPermitted":False},
+        "connectedScientificResearchComputePlatform": {"version":"1.0.0","releaseStage":"general-availability","stableContracts":True,"upgradeCertification":True,"productionAttestation":True,"incidentReadiness":True,"supportLifecycle":True},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -4233,3 +4241,94 @@ def public_release_hardening_timeline_route(auth:dict[str,str]=Depends(require_c
 def public_release_hardening_dashboard_route(auth:dict[str,str]=Depends(require_compute_auth)):
     del auth; return public_release_hardening.dashboard()
 
+
+
+def _connected_platform_http_error(exc: ConnectedPlatformError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/connected-platform/health")
+def connected_platform_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform.health()
+
+
+@app.get("/v1/connected-platform/policies")
+def connected_platform_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_policies(settings.stable_platform_persistent_disk_mounted)
+
+
+@app.get("/v1/connected-platform/catalog")
+def connected_platform_catalog_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform.catalog()
+
+
+@app.get("/v1/connected-platform/records/{kind}")
+def connected_platform_records_route(kind: str, limit: int = Query(200, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return connected_platform.list_records(kind, limit)
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/contracts")
+def connected_platform_contract_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.register_contract(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/support-lifecycles")
+def connected_platform_support_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.declare_support_lifecycle(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/upgrade-certifications")
+def connected_platform_upgrade_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.certify_upgrade(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/production-attestations")
+def connected_platform_production_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.attest_production_readiness(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/incident-readiness")
+def connected_platform_incident_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.attest_incident_readiness(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.post("/v1/connected-platform/general-availability")
+def connected_platform_ga_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return connected_platform.certify_general_availability(payload, _institutional_actor(auth))
+    except ConnectedPlatformError as exc:
+        raise _connected_platform_http_error(exc) from exc
+
+
+@app.get("/v1/connected-platform/timeline/verify")
+def connected_platform_timeline_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform.verify_timeline()
+
+
+@app.get("/v1/connected-platform/dashboard")
+def connected_platform_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform.dashboard()

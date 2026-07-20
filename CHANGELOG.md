@@ -1,3 +1,10 @@
+## 1.0.0 — Connected Scientific Research and Compute Platform
+
+- Stabilizes the public research, compute, interoperability, governance, security, recovery, accessibility, and SDK contracts for the 1.0 support line.
+- Adds a permanent stable-contract registry, support-lifecycle declarations, certified upgrade evidence, production-readiness attestations, incident-readiness records, and a general-availability certification gate.
+- Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
+- Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
+
 ## 0.40.2 — Migration, Compatibility, and Public Release Hardening
 
 - Added supported-baseline upgrade assessments with verified-backup and rollback-proof gates.

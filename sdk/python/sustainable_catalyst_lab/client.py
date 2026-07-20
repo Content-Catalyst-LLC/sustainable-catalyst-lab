@@ -410,6 +410,36 @@ class LabClient:
     def public_release_hardening_dashboard(self):
         return self.request("GET", "/v1/public-release-hardening/dashboard")
 
+    def connected_platform_health(self):
+        return self.request("GET", "/v1/connected-platform/health")
+
+    def connected_platform_catalog(self):
+        return self.request("GET", "/v1/connected-platform/catalog")
+
+    def list_connected_platform_records(self, kind: str, limit: int = 200):
+        return self.request("GET", f"/v1/connected-platform/records/{_segment(kind)}?limit={max(1, min(int(limit), 5000))}")
+
+    def register_stable_contract(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/contracts", payload)
+
+    def declare_support_lifecycle(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/support-lifecycles", payload)
+
+    def certify_upgrade(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/upgrade-certifications", payload)
+
+    def attest_production_readiness(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/production-attestations", payload)
+
+    def attest_incident_readiness(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/incident-readiness", payload)
+
+    def certify_general_availability(self, payload: Any):
+        return self.request("POST", "/v1/connected-platform/general-availability", payload)
+
+    def connected_platform_dashboard(self):
+        return self.request("GET", "/v1/connected-platform/dashboard")
+
 
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()

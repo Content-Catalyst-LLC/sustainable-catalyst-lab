@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "recordHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-support-lifecycle/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "supported",
+        "maintenance",
+        "security-only",
+        "end-of-life"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "releaseVersion",
+    "status",
+    "supportStart",
+    "recordHash"
+  ],
+  "title": "sc-lab-support-lifecycle/1.0.0",
+  "type": "object"
+}

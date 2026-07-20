@@ -1,0 +1,23 @@
+{
+  "forcePushPermitted": false,
+  "productionFilesMayBeOverwrittenByApi": false,
+  "releaseStage": "general-availability",
+  "schema": "sc-lab-stable-platform-policy/1.0.0",
+  "semanticVersioning": true,
+  "stablePublicContracts": true,
+  "supportedUpgradeBaselines": [
+    "0.31.0",
+    "0.31.1",
+    "0.38.0",
+    "0.38.1",
+    "0.38.2",
+    "0.39.0",
+    "0.39.1",
+    "0.39.2",
+    "0.39.3",
+    "0.40.0",
+    "0.40.1",
+    "0.40.2"
+  ],
+  "version": "1.0.0"
+}

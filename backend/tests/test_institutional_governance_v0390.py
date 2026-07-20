@@ -129,7 +129,7 @@ def test_fastapi_routes(tmp_path, monkeypatch):
     importlib.reload(main_module)
     client = TestClient(main_module.app)
     headers = {"X-SC-Lab-Key": "route-key", "X-SC-Lab-Actor": "alice"}
-    assert client.get("/v1/institutional-governance/health", headers=headers).json()["serviceVersion"] == "0.40.2"
+    assert client.get("/v1/institutional-governance/health", headers=headers).json()["serviceVersion"] == "1.0.0"
     assert client.post("/v1/team-workspaces", headers=headers, json={"id": "route-team", "title": "Route Team"}).status_code == 200
     created = client.post("/v1/institutions", headers=headers, json={"id": "route-institution", "name": "Route Institution"})
     assert created.status_code == 200

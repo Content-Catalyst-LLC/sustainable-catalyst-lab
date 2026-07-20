@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "generalAvailabilityClaim": {
+      "type": "boolean"
+    },
+    "recordHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "releaseStage": {
+      "const": "general-availability"
+    },
+    "releaseVersion": {
+      "const": "1.0.0"
+    },
+    "schema": {
+      "const": "sc-lab-general-availability-certification/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "general-availability-certified",
+        "blocked"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "releaseVersion",
+    "releaseStage",
+    "evidence",
+    "status",
+    "blockers",
+    "generalAvailabilityClaim",
+    "recordHash"
+  ],
+  "title": "sc-lab-general-availability-certification/1.0.0",
+  "type": "object"
+}

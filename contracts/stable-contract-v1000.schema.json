@@ -1,0 +1,51 @@
+{
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-stable-contract-1.0.0.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "breakingChangesRequireMajorVersion": {
+      "const": true
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "recordHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "releaseVersion": {
+      "const": "1.0.0"
+    },
+    "schema": {
+      "const": "sc-lab-stable-contract/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "stable",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "versions": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "releaseVersion",
+    "name",
+    "status",
+    "versions",
+    "recordHash"
+  ],
+  "title": "sc-lab-stable-contract/1.0.0",
+  "type": "object"
+}

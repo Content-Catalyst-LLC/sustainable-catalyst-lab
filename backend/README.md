@@ -404,3 +404,8 @@ The beta control plane uses `SC_LAB_PLATFORM_BETA_DB_PATH` for institutional coh
 ## v0.40.1 Accessibility, Mobile, Offline, and Interface Finalization
 
 The interface-finalization service provides responsive readiness audits, accessibility preference profiles, metadata-only offline project snapshots, idempotent offline operation queues, explicit reconciliation receipts, connection-state support, and an opt-in safe offline shell. Restricted research data and secret-bearing payloads are rejected from offline storage.
+
+## Stable platform control plane (v1.0.0)
+
+The `/v1/connected-platform` API records stable contracts, support lifecycles, certified upgrades, production-readiness attestations, incident-readiness evidence, and evidence-gated general-availability certifications. Configure `SC_LAB_CONNECTED_PLATFORM_DB_PATH` on persistent storage for production use.
+

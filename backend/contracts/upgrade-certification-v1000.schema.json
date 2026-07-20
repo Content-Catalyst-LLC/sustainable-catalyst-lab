@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "forcePushRequired": {
+      "const": false
+    },
+    "recordHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-upgrade-certification/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "certified",
+        "blocked"
+      ]
+    },
+    "targetVersion": {
+      "const": "1.0.0"
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "baselineVersion",
+    "targetVersion",
+    "status",
+    "blockers",
+    "recordHash"
+  ],
+  "title": "sc-lab-upgrade-certification/1.0.0",
+  "type": "object"
+}

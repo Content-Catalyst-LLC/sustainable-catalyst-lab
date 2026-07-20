@@ -162,5 +162,5 @@ def test_fastapi_routes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         assert verified.status_code == 200
         assert verified.json()["ok"] is True
         health = client.get("/health").json()
-        assert health["version"] == "0.40.2"
+        assert health["version"] == "1.0.0"
         assert health["scientificModelRegistry"]["version"] == "0.34.0"

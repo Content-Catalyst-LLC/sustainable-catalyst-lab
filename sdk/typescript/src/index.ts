@@ -151,6 +151,17 @@ export class LabClient {
   evaluateReleaseCandidate(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/release-candidates", payload); }
   publicReleaseHardeningDashboard() { return this.request("GET", "/v1/public-release-hardening/dashboard"); }
 
+  connectedPlatformHealth() { return this.request("GET", "/v1/connected-platform/health"); }
+  connectedPlatformCatalog() { return this.request("GET", "/v1/connected-platform/catalog"); }
+  listConnectedPlatformRecords(kind: string, limit = 200) { return this.request("GET", `/v1/connected-platform/records/${segment(kind)}?limit=${Math.max(1, Math.min(Math.trunc(limit), 5000))}`); }
+  registerStableContract(payload: unknown) { return this.request("POST", "/v1/connected-platform/contracts", payload); }
+  declareSupportLifecycle(payload: unknown) { return this.request("POST", "/v1/connected-platform/support-lifecycles", payload); }
+  certifyUpgrade(payload: unknown) { return this.request("POST", "/v1/connected-platform/upgrade-certifications", payload); }
+  attestProductionReadiness(payload: unknown) { return this.request("POST", "/v1/connected-platform/production-attestations", payload); }
+  attestIncidentReadiness(payload: unknown) { return this.request("POST", "/v1/connected-platform/incident-readiness", payload); }
+  certifyGeneralAvailability(payload: unknown) { return this.request("POST", "/v1/connected-platform/general-availability", payload); }
+  connectedPlatformDashboard() { return this.request("GET", "/v1/connected-platform/dashboard"); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

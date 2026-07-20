@@ -725,3 +725,10 @@ The beta interface finalization layer combines responsive and accessibility audi
 ## v0.40.2 — Migration, Compatibility, and Public Release Hardening
 
 Adds supported-baseline migration assessments, compatibility matrices, deprecation guidance, clean-install evidence, rollback proofs, and an evidence-gated release-candidate report. Migration remains dry-run by default, force-push is prohibited, and production activation is operator controlled.
+
+## v1.0.0 — Connected Scientific Research and Compute Platform
+
+Sustainable Catalyst Lab v1.0.0 promotes the connected research platform to a stable support line. The release adds a permanent contract catalog, support lifecycle declarations, upgrade certifications, production and incident readiness attestations, and an evidence-gated general-availability certification. Stable certification requires complete interoperability, governance, security, backup/restore, migration, performance, accessibility, documentation, observability, incident-response, and support evidence with no unresolved critical or high-severity defects.
+
+The platform continues to reject unrestricted executable payloads, credentials, restricted dataset bytes, destructive API restores, and force-push deployment behavior.
+
