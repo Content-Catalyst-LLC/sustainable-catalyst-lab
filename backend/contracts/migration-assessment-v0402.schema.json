@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/migration-assessment-v0402.schema.json",
+  "title": "sc-lab-migration-assessment/0.40.2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "createdAt",
+    "baselineVersion",
+    "targetVersion",
+    "mode",
+    "status",
+    "blockers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "baselineVersion": {
+      "type": "string"
+    },
+    "targetVersion": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "dimensions": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "checks": {
+      "type": "array"
+    }
+  }
+}

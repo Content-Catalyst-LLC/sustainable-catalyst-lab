@@ -1,3 +1,14 @@
+## 0.40.2 — Migration, Compatibility, and Public Release Hardening
+
+- Added supported-baseline upgrade assessments with verified-backup and rollback-proof gates.
+- Added runtime, WordPress, browser, database, Render, and SDK compatibility matrices.
+- Added deprecation records with replacement routes and migration guidance.
+- Added clean-install certification and non-destructive rollback plans.
+- Added security, licensing, documentation, archive, test, and defect release-candidate gates.
+- Added WordPress, FastAPI, Python SDK, and TypeScript SDK operations.
+- Repaired the missing v0.40.1 WordPress-to-FastAPI interface-finalization proxy routes.
+- Explicitly prohibits force-push and API-driven production overwrite.
+
 ## 0.40.1 — Accessibility, Mobile, Offline, and Interface Finalization
 
 - Added unified phone, tablet, and desktop interface-readiness audits.

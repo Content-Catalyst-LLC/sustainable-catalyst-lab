@@ -16,5 +16,5 @@
     const meta=document.createElement('p'); meta.textContent=(manifest.view||'research')+' · '+(resource.id||'record');
     article.append(eyebrow,title,meta); node.append(article); return body;
   }
-  global.SustainableCatalystResearchEmbed={mount:mount,version:'0.40.1'};
+  global.SustainableCatalystResearchEmbed={mount:mount,version:'0.40.2'};
 })(window);

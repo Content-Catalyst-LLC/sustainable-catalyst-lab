@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/deprecation-record-v0402.schema.json",
+  "title": "sc-lab-deprecation-record/0.40.2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "createdAt",
+    "subject",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "checks": {
+      "type": "array"
+    },
+    "blockers": {
+      "type": "array"
+    }
+  }
+}

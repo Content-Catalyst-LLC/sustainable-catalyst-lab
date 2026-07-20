@@ -1,0 +1,31 @@
+{
+  "schema": "sc-lab-public-release-hardening-policy/0.40.2",
+  "version": "0.40.2",
+  "migrationDefaultMode": "dry-run",
+  "forcePushPermitted": false,
+  "productionFilesMayBeOverwrittenByApi": false,
+  "supportedBaselines": [
+    "0.31.0",
+    "0.31.1",
+    "0.38.0",
+    "0.38.1",
+    "0.38.2",
+    "0.39.0",
+    "0.39.1",
+    "0.39.2",
+    "0.39.3",
+    "0.40.0",
+    "0.40.1"
+  ],
+  "requiredEvidence": [
+    "migration",
+    "compatibility",
+    "cleanInstall",
+    "rollback",
+    "security",
+    "licensing",
+    "documentation",
+    "archives",
+    "tests"
+  ]
+}

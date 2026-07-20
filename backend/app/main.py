@@ -56,6 +56,7 @@ from .multi_instance_operations import MultiInstanceOperationsManager, Operation
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
+from .public_release_hardening import PublicReleaseHardeningManager, PublicReleaseHardeningError, policies as public_release_hardening_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -122,6 +123,7 @@ multi_instance_operations = MultiInstanceOperationsManager(
         "performance-validation": settings.performance_validation_db_path,
         "platform-beta": settings.platform_beta_db_path,
         "interface-finalization": settings.interface_finalization_db_path,
+        "public-release-hardening": settings.public_release_hardening_db_path,
     },
     settings.artifact_root,
     settings.multi_instance_max_backups,
@@ -153,6 +155,12 @@ interface_finalization = InterfaceFinalizationManager(
     settings.interface_finalization_history_limit,
     settings.interface_max_snapshot_assets,
     settings.interface_max_queue_records,
+)
+public_release_hardening = PublicReleaseHardeningManager(
+    settings.public_release_hardening_db_path,
+    settings.public_release_hardening_persistent_disk_mounted,
+    settings.public_release_migration_execution_enabled,
+    settings.public_release_hardening_history_limit,
 )
 
 
@@ -292,6 +300,7 @@ def health():
         "performanceLoadChaosValidation": {"version":"0.39.3","loadProfiles":True,"latencyPercentiles":True,"throughputMeasurement":True,"performanceBudgets":True,"safeChaosScenarios":True,"capacityReports":True,"productionChaos":False,"externalTraffic":False},
         "connectedScientificResearchPlatformBeta": {"version":"0.40.0","releaseStage":"beta","institutionalCohorts":True,"guidedResearchProjects":True,"privacyMinimizedTelemetry":True,"feedbackOperations":True,"knownLimitations":True,"supportPathways":True,"releaseReadinessGate":True,"generalAvailabilityClaim":False},
         "accessibilityMobileOfflineInterfaceFinalization": {"version":"0.40.1","responsiveAudits":True,"accessibilityPreferences":True,"browserLocalSnapshots":True,"idempotentOfflineQueue":True,"explicitConflictReconciliation":True,"optInOfflineShell":True,"restrictedDataMayBeCached":False},
+        "migrationCompatibilityPublicReleaseHardening": {"version":"0.40.2","upgradeAssessment":True,"compatibilityMatrices":True,"deprecationRegistry":True,"cleanInstallCertification":True,"rollbackEvidence":True,"releaseCandidateGate":True,"forcePushPermitted":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -4163,4 +4172,64 @@ def interface_finalization_timeline_verify_route(auth: dict[str, str] = Depends(
 def interface_finalization_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return interface_finalization.dashboard()
+
+
+def _public_release_hardening_http_error(exc: PublicReleaseHardeningError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/public-release-hardening/health")
+def public_release_hardening_health_route(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return public_release_hardening.health()
+
+@app.get("/v1/public-release-hardening/policies")
+def public_release_hardening_policies_route(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return public_release_hardening_policies(settings.public_release_hardening_persistent_disk_mounted, settings.public_release_migration_execution_enabled)
+
+@app.get("/v1/public-release-hardening/catalog")
+def public_release_hardening_catalog_route(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return public_release_hardening.catalog()
+
+@app.get("/v1/public-release-hardening/records/{kind}")
+def public_release_hardening_records_route(kind:str,limit:int=Query(200,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try: return public_release_hardening.list_records(kind,limit)
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/compatibility-matrices")
+def public_release_hardening_compatibility_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.create_compatibility_matrix(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/migration-assessments")
+def public_release_hardening_migration_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.assess_migration(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/deprecations")
+def public_release_hardening_deprecation_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.register_deprecation(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/clean-install-reports")
+def public_release_hardening_clean_install_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.create_clean_install_report(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/rollback-plans")
+def public_release_hardening_rollback_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.create_rollback_plan(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.post("/v1/public-release-hardening/release-candidates")
+def public_release_hardening_candidate_route(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try: return public_release_hardening.create_release_candidate(payload,_institutional_actor(auth))
+    except PublicReleaseHardeningError as exc: raise _public_release_hardening_http_error(exc) from exc
+
+@app.get("/v1/public-release-hardening/timeline/verify")
+def public_release_hardening_timeline_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return public_release_hardening.verify_timeline()
+
+@app.get("/v1/public-release-hardening/dashboard")
+def public_release_hardening_dashboard_route(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return public_release_hardening.dashboard()
 

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/compatibility-matrix-v0402.schema.json",
+  "title": "sc-lab-compatibility-matrix/0.40.2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "createdAt",
+    "releaseVersion",
+    "dimensions",
+    "status",
+    "blockers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "releaseVersion": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "checks": {
+      "type": "array"
+    }
+  }
+}

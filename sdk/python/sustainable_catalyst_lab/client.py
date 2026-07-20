@@ -380,6 +380,36 @@ class LabClient:
     def interface_finalization_dashboard(self):
         return self.request("GET", "/v1/interface-finalization/dashboard")
 
+    def public_release_hardening_health(self):
+        return self.request("GET", "/v1/public-release-hardening/health")
+
+    def public_release_hardening_catalog(self):
+        return self.request("GET", "/v1/public-release-hardening/catalog")
+
+    def list_public_release_records(self, kind: str, limit: int = 200):
+        return self.request("GET", f"/v1/public-release-hardening/records/{_segment(kind)}?limit={max(1, min(int(limit), 5000))}")
+
+    def create_compatibility_matrix(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/compatibility-matrices", payload)
+
+    def assess_public_release_migration(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/migration-assessments", payload)
+
+    def register_deprecation(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/deprecations", payload)
+
+    def create_clean_install_report(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/clean-install-reports", payload)
+
+    def create_rollback_plan(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/rollback-plans", payload)
+
+    def evaluate_release_candidate(self, payload: Any):
+        return self.request("POST", "/v1/public-release-hardening/release-candidates", payload)
+
+    def public_release_hardening_dashboard(self):
+        return self.request("GET", "/v1/public-release-hardening/dashboard")
+
 
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()

@@ -186,7 +186,7 @@ def test_fastapi_workspace_and_public_routes(tmp_path, monkeypatch):
     admin = {"X-SC-Lab-Actor": "alice", "X-SC-Lab-Actor-Name": "Alice"}
     with TestClient(main.app) as client:
         health = client.get("/v1/public-reproduction/health", headers=headers)
-        assert health.status_code == 200 and health.json()["serviceVersion"] == "0.40.1"
+        assert health.status_code == 200 and health.json()["serviceVersion"] == "0.40.2"
         created = client.post("/v1/team-workspaces/research-team/public-reproduction-records", headers=headers, json={"id": "api-record", "slug": "api-verification-record", "publicationId": publication["id"], "assemblyId": assembled["id"]})
         assert created.status_code == 200
         published = client.post("/v1/team-workspaces/research-team/public-reproduction-records/api-record/publish", headers=admin)

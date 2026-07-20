@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/rollback-plan-v0402.schema.json",
+  "title": "sc-lab-rollback-plan/0.40.2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "createdAt",
+    "releaseVersion",
+    "backupId",
+    "status",
+    "blockers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "releaseVersion": {
+      "type": "string"
+    },
+    "backupId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "dimensions": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "checks": {
+      "type": "array"
+    }
+  }
+}

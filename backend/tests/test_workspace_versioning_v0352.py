@@ -164,4 +164,4 @@ def test_fastapi_version_routes_use_workspace_actor(tmp_path: Path, monkeypatch)
         assert listing.status_code == 200
         health = client.get("/v1/workspace-versions/health", headers=headers)
         assert health.status_code == 200
-        assert health.json()["serviceVersion"] == "0.40.1"
+        assert health.json()["serviceVersion"] == "0.40.2"

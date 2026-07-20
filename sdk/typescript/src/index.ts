@@ -140,6 +140,16 @@ export class LabClient {
   queueOfflineOperation(payload: unknown) { return this.request("POST", "/v1/interface-finalization/offline-operations", payload); }
   reconcileOfflineOperations(payload: unknown) { return this.request("POST", "/v1/interface-finalization/reconcile", payload); }
   interfaceFinalizationDashboard() { return this.request("GET", "/v1/interface-finalization/dashboard"); }
+  publicReleaseHardeningHealth() { return this.request("GET", "/v1/public-release-hardening/health"); }
+  publicReleaseHardeningCatalog() { return this.request("GET", "/v1/public-release-hardening/catalog"); }
+  listPublicReleaseRecords(kind: string, limit = 200) { return this.request("GET", `/v1/public-release-hardening/records/${segment(kind)}?limit=${Math.max(1, Math.min(Math.trunc(limit), 5000))}`); }
+  createCompatibilityMatrix(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/compatibility-matrices", payload); }
+  assessPublicReleaseMigration(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/migration-assessments", payload); }
+  registerDeprecation(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/deprecations", payload); }
+  createCleanInstallReport(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/clean-install-reports", payload); }
+  createRollbackPlan(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/rollback-plans", payload); }
+  evaluateReleaseCandidate(payload: unknown) { return this.request("POST", "/v1/public-release-hardening/release-candidates", payload); }
+  publicReleaseHardeningDashboard() { return this.request("GET", "/v1/public-release-hardening/dashboard"); }
 
 }
 

@@ -720,3 +720,8 @@ Discover the API at `/v1/public-research-api`. Configure `SC_LAB_PUBLIC_API_KEY`
 ## v0.40.1 — Accessibility, Mobile, Offline, and Interface Finalization
 
 The beta interface finalization layer combines responsive and accessibility audits, user preference profiles, browser-local project snapshots, idempotent offline operations, explicit conflict reconciliation, connection-state communication, and an opt-in offline shell. Backend records contain metadata, references, and hashes only; restricted research data cannot be registered for browser caching.
+
+
+## v0.40.2 — Migration, Compatibility, and Public Release Hardening
+
+Adds supported-baseline migration assessments, compatibility matrices, deprecation guidance, clean-install evidence, rollback proofs, and an evidence-gated release-candidate report. Migration remains dry-run by default, force-push is prohibited, and production activation is operator controlled.
