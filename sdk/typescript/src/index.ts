@@ -97,6 +97,15 @@ export class LabClient {
   runRecoveryDrill(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/recovery-drills", payload); }
   multiInstanceOperationsDashboard() { return this.request("GET", "/v1/multi-instance-operations/dashboard"); }
 
+  performanceValidationHealth() { return this.request("GET", "/v1/performance-validation/health"); }
+  performanceValidationPolicies() { return this.request("GET", "/v1/performance-validation/policies"); }
+  performanceValidationCatalog() { return this.request("GET", "/v1/performance-validation/catalog"); }
+  listPerformanceRuns(kind = "", limit = 200) { const q = `?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}${kind ? `&kind=${segment(kind)}` : ""}`; return this.request("GET", `/v1/performance-validation/runs${q}`); }
+  runLoadValidation(payload: unknown) { return this.request("POST", "/v1/performance-validation/load-runs", payload); }
+  runChaosValidation(payload: unknown) { return this.request("POST", "/v1/performance-validation/chaos-runs", payload); }
+  createCapacityReport(payload: unknown) { return this.request("POST", "/v1/performance-validation/capacity-reports", payload); }
+  performanceValidationDashboard() { return this.request("GET", "/v1/performance-validation/dashboard"); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {
@@ -107,4 +116,5 @@ export async function verifyWebhook(secret: string, timestamp: string, body: str
   let mismatch = 0;
   for (let index = 0; index < expected.length; index += 1) mismatch |= expected.charCodeAt(index) ^ signature.charCodeAt(index);
   return mismatch === 0;
+
 }

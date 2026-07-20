@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Performance Validation Run v0.39.3",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "profile",
+    "status",
+    "createdAt",
+    "completedAt",
+    "configuration",
+    "budget",
+    "checks",
+    "metrics",
+    "productionResourcesMutated",
+    "externalTrafficGenerated",
+    "resultHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "const": "load"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ]
+    },
+    "actor": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "configuration": {
+      "type": "object"
+    },
+    "budget": {
+      "type": "object"
+    },
+    "checks": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "productionResourcesMutated": {
+      "const": false
+    },
+    "externalTrafficGenerated": {
+      "const": false
+    },
+    "resultHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

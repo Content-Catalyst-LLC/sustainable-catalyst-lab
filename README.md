@@ -1,5 +1,9 @@
+# Sustainable Catalyst Lab
 
-## v0.39.2 — Multi-Instance Operations, Backup, Migration, and Disaster Recovery
+## v0.39.3 — Performance, Load, and Chaos Validation
+
+Adds bounded load profiles, latency percentiles, throughput measurement, explicit performance budgets, isolated chaos scenarios, capacity evidence, FastAPI and WordPress operations surfaces, and Python/TypeScript SDK support. Production mutation, destructive chaos, and outbound network traffic remain disabled.
+
 
 The Lab now provides stable instance identity, consistent SQLite snapshots, signed and hash-verified backup archives, staged non-destructive restore, idempotent migration journals, signed cross-instance recovery transfer, and measurable RPO/RTO disaster-recovery drills. See `docs/multi-instance-operations-v0392.md`.
 

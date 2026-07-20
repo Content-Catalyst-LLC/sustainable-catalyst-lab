@@ -100,7 +100,7 @@ def test_restore_is_staged_and_does_not_overwrite_source(tmp_path):
 def test_migration_journal_is_verified_and_idempotent(tmp_path):
     store = manager(tmp_path)
     store.create_backup({"id": "backup-migration", "artifactMode": "none"}, "alice")
-    plan = store.create_migration_plan({"id": "migration-one", "sourceVersion": "0.39.1", "targetVersion": "0.39.2"}, "alice")["migration"]
+    plan = store.create_migration_plan({"id": "migration-one", "sourceVersion": "0.39.1", "targetVersion": "0.39.3"}, "alice")["migration"]
     assert plan["steps"][1]["id"] == "create-backup"
     dry_run = store.execute_migration("migration-one", {"backupId": "backup-migration", "dryRun": True}, "alice")
     assert dry_run["result"]["status"] == "validated"
@@ -142,7 +142,7 @@ def test_contract_instances(tmp_path):
     store = manager(tmp_path)
     instance = store.instance_manifest()
     backup = store.create_backup({"id": "backup-contract", "artifactMode": "none"}, "alice")["backup"]["manifest"]
-    migration = store.create_migration_plan({"id": "migration-contract", "sourceVersion": "0.39.1", "targetVersion": "0.39.2"}, "alice")["migration"]
+    migration = store.create_migration_plan({"id": "migration-contract", "sourceVersion": "0.39.1", "targetVersion": "0.39.3"}, "alice")["migration"]
     peer = manager(tmp_path / "peer", "instance-peer")
     store.register_peer(peer.instance_manifest(), "alice")
     transfer = store.create_transfer({"id": "transfer-contract", "backupId": "backup-contract", "targetInstanceId": "instance-peer"}, "alice")["transfer"]

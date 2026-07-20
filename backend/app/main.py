@@ -53,6 +53,7 @@ from .public_research_integrations import IntegrationError, PublicResearchIntegr
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
 from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
+from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -116,6 +117,7 @@ multi_instance_operations = MultiInstanceOperationsManager(
         "security-privacy": settings.security_privacy_db_path,
         "request-replay": settings.security_replay_db_path,
         "multi-instance-operations": settings.multi_instance_operations_db_path,
+        "performance-validation": settings.performance_validation_db_path,
     },
     settings.artifact_root,
     settings.multi_instance_max_backups,
@@ -123,6 +125,15 @@ multi_instance_operations = MultiInstanceOperationsManager(
     settings.multi_instance_history_limit,
     settings.recovery_rpo_hours,
     settings.recovery_rto_minutes,
+)
+performance_validation = PerformanceChaosManager(
+    settings.performance_validation_db_path,
+    settings.performance_validation_persistent_disk_mounted,
+    settings.performance_validation_max_concurrency,
+    settings.performance_validation_max_iterations,
+    settings.performance_validation_history_limit,
+    settings.performance_validation_default_p95_ms,
+    settings.performance_validation_default_error_rate_ppm / 1_000_000.0,
 )
 
 
@@ -259,6 +270,7 @@ def health():
         "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":True,"singleSignOn":False},
         "securityPrivacyHardening": {"version":"0.39.1","aes256GcmSecrets":True,"credentialHashing":True,"requestNonceReplayProtection":True,"signedAuditChains":True,"privacyScanning":True,"privacyRequests":True},
         "multiInstanceOperations": {"version":"0.39.2","stableInstanceIdentity":True,"consistentSqliteSnapshots":True,"signedBackupManifests":True,"stagedRestore":True,"idempotentMigrations":True,"signedCrossInstanceTransfers":True,"rpoRtoDrills":True,"activeFileOverwriteByApi":False},
+        "performanceLoadChaosValidation": {"version":"0.39.3","loadProfiles":True,"latencyPercentiles":True,"throughputMeasurement":True,"performanceBudgets":True,"safeChaosScenarios":True,"capacityReports":True,"productionChaos":False,"externalTraffic":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3773,4 +3785,74 @@ def multi_instance_operations_recovery_drill_route(payload: dict[str, Any], auth
 def multi_instance_operations_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return multi_instance_operations.dashboard()
+
+
+def _performance_validation_http_error(exc: PerformanceValidationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/performance-validation/health")
+def performance_validation_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return performance_validation.health()
+
+
+@app.get("/v1/performance-validation/policies")
+def performance_validation_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return performance_validation_policies(settings.performance_validation_persistent_disk_mounted)
+
+
+@app.get("/v1/performance-validation/catalog")
+def performance_validation_catalog_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return performance_validation.catalog()
+
+
+@app.get("/v1/performance-validation/runs")
+def performance_validation_runs_route(kind: str = "", limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return performance_validation.list_runs(kind, limit)
+    except PerformanceValidationError as exc:
+        raise _performance_validation_http_error(exc) from exc
+
+
+@app.get("/v1/performance-validation/runs/{run_id}")
+def performance_validation_run_route(run_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return performance_validation.get_run(run_id)
+    except PerformanceValidationError as exc:
+        raise _performance_validation_http_error(exc) from exc
+
+
+@app.post("/v1/performance-validation/load-runs")
+def performance_validation_load_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return performance_validation.run_load(payload, _institutional_actor(auth))
+    except PerformanceValidationError as exc:
+        raise _performance_validation_http_error(exc) from exc
+
+
+@app.post("/v1/performance-validation/chaos-runs")
+def performance_validation_chaos_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return performance_validation.run_chaos(payload, _institutional_actor(auth))
+    except PerformanceValidationError as exc:
+        raise _performance_validation_http_error(exc) from exc
+
+
+@app.post("/v1/performance-validation/capacity-reports")
+def performance_validation_capacity_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return performance_validation.capacity_report(payload, _institutional_actor(auth))
+    except PerformanceValidationError as exc:
+        raise _performance_validation_http_error(exc) from exc
+
+
+@app.get("/v1/performance-validation/dashboard")
+def performance_validation_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return performance_validation.dashboard()
 

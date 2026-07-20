@@ -378,3 +378,19 @@ SC_LAB_RECOVERY_RTO_MINUTES=240
 ```
 
 The backup signing secret belongs only in the hosting provider's secret manager. WordPress and browser clients must never receive it. Remote object storage and automated failover are intentionally not enabled by this release.
+
+## v0.39.3 Performance, Load, and Chaos Validation
+
+The authenticated `/v1/performance-validation/*` service runs bounded load profiles against isolated validation resources, records p50/p95/p99 latency, throughput, and error rates, evaluates explicit budgets, and exercises safe simulated failure scenarios. It never sends external traffic, overwrites active research records, or performs destructive production chaos.
+
+```bash
+SC_LAB_PERFORMANCE_VALIDATION_DB_PATH=/app/data/sc-lab-performance-validation.sqlite3
+SC_LAB_PERFORMANCE_VALIDATION_MAX_CONCURRENCY=32
+SC_LAB_PERFORMANCE_VALIDATION_MAX_ITERATIONS=2000
+SC_LAB_PERFORMANCE_VALIDATION_HISTORY_LIMIT=10000
+SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_P95_MS=250
+SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_ERROR_RATE_PPM=10000
+SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED=1
+```
+
+Capacity reports summarize observed validation evidence only. Repeat the workload matrix on production-equivalent infrastructure before publishing capacity commitments.

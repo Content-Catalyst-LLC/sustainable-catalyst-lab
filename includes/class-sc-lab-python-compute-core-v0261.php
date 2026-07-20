@@ -516,6 +516,16 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/recovery-drills', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_recovery_drill'),'permission_callback'=>array(__CLASS__,'operations_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/dashboard', array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_dashboard'),'permission_callback'=>array(__CLASS__,'operations_permission')));
 
+        // v0.39.3 Performance, Load, and Chaos Validation.
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/health', array('methods'=>'GET','callback'=>array(__CLASS__,'performance_validation_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'performance_validation_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/catalog', array('methods'=>'GET','callback'=>array(__CLASS__,'performance_validation_catalog'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/runs', array('methods'=>'GET','callback'=>array(__CLASS__,'performance_validation_runs'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/load-runs', array('methods'=>'POST','callback'=>array(__CLASS__,'performance_validation_load'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/chaos-runs', array('methods'=>'POST','callback'=>array(__CLASS__,'performance_validation_chaos'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/capacity-reports', array('methods'=>'POST','callback'=>array(__CLASS__,'performance_validation_capacity'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/performance-validation/dashboard', array('methods'=>'GET','callback'=>array(__CLASS__,'performance_validation_dashboard'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -1177,6 +1187,17 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function multi_instance_operations_transfer_import(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/transfers/import','POST',$p,8388608);}
     public static function multi_instance_operations_recovery_drill(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/recovery-drills','POST',$p,8388608);}
     public static function multi_instance_operations_dashboard(){return self::proxy('/v1/multi-instance-operations/dashboard','GET',null,8388608);}
+
+
+    private static function performance_validation_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,200000,18);return is_wp_error($clean)?$clean:$clean;}
+    public static function performance_validation_health(){return self::proxy('/v1/performance-validation/health','GET',null,8388608);}
+    public static function performance_validation_policies(){return self::proxy('/v1/performance-validation/policies','GET',null,8388608);}
+    public static function performance_validation_catalog(){return self::proxy('/v1/performance-validation/catalog','GET',null,8388608);}
+    public static function performance_validation_runs(WP_REST_Request $request){$limit=max(1,min(2000,intval($request->get_param('limit')?:200)));$kind=sanitize_key($request->get_param('kind')?:'');$query='?limit='.$limit.($kind?'&kind='.rawurlencode($kind):'');return self::proxy('/v1/performance-validation/runs'.$query,'GET',null,8388608);}
+    public static function performance_validation_load(WP_REST_Request $request){$p=self::performance_validation_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/performance-validation/load-runs','POST',$p,8388608);}
+    public static function performance_validation_chaos(WP_REST_Request $request){$p=self::performance_validation_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/performance-validation/chaos-runs','POST',$p,8388608);}
+    public static function performance_validation_capacity(WP_REST_Request $request){$p=self::performance_validation_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/performance-validation/capacity-reports','POST',$p,8388608);}
+    public static function performance_validation_dashboard(){return self::proxy('/v1/performance-validation/dashboard','GET',null,8388608);}
 
     private static function surrogate_rom_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_surrogate_rom_payload','A JSON surrogate or reduced-order payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,500000,16);return is_wp_error($clean)?$clean:$clean;}
     public static function surrogate_rom_health(){return self::proxy('/v1/surrogate-rom/health');}

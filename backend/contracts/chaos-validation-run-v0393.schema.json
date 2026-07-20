@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chaos Validation Run v0.39.3",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "profile",
+    "status",
+    "createdAt",
+    "completedAt",
+    "durationSeconds",
+    "results",
+    "productionResourcesMutated",
+    "externalTrafficGenerated",
+    "resultHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "const": "chaos"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "durationSeconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "results": {
+      "type": "object"
+    },
+    "productionResourcesMutated": {
+      "const": false
+    },
+    "externalTrafficGenerated": {
+      "const": false
+    },
+    "resultHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

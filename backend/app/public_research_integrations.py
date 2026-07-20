@@ -146,7 +146,7 @@ def sdk_manifest() -> dict[str, Any]:
             {"language": "typescript", "package": "@sustainable-catalyst/lab-sdk", "path": "sdk/typescript", "minimum": "ES2022", "runtimeDependencies": []},
             {"language": "browser", "package": "SustainableCatalystResearchEmbed", "path": "sdk/embed", "minimum": "ES2020", "runtimeDependencies": []},
         ],
-        "capabilities": ["typed-handoff-planning", "typed-handoff-creation", "webhook-administration", "webhook-event-emission", "signed-embed-manifests", "institutional-governance", "governance-policy-evaluation", "governance-approvals"],
+        "capabilities": ["typed-handoff-planning", "typed-handoff-creation", "webhook-administration", "webhook-event-emission", "signed-embed-manifests", "institutional-governance", "governance-policy-evaluation", "governance-approvals", "performance-validation", "safe-chaos-validation", "capacity-evidence"],
     }
     body["manifestHash"] = _hash(body)
     return body

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Capacity Report v0.39.3",
+  "type": "object",
+  "required": [
+    "id",
+    "createdAt",
+    "runCount",
+    "passedRunCount",
+    "profiles",
+    "recommendations",
+    "productionSizingClaim",
+    "reportHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "passedRunCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "profiles": {
+      "type": "object"
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "productionSizingClaim": {
+      "const": false
+    },
+    "reportHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

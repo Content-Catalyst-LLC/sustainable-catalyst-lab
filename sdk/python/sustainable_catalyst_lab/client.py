@@ -256,6 +256,34 @@ class LabClient:
         return self.request("GET", "/v1/multi-instance-operations/dashboard")
 
 
+    def performance_validation_health(self):
+        return self.request("GET", "/v1/performance-validation/health")
+
+    def performance_validation_policies(self):
+        return self.request("GET", "/v1/performance-validation/policies")
+
+    def performance_validation_catalog(self):
+        return self.request("GET", "/v1/performance-validation/catalog")
+
+    def list_performance_runs(self, kind: str = "", limit: int = 200):
+        query = f"?limit={max(1, min(int(limit), 2000))}"
+        if kind:
+            query += f"&kind={_segment(kind)}"
+        return self.request("GET", f"/v1/performance-validation/runs{query}")
+
+    def run_load_validation(self, payload: Any):
+        return self.request("POST", "/v1/performance-validation/load-runs", payload)
+
+    def run_chaos_validation(self, payload: Any):
+        return self.request("POST", "/v1/performance-validation/chaos-runs", payload)
+
+    def create_capacity_report(self, payload: Any):
+        return self.request("POST", "/v1/performance-validation/capacity-reports", payload)
+
+    def performance_validation_dashboard(self):
+        return self.request("GET", "/v1/performance-validation/dashboard")
+
+
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature)

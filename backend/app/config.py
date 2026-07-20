@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.39.2"
+    version: str = "0.39.3"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -201,6 +201,13 @@ class Settings:
     recovery_rpo_hours: int = _int("SC_LAB_RECOVERY_RPO_HOURS", 24, 1, 8760)
     recovery_rto_minutes: int = _int("SC_LAB_RECOVERY_RTO_MINUTES", 240, 1, 10080)
     multi_instance_persistent_disk_mounted: bool = os.getenv("SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_SECURITY_PRIVACY_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    performance_validation_db_path: str = os.getenv("SC_LAB_PERFORMANCE_VALIDATION_DB_PATH", "./data/sc-lab-performance-validation.sqlite3").strip()
+    performance_validation_max_concurrency: int = _int("SC_LAB_PERFORMANCE_VALIDATION_MAX_CONCURRENCY", 32, 1, 128)
+    performance_validation_max_iterations: int = _int("SC_LAB_PERFORMANCE_VALIDATION_MAX_ITERATIONS", 2000, 1, 100000)
+    performance_validation_history_limit: int = _int("SC_LAB_PERFORMANCE_VALIDATION_HISTORY_LIMIT", 10000, 100, 1000000)
+    performance_validation_default_p95_ms: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_P95_MS", 250, 1, 60000)
+    performance_validation_default_error_rate_ppm: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_ERROR_RATE_PPM", 10000, 0, 1000000)
+    performance_validation_persistent_disk_mounted: bool = os.getenv("SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

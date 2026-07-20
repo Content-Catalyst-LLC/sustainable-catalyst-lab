@@ -1,3 +1,12 @@
+# v0.39.3 — Performance, Load, and Chaos Validation
+
+- Added five bounded performance workload profiles.
+- Added p50, p95, and p99 latency, throughput, error-rate, and budget validation.
+- Added five safe isolated chaos scenarios with recovery evidence.
+- Added capacity reports and operator dashboard.
+- Added WordPress, FastAPI, Python SDK, and TypeScript SDK surfaces.
+- Explicitly prohibits production mutation, destructive fault injection, and external traffic.
+
 # v0.39.2 — Multi-Instance Operations, Backup, Migration, and Disaster Recovery
 
 - Added stable local and peer instance manifests.

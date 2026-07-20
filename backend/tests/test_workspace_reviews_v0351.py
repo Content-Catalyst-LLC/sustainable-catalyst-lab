@@ -144,4 +144,4 @@ def test_fastapi_review_routes_use_workspace_actor(tmp_path: Path, monkeypatch):
         assert approval.status_code == 200
         health = client.get("/v1/workspace-reviews/health", headers=headers)
         assert health.status_code == 200
-        assert health.json()["serviceVersion"] == "0.39.2"
+        assert health.json()["serviceVersion"] == "0.39.3"

@@ -59,6 +59,7 @@
           'public-research-integrations' => 'Public API & integrations',
           'institutional-governance-v0390' => 'Institutional governance',
           'multi-instance-operations-v0392' => 'Backup, migration & recovery',
+          'performance-chaos-v0393' => 'Performance, load & chaos validation',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2247,6 +2248,29 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
   "request": {"summary":"Share aggregate indicators"}
 }</textarea><label>Approval request ID<input data-ig-v0390-approval value="wetland-share-approval"></label><textarea data-ig-v0390-decision-json>{"decision":"approve","rationale":"Aggregate public-interest data only"}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="request-approval">Request approval</button><button type="button" class="sc-lab-button" data-ig-v0390-action="approvals">List approvals</button><button type="button" class="sc-lab-button" data-ig-v0390-action="decide">Record decision</button></div></div>
           <div class="sc-ig0390-card is-wide"><h4>Institutional governance response</h4><pre class="sc-ig0390-output" data-ig-v0390-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-pc0393" data-lab-module="performance-chaos-v0393" data-module-panel="performance-chaos-v0393" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">SYSTEM / RELEASE VALIDATION / v0.39.3</p><h3>Performance, Load, and Chaos Validation</h3><p>Measure latency percentiles and throughput, enforce explicit performance budgets, inject bounded failures into isolated resources, and produce evidence-bounded capacity reports without destructive production chaos or external traffic.</p></header>
+        <p class="sc-pc0393-status" data-pc-v0393-status role="status" aria-live="polite">Connecting to performance validation…</p>
+        <div class="sc-pc0393-metrics" data-pc-v0393-metrics></div>
+        <div class="sc-pc0393-grid">
+          <div class="sc-pc0393-card"><h4>Load validation</h4><textarea data-pc-v0393-load-json>{
+  "id": "api-read-beta-baseline",
+  "profile": "api-read",
+  "iterations": 200,
+  "concurrency": 8,
+  "payloadBytes": 4096,
+  "budget": {"p95Ms": 250, "maxErrorRate": 0.01, "minThroughputPerSecond": 10}
+}</textarea><div class="sc-pc0393-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pc-v0393-action="load">Run load profile</button><button type="button" class="sc-lab-button" data-pc-v0393-action="catalog">Catalog</button><button type="button" class="sc-lab-button" data-pc-v0393-action="policies">Policies</button></div><p class="sc-pc0393-note">Validation workloads use temporary or dedicated validation resources. They do not mutate active research records.</p></div>
+          <div class="sc-pc0393-card"><h4>Safe chaos scenario</h4><textarea data-pc-v0393-chaos-json>{
+  "id": "database-lock-recovery",
+  "scenario": "database-lock"
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-pc-v0393-action="chaos">Run isolated scenario</button><p class="sc-pc0393-note">Available scenarios: database lock, storage latency, worker termination, network timeout simulation, and partial-write rejection. Production chaos remains disabled.</p></div>
+          <div class="sc-pc0393-card"><h4>Capacity evidence</h4><textarea data-pc-v0393-capacity-json>{"id":"beta-capacity-report","limit":100}</textarea><div class="sc-pc0393-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-pc-v0393-action="capacity">Create capacity report</button><button type="button" class="sc-lab-button" data-pc-v0393-action="runs">List runs</button><button type="button" class="sc-lab-button" data-pc-v0393-action="refresh">Refresh dashboard</button></div><p class="sc-pc0393-note">Reports summarize validated evidence only and never claim production sizing without production-equivalent tests.</p></div>
+          <div class="sc-pc0393-card is-wide"><h4>Validation response</h4><pre class="sc-pc0393-output" data-pc-v0393-output>No response yet.</pre></div>
         </div>
       </section>
 

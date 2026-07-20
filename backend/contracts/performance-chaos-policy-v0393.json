@@ -1,0 +1,15 @@
+{
+  "version": "0.39.3",
+  "executionBoundary": "isolated-validation-resources-only",
+  "productionMutation": false,
+  "externalTraffic": false,
+  "maxConcurrency": 128,
+  "maxIterations": 100000,
+  "chaosScenarios": [
+    "database-lock",
+    "storage-latency",
+    "worker-termination",
+    "network-timeout",
+    "partial-write"
+  ]
+}
