@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Guided Research Project v0.40.0",
+  "type": "object",
+  "required": [
+    "id",
+    "templateId",
+    "title",
+    "workspaceId",
+    "stage",
+    "stageIndex",
+    "status",
+    "recordHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "templateId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "stageIndex": {
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "complete"
+      ]
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "handoffs": {
+      "type": "array"
+    },
+    "recordHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

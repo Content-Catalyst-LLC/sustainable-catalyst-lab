@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.39.3"
+    version: str = "0.40.0"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -208,6 +208,11 @@ class Settings:
     performance_validation_default_p95_ms: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_P95_MS", 250, 1, 60000)
     performance_validation_default_error_rate_ppm: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_ERROR_RATE_PPM", 10000, 0, 1000000)
     performance_validation_persistent_disk_mounted: bool = os.getenv("SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    platform_beta_db_path: str = os.getenv("SC_LAB_PLATFORM_BETA_DB_PATH", "./data/sc-lab-platform-beta.sqlite3").strip()
+    platform_beta_telemetry_enabled: bool = os.getenv("SC_LAB_PLATFORM_BETA_TELEMETRY_ENABLED", "0").lower() in {"1", "true", "yes"}
+    platform_beta_history_limit: int = _int("SC_LAB_PLATFORM_BETA_HISTORY_LIMIT", 250000, 100, 5000000)
+    platform_beta_max_records: int = _int("SC_LAB_PLATFORM_BETA_MAX_RECORDS", 100000, 100, 2000000)
+    platform_beta_persistent_disk_mounted: bool = os.getenv("SC_LAB_PLATFORM_BETA_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

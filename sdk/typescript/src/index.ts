@@ -106,6 +106,30 @@ export class LabClient {
   createCapacityReport(payload: unknown) { return this.request("POST", "/v1/performance-validation/capacity-reports", payload); }
   performanceValidationDashboard() { return this.request("GET", "/v1/performance-validation/dashboard"); }
 
+
+  platformBetaHealth() { return this.request("GET", "/v1/platform-beta/health"); }
+  platformBetaPolicies() { return this.request("GET", "/v1/platform-beta/policies"); }
+  platformBetaCatalog() { return this.request("GET", "/v1/platform-beta/catalog"); }
+  listBetaCohorts(limit = 200) { return this.request("GET", `/v1/platform-beta/cohorts?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  createBetaCohort(payload: unknown) { return this.request("POST", "/v1/platform-beta/cohorts", payload); }
+  listBetaOnboarding(limit = 200) { return this.request("GET", `/v1/platform-beta/onboarding?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  startBetaOnboarding(payload: unknown) { return this.request("POST", "/v1/platform-beta/onboarding", payload); }
+  advanceBetaOnboarding(onboardingId: string, payload: unknown) { return this.request("POST", `/v1/platform-beta/onboarding/${segment(onboardingId)}/advance`, payload); }
+  listBetaProjectTemplates() { return this.request("GET", "/v1/platform-beta/project-templates"); }
+  listBetaProjects(limit = 200) { return this.request("GET", `/v1/platform-beta/projects?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  createBetaProject(payload: unknown) { return this.request("POST", "/v1/platform-beta/projects", payload); }
+  advanceBetaProject(projectId: string, payload: unknown) { return this.request("POST", `/v1/platform-beta/projects/${segment(projectId)}/advance`, payload); }
+  recordBetaTelemetry(payload: unknown) { return this.request("POST", "/v1/platform-beta/telemetry", payload); }
+  betaTelemetrySummary() { return this.request("GET", "/v1/platform-beta/telemetry/summary"); }
+  submitBetaFeedback(payload: unknown) { return this.request("POST", "/v1/platform-beta/feedback", payload); }
+  listBetaFeedback(limit = 200) { return this.request("GET", `/v1/platform-beta/feedback?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  createBetaLimitation(payload: unknown) { return this.request("POST", "/v1/platform-beta/limitations", payload); }
+  listBetaLimitations(limit = 200) { return this.request("GET", `/v1/platform-beta/limitations?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  createBetaSupportCase(payload: unknown) { return this.request("POST", "/v1/platform-beta/support-cases", payload); }
+  listBetaSupportCases(limit = 200) { return this.request("GET", `/v1/platform-beta/support-cases?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  evaluateBetaReadiness(payload: unknown) { return this.request("POST", "/v1/platform-beta/readiness-reports", payload); }
+  platformBetaDashboard() { return this.request("GET", "/v1/platform-beta/dashboard"); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

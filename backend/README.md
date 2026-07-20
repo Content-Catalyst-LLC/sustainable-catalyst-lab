@@ -394,3 +394,8 @@ SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED=1
 ```
 
 Capacity reports summarize observed validation evidence only. Repeat the workload matrix on production-equivalent infrastructure before publishing capacity commitments.
+
+
+## v0.40.0 Connected Scientific Research Platform Beta
+
+The beta control plane uses `SC_LAB_PLATFORM_BETA_DB_PATH` for institutional cohorts, onboarding, guided projects, privacy-minimized telemetry, feedback, limitations, support cases, readiness reports, and hash-chained operational events. Telemetry remains disabled unless `SC_LAB_PLATFORM_BETA_TELEMETRY_ENABLED=1`; every event also requires explicit `optIn: true`.

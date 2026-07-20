@@ -126,7 +126,7 @@ def test_fastapi_routes_and_security_headers(tmp_path, monkeypatch):
     client = TestClient(main_module.app)
     headers = {"X-SC-Lab-Key": "route-key", "X-SC-Lab-Actor": "alice"}
     health = client.get("/v1/security-privacy/health", headers=headers)
-    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.39.3"
+    assert health.status_code == 200 and health.json()["serviceVersion"] == "0.40.0"
     assert health.headers["x-content-type-options"] == "nosniff"
     created = client.post("/v1/institutions/institution-one/secrets", headers=headers, json={"name": "provider-key", "value": "route-secret"})
     assert created.status_code == 200 and "route-secret" not in created.text

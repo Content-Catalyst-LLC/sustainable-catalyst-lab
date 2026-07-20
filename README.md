@@ -1,6 +1,8 @@
 # Sustainable Catalyst Lab
 
-## v0.39.3 — Performance, Load, and Chaos Validation
+## v0.40.0 — Connected Scientific Research Platform Beta
+
+Sustainable Catalyst Lab v0.40.0 unifies its scientific workflow, institutional governance, interoperability, public integration, security, recovery, and validation layers into a controlled beta operating platform. It adds institutional cohorts, guided research projects, privacy-minimized opt-in telemetry, feedback and support operations, known limitations, and a component-aware beta readiness gate. The release does not claim general availability.
 
 Adds bounded load profiles, latency percentiles, throughput measurement, explicit performance budgets, isolated chaos scenarios, capacity evidence, FastAPI and WordPress operations surfaces, and Python/TypeScript SDK support. Production mutation, destructive chaos, and outbound network traffic remain disabled.
 

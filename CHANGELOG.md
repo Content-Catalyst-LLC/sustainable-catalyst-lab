@@ -1,3 +1,12 @@
+# v0.40.0 — Connected Scientific Research Platform Beta
+
+- Added controlled institutional beta cohorts and staged onboarding journeys.
+- Added guided end-to-end research projects with three reusable templates.
+- Added explicit-opt-in, privacy-minimized telemetry with hashed identifiers and no research payload storage.
+- Added feedback, known-limitations, support-case, and beta incident operations.
+- Added component-aware release-readiness reports and hash-chained beta-operation timelines.
+- Added WordPress Connected Platform Beta console plus Python and TypeScript SDK methods.
+
 # v0.39.3 — Performance, Load, and Chaos Validation
 
 - Added five bounded performance workload profiles.

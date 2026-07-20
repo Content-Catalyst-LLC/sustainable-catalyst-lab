@@ -1,0 +1,13 @@
+<?php
+/** Sustainable Catalyst Lab v0.40.0 Connected Scientific Research Platform Beta. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Connected_Platform_Beta_V0400 {
+    const VERSION='0.40.0'; private static $initialized=false;
+    public static function init(){if(self::$initialized){return;}self::$initialized=true;add_action('rest_api_init',array(__CLASS__,'routes'));add_filter('sc_lab_module_aliases_v02631',array(__CLASS__,'aliases'));add_filter('sc_lab_panel_aliases_v02631',array(__CLASS__,'aliases'));add_shortcode('sc_lab_connected_platform_beta',array(__CLASS__,'shortcode'));add_shortcode('sc_lab_beta_operations',array(__CLASS__,'shortcode'));}
+    public static function aliases($aliases){$aliases=is_array($aliases)?$aliases:array();foreach(array('connected-platform-beta','platform-beta','beta-operations','institutional-beta','guided-research-beta','release-readiness-beta') as $alias){$aliases[$alias]='connected-platform-beta-v0400';}return $aliases;}
+    public static function shortcode(){return do_shortcode('[sc_lab_app module="connected-platform-beta-v0400"]');}
+    public static function routes(){register_rest_route('sc-lab/v1','/connected-platform-beta/v0400/health',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));}
+    private static function state($relative){$path=SC_LAB_DIR.$relative;return array('exists'=>is_file($path),'sha256'=>is_file($path)?hash_file('sha256',$path):null);}
+    public static function health(){$required=array('backend/app/connected_platform_beta.py','backend/tests/test_connected_platform_beta_v0400.py','assets/js/modules/connected-platform-beta-v0400.js','assets/css/sc-lab-connected-platform-beta-v0400.css','contracts/beta-cohort-v0400.schema.json','contracts/beta-onboarding-v0400.schema.json','contracts/guided-research-project-v0400.schema.json','contracts/beta-telemetry-event-v0400.schema.json','contracts/beta-feedback-v0400.schema.json','contracts/beta-readiness-report-v0400.schema.json','contracts/connected-platform-beta-policy-v0400.json');$files=array();$ok=true;foreach($required as $relative){$files[$relative]=self::state($relative);if(empty($files[$relative]['exists'])){$ok=false;}}return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'beta-ready':'incomplete','version'=>self::VERSION,'releaseStage'=>'beta','generalAvailabilityClaim'=>false,'institutionalCohorts'=>true,'guidedResearchProjects'=>true,'privacyMinimizedTelemetry'=>true,'feedbackOperations'=>true,'knownLimitations'=>true,'supportPathways'=>true,'releaseReadinessGate'=>true,'files'=>$files,'time'=>gmdate('c')));}
+}
+SC_Lab_Connected_Platform_Beta_V0400::init();

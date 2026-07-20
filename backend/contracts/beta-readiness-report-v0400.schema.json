@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Connected Platform Beta Readiness Report v0.40.0",
+  "type": "object",
+  "required": [
+    "id",
+    "releaseVersion",
+    "releaseStage",
+    "status",
+    "componentChecks",
+    "blockers",
+    "generalAvailabilityClaim",
+    "reportHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "releaseVersion": {
+      "const": "0.40.0"
+    },
+    "releaseStage": {
+      "const": "beta"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    },
+    "componentChecks": {
+      "type": "array"
+    },
+    "blockers": {
+      "type": "array"
+    },
+    "generalAvailabilityClaim": {
+      "const": false
+    },
+    "reportHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

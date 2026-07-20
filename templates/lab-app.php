@@ -60,6 +60,7 @@
           'institutional-governance-v0390' => 'Institutional governance',
           'multi-instance-operations-v0392' => 'Backup, migration & recovery',
           'performance-chaos-v0393' => 'Performance, load & chaos validation',
+          'connected-platform-beta-v0400' => 'Connected research platform beta',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2251,6 +2252,69 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+
+
+      <section class="sc-lab-panel sc-beta0400" data-lab-module="connected-platform-beta-v0400" data-module-panel="connected-platform-beta-v0400" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PLATFORM / CONTROLLED BETA / v0.40.0</p><h3>Connected Scientific Research Platform Beta</h3><p>Operate controlled institutional cohorts, guide complete research journeys, collect privacy-minimized opt-in telemetry, triage feedback and limitations, connect support pathways, and evaluate beta release readiness across the Lab’s governance, security, interoperability, recovery, and validation layers.</p></header>
+        <div class="sc-beta0400-banner"><strong>Controlled beta boundary</strong><span>This release does not claim general availability. Beta operations never bypass institutional controls, and telemetry never stores raw identifiers or research payloads.</span></div>
+        <p class="sc-beta0400-status" data-beta-v0400-status role="status" aria-live="polite">Connecting to connected platform beta operations…</p>
+        <div class="sc-beta0400-metrics" data-beta-v0400-metrics></div>
+        <div class="sc-beta0400-grid">
+          <div class="sc-beta0400-card"><h4>Institutional beta cohort</h4><textarea data-beta-v0400-cohort-json>{
+  "id": "institutional-beta-one",
+  "name": "Institutional Research Beta One",
+  "institutionId": "institution-one",
+  "status": "active",
+  "goals": ["Validate complete research workflow", "Document operating limitations"]
+}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="create-cohort">Create cohort</button><button type="button" class="sc-lab-button" data-beta-v0400-action="cohorts">List cohorts</button><button type="button" class="sc-lab-button" data-beta-v0400-action="catalog">Beta catalog</button><button type="button" class="sc-lab-button" data-beta-v0400-action="policies">Policies</button></div></div>
+          <div class="sc-beta0400-card"><h4>Institution onboarding journey</h4><textarea data-beta-v0400-onboarding-json>{
+  "id": "institution-one-onboarding",
+  "cohortId": "institutional-beta-one",
+  "institutionId": "institution-one",
+  "principalId": "beta-research-lead",
+  "workspaceId": "wetland-research"
+}</textarea><label>Onboarding ID<input data-beta-v0400-onboarding-id value="institution-one-onboarding"></label><textarea data-beta-v0400-onboarding-advance-json>{"stage":"identity","completedItems":["Institution record verified"]}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="start-onboarding">Start onboarding</button><button type="button" class="sc-lab-button" data-beta-v0400-action="advance-onboarding">Advance one stage</button><button type="button" class="sc-lab-button" data-beta-v0400-action="onboarding">List onboarding</button></div></div>
+          <div class="sc-beta0400-card"><h4>Guided end-to-end research project</h4><textarea data-beta-v0400-project-json>{
+  "id": "wetland-beta-project",
+  "templateId": "evidence-to-experiment",
+  "title": "Wetland resilience evidence study",
+  "cohortId": "institutional-beta-one",
+  "workspaceId": "wetland-research",
+  "researchQuestion": "How does drought frequency affect wetland resilience?"
+}</textarea><label>Project ID<input data-beta-v0400-project-id value="wetland-beta-project"></label><textarea data-beta-v0400-project-advance-json>{"stage":"source","outputs":{"evidenceRecord":"evidence:wetland-v1"}}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="create-project">Create guided project</button><button type="button" class="sc-lab-button" data-beta-v0400-action="advance-project">Advance one stage</button><button type="button" class="sc-lab-button" data-beta-v0400-action="projects">List projects</button><button type="button" class="sc-lab-button" data-beta-v0400-action="templates">Templates</button></div></div>
+          <div class="sc-beta0400-card"><h4>Privacy-minimized beta telemetry</h4><textarea data-beta-v0400-telemetry-json>{
+  "id": "wetland-module-opened",
+  "eventType": "module.opened",
+  "workspaceId": "wetland-research",
+  "optIn": true,
+  "properties": {"module":"experiment-framework-v0300","surface":"wordpress"}
+}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="telemetry">Record opted-in event</button><button type="button" class="sc-lab-button" data-beta-v0400-action="telemetry-summary">Telemetry summary</button></div><p class="sc-beta0400-note">Actor and workspace identifiers are hashed. Raw identifiers, secrets, restricted data, and research payloads are rejected.</p></div>
+          <div class="sc-beta0400-card"><h4>Feedback and known limitations</h4><textarea data-beta-v0400-feedback-json>{
+  "id": "feedback-navigation-one",
+  "category": "usability",
+  "severity": "medium",
+  "title": "Research stage navigation",
+  "description": "The transition from analysis to review needs clearer guidance.",
+  "projectId": "wetland-beta-project"
+}</textarea><textarea data-beta-v0400-limitation-json>{
+  "id": "limitation-offline-size",
+  "severity": "medium",
+  "title": "Large offline package validation",
+  "description": "Very large field packages require additional beta testing.",
+  "workaround": "Split the package into governed collections.",
+  "targetRelease": "0.40.2"
+}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="feedback">Submit feedback</button><button type="button" class="sc-lab-button" data-beta-v0400-action="feedback-list">List feedback</button><button type="button" class="sc-lab-button" data-beta-v0400-action="create-limitation">Register limitation</button><button type="button" class="sc-lab-button" data-beta-v0400-action="limitations">List limitations</button></div></div>
+          <div class="sc-beta0400-card"><h4>Support and incident pathway</h4><textarea data-beta-v0400-support-json>{
+  "id": "support-institution-setup",
+  "severity": "high",
+  "title": "Institutional beta setup assistance",
+  "summary": "Research administrators need assistance completing the governance and workspace setup.",
+  "workspaceId": "wetland-research"
+}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="create-support">Create support case</button><button type="button" class="sc-lab-button" data-beta-v0400-action="support">List support cases</button></div></div>
+          <div class="sc-beta0400-card"><h4>Beta release-readiness gate</h4><textarea data-beta-v0400-readiness-json>{"id":"v0.40.0-institutional-beta-readiness"}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="readiness">Evaluate readiness</button><button type="button" class="sc-lab-button" data-beta-v0400-action="readiness-list">Prior reports</button><button type="button" class="sc-lab-button" data-beta-v0400-action="timeline">Beta timeline</button><button type="button" class="sc-lab-button" data-beta-v0400-action="verify-timeline">Verify timeline</button><button type="button" class="sc-lab-button" data-beta-v0400-action="refresh">Refresh dashboard</button></div><p class="sc-beta0400-note">Expansion is blocked when a required platform component is degraded or a critical feedback, limitation, or support record remains unresolved.</p></div>
+          <div class="sc-beta0400-card is-wide"><h4>Beta operations response</h4><pre class="sc-beta0400-output" data-beta-v0400-output>No response yet.</pre></div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-pc0393" data-lab-module="performance-chaos-v0393" data-module-panel="performance-chaos-v0393" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">SYSTEM / RELEASE VALIDATION / v0.39.3</p><h3>Performance, Load, and Chaos Validation</h3><p>Measure latency percentiles and throughput, enforce explicit performance budgets, inject bounded failures into isolated resources, and produce evidence-bounded capacity reports without destructive production chaos or external traffic.</p></header>

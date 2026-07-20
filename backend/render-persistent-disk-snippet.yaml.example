@@ -38,3 +38,11 @@ envVars:
 #   value: /app/data/sc-lab-research-interoperability.sqlite3
 # - key: SC_LAB_INTEROPERABILITY_PERSISTENT_DISK_MOUNTED
 #   value: "1"
+
+# v0.40.0 beta operations
+# - key: SC_LAB_PLATFORM_BETA_DB_PATH
+#   value: /app/data/sc-lab-platform-beta.sqlite3
+# - key: SC_LAB_PLATFORM_BETA_PERSISTENT_DISK_MOUNTED
+#   value: "1"
+# - key: SC_LAB_PLATFORM_BETA_TELEMETRY_ENABLED
+#   value: "0"

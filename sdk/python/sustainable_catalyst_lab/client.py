@@ -284,6 +284,73 @@ class LabClient:
         return self.request("GET", "/v1/performance-validation/dashboard")
 
 
+    def platform_beta_health(self):
+        return self.request("GET", "/v1/platform-beta/health")
+
+    def platform_beta_policies(self):
+        return self.request("GET", "/v1/platform-beta/policies")
+
+    def platform_beta_catalog(self):
+        return self.request("GET", "/v1/platform-beta/catalog")
+
+    def list_beta_cohorts(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/cohorts?limit={max(1, min(int(limit), 2000))}")
+
+    def create_beta_cohort(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/cohorts", payload)
+
+    def list_beta_onboarding(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/onboarding?limit={max(1, min(int(limit), 2000))}")
+
+    def start_beta_onboarding(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/onboarding", payload)
+
+    def advance_beta_onboarding(self, onboarding_id: str, payload: Any):
+        return self.request("POST", f"/v1/platform-beta/onboarding/{_segment(onboarding_id)}/advance", payload)
+
+    def list_beta_project_templates(self):
+        return self.request("GET", "/v1/platform-beta/project-templates")
+
+    def list_beta_projects(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/projects?limit={max(1, min(int(limit), 2000))}")
+
+    def create_beta_project(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/projects", payload)
+
+    def advance_beta_project(self, project_id: str, payload: Any):
+        return self.request("POST", f"/v1/platform-beta/projects/{_segment(project_id)}/advance", payload)
+
+    def record_beta_telemetry(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/telemetry", payload)
+
+    def beta_telemetry_summary(self):
+        return self.request("GET", "/v1/platform-beta/telemetry/summary")
+
+    def submit_beta_feedback(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/feedback", payload)
+
+    def list_beta_feedback(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/feedback?limit={max(1, min(int(limit), 2000))}")
+
+    def create_beta_limitation(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/limitations", payload)
+
+    def list_beta_limitations(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/limitations?limit={max(1, min(int(limit), 2000))}")
+
+    def create_beta_support_case(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/support-cases", payload)
+
+    def list_beta_support_cases(self, limit: int = 200):
+        return self.request("GET", f"/v1/platform-beta/support-cases?limit={max(1, min(int(limit), 2000))}")
+
+    def evaluate_beta_readiness(self, payload: Any):
+        return self.request("POST", "/v1/platform-beta/readiness-reports", payload)
+
+    def platform_beta_dashboard(self):
+        return self.request("GET", "/v1/platform-beta/dashboard")
+
+
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature)

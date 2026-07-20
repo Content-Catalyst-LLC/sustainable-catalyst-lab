@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Beta Onboarding Record v0.40.0",
+  "type": "object",
+  "required": [
+    "id",
+    "institutionId",
+    "principalId",
+    "workspaceId",
+    "stage",
+    "stageIndex",
+    "status",
+    "recordHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "institutionId": {
+      "type": "string"
+    },
+    "principalId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "stage": {
+      "enum": [
+        "institution",
+        "identity",
+        "workspace",
+        "data",
+        "workflow",
+        "validation",
+        "publication",
+        "complete"
+      ]
+    },
+    "stageIndex": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "in-progress",
+        "complete"
+      ]
+    },
+    "recordHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

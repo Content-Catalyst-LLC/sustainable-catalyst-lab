@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Privacy-Minimized Beta Telemetry Event v0.40.0",
+  "type": "object",
+  "required": [
+    "id",
+    "eventType",
+    "occurredAt",
+    "actorHash",
+    "workspaceHash",
+    "properties",
+    "eventHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "occurredAt": {
+      "type": "string"
+    },
+    "actorHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "workspaceHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "properties": {
+      "type": "object"
+    },
+    "researchPayloadStored": {
+      "const": false
+    },
+    "rawIdentifiersStored": {
+      "const": false
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

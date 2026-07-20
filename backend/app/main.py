@@ -54,6 +54,7 @@ from .institutional_governance import InstitutionalGovernanceError, Institutiona
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
 from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
+from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -118,6 +119,7 @@ multi_instance_operations = MultiInstanceOperationsManager(
         "request-replay": settings.security_replay_db_path,
         "multi-instance-operations": settings.multi_instance_operations_db_path,
         "performance-validation": settings.performance_validation_db_path,
+        "platform-beta": settings.platform_beta_db_path,
     },
     settings.artifact_root,
     settings.multi_instance_max_backups,
@@ -134,6 +136,13 @@ performance_validation = PerformanceChaosManager(
     settings.performance_validation_history_limit,
     settings.performance_validation_default_p95_ms,
     settings.performance_validation_default_error_rate_ppm / 1_000_000.0,
+)
+connected_platform_beta = ConnectedPlatformBetaManager(
+    settings.platform_beta_db_path,
+    settings.platform_beta_persistent_disk_mounted,
+    settings.platform_beta_telemetry_enabled,
+    settings.platform_beta_history_limit,
+    settings.platform_beta_max_records,
 )
 
 
@@ -271,6 +280,7 @@ def health():
         "securityPrivacyHardening": {"version":"0.39.1","aes256GcmSecrets":True,"credentialHashing":True,"requestNonceReplayProtection":True,"signedAuditChains":True,"privacyScanning":True,"privacyRequests":True},
         "multiInstanceOperations": {"version":"0.39.2","stableInstanceIdentity":True,"consistentSqliteSnapshots":True,"signedBackupManifests":True,"stagedRestore":True,"idempotentMigrations":True,"signedCrossInstanceTransfers":True,"rpoRtoDrills":True,"activeFileOverwriteByApi":False},
         "performanceLoadChaosValidation": {"version":"0.39.3","loadProfiles":True,"latencyPercentiles":True,"throughputMeasurement":True,"performanceBudgets":True,"safeChaosScenarios":True,"capacityReports":True,"productionChaos":False,"externalTraffic":False},
+        "connectedScientificResearchPlatformBeta": {"version":"0.40.0","releaseStage":"beta","institutionalCohorts":True,"guidedResearchProjects":True,"privacyMinimizedTelemetry":True,"feedbackOperations":True,"knownLimitations":True,"supportPathways":True,"releaseReadinessGate":True,"generalAvailabilityClaim":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3855,4 +3865,201 @@ def performance_validation_capacity_route(payload: dict[str, Any], auth: dict[st
 def performance_validation_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return performance_validation.dashboard()
+
+def _platform_beta_http_error(exc: BetaPlatformError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+def _platform_beta_component_snapshot() -> dict[str, Any]:
+    probes = {
+        "interoperability": research_interoperability.health,
+        "typedHandoffs": typed_cross_product_handoffs.health,
+        "publicIntegrations": public_research_integrations.health,
+        "governance": institutional_governance.health,
+        "securityPrivacy": security_privacy.health,
+        "recovery": multi_instance_operations.health,
+        "performanceValidation": performance_validation.health,
+    }
+    snapshot: dict[str, Any] = {}
+    for key, probe in probes.items():
+        try:
+            snapshot[key] = probe()
+        except Exception as exc:
+            snapshot[key] = {"ok": False, "status": "error", "detail": str(exc)}
+    return snapshot
+
+
+@app.get("/v1/platform-beta/health")
+def platform_beta_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.health()
+
+
+@app.get("/v1/platform-beta/policies")
+def platform_beta_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta_policies(settings.platform_beta_persistent_disk_mounted, settings.platform_beta_telemetry_enabled)
+
+
+@app.get("/v1/platform-beta/catalog")
+def platform_beta_catalog_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.catalog()
+
+
+@app.get("/v1/platform-beta/cohorts")
+def platform_beta_cohorts_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_cohorts(limit)
+
+
+@app.post("/v1/platform-beta/cohorts")
+def platform_beta_cohort_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.create_cohort(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/onboarding")
+def platform_beta_onboarding_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_onboarding(limit)
+
+
+@app.post("/v1/platform-beta/onboarding")
+def platform_beta_onboarding_start_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.start_onboarding(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/onboarding/{record_id}/advance")
+def platform_beta_onboarding_advance_route(record_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.advance_onboarding(record_id, payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/project-templates")
+def platform_beta_templates_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return {"ok": True, "version": "0.40.0", "projectTemplates": connected_platform_beta.catalog()["projectTemplates"]}
+
+
+@app.get("/v1/platform-beta/projects")
+def platform_beta_projects_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_projects(limit)
+
+
+@app.post("/v1/platform-beta/projects")
+def platform_beta_project_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.create_project(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/projects/{project_id}")
+def platform_beta_project_get_route(project_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return connected_platform_beta.get_project(project_id)
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/projects/{project_id}/advance")
+def platform_beta_project_advance_route(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.advance_project(project_id, payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/telemetry")
+def platform_beta_telemetry_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.record_telemetry(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/telemetry/summary")
+def platform_beta_telemetry_summary_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.telemetry_summary()
+
+
+@app.get("/v1/platform-beta/feedback")
+def platform_beta_feedback_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_feedback(limit)
+
+
+@app.post("/v1/platform-beta/feedback")
+def platform_beta_feedback_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.create_feedback(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/feedback/{issue_id}")
+def platform_beta_feedback_update_route(issue_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.update_feedback(issue_id, payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/limitations")
+def platform_beta_limitations_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_limitations(limit)
+
+
+@app.post("/v1/platform-beta/limitations")
+def platform_beta_limitation_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.create_limitation(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/limitations/{issue_id}")
+def platform_beta_limitation_update_route(issue_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.update_limitation(issue_id, payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/support-cases")
+def platform_beta_support_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_support_cases(limit)
+
+
+@app.post("/v1/platform-beta/support-cases")
+def platform_beta_support_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.create_support_case(payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.post("/v1/platform-beta/support-cases/{issue_id}")
+def platform_beta_support_update_route(issue_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.update_support_case(issue_id, payload, _institutional_actor(auth))
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/readiness-reports")
+def platform_beta_readiness_reports_route(limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.list_readiness_reports(limit)
+
+
+@app.post("/v1/platform-beta/readiness-reports")
+def platform_beta_readiness_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return connected_platform_beta.evaluate_readiness(payload, _institutional_actor(auth), _platform_beta_component_snapshot())
+    except BetaPlatformError as exc: raise _platform_beta_http_error(exc) from exc
+
+
+@app.get("/v1/platform-beta/timeline")
+def platform_beta_timeline_route(limit: int = Query(200, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.timeline(limit)
+
+
+@app.get("/v1/platform-beta/timeline/verify")
+def platform_beta_timeline_verify_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.verify_timeline()
+
+
+@app.get("/v1/platform-beta/dashboard")
+def platform_beta_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return connected_platform_beta.dashboard()
 

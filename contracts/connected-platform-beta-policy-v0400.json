@@ -1,0 +1,18 @@
+{
+  "version": "0.40.0",
+  "releaseStage": "beta",
+  "generalAvailabilityClaim": false,
+  "telemetryOptInRequired": true,
+  "telemetryStoresRawIdentifiers": false,
+  "telemetryStoresResearchPayloads": false,
+  "productionMutation": false,
+  "capabilities": [
+    "institutional-beta-cohorts",
+    "guided-research-projects",
+    "privacy-minimized-telemetry",
+    "feedback-operations",
+    "known-limitations-register",
+    "support-and-incidents",
+    "release-readiness-gate"
+  ]
+}

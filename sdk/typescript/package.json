@@ -1,6 +1,6 @@
 {
   "name": "@sustainable-catalyst/lab-sdk",
-  "version": "0.39.3",
+  "version": "0.40.0",
   "type": "module",
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
