@@ -46,3 +46,8 @@ envVars:
 #   value: "1"
 # - key: SC_LAB_PLATFORM_BETA_TELEMETRY_ENABLED
 #   value: "0"
+
+# v0.40.1 interface finalization
+SC_LAB_INTERFACE_FINALIZATION_DB_PATH=/app/data/sc-lab-interface-finalization.sqlite3
+SC_LAB_INTERFACE_FINALIZATION_PERSISTENT_DISK_MOUNTED=1
+SC_LAB_INTERFACE_OFFLINE_SHELL_ENABLED=1

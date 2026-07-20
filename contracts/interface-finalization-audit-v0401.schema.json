@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/interface-finalization-audit-v0401.schema.json",
+  "title": "Interface Finalization Audit",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "profile",
+    "status",
+    "score",
+    "checks",
+    "recordHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-interface-finalization-audit/0.40.1"
+    },
+    "profile": {
+      "enum": [
+        "phone",
+        "tablet",
+        "desktop"
+      ]
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "needs-attention"
+      ]
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "recordHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

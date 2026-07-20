@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/accessibility-preferences-v0401.schema.json",
+  "title": "Accessibility Preferences",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "reducedMotion",
+    "increasedContrast",
+    "largeText",
+    "dataSaver",
+    "touchTargetMinimumPx"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-accessibility-preferences/0.40.1"
+    },
+    "reducedMotion": {
+      "type": "boolean"
+    },
+    "increasedContrast": {
+      "type": "boolean"
+    },
+    "largeText": {
+      "type": "boolean"
+    },
+    "dataSaver": {
+      "type": "boolean"
+    },
+    "touchTargetMinimumPx": {
+      "type": "integer",
+      "minimum": 44,
+      "maximum": 72
+    }
+  }
+}

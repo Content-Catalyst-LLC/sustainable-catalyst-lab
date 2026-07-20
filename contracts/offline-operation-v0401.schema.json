@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/offline-operation-v0401.schema.json",
+  "title": "Offline Operation",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "idempotencyKey",
+    "workspaceId",
+    "projectId",
+    "operation",
+    "status",
+    "payloadHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-offline-operation/0.40.1"
+    },
+    "idempotencyKey": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "attach-reference",
+        "advance-stage",
+        "create",
+        "delete",
+        "save-draft",
+        "update"
+      ]
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "applied",
+        "conflict",
+        "rejected"
+      ]
+    },
+    "payloadHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

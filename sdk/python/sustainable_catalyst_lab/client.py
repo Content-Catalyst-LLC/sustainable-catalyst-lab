@@ -350,6 +350,36 @@ class LabClient:
     def platform_beta_dashboard(self):
         return self.request("GET", "/v1/platform-beta/dashboard")
 
+    def interface_finalization_health(self):
+        return self.request("GET", "/v1/interface-finalization/health")
+
+    def interface_finalization_policies(self):
+        return self.request("GET", "/v1/interface-finalization/policies")
+
+    def interface_finalization_catalog(self):
+        return self.request("GET", "/v1/interface-finalization/catalog")
+
+    def create_interface_audit(self, payload: Any):
+        return self.request("POST", "/v1/interface-finalization/audits", payload)
+
+    def list_interface_audits(self, limit: int = 200):
+        return self.request("GET", f"/v1/interface-finalization/audits?limit={max(1, min(int(limit), 2000))}")
+
+    def save_interface_preferences(self, profile_id: str, payload: Any):
+        return self.request("PUT", f"/v1/interface-finalization/preferences/{_segment(profile_id)}", payload)
+
+    def create_offline_snapshot(self, payload: Any):
+        return self.request("POST", "/v1/interface-finalization/offline-snapshots", payload)
+
+    def queue_offline_operation(self, payload: Any):
+        return self.request("POST", "/v1/interface-finalization/offline-operations", payload)
+
+    def reconcile_offline_operations(self, payload: Any):
+        return self.request("POST", "/v1/interface-finalization/reconcile", payload)
+
+    def interface_finalization_dashboard(self):
+        return self.request("GET", "/v1/interface-finalization/dashboard")
+
 
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()

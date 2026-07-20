@@ -1,3 +1,13 @@
+## 0.40.1 — Accessibility, Mobile, Offline, and Interface Finalization
+
+- Added unified phone, tablet, and desktop interface-readiness audits.
+- Added global 44 px touch targets, visible focus, reduced-motion, forced-colors, text-zoom, and narrow-screen safeguards.
+- Added persistent accessibility and data-use preference profiles.
+- Added browser-local IndexedDB project snapshots and metadata-only backend manifests.
+- Added idempotent disconnected operation queues and explicit applied/conflict/rejected reconciliation receipts.
+- Added an opt-in service-worker shell that refuses restricted data, authenticated API routes, and administrative pages.
+- Added connection-state communication, WordPress operations UI, Python/TypeScript SDK methods, contracts, and release validation.
+
 # v0.40.0 — Connected Scientific Research Platform Beta
 
 - Added controlled institutional beta cohorts and staged onboarding journeys.

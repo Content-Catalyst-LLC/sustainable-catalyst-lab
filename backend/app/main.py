@@ -55,6 +55,7 @@ from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyM
 from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
+from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -120,6 +121,7 @@ multi_instance_operations = MultiInstanceOperationsManager(
         "multi-instance-operations": settings.multi_instance_operations_db_path,
         "performance-validation": settings.performance_validation_db_path,
         "platform-beta": settings.platform_beta_db_path,
+        "interface-finalization": settings.interface_finalization_db_path,
     },
     settings.artifact_root,
     settings.multi_instance_max_backups,
@@ -143,6 +145,14 @@ connected_platform_beta = ConnectedPlatformBetaManager(
     settings.platform_beta_telemetry_enabled,
     settings.platform_beta_history_limit,
     settings.platform_beta_max_records,
+)
+interface_finalization = InterfaceFinalizationManager(
+    settings.interface_finalization_db_path,
+    settings.interface_finalization_persistent_disk_mounted,
+    settings.interface_offline_shell_enabled,
+    settings.interface_finalization_history_limit,
+    settings.interface_max_snapshot_assets,
+    settings.interface_max_queue_records,
 )
 
 
@@ -281,6 +291,7 @@ def health():
         "multiInstanceOperations": {"version":"0.39.2","stableInstanceIdentity":True,"consistentSqliteSnapshots":True,"signedBackupManifests":True,"stagedRestore":True,"idempotentMigrations":True,"signedCrossInstanceTransfers":True,"rpoRtoDrills":True,"activeFileOverwriteByApi":False},
         "performanceLoadChaosValidation": {"version":"0.39.3","loadProfiles":True,"latencyPercentiles":True,"throughputMeasurement":True,"performanceBudgets":True,"safeChaosScenarios":True,"capacityReports":True,"productionChaos":False,"externalTraffic":False},
         "connectedScientificResearchPlatformBeta": {"version":"0.40.0","releaseStage":"beta","institutionalCohorts":True,"guidedResearchProjects":True,"privacyMinimizedTelemetry":True,"feedbackOperations":True,"knownLimitations":True,"supportPathways":True,"releaseReadinessGate":True,"generalAvailabilityClaim":False},
+        "accessibilityMobileOfflineInterfaceFinalization": {"version":"0.40.1","responsiveAudits":True,"accessibilityPreferences":True,"browserLocalSnapshots":True,"idempotentOfflineQueue":True,"explicitConflictReconciliation":True,"optInOfflineShell":True,"restrictedDataMayBeCached":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -4062,4 +4073,94 @@ def platform_beta_timeline_verify_route(auth: dict[str, str] = Depends(require_c
 def platform_beta_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return connected_platform_beta.dashboard()
+
+
+def _interface_finalization_http_error(exc: InterfaceFinalizationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/interface-finalization/health")
+def interface_finalization_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.health()
+
+
+@app.get("/v1/interface-finalization/policies")
+def interface_finalization_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization_policies(settings.interface_finalization_persistent_disk_mounted, settings.interface_offline_shell_enabled, settings.interface_max_snapshot_assets, settings.interface_max_queue_records)
+
+
+@app.get("/v1/interface-finalization/catalog")
+def interface_finalization_catalog_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.catalog()
+
+
+@app.get("/v1/interface-finalization/audits")
+def interface_finalization_audits_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.list_audits(limit)
+
+
+@app.post("/v1/interface-finalization/audits")
+def interface_finalization_audit_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return interface_finalization.create_audit(payload, _institutional_actor(auth))
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.get("/v1/interface-finalization/preferences/{profile_id}")
+def interface_finalization_preferences_get_route(profile_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return interface_finalization.get_preferences(profile_id)
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.put("/v1/interface-finalization/preferences/{profile_id}")
+def interface_finalization_preferences_save_route(profile_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return interface_finalization.save_preferences(profile_id, payload, _institutional_actor(auth))
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.get("/v1/interface-finalization/offline-snapshots")
+def interface_finalization_snapshots_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.list_snapshots(limit)
+
+
+@app.post("/v1/interface-finalization/offline-snapshots")
+def interface_finalization_snapshot_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return interface_finalization.create_snapshot(payload, _institutional_actor(auth))
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.get("/v1/interface-finalization/offline-operations")
+def interface_finalization_operations_route(status: str = "", limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return interface_finalization.list_operations(status, limit)
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.post("/v1/interface-finalization/offline-operations")
+def interface_finalization_operation_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return interface_finalization.queue_operation(payload, _institutional_actor(auth))
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.post("/v1/interface-finalization/reconcile")
+def interface_finalization_reconcile_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return interface_finalization.reconcile(payload, _institutional_actor(auth))
+    except InterfaceFinalizationError as exc: raise _interface_finalization_http_error(exc) from exc
+
+
+@app.get("/v1/interface-finalization/timeline/verify")
+def interface_finalization_timeline_verify_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.verify_timeline()
+
+
+@app.get("/v1/interface-finalization/dashboard")
+def interface_finalization_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return interface_finalization.dashboard()
 

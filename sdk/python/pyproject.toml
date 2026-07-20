@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "sustainable-catalyst-lab"
-version = "0.40.0"
+version = "0.40.1"
 description = "Dependency-light client for the Sustainable Catalyst Lab research API"
 requires-python = ">=3.10"
 dependencies = []

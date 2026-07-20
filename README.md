@@ -716,3 +716,7 @@ Publishes safe immutable reproduction records, nonce-bound verification challeng
 ## v0.38.2 research integrations
 
 Discover the API at `/v1/public-research-api`. Configure `SC_LAB_PUBLIC_API_KEY` and `SC_LAB_WEBHOOK_SIGNING_SECRET` before enabling institutional integrations. SDK source is included under `sdk/python` and `sdk/typescript`.
+
+## v0.40.1 — Accessibility, Mobile, Offline, and Interface Finalization
+
+The beta interface finalization layer combines responsive and accessibility audits, user preference profiles, browser-local project snapshots, idempotent offline operations, explicit conflict reconciliation, connection-state communication, and an opt-in offline shell. Backend records contain metadata, references, and hashes only; restricted research data cannot be registered for browser caching.

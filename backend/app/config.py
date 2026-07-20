@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.40.0"
+    version: str = "0.40.1"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -213,6 +213,12 @@ class Settings:
     platform_beta_history_limit: int = _int("SC_LAB_PLATFORM_BETA_HISTORY_LIMIT", 250000, 100, 5000000)
     platform_beta_max_records: int = _int("SC_LAB_PLATFORM_BETA_MAX_RECORDS", 100000, 100, 2000000)
     platform_beta_persistent_disk_mounted: bool = os.getenv("SC_LAB_PLATFORM_BETA_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    interface_finalization_db_path: str = os.getenv("SC_LAB_INTERFACE_FINALIZATION_DB_PATH", "./data/sc-lab-interface-finalization.sqlite3").strip()
+    interface_offline_shell_enabled: bool = os.getenv("SC_LAB_INTERFACE_OFFLINE_SHELL_ENABLED", "1").lower() not in {"0", "false", "no"}
+    interface_finalization_history_limit: int = _int("SC_LAB_INTERFACE_FINALIZATION_HISTORY_LIMIT", 250000, 100, 5000000)
+    interface_max_snapshot_assets: int = _int("SC_LAB_INTERFACE_MAX_SNAPSHOT_ASSETS", 5000, 1, 100000)
+    interface_max_queue_records: int = _int("SC_LAB_INTERFACE_MAX_QUEUE_RECORDS", 100000, 100, 2000000)
+    interface_finalization_persistent_disk_mounted: bool = os.getenv("SC_LAB_INTERFACE_FINALIZATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PLATFORM_BETA_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

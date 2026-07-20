@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-interface-finalization-policy/0.40.1",
+  "version": "0.40.1",
+  "wcagTarget": "2.2 AA oriented; not a certification claim",
+  "viewportProfiles": {
+    "phone": 390,
+    "tablet": 820,
+    "desktop": 1440
+  },
+  "touchTargetMinimumPx": 44,
+  "offlineShellOptInRequired": true,
+  "restrictedDataMayBeCached": false,
+  "rawResearchPayloadsStoredByBackend": false,
+  "conflictResolution": "explicit-receipts-only"
+}

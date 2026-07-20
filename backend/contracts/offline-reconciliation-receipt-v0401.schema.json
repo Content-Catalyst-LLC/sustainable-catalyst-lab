@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/offline-reconciliation-receipt-v0401.schema.json",
+  "title": "Offline Reconciliation Receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "schema",
+    "decisions",
+    "appliedCount",
+    "conflictCount",
+    "rejectedCount",
+    "receiptHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-offline-reconciliation-receipt/0.40.1"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "appliedCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "conflictCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "rejectedCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "receiptHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

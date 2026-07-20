@@ -61,6 +61,7 @@
           'multi-instance-operations-v0392' => 'Backup, migration & recovery',
           'performance-chaos-v0393' => 'Performance, load & chaos validation',
           'connected-platform-beta-v0400' => 'Connected research platform beta',
+          'interface-finalization-v0401' => 'Accessible mobile and offline workspace',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2313,6 +2314,53 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 }</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="create-support">Create support case</button><button type="button" class="sc-lab-button" data-beta-v0400-action="support">List support cases</button></div></div>
           <div class="sc-beta0400-card"><h4>Beta release-readiness gate</h4><textarea data-beta-v0400-readiness-json>{"id":"v0.40.0-institutional-beta-readiness"}</textarea><div class="sc-beta0400-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0400-action="readiness">Evaluate readiness</button><button type="button" class="sc-lab-button" data-beta-v0400-action="readiness-list">Prior reports</button><button type="button" class="sc-lab-button" data-beta-v0400-action="timeline">Beta timeline</button><button type="button" class="sc-lab-button" data-beta-v0400-action="verify-timeline">Verify timeline</button><button type="button" class="sc-lab-button" data-beta-v0400-action="refresh">Refresh dashboard</button></div><p class="sc-beta0400-note">Expansion is blocked when a required platform component is degraded or a critical feedback, limitation, or support record remains unresolved.</p></div>
           <div class="sc-beta0400-card is-wide"><h4>Beta operations response</h4><pre class="sc-beta0400-output" data-beta-v0400-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+
+      <section class="sc-lab-panel sc-if0401" data-lab-module="interface-finalization-v0401" data-module-panel="interface-finalization-v0401" data-service-worker-url="<?php echo esc_url(home_url('/?sc_lab_sw_v0401=1')); ?>" data-offline-public="<?php echo is_user_logged_in() ? '0' : '1'; ?>" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">INTERFACE / ACCESSIBILITY / MOBILE / OFFLINE / v0.40.1</p><h3>Accessible Mobile and Offline Research Workspace</h3><p>Audit the active Lab interface at phone, tablet, and desktop widths, apply accessibility preferences, retain browser-local project snapshots, queue disconnected work, reconcile conflicts explicitly, and opt into a restricted-data-safe offline shell.</p></header>
+        <div class="sc-if0401-banner"><strong>Finalization boundary</strong><span>Automated checks support WCAG 2.2 AA-oriented review but do not claim certification. The backend stores only offline metadata and hashes; raw project snapshots remain in this browser. Restricted records are never eligible for offline caching.</span></div>
+        <p class="sc-if0401-status" data-if-v0401-status role="status" aria-live="polite">Checking connection and interface state…</p>
+        <div class="sc-if0401-metrics" data-if-v0401-metrics></div>
+        <div class="sc-if0401-grid">
+          <div class="sc-if0401-card"><h4>Responsive accessibility audit</h4><p class="sc-if0401-note">Runs a browser audit for overflow, 44 px targets, keyboard behavior, accessible names, live regions, dialogs, tables, visualizations, reduced motion, forced colors, and text zoom.</p><div class="sc-if0401-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="audit">Audit current viewport</button><button type="button" class="sc-lab-button" data-if-v0401-action="audits">Prior audits</button><button type="button" class="sc-lab-button" data-if-v0401-action="catalog">Audit catalog</button><button type="button" class="sc-lab-button" data-if-v0401-action="policies">Policies</button></div></div>
+          <div class="sc-if0401-card"><h4>Accessibility and data-use preferences</h4><label>Profile ID<input data-if-v0401-profile-id value="default-researcher"></label><textarea data-if-v0401-preferences-json>{
+  "reducedMotion": false,
+  "increasedContrast": false,
+  "largeText": false,
+  "dataSaver": false,
+  "touchTargetMinimumPx": 44
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="save-preferences">Save and apply preferences</button></div>
+          <div class="sc-if0401-card"><h4>Opt-in offline shell</h4><p class="sc-if0401-note">Caches static Lab assets. A public Lab page is cached only after this explicit action; authenticated pages are not cached. Offline research payloads stay in IndexedDB on this device.</p><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="enable-shell">Enable offline shell</button></div>
+          <div class="sc-if0401-card"><h4>Browser-local project snapshot</h4><textarea data-if-v0401-local-json>{
+  "id": "wetland-local-snapshot",
+  "projectId": "wetland-beta-project",
+  "workspaceId": "wetland-research",
+  "classification": "internal",
+  "draft": {"stage":"analyze","notes":"Browser-local draft only"}
+}</textarea><div class="sc-if0401-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="save-local">Save locally</button><button type="button" class="sc-lab-button" data-if-v0401-action="list-local">List local snapshots</button></div></div>
+          <div class="sc-if0401-card"><h4>Governed offline snapshot metadata</h4><textarea data-if-v0401-snapshot-json>{
+  "id": "wetland-offline-manifest",
+  "projectId": "wetland-beta-project",
+  "workspaceId": "wetland-research",
+  "classification": "internal",
+  "assets": [{"id":"evidence-index","url":"/research/evidence-index.json","sha256":"2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881","sizeBytes":1,"mediaType":"application/json","classification":"internal"}]
+}</textarea><div class="sc-if0401-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="register-snapshot">Register metadata</button><button type="button" class="sc-lab-button" data-if-v0401-action="snapshots">List metadata</button></div></div>
+          <div class="sc-if0401-card"><h4>Disconnected operation queue</h4><textarea data-if-v0401-operation-json>{
+  "id": "wetland-draft-op-1",
+  "idempotencyKey": "wetland-draft-op-1",
+  "workspaceId": "wetland-research",
+  "projectId": "wetland-beta-project",
+  "operation": "save-draft",
+  "baseVersion": "project-v3",
+  "payload": {"stage":"analyze","summary":"Offline draft reference"}
+}</textarea><div class="sc-if0401-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="queue">Queue operation</button><button type="button" class="sc-lab-button" data-if-v0401-action="operations">List queue</button></div></div>
+          <div class="sc-if0401-card"><h4>Explicit synchronization reconciliation</h4><textarea data-if-v0401-reconcile-json>{
+  "id": "wetland-reconciliation-1",
+  "decisions": [{"operationId":"wetland-draft-op-1","status":"applied","remoteVersion":"project-v4","resolution":"Applied after reconnect"}]
+}</textarea><div class="sc-if0401-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-if-v0401-action="reconcile">Reconcile queue</button><button type="button" class="sc-lab-button" data-if-v0401-action="verify">Verify event chain</button><button type="button" class="sc-lab-button" data-if-v0401-action="refresh">Refresh dashboard</button></div></div>
+          <div class="sc-if0401-card is-wide"><h4>Interface and offline operations response</h4><pre class="sc-if0401-output" data-if-v0401-output>No response yet.</pre></div>
         </div>
       </section>
 

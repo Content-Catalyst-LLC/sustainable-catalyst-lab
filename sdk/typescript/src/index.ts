@@ -130,6 +130,17 @@ export class LabClient {
   evaluateBetaReadiness(payload: unknown) { return this.request("POST", "/v1/platform-beta/readiness-reports", payload); }
   platformBetaDashboard() { return this.request("GET", "/v1/platform-beta/dashboard"); }
 
+  interfaceFinalizationHealth() { return this.request("GET", "/v1/interface-finalization/health"); }
+  interfaceFinalizationPolicies() { return this.request("GET", "/v1/interface-finalization/policies"); }
+  interfaceFinalizationCatalog() { return this.request("GET", "/v1/interface-finalization/catalog"); }
+  createInterfaceAudit(payload: unknown) { return this.request("POST", "/v1/interface-finalization/audits", payload); }
+  listInterfaceAudits(limit = 200) { return this.request("GET", `/v1/interface-finalization/audits?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  saveInterfacePreferences(profileId: string, payload: unknown) { return this.request("PUT", `/v1/interface-finalization/preferences/${segment(profileId)}`, payload); }
+  createOfflineSnapshot(payload: unknown) { return this.request("POST", "/v1/interface-finalization/offline-snapshots", payload); }
+  queueOfflineOperation(payload: unknown) { return this.request("POST", "/v1/interface-finalization/offline-operations", payload); }
+  reconcileOfflineOperations(payload: unknown) { return this.request("POST", "/v1/interface-finalization/reconcile", payload); }
+  interfaceFinalizationDashboard() { return this.request("GET", "/v1/interface-finalization/dashboard"); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

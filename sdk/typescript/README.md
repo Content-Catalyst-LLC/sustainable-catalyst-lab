@@ -1,4 +1,4 @@
-# Sustainable Catalyst Lab TypeScript SDK v0.40.0
+# Sustainable Catalyst Lab TypeScript SDK v0.40.1
 
 A dependency-light client for typed handoffs, webhooks, embeds, institutional governance, security operations, and multi-instance recovery.
 
