@@ -1,3 +1,14 @@
+# v0.39.2 — Multi-Instance Operations, Backup, Migration, and Disaster Recovery
+
+- Added stable local and peer instance manifests.
+- Added transaction-consistent SQLite snapshots and artifact inventory/full-copy modes.
+- Added signed, hash-verified, single-root backup archives.
+- Added staged, non-destructive restore verification.
+- Added backup-gated, idempotent migration plans and execution journals.
+- Added signed cross-instance transfer bundles and imports.
+- Added RPO/RTO recovery drills and an operations dashboard.
+- Added WordPress operations console plus Python and TypeScript SDK methods.
+
 ## 0.39.1 — Security, Privacy, Secrets, and Audit Hardening
 
 - Added encrypted secrets, one-time credentials, replay protection, signed audits, and privacy operations.

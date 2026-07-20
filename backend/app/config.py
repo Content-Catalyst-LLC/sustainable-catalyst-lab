@@ -14,7 +14,7 @@ def _int(name: str, default: int, minimum: int, maximum: int) -> int:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "0.39.1"
+    version: str = "0.39.2"
     service_name: str = "Sustainable Catalyst Python Compute Core"
     environment: str = os.getenv("SC_LAB_ENVIRONMENT", "production")
     api_key: str = os.getenv("SC_LAB_COMPUTE_API_KEY", os.getenv("SC_LAB_API_KEY", "")).strip()
@@ -186,6 +186,21 @@ class Settings:
     security_require_request_nonce: bool = os.getenv("SC_LAB_REQUIRE_REQUEST_NONCE", "1").lower() not in {"0", "false", "no"}
     security_replay_db_path: str = os.getenv("SC_LAB_SECURITY_REPLAY_DB_PATH", "./data/sc-lab-request-replay.sqlite3").strip()
     security_privacy_persistent_disk_mounted: bool = os.getenv("SC_LAB_SECURITY_PRIVACY_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_INSTITUTIONAL_GOVERNANCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+
+    multi_instance_operations_db_path: str = os.getenv("SC_LAB_MULTI_INSTANCE_OPERATIONS_DB_PATH", "./data/sc-lab-multi-instance-operations.sqlite3").strip()
+    multi_instance_backup_root: str = os.getenv("SC_LAB_BACKUP_ROOT", "./data/sc-lab-backups").strip()
+    instance_id: str = os.getenv("SC_LAB_INSTANCE_ID", "").strip()
+    instance_name: str = os.getenv("SC_LAB_INSTANCE_NAME", "Sustainable Catalyst Lab").strip()
+    instance_environment: str = os.getenv("SC_LAB_INSTANCE_ENVIRONMENT", "development").strip()
+    instance_region: str = os.getenv("SC_LAB_INSTANCE_REGION", "local").strip()
+    instance_public_url: str = os.getenv("SC_LAB_INSTANCE_PUBLIC_URL", "").strip()
+    backup_signing_secret: str = os.getenv("SC_LAB_BACKUP_SIGNING_SECRET", os.getenv("SC_LAB_AUDIT_SIGNING_SECRET", os.getenv("SC_LAB_COMPUTE_SIGNING_SECRET", ""))).strip()
+    multi_instance_max_backups: int = _int("SC_LAB_MULTI_INSTANCE_MAX_BACKUPS", 1000, 1, 100000)
+    multi_instance_max_bundle_bytes: int = _int("SC_LAB_MULTI_INSTANCE_MAX_BUNDLE_BYTES", 2147483648, 1048576, 1099511627776)
+    multi_instance_history_limit: int = _int("SC_LAB_MULTI_INSTANCE_HISTORY_LIMIT", 250000, 100, 10000000)
+    recovery_rpo_hours: int = _int("SC_LAB_RECOVERY_RPO_HOURS", 24, 1, 8760)
+    recovery_rto_minutes: int = _int("SC_LAB_RECOVERY_RTO_MINUTES", 240, 1, 10080)
+    multi_instance_persistent_disk_mounted: bool = os.getenv("SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_SECURITY_PRIVACY_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
 
     @property
     def auth_mode(self) -> str:

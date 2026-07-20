@@ -1,0 +1,20 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/multi-instance-operations-policy-v0392.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "activeFileOverwriteByApi": false,
+  "backupManifestIntegrity": "sha256",
+  "forcePush": false,
+  "migrationMode": "additive-idempotent-journal",
+  "optionalManifestSignature": "hmac-sha256",
+  "pathTraversalProtection": true,
+  "recoveryObjectives": {
+    "rpoHours": 24,
+    "rtoMinutes": 240
+  },
+  "restoreMode": "staged-only",
+  "schema": "sc-lab-multi-instance-operations-policy/0.39.2",
+  "sqliteSnapshotMethod": "sqlite-backup-api",
+  "symlinkFollowing": false,
+  "transferMode": "signed-single-root-bundle",
+  "version": "0.39.2"
+}

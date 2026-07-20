@@ -494,6 +494,28 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-conflicts/(?P<conflict>[A-Za-z0-9._:-]{1,180})/resolve', array('methods'=>'POST','callback'=>array(__CLASS__,'edge_sync_conflict_resolve'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
         register_rest_route(self::NAMESPACE, '/compute/core/team-workspaces/(?P<workspace>[A-Za-z0-9._:-]{1,180})/edge-sync-timeline', array('methods'=>'GET','callback'=>array(__CLASS__,'edge_sync_timeline'),'permission_callback'=>array(__CLASS__,'collaboration_permission')));
 
+        // v0.39.2 Multi-Instance Operations, Backup, Migration, and Disaster Recovery.
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/health', array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_health'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_policies'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/instance', array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_instance'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/instances', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_instances'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_instance_register'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/backups', array(
+            array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_backups'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+            array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_backup_create'),'permission_callback'=>array(__CLASS__,'operations_permission')),
+        ));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/backups/(?P<backup>[A-Za-z0-9._:-]{1,180})/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_backup_verify'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/backups/(?P<backup>[A-Za-z0-9._:-]{1,180})/restore', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_restore_stage'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/migrations', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_migration_create'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/migrations/(?P<migration>[A-Za-z0-9._:-]{1,180})/execute', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_migration_execute'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/transfers', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_transfer_create'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/transfers/(?P<transfer>[A-Za-z0-9._:-]{1,180})/verify', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_transfer_verify'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/transfers/import', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_transfer_import'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/recovery-drills', array('methods'=>'POST','callback'=>array(__CLASS__,'multi_instance_operations_recovery_drill'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+        register_rest_route(self::NAMESPACE, '/compute/core/multi-instance-operations/dashboard', array('methods'=>'GET','callback'=>array(__CLASS__,'multi_instance_operations_dashboard'),'permission_callback'=>array(__CLASS__,'operations_permission')));
+
         register_rest_route(self::NAMESPACE, '/compute/core/jobs', array(
             array('methods'=>'GET','callback'=>array(__CLASS__,'jobs_list'),'permission_callback'=>'__return_true'),
             array('methods'=>'POST','callback'=>array(__CLASS__,'job_create'),'permission_callback'=>'__return_true'),
@@ -1137,6 +1159,24 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function research_interoperability_receipt_verify(WP_REST_Request $request){return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/research-handoff-receipts/'.rawurlencode($request['receipt']));}
     public static function research_interoperability_withdraw(WP_REST_Request $request){$p=self::research_interoperability_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/research-handoffs/'.rawurlencode($request['handoff']).'/withdraw','POST',$p,1048576);}
     public static function research_interoperability_timeline(WP_REST_Request $request){$limit=max(1,min(5000,intval($request->get_param('limit')?:500)));return self::proxy('/v1/team-workspaces/'.rawurlencode($request['workspace']).'/interoperability-timeline?limit='.$limit);}
+
+    private static function multi_instance_operations_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){$p=array();}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,200000,18);return is_wp_error($clean)?$clean:$clean;}
+    public static function multi_instance_operations_health(){return self::proxy('/v1/multi-instance-operations/health','GET',null,8388608);}
+    public static function multi_instance_operations_policies(){return self::proxy('/v1/multi-instance-operations/policies','GET',null,8388608);}
+    public static function multi_instance_operations_instance(){return self::proxy('/v1/multi-instance-operations/instance','GET',null,8388608);}
+    public static function multi_instance_operations_instances(){return self::proxy('/v1/multi-instance-operations/instances','GET',null,8388608);}
+    public static function multi_instance_operations_instance_register(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/instances','POST',$p,8388608);}
+    public static function multi_instance_operations_backups(WP_REST_Request $request){$limit=max(1,min(2000,intval($request->get_param('limit')?:200)));return self::proxy('/v1/multi-instance-operations/backups?limit='.$limit,'GET',null,8388608);}
+    public static function multi_instance_operations_backup_create(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/backups','POST',$p,8388608);}
+    public static function multi_instance_operations_backup_verify(WP_REST_Request $request){return self::proxy('/v1/multi-instance-operations/backups/'.rawurlencode($request['backup']).'/verify','POST',array(),8388608);}
+    public static function multi_instance_operations_restore_stage(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/backups/'.rawurlencode($request['backup']).'/restore','POST',$p,8388608);}
+    public static function multi_instance_operations_migration_create(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/migrations','POST',$p,8388608);}
+    public static function multi_instance_operations_migration_execute(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/migrations/'.rawurlencode($request['migration']).'/execute','POST',$p,8388608);}
+    public static function multi_instance_operations_transfer_create(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/transfers','POST',$p,8388608);}
+    public static function multi_instance_operations_transfer_verify(WP_REST_Request $request){return self::proxy('/v1/multi-instance-operations/transfers/'.rawurlencode($request['transfer']).'/verify','POST',array(),8388608);}
+    public static function multi_instance_operations_transfer_import(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/transfers/import','POST',$p,8388608);}
+    public static function multi_instance_operations_recovery_drill(WP_REST_Request $request){$p=self::multi_instance_operations_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/multi-instance-operations/recovery-drills','POST',$p,8388608);}
+    public static function multi_instance_operations_dashboard(){return self::proxy('/v1/multi-instance-operations/dashboard','GET',null,8388608);}
 
     private static function surrogate_rom_payload(WP_REST_Request $request){$p=$request->get_json_params();if(!is_array($p)){return new WP_Error('sc_lab_invalid_surrogate_rom_payload','A JSON surrogate or reduced-order payload is required.',array('status'=>400));}$nodes=0;$clean=self::sanitize_tree($p,0,$nodes,500000,16);return is_wp_error($clean)?$clean:$clean;}
     public static function surrogate_rom_health(){return self::proxy('/v1/surrogate-rom/health');}

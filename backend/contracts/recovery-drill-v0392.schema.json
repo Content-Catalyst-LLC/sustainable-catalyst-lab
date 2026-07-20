@@ -1,0 +1,97 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/recovery-drill-v0392.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "activeFilesOverwritten": {
+      "const": false
+    },
+    "backupAgeHours": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "backupId": {
+      "type": "string"
+    },
+    "backupVerified": {
+      "type": "boolean"
+    },
+    "completedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "drillId": {
+      "type": "string"
+    },
+    "elapsedSeconds": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "instanceId": {
+      "type": "string"
+    },
+    "restoreId": {
+      "type": "string"
+    },
+    "restoreVerified": {
+      "type": "boolean"
+    },
+    "resultHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "rpoPassed": {
+      "type": "boolean"
+    },
+    "rpoTargetHours": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "rtoPassed": {
+      "type": "boolean"
+    },
+    "rtoTargetMinutes": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schema": {
+      "const": "sc-lab-recovery-drill/0.39.2"
+    },
+    "startedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ]
+    },
+    "version": {
+      "const": "0.39.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "drillId",
+    "instanceId",
+    "backupId",
+    "restoreId",
+    "status",
+    "startedAt",
+    "completedAt",
+    "elapsedSeconds",
+    "backupAgeHours",
+    "rpoTargetHours",
+    "rtoTargetMinutes",
+    "rpoPassed",
+    "rtoPassed",
+    "backupVerified",
+    "restoreVerified",
+    "activeFilesOverwritten",
+    "resultHash"
+  ],
+  "title": "Sustainable Catalyst Lab Recovery Drill v0.39.2",
+  "type": "object"
+}

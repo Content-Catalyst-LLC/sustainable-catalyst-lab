@@ -207,6 +207,55 @@ class LabClient:
         return self.request("GET", f"/v1/institutions/{_segment(institution_id)}/security-audit/verify")
 
 
+    def multi_instance_operations_health(self):
+        return self.request("GET", "/v1/multi-instance-operations/health")
+
+    def multi_instance_operations_policies(self):
+        return self.request("GET", "/v1/multi-instance-operations/policies")
+
+    def instance_manifest(self):
+        return self.request("GET", "/v1/multi-instance-operations/instance")
+
+    def list_instances(self):
+        return self.request("GET", "/v1/multi-instance-operations/instances")
+
+    def register_instance(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/instances", payload)
+
+    def list_backups(self, limit: int = 200):
+        return self.request("GET", f"/v1/multi-instance-operations/backups?limit={max(1, min(int(limit), 2000))}")
+
+    def create_backup(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/backups", payload)
+
+    def verify_backup(self, backup_id: str):
+        return self.request("POST", f"/v1/multi-instance-operations/backups/{_segment(backup_id)}/verify", {})
+
+    def stage_restore(self, backup_id: str, payload: Any):
+        return self.request("POST", f"/v1/multi-instance-operations/backups/{_segment(backup_id)}/restore", payload)
+
+    def create_migration_plan(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/migrations", payload)
+
+    def execute_migration(self, migration_id: str, payload: Any):
+        return self.request("POST", f"/v1/multi-instance-operations/migrations/{_segment(migration_id)}/execute", payload)
+
+    def create_instance_transfer(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/transfers", payload)
+
+    def verify_instance_transfer(self, transfer_id: str):
+        return self.request("POST", f"/v1/multi-instance-operations/transfers/{_segment(transfer_id)}/verify", {})
+
+    def import_instance_transfer(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/transfers/import", payload)
+
+    def run_recovery_drill(self, payload: Any):
+        return self.request("POST", "/v1/multi-instance-operations/recovery-drills", payload)
+
+    def multi_instance_operations_dashboard(self):
+        return self.request("GET", "/v1/multi-instance-operations/dashboard")
+
+
 def verify_webhook(secret: str, timestamp: str, body: bytes, signature: str) -> bool:
     expected = hmac.new(secret.encode("utf-8"), timestamp.encode("utf-8") + b"." + body, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature)

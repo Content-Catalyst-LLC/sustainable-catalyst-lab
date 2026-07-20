@@ -357,3 +357,24 @@ SC_LAB_ARTIFACT_REPOSITORY_PERSISTENT_DISK_MOUNTED=0
 ## v0.37.2 Public Reproduction and Verification Portal
 
 Publishes safe immutable reproduction records, nonce-bound verification challenges, and signed receipts without exposing private workspace data, executable code, credentials, callbacks, or restricted dataset bytes.
+
+
+## v0.39.2 Multi-Instance Operations, Backup, Migration, and Disaster Recovery
+
+The authenticated `/v1/multi-instance-operations/*` service provides stable instance manifests, consistent SQLite snapshots, signed backup archives, staged restore verification, idempotent migration journals, signed cross-instance transfer bundles, and RPO/RTO recovery drills. Restore operations are deliberately non-destructive: the service extracts and verifies into a new staging directory and never replaces active production files through the API.
+
+```bash
+SC_LAB_MULTI_INSTANCE_OPERATIONS_DB_PATH=/app/data/sc-lab-multi-instance-operations.sqlite3
+SC_LAB_BACKUP_ROOT=/app/data/sc-lab-backups
+SC_LAB_INSTANCE_ID=sc-lab-production
+SC_LAB_INSTANCE_NAME="Sustainable Catalyst Lab"
+SC_LAB_INSTANCE_ENVIRONMENT=production
+SC_LAB_INSTANCE_REGION=us-central
+SC_LAB_INSTANCE_PUBLIC_URL=https://lab.example.org
+SC_LAB_BACKUP_SIGNING_SECRET=<strong-random-secret>
+SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED=1
+SC_LAB_RECOVERY_RPO_HOURS=24
+SC_LAB_RECOVERY_RTO_MINUTES=240
+```
+
+The backup signing secret belongs only in the hosting provider's secret manager. WordPress and browser clients must never receive it. Remote object storage and automated failover are intentionally not enabled by this release.

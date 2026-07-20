@@ -1,0 +1,108 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/instance-manifest-v0392.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactStore": {
+      "type": "object"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "generatedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "instanceId": {
+      "pattern": "^[a-z0-9][a-z0-9._:-]{1,127}$",
+      "type": "string"
+    },
+    "manifestHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "type": "string"
+    },
+    "publicUrl": {
+      "maxLength": 500,
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "local",
+        "peer"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-instance-manifest/0.39.2"
+    },
+    "signingConfigured": {
+      "type": "boolean"
+    },
+    "sources": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "available",
+          "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "type": "string"
+    },
+    "storageDurability": {
+      "enum": [
+        "persistent-disk",
+        "instance-local",
+        "unknown"
+      ]
+    },
+    "version": {
+      "const": "0.39.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "instanceId",
+    "name",
+    "environment",
+    "region",
+    "role",
+    "status",
+    "storageDurability",
+    "signingConfigured",
+    "sources",
+    "artifactStore",
+    "generatedAt",
+    "manifestHash"
+  ],
+  "title": "Sustainable Catalyst Lab Instance Manifest v0.39.2",
+  "type": "object"
+}

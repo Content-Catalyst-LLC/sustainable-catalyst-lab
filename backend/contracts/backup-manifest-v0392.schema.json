@@ -1,0 +1,164 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/backup-manifest-v0392.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "additionalProperties": false,
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "fileCount": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "inventoryPath": {
+          "type": "string"
+        },
+        "inventorySha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "none",
+            "manifest",
+            "full"
+          ]
+        },
+        "totalBytes": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "mode",
+        "available",
+        "fileCount",
+        "totalBytes"
+      ],
+      "type": "object"
+    },
+    "backupId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "instance": {
+      "additionalProperties": true,
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "manifestHash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "schema": {
+          "const": "sc-lab-instance-manifest/0.39.2"
+        },
+        "version": {
+          "const": "0.39.2"
+        }
+      },
+      "required": [
+        "schema",
+        "version",
+        "instanceId",
+        "name",
+        "manifestHash"
+      ],
+      "type": "object"
+    },
+    "label": {
+      "type": "string"
+    },
+    "manifestHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "restoreMode": {
+      "const": "staged-only"
+    },
+    "schema": {
+      "const": "sc-lab-backup-manifest/0.39.2"
+    },
+    "signature": {
+      "pattern": "^(|[0-9a-f]{64})$",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "sqlite-snapshot",
+              "file-copy"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "sizeBytes": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "path",
+          "sizeBytes",
+          "sha256"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "const": "sealed"
+    },
+    "totalPayloadBytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "version": {
+      "const": "0.39.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "backupId",
+    "instance",
+    "label",
+    "status",
+    "createdBy",
+    "createdAt",
+    "sources",
+    "artifacts",
+    "totalPayloadBytes",
+    "restoreMode",
+    "manifestHash",
+    "signature"
+  ],
+  "title": "Sustainable Catalyst Lab Backup Manifest v0.39.2",
+  "type": "object"
+}

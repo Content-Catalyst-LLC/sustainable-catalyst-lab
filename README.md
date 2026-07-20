@@ -1,3 +1,8 @@
+
+## v0.39.2 — Multi-Instance Operations, Backup, Migration, and Disaster Recovery
+
+The Lab now provides stable instance identity, consistent SQLite snapshots, signed and hash-verified backup archives, staged non-destructive restore, idempotent migration journals, signed cross-instance recovery transfer, and measurable RPO/RTO disaster-recovery drills. See `docs/multi-instance-operations-v0392.md`.
+
 # Sustainable Catalyst Lab
 
 **Current release: v0.39.1 — Institutional Administration, Identity, and Governance**

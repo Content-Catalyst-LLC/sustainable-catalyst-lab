@@ -1,0 +1,72 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/instance-transfer-envelope-v0392.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backupBundleHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "backupFileName": {
+      "type": "string"
+    },
+    "backupId": {
+      "type": "string"
+    },
+    "backupManifestHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "envelopeHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-instance-transfer-envelope/0.39.2"
+    },
+    "signature": {
+      "pattern": "^(|[0-9a-f]{64})$",
+      "type": "string"
+    },
+    "sourceInstanceId": {
+      "type": "string"
+    },
+    "status": {
+      "const": "sealed"
+    },
+    "targetInstanceId": {
+      "type": "string"
+    },
+    "transferId": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.39.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "transferId",
+    "sourceInstanceId",
+    "targetInstanceId",
+    "backupId",
+    "backupFileName",
+    "backupBundleHash",
+    "backupManifestHash",
+    "status",
+    "createdBy",
+    "createdAt",
+    "envelopeHash",
+    "signature"
+  ],
+  "title": "Sustainable Catalyst Lab Instance Transfer Envelope v0.39.2",
+  "type": "object"
+}

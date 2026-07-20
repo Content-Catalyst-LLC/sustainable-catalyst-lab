@@ -79,6 +79,24 @@ export class LabClient {
   createPrivacyRequest(institutionId: string, payload: unknown) { return this.request("POST", `/v1/institutions/${segment(institutionId)}/privacy-requests`, payload); }
   verifySecurityAudit(institutionId: string) { return this.request("GET", `/v1/institutions/${segment(institutionId)}/security-audit/verify`); }
 
+
+  multiInstanceOperationsHealth() { return this.request("GET", "/v1/multi-instance-operations/health"); }
+  multiInstanceOperationsPolicies() { return this.request("GET", "/v1/multi-instance-operations/policies"); }
+  instanceManifest() { return this.request("GET", "/v1/multi-instance-operations/instance"); }
+  listInstances() { return this.request("GET", "/v1/multi-instance-operations/instances"); }
+  registerInstance(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/instances", payload); }
+  listBackups(limit = 200) { return this.request("GET", `/v1/multi-instance-operations/backups?limit=${Math.max(1, Math.min(Math.trunc(limit), 2000))}`); }
+  createBackup(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/backups", payload); }
+  verifyBackup(backupId: string) { return this.request("POST", `/v1/multi-instance-operations/backups/${segment(backupId)}/verify`, {}); }
+  stageRestore(backupId: string, payload: unknown) { return this.request("POST", `/v1/multi-instance-operations/backups/${segment(backupId)}/restore`, payload); }
+  createMigrationPlan(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/migrations", payload); }
+  executeMigration(migrationId: string, payload: unknown) { return this.request("POST", `/v1/multi-instance-operations/migrations/${segment(migrationId)}/execute`, payload); }
+  createInstanceTransfer(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/transfers", payload); }
+  verifyInstanceTransfer(transferId: string) { return this.request("POST", `/v1/multi-instance-operations/transfers/${segment(transferId)}/verify`, {}); }
+  importInstanceTransfer(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/transfers/import", payload); }
+  runRecoveryDrill(payload: unknown) { return this.request("POST", "/v1/multi-instance-operations/recovery-drills", payload); }
+  multiInstanceOperationsDashboard() { return this.request("GET", "/v1/multi-instance-operations/dashboard"); }
+
 }
 
 export async function verifyWebhook(secret: string, timestamp: string, body: string, signature: string): Promise<boolean> {

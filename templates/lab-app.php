@@ -58,6 +58,7 @@
           'typed-cross-product-handoffs' => 'Typed product handoffs',
           'public-research-integrations' => 'Public API & integrations',
           'institutional-governance-v0390' => 'Institutional governance',
+          'multi-instance-operations-v0392' => 'Backup, migration & recovery',
           'model-registry' => 'Scientific model registry',
           'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
@@ -2246,6 +2247,45 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
   "request": {"summary":"Share aggregate indicators"}
 }</textarea><label>Approval request ID<input data-ig-v0390-approval value="wetland-share-approval"></label><textarea data-ig-v0390-decision-json>{"decision":"approve","rationale":"Aggregate public-interest data only"}</textarea><div class="sc-ig0390-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ig-v0390-action="request-approval">Request approval</button><button type="button" class="sc-lab-button" data-ig-v0390-action="approvals">List approvals</button><button type="button" class="sc-lab-button" data-ig-v0390-action="decide">Record decision</button></div></div>
           <div class="sc-ig0390-card is-wide"><h4>Institutional governance response</h4><pre class="sc-ig0390-output" data-ig-v0390-output>No response yet.</pre></div>
+        </div>
+      </section>
+
+      <section class="sc-lab-panel sc-mi0392" data-lab-module="multi-instance-operations-v0392" data-module-panel="multi-instance-operations-v0392" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">SYSTEM / RECOVERY OPERATIONS / v0.39.2</p><h3>Multi-Instance Operations, Backup, Migration, and Disaster Recovery</h3><p>Identify this Lab instance, create consistent signed backups, verify archives, stage non-destructive restores, execute idempotent migration plans, transfer governed recovery bundles between instances, and validate recovery objectives.</p></header>
+        <p class="sc-mi0392-status" data-mi-v0392-status role="status" aria-live="polite">Connecting to recovery operations…</p>
+        <div class="sc-mi0392-metrics" data-mi-v0392-metrics></div>
+        <div class="sc-mi0392-grid">
+          <div class="sc-mi0392-card"><h4>Instance registry</h4><textarea data-mi-v0392-instance-json>{
+  "id": "sc-lab-secondary",
+  "name": "Secondary Research Node",
+  "environment": "production",
+  "region": "us-central",
+  "publicUrl": "https://lab-secondary.example.org",
+  "role": "recovery"
+}</textarea><div class="sc-mi0392-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mi-v0392-action="register-instance">Register peer</button><button type="button" class="sc-lab-button" data-mi-v0392-action="instance">Local instance</button><button type="button" class="sc-lab-button" data-mi-v0392-action="instances">All instances</button><button type="button" class="sc-lab-button" data-mi-v0392-action="policies">Policies</button></div></div>
+          <div class="sc-mi0392-card"><h4>Consistent backup and verification</h4><textarea data-mi-v0392-backup-json>{
+  "label": "pre-release-v0.39.2",
+  "artifactMode": "manifest",
+  "includeSources": []
+}</textarea><label>Backup ID<input data-mi-v0392-backup placeholder="backup identifier"></label><textarea data-mi-v0392-restore-json>{"targetName":"verification-restore"}</textarea><div class="sc-mi0392-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mi-v0392-action="create-backup">Create backup</button><button type="button" class="sc-lab-button" data-mi-v0392-action="backups">List</button><button type="button" class="sc-lab-button" data-mi-v0392-action="verify-backup">Verify</button><button type="button" class="sc-lab-button" data-mi-v0392-action="stage-restore">Stage restore</button></div><p class="sc-mi0392-note">API restores are staged and verified. They never overwrite active production files.</p></div>
+          <div class="sc-mi0392-card"><h4>Migration journal</h4><textarea data-mi-v0392-migration-json>{
+  "sourceVersion": "0.39.1",
+  "targetVersion": "0.39.2",
+  "backupId": "replace-with-verified-backup-id",
+  "steps": [
+    {"id":"validate-backup","kind":"validation"},
+    {"id":"deploy-release","kind":"deployment"}
+  ]
+}</textarea><label>Migration ID<input data-mi-v0392-migration placeholder="migration identifier"></label><textarea data-mi-v0392-execute-json>{"confirmed":true}</textarea><div class="sc-mi0392-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mi-v0392-action="create-migration">Create plan</button><button type="button" class="sc-lab-button" data-mi-v0392-action="execute-migration">Execute once</button></div></div>
+          <div class="sc-mi0392-card"><h4>Cross-instance recovery transfer</h4><textarea data-mi-v0392-transfer-json>{
+  "backupId": "replace-with-verified-backup-id",
+  "targetInstanceId": "sc-lab-secondary"
+}</textarea><label>Transfer ID<input data-mi-v0392-transfer placeholder="transfer identifier"></label><textarea data-mi-v0392-import-json>{"fileName":"replace-with-transfer-file.zip"}</textarea><div class="sc-mi0392-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mi-v0392-action="create-transfer">Create transfer</button><button type="button" class="sc-lab-button" data-mi-v0392-action="verify-transfer">Verify</button><button type="button" class="sc-lab-button" data-mi-v0392-action="import-transfer">Import</button></div></div>
+          <div class="sc-mi0392-card"><h4>Recovery drill</h4><textarea data-mi-v0392-drill-json>{
+  "backupId": "replace-with-verified-backup-id",
+  "targetName": "quarterly-recovery-drill"
+}</textarea><button type="button" class="sc-lab-button sc-lab-button-primary" data-mi-v0392-action="run-drill">Run RPO/RTO drill</button></div>
+          <div class="sc-mi0392-card is-wide"><h4>Operations response</h4><div class="sc-mi0392-actions"><button type="button" class="sc-lab-button" data-mi-v0392-action="refresh">Refresh dashboard</button></div><pre class="sc-mi0392-output" data-mi-v0392-output>No response yet.</pre></div>
         </div>
       </section>
 

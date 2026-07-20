@@ -1,0 +1,87 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/migration-plan-v0392.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "migrationId": {
+      "type": "string"
+    },
+    "planHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "rollbackStrategy": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-migration-plan/0.39.2"
+    },
+    "sourceInstanceId": {
+      "type": "string"
+    },
+    "sourceVersion": {
+      "type": "string"
+    },
+    "status": {
+      "const": "planned"
+    },
+    "steps": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "destructive": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "order",
+          "id",
+          "description",
+          "destructive"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "targetVersion": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.39.2"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "migrationId",
+    "sourceInstanceId",
+    "sourceVersion",
+    "targetVersion",
+    "status",
+    "steps",
+    "rollbackStrategy",
+    "createdBy",
+    "createdAt",
+    "planHash"
+  ],
+  "title": "Sustainable Catalyst Lab Migration Plan v0.39.2",
+  "type": "object"
+}

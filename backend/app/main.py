@@ -52,6 +52,7 @@ from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
+from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
 from .registry import catalog, resolve
 from .schemas import ComputeRequest, ComputeResponse
 from .security import require_compute_auth
@@ -81,6 +82,48 @@ typed_cross_product_handoffs = TypedCrossProductHandoffs(research_interoperabili
 public_research_integrations = PublicResearchIntegrationGateway(settings.public_integration_db_path, team_workspaces, settings.webhook_signing_secret, settings.webhook_delivery_enabled, settings.public_integration_persistent_disk_mounted, settings.public_integration_max_subscriptions, settings.public_integration_max_deliveries)
 institutional_governance = InstitutionalGovernanceManager(settings.institutional_governance_db_path, team_workspaces, settings.institutional_governance_persistent_disk_mounted, settings.institutional_governance_max_institutions, settings.institutional_governance_max_principals, settings.institutional_governance_history_limit)
 security_privacy = SecurityPrivacyManager(settings.security_privacy_db_path, settings.secret_master_key, settings.secret_previous_master_keys, settings.audit_signing_secret, settings.security_privacy_persistent_disk_mounted, settings.security_privacy_max_secrets, settings.security_privacy_max_credentials, settings.security_privacy_history_limit, settings.service_credential_ttl_days)
+multi_instance_operations = MultiInstanceOperationsManager(
+    settings.multi_instance_operations_db_path,
+    settings.multi_instance_backup_root,
+    settings.instance_id,
+    settings.instance_name,
+    settings.instance_environment,
+    settings.instance_region,
+    settings.instance_public_url,
+    settings.backup_signing_secret,
+    settings.multi_instance_persistent_disk_mounted,
+    {
+        "jobs": settings.job_db_path,
+        "dispatcher": settings.dispatcher_db_path,
+        "artifacts": settings.artifact_db_path,
+        "workflows": settings.workflow_db_path,
+        "workflow-schedules": settings.workflow_schedule_db_path,
+        "experiment-campaigns": settings.experiment_campaign_db_path,
+        "closed-loop": settings.closed_loop_db_path,
+        "model-registry": settings.model_registry_db_path,
+        "ensemble-studies": settings.ensemble_study_db_path,
+        "surrogate-rom": settings.surrogate_rom_db_path,
+        "team-workspaces": settings.team_workspace_db_path,
+        "artifact-repository": settings.artifact_repository_db_path,
+        "institutional-nodes": settings.institutional_node_db_path,
+        "edge-sync": settings.edge_sync_db_path,
+        "publication-studio": settings.publication_studio_db_path,
+        "manuscript-assembly": settings.manuscript_assembly_db_path,
+        "public-reproduction": settings.public_reproduction_db_path,
+        "interoperability": settings.interoperability_db_path,
+        "public-integrations": settings.public_integration_db_path,
+        "institutional-governance": settings.institutional_governance_db_path,
+        "security-privacy": settings.security_privacy_db_path,
+        "request-replay": settings.security_replay_db_path,
+        "multi-instance-operations": settings.multi_instance_operations_db_path,
+    },
+    settings.artifact_root,
+    settings.multi_instance_max_backups,
+    settings.multi_instance_max_bundle_bytes,
+    settings.multi_instance_history_limit,
+    settings.recovery_rpo_hours,
+    settings.recovery_rto_minutes,
+)
 
 
 @asynccontextmanager
@@ -215,6 +258,7 @@ def health():
         "publicResearchIntegrations": {"version":"0.38.2","stableApiCatalog":True,"scopedAuthentication":True,"signedWebhooks":True,"ssrfProtection":True,"signedExpiringEmbeds":True,"pythonSdk":True,"typescriptSdk":True,"browserEmbedSdk":True,"outboundDeliveryEnabled":settings.webhook_delivery_enabled},
         "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":True,"singleSignOn":False},
         "securityPrivacyHardening": {"version":"0.39.1","aes256GcmSecrets":True,"credentialHashing":True,"requestNonceReplayProtection":True,"signedAuditChains":True,"privacyScanning":True,"privacyRequests":True},
+        "multiInstanceOperations": {"version":"0.39.2","stableInstanceIdentity":True,"consistentSqliteSnapshots":True,"signedBackupManifests":True,"stagedRestore":True,"idempotentMigrations":True,"signedCrossInstanceTransfers":True,"rpoRtoDrills":True,"activeFileOverwriteByApi":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -3610,3 +3654,123 @@ def security_privacy_audit_verify_route(institution_id: str, auth: dict[str, str
         return security_privacy.verify_audit_chain(institution_id, _institutional_actor(auth))
     except SecurityHardeningError as exc:
         raise _security_privacy_http_error(exc) from exc
+
+def _multi_instance_http_error(exc: OperationsError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/multi-instance-operations/health")
+def multi_instance_operations_health_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return multi_instance_operations.health()
+
+
+@app.get("/v1/multi-instance-operations/policies")
+def multi_instance_operations_policies_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return multi_instance_operations_policies(settings.multi_instance_persistent_disk_mounted)
+
+
+@app.get("/v1/multi-instance-operations/instance")
+def multi_instance_operations_instance_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return {"ok": True, "version": "0.39.2", "instance": multi_instance_operations.instance_manifest()}
+
+
+@app.get("/v1/multi-instance-operations/instances")
+def multi_instance_operations_instances_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return multi_instance_operations.list_instances()
+
+
+@app.post("/v1/multi-instance-operations/instances")
+def multi_instance_operations_register_instance_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.register_peer(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.get("/v1/multi-instance-operations/backups")
+def multi_instance_operations_backups_route(limit: int = Query(200, ge=1, le=2000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return multi_instance_operations.list_backups(limit)
+
+
+@app.post("/v1/multi-instance-operations/backups")
+def multi_instance_operations_create_backup_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.create_backup(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/backups/{backup_id}/verify")
+def multi_instance_operations_verify_backup_route(backup_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.verify_backup(backup_id, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/backups/{backup_id}/restore")
+def multi_instance_operations_restore_route(backup_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.stage_restore(backup_id, payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/migrations")
+def multi_instance_operations_migration_plan_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.create_migration_plan(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/migrations/{migration_id}/execute")
+def multi_instance_operations_migration_execute_route(migration_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.execute_migration(migration_id, payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/transfers")
+def multi_instance_operations_transfer_create_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.create_transfer(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/transfers/{transfer_id}/verify")
+def multi_instance_operations_transfer_verify_route(transfer_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.verify_transfer(transfer_id, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/transfers/import")
+def multi_instance_operations_transfer_import_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.import_transfer(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.post("/v1/multi-instance-operations/recovery-drills")
+def multi_instance_operations_recovery_drill_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        return multi_instance_operations.run_recovery_drill(payload, _institutional_actor(auth))
+    except OperationsError as exc:
+        raise _multi_instance_http_error(exc) from exc
+
+
+@app.get("/v1/multi-instance-operations/dashboard")
+def multi_instance_operations_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return multi_instance_operations.dashboard()
+
