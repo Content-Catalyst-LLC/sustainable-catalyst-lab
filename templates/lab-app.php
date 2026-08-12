@@ -51,6 +51,7 @@
           'scholarly-discovery' => 'Scholarly discovery',
           'experiment-framework' => 'Experiment framework',
           'design-studies' => 'Design studies',
+          'model-studio' => 'Model Studio',
           'model-calibration' => 'Model calibration',
           'manuscript-assembly' => 'Manuscript, report & notebook assembly',
           'public-reproduction' => 'Public reproduction & verification',
@@ -1538,6 +1539,35 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 
     <div data-instrumentation-validation-custody-root></div>
 </section>
+
+      <section class="sc-lab-panel sc-lab-module sc-ms0410" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.41.0</p><h3>Model Studio</h3><p>Define a scientific model once, bind it to project data, preview it through the shared scientific graph contract, and prepare governed handoffs to calibration, uncertainty, design studies, registry, or Workbench.</p></header>
+        <p class="sc-ms0410-status" data-ms-v0410-status role="status" aria-live="polite">Model Studio loading…</p>
+        <div class="sc-ms0410-workflow" aria-label="Model Studio workflow"><span>Define</span><span>Bind data</span><span>Preview</span><span>Fit</span><span>Diagnose</span><span>Uncertainty</span><span>Compare</span><span>Register</span></div>
+        <div class="sc-ms0410-grid">
+          <section class="sc-ms0410-card"><h4>Model definition</h4>
+            <label>Model title<input data-ms-v0410-title value="Scientific model"></label>
+            <label>Model family<select data-ms-v0410-family><option value="linear-multivariate">Linear multivariate</option><option value="polynomial-univariate">Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option><option value="registered-model">Registered scientific model</option><option value="declarative-expression">Declarative expression — definition only</option></select></label>
+            <label data-ms-v0410-equation-wrap hidden>Equation definition<input data-ms-v0410-equation value="T = b0 + b1*C"><small data-ms-v0410-family-note></small></label>
+            <label data-ms-v0410-registered-wrap hidden>Registered model ID<input data-ms-v0410-registered-model placeholder="model-registry ID or alias"></label>
+            <div class="sc-ms0410-inline"><label>Feature symbols<input data-ms-v0410-features value="x" placeholder="x,z"></label><label>Response symbol<input data-ms-v0410-response value="y"></label></div>
+            <label>Parameter symbols<input data-ms-v0410-parameters value="b0,b1" placeholder="b0,b1,b2"></label>
+            <div class="sc-ms0410-inline"><label>Primary X unit<input data-ms-v0410-x-unit placeholder="%"></label><label>Y unit<input data-ms-v0410-y-unit placeholder="°C"></label></div>
+            <label>Dataset registry ID<input data-ms-v0410-dataset-id placeholder="Optional dataset ID"></label>
+            <label>Assumptions<textarea data-ms-v0410-assumptions></textarea></label><label>Limitations<textarea data-ms-v0410-limitations></textarea></label>
+            <div class="sc-ms0410-actions"><button type="button" class="sc-lab-button" data-ms-v0410-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0410-preview>Generate model preview</button><button type="button" class="sc-lab-button" data-ms-v0410-save>Save draft</button></div>
+            <p class="sc-ms0410-note">v0.41.0 establishes the model contract. Arbitrary code and arbitrary formula execution remain disabled.</p>
+          </section>
+          <section class="sc-ms0410-card"><h4>Data binding & scientific graph</h4>
+            <label>Preview rows as JSON<textarea data-ms-v0410-rows aria-label="Preview dataset rows"></textarea></label>
+            <div class="sc-ms0410-summary" data-ms-v0410-summary></div>
+            <div class="sc-ms0410-graph" data-ms-v0410-graph><div class="sc-lab-data-note">Generate a preview to inspect the bound observations.</div></div>
+            <details><summary>Scientific graph specification</summary><pre class="sc-ms0410-contract" data-ms-v0410-graph-spec>No graph specification yet.</pre></details>
+            <h4>Governed handoffs</h4><div class="sc-ms0410-handoffs"><button type="button" class="sc-lab-button" data-ms-v0410-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="workbench">Workbench</button></div>
+            <details><summary>Model contract</summary><pre class="sc-ms0410-contract" data-ms-v0410-contract>No model contract yet.</pre></details>
+          </section>
+        </div>
+      </section>
 
       <section class="sc-lab-panel sc-cal0302" data-lab-module="model-calibration" data-module-panel="model-calibration" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL CALIBRATION / v0.30.2</p><h3>Scientific model calibration and validation</h3><p>Fit registered scientific model forms to project datasets, reserve holdout observations, inspect residuals and parameter uncertainty, compare models, and preserve calibration provenance.</p></header>

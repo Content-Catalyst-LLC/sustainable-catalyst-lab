@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.41.0",
+  "version": "0.41.0",
+  "purpose": "Unify scientific model definitions, dataset bindings, result references, graph specifications, provenance, and handoffs without enabling arbitrary code execution.",
+  "boundaries": {
+    "arbitraryCode": false,
+    "arbitraryFormulaExecution": false,
+    "declarativeExpressionDefinition": true,
+    "registeredModelExecution": true,
+    "browserLocalDrafts": true,
+    "provenanceRequired": true,
+    "unitsMetadata": true
+  },
+  "handoffTargets": ["model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"]
+}

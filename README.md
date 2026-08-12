@@ -1,5 +1,11 @@
 # Sustainable Catalyst Lab
 
+## Model Studio v0.41.0 feature layer
+
+This source tree includes the additive **Model Studio & Scientific Visualization Foundation v0.41.0** feature layer on top of the Lab's stable v1.0.0 platform metadata. Model Studio establishes a durable model contract for variables, parameters, units, dataset bindings, assumptions, limitations, provenance, graph specifications, and governed handoffs to calibration, design studies, uncertainty analysis, the model registry, and Workbench.
+
+The shared scientific visualization engine now provides numerical ticks and gridlines, true scatter rendering, line/scatter composition, accessible/focusable points, hover inspection, legends, and reusable SVG rendering. Existing Numerical Visualization Studio output delegates to this shared engine when it is available. Arbitrary code and arbitrary formula execution remain disabled.
+
 ## v0.40.0 — Connected Scientific Research Platform Beta
 
 Sustainable Catalyst Lab v0.40.0 unifies its scientific workflow, institutional governance, interoperability, public integration, security, recovery, and validation layers into a controlled beta operating platform. It adds institutional cohorts, guided research projects, privacy-minimized opt-in telemetry, feedback and support operations, known limitations, and a component-aware beta readiness gate. The release does not claim general availability.

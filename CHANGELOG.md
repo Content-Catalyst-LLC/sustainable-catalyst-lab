@@ -5,6 +5,16 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## Feature layer v0.41.0 — Model Studio & Scientific Visualization Foundation
+
+- Adds a first-class Model Studio workspace that unifies model identity, variables, parameters, units, dataset bindings, assumptions, limitations, provenance, and governed handoffs.
+- Adds shared `sc-lab-model-studio-model/0.41.0`, `sc-lab-scientific-graph/0.41.0`, and `sc-lab-model-studio-result/0.41.0` contracts.
+- Adds a shared scientific visualization renderer with numerical gridlines/ticks, true scatter rendering, line/scatter composition, focusable data points, hover inspection, legends, and accessible SVG output.
+- Routes the existing Numerical Visualization Studio through the shared renderer when available, reducing duplicate graph logic.
+- Adds FastAPI normalization/bundle endpoints and WordPress compute-core proxy routes for Model Studio contracts.
+- Preserves the v1.0.0 GA platform metadata in this source tree; v0.41.0 is an additive scientific modeling feature layer, not a downgrade of the platform release line.
+- Keeps arbitrary code execution and arbitrary formula execution disabled. Declarative equation text may be preserved as model definition metadata for the planned equation-runtime release.
+
 ## 0.40.2 — Migration, Compatibility, and Public Release Hardening
 
 - Added supported-baseline upgrade assessments with verified-backup and rollback-proof gates.

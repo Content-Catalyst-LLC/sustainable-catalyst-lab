@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-studio-model-v0410.schema.json",
+  "title": "Sustainable Catalyst Lab Model Studio Model",
+  "type": "object",
+  "required": ["schema", "version", "id", "title", "family", "definition", "variables", "parameters", "dataset", "provenance"],
+  "properties": {
+    "schema": {"const": "sc-lab-model-studio-model/0.41.0"},
+    "version": {"const": "0.41.0"},
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "status": {"type": "string"},
+    "family": {"enum": ["linear-multivariate", "polynomial-univariate", "exponential-univariate", "logistic-univariate", "registered-model", "declarative-expression"]},
+    "definition": {"type": "object", "required": ["executionAdapter", "executable"]},
+    "variables": {"type": "array", "items": {"type": "object", "required": ["symbol", "label", "role"]}},
+    "parameters": {"type": "array", "items": {"type": "object", "required": ["symbol", "label", "role", "bounds"]}},
+    "dataset": {"type": "object", "required": ["bindings"]},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "provenance": {"type": "object", "required": ["createdAt", "updatedAt", "sourceIds"]},
+    "modelHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}
