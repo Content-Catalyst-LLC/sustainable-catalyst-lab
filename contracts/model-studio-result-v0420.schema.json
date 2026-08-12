@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-studio-result-v0420.schema.json",
+  "title": "Sustainable Catalyst Lab Model Studio Result",
+  "type": "object",
+  "required": ["schema", "version", "modelId", "status", "metrics", "graphIds", "provenance"],
+  "properties": {
+    "schema": {"const": "sc-lab-model-studio-result/0.42.0"},
+    "version": {"const": "0.42.0"},
+    "modelId": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "computed", "validated", "failed"]},
+    "metrics": {"type": "object"},
+    "graphIds": {"type": "array", "items": {"type": "string"}},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": true
+}

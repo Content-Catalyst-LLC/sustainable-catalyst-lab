@@ -5,6 +5,17 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## Feature layer v0.42.0 — Scientific Equation Builder & Model Definition
+
+- Upgrades Model Studio from definition-only declarative expressions to a governed, executable scientific-equation grammar.
+- Adds a whitelist AST parser/evaluator with declared-symbol enforcement and explicit rejection of arbitrary code, attributes, subscripts, comprehensions, imports, lambdas, unknown functions, and non-finite results.
+- Adds registered scientific functions including exponential, logarithmic, trigonometric, hyperbolic, square-root, absolute-value, minimum, and maximum operations, plus `pi` and `e` constants.
+- Adds equation validation and deterministic preview endpoints through FastAPI and the WordPress compute-core proxy.
+- Adds reusable equation templates for linear screening, exponential decay, logistic growth, Michaelis-Menten saturation, and power-law models.
+- Adds parameter preview values, parameter bounds, scientific constants, initial-condition metadata, unit-bearing variables, dataset bindings, evaluated-row inspection, and governed equation-preview graphs.
+- Advances Model Studio, graph, result, bundle, and scientific-equation contracts to v0.42.0 while retaining the shared v0.41.0 visualization renderer as infrastructure.
+- Keeps the WordPress-facing release line at v0.42.0 and the internal platform-compatibility line at v1.0.0; integrity validation continues to verify those lines independently.
+
 ## Feature layer v0.41.0 — Model Studio & Scientific Visualization Foundation
 
 - Adds a first-class Model Studio workspace that unifies model identity, variables, parameters, units, dataset bindings, assumptions, limitations, provenance, and governed handoffs.

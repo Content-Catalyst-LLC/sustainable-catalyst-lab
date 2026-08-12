@@ -1540,31 +1540,39 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
     <div data-instrumentation-validation-custody-root></div>
 </section>
 
-      <section class="sc-lab-panel sc-lab-module sc-ms0410" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.41.0</p><h3>Model Studio</h3><p>Define a scientific model once, bind it to project data, preview it through the shared scientific graph contract, and prepare governed handoffs to calibration, uncertainty, design studies, registry, or Workbench.</p></header>
-        <p class="sc-ms0410-status" data-ms-v0410-status role="status" aria-live="polite">Model Studio loading…</p>
-        <div class="sc-ms0410-workflow" aria-label="Model Studio workflow"><span>Define</span><span>Bind data</span><span>Preview</span><span>Fit</span><span>Diagnose</span><span>Uncertainty</span><span>Compare</span><span>Register</span></div>
-        <div class="sc-ms0410-grid">
-          <section class="sc-ms0410-card"><h4>Model definition</h4>
-            <label>Model title<input data-ms-v0410-title value="Scientific model"></label>
-            <label>Model family<select data-ms-v0410-family><option value="linear-multivariate">Linear multivariate</option><option value="polynomial-univariate">Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option><option value="registered-model">Registered scientific model</option><option value="declarative-expression">Declarative expression — definition only</option></select></label>
-            <label data-ms-v0410-equation-wrap hidden>Equation definition<input data-ms-v0410-equation value="T = b0 + b1*C"><small data-ms-v0410-family-note></small></label>
-            <label data-ms-v0410-registered-wrap hidden>Registered model ID<input data-ms-v0410-registered-model placeholder="model-registry ID or alias"></label>
-            <div class="sc-ms0410-inline"><label>Feature symbols<input data-ms-v0410-features value="x" placeholder="x,z"></label><label>Response symbol<input data-ms-v0410-response value="y"></label></div>
-            <label>Parameter symbols<input data-ms-v0410-parameters value="b0,b1" placeholder="b0,b1,b2"></label>
-            <div class="sc-ms0410-inline"><label>Primary X unit<input data-ms-v0410-x-unit placeholder="%"></label><label>Y unit<input data-ms-v0410-y-unit placeholder="°C"></label></div>
-            <label>Dataset registry ID<input data-ms-v0410-dataset-id placeholder="Optional dataset ID"></label>
-            <label>Assumptions<textarea data-ms-v0410-assumptions></textarea></label><label>Limitations<textarea data-ms-v0410-limitations></textarea></label>
-            <div class="sc-ms0410-actions"><button type="button" class="sc-lab-button" data-ms-v0410-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0410-preview>Generate model preview</button><button type="button" class="sc-lab-button" data-ms-v0410-save>Save draft</button></div>
-            <p class="sc-ms0410-note">v0.41.0 establishes the model contract. Arbitrary code and arbitrary formula execution remain disabled.</p>
+      <section class="sc-lab-panel sc-lab-module sc-ms0420" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.42.0</p><h3>Scientific Equation Builder &amp; Model Definition</h3><p>Define governed scientific equations, declare variables and parameters with units, validate the safe expression grammar, evaluate deterministic previews, and carry the same model contract into calibration, uncertainty, design studies, registry, or Workbench.</p></header>
+        <p class="sc-ms0420-status" data-ms-v0420-status role="status" aria-live="polite">Model Studio loading…</p>
+        <div class="sc-ms0420-workflow" aria-label="Model Studio workflow"><span>Define</span><span>Validate equation</span><span>Bind data</span><span>Preview</span><span>Fit</span><span>Diagnose</span><span>Compare</span><span>Register</span></div>
+        <div class="sc-ms0420-safety"><span>NO EVAL</span><span>NO PYTHON</span><span>WHITELISTED FUNCTIONS</span><span>DECLARED SYMBOLS ONLY</span></div>
+        <div class="sc-ms0420-grid">
+          <section class="sc-ms0420-card"><h4>Model definition</h4>
+            <label>Equation template<select data-ms-v0420-template><option value="exponential">Exponential decay</option><option value="linear">Linear screening</option><option value="logistic">Logistic growth</option><option value="michaelis">Michaelis-Menten saturation</option><option value="power">Power law</option></select></label>
+            <label>Model title<input data-ms-v0420-title value="Scientific model"></label>
+            <label>Model family<select data-ms-v0420-family><option value="declarative-expression">Declarative scientific expression</option><option value="linear-multivariate">Linear multivariate calibration</option><option value="polynomial-univariate">Polynomial univariate calibration</option><option value="exponential-univariate">Exponential univariate calibration</option><option value="logistic-univariate">Logistic univariate calibration</option><option value="registered-model">Registered scientific model</option></select></label>
+            <div data-ms-v0420-equation-wrap><label>Scientific equation<input class="sc-ms0420-equation" data-ms-v0420-equation value="y = a * exp(-k*x)" spellcheck="false"></label></div>
+            <div class="sc-ms0420-equation-tools" data-ms-v0420-equation-tools><p><strong>Safe grammar:</strong> + − × ÷ ^ and registered functions including exp, log, sqrt, sin, cos, tan, min, max and abs.</p><button type="button" class="sc-lab-button" data-ms-v0420-validate>Validate equation</button><div class="sc-ms0420-validation" data-ms-v0420-equation-validation data-state="idle">Validate the equation to inspect its safe execution contract.</div></div>
+            <label data-ms-v0420-registered-wrap hidden>Registered model ID<input data-ms-v0420-registered-model placeholder="model-registry ID or alias"></label>
+            <div class="sc-ms0420-inline"><label>Input symbols<input data-ms-v0420-features value="x" placeholder="x,z"></label><label>Output symbol<input data-ms-v0420-response value="y"></label></div>
+            <label>Parameter symbols<input data-ms-v0420-parameters value="a,k" placeholder="a,k"></label>
+            <label>Parameter preview values<input data-ms-v0420-parameter-values value="a=10,k=0.35" placeholder="a=10,k=0.35"></label>
+            <label>Parameter bounds<input data-ms-v0420-parameter-bounds placeholder="a=0:20,k=0:2"></label>
+            <label>Scientific constants<input data-ms-v0420-constants placeholder="g=9.80665"></label>
+            <label>Initial conditions <small>(metadata for dynamic-system handoff)</small><input data-ms-v0420-initial-conditions placeholder="N=10"></label>
+            <div class="sc-ms0420-inline"><label>Primary X unit<input data-ms-v0420-x-unit placeholder="s"></label><label>Y unit<input data-ms-v0420-y-unit placeholder="mg/L"></label></div>
+            <label>Dataset registry ID<input data-ms-v0420-dataset-id placeholder="Optional dataset ID"></label>
+            <label>Assumptions<textarea data-ms-v0420-assumptions></textarea></label><label>Limitations<textarea data-ms-v0420-limitations></textarea></label>
+            <div class="sc-ms0420-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0420-preview>Evaluate model preview</button><button type="button" class="sc-lab-button" data-ms-v0420-save>Save model definition</button></div>
+            <p class="sc-ms0420-note">v0.42.0 executes only the governed declarative grammar. Arbitrary Python, JavaScript, shell commands, imports, attributes, subscripts, comprehensions, and user-defined functions remain disabled.</p>
           </section>
-          <section class="sc-ms0410-card"><h4>Data binding & scientific graph</h4>
-            <label>Preview rows as JSON<textarea data-ms-v0410-rows aria-label="Preview dataset rows"></textarea></label>
-            <div class="sc-ms0410-summary" data-ms-v0410-summary></div>
-            <div class="sc-ms0410-graph" data-ms-v0410-graph><div class="sc-lab-data-note">Generate a preview to inspect the bound observations.</div></div>
-            <details><summary>Scientific graph specification</summary><pre class="sc-ms0410-contract" data-ms-v0410-graph-spec>No graph specification yet.</pre></details>
-            <h4>Governed handoffs</h4><div class="sc-ms0410-handoffs"><button type="button" class="sc-lab-button" data-ms-v0410-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0410-handoff="workbench">Workbench</button></div>
-            <details><summary>Model contract</summary><pre class="sc-ms0410-contract" data-ms-v0410-contract>No model contract yet.</pre></details>
+          <section class="sc-ms0420-card"><h4>Data binding &amp; scientific graph</h4>
+            <label>Preview input rows as JSON<textarea data-ms-v0420-rows aria-label="Preview dataset rows"></textarea></label>
+            <div class="sc-ms0420-summary" data-ms-v0420-summary></div>
+            <div class="sc-ms0420-graph" data-ms-v0420-graph><div class="sc-lab-data-note">Evaluate a model preview to render the scientific equation.</div></div>
+            <details><summary>Evaluated rows</summary><pre class="sc-ms0420-contract sc-ms0420-evaluated" data-ms-v0420-evaluated-rows>No evaluation yet.</pre></details>
+            <details><summary>Scientific graph specification</summary><pre class="sc-ms0420-contract" data-ms-v0420-graph-spec>No graph specification yet.</pre></details>
+            <h4>Governed handoffs</h4><div class="sc-ms0420-handoffs"><button type="button" class="sc-lab-button" data-ms-v0420-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0420-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0420-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0420-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0420-handoff="workbench">Workbench</button></div>
+            <details><summary>Model contract</summary><pre class="sc-ms0420-contract" data-ms-v0420-contract>No model contract yet.</pre></details>
           </section>
         </div>
       </section>

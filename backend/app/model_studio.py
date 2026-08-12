@@ -8,11 +8,13 @@ import math
 import re
 from typing import Any
 
-VERSION = "0.41.0"
-MODEL_SCHEMA = "sc-lab-model-studio-model/0.41.0"
-GRAPH_SCHEMA = "sc-lab-scientific-graph/0.41.0"
-RESULT_SCHEMA = "sc-lab-model-studio-result/0.41.0"
-BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.41.0"
+from .equation_builder import EquationBuilderError, catalog as equation_catalog, evaluate_rows as evaluate_equation_rows, validate_definition as validate_equation_definition
+
+VERSION = "0.42.0"
+MODEL_SCHEMA = "sc-lab-model-studio-model/0.42.0"
+GRAPH_SCHEMA = "sc-lab-scientific-graph/0.42.0"
+RESULT_SCHEMA = "sc-lab-model-studio-result/0.42.0"
+BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.42.0"
 
 MODEL_FAMILIES = {
     "linear-multivariate": {"label": "Linear multivariate", "execution": "model-calibration-v0302"},
@@ -20,7 +22,7 @@ MODEL_FAMILIES = {
     "exponential-univariate": {"label": "Exponential univariate", "execution": "model-calibration-v0302"},
     "logistic-univariate": {"label": "Logistic univariate", "execution": "model-calibration-v0302"},
     "registered-model": {"label": "Registered scientific model", "execution": "model-registry-v0340"},
-    "declarative-expression": {"label": "Declarative expression (definition only)", "execution": "v0.42.0-planned"},
+    "declarative-expression": {"label": "Declarative scientific expression", "execution": "equation-builder-v0420"},
 }
 GRAPH_TYPES = {"line", "scatter", "line-scatter", "histogram", "horizontal-bars", "heatmap"}
 ALLOWED_PARAMETER_ROLES = {"estimated", "fixed", "initial", "derived"}
@@ -85,6 +87,7 @@ def policies() -> dict[str, Any]:
         "boundaries": {
             "arbitraryCode": False,
             "arbitraryFormulaExecution": False,
+            "safeDeclarativeExpressionExecution": True,
             "declarativeExpressionDefinition": True,
             "registeredModelExecution": True,
             "browserLocalDrafts": True,
@@ -104,6 +107,8 @@ def health() -> dict[str, Any]:
         "sharedVisualizationContract": True,
         "arbitraryCode": False,
         "arbitraryFormulaExecution": False,
+        "safeDeclarativeExpressionExecution": True,
+        "equationBuilder": equation_catalog(),
     }
 
 
@@ -157,6 +162,35 @@ def normalize_model(payload: dict[str, Any]) -> dict[str, Any]:
             "bounds": {"lower": lower, "upper": upper},
         })
 
+    constants = []
+    c_seen = set()
+    for index, row in enumerate(src.get("constants") or []):
+        if not isinstance(row, dict):
+            raise ModelStudioError("constants must contain objects.")
+        symbol = _symbol(row.get("symbol") or row.get("name"), f"constants[{index}].symbol")
+        if symbol in c_seen or symbol in p_seen or symbol in seen:
+            raise ModelStudioError(f"Duplicate scientific symbol: {symbol}.")
+        c_seen.add(symbol)
+        value = _finite(row.get("value"), f"{symbol} constant value")
+        if value is None:
+            raise ModelStudioError(f"Constant {symbol} requires a numeric value.")
+        constants.append({
+            "symbol": symbol,
+            "label": _text(row.get("label") or symbol, "constant label", 120, True),
+            "unit": _text(row.get("unit"), "constant unit", 80),
+            "value": value,
+        })
+
+    initial_conditions = []
+    for index, row in enumerate(src.get("initialConditions") or []):
+        if not isinstance(row, dict):
+            raise ModelStudioError("initialConditions must contain objects.")
+        symbol = _symbol(row.get("symbol"), f"initialConditions[{index}].symbol")
+        value = _finite(row.get("value"), f"initial condition {symbol}")
+        if value is None:
+            raise ModelStudioError(f"Initial condition {symbol} requires a numeric value.")
+        initial_conditions.append({"symbol": symbol, "value": value, "unit": _text(row.get("unit"), "initial condition unit", 80)})
+
     bindings = []
     for index, row in enumerate(src.get("datasetBindings") or src.get("bindings") or []):
         if not isinstance(row, dict):
@@ -181,13 +215,15 @@ def normalize_model(payload: dict[str, Any]) -> dict[str, Any]:
         "status": _text(src.get("status") or "draft", "status", 32, True),
         "family": family,
         "definition": {
-            "equation": _text((src.get("definition") or {}).get("equation") if isinstance(src.get("definition"), dict) else src.get("equation"), "equation", 1000),
+            "equation": _text((src.get("definition") or {}).get("equation") if isinstance(src.get("definition"), dict) else src.get("equation"), "equation", 2000),
             "registeredModelId": _text((src.get("definition") or {}).get("registeredModelId") if isinstance(src.get("definition"), dict) else src.get("registeredModelId"), "registeredModelId", 160),
             "executionAdapter": MODEL_FAMILIES[family]["execution"],
-            "executable": family != "declarative-expression",
+            "executable": True,
         },
         "variables": variables,
         "parameters": parameters,
+        "constants": constants,
+        "initialConditions": initial_conditions,
         "dataset": {
             "datasetId": _text((src.get("dataset") or {}).get("datasetId") if isinstance(src.get("dataset"), dict) else src.get("datasetId"), "datasetId", 160),
             "bindings": bindings,
@@ -196,12 +232,36 @@ def normalize_model(payload: dict[str, Any]) -> dict[str, Any]:
         "limitations": [_text(v, "limitation", 500, True) for v in (src.get("limitations") or [])][:50],
         "provenance": {
             "projectId": _text((src.get("provenance") or {}).get("projectId") if isinstance(src.get("provenance"), dict) else src.get("projectId"), "projectId", 160),
-            "sourceIds": [_text(v, "sourceId", 160, True) for v in ((src.get("provenance") or {}).get("sourceIds") if isinstance(src.get("provenance"), dict) else [])][:100],
+            "sourceIds": [_text(v, "sourceId", 160, True) for v in (((src.get("provenance") or {}).get("sourceIds") if isinstance(src.get("provenance"), dict) else []) or [])][:100],
             "createdAt": created_at,
             "updatedAt": _now(),
             "createdBy": _text((src.get("provenance") or {}).get("createdBy") if isinstance(src.get("provenance"), dict) else "", "createdBy", 160),
         },
     }
+    if family == "declarative-expression":
+        if not normalized["definition"]["equation"]:
+            raise ModelStudioError("Declarative scientific models require an equation.")
+        declared = variables + parameters + constants
+        response_symbols = [row["symbol"] for row in variables if row.get("role") == "response"]
+        output_symbol = response_symbols[0] if response_symbols else None
+        try:
+            equation_validation = validate_equation_definition({
+                "equation": normalized["definition"]["equation"],
+                "variables": variables,
+                "parameters": parameters,
+                "constants": constants,
+                "outputSymbol": output_symbol,
+            })
+        except EquationBuilderError as exc:
+            raise ModelStudioError(str(exc)) from exc
+        normalized["definition"]["equation"] = equation_validation["equation"]
+        normalized["definition"]["outputSymbol"] = equation_validation["outputSymbol"]
+        normalized["definition"]["referencedSymbols"] = equation_validation["referencedSymbols"]
+        normalized["definition"]["functions"] = equation_validation["functions"]
+        normalized["definition"]["safeExecution"] = True
+    else:
+        normalized["definition"]["safeExecution"] = False
+
     hashable = deepcopy(normalized)
     hashable.pop("modelHash", None)
     normalized["modelHash"] = _digest(hashable)
@@ -256,7 +316,75 @@ def build_bundle(payload: dict[str, Any]) -> dict[str, Any]:
         "graphs": graphs,
         "result": result,
         "handoffTargets": ["model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
-        "boundaries": {"arbitraryCode": False, "arbitraryFormulaExecution": False},
+        "boundaries": {"arbitraryCode": False, "arbitraryFormulaExecution": False, "safeDeclarativeExpressionExecution": True},
     }
     bundle["bundleHash"] = _digest(bundle)
     return bundle
+
+
+def validate_equation(payload: dict[str, Any]) -> dict[str, Any]:
+    try:
+        return validate_equation_definition(payload)
+    except EquationBuilderError as exc:
+        raise ModelStudioError(str(exc)) from exc
+
+
+def preview_equation_model(payload: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        raise ModelStudioError("Equation preview request must be an object.")
+    model = normalize_model(payload.get("model") or payload)
+    if model["family"] != "declarative-expression":
+        raise ModelStudioError("Equation preview requires the declarative-expression model family.")
+    rows = payload.get("rows") or []
+    if not isinstance(rows, list):
+        raise ModelStudioError("rows must be an array.")
+    parameter_values = {}
+    for row in model["parameters"]:
+        if row.get("value") is not None:
+            parameter_values[row["symbol"]] = row["value"]
+    for row in model.get("constants") or []:
+        parameter_values[row["symbol"]] = row["value"]
+    try:
+        evaluated = evaluate_equation_rows({
+            "definition": {
+                "equation": model["definition"]["equation"],
+                "variables": model["variables"],
+                "parameters": model["parameters"],
+                "constants": model.get("constants") or [],
+                "outputSymbol": model["definition"].get("outputSymbol"),
+            },
+            "values": parameter_values,
+            "rows": rows,
+        })
+    except EquationBuilderError as exc:
+        raise ModelStudioError(str(exc)) from exc
+    feature_bindings = [b for b in model["dataset"]["bindings"] if b["role"] in {"feature", "time"}]
+    if not feature_bindings:
+        raise ModelStudioError("Equation preview requires at least one feature or time binding.")
+    x_binding = feature_bindings[0]
+    output_symbol = model["definition"]["outputSymbol"]
+    response_binding = next((b for b in model["dataset"]["bindings"] if b["role"] == "response" and b["symbol"] == output_symbol), None)
+    points = []
+    for row in evaluated["rows"]:
+        if x_binding["column"] not in row:
+            raise ModelStudioError(f"Preview row is missing x column: {x_binding['column']}.")
+        points.append({"x": row[x_binding["column"]], "y": row[output_symbol]})
+    x_label = x_binding["column"] + (f" ({x_binding['unit']})" if x_binding.get("unit") else "")
+    y_unit = response_binding.get("unit") if response_binding else next((v.get("unit") for v in model["variables"] if v["symbol"] == output_symbol), "")
+    y_label = output_symbol + (f" ({y_unit})" if y_unit else "")
+    graph = normalize_graph({
+        "kind": "line-scatter",
+        "title": f"{model['title']} — equation preview",
+        "description": "Safe declarative equation evaluated over the supplied preview rows.",
+        "xLabel": x_label,
+        "yLabel": y_label,
+        "series": [{"id": "equation-preview", "label": "Model output", "mode": "line-scatter", "points": points}],
+    })
+    return {
+        "ok": True,
+        "version": VERSION,
+        "model": model,
+        "evaluation": evaluated,
+        "graph": graph,
+        "boundaries": {"arbitraryCode": False, "safeDeclarativeExpressionExecution": True},
+    }

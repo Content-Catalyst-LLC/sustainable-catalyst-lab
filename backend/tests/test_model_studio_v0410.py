@@ -30,12 +30,13 @@ def test_health_and_policy_boundary():
     policy = policies()
     assert policy["boundaries"]["arbitraryCode"] is False
     assert policy["boundaries"]["arbitraryFormulaExecution"] is False
+    assert policy["boundaries"]["safeDeclarativeExpressionExecution"] is True
     assert policy["boundaries"]["declarativeExpressionDefinition"] is True
 
 
 def test_normalize_model_is_stable_and_binds_units():
     model = normalize_model(base_model())
-    assert model["schema"] == "sc-lab-model-studio-model/0.41.0"
+    assert model["schema"] == "sc-lab-model-studio-model/0.42.0"
     assert model["family"] == "linear-multivariate"
     assert model["dataset"]["bindings"][0]["unit"] == "%"
     assert len(model["modelHash"]) == 64
@@ -47,7 +48,8 @@ def test_declarative_expression_is_definition_only():
     payload["definition"] = {"equation": "T = b0 + b1*C"}
     model = normalize_model(payload)
     assert model["definition"]["equation"] == "T = b0 + b1*C"
-    assert model["definition"]["executable"] is False
+    assert model["definition"]["executable"] is True
+    assert model["definition"]["safeExecution"] is True
 
 
 def test_rejects_unsafe_symbol_and_bad_bounds():

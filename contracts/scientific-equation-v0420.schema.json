@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-equation-v0420.schema.json",
+  "title": "Sustainable Catalyst Safe Scientific Equation",
+  "type": "object",
+  "required": ["schema", "version", "equation", "outputSymbol", "referencedSymbols", "functions", "executable", "arbitraryCode"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-equation/0.42.0"},
+    "version": {"const": "0.42.0"},
+    "equation": {"type": "string", "minLength": 3, "maxLength": 2000},
+    "outputSymbol": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"},
+    "referencedSymbols": {"type": "array", "items": {"type": "string"}},
+    "functions": {"type": "array", "items": {"enum": ["abs", "acos", "asin", "atan", "cos", "cosh", "exp", "log", "log10", "max", "min", "sin", "sinh", "sqrt", "tan", "tanh"]}},
+    "executable": {"const": true},
+    "arbitraryCode": {"const": false}
+  },
+  "additionalProperties": true
+}

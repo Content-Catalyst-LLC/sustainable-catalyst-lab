@@ -27,7 +27,7 @@ from .external_discovery import DiscoveryError, build_openurl as build_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
-from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies
+from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1048,6 +1048,16 @@ def model_studio_graph_normalize_route(payload: dict[str, Any]):
 @app.post("/v1/model-studio/bundles/build")
 def model_studio_bundle_build_route(payload: dict[str, Any]):
     try: return build_model_studio_bundle(payload)
+    except ModelStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/equations/validate")
+def model_studio_equation_validate_route(payload: dict[str, Any]):
+    try: return validate_model_studio_equation(payload)
+    except ModelStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/equations/preview")
+def model_studio_equation_preview_route(payload: dict[str, Any]):
+    try: return preview_model_studio_equation(payload)
     except ModelStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 

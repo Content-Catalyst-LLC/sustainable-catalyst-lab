@@ -1,0 +1,19 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.42.0",
+  "version": "0.42.0",
+  "purpose": "Define and safely execute declarative scientific equations while preserving model, data-binding, provenance, visualization, and cross-product handoff contracts.",
+  "boundaries": {
+    "arbitraryCode": false,
+    "arbitraryFormulaExecution": false,
+    "safeDeclarativeExpressionExecution": true,
+    "attributes": false,
+    "subscripts": false,
+    "comprehensions": false,
+    "userDefinedFunctions": false,
+    "registeredModelExecution": true,
+    "browserLocalDrafts": true,
+    "provenanceRequired": true,
+    "unitsMetadata": true
+  },
+  "handoffTargets": ["model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"]
+}
