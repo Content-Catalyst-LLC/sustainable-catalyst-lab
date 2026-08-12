@@ -1444,7 +1444,7 @@
     "sdk/typescript/package.json": "f7ae39302969e7a5dced812d10cdcf89221162fa20f0a45b90d185fd577e2938",
     "sdk/typescript/src/index.ts": "073a5a885b7a52e2647cfee2d3a3ad15fe13b531f1a8815b88013701d79e1be1",
     "sdk/typescript/tsconfig.json": "58e8f8d6a2e2dda1f1a3e57b99c19c1a9f823be53af0c3c01e126a4d726198bd",
-    "sustainable-catalyst-lab.php": "862ce4903bf1cf35642f84fdb16a984f1bfeeabd61e2ec16af815ca21ec026b8",
+    "sustainable-catalyst-lab.php": "5d4a0b7b9e19deaa97cc36cbecd8eaf847afd3234aa1db81ffacb6737b532740",
     "templates/lab-app.php": "bb55c43f8dadbdd10feffb396245e7f90cca83d2ab960c9852dcba17fe53ba7f"
   }
 }
