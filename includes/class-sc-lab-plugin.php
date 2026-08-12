@@ -13,13 +13,13 @@ final class SC_Lab_Plugin {
     public static function activate() {
         $defaults = SC_Lab_Admin::defaults();
         if (!get_option('sc_lab_settings')) { add_option('sc_lab_settings', $defaults); }
-        update_option('sc_lab_plugin_identity', array('slug'=>SC_LAB_PLUGIN_SLUG,'basename'=>SC_LAB_PLUGIN_BASENAME,'version'=>SC_LAB_VERSION,'activated_at'=>gmdate('c')), false);
+        update_option('sc_lab_plugin_identity', array('slug'=>SC_LAB_PLUGIN_SLUG,'basename'=>SC_LAB_PLUGIN_BASENAME,'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),'activated_at'=>gmdate('c')), false);
         flush_rewrite_rules(false);
     }
 
     private function asset_version($relative) {
         $path = SC_LAB_DIR . ltrim($relative, '/');
-        return SC_LAB_VERSION . '.' . (is_file($path) ? substr(hash_file('sha256', $path), 0, 12) : '0');
+        return (defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION) . '.' . (is_file($path) ? substr(hash_file('sha256', $path), 0, 12) : '0');
     }
 
     private function __construct() {
@@ -147,7 +147,8 @@ final class SC_Lab_Plugin {
 
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults());
         wp_localize_script('sc-lab-app', 'SCLabConfig', array(
-            'version' => SC_LAB_VERSION,
+            'version' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION,
+            'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : SC_LAB_VERSION,
             'restBase' => esc_url_raw(rest_url('sc-lab/v1/')),
             'nonce' => wp_create_nonce('wp_rest'),
             'elementsUrl' => esc_url_raw(SC_LAB_URL . 'assets/data/elements.json'),

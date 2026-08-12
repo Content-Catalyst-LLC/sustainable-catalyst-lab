@@ -31,6 +31,7 @@
       integrity: '0.26.3.2',
       release: config.pluginVersion || W.SCLabConfig?.version || null,
       configuredPlugin: config.pluginVersion || null,
+      platform: config.platformVersion || W.SCLabConfig?.platformVersion || null,
       appConfig: W.SCLabConfig?.version || null,
       panelRuntime: panel?.version || config.panelRuntimeVersion || null,
       panelPlugin: panel?.pluginVersion || null

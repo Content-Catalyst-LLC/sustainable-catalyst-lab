@@ -18,6 +18,7 @@ PYTHONPATH="$ROOT/backend${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON_BIN" -m pytest -q
 
 node tests/test-v0410.js
 php tests/test-v0410.php
+php tests/test-v0410-integrity-runtime.php
 node --check assets/js/modules/scientific-visualization-engine-v0410.js
 node --check assets/js/modules/model-studio-v0410.js
 node --check assets/js/modules/numerical-visualization-studio.js

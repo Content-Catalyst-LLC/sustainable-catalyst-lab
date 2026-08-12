@@ -12,8 +12,10 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_FEATURE_VERSION', '0.41.0');
+define('SC_LAB_RELEASE_VERSION', '0.41.0');
+define('SC_LAB_FEATURE_VERSION', SC_LAB_RELEASE_VERSION);
 define('SC_LAB_PLATFORM_VERSION', '1.0.0');
+// Historical internal modules may continue to use SC_LAB_VERSION as the stable-platform compatibility marker.
 define('SC_LAB_VERSION', SC_LAB_PLATFORM_VERSION);
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-architecture-building-rest.php';

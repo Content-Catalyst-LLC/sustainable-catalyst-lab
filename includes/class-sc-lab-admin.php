@@ -155,7 +155,7 @@ class SC_Lab_Admin {
           <table class="widefat striped" style="max-width:960px"><tbody>
             <tr><th>Current plugin basename</th><td><code><?php echo esc_html(SC_LAB_PLUGIN_BASENAME); ?></code></td></tr>
             <tr><th>Stable plugin slug</th><td><code><?php echo esc_html(SC_LAB_PLUGIN_SLUG); ?></code></td></tr>
-            <tr><th>Current version</th><td><code><?php echo esc_html(SC_LAB_VERSION); ?></code></td></tr>
+            <tr><th>Current version</th><td><code><?php echo esc_html(defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION); ?></code></td></tr>
           </tbody></table>
           <?php $duplicates = self::duplicate_plugins(); ?>
           <?php if ($duplicates): ?>

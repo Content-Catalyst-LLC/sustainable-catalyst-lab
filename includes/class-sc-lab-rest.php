@@ -63,7 +63,7 @@ class SC_Lab_REST {
         $settings = $this->settings();
         return rest_ensure_response(array(
             'ok'=>true,
-            'version'=>SC_LAB_VERSION,
+            'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
             'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring')

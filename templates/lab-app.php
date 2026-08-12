@@ -9,7 +9,7 @@
       <div class="sc-lab-titleblock">
         <span class="sc-lab-kicker">Sustainable Catalyst</span>
         <h2>Lab</h2>
-        <span class="sc-lab-version">v<?php echo esc_html(SC_LAB_VERSION); ?></span>
+        <span class="sc-lab-version">v<?php echo esc_html(defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION); ?></span>
       </div>
 
       <div class="sc-lab-project-controls">

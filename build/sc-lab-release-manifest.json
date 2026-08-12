@@ -379,11 +379,11 @@
     "backend/worker_agent/config.py": "2069455c592eae6ff216f214322b47ae8576a3b7ef5716fdf10875574af497cc",
     "backend/worker_agent/runtime.py": "72a9b4562841ad52a4d18d55d9f5da89c44fed3037c1d6bd8db6c4bc73643ed4"
   },
-  "buildFingerprint": "015434139d73c5734cb8b6e3ceab459be9a9449d341af7b84fb7704d6265dce2",
-  "generatedAt": "2026-08-12T05:23:39Z",
+  "buildFingerprint": "cdc2ec362be0a8dbf3bae22baf259ee18e01253c7a2a0d9f897391f0a5aeaa92",
+  "generatedAt": "2026-08-12T05:43:55Z",
   "integrityManifestScope": "sha256-complete-source-v1000-plus-model-studio-v0410",
   "moduleCount": 88,
-  "releaseVersion": "1.0.0",
+  "releaseVersion": "0.41.0",
   "routeAssertions": {
     "accessible-lab": "interface-finalization-v0401",
     "active-learning": "experiment-campaigns",
@@ -518,7 +518,7 @@
     "workspace-review": "workspace-review",
     "workspace-versioning": "workspace-versioning"
   },
-  "sourceCommit": "Sustainable Catalyst Lab v1.0.0 + Model Studio v0.41.0 feature layer",
+  "sourceCommit": "Sustainable Catalyst Lab v0.41.0 Model Studio release; platform compatibility v1.0.0",
   "wordpressCriticalFiles": {
     ".gitignore": "3a2f1853ae3d47114391c8628ccd352a960004da1a2d0c111c593cd07853497e",
     "CHANGELOG.md": "f8376d45b75c49f9c11c4555061d3e545416e3b75da6b4ad771248a3286d252d",
@@ -728,7 +728,7 @@
     "assets/js/sc-lab-app.js": "84eb50f0eb3eac39ee7ec19e61c755b7d0e8c5b7b33b57d6e28e082a2f383014",
     "assets/js/sc-lab-functional-health-admin-v0264.js": "34c334e501f126c4d9ee3b376d4a46e2e5b19fcbdb91bf7c556d96496bf11bad",
     "assets/js/sc-lab-functional-validation-v0264.js": "f0f8c05559b16f0a4818439d90f2ea2035ac6999311a98699671b8935d9ee2e2",
-    "assets/js/sc-lab-integrity-v02632.js": "86de7f8d963d31138a9cdccc63e05fb24408ccbc2ab65b8f64e20fc23b1319f3",
+    "assets/js/sc-lab-integrity-v02632.js": "7594080cc182440135cf0badaa247f60d777c74eadd3ad97fce1fa3380a7de15",
     "assets/js/sc-lab-interface-health-admin-v0265.js": "758592c1274617a6a5218d23ef1f55ae79ac1ba82627cf06a7edf3d744252db0",
     "assets/js/sc-lab-interface-v0265.js": "24ad7d54fccb7172cbf03e706b4ef3347b5433b903ce0a077da8c63dfc60d800",
     "assets/js/sc-lab-lifecycle-v0255.js": "f8ae1cf95b45f659669dc3f3b8e092feeb4f59a10ec7c0eecc7a8b4112dfbce0",
@@ -1313,7 +1313,7 @@
     "examples/instrumentation/live_json_adapter_v0252.py": "7aa519dbcf3c605d6a73906913f5491eb4e87f7c0f9d6a94da9cdd82046277e2",
     "examples/instrumentation/raspberry_pi_serial_ingest_v0250.py": "b4365569b2311a60910a341f57b17cd23c9c15c5d06ec5bc77ae935cb7494f70",
     "examples/integrations/webhook-receiver-python.py": "a47d0c5f7eda764b9cc6a8885560f86a0539bc3170cf926aaa849aeccc76d7c0",
-    "includes/class-sc-lab-admin.php": "daa92cffc9495768438427836ae17b4c67ffbcdfbdfea2e7b9bbab9360d07588",
+    "includes/class-sc-lab-admin.php": "9bf96bbfcff4fce0910ee40d2792550656b4961355534321ff204a203319ea15",
     "includes/class-sc-lab-aerospace-engineering-flight-systems-rest.php": "cd406493f9084716218a7352b6a9c235ad33c20eb8c7067074f3bf5c3d8973bd",
     "includes/class-sc-lab-aerospace-engineering-flight-systems.php": "4c0d9287a51fe4711ca9df6d44cbdb052951158e3fdbed6a996ad6c35fd7c452",
     "includes/class-sc-lab-architecture-building-rest.php": "b413af861f11bd58c94c521b04948cbf5562a51a7f6c67c4cbebf8ae03934ab7",
@@ -1375,7 +1375,7 @@
     "includes/class-sc-lab-instrumentation-production-v0251.php": "c0f26d46096c7b14b076db6443bfdf94ae3ad912be81af6ff9503dfcca7d421c",
     "includes/class-sc-lab-instrumentation-validation-custody-v0253.php": "f7b7306090bf0be015c08d0fedc3428d910a49e23a32c56ad0a4cd71c37931fd",
     "includes/class-sc-lab-instrumentation-validation-rest-v0253.php": "b1d9b19236708c6f3ea2abf8728565d9abfc910e99e30026e8a1c39720f3316d",
-    "includes/class-sc-lab-integrity-v02632.php": "acb9b9f66bbea10b795054b4bd0d29732e4336fc40f0a3ed46d5743918c6f144",
+    "includes/class-sc-lab-integrity-v02632.php": "87a576efc99a19e3801e8258822fabdcc50b147c61f734c9a9814f7347d2e606",
     "includes/class-sc-lab-interface-finalization-v0401.php": "711e64a252ff4c0970ff1c257f069cfbc53d33a02a03e602683be7875c400181",
     "includes/class-sc-lab-interface-reliability-v0265.php": "b615b2e11b3ef9e5e9078d11cc0736e938b6aa4026fd751f54fe6351e25a1c4b",
     "includes/class-sc-lab-laboratory-data-instrumentation-v0250.php": "2f0e5ee55d9598522368aee2d0312108757b11a473993014876fd1138fb3b30a",
@@ -1400,7 +1400,7 @@
     "includes/class-sc-lab-offline-edge-sync-v0362.php": "e84007f9266741f2ae1889dd671ada2fa992c6dc7d8499a58452161bbba7cd2a",
     "includes/class-sc-lab-performance-chaos-v0393.php": "4b89b5005798d989ff8dd1ca57a023b727ba19b4853ee79f66af0d01d498cdb1",
     "includes/class-sc-lab-persistent-queue-v0311.php": "9d102dcf443c4ceaf8c69ab141dfe1bc03876de51a6f5b5524e976fa61f871a1",
-    "includes/class-sc-lab-plugin.php": "193cfc5f6223630cfce84322a5b078a6ce0498bc92bf4a74a2d6f361bacf1a9f",
+    "includes/class-sc-lab-plugin.php": "9bdc12f32f8fb5e7cf04c6c9656ad8fdd1cc3e63d0498ca74c786020fefd620a",
     "includes/class-sc-lab-production-stability-v0266.php": "169223bfd5a5d2c8de584102e9625af51c3825c876bb16d898d1fec15c36ebb3",
     "includes/class-sc-lab-project-workspace-v0280.php": "37f67f417f0d7799b35fd1e609ead0f130d1c7e4ad2566713e5981b9913c670c",
     "includes/class-sc-lab-public-release-hardening-v0402.php": "b8ff5d8550e98b70e6df6c6d66164da3a6c4ce7002609757bf384827b8f10c8a",
@@ -1413,7 +1413,7 @@
     "includes/class-sc-lab-research-interoperability-v0380.php": "03571bef3289500ed02454a85944cab94dad0c3780d0013759ec8d120e7c3b1b",
     "includes/class-sc-lab-research-provenance-v0290.php": "ee3cda563c60fc4725076c872072c338ca14a90932aad907913cbb97d9d924f2",
     "includes/class-sc-lab-research-quality-v0291.php": "a7bbc81f40527cb5631b2c08fce868c4a9c4271538dba62a03d424cef52783c6",
-    "includes/class-sc-lab-rest.php": "232c137b87203e451efd8d5e5a94a1862c78ec6030bbfeb303710815a6a4b7d4",
+    "includes/class-sc-lab-rest.php": "e626155b3f1f547980c458c1556a3e895dc3ab3cd5d4448a17442d0fd20540bf",
     "includes/class-sc-lab-rocket-propulsion-spaceflight-rest.php": "32bf5f8f8f0095c4fcb90ec8fd799c40e322849233eb765dc9b2b973fca867a3",
     "includes/class-sc-lab-rocket-propulsion-spaceflight.php": "51ffa9f4b72d1ba35ee417204d8f6bcda298ad73d0fc40fa565c2c40fb28c0ed",
     "includes/class-sc-lab-runtime-repair-v0263.php": "8a0fbc7fdbf7d8690d9a8fc139b543839c9c79e4ada0e9210f5033facf9b95c3",
@@ -1431,7 +1431,7 @@
     "includes/class-sc-lab-workflow-orchestration-v0320.php": "ffd91a2f60337d1fe90292ae033c3ac63f52f598b675958b4a2d261cfbf7047a",
     "includes/class-sc-lab-workspace-review-v0351.php": "4c14788d6c1fe4c607a03405ecab3d3fc2f87d1e63f6e80bdf03683477128834",
     "includes/class-sc-lab-workspace-versioning-v0352.php": "6417a8fdd7dc5306fbd71eaa9c15286f62872ee6f87533a104d72e8fb419780e",
-    "scripts/test_v0410_release.sh": "6b324f67db0b137d651ef8881b8ec101c684555f7d1995a0a7c9bc45bc135ff9",
+    "scripts/test_v0410_release.sh": "e6c3c59f69dc397f1b955f5eeb92e6e7fd8a7581c68dfaf2eefcf84e20e007a1",
     "sdk/embed/README.md": "ed9eb8697f33da4657b9bbdbfbbc846c23f6f33c34a93f338901ca643f7d0e76",
     "sdk/embed/sc-lab-research-embed.js": "586497c88a898a8e669843be50b55a7cc2e85e43d6cae32712788da67cf6139b",
     "sdk/python/README.md": "38c12ba15ba298078ed7cfa94128460962520c603df8d00ff7436fa8b1902f80",
@@ -1444,7 +1444,10 @@
     "sdk/typescript/package.json": "f7ae39302969e7a5dced812d10cdcf89221162fa20f0a45b90d185fd577e2938",
     "sdk/typescript/src/index.ts": "073a5a885b7a52e2647cfee2d3a3ad15fe13b531f1a8815b88013701d79e1be1",
     "sdk/typescript/tsconfig.json": "58e8f8d6a2e2dda1f1a3e57b99c19c1a9f823be53af0c3c01e126a4d726198bd",
-    "sustainable-catalyst-lab.php": "5d4a0b7b9e19deaa97cc36cbecd8eaf847afd3234aa1db81ffacb6737b532740",
-    "templates/lab-app.php": "bb55c43f8dadbdd10feffb396245e7f90cca83d2ab960c9852dcba17fe53ba7f"
-  }
+    "sustainable-catalyst-lab.php": "6e94f2c2f3adf96f35aad2daf5c8c1790f00e7482dd27e89f967e7ab45826fea",
+    "templates/lab-app.php": "b91b2aa5f1e74f1b1895c0452f2aeb00259d4b5559a8ecf421c82a0e926bd0c4",
+    "tests/test-v0410-integrity-runtime.php": "0a4d45afa77bd9a4441506639696f87cbd63b8e6ca19684ced711209d6cacc4f"
+  },
+  "featureVersion": "0.41.0",
+  "platformVersion": "1.0.0"
 }
