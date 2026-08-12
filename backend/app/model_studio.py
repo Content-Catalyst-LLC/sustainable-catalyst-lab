@@ -10,11 +10,11 @@ from typing import Any
 
 from .equation_builder import EquationBuilderError, catalog as equation_catalog, evaluate_rows as evaluate_equation_rows, validate_definition as validate_equation_definition
 
-VERSION = "0.42.0"
-MODEL_SCHEMA = "sc-lab-model-studio-model/0.42.0"
-GRAPH_SCHEMA = "sc-lab-scientific-graph/0.42.0"
-RESULT_SCHEMA = "sc-lab-model-studio-result/0.42.0"
-BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.42.0"
+VERSION = "0.43.0"
+MODEL_SCHEMA = "sc-lab-model-studio-model/0.43.0"
+GRAPH_SCHEMA = "sc-lab-scientific-graph/0.43.0"
+RESULT_SCHEMA = "sc-lab-model-studio-result/0.43.0"
+BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.43.0"
 
 MODEL_FAMILIES = {
     "linear-multivariate": {"label": "Linear multivariate", "execution": "model-calibration-v0302"},
@@ -100,7 +100,7 @@ def policies() -> dict[str, Any]:
 def health() -> dict[str, Any]:
     return {
         "ok": True,
-        "status": "model-studio-foundation-ready",
+        "status": "model-diagnostics-ready",
         "version": VERSION,
         "modelFamilies": len(MODEL_FAMILIES),
         "graphTypes": len(GRAPH_TYPES),
@@ -293,6 +293,10 @@ def normalize_graph(payload: dict[str, Any]) -> dict[str, Any]:
         "xLabel": _text(payload.get("xLabel") or "X", "xLabel", 120),
         "yLabel": _text(payload.get("yLabel") or "Y", "yLabel", 120),
         "series": series,
+        "bars": [
+            {"label": _text(row.get("label") or f"Bar {index+1}", f"bars[{index}].label", 120, True), "value": _finite(row.get("value"), f"bars[{index}].value")}
+            for index, row in enumerate(payload.get("bars") or []) if isinstance(row, dict)
+        ][:200],
         "annotations": deepcopy(payload.get("annotations") or [])[:100],
         "accessibility": {"role": "img", "tabularFallback": True},
         "interaction": {"tooltip": True, "focusablePoints": True, "zoom": False, "pan": False},
@@ -315,7 +319,7 @@ def build_bundle(payload: dict[str, Any]) -> dict[str, Any]:
         "model": model,
         "graphs": graphs,
         "result": result,
-        "handoffTargets": ["model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
+        "handoffTargets": ["model-diagnostics", "model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
         "boundaries": {"arbitraryCode": False, "arbitraryFormulaExecution": False, "safeDeclarativeExpressionExecution": True},
     }
     bundle["bundleHash"] = _digest(bundle)

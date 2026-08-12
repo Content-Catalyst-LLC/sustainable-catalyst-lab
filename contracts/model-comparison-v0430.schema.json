@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-comparison-v0430.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Model Comparison v0.43.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "ranking",
+    "recommendedCandidateId",
+    "selectionPolicy",
+    "graph",
+    "comparisonHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-model-comparison/0.43.0"
+    },
+    "version": {
+      "const": "0.43.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "ranking": {
+      "type": "array",
+      "minItems": 2
+    },
+    "recommendedCandidateId": {
+      "type": "string"
+    },
+    "selectionPolicy": {
+      "type": "string"
+    },
+    "graph": {
+      "type": "object"
+    },
+    "comparisonHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

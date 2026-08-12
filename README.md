@@ -1,10 +1,10 @@
 # Sustainable Catalyst Lab
 
-## Model Studio v0.42.0 feature layer
+## Model Studio v0.43.0 feature layer
 
-This source tree includes **Scientific Equation Builder & Model Definition v0.42.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. The v0.41.0 shared visualization foundation remains the common renderer, while v0.42.0 adds a safe declarative scientific-equation grammar, explicit variables/parameters/constants/bounds/initial-condition metadata, deterministic equation previews, and governed handoffs to calibration, design studies, uncertainty analysis, the model registry, and Workbench. Arbitrary Python, JavaScript, shell execution, imports, attributes, subscripts, comprehensions, and user-defined functions remain disabled.
+This source tree includes **Model Diagnostics, Cross-Validation & Scientific Model Comparison v0.43.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. It adds deterministic k-fold and repeated k-fold validation, full-fit residual diagnostics, observed-vs-predicted and Q–Q evidence, AIC/AICc/BIC, and governed multi-model comparison using cross-validation RMSE with AICc/BIC tie breakers and Akaike weights.
 
-The shared scientific visualization engine now provides numerical ticks and gridlines, true scatter rendering, line/scatter composition, accessible/focusable points, hover inspection, legends, and reusable SVG rendering. Existing Numerical Visualization Studio output delegates to this shared engine when it is available. Arbitrary code and arbitrary formula execution remain disabled.
+The v0.42.0 safe declarative equation grammar remains the model-definition layer, and the v0.41.0 shared scientific visualization engine remains the graph renderer. In v0.43.0, statistical fitting and model comparison intentionally use registered calibration families; arbitrary Python/JavaScript/shell execution and arbitrary-formula fitting remain disabled.
 
 ## v0.40.0 — Connected Scientific Research Platform Beta
 

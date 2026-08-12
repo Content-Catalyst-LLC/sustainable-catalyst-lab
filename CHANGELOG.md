@@ -5,6 +5,18 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## Feature layer v0.43.0 — Model Diagnostics, Cross-Validation & Scientific Model Comparison
+
+- Adds a dedicated model-diagnostics service for registered calibration forms without weakening the safe v0.42 equation-definition boundary.
+- Adds deterministic k-fold and repeated k-fold cross-validation with seeded splits, fold-level evidence, aggregate RMSE/MAE/bias/R²/max-error summaries, and full-data refits.
+- Adds observed-vs-predicted, residual-vs-fitted, normal Q–Q, standardized-residual, and fold-RMSE diagnostics rendered through the shared v0.41 scientific visualization engine.
+- Adds AIC, small-sample-corrected AICc, and BIC to model evidence, with explicit handling when AICc is undefined for insufficient residual degrees of freedom.
+- Adds scientific multi-model comparison ranked primarily by mean cross-validation RMSE, with AICc and BIC tie breakers, ΔAICc, and Akaike weights.
+- Adds Model Studio controls for validation form/objective, folds, repeats, deterministic seed, diagnostics execution, cross-validation, candidate selection, comparison graphics, and evidence handoffs.
+- Adds FastAPI and WordPress compute-core routes plus v0.43 model, graph, diagnostics, cross-validation, and comparison contracts.
+- Keeps arbitrary code and arbitrary-formula fitting disabled; v0.42 declarative equations remain safe for definition/preview while v0.43 fitting and comparison use registered calibration families.
+- Keeps the WordPress-facing release line at v0.43.0 and the internal platform-compatibility line at v1.0.0; integrity validation verifies those lines independently.
+
 ## Feature layer v0.42.0 — Scientific Equation Builder & Model Definition
 
 - Upgrades Model Studio from definition-only declarative expressions to a governed, executable scientific-equation grammar.

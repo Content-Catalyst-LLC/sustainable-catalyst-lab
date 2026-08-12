@@ -26,7 +26,7 @@ def base_model():
 
 
 def test_health_and_policy_boundary():
-    assert health()["status"] == "model-studio-foundation-ready"
+    assert health()["status"] == "model-diagnostics-ready"
     policy = policies()
     assert policy["boundaries"]["arbitraryCode"] is False
     assert policy["boundaries"]["arbitraryFormulaExecution"] is False
@@ -36,7 +36,7 @@ def test_health_and_policy_boundary():
 
 def test_normalize_model_is_stable_and_binds_units():
     model = normalize_model(base_model())
-    assert model["schema"] == "sc-lab-model-studio-model/0.42.0"
+    assert model["schema"] == "sc-lab-model-studio-model/0.43.0"
     assert model["family"] == "linear-multivariate"
     assert model["dataset"]["bindings"][0]["unit"] == "%"
     assert len(model["modelHash"]) == 64

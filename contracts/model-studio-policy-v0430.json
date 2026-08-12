@@ -1,0 +1,40 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.43.0",
+  "version": "0.43.0",
+  "purpose": "Add reproducible model diagnostics, deterministic cross-validation, and evidence-based scientific model comparison to the governed Model Studio foundation.",
+  "validation": {
+    "methods": [
+      "k-fold",
+      "repeated-k-fold"
+    ],
+    "folds": {
+      "minimum": 2,
+      "maximum": 20,
+      "default": 5
+    },
+    "repeats": {
+      "minimum": 1,
+      "maximum": 10,
+      "default": 1
+    },
+    "seeded": true
+  },
+  "selectionPolicy": "lowest mean cross-validation RMSE; AICc then BIC as tie breakers",
+  "boundaries": {
+    "arbitraryCode": false,
+    "arbitraryFormulaFitting": false,
+    "safeDeclarativeExpressionExecution": true,
+    "registeredCalibrationFormsOnly": true,
+    "deterministicSplits": true,
+    "provenanceRequired": true,
+    "unitsMetadata": true
+  },
+  "handoffTargets": [
+    "model-diagnostics",
+    "model-calibration",
+    "design-studies",
+    "ensemble-uncertainty",
+    "model-registry",
+    "workbench"
+  ]
+}

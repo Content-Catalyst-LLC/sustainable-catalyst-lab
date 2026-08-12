@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-graph-v0430.schema.json",
+  "title": "Sustainable Catalyst Scientific Graph v0.43.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "kind",
+    "title",
+    "series",
+    "accessibility",
+    "interaction",
+    "exports"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-graph/0.43.0"
+    },
+    "version": {
+      "const": "0.43.0"
+    },
+    "kind": {
+      "enum": [
+        "line",
+        "scatter",
+        "line-scatter",
+        "histogram",
+        "horizontal-bars",
+        "heatmap"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "xLabel": {
+      "type": "string"
+    },
+    "yLabel": {
+      "type": "string"
+    },
+    "series": {
+      "type": "array"
+    },
+    "annotations": {
+      "type": "array"
+    },
+    "accessibility": {
+      "type": "object"
+    },
+    "interaction": {
+      "type": "object"
+    },
+    "exports": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "svg",
+          "png",
+          "csv",
+          "json"
+        ]
+      }
+    },
+    "graphHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "bars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

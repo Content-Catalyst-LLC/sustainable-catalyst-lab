@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-diagnostics-v0430.schema.json",
+  "title": "Sustainable Catalyst Lab Model Diagnostics v0.43.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "modelType",
+    "metrics",
+    "informationCriteria",
+    "residualSummary",
+    "graphs",
+    "diagnosticsHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-model-diagnostics/0.43.0"
+    },
+    "version": {
+      "const": "0.43.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "modelType": {
+      "type": "string"
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "rmse",
+        "mae",
+        "bias",
+        "rSquared",
+        "sse"
+      ]
+    },
+    "informationCriteria": {
+      "type": "object",
+      "required": [
+        "aic",
+        "aicc",
+        "bic"
+      ]
+    },
+    "residualSummary": {
+      "type": "object"
+    },
+    "standardizedResiduals": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "flaggedObservations": {
+      "type": "array"
+    },
+    "graphs": {
+      "type": "object"
+    },
+    "diagnosticsHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

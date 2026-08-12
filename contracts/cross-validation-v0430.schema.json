@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/cross-validation-v0430.schema.json",
+  "title": "Sustainable Catalyst Lab Cross-Validation v0.43.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "method",
+    "folds",
+    "repeats",
+    "seed",
+    "foldResults",
+    "aggregate",
+    "fullDatasetFit",
+    "crossValidationHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-cross-validation/0.43.0"
+    },
+    "version": {
+      "const": "0.43.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "method": {
+      "enum": [
+        "k-fold",
+        "repeated-k-fold"
+      ]
+    },
+    "folds": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 20
+    },
+    "repeats": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "foldResults": {
+      "type": "array"
+    },
+    "aggregate": {
+      "type": "object"
+    },
+    "fullDatasetFit": {
+      "type": "object"
+    },
+    "graphs": {
+      "type": "object"
+    },
+    "crossValidationHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

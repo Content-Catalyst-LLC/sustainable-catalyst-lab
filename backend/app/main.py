@@ -28,6 +28,7 @@ from .experiment_framework import ExperimentFrameworkError, build_report as buil
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
 from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
+from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1059,6 +1060,30 @@ def model_studio_equation_validate_route(payload: dict[str, Any]):
 def model_studio_equation_preview_route(payload: dict[str, Any]):
     try: return preview_model_studio_equation(payload)
     except ModelStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/model-studio/diagnostics/health")
+def model_studio_diagnostics_health_route():
+    return model_diagnostics_health()
+
+@app.get("/v1/model-studio/diagnostics/policies")
+def model_studio_diagnostics_policies_route():
+    return model_diagnostics_policies()
+
+@app.post("/v1/model-studio/diagnostics/run")
+def model_studio_diagnostics_run_route(payload: dict[str, Any]):
+    try: return diagnose_scientific_model(payload)
+    except ModelDiagnosticsError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/cross-validation/run")
+def model_studio_cross_validation_run_route(payload: dict[str, Any]):
+    try: return cross_validate_scientific_model(payload)
+    except ModelDiagnosticsError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/comparison/run")
+def model_studio_comparison_run_route(payload: dict[str, Any]):
+    try: return compare_scientific_models(payload)
+    except ModelDiagnosticsError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-calibration/health")
