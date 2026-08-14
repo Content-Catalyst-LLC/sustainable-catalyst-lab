@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dynamic-parameter-estimation-v0450.schema.json",
+  "title": "Sustainable Catalyst Dynamic Parameter Estimation v0.45.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "system",
+    "optimizer",
+    "estimatedParameters",
+    "metrics",
+    "identifiability",
+    "residuals",
+    "graphs",
+    "estimationHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-dynamic-parameter-estimation/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    },
+    "system": {
+      "$ref": "dynamic-system-v0450.schema.json"
+    },
+    "optimizer": {
+      "type": "object"
+    },
+    "estimatedParameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "value",
+          "standardError",
+          "confidence95",
+          "bounds",
+          "atBound"
+        ]
+      }
+    },
+    "fixedParameters": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "n",
+        "parameterCount",
+        "degreesOfFreedom",
+        "sse",
+        "rmse",
+        "mae",
+        "bias",
+        "rSquared"
+      ]
+    },
+    "identifiability": {
+      "type": "object",
+      "required": [
+        "status",
+        "jacobianRank",
+        "parameterCount",
+        "conditionNumber",
+        "covariance",
+        "warnings"
+      ]
+    },
+    "residuals": {
+      "type": "array"
+    },
+    "graphs": {
+      "type": "object"
+    },
+    "boundaries": {
+      "type": "object"
+    },
+    "estimationHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

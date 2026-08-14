@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-studio-result-v0450.schema.json",
+  "title": "Model Studio Result v0.45.0",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "sc-lab-model-studio-result/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    }
+  },
+  "additionalProperties": true
+}

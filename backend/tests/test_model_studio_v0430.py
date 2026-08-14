@@ -23,11 +23,11 @@ def base_model():
 
 
 def test_model_studio_advances_to_v0430_contracts():
-    assert health()["version"] == "0.44.0"
+    assert health()["version"] == "0.45.0"
     assert health()["status"] == "interactive-visualization-ready"
     model = normalize_model(base_model())
-    assert model["schema"] == "sc-lab-model-studio-model/0.44.0"
-    assert model["version"] == "0.44.0"
+    assert model["schema"] == "sc-lab-model-studio-model/0.45.0"
+    assert model["version"] == "0.45.0"
     assert policies()["boundaries"]["arbitraryCode"] is False
 
 
@@ -37,13 +37,13 @@ def test_shared_graph_contract_preserves_comparison_bars():
         "title": "Model comparison",
         "bars": [{"label": "Linear", "value": 1.2}, {"label": "Polynomial", "value": 1.6}],
     })
-    assert graph["schema"] == "sc-lab-scientific-graph/0.44.0"
+    assert graph["schema"] == "sc-lab-scientific-graph/0.45.0"
     assert graph["bars"] == [{"label": "Linear", "value": 1.2}, {"label": "Polynomial", "value": 1.6}]
 
 
 def test_bundle_adds_model_diagnostics_handoff():
     bundle = build_bundle({"model": base_model()})
-    assert bundle["schema"] == "sc-lab-model-studio-bundle/0.44.0"
+    assert bundle["schema"] == "sc-lab-model-studio-bundle/0.45.0"
     assert "model-diagnostics" in bundle["handoffTargets"]
 
 

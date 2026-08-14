@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-graph-v0450.schema.json",
+  "title": "Sustainable Catalyst Scientific Graph v0.45.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "kind",
+    "title",
+    "series",
+    "accessibility",
+    "interaction",
+    "publication",
+    "exports"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-graph/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    },
+    "kind": {
+      "enum": [
+        "line",
+        "scatter",
+        "line-scatter",
+        "histogram",
+        "horizontal-bars",
+        "heatmap"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "xLabel": {
+      "type": "string"
+    },
+    "yLabel": {
+      "type": "string"
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "mode",
+          "points"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "line",
+              "scatter",
+              "line-scatter"
+            ]
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "properties": {
+                "x": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "y": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "xLow": {
+                  "type": "number"
+                },
+                "xHigh": {
+                  "type": "number"
+                },
+                "yLow": {
+                  "type": "number"
+                },
+                "yHigh": {
+                  "type": "number"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "annotations": {
+      "type": "array"
+    },
+    "accessibility": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "tabularFallback": {
+          "type": "boolean"
+        },
+        "keyboardNavigation": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "interaction": {
+      "type": "object",
+      "properties": {
+        "tooltip": {
+          "type": "boolean"
+        },
+        "focusablePoints": {
+          "type": "boolean"
+        },
+        "zoom": {
+          "type": "boolean"
+        },
+        "pan": {
+          "type": "boolean"
+        },
+        "crosshair": {
+          "type": "boolean"
+        },
+        "seriesToggle": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "subtitle": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "aspectRatio": {
+          "enum": [
+            "16:9",
+            "3:2",
+            "4:3",
+            "1:1"
+          ]
+        },
+        "showGrid": {
+          "type": "boolean"
+        },
+        "showLegend": {
+          "type": "boolean"
+        },
+        "background": {
+          "const": "white"
+        }
+      },
+      "additionalProperties": false
+    },
+    "exports": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "svg",
+          "png",
+          "csv",
+          "json"
+        ]
+      }
+    },
+    "graphHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "bars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

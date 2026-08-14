@@ -17,7 +17,7 @@ def expression_model():
 
 def test_v0440_health_and_visualization_policy():
     h = health()
-    assert h["version"] == "0.44.0"
+    assert h["version"] == "0.45.0"
     assert h["status"] == "interactive-visualization-ready"
     assert h["interactiveVisualization"] is True
     assert h["publicationGraphics"] is True
@@ -40,7 +40,7 @@ def test_graph_contract_preserves_uncertainty_and_publication_metadata():
         ]}],
         "publication": {"subtitle": "95% model interval", "caption": "Illustrative fit.", "source": "Lab dataset", "method": "Governed equation preview", "aspectRatio": "3:2", "showGrid": True, "showLegend": True},
     })
-    assert graph["schema"] == "sc-lab-scientific-graph/0.44.0"
+    assert graph["schema"] == "sc-lab-scientific-graph/0.45.0"
     assert graph["series"][0]["points"][0]["yLow"] == 9.2
     assert graph["series"][0]["points"][0]["label"] == "baseline"
     assert graph["interaction"]["zoom"] is True
@@ -58,13 +58,13 @@ def test_invalid_publication_ratio_rejected():
 def test_equation_preview_uses_interactive_graph_contract():
     result = preview_equation_model({"model": expression_model(), "rows": [{"x": 0}, {"x": 1}, {"x": 2}, {"x": 3}]})
     graph = result["graph"]
-    assert graph["version"] == "0.44.0"
+    assert graph["version"] == "0.45.0"
     assert graph["interaction"]["zoom"] is True
     assert graph["accessibility"]["keyboardNavigation"] is True
 
 
 def test_bundle_advances_to_v0440_without_changing_safety_boundary():
     bundle = build_bundle({"model": expression_model()})
-    assert bundle["schema"] == "sc-lab-model-studio-bundle/0.44.0"
+    assert bundle["schema"] == "sc-lab-model-studio-bundle/0.45.0"
     assert bundle["boundaries"]["arbitraryCode"] is False
     assert "workbench" in bundle["handoffTargets"]

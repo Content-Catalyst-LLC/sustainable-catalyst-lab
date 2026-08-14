@@ -1540,68 +1540,102 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
     <div data-instrumentation-validation-custody-root></div>
 </section>
 
-      <section class="sc-lab-panel sc-lab-module sc-ms0440" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.44.0</p><h3>Interactive Scientific Graph Engine &amp; Publication Graphics</h3><p>Define and diagnose governed scientific models, inspect results interactively, zoom and pan scientific figures, preserve uncertainty and annotations, and prepare publication-ready SVG/PNG/CSV/JSON graphics without leaving Model Studio.</p></header>
-        <p class="sc-ms0440-status" data-ms-v0440-status role="status" aria-live="polite">Model Studio loading…</p>
-        <div class="sc-ms0440-workflow" aria-label="Model Studio workflow"><span>Define</span><span>Bind data</span><span>Fit</span><span>Diagnose</span><span>Cross-validate</span><span>Compare</span><span>Review evidence</span><span>Publish</span><span>Register</span></div>
-        <div class="sc-ms0440-safety"><span>NO EVAL</span><span>NO PYTHON</span><span>WHITELISTED FUNCTIONS</span><span>DECLARED SYMBOLS ONLY</span></div>
-        <div class="sc-ms0440-grid">
-          <section class="sc-ms0440-card"><h4>Model definition</h4>
-            <label>Equation template<select data-ms-v0440-template><option value="exponential">Exponential decay</option><option value="linear">Linear screening</option><option value="logistic">Logistic growth</option><option value="michaelis">Michaelis-Menten saturation</option><option value="power">Power law</option></select></label>
-            <label>Model title<input data-ms-v0440-title value="Scientific model"></label>
-            <label>Model family<select data-ms-v0440-family><option value="declarative-expression">Declarative scientific expression</option><option value="linear-multivariate">Linear multivariate calibration</option><option value="polynomial-univariate">Polynomial univariate calibration</option><option value="exponential-univariate">Exponential univariate calibration</option><option value="logistic-univariate">Logistic univariate calibration</option><option value="registered-model">Registered scientific model</option></select></label>
-            <div data-ms-v0440-equation-wrap><label>Scientific equation<input class="sc-ms0440-equation" data-ms-v0440-equation value="y = a * exp(-k*x)" spellcheck="false"></label></div>
-            <div class="sc-ms0440-equation-tools" data-ms-v0440-equation-tools><p><strong>Safe grammar:</strong> + − × ÷ ^ and registered functions including exp, log, sqrt, sin, cos, tan, min, max and abs.</p><button type="button" class="sc-lab-button" data-ms-v0440-validate>Validate equation</button><div class="sc-ms0440-validation" data-ms-v0440-equation-validation data-state="idle">Validate the equation to inspect its safe execution contract.</div></div>
-            <label data-ms-v0440-registered-wrap hidden>Registered model ID<input data-ms-v0440-registered-model placeholder="model-registry ID or alias"></label>
-            <div class="sc-ms0440-inline"><label>Input symbols<input data-ms-v0440-features value="x" placeholder="x,z"></label><label>Output symbol<input data-ms-v0440-response value="y"></label></div>
-            <label>Parameter symbols<input data-ms-v0440-parameters value="a,k" placeholder="a,k"></label>
-            <label>Parameter preview values<input data-ms-v0440-parameter-values value="a=10,k=0.35" placeholder="a=10,k=0.35"></label>
-            <label>Parameter bounds<input data-ms-v0440-parameter-bounds placeholder="a=0:20,k=0:2"></label>
-            <label>Scientific constants<input data-ms-v0440-constants placeholder="g=9.80665"></label>
-            <label>Initial conditions <small>(metadata for dynamic-system handoff)</small><input data-ms-v0440-initial-conditions placeholder="N=10"></label>
-            <div class="sc-ms0440-inline"><label>Primary X unit<input data-ms-v0440-x-unit placeholder="s"></label><label>Y unit<input data-ms-v0440-y-unit placeholder="mg/L"></label></div>
-            <label>Dataset registry ID<input data-ms-v0440-dataset-id placeholder="Optional dataset ID"></label>
-            <label>Assumptions<textarea data-ms-v0440-assumptions></textarea></label><label>Limitations<textarea data-ms-v0440-limitations></textarea></label>
-            <div class="sc-ms0440-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0440-preview>Evaluate model preview</button><button type="button" class="sc-lab-button" data-ms-v0440-save>Save model definition</button></div>
-            <p class="sc-ms0440-note">Equation previews remain governed by the v0.42 safe grammar. v0.43 diagnostics and parameter fitting operate only on registered calibration forms; arbitrary code and arbitrary formula fitting remain disabled.</p>
+      <section class="sc-lab-panel sc-lab-module sc-ms0450" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.45.0</p><h3>Dynamic Systems, ODE Models &amp; Parameter Estimation</h3><p>Define coupled dynamic systems with safe derivative expressions, simulate governed ODE models, estimate bounded parameters from observations, inspect identifiability and residual evidence, and carry results into the shared interactive scientific graph and publication workflow.</p></header>
+        <p class="sc-ms0450-status" data-ms-v0450-status role="status" aria-live="polite">Model Studio loading…</p>
+        <div class="sc-ms0450-workflow" aria-label="Model Studio workflow"><span>Define</span><span>Simulate</span><span>Estimate</span><span>Diagnose</span><span>Cross-validate</span><span>Compare</span><span>Review evidence</span><span>Publish</span><span>Register</span></div>
+        <div class="sc-ms0450-safety"><span>NO EVAL</span><span>NO PYTHON</span><span>WHITELISTED FUNCTIONS</span><span>DECLARED SYMBOLS ONLY</span></div>
+        <div class="sc-ms0450-grid">
+          <section class="sc-ms0450-card"><h4>Model definition</h4>
+            <label>Equation template<select data-ms-v0450-template><option value="exponential">Exponential decay</option><option value="linear">Linear screening</option><option value="logistic">Logistic growth</option><option value="michaelis">Michaelis-Menten saturation</option><option value="power">Power law</option></select></label>
+            <label>Model title<input data-ms-v0450-title value="Scientific model"></label>
+            <label>Model family<select data-ms-v0450-family><option value="declarative-expression">Declarative scientific expression</option><option value="linear-multivariate">Linear multivariate calibration</option><option value="polynomial-univariate">Polynomial univariate calibration</option><option value="exponential-univariate">Exponential univariate calibration</option><option value="logistic-univariate">Logistic univariate calibration</option><option value="registered-model">Registered scientific model</option></select></label>
+            <div data-ms-v0450-equation-wrap><label>Scientific equation<input class="sc-ms0450-equation" data-ms-v0450-equation value="y = a * exp(-k*x)" spellcheck="false"></label></div>
+            <div class="sc-ms0450-equation-tools" data-ms-v0450-equation-tools><p><strong>Safe grammar:</strong> + − × ÷ ^ and registered functions including exp, log, sqrt, sin, cos, tan, min, max and abs.</p><button type="button" class="sc-lab-button" data-ms-v0450-validate>Validate equation</button><div class="sc-ms0450-validation" data-ms-v0450-equation-validation data-state="idle">Validate the equation to inspect its safe execution contract.</div></div>
+            <label data-ms-v0450-registered-wrap hidden>Registered model ID<input data-ms-v0450-registered-model placeholder="model-registry ID or alias"></label>
+            <div class="sc-ms0450-inline"><label>Input symbols<input data-ms-v0450-features value="x" placeholder="x,z"></label><label>Output symbol<input data-ms-v0450-response value="y"></label></div>
+            <label>Parameter symbols<input data-ms-v0450-parameters value="a,k" placeholder="a,k"></label>
+            <label>Parameter preview values<input data-ms-v0450-parameter-values value="a=10,k=0.35" placeholder="a=10,k=0.35"></label>
+            <label>Parameter bounds<input data-ms-v0450-parameter-bounds placeholder="a=0:20,k=0:2"></label>
+            <label>Scientific constants<input data-ms-v0450-constants placeholder="g=9.80665"></label>
+            <label>Initial conditions <small>(metadata for dynamic-system handoff)</small><input data-ms-v0450-initial-conditions placeholder="N=10"></label>
+            <div class="sc-ms0450-inline"><label>Primary X unit<input data-ms-v0450-x-unit placeholder="s"></label><label>Y unit<input data-ms-v0450-y-unit placeholder="mg/L"></label></div>
+            <label>Dataset registry ID<input data-ms-v0450-dataset-id placeholder="Optional dataset ID"></label>
+            <label>Assumptions<textarea data-ms-v0450-assumptions></textarea></label><label>Limitations<textarea data-ms-v0450-limitations></textarea></label>
+            <div class="sc-ms0450-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0450-preview>Evaluate model preview</button><button type="button" class="sc-lab-button" data-ms-v0450-save>Save model definition</button></div>
+            <p class="sc-ms0450-note">Algebraic equation previews remain governed by the v0.42 safe grammar. Dynamic-system derivative expressions use the same whitelist in v0.45. Registered calibration diagnostics remain separate; arbitrary code and arbitrary algebraic-form fitting remain disabled.</p>
           </section>
-          <section class="sc-ms0440-card"><h4>Data binding &amp; scientific graph</h4>
-            <label>Preview input rows as JSON<textarea data-ms-v0440-rows aria-label="Preview dataset rows"></textarea></label>
-            <div class="sc-ms0440-summary" data-ms-v0440-summary></div>
-            <div class="sc-ms0440-graph" data-ms-v0440-graph><div class="sc-lab-data-note">Evaluate a model preview to render the scientific equation.</div></div>
-            <div class="sc-ms0440-publication"><h4>Publication figure</h4><p>These settings are embedded into exported figures. The graph toolbar provides reset, zoom, pan, SVG, 2× PNG, CSV, JSON, and accessible-table controls.</p><div class="sc-ms0440-inline"><label>Aspect ratio<select data-ms-v0440-publication-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label><label>Subtitle<input data-ms-v0440-publication-subtitle placeholder="Optional figure subtitle"></label></div><label>Caption<textarea data-ms-v0440-publication-caption placeholder="Concise publication caption"></textarea></label><div class="sc-ms0440-inline"><label>Source<input data-ms-v0440-publication-source placeholder="Dataset, archive, or source"></label><label>Method<input data-ms-v0440-publication-method placeholder="Model / method / validation note"></label></div><label>Notes<input data-ms-v0440-publication-notes placeholder="Uncertainty, exclusions, or interpretation note"></label><div class="sc-ms0440-checks"><label><input type="checkbox" checked data-ms-v0440-publication-grid> Show grid</label><label><input type="checkbox" checked data-ms-v0440-publication-legend> Show legend</label></div><button type="button" class="sc-lab-button" data-ms-v0440-publication-apply>Apply publication settings</button></div>
-            <details><summary>Evaluated rows</summary><pre class="sc-ms0440-contract sc-ms0440-evaluated" data-ms-v0440-evaluated-rows>No evaluation yet.</pre></details>
-            <details><summary>Scientific graph specification</summary><pre class="sc-ms0440-contract" data-ms-v0440-graph-spec>No graph specification yet.</pre></details>
-            <h4>Governed handoffs</h4><div class="sc-ms0440-handoffs"><button type="button" class="sc-lab-button" data-ms-v0440-handoff="model-diagnostics">Diagnostics evidence</button><button type="button" class="sc-lab-button" data-ms-v0440-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0440-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0440-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0440-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0440-handoff="workbench">Workbench</button></div>
-            <details><summary>Model contract</summary><pre class="sc-ms0440-contract" data-ms-v0440-contract>No model contract yet.</pre></details>
+          <section class="sc-ms0450-card"><h4>Data binding &amp; scientific graph</h4>
+            <label>Preview input rows as JSON<textarea data-ms-v0450-rows aria-label="Preview dataset rows"></textarea></label>
+            <div class="sc-ms0450-summary" data-ms-v0450-summary></div>
+            <div class="sc-ms0450-graph" data-ms-v0450-graph><div class="sc-lab-data-note">Evaluate a model preview to render the scientific equation.</div></div>
+            <div class="sc-ms0450-publication"><h4>Publication figure</h4><p>These settings are embedded into exported figures. The graph toolbar provides reset, zoom, pan, SVG, 2× PNG, CSV, JSON, and accessible-table controls.</p><div class="sc-ms0450-inline"><label>Aspect ratio<select data-ms-v0450-publication-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label><label>Subtitle<input data-ms-v0450-publication-subtitle placeholder="Optional figure subtitle"></label></div><label>Caption<textarea data-ms-v0450-publication-caption placeholder="Concise publication caption"></textarea></label><div class="sc-ms0450-inline"><label>Source<input data-ms-v0450-publication-source placeholder="Dataset, archive, or source"></label><label>Method<input data-ms-v0450-publication-method placeholder="Model / method / validation note"></label></div><label>Notes<input data-ms-v0450-publication-notes placeholder="Uncertainty, exclusions, or interpretation note"></label><div class="sc-ms0450-checks"><label><input type="checkbox" checked data-ms-v0450-publication-grid> Show grid</label><label><input type="checkbox" checked data-ms-v0450-publication-legend> Show legend</label></div><button type="button" class="sc-lab-button" data-ms-v0450-publication-apply>Apply publication settings</button></div>
+            <details><summary>Evaluated rows</summary><pre class="sc-ms0450-contract sc-ms0450-evaluated" data-ms-v0450-evaluated-rows>No evaluation yet.</pre></details>
+            <details><summary>Scientific graph specification</summary><pre class="sc-ms0450-contract" data-ms-v0450-graph-spec>No graph specification yet.</pre></details>
+            <h4>Governed handoffs</h4><div class="sc-ms0450-handoffs"><button type="button" class="sc-lab-button" data-ms-v0450-handoff="dynamic-systems">Dynamic systems</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="model-diagnostics">Diagnostics evidence</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0450-handoff="workbench">Workbench</button></div>
+            <details><summary>Model contract</summary><pre class="sc-ms0450-contract" data-ms-v0450-contract>No model contract yet.</pre></details>
           </section>
-          <section class="sc-ms0440-card sc-ms0440-diagnostics-card"><h4>Diagnostics &amp; model evidence</h4>
+          <section class="sc-ms0450-card sc-ms0450-diagnostics-card"><h4>Diagnostics &amp; model evidence</h4>
             <p>Fit registered model forms against observed response values, inspect residual behavior, estimate out-of-sample performance, and compare alternatives using the same deterministic validation policy.</p>
-            <div class="sc-ms0440-diagnostic-controls">
-              <label>Validation model form<select data-ms-v0440-validation-model><option value="linear-multivariate">Linear multivariate</option><option value="polynomial-univariate">Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option></select></label>
-              <label>Objective<select data-ms-v0440-objective><option value="least-squares">Least squares</option><option value="weighted-least-squares">Weighted least squares</option><option value="robust-huber">Robust Huber</option><option value="robust-soft-l1">Robust soft-L1</option></select></label>
-              <label>Polynomial degree<input type="number" min="1" max="5" value="2" data-ms-v0440-degree></label>
-              <label>Folds<input type="number" min="2" max="20" value="5" data-ms-v0440-folds></label>
-              <label>Repeats<input type="number" min="1" max="10" value="1" data-ms-v0440-repeats></label>
-              <label>Seed<input type="number" value="42" data-ms-v0440-seed></label>
+            <div class="sc-ms0450-diagnostic-controls">
+              <label>Validation model form<select data-ms-v0450-validation-model><option value="linear-multivariate">Linear multivariate</option><option value="polynomial-univariate">Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option></select></label>
+              <label>Objective<select data-ms-v0450-objective><option value="least-squares">Least squares</option><option value="weighted-least-squares">Weighted least squares</option><option value="robust-huber">Robust Huber</option><option value="robust-soft-l1">Robust soft-L1</option></select></label>
+              <label>Polynomial degree<input type="number" min="1" max="5" value="2" data-ms-v0450-degree></label>
+              <label>Folds<input type="number" min="2" max="20" value="5" data-ms-v0450-folds></label>
+              <label>Repeats<input type="number" min="1" max="10" value="1" data-ms-v0450-repeats></label>
+              <label>Seed<input type="number" value="42" data-ms-v0450-seed></label>
             </div>
-            <div class="sc-ms0440-actions"><button type="button" class="sc-lab-button" data-ms-v0440-diagnostics-example>Load diagnostics example</button><button type="button" class="sc-lab-button" data-ms-v0440-run-diagnostics>Run diagnostics</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0440-run-cv>Run cross-validation</button></div>
-            <div class="sc-ms0440-summary sc-ms0440-diagnostic-summary" data-ms-v0440-diagnostic-summary><article><span>RMSE</span><strong>—</strong></article><article><span>MAE</span><strong>—</strong></article><article><span>R²</span><strong>—</strong></article><article><span>AICc</span><strong>—</strong></article><article><span>CV RMSE</span><strong>—</strong></article><article><span>CV ± SD</span><strong>—</strong></article></div>
-            <div class="sc-ms0440-diagnostic-graphs">
-              <div class="sc-ms0440-graph" data-ms-v0440-observed-graph><div class="sc-lab-data-note">Observed vs predicted appears after diagnostics.</div></div>
-              <div class="sc-ms0440-graph" data-ms-v0440-residual-graph><div class="sc-lab-data-note">Residuals vs fitted appears after diagnostics.</div></div>
-              <div class="sc-ms0440-graph" data-ms-v0440-qq-graph><div class="sc-lab-data-note">Normal Q–Q diagnostic appears after diagnostics.</div></div>
-              <div class="sc-ms0440-graph" data-ms-v0440-cv-graph><div class="sc-lab-data-note">Fold RMSE appears after cross-validation.</div></div>
+            <div class="sc-ms0450-actions"><button type="button" class="sc-lab-button" data-ms-v0450-diagnostics-example>Load diagnostics example</button><button type="button" class="sc-lab-button" data-ms-v0450-run-diagnostics>Run diagnostics</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0450-run-cv>Run cross-validation</button></div>
+            <div class="sc-ms0450-summary sc-ms0450-diagnostic-summary" data-ms-v0450-diagnostic-summary><article><span>RMSE</span><strong>—</strong></article><article><span>MAE</span><strong>—</strong></article><article><span>R²</span><strong>—</strong></article><article><span>AICc</span><strong>—</strong></article><article><span>CV RMSE</span><strong>—</strong></article><article><span>CV ± SD</span><strong>—</strong></article></div>
+            <div class="sc-ms0450-diagnostic-graphs">
+              <div class="sc-ms0450-graph" data-ms-v0450-observed-graph><div class="sc-lab-data-note">Observed vs predicted appears after diagnostics.</div></div>
+              <div class="sc-ms0450-graph" data-ms-v0450-residual-graph><div class="sc-lab-data-note">Residuals vs fitted appears after diagnostics.</div></div>
+              <div class="sc-ms0450-graph" data-ms-v0450-qq-graph><div class="sc-lab-data-note">Normal Q–Q diagnostic appears after diagnostics.</div></div>
+              <div class="sc-ms0450-graph" data-ms-v0450-cv-graph><div class="sc-lab-data-note">Fold RMSE appears after cross-validation.</div></div>
             </div>
-            <details><summary>Diagnostics / validation record</summary><pre class="sc-ms0440-contract" data-ms-v0440-diagnostic-record>No diagnostics record yet.</pre></details>
+            <details><summary>Diagnostics / validation record</summary><pre class="sc-ms0450-contract" data-ms-v0450-diagnostic-record>No diagnostics record yet.</pre></details>
             <hr>
             <h4>Scientific model comparison</h4>
             <p>Select two or more registered forms. Lab evaluates each candidate with the same folds, repeats, seed, response, features, and dataset, then ranks primarily by mean validation RMSE with AICc and BIC as tie-breakers.</p>
-            <label>Candidate model forms<select multiple size="4" data-ms-v0440-comparison-models><option value="linear-multivariate" selected>Linear multivariate</option><option value="polynomial-univariate" selected>Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option></select></label>
-            <div class="sc-ms0440-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0440-compare>Compare selected models</button></div>
-            <div class="sc-ms0440-graph" data-ms-v0440-comparison-graph><div class="sc-lab-data-note">Cross-validation comparison appears here.</div></div>
-            <div class="sc-ms0440-comparison-table" data-ms-v0440-comparison-table></div>
-            <details><summary>Model comparison record</summary><pre class="sc-ms0440-contract" data-ms-v0440-comparison-record>No model comparison yet.</pre></details>
+            <label>Candidate model forms<select multiple size="4" data-ms-v0450-comparison-models><option value="linear-multivariate" selected>Linear multivariate</option><option value="polynomial-univariate" selected>Polynomial univariate</option><option value="exponential-univariate">Exponential univariate</option><option value="logistic-univariate">Logistic univariate</option></select></label>
+            <div class="sc-ms0450-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0450-compare>Compare selected models</button></div>
+            <div class="sc-ms0450-graph" data-ms-v0450-comparison-graph><div class="sc-lab-data-note">Cross-validation comparison appears here.</div></div>
+            <div class="sc-ms0450-comparison-table" data-ms-v0450-comparison-table></div>
+            <details><summary>Model comparison record</summary><pre class="sc-ms0450-contract" data-ms-v0450-comparison-record>No model comparison yet.</pre></details>
+          </section>
+
+          <section class="sc-ms0450-card sc-ms0450-dynamic-card"><h4>Dynamic systems &amp; ODE parameter estimation</h4>
+            <p>Build deterministic coupled ordinary differential equation systems with declared states, bounded parameters, explicit initial conditions, and a governed solver. Derivative expressions reuse the safe v0.42 scientific grammar; no Python or arbitrary code is executed.</p>
+            <div class="sc-ms0450-dynamic-grid">
+              <div class="sc-ms0450-dynamic-controls">
+                <label>Dynamic-system template<select data-ms-v0450-dynamic-template><option value="exponential">Exponential decay</option><option value="logistic">Logistic growth</option><option value="sir">SIR compartment model</option><option value="predator">Predator-prey</option></select></label>
+                <label>System title<input data-ms-v0450-dynamic-title value="Exponential decay ODE"></label>
+                <div class="sc-ms0450-inline"><label>Independent variable<input data-ms-v0450-dynamic-time-symbol value="t"></label><label>Time unit<input data-ms-v0450-dynamic-time-unit value="s"></label></div>
+                <label>State initial conditions <small>symbol=value</small><input data-ms-v0450-dynamic-states value="X=10" placeholder="S=990,I=10,R=0"></label>
+                <label>State units <small>optional symbol=unit</small><input data-ms-v0450-dynamic-state-units placeholder="S=people,I=people,R=people"></label>
+                <label>Parameter starting values <small>symbol=value</small><input data-ms-v0450-dynamic-parameters value="k=0.2"></label>
+                <label>Parameter bounds <small>symbol=lower:upper</small><input data-ms-v0450-dynamic-bounds value="k=0:2"></label>
+                <label>Fixed parameter symbols <small>comma-separated; otherwise estimated</small><input data-ms-v0450-dynamic-fixed placeholder=""></label>
+                <label>Scientific constants <small>symbol=value</small><input data-ms-v0450-dynamic-constants placeholder="Pop=1000"></label>
+                <label>Derivative equations <small>one per line as State: expression</small><textarea class="sc-ms0450-ode-equations" data-ms-v0450-dynamic-equations spellcheck="false">X: -k*X</textarea></label>
+                <div class="sc-ms0450-parameter-controls"><label>Start<input type="number" step="any" value="0" data-ms-v0450-dynamic-start></label><label>End<input type="number" step="any" value="5" data-ms-v0450-dynamic-end></label><label>Points<input type="number" min="2" max="5000" value="201" data-ms-v0450-dynamic-points></label><label>Solver<select data-ms-v0450-dynamic-solver><option>RK45</option><option>RK23</option><option>DOP853</option><option>Radau</option><option>BDF</option><option>LSODA</option></select></label></div>
+                <div class="sc-ms0450-inline"><label>Relative tolerance<input type="number" step="any" value="0.000001" data-ms-v0450-dynamic-rtol></label><label>Absolute tolerance<input type="number" step="any" value="0.000000001" data-ms-v0450-dynamic-atol></label></div>
+                <div class="sc-ms0450-actions"><button type="button" class="sc-lab-button" data-ms-v0450-dynamic-normalize>Validate ODE system</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0450-dynamic-simulate>Simulate trajectories</button><button type="button" class="sc-lab-button" data-ms-v0450-dynamic-save>Save dynamic evidence</button></div>
+                <div class="sc-ms0450-dynamic-note"><strong>v0.45 boundary</strong>ODE events, delay differential equations, stochastic differential equations, and PDEs are not executed in this release. This foundation is deterministic ODE modeling with bounded parameter estimation.</div>
+              </div>
+              <div>
+                <div class="sc-ms0450-summary" data-ms-v0450-dynamic-summary><article><span>States</span><strong>—</strong></article><article><span>Parameters</span><strong>—</strong></article><article><span>Solver</span><strong>—</strong></article><article><span>Trajectory points</span><strong>—</strong></article><article><span>Fit RMSE</span><strong>—</strong></article><article><span>Identifiability</span><strong>—</strong></article></div>
+                <div class="sc-ms0450-dynamic-graphs"><div class="sc-ms0450-graph" data-ms-v0450-dynamic-trajectory><div class="sc-lab-data-note">State trajectories appear after ODE simulation.</div></div><div class="sc-ms0450-graph" data-ms-v0450-dynamic-phase><div class="sc-lab-data-note">Phase portrait appears for systems with two or more states.</div></div></div>
+                <hr><h4>Estimate parameters from observations</h4>
+                <p>Bind observations by the independent-variable symbol and one or more state symbols. Lab estimates only parameters not marked fixed, respects configured bounds, and reports local Jacobian identifiability evidence.</p>
+                <div class="sc-ms0450-inline"><label>Observed states<input data-ms-v0450-dynamic-observed-states value="X" placeholder="S,I,R"></label><label>Robust loss<select data-ms-v0450-dynamic-loss><option value="linear">Linear least squares</option><option value="soft_l1">Soft-L1</option><option value="huber">Huber</option><option value="cauchy">Cauchy</option><option value="arctan">Arctan</option></select></label></div>
+                <div class="sc-ms0450-inline"><label>Robust f-scale<input type="number" step="any" min="0.000001" value="1" data-ms-v0450-dynamic-fscale></label><label>Max evaluations<input type="number" min="10" max="4000" value="1000" data-ms-v0450-dynamic-max-evals></label></div>
+                <label>Observed rows as JSON<textarea class="sc-ms0450-observations" data-ms-v0450-dynamic-observations aria-label="Dynamic system observation rows">[]</textarea></label>
+                <div class="sc-ms0450-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-ms-v0450-dynamic-estimate>Estimate bounded parameters</button></div>
+                <div class="sc-ms0450-dynamic-graphs"><div class="sc-ms0450-graph" data-ms-v0450-dynamic-fit><div class="sc-lab-data-note">Observed vs fitted trajectories appear after parameter estimation.</div></div><div class="sc-ms0450-graph" data-ms-v0450-dynamic-residual><div class="sc-lab-data-note">Parameter-estimation residuals appear here.</div></div></div>
+                <details><summary>Dynamic-system / estimation record</summary><pre class="sc-ms0450-contract" data-ms-v0450-dynamic-record>No dynamic-system record yet.</pre></details>
+              </div>
+            </div>
           </section>
         </div>
       </section>

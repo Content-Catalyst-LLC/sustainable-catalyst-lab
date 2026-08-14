@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dynamic-system-v0450.schema.json",
+  "title": "Sustainable Catalyst Dynamic System v0.45.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "title",
+    "independentVariable",
+    "states",
+    "parameters",
+    "constants",
+    "equations",
+    "timeSpan",
+    "solver",
+    "boundaries",
+    "systemHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-dynamic-system/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "independentVariable": {
+      "type": "object",
+      "required": [
+        "symbol",
+        "label",
+        "unit"
+      ],
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "label": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "unit",
+          "initial"
+        ],
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "initial": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "unit",
+          "role",
+          "value",
+          "bounds"
+        ],
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "estimated",
+              "fixed"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "bounds": {
+            "type": "object",
+            "properties": {
+              "lower": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "upper": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "lower",
+              "upper"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "constants": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "unit",
+          "value"
+        ]
+      }
+    },
+    "equations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": [
+          "state",
+          "derivativeSymbol",
+          "rhs",
+          "equation",
+          "referencedSymbols",
+          "functions"
+        ]
+      }
+    },
+    "timeSpan": {
+      "type": "object",
+      "required": [
+        "start",
+        "end",
+        "points"
+      ],
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "end": {
+          "type": "number"
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 5000
+        }
+      },
+      "additionalProperties": false
+    },
+    "solver": {
+      "type": "object",
+      "required": [
+        "method",
+        "rtol",
+        "atol",
+        "maxStep"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "RK23",
+            "RK45",
+            "DOP853",
+            "Radau",
+            "BDF",
+            "LSODA"
+          ]
+        },
+        "rtol": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "atol": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maxStep": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "boundaries": {
+      "type": "object"
+    },
+    "systemHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

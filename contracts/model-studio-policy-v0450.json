@@ -1,0 +1,63 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.45.0",
+  "version": "0.45.0",
+  "purpose": "Add deterministic dynamic-system and ordinary differential equation modeling with safe derivative expressions, governed numerical integration, bounded parameter estimation, local identifiability evidence, and shared scientific visualization while retaining the v0.44 graph engine, v0.43 diagnostics, and v0.42 equation grammar.",
+  "dynamicSystems": {
+    "coupledODEs": true,
+    "safeDerivativeExpressions": true,
+    "solvers": [
+      "RK23",
+      "RK45",
+      "DOP853",
+      "Radau",
+      "BDF",
+      "LSODA"
+    ],
+    "parameterEstimation": "bounded-scipy-least-squares",
+    "robustLosses": [
+      "linear",
+      "soft_l1",
+      "huber",
+      "cauchy",
+      "arctan"
+    ],
+    "identifiability": [
+      "jacobian-rank",
+      "information-matrix-condition-number",
+      "approximate-covariance",
+      "95-percent-confidence-intervals",
+      "parameter-bound-flags"
+    ],
+    "graphs": [
+      "state-trajectories",
+      "phase-portrait",
+      "observed-vs-fitted-trajectories",
+      "estimation-residuals"
+    ]
+  },
+  "visualizationCompatibility": "v0.44.0",
+  "diagnosticsCompatibility": "v0.43.0",
+  "equationCompatibility": "v0.42.0",
+  "boundaries": {
+    "arbitraryCode": false,
+    "arbitraryPython": false,
+    "arbitraryFormulaFitting": false,
+    "safeDeclarativeExpressionExecution": true,
+    "safeDeclarativeDerivativeExpressions": true,
+    "odeEvents": false,
+    "delayDifferentialEquations": false,
+    "stochasticDifferentialEquations": false,
+    "partialDifferentialEquations": false,
+    "provenanceRequired": true,
+    "unitsMetadata": true
+  },
+  "handoffTargets": [
+    "dynamic-systems",
+    "model-diagnostics",
+    "model-calibration",
+    "design-studies",
+    "ensemble-uncertainty",
+    "model-registry",
+    "workbench"
+  ]
+}

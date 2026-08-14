@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-studio-model-v0450.schema.json",
+  "title": "Sustainable Catalyst Lab Model Studio Model v0.45.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "title",
+    "family",
+    "definition",
+    "variables",
+    "parameters",
+    "constants",
+    "initialConditions",
+    "dataset",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-model-studio-model/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "linear-multivariate",
+        "polynomial-univariate",
+        "exponential-univariate",
+        "logistic-univariate",
+        "registered-model",
+        "declarative-expression"
+      ]
+    },
+    "definition": {
+      "type": "object",
+      "required": [
+        "executionAdapter",
+        "executable",
+        "safeExecution"
+      ],
+      "properties": {
+        "equation": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "registeredModelId": {
+          "type": "string"
+        },
+        "executionAdapter": {
+          "type": "string"
+        },
+        "executable": {
+          "type": "boolean"
+        },
+        "safeExecution": {
+          "type": "boolean"
+        },
+        "outputSymbol": {
+          "type": "string"
+        },
+        "referencedSymbols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "functions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "role"
+        ]
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "role",
+          "bounds"
+        ]
+      }
+    },
+    "constants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "label",
+          "value"
+        ]
+      }
+    },
+    "initialConditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "symbol",
+          "value"
+        ]
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "required": [
+        "bindings"
+      ]
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "createdAt",
+        "updatedAt",
+        "sourceIds"
+      ]
+    },
+    "modelHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

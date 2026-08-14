@@ -29,6 +29,7 @@ from .design_studies import DesignStudyError, analyze_results as analyze_design_
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
 from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
 from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
+from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate_dynamic_system_parameters, health as dynamic_systems_health, normalize_definition as normalize_dynamic_system, policies as dynamic_systems_policies, simulate as simulate_dynamic_system, templates as dynamic_system_templates
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1084,6 +1085,34 @@ def model_studio_cross_validation_run_route(payload: dict[str, Any]):
 def model_studio_comparison_run_route(payload: dict[str, Any]):
     try: return compare_scientific_models(payload)
     except ModelDiagnosticsError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/model-studio/dynamic-systems/health")
+def model_studio_dynamic_systems_health_route():
+    return dynamic_systems_health()
+
+@app.get("/v1/model-studio/dynamic-systems/policies")
+def model_studio_dynamic_systems_policies_route():
+    return dynamic_systems_policies()
+
+@app.get("/v1/model-studio/dynamic-systems/templates")
+def model_studio_dynamic_systems_templates_route():
+    return dynamic_system_templates()
+
+@app.post("/v1/model-studio/dynamic-systems/normalize")
+def model_studio_dynamic_systems_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "system": normalize_dynamic_system(payload.get("system") or payload)}
+    except DynamicSystemError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/simulate")
+def model_studio_dynamic_systems_simulate_route(payload: dict[str, Any]):
+    try: return simulate_dynamic_system(payload)
+    except DynamicSystemError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/estimate")
+def model_studio_dynamic_systems_estimate_route(payload: dict[str, Any]):
+    try: return estimate_dynamic_system_parameters(payload)
+    except DynamicSystemError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-calibration/health")

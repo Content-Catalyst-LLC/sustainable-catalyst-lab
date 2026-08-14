@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/dynamic-system-simulation-v0450.schema.json",
+  "title": "Sustainable Catalyst Dynamic System Simulation v0.45.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "system",
+    "parameterValues",
+    "rows",
+    "solver",
+    "graphs",
+    "simulationHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-dynamic-system-simulation/0.45.0"
+    },
+    "version": {
+      "const": "0.45.0"
+    },
+    "system": {
+      "$ref": "dynamic-system-v0450.schema.json"
+    },
+    "parameterValues": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "rows": {
+      "type": "array",
+      "maxItems": 5000,
+      "items": {
+        "type": "object"
+      }
+    },
+    "rowCount": {
+      "type": "integer"
+    },
+    "solver": {
+      "type": "object"
+    },
+    "graphs": {
+      "type": "object"
+    },
+    "boundaries": {
+      "type": "object"
+    },
+    "simulationHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": true
+}
