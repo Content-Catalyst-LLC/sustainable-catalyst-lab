@@ -30,6 +30,7 @@ from .model_calibration import ModelCalibrationError, build_report as build_cali
 from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
 from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
 from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate_dynamic_system_parameters, health as dynamic_systems_health, normalize_definition as normalize_dynamic_system, policies as dynamic_systems_policies, simulate as simulate_dynamic_system, templates as dynamic_system_templates
+from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1113,6 +1114,35 @@ def model_studio_dynamic_systems_simulate_route(payload: dict[str, Any]):
 def model_studio_dynamic_systems_estimate_route(payload: dict[str, Any]):
     try: return estimate_dynamic_system_parameters(payload)
     except DynamicSystemError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/model-studio/response-surfaces/health")
+def model_studio_response_surfaces_health_route():
+    return response_surfaces_health()
+
+@app.get("/v1/model-studio/response-surfaces/policies")
+def model_studio_response_surfaces_policies_route():
+    return response_surfaces_policies()
+
+@app.post("/v1/model-studio/response-surfaces/normalize")
+def model_studio_response_surfaces_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "study": normalize_response_surface_study(payload.get("study") or payload)}
+    except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/response-surfaces/fit")
+def model_studio_response_surfaces_fit_route(payload: dict[str, Any]):
+    try: return fit_response_surface(payload)
+    except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/response-surfaces/explore")
+def model_studio_response_surfaces_explore_route(payload: dict[str, Any]):
+    try: return explore_response_surface(payload)
+    except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/response-surfaces/optimize")
+def model_studio_response_surfaces_optimize_route(payload: dict[str, Any]):
+    try: return optimize_response_surface(payload)
+    except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-calibration/health")

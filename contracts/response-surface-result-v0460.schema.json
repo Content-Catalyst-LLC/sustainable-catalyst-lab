@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/response-surface-result-v0460.schema.json",
+  "title": "Sustainable Catalyst Response Surface Result v0.46.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "study",
+    "coefficients",
+    "metrics",
+    "designMatrix",
+    "graphs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-response-surface-result/0.46.0"
+    },
+    "version": {
+      "const": "0.46.0"
+    },
+    "study": {
+      "$ref": "response-surface-study-v0460.schema.json"
+    },
+    "coefficients": {
+      "type": "array"
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "lackOfFit": {
+      "type": "object"
+    },
+    "designMatrix": {
+      "type": "object"
+    },
+    "graphs": {
+      "type": "object"
+    },
+    "fit": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

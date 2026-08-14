@@ -5,6 +5,15 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## 0.46.0 — Response Surfaces, Optimization & Design-Space Exploration
+
+- Added full second-order response-surface fitting with coded factors, quadratic curvature, and two-factor interactions.
+- Added coefficient inference, design-matrix conditioning, AIC/AICc/BIC, and replicated-point lack-of-fit testing.
+- Added bounded design-space heatmaps with feasibility constraints and prediction uncertainty.
+- Added deterministic maximize/minimize/target optimization constrained to declared experimental factor bounds.
+- Added Model Studio, FastAPI, WordPress compute-core, project-persistence, schema, integrity, and release-gate integration.
+- Preserved v1.0.0 internal platform compatibility and the v0.45 dynamic-system, v0.44 visualization, v0.43 diagnostics, and v0.42 equation foundations.
+
 ## Feature layer v0.44.0 — Interactive Scientific Graph Engine & Publication Graphics
 
 - Replaces the v0.41 shared renderer in active Lab surfaces with Scientific Visualization Engine v0.44.0 while retaining backward-compatible graph inputs.

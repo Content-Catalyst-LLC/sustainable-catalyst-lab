@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/design-space-exploration-v0460.schema.json",
+  "title": "Sustainable Catalyst Design-Space Exploration v0.46.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "xFactor",
+    "yFactor",
+    "gridSize",
+    "responseRange",
+    "graph"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-design-space-exploration/0.46.0"
+    },
+    "version": {
+      "const": "0.46.0"
+    },
+    "xFactor": {
+      "type": "string"
+    },
+    "yFactor": {
+      "type": "string"
+    },
+    "gridSize": {
+      "type": "integer",
+      "minimum": 9,
+      "maximum": 81
+    },
+    "fixedFactors": {
+      "type": "object"
+    },
+    "responseRange": {
+      "type": "object"
+    },
+    "feasibleFraction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "graph": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

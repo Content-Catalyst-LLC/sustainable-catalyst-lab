@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/design-space-optimization-v0460.schema.json",
+  "title": "Sustainable Catalyst Design-Space Optimization v0.46.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "goal",
+    "optimumFactors",
+    "predictedResponse",
+    "solver"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-design-space-optimization/0.46.0"
+    },
+    "version": {
+      "const": "0.46.0"
+    },
+    "goal": {
+      "enum": [
+        "maximize",
+        "minimize",
+        "target"
+      ]
+    },
+    "target": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "optimumFactors": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "predictedResponse": {
+      "type": "number"
+    },
+    "predictionStandardError": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "solver": {
+      "type": "object"
+    },
+    "atBoundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

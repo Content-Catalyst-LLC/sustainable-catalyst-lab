@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-studio-bundle-v0460.schema.json",
+  "title": "Model Studio Bundle v0.46.0",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "sc-lab-model-studio-bundle/0.46.0"
+    },
+    "version": {
+      "const": "0.46.0"
+    }
+  },
+  "additionalProperties": true
+}

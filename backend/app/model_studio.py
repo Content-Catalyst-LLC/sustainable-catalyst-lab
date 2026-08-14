@@ -10,11 +10,11 @@ from typing import Any
 
 from .equation_builder import EquationBuilderError, catalog as equation_catalog, evaluate_rows as evaluate_equation_rows, validate_definition as validate_equation_definition
 
-VERSION = "0.45.0"
-MODEL_SCHEMA = "sc-lab-model-studio-model/0.45.0"
-GRAPH_SCHEMA = "sc-lab-scientific-graph/0.45.0"
-RESULT_SCHEMA = "sc-lab-model-studio-result/0.45.0"
-BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.45.0"
+VERSION = "0.46.0"
+MODEL_SCHEMA = "sc-lab-model-studio-model/0.46.0"
+GRAPH_SCHEMA = "sc-lab-scientific-graph/0.46.0"
+RESULT_SCHEMA = "sc-lab-model-studio-result/0.46.0"
+BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.46.0"
 
 MODEL_FAMILIES = {
     "linear-multivariate": {"label": "Linear multivariate", "execution": "model-calibration-v0302"},
@@ -86,7 +86,7 @@ def policies() -> dict[str, Any]:
         "graphTypes": sorted(GRAPH_TYPES),
         "visualizationEngine": {
             "version": "0.44.0",
-            "contractVersion": "0.45.0",
+            "contractVersion": "0.46.0",
             "interactions": ["tooltip", "crosshair", "zoom", "pan", "series-toggle", "keyboard-navigation"],
             "uncertainty": ["error-bars", "confidence-ribbons"],
             "publicationExports": ["svg", "png", "csv", "json"],
@@ -104,6 +104,8 @@ def policies() -> dict[str, Any]:
             "dynamicSystems": True,
             "safeDeclarativeDerivativeExpressions": True,
             "boundedDynamicParameterEstimation": True,
+            "responseSurfaces": True,
+            "boundedDesignSpaceOptimization": True,
         },
     }
 
@@ -121,6 +123,8 @@ def health() -> dict[str, Any]:
         "uncertaintyRendering": True,
         "dynamicSystems": True,
         "odeParameterEstimation": True,
+        "responseSurfaces": True,
+        "designSpaceOptimization": True,
         "arbitraryCode": False,
         "arbitraryFormulaExecution": False,
         "safeDeclarativeExpressionExecution": True,
@@ -374,7 +378,7 @@ def build_bundle(payload: dict[str, Any]) -> dict[str, Any]:
         "model": model,
         "graphs": graphs,
         "result": result,
-        "handoffTargets": ["dynamic-systems", "model-diagnostics", "model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
+        "handoffTargets": ["response-surfaces", "dynamic-systems", "model-diagnostics", "model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
         "boundaries": {"arbitraryCode": False, "arbitraryFormulaExecution": False, "safeDeclarativeExpressionExecution": True},
     }
     bundle["bundleHash"] = _digest(bundle)

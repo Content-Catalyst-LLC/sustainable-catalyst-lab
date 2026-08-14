@@ -1,0 +1,52 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.46.0",
+  "version": "0.46.0",
+  "purpose": "Add governed full second-order response-surface modeling, bounded design-space exploration, coefficient/lack-of-fit evidence, and deterministic continuous optimization while retaining v0.45 dynamic systems, v0.44 scientific visualization, v0.43 diagnostics, and v0.42 safe equation grammar.",
+  "responseSurfaces": {
+    "model": "full-second-order-coded-factor",
+    "terms": [
+      "intercept",
+      "linear",
+      "quadratic",
+      "two-factor-interactions"
+    ],
+    "inference": [
+      "standard-errors",
+      "t-statistics",
+      "p-values",
+      "95-percent-confidence-intervals",
+      "AIC",
+      "AICc",
+      "BIC",
+      "design-matrix-rank",
+      "condition-number",
+      "replicated-point-lack-of-fit"
+    ],
+    "exploration": [
+      "bounded-two-factor-heatmaps",
+      "fixed-other-factors",
+      "response-feasibility-constraints",
+      "prediction-standard-error"
+    ],
+    "optimization": [
+      "maximize",
+      "minimize",
+      "target",
+      "bounded-differential-evolution",
+      "deterministic-seed",
+      "prediction-uncertainty",
+      "boundary-flags"
+    ]
+  },
+  "dynamicSystemsCompatibility": "v0.45.0",
+  "visualizationCompatibility": "v0.44.0",
+  "diagnosticsCompatibility": "v0.43.0",
+  "equationCompatibility": "v0.42.0",
+  "boundaries": {
+    "arbitraryCode": false,
+    "extrapolationBeyondFactorBounds": false,
+    "higherThanQuadraticSurfaces": false,
+    "mixedIntegerOptimization": false,
+    "multiResponseDesirability": false
+  }
+}
