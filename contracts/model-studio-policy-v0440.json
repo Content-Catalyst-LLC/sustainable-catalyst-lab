@@ -1,0 +1,65 @@
+{
+  "schema": "sc-lab-model-studio-policy/0.44.0",
+  "version": "0.44.0",
+  "purpose": "Upgrade the shared Lab scientific visualization layer with interactive inspection, publication metadata, uncertainty rendering, accessible data fallback, and governed export while retaining v0.43 diagnostics and model comparison.",
+  "visualization": {
+    "sharedEngine": "SCLabScientificVisualizationEngineV0440",
+    "interactions": [
+      "tooltip",
+      "crosshair",
+      "wheel-zoom",
+      "button-zoom",
+      "drag-pan",
+      "keyboard-pan",
+      "keyboard-zoom",
+      "series-toggle",
+      "view-reset"
+    ],
+    "uncertainty": [
+      "vertical-error-bars",
+      "confidence-ribbons"
+    ],
+    "annotations": [
+      "vertical-line",
+      "horizontal-line",
+      "point"
+    ],
+    "publicationAspectRatios": [
+      "16:9",
+      "3:2",
+      "4:3",
+      "1:1"
+    ],
+    "exports": [
+      "svg",
+      "png-2x",
+      "csv",
+      "json"
+    ],
+    "accessibility": [
+      "svg-title-description",
+      "focusable-points",
+      "keyboard-navigation",
+      "tabular-fallback"
+    ]
+  },
+  "diagnosticsCompatibility": "v0.43.0",
+  "equationCompatibility": "v0.42.0",
+  "boundaries": {
+    "arbitraryCode": false,
+    "arbitraryFormulaFitting": false,
+    "safeDeclarativeExpressionExecution": true,
+    "registeredCalibrationFormsOnly": true,
+    "browserLocalExports": true,
+    "provenanceRequired": true,
+    "unitsMetadata": true
+  },
+  "handoffTargets": [
+    "model-diagnostics",
+    "model-calibration",
+    "design-studies",
+    "ensemble-uncertainty",
+    "model-registry",
+    "workbench"
+  ]
+}

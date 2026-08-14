@@ -10,11 +10,11 @@ from typing import Any
 
 from .equation_builder import EquationBuilderError, catalog as equation_catalog, evaluate_rows as evaluate_equation_rows, validate_definition as validate_equation_definition
 
-VERSION = "0.43.0"
-MODEL_SCHEMA = "sc-lab-model-studio-model/0.43.0"
-GRAPH_SCHEMA = "sc-lab-scientific-graph/0.43.0"
-RESULT_SCHEMA = "sc-lab-model-studio-result/0.43.0"
-BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.43.0"
+VERSION = "0.44.0"
+MODEL_SCHEMA = "sc-lab-model-studio-model/0.44.0"
+GRAPH_SCHEMA = "sc-lab-scientific-graph/0.44.0"
+RESULT_SCHEMA = "sc-lab-model-studio-result/0.44.0"
+BUNDLE_SCHEMA = "sc-lab-model-studio-bundle/0.44.0"
 
 MODEL_FAMILIES = {
     "linear-multivariate": {"label": "Linear multivariate", "execution": "model-calibration-v0302"},
@@ -84,6 +84,13 @@ def policies() -> dict[str, Any]:
         "bundleSchema": BUNDLE_SCHEMA,
         "modelFamilies": [{"id": key, **value} for key, value in MODEL_FAMILIES.items()],
         "graphTypes": sorted(GRAPH_TYPES),
+        "visualizationEngine": {
+            "version": "0.44.0",
+            "interactions": ["tooltip", "crosshair", "zoom", "pan", "series-toggle", "keyboard-navigation"],
+            "uncertainty": ["error-bars", "confidence-ribbons"],
+            "publicationExports": ["svg", "png", "csv", "json"],
+            "aspectRatios": ["16:9", "3:2", "4:3", "1:1"],
+        },
         "boundaries": {
             "arbitraryCode": False,
             "arbitraryFormulaExecution": False,
@@ -100,11 +107,14 @@ def policies() -> dict[str, Any]:
 def health() -> dict[str, Any]:
     return {
         "ok": True,
-        "status": "model-diagnostics-ready",
+        "status": "interactive-visualization-ready",
         "version": VERSION,
         "modelFamilies": len(MODEL_FAMILIES),
         "graphTypes": len(GRAPH_TYPES),
         "sharedVisualizationContract": True,
+        "interactiveVisualization": True,
+        "publicationGraphics": True,
+        "uncertaintyRendering": True,
         "arbitraryCode": False,
         "arbitraryFormulaExecution": False,
         "safeDeclarativeExpressionExecution": True,
@@ -282,8 +292,29 @@ def normalize_graph(payload: dict[str, Any]) -> dict[str, Any]:
         for p_index, point in enumerate(row.get("points") or []):
             if not isinstance(point, dict):
                 raise ModelStudioError("series points must be objects.")
-            points.append({"x": _finite(point.get("x"), f"series[{index}].points[{p_index}].x"), "y": _finite(point.get("y"), f"series[{index}].points[{p_index}].y")})
-        series.append({"id": _text(row.get("id") or f"series-{index+1}", "series id", 80, True), "label": _text(row.get("label") or f"Series {index+1}", "series label", 120, True), "mode": _text(row.get("mode") or ("scatter" if kind == "scatter" else "line"), "series mode", 30, True), "points": points})
+            normalized_point = {
+                "x": _finite(point.get("x"), f"series[{index}].points[{p_index}].x"),
+                "y": _finite(point.get("y"), f"series[{index}].points[{p_index}].y"),
+            }
+            for key in ("xLow", "xHigh", "yLow", "yHigh"):
+                value = _finite(point.get(key), f"series[{index}].points[{p_index}].{key}")
+                if value is not None:
+                    normalized_point[key] = value
+            label = _text(point.get("label"), f"series[{index}].points[{p_index}].label", 160)
+            if label:
+                normalized_point["label"] = label
+            points.append(normalized_point)
+        series.append({
+            "id": _text(row.get("id") or f"series-{index+1}", "series id", 80, True),
+            "label": _text(row.get("label") or f"Series {index+1}", "series label", 120, True),
+            "mode": _text(row.get("mode") or ("scatter" if kind == "scatter" else "line"), "series mode", 30, True),
+            "points": points,
+        })
+    publication_payload = payload.get("publication") if isinstance(payload.get("publication"), dict) else {}
+    aspect = _text(publication_payload.get("aspectRatio") or "16:9", "publication aspectRatio", 16, True)
+    if aspect not in {"16:9", "4:3", "3:2", "1:1"}:
+        raise ModelStudioError("Unsupported publication aspect ratio.")
+    interaction_payload = payload.get("interaction") if isinstance(payload.get("interaction"), dict) else {}
     graph = {
         "schema": GRAPH_SCHEMA,
         "version": VERSION,
@@ -298,8 +329,26 @@ def normalize_graph(payload: dict[str, Any]) -> dict[str, Any]:
             for index, row in enumerate(payload.get("bars") or []) if isinstance(row, dict)
         ][:200],
         "annotations": deepcopy(payload.get("annotations") or [])[:100],
-        "accessibility": {"role": "img", "tabularFallback": True},
-        "interaction": {"tooltip": True, "focusablePoints": True, "zoom": False, "pan": False},
+        "accessibility": {"role": "img", "tabularFallback": True, "keyboardNavigation": True},
+        "interaction": {
+            "tooltip": bool(interaction_payload.get("tooltip", True)),
+            "focusablePoints": bool(interaction_payload.get("focusablePoints", True)),
+            "zoom": bool(interaction_payload.get("zoom", True)),
+            "pan": bool(interaction_payload.get("pan", True)),
+            "crosshair": bool(interaction_payload.get("crosshair", True)),
+            "seriesToggle": bool(interaction_payload.get("seriesToggle", True)),
+        },
+        "publication": {
+            "subtitle": _text(publication_payload.get("subtitle"), "publication subtitle", 240),
+            "caption": _text(publication_payload.get("caption"), "publication caption", 800),
+            "source": _text(publication_payload.get("source"), "publication source", 300),
+            "method": _text(publication_payload.get("method"), "publication method", 500),
+            "notes": _text(publication_payload.get("notes"), "publication notes", 500),
+            "aspectRatio": aspect,
+            "showGrid": bool(publication_payload.get("showGrid", True)),
+            "showLegend": bool(publication_payload.get("showLegend", True)),
+            "background": "white",
+        },
         "exports": ["svg", "png", "csv", "json"],
     }
     graph["graphHash"] = _digest(graph)

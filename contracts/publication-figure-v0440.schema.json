@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/publication-figure-v0440.schema.json",
+  "title": "Sustainable Catalyst Publication Figure v0.44.0",
+  "type": "object",
+  "required": [
+    "aspectRatio",
+    "showGrid",
+    "showLegend",
+    "background"
+  ],
+  "properties": {
+    "subtitle": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "caption": {
+      "type": "string",
+      "maxLength": 800
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "method": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "aspectRatio": {
+      "enum": [
+        "16:9",
+        "3:2",
+        "4:3",
+        "1:1"
+      ]
+    },
+    "showGrid": {
+      "type": "boolean"
+    },
+    "showLegend": {
+      "type": "boolean"
+    },
+    "background": {
+      "const": "white"
+    }
+  },
+  "additionalProperties": false
+}

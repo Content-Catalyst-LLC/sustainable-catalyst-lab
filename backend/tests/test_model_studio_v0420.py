@@ -29,8 +29,8 @@ def model():
 
 
 def test_health_and_policy_enable_safe_declarative_execution():
-    assert health()["status"] == "model-diagnostics-ready"
-    assert health()["version"] == "0.43.0"
+    assert health()["status"] == "interactive-visualization-ready"
+    assert health()["version"] == "0.44.0"
     p = policies()
     assert p["boundaries"]["safeDeclarativeExpressionExecution"] is True
     assert p["boundaries"]["arbitraryCode"] is False
@@ -39,7 +39,7 @@ def test_health_and_policy_enable_safe_declarative_execution():
 
 def test_model_normalization_validates_equation_and_constants():
     m = normalize_model(model())
-    assert m["schema"] == "sc-lab-model-studio-model/0.43.0"
+    assert m["schema"] == "sc-lab-model-studio-model/0.44.0"
     assert m["definition"]["safeExecution"] is True
     assert m["definition"]["outputSymbol"] == "y"
     assert m["definition"]["functions"] == ["exp"]
@@ -71,7 +71,7 @@ def test_declarative_equation_rejects_undeclared_symbol():
 
 def test_bundle_is_v0420_and_preserves_handoffs():
     b = build_bundle({"model": model()})
-    assert b["schema"] == "sc-lab-model-studio-bundle/0.43.0"
+    assert b["schema"] == "sc-lab-model-studio-bundle/0.44.0"
     assert b["boundaries"]["safeDeclarativeExpressionExecution"] is True
     assert "workbench" in b["handoffTargets"]
 

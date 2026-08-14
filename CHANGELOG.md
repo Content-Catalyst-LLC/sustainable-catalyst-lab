@@ -5,6 +5,19 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## Feature layer v0.44.0 — Interactive Scientific Graph Engine & Publication Graphics
+
+- Replaces the v0.41 shared renderer in active Lab surfaces with Scientific Visualization Engine v0.44.0 while retaining backward-compatible graph inputs.
+- Adds wheel/button zoom, drag pan, keyboard pan/zoom/reset, crosshair coordinates, focusable data points, and click-to-hide series controls.
+- Adds uncertainty confidence ribbons and vertical error bars when graph points provide `yLow`/`yHigh` values.
+- Adds vertical/horizontal reference lines and point annotations.
+- Adds publication metadata for subtitle, caption, source, method, notes, aspect ratio, grid visibility, and legend visibility.
+- Adds browser-local publication exports for SVG, 2× PNG, CSV, and JSON plus an accessible tabular fallback.
+- Routes both Model Studio and Numerical Visualization Studio through the v0.44 shared renderer.
+- Advances Model Studio model/graph/bundle contracts to v0.44.0 while retaining v0.43 diagnostics/comparison and v0.42 equation safety boundaries.
+- Keeps arbitrary code and arbitrary-formula fitting disabled.
+- Keeps the WordPress-facing release line at v0.44.0 and the internal platform-compatibility line at v1.0.0, verified independently by runtime integrity checks.
+
 ## Feature layer v0.43.0 — Model Diagnostics, Cross-Validation & Scientific Model Comparison
 
 - Adds a dedicated model-diagnostics service for registered calibration forms without weakening the safe v0.42 equation-definition boundary.
