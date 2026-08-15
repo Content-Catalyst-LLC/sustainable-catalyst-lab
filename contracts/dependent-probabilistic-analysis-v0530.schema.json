@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-dependent-probabilistic-analysis/0.53.0",
+  "title": "Sustainable Catalyst Lab Dependent Probabilistic Analysis v0.53.0",
+  "type": "object",
+  "required": ["schema", "version", "study", "summary", "dependencyDiagnostics", "graphs", "governance", "analysisHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-dependent-probabilistic-analysis/0.53.0"},
+    "version": {"const": "0.53.0"},
+    "study": {"type": "object"},
+    "summary": {"type": "object"},
+    "sensitivity": {"type": "object"},
+    "dependencyDiagnostics": {"type": "object"},
+    "graphs": {"type": "object"},
+    "governance": {"type": "object"},
+    "analysisHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

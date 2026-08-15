@@ -1,0 +1,6 @@
+/* Sustainable Catalyst Lab v0.53.0 — Correlated uncertainty and dependency models. */
+.sc-cu0530-card textarea[data-pa-v0530-matrix]{min-height:118px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;line-height:1.45;resize:vertical}
+.sc-cu0530-card select,.sc-cu0530-card input,.sc-cu0530-card textarea{width:100%}
+[data-pa-v0530-dependency-summary]{font-size:.84rem;line-height:1.45}
+[data-pa-v0530-dependency-summary] strong{font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:760px){.sc-cu0530-card textarea[data-pa-v0530-matrix]{min-height:150px}}

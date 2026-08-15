@@ -63,6 +63,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_probabilistic_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_probabilistic_normalize'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/analyze', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_probabilistic_analyze'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/v0530/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_correlated_uncertainty_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/v0530/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_correlated_uncertainty_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/v0530/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_correlated_uncertainty_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/v0530/analyze', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_correlated_uncertainty_analyze'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/v0530/estimate-dependency', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_correlated_uncertainty_estimate'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_handoff_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_handoff_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/models/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_handoff_model_normalize'),'permission_callback'=>'__return_true'));
@@ -913,6 +918,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_studio_probabilistic_policies(){return self::proxy('/v1/model-studio/probabilistic/policies');}
     public static function model_studio_probabilistic_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/normalize','POST',$p,16777216);}
     public static function model_studio_probabilistic_analyze(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/analyze','POST',$p,33554432);}
+    public static function model_studio_correlated_uncertainty_health(){return self::proxy('/v1/model-studio/probabilistic/v0530/health');}
+    public static function model_studio_correlated_uncertainty_policies(){return self::proxy('/v1/model-studio/probabilistic/v0530/policies');}
+    public static function model_studio_correlated_uncertainty_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/v0530/normalize','POST',$p,16777216);}
+    public static function model_studio_correlated_uncertainty_analyze(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/v0530/analyze','POST',$p,33554432);}
+    public static function model_studio_correlated_uncertainty_estimate(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/v0530/estimate-dependency','POST',$p,33554432);}
     public static function model_handoff_health(){return self::proxy('/v1/model-handoff/health');}
     public static function model_handoff_policies(){return self::proxy('/v1/model-handoff/policies');}
     public static function model_handoff_model_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-handoff/models/normalize','POST',$p,2097152);}

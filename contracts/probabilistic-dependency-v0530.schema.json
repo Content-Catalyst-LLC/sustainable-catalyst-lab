@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-probabilistic-dependency/0.53.0",
+  "title": "Sustainable Catalyst Lab Probabilistic Dependency v0.53.0",
+  "type": "object",
+  "required": ["method"],
+  "properties": {
+    "method": {"enum": ["independent", "gaussian-copula"]},
+    "matrixType": {"enum": ["correlation", "covariance"]},
+    "symbols": {"type": "array", "items": {"type": "string"}, "maxItems": 32},
+    "matrix": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+    "source": {"type": "string", "maxLength": 240},
+    "notes": {"type": "string", "maxLength": 1000}
+  },
+  "additionalProperties": false
+}

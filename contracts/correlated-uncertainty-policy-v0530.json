@@ -1,0 +1,12 @@
+{
+  "schema": "sc-lab-correlated-uncertainty-policy/0.53.0",
+  "version": "0.53.0",
+  "dependencyMethods": ["independent", "gaussian-copula"],
+  "matrixTypes": ["correlation", "covariance"],
+  "marginalDistributions": ["uniform", "normal", "lognormal", "triangular"],
+  "dependentSaltelliSobol": false,
+  "automaticDependencyInference": false,
+  "automaticCausalInterpretation": false,
+  "arbitraryCode": false,
+  "operatorReviewRequiredForEstimatedDependency": true
+}

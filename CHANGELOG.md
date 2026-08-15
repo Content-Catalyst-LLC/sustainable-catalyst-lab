@@ -1,3 +1,10 @@
+# v0.53.0 — Correlated Uncertainty & Probabilistic Dependency Models
+
+- Added evidence-backed correlation/covariance dependency models through a Gaussian copula.
+- Added positive-semidefinite validation, dependency diagnostics, empirical dependency estimation, and Graph Studio heatmaps.
+- Preserved marginal distributions and blocked dependent-input Saltelli–Sobol decomposition.
+- Preserved v0.48.3 navigation/presentation and the v0.49–v0.52 modeling/reproducibility stack.
+
 ## 0.52.0 — Bayesian Inference, Posterior Diagnostics & Posterior Predictive Modeling
 
 - Added governed Bayesian Gaussian, binomial-logit, and Poisson-log regression inside Model Studio.

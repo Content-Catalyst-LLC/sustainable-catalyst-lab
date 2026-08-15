@@ -33,6 +33,7 @@ from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
+from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
 from .reproducible_model_package import ReproducibleModelPackageError, build_package as build_reproducible_model_package, build_research_bundle as build_model_research_bundle, health as reproducible_model_package_health, policies as reproducible_model_package_policies, registry_projection as reproducible_model_registry_projection, verify_package as verify_reproducible_model_package
 from .advanced_statistical_modeling import AdvancedStatisticalModelingError, compare as compare_advanced_statistical_models, cross_validate as cross_validate_advanced_statistical_model, fit as fit_advanced_statistical_model, health as advanced_statistical_modeling_health, normalize_study as normalize_advanced_statistical_study, policies as advanced_statistical_modeling_policies, predict as predict_advanced_statistical_model
@@ -1290,6 +1291,35 @@ def model_studio_bayesian_posterior_predictive_route(payload: dict[str, Any]):
         return run_posterior_predictive(payload)
     except BayesianInferenceError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.get("/v1/model-studio/probabilistic/v0530/health")
+def model_studio_correlated_uncertainty_health_route():
+    return correlated_uncertainty_health()
+
+@app.get("/v1/model-studio/probabilistic/v0530/policies")
+def model_studio_correlated_uncertainty_policies_route():
+    return correlated_uncertainty_policies()
+
+@app.post("/v1/model-studio/probabilistic/v0530/normalize")
+def model_studio_correlated_uncertainty_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "study": normalize_correlated_uncertainty_study(payload.get("study") or payload)}
+    except CorrelatedUncertaintyError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/probabilistic/v0530/analyze")
+def model_studio_correlated_uncertainty_analyze_route(payload: dict[str, Any]):
+    try:
+        return run_correlated_uncertainty(payload.get("study") if isinstance(payload.get("study"), dict) else payload)
+    except CorrelatedUncertaintyError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/probabilistic/v0530/estimate-dependency")
+def model_studio_correlated_uncertainty_estimate_route(payload: dict[str, Any]):
+    try:
+        return estimate_probabilistic_dependency(payload)
+    except CorrelatedUncertaintyError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=str(exc)) from exc
 
 @app.get("/v1/model-studio/probabilistic/health")
 def model_studio_probabilistic_health_route():
