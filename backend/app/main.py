@@ -31,6 +31,7 @@ from .model_studio import ModelStudioError, build_bundle as build_model_studio_b
 from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
 from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate_dynamic_system_parameters, health as dynamic_systems_health, normalize_definition as normalize_dynamic_system, policies as dynamic_systems_policies, simulate as simulate_dynamic_system, templates as dynamic_system_templates
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
+from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1143,6 +1144,30 @@ def model_studio_response_surfaces_explore_route(payload: dict[str, Any]):
 def model_studio_response_surfaces_optimize_route(payload: dict[str, Any]):
     try: return optimize_response_surface(payload)
     except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/graph-studio/health")
+def graph_studio_health_route():
+    return graph_studio_health()
+
+@app.get("/v1/graph-studio/policies")
+def graph_studio_policies_route():
+    return graph_studio_policies()
+
+@app.post("/v1/graph-studio/graphs/normalize")
+def graph_studio_graph_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "graph": normalize_graph_studio_graph(payload.get("graph") or payload)}
+    except GraphStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/graph-studio/figures/normalize")
+def graph_studio_figure_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "figure": normalize_graph_studio_figure(payload.get("figure") or payload)}
+    except GraphStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/graph-studio/workspaces/build")
+def graph_studio_workspace_build_route(payload: dict[str, Any]):
+    try: return build_graph_studio_workspace(payload)
+    except GraphStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-calibration/health")

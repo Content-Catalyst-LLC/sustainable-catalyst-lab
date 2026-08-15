@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific model studio, shared scientific visualization, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, scientific workflow orchestration, dependency graphs, declarative workflow conditions, checkpoint history, partial recovery, durable schedules, authenticated event triggers, missed-run recovery, concurrency controls, adaptive experiment campaigns, sequential design, Gaussian-process surrogate modeling, Bayesian optimization, active learning, predictive uncertainty, resource-aware trial search, budget-aware orchestration, closed-loop simulation and instrument campaigns, signed measurement ingestion, safety interlocks, operator-approved setpoints, shared research projects, role-governed team workspaces, single-use invitations, collaboration-safe resource linking, append-only review discussions, review assignments, approval gates, immutable scientific sign-off, immutable workspace version history, named research branches, three-way merge, conflict resolution, protected-branch approval gates, institutional node federation, local-data execution, signed execution envelopes, node attestations, offline field research, sealed work packages, resumable edge synchronization, conflict-safe reconciliation, field-device provenance, reproducibility packages, research publication rendering, citation exports, verification manifests, scientific publication sign-off, typed cross-product research handoffs, stable public research APIs, signed webhooks, expiring research embeds, Python and TypeScript research SDKs, institutional administration, human and service identity records, role bindings, workspace classification, retention governance, approval workflows, policy evaluation, encrypted secrets, replay protection, signed audit chains, privacy workflows, stable instance identity, consistent backups, staged restore, migration journals, cross-instance transfer, disaster-recovery drills, performance budgets, load validation, safe chaos scenarios, capacity evidence, institutional beta cohorts, guided research journeys, privacy-minimized product telemetry, feedback and known-limitations operations, support pathways, beta release-readiness gates, and data-connected documentation.
- * Version: 0.46.0
+ * Version: 0.47.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -12,7 +12,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('SC_LAB_RELEASE_VERSION', '0.46.0');
+define('SC_LAB_RELEASE_VERSION', '0.47.0');
 define('SC_LAB_FEATURE_VERSION', SC_LAB_RELEASE_VERSION);
 define('SC_LAB_PLATFORM_VERSION', '1.0.0');
 // Historical internal modules may continue to use SC_LAB_VERSION as the stable-platform compatibility marker.
@@ -144,9 +144,12 @@ SC_Lab_Design_Studies_V0301::init();
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-model-calibration-v0302.php';
 SC_Lab_Model_Calibration_V0302::init();
 
-// v0.46.0 Response Surfaces, Optimization & Design-Space Exploration; v0.45 dynamic systems, v0.44 graph engine, v0.43 diagnostics, and v0.42 equation grammar remain governed foundations.
+// v0.47.0 Graph Studio and interface reorganization; v0.46 response surfaces, v0.45 dynamic systems, v0.44 graph engine, v0.43 diagnostics, and v0.42 equation grammar remain governed foundations.
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-model-studio-v0460.php';
 SC_Lab_Model_Studio_V0460::init();
+
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-graph-studio-v0470.php';
+SC_Lab_Graph_Studio_V0470::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-distributed-dispatcher-v0310.php';
 SC_Lab_Distributed_Dispatcher_V0310::init();

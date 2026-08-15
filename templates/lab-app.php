@@ -50,35 +50,17 @@
           'method-review' => 'Method review',
           'scholarly-discovery' => 'Scholarly discovery',
           'experiment-framework' => 'Experiment framework',
-          'design-studies' => 'Design studies',
-          'model-studio' => 'Model Studio',
-          'model-calibration' => 'Model calibration',
           'manuscript-assembly' => 'Manuscript, report & notebook assembly',
           'public-reproduction' => 'Public reproduction & verification',
           'research-interoperability' => 'Research interoperability',
           'typed-cross-product-handoffs' => 'Typed product handoffs',
           'public-research-integrations' => 'Public API & integrations',
-          'institutional-governance-v0390' => 'Institutional governance',
-          'multi-instance-operations-v0392' => 'Backup, migration & recovery',
-          'performance-chaos-v0393' => 'Performance, load & chaos validation',
-          'connected-platform-beta-v0400' => 'Connected research platform beta',
-          'interface-finalization-v0401' => 'Accessible mobile and offline workspace',
-          'public-release-hardening-v0402' => 'Migration, compatibility & release hardening',
-          'connected-platform-v1000' => 'Connected scientific platform',
-          'model-registry' => 'Scientific model registry',
-          'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
-          'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
           'team-workspaces' => 'Shared projects & team workspaces',
           'workspace-review' => 'Review, approvals & sign-off',
           'workflow-orchestration' => 'Scientific workflows',
           'workflow-automation' => 'Scheduled & event-driven runs',
           'experiment-campaigns' => 'Adaptive experiment campaigns',
           'closed-loop-campaigns' => 'Closed-loop campaigns',
-          'distributed-dispatcher' => 'Compute dispatcher',
-          'persistent-queue' => 'Persistent queue',
-          'dispatcher-operations' => 'Dispatcher operations',
-          'worker-agent' => 'Secure worker agents',
-          'artifact-transport' => 'Artifact transport',
           'activity' => 'Activity',
         ),
         'Observe' => array(
@@ -87,12 +69,19 @@
           'astronomy-observations' => 'Space & astronomy observations',
           'marine-biology' => 'Marine biology',
         ),
+        'Model' => array(
+          'model-studio' => 'Model Studio',
+          'model-calibration' => 'Model calibration',
+          'design-studies' => 'Design studies',
+          'model-registry' => 'Scientific model registry',
+          'ensemble-uncertainty' => 'Ensembles, sensitivity & uncertainty',
+          'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
+        ),
         'Analyze' => array(
           'dataset-inspector' => 'Dataset inspector',
           'numerical-methods' => 'Numerical Methods Studio',
           'numerical-validation' => 'Numerical Validation Library',
           'numerical-governance' => 'Precision & Solver Governance',
-          'numerical-visualization' => 'Scientific Visualization',
           'long-running-jobs' => 'Long Jobs & Checkpoints',
           'chemistry' => 'Chemistry',
           'physics' => 'Physics laboratory',
@@ -101,14 +90,29 @@
           'materials' => 'Materials laboratory',
           'earth-systems' => 'Earth systems laboratory',
           'energy-engineering' => 'Energy & engineering',
-  'electrical-embedded' => 'Electrical & embedded',
-  'mechanical-thermal' => 'Mechanical & thermal', 'civil-infrastructure' => 'Civil & infrastructure', 'architecture-building' => 'Architecture & building performance', 'urban-planning-spatial' => 'Urban planning & spatial systems', 'sustainable-cities-resilience' => 'Sustainable cities & urban resilience', 'comparative-economics-development-systems' => 'Comparative economics & development systems', 'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems', 'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight', 'microbiology-laboratory' => 'Microbiology laboratory', 'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis', 'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering',
-    'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals',
-    'genetics-genomics-sequence-analysis' => 'Genetics, genomics & sequence analysis',
-    'laboratory-data-instrumentation' => 'Laboratory data & instrumentation', 'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
-          'visualization-studio' => 'Visualization & export',
+          'electrical-embedded' => 'Electrical & embedded',
+          'mechanical-thermal' => 'Mechanical & thermal',
+          'civil-infrastructure' => 'Civil & infrastructure',
+          'architecture-building' => 'Architecture & building performance',
+          'urban-planning-spatial' => 'Urban planning & spatial systems',
+          'sustainable-cities-resilience' => 'Sustainable cities & urban resilience',
+          'comparative-economics-development-systems' => 'Comparative economics & development systems',
+          'aerospace-engineering-flight-systems' => 'Aerospace engineering & flight systems',
+          'rocket-propulsion-spaceflight' => 'Rocket propulsion & spaceflight',
+          'microbiology-laboratory' => 'Microbiology laboratory',
+          'biochemistry-molecular-analysis' => 'Biochemistry & molecular analysis',
+          'biotechnology-bioprocess-engineering' => 'Biotechnology & bioprocess engineering',
+          'biomedical-engineering-biosignals' => 'Biomedical engineering & biosignals',
+          'genetics-genomics-sequence-analysis' => 'Genetics, genomics & sequence analysis',
+          'laboratory-data-instrumentation' => 'Laboratory data & instrumentation',
+          'circular-economy-industrial-ecology' => 'Circular economy & industrial ecology',
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
+        ),
+        'Visualize' => array(
+          'graph-studio' => 'Graph Studio',
+          'numerical-visualization' => 'Scientific Visualization',
+          'visualization-studio' => 'Visualization & export',
         ),
         'Record' => array(
           'experiments' => 'Experiments',
@@ -118,14 +122,26 @@
           'documentation' => 'Documentation',
         ),
         'System' => array(
+          'institutional-governance-v0390' => 'Institutional governance',
+          'multi-instance-operations-v0392' => 'Backup, migration & recovery',
+          'performance-chaos-v0393' => 'Performance, load & chaos validation',
+          'connected-platform-beta-v0400' => 'Connected research platform beta',
+          'interface-finalization-v0401' => 'Accessible mobile and offline workspace',
+          'public-release-hardening-v0402' => 'Migration, compatibility & release hardening',
+          'connected-platform-v1000' => 'Connected scientific platform',
+          'distributed-dispatcher' => 'Compute dispatcher',
+          'persistent-queue' => 'Persistent queue',
+          'dispatcher-operations' => 'Dispatcher operations',
+          'worker-agent' => 'Secure worker agents',
+          'artifact-transport' => 'Artifact transport',
           'workspace-data' => 'Workspace data',
           'source-registry' => 'Source registry',
           'system-status' => 'Connector status',
         ),
       );
       foreach ($groups as $group => $items): ?>
-        <div class="sc-lab-nav-group">
-          <span class="sc-lab-nav-heading"><?php echo esc_html($group); ?></span>
+        <div class="sc-lab-nav-group" data-lab-nav-group="<?php echo esc_attr($group); ?>">
+          <button type="button" class="sc-lab-nav-heading sc-lab-nav-group-toggle" data-lab-nav-group-toggle aria-expanded="true"><?php echo esc_html($group); ?></button>
           <?php foreach ($items as $key => $label): ?>
             <button type="button" class="sc-lab-nav-button" data-lab-module-button="<?php echo esc_attr($key); ?>"><?php echo esc_html($label); ?></button>
           <?php endforeach; ?>
@@ -147,6 +163,13 @@
         </div>
 
         <div class="sc-lab-metrics" data-overview-metrics></div>
+
+        <div class="sc-lab-focus-actions" aria-label="Primary scientific workspaces">
+          <button type="button" class="sc-lab-focus-card" data-open-module="model-studio"><span class="sc-lab-section-code">MODEL</span><strong>Build &amp; validate models</strong><span>Define equations, fit models, diagnose results, explore dynamic systems and response surfaces.</span></button>
+          <button type="button" class="sc-lab-focus-card" data-open-module="graph-studio"><span class="sc-lab-section-code">GRAPH</span><strong>Create scientific figures</strong><span>Inspect data on a large interactive canvas, refine publication metadata, and manage project figures.</span></button>
+          <button type="button" class="sc-lab-focus-card" data-open-module="experiments"><span class="sc-lab-section-code">EXPERIMENT</span><strong>Record experimental work</strong><span>Plan and preserve experiments, methods, results, and evidence against the active project.</span></button>
+          <button type="button" class="sc-lab-focus-card" data-open-module="scientific-feeds"><span class="sc-lab-section-code">OBSERVE</span><strong>Work with observations</strong><span>Bring Earth, space, marine, and scientific observations into the research workflow.</span></button>
+        </div>
 
         <section class="sc-lab-dashboard-section">
           <div class="sc-lab-dashboard-head">
@@ -1540,6 +1563,43 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
     <div data-instrumentation-validation-custody-root></div>
 </section>
 
+      <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.47.0</p><h3>Scientific Figure Workspace</h3><p>Build, inspect, refine, save, and reuse scientific figures on a dedicated large-format canvas. Graph Studio consumes governed Lab graph specifications from Model Studio and other analysis modules without changing the underlying scientific result.</p></header>
+        <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
+        <div class="sc-gs0470-shell">
+          <aside class="sc-gs0470-controls" aria-label="Figure controls">
+            <section class="sc-gs0470-card"><h4>Figure definition</h4>
+              <label>Graph type<select data-gs-v0470-kind><option value="line-scatter">Scatter + fitted line</option><option value="line">Line</option><option value="scatter">Scatter</option><option value="histogram">Histogram</option><option value="horizontal-bars">Horizontal bars</option><option value="heatmap">Heatmap / response surface</option></select></label>
+              <label>Figure title<input data-gs-v0470-title value="Scientific figure"></label>
+              <label>Subtitle<input data-gs-v0470-subtitle placeholder="Optional scientific context"></label>
+              <div class="sc-gs0470-inline"><label>X field<input data-gs-v0470-x value="x"></label><label>Primary Y field<input data-gs-v0470-y value="y"></label></div>
+              <label>Series <small>key:label:mode, comma separated</small><input data-gs-v0470-series value="observed:Observed:points,fit:Fitted model:line"></label>
+              <div class="sc-gs0470-inline"><label>Z field <small>heatmap</small><input data-gs-v0470-z value="z"></label><label>Histogram bins<input type="number" min="4" max="40" value="12" data-gs-v0470-bins></label></div>
+              <div class="sc-gs0470-inline"><label>X-axis label<input data-gs-v0470-x-label value="Time (s)"></label><label>Y-axis label<input data-gs-v0470-y-label value="Response (mg/L)"></label></div>
+              <label>Figure data JSON<textarea data-gs-v0470-rows spellcheck="false"></textarea></label>
+              <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0470-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-render>Render figure</button></div>
+            </section>
+            <section class="sc-gs0470-card"><h4>Publication metadata</h4>
+              <label>Aspect ratio<select data-gs-v0470-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label>
+              <label>Caption<textarea data-gs-v0470-caption placeholder="Concise figure caption"></textarea></label>
+              <label>Source<input data-gs-v0470-source placeholder="Dataset, archive, experiment, or source"></label>
+              <label>Method<input data-gs-v0470-method placeholder="Method / model / validation note"></label>
+              <label>Notes<input data-gs-v0470-notes placeholder="Uncertainty, exclusions, interpretation"></label>
+              <label>Tags<input data-gs-v0470-tags placeholder="diagnostics, publication, response-surface"></label>
+              <div class="sc-gs0470-checks"><label><input type="checkbox" checked data-gs-v0470-grid> Grid</label><label><input type="checkbox" checked data-gs-v0470-legend> Legend</label></div>
+            </section>
+            <section class="sc-gs0470-card"><h4>Figure actions</h4><p class="sc-lab-data-note">SVG, 2× PNG, CSV, JSON, zoom, pan, crosshair, series controls, and accessible tables are available directly in the graph toolbar.</p>
+              <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-save>Save figure</button><button type="button" class="sc-lab-button" data-gs-v0470-duplicate>Duplicate draft</button><button type="button" class="sc-lab-button" data-gs-v0470-latest>Open latest graph</button><button type="button" class="sc-lab-button" data-gs-v0470-notebook>Add to notebook</button><button type="button" class="sc-lab-button" data-gs-v0470-report>Send to report</button></div>
+            </section>
+          </aside>
+          <div class="sc-gs0470-workspace">
+            <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge">Shared graph engine v0.44</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
+            <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
+            <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
+          </div>
+        </div>
+      </section>
+
       <section class="sc-lab-panel sc-lab-module sc-ms0460" data-lab-module="model-studio" data-module-panel="model-studio" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / MODEL STUDIO / v0.46.0</p><h3>Response Surfaces, Optimization &amp; Design-Space Exploration</h3><p>Fit auditable quadratic response surfaces from bounded experimental factors, inspect coefficient and lack-of-fit evidence, explore constrained design spaces, identify governed optima, and carry the results into the shared interactive scientific graph, dynamic-system, uncertainty, and publication workflows.</p></header>
         <p class="sc-ms0460-status" data-ms-v0460-status role="status" aria-live="polite">Model Studio loading…</p>
@@ -1569,7 +1629,7 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
             <label>Preview input rows as JSON<textarea data-ms-v0460-rows aria-label="Preview dataset rows"></textarea></label>
             <div class="sc-ms0460-summary" data-ms-v0460-summary></div>
             <div class="sc-ms0460-graph" data-ms-v0460-graph><div class="sc-lab-data-note">Evaluate a model preview to render the scientific equation.</div></div>
-            <div class="sc-ms0460-publication"><h4>Publication figure</h4><p>These settings are embedded into exported figures. The graph toolbar provides reset, zoom, pan, SVG, 2× PNG, CSV, JSON, and accessible-table controls.</p><div class="sc-ms0460-inline"><label>Aspect ratio<select data-ms-v0460-publication-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label><label>Subtitle<input data-ms-v0460-publication-subtitle placeholder="Optional figure subtitle"></label></div><label>Caption<textarea data-ms-v0460-publication-caption placeholder="Concise publication caption"></textarea></label><div class="sc-ms0460-inline"><label>Source<input data-ms-v0460-publication-source placeholder="Dataset, archive, or source"></label><label>Method<input data-ms-v0460-publication-method placeholder="Model / method / validation note"></label></div><label>Notes<input data-ms-v0460-publication-notes placeholder="Uncertainty, exclusions, or interpretation note"></label><div class="sc-ms0460-checks"><label><input type="checkbox" checked data-ms-v0460-publication-grid> Show grid</label><label><input type="checkbox" checked data-ms-v0460-publication-legend> Show legend</label></div><button type="button" class="sc-lab-button" data-ms-v0460-publication-apply>Apply publication settings</button></div>
+            <div class="sc-ms0460-publication"><h4>Publication figure</h4><p>These settings are embedded into exported figures. The graph toolbar provides reset, zoom, pan, SVG, 2× PNG, CSV, JSON, and accessible-table controls.</p><div class="sc-ms0460-inline"><label>Aspect ratio<select data-ms-v0460-publication-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label><label>Subtitle<input data-ms-v0460-publication-subtitle placeholder="Optional figure subtitle"></label></div><label>Caption<textarea data-ms-v0460-publication-caption placeholder="Concise publication caption"></textarea></label><div class="sc-ms0460-inline"><label>Source<input data-ms-v0460-publication-source placeholder="Dataset, archive, or source"></label><label>Method<input data-ms-v0460-publication-method placeholder="Model / method / validation note"></label></div><label>Notes<input data-ms-v0460-publication-notes placeholder="Uncertainty, exclusions, or interpretation note"></label><div class="sc-ms0460-checks"><label><input type="checkbox" checked data-ms-v0460-publication-grid> Show grid</label><label><input type="checkbox" checked data-ms-v0460-publication-legend> Show legend</label></div><button type="button" class="sc-lab-button" data-ms-v0460-publication-apply>Apply publication settings</button><button type="button" class="sc-lab-button" data-ms-v0460-open-graph-studio>Open in Graph Studio</button></div>
             <details><summary>Evaluated rows</summary><pre class="sc-ms0460-contract sc-ms0460-evaluated" data-ms-v0460-evaluated-rows>No evaluation yet.</pre></details>
             <details><summary>Scientific graph specification</summary><pre class="sc-ms0460-contract" data-ms-v0460-graph-spec>No graph specification yet.</pre></details>
             <h4>Governed handoffs</h4><div class="sc-ms0460-handoffs"><button type="button" class="sc-lab-button" data-ms-v0460-handoff="response-surfaces">Response surfaces</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="dynamic-systems">Dynamic systems</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="model-diagnostics">Diagnostics evidence</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="model-calibration">Calibration</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="design-studies">Design studies</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="ensemble-uncertainty">Uncertainty</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="model-registry">Model registry</button><button type="button" class="sc-lab-button" data-ms-v0460-handoff="workbench">Workbench</button></div>

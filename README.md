@@ -1,10 +1,10 @@
 # Sustainable Catalyst Lab
 
-## Model Studio v0.44.0 feature layer
+## Graph Studio v0.47.0 feature layer
 
-This source tree includes **Interactive Scientific Graph Engine & Publication Graphics v0.44.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. Model Studio and Numerical Visualization now share a common interactive renderer with zoom, pan, crosshair inspection, focusable points, series visibility controls, uncertainty bands/error bars, scientific annotations, and accessible table fallback.
+This source tree includes **Graph Studio, Scientific Figure Workspace & Interface Reorganization v0.47.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. Graph Studio is a first-class scientific visualization workspace with a large interactive canvas, project figure library, publication metadata, governed figure persistence, and handoffs from Model Studio.
 
-Publication figures can carry subtitle, caption, source, method, notes, aspect ratio, grid/legend settings, and can be exported locally as SVG, 2× PNG, CSV, or JSON. The v0.43 diagnostics/model-comparison layer and the v0.42 safe declarative equation grammar remain intact. Arbitrary code and arbitrary-formula fitting remain disabled.
+Graph Studio and the existing modeling/visualization surfaces continue to use the shared Scientific Visualization Engine v0.44.0 rather than maintaining separate renderers. The v0.46 response-surface, v0.45 dynamic-system, v0.43 diagnostics/model-comparison, and v0.42 safe-equation layers remain intact. Arbitrary code execution remains disabled.
 
 ## v0.40.0 — Connected Scientific Research Platform Beta
 

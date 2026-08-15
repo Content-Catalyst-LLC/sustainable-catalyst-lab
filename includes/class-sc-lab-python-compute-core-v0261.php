@@ -47,6 +47,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/response-surfaces/fit', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_response_surfaces_fit'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/response-surfaces/explore', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_response_surfaces_explore'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/response-surfaces/optimize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_response_surfaces_optimize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/health', array('methods'=>'GET','callback'=>array(__CLASS__,'graph_studio_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'graph_studio_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/graphs/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'graph_studio_graph_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/figures/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'graph_studio_figure_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/workspaces/build', array('methods'=>'POST','callback'=>array(__CLASS__,'graph_studio_workspace_build'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/datasets/health', array('methods'=>'GET','callback'=>array(__CLASS__,'dataset_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/datasets/profile', array('methods'=>'POST','callback'=>array(__CLASS__,'dataset_profile'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/reproducibility/health', array('methods'=>'GET','callback'=>array(__CLASS__,'reproducibility_health'),'permission_callback'=>'__return_true'));
@@ -864,6 +869,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_studio_response_surfaces_fit(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/response-surfaces/fit','POST',$p,16777216);}
     public static function model_studio_response_surfaces_explore(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/response-surfaces/explore','POST',$p,16777216);}
     public static function model_studio_response_surfaces_optimize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/response-surfaces/optimize','POST',$p,16777216);}
+    public static function graph_studio_health(){return self::proxy('/v1/graph-studio/health');}
+    public static function graph_studio_policies(){return self::proxy('/v1/graph-studio/policies');}
+    public static function graph_studio_graph_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/graph-studio/graphs/normalize','POST',$p,16777216);}
+    public static function graph_studio_figure_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/graph-studio/figures/normalize','POST',$p,16777216);}
+    public static function graph_studio_workspace_build(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/graph-studio/workspaces/build','POST',$p,16777216);}
     public static function dataset_health(){return self::proxy('/v1/datasets/health');}
     public static function dataset_profile(WP_REST_Request $request){$body=$request->get_json_params();if(!is_array($body)){return new WP_Error('invalid_dataset_profile','A JSON dataset profile request is required.',array('status'=>422));}$nodes=0;$clean=self::sanitize_tree($body,0,$nodes);if(is_wp_error($clean)){return $clean;}if(isset($clean['rows'])&&is_array($clean['rows'])){$clean['rows']=array_slice($clean['rows'],0,5000);}return self::proxy('/v1/datasets/profile','POST',$clean,8388608);}
     public static function reproducibility_health(){return self::proxy('/v1/reproducibility/health');}

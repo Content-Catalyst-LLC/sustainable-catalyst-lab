@@ -5,6 +5,16 @@
 - Requires verified operational evidence and zero unresolved critical or high defects before a general-availability certification can be issued.
 - Preserves non-destructive recovery, no-force-push installation, restricted-data boundaries, and opt-in telemetry/offline behavior.
 
+## 0.47.0 — Graph Studio, Scientific Figure Workspace & Interface Reorganization
+
+- Added a first-class Graph Studio with a large interactive scientific figure canvas and project-scoped figure library.
+- Added governed scientific-figure and figure-workspace contracts plus FastAPI and WordPress normalization/proxy routes.
+- Added project figure save/reopen/duplicate flows and Notebook/Report Studio figure handoffs.
+- Added `Open in Graph Studio` handoff from Model Studio without recomputing underlying model evidence.
+- Reorganized Lab navigation with dedicated MODEL and VISUALIZE groups, collapsible sections, and Overview front doors for Model, Graph, Experiment, and Observe.
+- Kept Scientific Visualization Engine v0.44.0 as the single shared renderer and retained the v0.46 governed scientific graph contract.
+- Preserved v1.0.0 internal platform compatibility and arbitrary-code execution boundaries.
+
 ## 0.46.0 — Response Surfaces, Optimization & Design-Space Exploration
 
 - Added full second-order response-surface fitting with coded factors, quadratic curvature, and two-factor interactions.

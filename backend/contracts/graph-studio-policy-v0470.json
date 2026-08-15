@@ -1,0 +1,15 @@
+{
+  "version": "0.47.0",
+  "figureSchema": "sc-lab-scientific-figure/0.47.0",
+  "workspaceSchema": "sc-lab-figure-workspace/0.47.0",
+  "graphContract": "sc-lab-scientific-graph/0.46.0",
+  "sharedVisualizationEngine": "0.44.0",
+  "graphTypes": ["heatmap", "histogram", "horizontal-bars", "line", "line-scatter", "scatter"],
+  "exports": ["svg", "png", "csv", "json"],
+  "boundaries": {
+    "arbitraryCode": false,
+    "remoteImageFetch": false,
+    "browserLocalProjectFigures": true,
+    "scientificGraphContractRequired": true
+  }
+}

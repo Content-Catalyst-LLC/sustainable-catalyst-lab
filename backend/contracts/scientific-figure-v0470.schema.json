@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-figure/0.47.0",
+  "title": "Sustainable Catalyst Lab Scientific Figure v0.47.0",
+  "type": "object",
+  "required": ["schema", "version", "recordType", "id", "title", "graph", "provenance", "fingerprint"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-figure/0.47.0"},
+    "version": {"const": "0.47.0"},
+    "recordType": {"const": "scientific-figure-v0470"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "title": {"type": "string", "minLength": 1, "maxLength": 180},
+    "status": {"type": "string"},
+    "sourceContext": {"type": "string"},
+    "tags": {"type": "array", "items": {"type": "string"}, "maxItems": 30},
+    "graph": {"type": "object"},
+    "provenance": {"type": "object"},
+    "fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}
