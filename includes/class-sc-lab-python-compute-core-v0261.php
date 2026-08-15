@@ -54,6 +54,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/statistics/predict', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_statistics_predict'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/statistics/cross-validate', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_statistics_cross_validate'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/statistics/compare', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_statistics_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/bayesian/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_bayesian_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/bayesian/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_bayesian_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/bayesian/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_bayesian_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/bayesian/fit', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_bayesian_fit'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-studio/bayesian/posterior-predictive', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_bayesian_posterior_predictive'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_probabilistic_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_probabilistic_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_probabilistic_normalize'),'permission_callback'=>'__return_true'));
@@ -899,6 +904,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_studio_statistics_predict(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/statistics/predict','POST',$p,16777216);}
     public static function model_studio_statistics_cross_validate(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/statistics/cross-validate','POST',$p,16777216);}
     public static function model_studio_statistics_compare(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/statistics/compare','POST',$p,16777216);}
+    public static function model_studio_bayesian_health(){return self::proxy('/v1/model-studio/bayesian/health');}
+    public static function model_studio_bayesian_policies(){return self::proxy('/v1/model-studio/bayesian/policies');}
+    public static function model_studio_bayesian_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/bayesian/normalize','POST',$p,8388608);}
+    public static function model_studio_bayesian_fit(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/bayesian/fit','POST',$p,33554432);}
+    public static function model_studio_bayesian_posterior_predictive(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/bayesian/posterior-predictive','POST',$p,33554432);}
     public static function model_studio_probabilistic_health(){return self::proxy('/v1/model-studio/probabilistic/health');}
     public static function model_studio_probabilistic_policies(){return self::proxy('/v1/model-studio/probabilistic/policies');}
     public static function model_studio_probabilistic_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/normalize','POST',$p,16777216);}

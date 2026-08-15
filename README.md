@@ -1,5 +1,11 @@
 # Sustainable Catalyst Lab
 
+## v0.52.0 Bayesian Inference, Posterior Diagnostics & Posterior Predictive Modeling
+
+This source tree adds governed Bayesian regression to Model Studio for Gaussian, binomial-logit, and Poisson-log response families. The release supports explicit normal coefficient priors, term-specific normal priors, inverse-gamma Gaussian residual-variance priors, multi-chain posterior sampling, split-Rhat screening, autocorrelation effective sample size, Monte Carlo standard error, acceptance-rate and trace review, central credible intervals, posterior-predictive distributions, and posterior-predictive checks.
+
+Gaussian models use a Gibbs sampler; binomial-logit and Poisson-log models use adaptive random-walk Metropolis initialized from a Laplace approximation. Diagnostics are evidence for review and never an automatic convergence certificate. Arbitrary code, automatic prior selection, automatic causal claims, Bayes-factor claims, and hierarchical models remain outside v0.52.0 scope. Bayesian analysis packets are project-scoped and automatically travel with the v0.50 reproducible-model-package collector. The v0.48.3 navigation architecture and platform compatibility v1.0.0 remain unchanged.
+
 ## v0.51.0 Advanced Statistical Modeling & Generalized Regression
 
 This source tree adds a governed advanced-statistics layer to Model Studio: Gaussian OLS/WLS, Huber robust regression, ridge/lasso/elastic-net regularization, binomial-logit and Poisson-log generalized linear models, Gaussian cubic splines, deterministic repeated k-fold validation, model comparison, coefficient evidence, and shared-engine scientific figures. Statistical evidence is project-scoped and travels with the v0.50 reproducible-model-package workflow.

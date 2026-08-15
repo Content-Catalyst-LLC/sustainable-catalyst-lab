@@ -36,6 +36,7 @@ from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_p
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
 from .reproducible_model_package import ReproducibleModelPackageError, build_package as build_reproducible_model_package, build_research_bundle as build_model_research_bundle, health as reproducible_model_package_health, policies as reproducible_model_package_policies, registry_projection as reproducible_model_registry_projection, verify_package as verify_reproducible_model_package
 from .advanced_statistical_modeling import AdvancedStatisticalModelingError, compare as compare_advanced_statistical_models, cross_validate as cross_validate_advanced_statistical_model, fit as fit_advanced_statistical_model, health as advanced_statistical_modeling_health, normalize_study as normalize_advanced_statistical_study, policies as advanced_statistical_modeling_policies, predict as predict_advanced_statistical_model
+from .bayesian_inference import BayesianInferenceError, fit as fit_bayesian_model, health as bayesian_inference_health, normalize_study as normalize_bayesian_study, policies as bayesian_inference_policies, posterior_predictive as run_posterior_predictive
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1259,6 +1260,35 @@ def model_studio_statistics_compare_route(payload: dict[str, Any]):
     try:
         return compare_advanced_statistical_models(payload)
     except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.get("/v1/model-studio/bayesian/health")
+def model_studio_bayesian_health_route():
+    return bayesian_inference_health()
+
+@app.get("/v1/model-studio/bayesian/policies")
+def model_studio_bayesian_policies_route():
+    return bayesian_inference_policies()
+
+@app.post("/v1/model-studio/bayesian/normalize")
+def model_studio_bayesian_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "study": normalize_bayesian_study(payload.get("study") or payload)}
+    except BayesianInferenceError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/bayesian/fit")
+def model_studio_bayesian_fit_route(payload: dict[str, Any]):
+    try:
+        return fit_bayesian_model(payload)
+    except BayesianInferenceError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/bayesian/posterior-predictive")
+def model_studio_bayesian_posterior_predictive_route(payload: dict[str, Any]):
+    try:
+        return run_posterior_predictive(payload)
+    except BayesianInferenceError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 @app.get("/v1/model-studio/probabilistic/health")

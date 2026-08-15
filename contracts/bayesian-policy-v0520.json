@@ -1,0 +1,24 @@
+{
+  "schema": "sc-lab-bayesian-policy/0.52.0",
+  "version": "0.52.0",
+  "families": ["gaussian", "binomial-logit", "poisson-log"],
+  "modelTypes": ["linear", "cubic-spline"],
+  "priors": {
+    "coefficients": "independent-normal",
+    "termSpecificNormalPriors": true,
+    "gaussianResidualVariance": "inverse-gamma"
+  },
+  "samplers": {
+    "gaussian": "gibbs-normal-inverse-gamma",
+    "binomial-logit": "adaptive-random-walk-metropolis",
+    "poisson-log": "adaptive-random-walk-metropolis"
+  },
+  "diagnostics": ["split-rhat", "autocorrelation-ess", "mcse", "acceptance-rate", "trace"],
+  "posteriorPredictive": true,
+  "automaticConvergenceCertification": false,
+  "automaticPriorSelection": false,
+  "automaticCausalClaims": false,
+  "hierarchicalModels": false,
+  "bayesFactors": false,
+  "arbitraryCode": false
+}

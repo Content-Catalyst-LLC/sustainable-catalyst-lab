@@ -1,3 +1,15 @@
+## 0.52.0 — Bayesian Inference, Posterior Diagnostics & Posterior Predictive Modeling
+
+- Added governed Bayesian Gaussian, binomial-logit, and Poisson-log regression inside Model Studio.
+- Added explicit normal coefficient priors, term-specific normal priors, and inverse-gamma Gaussian residual-variance priors.
+- Added multi-chain Gibbs sampling for Gaussian models and adaptive random-walk Metropolis for binomial/Poisson GLMs.
+- Added split-Rhat, autocorrelation ESS, MCSE, acceptance-rate, and trace diagnostics without automatic convergence certification.
+- Added central posterior credible intervals and posterior-predictive distributions/checks.
+- Added shared v0.44 scientific figures and Graph Studio handoff for posterior intervals, traces, and posterior-predictive evidence.
+- Added project-scoped Bayesian analysis packets compatible with v0.50 reproducible model packages.
+- Preserved v0.48.3 contextual navigation, the Graph Studio front door, three related-application cards, v0.49 model handoff, v0.50 reproducibility, and v0.51 advanced statistical modeling.
+- Kept arbitrary code, automatic prior selection, automatic causal claims, Bayes-factor claims, hierarchical models, and automatic publication disabled.
+
 ## 0.51.0 — Advanced Statistical Modeling & Generalized Regression
 
 - Added governed Gaussian OLS/WLS, Huber robust regression, ridge/lasso/elastic-net, binomial-logit GLM, Poisson-log GLM, and Gaussian cubic-spline regression.

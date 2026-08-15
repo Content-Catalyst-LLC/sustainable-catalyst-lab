@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-bayesian-study/0.52.0",
+  "title": "Sustainable Catalyst Lab Bayesian Study v0.52.0",
+  "type": "object",
+  "required": ["schema", "version", "family", "features", "response", "priors", "sampler", "studyHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-bayesian-study/0.52.0"},
+    "version": {"const": "0.52.0"},
+    "family": {"enum": ["gaussian", "binomial-logit", "poisson-log"]},
+    "modelType": {"enum": ["linear", "cubic-spline"]},
+    "features": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "response": {"type": "string"},
+    "priors": {"type": "object"},
+    "sampler": {"type": "object"},
+    "credibleLevel": {"type": "number", "minimum": 0.5, "maximum": 0.999},
+    "studyHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}

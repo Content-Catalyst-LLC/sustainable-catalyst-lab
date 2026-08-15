@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-bayesian-result/0.52.0",
+  "title": "Sustainable Catalyst Lab Bayesian Result v0.52.0",
+  "type": "object",
+  "required": ["schema", "version", "study", "posterior", "diagnostics", "posteriorPredictive", "graphs", "governance", "resultHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-bayesian-result/0.52.0"},
+    "version": {"const": "0.52.0"},
+    "study": {"type": "object"},
+    "posterior": {"type": "object"},
+    "diagnostics": {"type": "object"},
+    "posteriorPredictive": {"type": "object"},
+    "graphs": {"type": "object"},
+    "governance": {"type": "object"},
+    "resultHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}

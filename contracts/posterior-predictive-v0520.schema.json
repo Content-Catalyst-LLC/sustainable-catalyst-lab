@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-posterior-predictive/0.52.0",
+  "title": "Sustainable Catalyst Lab Posterior Predictive Result v0.52.0",
+  "type": "object",
+  "required": ["schema", "version", "predictions"],
+  "properties": {
+    "schema": {"const": "sc-lab-posterior-predictive/0.52.0"},
+    "version": {"const": "0.52.0"},
+    "predictions": {"type": "array"},
+    "checks": {"type": "object"}
+  },
+  "additionalProperties": true
+}

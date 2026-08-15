@@ -1751,6 +1751,42 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
             </div>
           </section>
 
+          <section class="sc-bayes0520" data-bayesian-inference-v0520 aria-label="Bayesian inference, posterior diagnostics, and posterior predictive modeling">
+            <div class="sc-bayes0520__head"><div><span class="sc-lab-section-code">MODEL / BAYESIAN</span><h4>Bayesian inference, posterior diagnostics &amp; posterior predictive modeling</h4><p>Estimate posterior distributions for Gaussian, binomial-logit, and Poisson-log regression models with explicit priors, multi-chain sampling, diagnostic review, credible intervals, and posterior-predictive checks. Bayesian evidence remains connected to the active project, Graph Studio, and reproducible-model packages.</p></div><span class="sc-bayes0520__contract">BAYESIAN 0.52.0</span></div>
+            <div class="sc-bayes0520__layout">
+              <div class="sc-bayes0520__controls">
+                <label>Study title<input data-bayes-v0520-title value="Bayesian model"></label>
+                <div class="sc-bayes0520__inline"><label>Response family<select data-bayes-v0520-family><option value="gaussian">Gaussian</option><option value="binomial-logit">Binomial · logit</option><option value="poisson-log">Poisson · log</option></select></label><label>Model type<select data-bayes-v0520-model-type><option value="linear">Linear</option><option value="cubic-spline">Cubic spline</option></select></label></div>
+                <label>Feature columns <small>comma separated</small><input data-bayes-v0520-features value="x,z"></label>
+                <div class="sc-bayes0520__inline"><label>Response column<input data-bayes-v0520-response value="y"></label><label>Credible level<input type="number" min="0.5" max="0.999" step="0.001" value="0.95" data-bayes-v0520-credible></label></div>
+                <div class="sc-bayes0520__inline"><label>Spline feature<input data-bayes-v0520-spline-feature value="x"></label><label>Interior knots<input type="number" min="0" max="12" value="3" data-bayes-v0520-knots></label></div>
+                <label class="sc-bayes0520__check"><input type="checkbox" checked data-bayes-v0520-standardize> Standardize design columns</label>
+                <h5>Priors</h5>
+                <div class="sc-bayes0520__inline"><label>Intercept mean<input type="number" step="any" value="0" data-bayes-v0520-intercept-mean></label><label>Intercept SD<input type="number" step="any" min="0.000001" value="10" data-bayes-v0520-intercept-sd></label></div>
+                <div class="sc-bayes0520__inline"><label>Coefficient mean<input type="number" step="any" value="0" data-bayes-v0520-coef-mean></label><label>Coefficient SD<input type="number" step="any" min="0.000001" value="2.5" data-bayes-v0520-coef-sd></label></div>
+                <div class="sc-bayes0520__inline"><label>Residual variance prior shape<input type="number" step="any" min="0.000001" value="2" data-bayes-v0520-sigma-shape></label><label>Residual variance prior scale<input type="number" step="any" min="0.000001" value="2" data-bayes-v0520-sigma-scale></label></div>
+                <h5>Sampler</h5>
+                <div class="sc-bayes0520__inline"><label>Chains<input type="number" min="2" max="8" value="4" data-bayes-v0520-chains></label><label>Posterior draws / chain<input type="number" min="50" max="4000" value="800" data-bayes-v0520-draws></label></div>
+                <div class="sc-bayes0520__inline"><label>Warmup / chain<input type="number" min="0" max="3000" value="500" data-bayes-v0520-warmup></label><label>Seed<input type="number" value="42" data-bayes-v0520-seed></label></div>
+                <div class="sc-bayes0520__inline"><label>Metropolis proposal scale<input type="number" min="0.02" max="20" step="0.05" value="1" data-bayes-v0520-proposal-scale></label><label>Target acceptance<input type="number" min="0.1" max="0.7" step="0.01" value="0.28" data-bayes-v0520-target-accept></label></div>
+                <label>Posterior-predictive draws<input type="number" min="20" max="1200" value="300" data-bayes-v0520-ppc-draws></label>
+                <label>Dataset rows as JSON<textarea data-bayes-v0520-rows spellcheck="false">[]</textarea></label>
+                <div class="sc-bayes0520__actions"><button type="button" class="sc-lab-button" data-bayes-v0520-example>Load Bayesian example</button><button type="button" class="sc-lab-button" data-bayes-v0520-use-stats>Use v0.51 statistical setup</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-bayes-v0520-fit>Sample posterior</button></div>
+                <div class="sc-bayes0520__actions"><button type="button" class="sc-lab-button" data-bayes-v0520-predict>Posterior predictive</button><button type="button" class="sc-lab-button" data-bayes-v0520-save>Save Bayesian evidence</button></div>
+                <p class="sc-bayes0520__status" data-bayes-v0520-status role="status" aria-live="polite">Bayesian modeling loading…</p>
+                <p class="sc-bayes0520__boundary"><strong>Scientific boundary.</strong> Posterior claims are conditional on the declared model, data, priors, and sampler. Split-R̂, ESS, MCSE, acceptance rates, trace plots, and posterior-predictive checks are review evidence—not an automatic convergence certificate. Lab does not select priors automatically, infer causality, execute arbitrary code, or claim that a posterior distribution proves a real-world mechanism.</p>
+              </div>
+              <div class="sc-bayes0520__evidence">
+                <div class="sc-bayes0520__summary" data-bayes-v0520-summary></div>
+                <div class="sc-bayes0520__graph-tabs" aria-label="Bayesian figure selector"><button type="button" data-bayes-v0520-graph="posteriorPredictive" aria-pressed="true">Posterior predictive</button><button type="button" data-bayes-v0520-graph="coefficientIntervals" aria-pressed="false">Credible intervals</button><button type="button" data-bayes-v0520-graph="trace" aria-pressed="false">Trace</button><button type="button" data-bayes-v0520-graph="predictiveSummary" aria-pressed="false">Predictive summary</button><button type="button" class="sc-lab-button" data-bayes-v0520-graph-studio>Open figure in Graph Studio</button></div>
+                <div class="sc-bayes0520__canvas" data-bayes-v0520-canvas><div class="sc-lab-data-note">Fit a Bayesian model to generate posterior and predictive figures.</div></div>
+                <h5>Posterior summary</h5><div class="sc-bayes0520__table" data-bayes-v0520-posterior></div>
+                <h5>Chain diagnostics</h5><div class="sc-bayes0520__table" data-bayes-v0520-diagnostics></div>
+                <details><summary>Bayesian model / posterior record</summary><pre data-bayes-v0520-record>No Bayesian result yet.</pre></details>
+              </div>
+            </div>
+          </section>
+
           <section class="sc-ms0460-card sc-ms0460-diagnostics-card"><h4>Diagnostics &amp; model evidence</h4>
             <p>Fit registered model forms against observed response values, inspect residual behavior, estimate out-of-sample performance, and compare alternatives using the same deterministic validation policy.</p>
             <div class="sc-ms0460-diagnostic-controls">
