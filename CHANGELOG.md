@@ -1,3 +1,12 @@
+# v0.60.1 — Beta Field Diagnostics, Integration Soak & Runtime Repair
+
+- Added metadata-only runtime snapshots and cross-studio failure localization.
+- Added a user-initiated four-cycle WordPress ↔ compute soak across five governed beta endpoints.
+- Added success-rate, latency, flapping, cross-studio-cycle, and transient-recovery evidence.
+- Added tamper-evident field-diagnostic packets and project `analysisPackets` persistence.
+- Preserved the six-destination rail, Graph Studio front door, and three related application cards.
+- Raw scientific data, credentials, external telemetry, background monitoring, automatic repair, and automatic scientific-state mutation remain disabled.
+
 # v0.60.0 — Integrated Scientific Research Beta
 
 - Added metadata-only integrated research journey and beta-readiness assessment.

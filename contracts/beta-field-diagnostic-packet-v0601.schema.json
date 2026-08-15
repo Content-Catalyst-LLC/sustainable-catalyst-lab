@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-beta-field-diagnostic-packet/0.60.1",
+  "type":"object",
+  "required":["schema","version","release","platformVersion","snapshotHash","probeHash","soakHash","probeStatus","soakStatus","boundaries","packetHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-beta-field-diagnostic-packet/0.60.1"},
+    "version":{"const":"0.60.1"},
+    "release":{"type":"string"},
+    "platformVersion":{"type":"string"},
+    "snapshotHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "probeHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "soakHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "probeStatus":{"enum":["pass","warn","fail"]},
+    "soakStatus":{"enum":["pass","warn","fail"]},
+    "failureDomains":{"type":"array","maxItems":16},
+    "repairHints":{"type":"array","maxItems":16},
+    "boundaries":{"type":"object"},
+    "packetHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":false
+}

@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-beta-integration-soak/0.60.1",
+  "type":"object",
+  "required":["schema","version","status","observationCount","cycleCount","endpoints","scenarios","soakHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-beta-integration-soak/0.60.1"},
+    "version":{"const":"0.60.1"},
+    "status":{"enum":["pass","warn","fail"]},
+    "observationCount":{"type":"integer","minimum":1,"maximum":80},
+    "cycleCount":{"type":"integer","minimum":1,"maximum":24},
+    "completeCycles":{"type":"integer","minimum":0},
+    "fullyGreenCycles":{"type":"integer","minimum":0},
+    "endpoints":{"type":"array","maxItems":5},
+    "scenarios":{"type":"array","maxItems":8},
+    "soakHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "humanReviewRequired":{"type":"boolean"}
+  },
+  "additionalProperties":true
+}

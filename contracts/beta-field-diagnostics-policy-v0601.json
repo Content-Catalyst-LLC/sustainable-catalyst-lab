@@ -1,0 +1,14 @@
+{
+  "schema":"sc-lab-beta-field-diagnostics-policy/0.60.1",
+  "version":"0.60.1",
+  "metadataOnlyDiagnostics":true,
+  "boundedUserInitiatedSoak":true,
+  "maxSoakObservations":80,
+  "externalTelemetryAuthorized":false,
+  "backgroundMonitoringAuthorized":false,
+  "automaticRepairAuthorized":false,
+  "automaticScientificStateMutationAuthorized":false,
+  "rawScientificDataAccepted":false,
+  "credentialsAccepted":false,
+  "humanReviewRequired":true
+}

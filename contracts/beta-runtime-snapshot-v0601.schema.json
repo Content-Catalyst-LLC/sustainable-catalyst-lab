@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-beta-runtime-snapshot/0.60.1",
+  "type":"object",
+  "required":["schema","version","release","platformVersion","connectivity","storage","integrity","dom","snapshotHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-beta-runtime-snapshot/0.60.1"},
+    "version":{"const":"0.60.1"},
+    "release":{"type":"string","maxLength":32},
+    "platformVersion":{"type":"string","maxLength":32},
+    "activeModule":{"type":"string","maxLength":80},
+    "visibility":{"enum":["visible","hidden","prerender","unknown"]},
+    "online":{"type":"boolean"},
+    "connectivity":{"type":"object"},
+    "storage":{"type":"object"},
+    "integrity":{"type":"object"},
+    "dom":{"type":"object"},
+    "errorCategories":{"type":"array","maxItems":24,"items":{"type":"string","maxLength":80}},
+    "snapshotHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":false
+}

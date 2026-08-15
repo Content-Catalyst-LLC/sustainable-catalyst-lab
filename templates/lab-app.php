@@ -2004,6 +2004,27 @@ P=1:9:bar</textarea></label>
             <p class="sc-beta0600__note">The beta packet contains metadata, counts, contract hashes, and evidence hashes only. Raw datasets, credentials, and scientific inputs are excluded. Human review remains mandatory.</p>
           </div>
         </details>
+        <details class="sc-bfd0601" data-beta-field-diagnostics-v0601>
+          <summary>Beta Field Diagnostics, Integration Soak &amp; Runtime Repair <span class="sc-bfd0601__badge">v0.60.1</span></summary>
+          <div class="sc-bfd0601__body">
+            <div class="sc-bfd0601__intro"><div><h4>Exercise the integrated beta before adding more science</h4><p>Capture a metadata-only runtime snapshot, localize cross-studio failures, and run a bounded four-cycle WordPress ↔ compute integration soak. The diagnostic layer reports repair evidence and failure domains; it does not mutate scientific state or send external telemetry.</p></div><span class="sc-bfd0601__badge">BETA / FIELD</span></div>
+            <p class="sc-bfd0601__status" data-bfd-v0601-status role="status" aria-live="polite">Beta field diagnostics loading…</p>
+            <div class="sc-bfd0601__actions">
+              <button type="button" class="sc-lab-button" data-bfd-v0601-capture>Capture runtime snapshot</button>
+              <button type="button" class="sc-lab-button" data-bfd-v0601-probe>Run integration probe</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-bfd-v0601-soak-button>Run bounded integration soak</button>
+              <button type="button" class="sc-lab-button" data-bfd-v0601-packet>Build diagnostic packet</button>
+              <button type="button" class="sc-lab-button" data-bfd-v0601-verify>Verify packet</button>
+              <button type="button" class="sc-lab-button" data-bfd-v0601-save>Save diagnostic evidence</button>
+            </div>
+            <div class="sc-bfd0601__metrics" data-bfd-v0601-metrics></div>
+            <div class="sc-bfd0601__grid">
+              <section class="sc-bfd0601__card"><h5>Endpoint soak</h5><div class="sc-bfd0601__soak" data-bfd-v0601-soak><p>No soak result yet.</p></div><h5>Failure domains</h5><div class="sc-bfd0601__domains" data-bfd-v0601-domains><span>none</span></div><h5>Repair evidence</h5><ul class="sc-bfd0601__hints" data-bfd-v0601-hints><li>Run the integration probe to localize a failure.</li></ul></section>
+              <section class="sc-bfd0601__card"><h5>Diagnostic evidence</h5><pre class="sc-bfd0601__output" data-bfd-v0601-output>No beta field diagnostic evidence generated yet.</pre></section>
+            </div>
+            <p class="sc-bfd0601__note">The soak is bounded and user initiated. Runtime metadata, endpoint status/latency, hashes, and failure categories may be retained; raw datasets, credentials, model inputs, automatic repairs, and external telemetry are excluded.</p>
+          </div>
+        </details>
         <details class="sc-wfc0570" data-scientific-workflow-v0570 open>
           <summary>Scientific Workflow Composer <span class="sc-wfc0570__badge">v0.57.0</span></summary>
           <div class="sc-wfc0570__body">

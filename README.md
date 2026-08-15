@@ -1,3 +1,7 @@
+## v0.60.1 — Beta Field Diagnostics, Integration Soak & Runtime Repair
+
+This stabilization release adds metadata-only runtime snapshots, cross-studio integration probes, a bounded user-initiated WordPress ↔ compute soak, failure-domain localization, and tamper-evident diagnostic packets. It does not add a new scientific workspace or permanent navigation item. Automatic repair, background monitoring, external telemetry, raw-scientific-data capture, and automatic scientific-state mutation remain disabled.
+
 ## v0.60.0 — Integrated Scientific Research Beta
 
 This beta milestone integrates the v0.49–v0.59 scientific feature line into a metadata-only project readiness contract. Lab can assess the active research journey across data, modeling, validation, workflow, reproducibility, and scientific audit, build a deterministic tamper-evident beta evidence packet, verify that packet, and save the evidence to the project. Raw datasets, credentials, and arbitrary executable inputs are excluded from the beta packet, and human review remains mandatory.
