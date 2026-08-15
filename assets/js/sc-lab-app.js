@@ -97,6 +97,7 @@
       qsa(root, '[data-lab-module]').forEach(panel => { panel.hidden = panel.dataset.labModule !== id; });
       qsa(root, '[data-lab-module-button]').forEach(button => button.classList.toggle('is-active', button.dataset.labModuleButton === id));
       root.dataset.activeModule = id;
+      root.dispatchEvent(new CustomEvent('sc-lab:module-opened', { detail: { module: id } }));
       closeMobileNav();
 
       if (id === 'overview') renderOverview();
@@ -289,19 +290,12 @@
     function renderOverview() {
       const project = projects.get();
       const counts = [
-        ['Evidence', project.evidence.length, 'evidence-decisions'],
-        ['Experiments', project.experiments.length, 'experiments'],
-        ['Calculations', project.calculations.length, 'science-engineering'],
-        ['Notes', project.notes.length, 'notebook'],
-        ['Decisions', project.decisions.length, 'evidence-decisions'],
-        ['Documents', project.documents.length, 'documentation'],
-        ['Biology', project.biologyRecords.length, 'biology'],
-        ['Astronomy', project.astronomyRecords.length, 'astronomy'],
-        ['Materials', project.materialsRecords.length, 'materials'],
-        ['Earth systems', project.earthRecords.length, 'earth-systems'],
-        ['Energy & engineering', project.energyRecords.length, 'energy-engineering'],
-  ['Electrical & embedded', project.electricalRecords.length, 'electrical-embedded'],
-  ['Mechanical & thermal', project.mechanicalThermalAnalyses.length, 'mechanical-thermal']
+        ['Models', (project.models || []).length, 'model-studio'],
+        ['Figures', (project.visualizations || []).length, 'graph-studio'],
+        ['Datasets', (project.datasets || []).length, 'dataset-registry'],
+        ['Experiments', (project.experiments || []).length, 'experiments'],
+        ['Evidence', (project.evidence || []).length, 'evidence-decisions'],
+        ['Notes', (project.notes || []).length, 'notebook']
       ];
       qs(root, '[data-overview-metrics]').innerHTML = counts.map(([label, value, module]) => metricHTML(label, value, module)).join('');
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');

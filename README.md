@@ -1,5 +1,11 @@
 # Sustainable Catalyst Lab
 
+## v0.48.1 presentation-repair feature layer
+
+This source tree includes **Graph Studio Front Door & Scientific Workspace Presentation Repair v0.48.1** over the validated v0.48.0 probabilistic-analysis stack. The outer WordPress Lab frame keeps the three related-application cards for Prototyping Workbench, Decision Studio, and Site Intelligence, while the Lab application itself now opens with a persistent primary-workspace switcher and a large Graph Studio scientific-canvas preview.
+
+The repair reuses Scientific Visualization Engine v0.44.0 and does not change the governed modeling or probabilistic computation layers. Stable platform compatibility remains v1.0.0 and arbitrary-code execution remains disabled.
+
 ## Graph Studio v0.47.0 feature layer
 
 This source tree includes **Graph Studio, Scientific Figure Workspace & Interface Reorganization v0.47.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. Graph Studio is a first-class scientific visualization workspace with a large interactive canvas, project figure library, publication metadata, governed figure persistence, and handoffs from Model Studio.

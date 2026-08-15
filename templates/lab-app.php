@@ -22,6 +22,13 @@
       </div>
     </div>
 
+    <nav class="sc-lab-workspace-switcher" aria-label="Primary Lab workspaces" data-v0481-workspace-switcher>
+      <button type="button" data-open-module="model-studio" data-v0481-workspace="model-studio"><span>MODEL</span><strong>Model Studio</strong></button>
+      <button type="button" data-open-module="graph-studio" data-v0481-workspace="graph-studio"><span>GRAPH</span><strong>Graph Studio</strong></button>
+      <button type="button" data-open-module="experiments" data-v0481-workspace="experiments"><span>EXPERIMENT</span><strong>Experiments</strong></button>
+      <button type="button" data-open-module="scientific-feeds" data-v0481-workspace="scientific-feeds"><span>OBSERVE</span><strong>Observations</strong></button>
+    </nav>
+
     <div class="sc-lab-commandbar">
       <div class="sc-lab-command-search">
         <label class="screen-reader-text" for="sc-lab-command-input">Search Lab tools and modules</label>
@@ -45,29 +52,8 @@
           'overview' => 'Overview',
           'project-workspace' => 'Project architecture',
           'dataset-registry' => 'Dataset registry',
-          'reproducible-runs' => 'Reproducible runs',
           'research-provenance' => 'Evidence & provenance',
-          'method-review' => 'Method review',
-          'scholarly-discovery' => 'Scholarly discovery',
-          'experiment-framework' => 'Experiment framework',
-          'manuscript-assembly' => 'Manuscript, report & notebook assembly',
-          'public-reproduction' => 'Public reproduction & verification',
-          'research-interoperability' => 'Research interoperability',
-          'typed-cross-product-handoffs' => 'Typed product handoffs',
-          'public-research-integrations' => 'Public API & integrations',
-          'team-workspaces' => 'Shared projects & team workspaces',
-          'workspace-review' => 'Review, approvals & sign-off',
-          'workflow-orchestration' => 'Scientific workflows',
-          'workflow-automation' => 'Scheduled & event-driven runs',
-          'experiment-campaigns' => 'Adaptive experiment campaigns',
-          'closed-loop-campaigns' => 'Closed-loop campaigns',
           'activity' => 'Activity',
-        ),
-        'Observe' => array(
-          'scientific-feeds' => 'Observation board',
-          'climate-maps' => 'Climate maps',
-          'astronomy-observations' => 'Space & astronomy observations',
-          'marine-biology' => 'Marine biology',
         ),
         'Model' => array(
           'model-studio' => 'Model Studio',
@@ -77,6 +63,17 @@
           'probabilistic-analysis' => 'Uncertainty & sensitivity',
           'ensemble-uncertainty' => 'Registered-model ensembles',
           'surrogate-reduced-order' => 'Surrogate models & reduced-order analysis',
+        ),
+        'Visualize' => array(
+          'graph-studio' => 'Graph Studio',
+          'numerical-visualization' => 'Scientific Visualization',
+          'visualization-studio' => 'Visualization & export',
+        ),
+        'Observe' => array(
+          'scientific-feeds' => 'Observation board',
+          'climate-maps' => 'Climate maps',
+          'astronomy-observations' => 'Space & astronomy observations',
+          'marine-biology' => 'Marine biology',
         ),
         'Analyze' => array(
           'dataset-inspector' => 'Dataset inspector',
@@ -110,17 +107,29 @@
           'code-studio' => 'Code switcher',
           'science-engineering' => 'Science & engineering',
         ),
-        'Visualize' => array(
-          'graph-studio' => 'Graph Studio',
-          'numerical-visualization' => 'Scientific Visualization',
-          'visualization-studio' => 'Visualization & export',
-        ),
         'Record' => array(
           'experiments' => 'Experiments',
           'evidence-decisions' => 'Evidence & decisions',
           'notebook' => 'Notebook',
           'report-studio' => 'PDF reports',
           'documentation' => 'Documentation',
+        ),
+        'Research operations' => array(
+          'reproducible-runs' => 'Reproducible runs',
+          'method-review' => 'Method review',
+          'scholarly-discovery' => 'Scholarly discovery',
+          'experiment-framework' => 'Experiment framework',
+          'manuscript-assembly' => 'Manuscript, report & notebook assembly',
+          'public-reproduction' => 'Public reproduction & verification',
+          'research-interoperability' => 'Research interoperability',
+          'typed-cross-product-handoffs' => 'Typed product handoffs',
+          'public-research-integrations' => 'Public API & integrations',
+          'team-workspaces' => 'Shared projects & team workspaces',
+          'workspace-review' => 'Review, approvals & sign-off',
+          'workflow-orchestration' => 'Scientific workflows',
+          'workflow-automation' => 'Scheduled & event-driven runs',
+          'experiment-campaigns' => 'Adaptive experiment campaigns',
+          'closed-loop-campaigns' => 'Closed-loop campaigns',
         ),
         'System' => array(
           'institutional-governance-v0390' => 'Institutional governance',
@@ -157,87 +166,118 @@
     </nav>
 
     <main class="sc-lab-main">
-      <section class="sc-lab-panel" data-lab-module="overview">
-        <div class="sc-lab-panel-head">
-          <div><span class="sc-lab-section-code">LAB/OVERVIEW</span><h3>Scientific project workspace</h3></div>
+      <section class="sc-lab-panel sc-lab-overview-v0481" data-lab-module="overview">
+        <div class="sc-lab-overview-heading-v0481">
+          <div>
+            <span class="sc-lab-section-code">LAB / SCIENTIFIC WORKSPACE</span>
+            <h3>Model. Visualize. Test. Record.</h3>
+            <p>Use the active project as a connected scientific workspace. Start with a model or observation, inspect the evidence visually, then preserve the result as a reproducible project record.</p>
+          </div>
           <span class="sc-lab-status-dot is-ready">Ready</span>
         </div>
 
-        <div class="sc-lab-metrics" data-overview-metrics></div>
-
-        <div class="sc-lab-focus-actions" aria-label="Primary scientific workspaces">
-          <button type="button" class="sc-lab-focus-card" data-open-module="model-studio"><span class="sc-lab-section-code">MODEL</span><strong>Build &amp; validate models</strong><span>Define equations, fit models, diagnose results, explore dynamic systems and response surfaces.</span></button>
-          <button type="button" class="sc-lab-focus-card" data-open-module="graph-studio"><span class="sc-lab-section-code">GRAPH</span><strong>Create scientific figures</strong><span>Inspect data on a large interactive canvas, refine publication metadata, and manage project figures.</span></button>
-          <button type="button" class="sc-lab-focus-card" data-open-module="experiments"><span class="sc-lab-section-code">EXPERIMENT</span><strong>Record experimental work</strong><span>Plan and preserve experiments, methods, results, and evidence against the active project.</span></button>
-          <button type="button" class="sc-lab-focus-card" data-open-module="scientific-feeds"><span class="sc-lab-section-code">OBSERVE</span><strong>Work with observations</strong><span>Bring Earth, space, marine, and scientific observations into the research workflow.</span></button>
-        </div>
-
-        <section class="sc-lab-dashboard-section">
-          <div class="sc-lab-dashboard-head">
-            <div><span class="sc-lab-section-code">LIVE/SIGNALS</span><h4>Scientific signals</h4></div>
-            <button type="button" class="sc-lab-button" data-overview-refresh>Refresh signals</button>
+        <section class="sc-lab-overview-stage-v0481" aria-label="Graph Studio front door">
+          <div class="sc-lab-overview-figure-v0481">
+            <div class="sc-lab-overview-figure-head-v0481">
+              <div>
+                <span class="sc-lab-section-code">GRAPH STUDIO / PROJECT FIGURE</span>
+                <h4 data-v0481-preview-title>Scientific figure workspace</h4>
+                <p data-v0481-preview-meta>Latest saved project figure, or an illustrative scientific preview.</p>
+              </div>
+              <div class="sc-lab-overview-figure-actions-v0481">
+                <button type="button" class="sc-lab-button" data-v0481-open-latest>Latest figure</button>
+                <button type="button" class="sc-lab-button sc-lab-button-primary" data-open-module="graph-studio">Open Graph Studio</button>
+              </div>
+            </div>
+            <div class="sc-lab-overview-canvas-v0481" data-v0481-overview-canvas aria-label="Scientific figure preview"></div>
           </div>
-          <div class="sc-lab-overview-signals" data-overview-signals>
-            <div class="sc-lab-data-note">Loading a concise view of Earth, space, marine, and literature signals…</div>
-          </div>
+
+          <aside class="sc-lab-overview-launcher-v0481" aria-label="Primary research workspaces">
+            <span class="sc-lab-section-code">RESEARCH / START</span>
+            <h4>Choose a workspace</h4>
+            <p>Primary research tools stay one action away. Specialist modules remain available in the navigation and command search.</p>
+            <div class="sc-lab-overview-launcher-actions-v0481">
+              <button type="button" data-open-module="model-studio"><span>01</span><strong>Model Studio</strong><small>Build, fit, diagnose and compare.</small></button>
+              <button type="button" data-open-module="graph-studio"><span>02</span><strong>Graph Studio</strong><small>Inspect and publish scientific figures.</small></button>
+              <button type="button" data-open-module="experiments"><span>03</span><strong>Experiments</strong><small>Plan and preserve experimental work.</small></button>
+              <button type="button" data-open-module="scientific-feeds"><span>04</span><strong>Observations</strong><small>Bring scientific signals into the project.</small></button>
+            </div>
+          </aside>
         </section>
 
-        <section class="sc-lab-dashboard-section">
-          <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">QUICK/TOOLS</span><h4>Scientific tools</h4></div></div>
-          <div class="sc-lab-quick-tools" data-quick-tools>
-            <button type="button" data-quick-tool="periodic-table"><strong>Periodic Table</strong><span>Elements and properties</span></button>
-            <button type="button" data-quick-tool="stoichiometry"><strong>Stoichiometry</strong><span>Formulas, balance, yield</span></button>
-            <button type="button" data-quick-tool="spectrometry"><strong>Spectrometry</strong><span>Import, process, detect peaks</span></button>
-            <button type="button" data-quick-tool="photon"><strong>Photon Energy</strong><span>Wavelength, frequency, energy</span></button>
-            <button type="button" data-quick-tool="rlc"><strong>RLC Impedance</strong><span>Reactance, phase, resonance</span></button>
-            <button type="button" data-quick-tool="electromagnetism-studio"><strong>Electromagnetism</strong><span>Fields, induction, propagation</span></button>
-            <button type="button" data-quick-tool="particle-physics"><strong>Particle Physics</strong><span>Particles, decays, detectors</span></button>
-            <button type="button" data-quick-tool="circuit-bench"><strong>Circuit &amp; Signal Bench</strong><span>RLC, filters, frequency response</span></button>
-            <button type="button" data-quick-tool="sequence-analysis"><strong>Sequence Analysis</strong><span>DNA, RNA, ORFs, alignments</span></button>
-            <button type="button" data-quick-tool="enzyme-kinetics"><strong>Enzyme Kinetics</strong><span>Michaelis–Menten and inhibition</span></button>
-            <button type="button" data-quick-tool="orbital-mechanics-lab"><strong>Orbital Mechanics Lab</strong><span>Kepler, transfers, Hill and Roche limits</span></button>
-            <button type="button" data-quick-tool="stellar-astrophysics"><strong>Stellar Astrophysics</strong><span>Luminosity, blackbody, gravity, lifetime</span></button>
-            <button type="button" data-quick-tool="astronomical-photometry"><strong>Astronomical Photometry</strong><span>Magnitudes, aperture counts, SNR</span></button>
-            <button type="button" data-quick-tool="cosmology-tools"><strong>Cosmology</strong><span>Hubble distance and critical density</span></button>
-            <button type="button" data-quick-tool="materials-characterization"><strong>Materials Characterization</strong><span>XRD, lattice parameters, crystallite size</span></button>
-            <button type="button" data-quick-tool="mechanical-properties"><strong>Mechanical Properties</strong><span>Stress, fracture, fatigue, and creep</span></button>
-            <button type="button" data-quick-tool="materials-microscopy"><strong>Materials Microscopy</strong><span>Particle, grain, and image analysis</span></button>
-            <button type="button" data-quick-tool="earth-climate-analysis"><strong>Earth &amp; Climate Analysis</strong><span>Atmosphere, trends, hydrology, carbon</span></button>
-            <button type="button" data-quick-tool="ocean-marine-analysis"><strong>Ocean &amp; Marine Systems</strong><span>Waves, circulation, ecology, fisheries</span></button>
-            <button type="button" data-quick-tool="remote-hazards"><strong>Remote Sensing &amp; Hazards</strong><span>Indices, classification, recurrence, runup</span></button>
-            <button type="button" data-quick-tool="energy-systems"><strong>Energy Systems</strong><span>Balances, efficiency, capacity, intensity</span></button>
-            <button type="button" data-quick-tool="renewable-energy"><strong>Renewable Energy</strong><span>Solar, wind, hydro, and resource analysis</span></button>
-            <button type="button" data-quick-tool="storage-grid"><strong>Storage &amp; Grid</strong><span>Batteries, hydrogen, power systems, reliability</span></button>
-            <button type="button" data-quick-tool="energy-economics"><strong>Energy Economics</strong><span>LCOE, LCOS, NPV, emissions, reliability</span></button>
-            <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
-            <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
-            <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
-          </div>
-        </section>
+        <div class="sc-lab-metrics sc-lab-metrics-v0481" data-overview-metrics></div>
 
-        <div class="sc-lab-dashboard-columns">
-          <section class="sc-lab-dashboard-section">
-            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/WORK</span><h4>Active scientific work</h4></div></div>
+        <div class="sc-lab-overview-work-v0481">
+          <section class="sc-lab-dashboard-section sc-lab-dashboard-section-v0481">
+            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT / FIGURES</span><h4>Recent scientific figures</h4></div><button type="button" class="sc-lab-text-button" data-open-module="graph-studio">Open library</button></div>
+            <div class="sc-lab-overview-figures-v0481" data-v0481-project-figures></div>
+          </section>
+          <section class="sc-lab-dashboard-section sc-lab-dashboard-section-v0481">
+            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT / WORK</span><h4>Active scientific work</h4></div><button type="button" class="sc-lab-text-button" data-open-module="activity">Activity</button></div>
             <div class="sc-lab-project-work" data-project-work></div>
           </section>
-          <section class="sc-lab-dashboard-section">
-            <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/ACTIVITY</span><h4>Recent activity</h4></div><button type="button" class="sc-lab-text-button" data-open-module="activity">View all</button></div>
-            <div class="sc-lab-list" data-recent-activity></div>
-          </section>
         </div>
 
-        <section class="sc-lab-dashboard-section">
-          <div class="sc-lab-dashboard-head"><div><span class="sc-lab-section-code">PROJECT/TRACE</span><h4>Traceability map</h4></div></div>
-          <div class="sc-lab-trace-map" data-traceability></div>
-        </section>
+        <details class="sc-lab-secondary-drawer-v0481">
+          <summary><span><span class="sc-lab-section-code">LIVE / SIGNALS</span><strong>Scientific signals</strong></span><small>Earth, space, marine and scholarly observations</small></summary>
+          <div class="sc-lab-secondary-drawer-body-v0481">
+            <div class="sc-lab-dashboard-head"><div></div><button type="button" class="sc-lab-button" data-overview-refresh>Refresh signals</button></div>
+            <div class="sc-lab-overview-signals" data-overview-signals><div class="sc-lab-data-note">Scientific signals load when this drawer is opened or refreshed.</div></div>
+          </div>
+        </details>
 
-        <div class="sc-lab-empty-state" data-overview-empty hidden>
+        <details class="sc-lab-secondary-drawer-v0481">
+          <summary><span><span class="sc-lab-section-code">TOOLS / SPECIALIST</span><strong>Scientific tool library</strong></span><small>Chemistry, physics, biology, Earth systems, energy and engineering tools</small></summary>
+          <div class="sc-lab-secondary-drawer-body-v0481">
+            <div class="sc-lab-quick-tools" data-quick-tools>
+              <button type="button" data-quick-tool="periodic-table"><strong>Periodic Table</strong><span>Elements and properties</span></button>
+              <button type="button" data-quick-tool="stoichiometry"><strong>Stoichiometry</strong><span>Formulas, balance, yield</span></button>
+              <button type="button" data-quick-tool="spectrometry"><strong>Spectrometry</strong><span>Import, process, detect peaks</span></button>
+              <button type="button" data-quick-tool="photon"><strong>Photon Energy</strong><span>Wavelength, frequency, energy</span></button>
+              <button type="button" data-quick-tool="rlc"><strong>RLC Impedance</strong><span>Reactance, phase, resonance</span></button>
+              <button type="button" data-quick-tool="electromagnetism-studio"><strong>Electromagnetism</strong><span>Fields, induction, propagation</span></button>
+              <button type="button" data-quick-tool="particle-physics"><strong>Particle Physics</strong><span>Particles, decays, detectors</span></button>
+              <button type="button" data-quick-tool="circuit-bench"><strong>Circuit &amp; Signal Bench</strong><span>RLC, filters, frequency response</span></button>
+              <button type="button" data-quick-tool="sequence-analysis"><strong>Sequence Analysis</strong><span>DNA, RNA, ORFs, alignments</span></button>
+              <button type="button" data-quick-tool="enzyme-kinetics"><strong>Enzyme Kinetics</strong><span>Michaelis–Menten and inhibition</span></button>
+              <button type="button" data-quick-tool="orbital-mechanics-lab"><strong>Orbital Mechanics Lab</strong><span>Kepler, transfers, Hill and Roche limits</span></button>
+              <button type="button" data-quick-tool="stellar-astrophysics"><strong>Stellar Astrophysics</strong><span>Luminosity, blackbody, gravity, lifetime</span></button>
+              <button type="button" data-quick-tool="astronomical-photometry"><strong>Astronomical Photometry</strong><span>Magnitudes, aperture counts, SNR</span></button>
+              <button type="button" data-quick-tool="cosmology-tools"><strong>Cosmology</strong><span>Hubble distance and critical density</span></button>
+              <button type="button" data-quick-tool="materials-characterization"><strong>Materials Characterization</strong><span>XRD, lattice parameters, crystallite size</span></button>
+              <button type="button" data-quick-tool="mechanical-properties"><strong>Mechanical Properties</strong><span>Stress, fracture, fatigue, and creep</span></button>
+              <button type="button" data-quick-tool="materials-microscopy"><strong>Materials Microscopy</strong><span>Particle, grain, and image analysis</span></button>
+              <button type="button" data-quick-tool="earth-climate-analysis"><strong>Earth &amp; Climate Analysis</strong><span>Atmosphere, trends, hydrology, carbon</span></button>
+              <button type="button" data-quick-tool="ocean-marine-analysis"><strong>Ocean &amp; Marine Systems</strong><span>Waves, circulation, ecology, fisheries</span></button>
+              <button type="button" data-quick-tool="remote-hazards"><strong>Remote Sensing &amp; Hazards</strong><span>Indices, classification, recurrence, runup</span></button>
+              <button type="button" data-quick-tool="energy-systems"><strong>Energy Systems</strong><span>Balances, efficiency, capacity, intensity</span></button>
+              <button type="button" data-quick-tool="renewable-energy"><strong>Renewable Energy</strong><span>Solar, wind, hydro, and resource analysis</span></button>
+              <button type="button" data-quick-tool="storage-grid"><strong>Storage &amp; Grid</strong><span>Batteries, hydrogen, power systems, reliability</span></button>
+              <button type="button" data-quick-tool="energy-economics"><strong>Energy Economics</strong><span>LCOE, LCOS, NPV, emissions, reliability</span></button>
+              <button type="button" data-quick-tool="orbit"><strong>Orbital Mechanics</strong><span>Velocity and period</span></button>
+              <button type="button" data-quick-tool="uncertainty"><strong>Uncertainty</strong><span>Independent propagation</span></button>
+              <button type="button" data-quick-tool="pv"><strong>Energy Systems</strong><span>Photovoltaic output</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="sc-lab-secondary-drawer-v0481">
+          <summary><span><span class="sc-lab-section-code">PROJECT / TRACE</span><strong>Traceability and recent activity</strong></span><small>Sources → observations → evidence → models → experiments → decisions</small></summary>
+          <div class="sc-lab-secondary-drawer-body-v0481">
+            <div class="sc-lab-dashboard-columns">
+              <section><div class="sc-lab-dashboard-head"><div><h4>Traceability map</h4></div></div><div class="sc-lab-trace-map" data-traceability></div></section>
+              <section><div class="sc-lab-dashboard-head"><div><h4>Recent activity</h4></div><button type="button" class="sc-lab-text-button" data-open-module="activity">View all</button></div><div class="sc-lab-list" data-recent-activity></div></section>
+            </div>
+          </div>
+        </details>
+
+        <div class="sc-lab-empty-state sc-lab-empty-state-v0481" data-overview-empty hidden>
           <h4>Start a scientific record</h4>
-          <p>Create a first evidence record, experiment, calculation, or notebook entry. Every result remains connected to the active project.</p>
+          <p>Create a model, figure, experiment, observation, or notebook entry. Every result remains connected to the active project.</p>
           <div class="sc-lab-empty-actions">
-            <button type="button" class="sc-lab-button" data-open-module="scientific-feeds">Query signals</button>
+            <button type="button" class="sc-lab-button" data-open-module="model-studio">Build model</button>
+            <button type="button" class="sc-lab-button" data-open-module="graph-studio">Create figure</button>
             <button type="button" class="sc-lab-button" data-command-action="experiment">Create experiment</button>
-            <button type="button" class="sc-lab-button" data-quick-tool="stoichiometry">Run calculation</button>
             <button type="button" class="sc-lab-button sc-lab-button-primary" data-command-action="note">Add notebook entry</button>
           </div>
         </div>

@@ -1,3 +1,14 @@
+## 0.48.1 — Graph Studio Front Door & Scientific Workspace Presentation Repair
+
+- Preserves the three-card Workbench / Decision Studio / Site Intelligence application row while tightening its institutional presentation.
+- Adds a persistent Model Studio / Graph Studio / Experiments / Observations workspace switcher.
+- Replaces the dashboard-first Lab Overview with a graph-forward scientific workspace using the shared v0.44 visualization engine.
+- Shows the latest project figure on the front door when available and an explicitly illustrative preview otherwise.
+- Reduces Overview metrics to models, figures, datasets, experiments, evidence, and notes.
+- Splits specialist workflow modules into Research operations and collapses specialist navigation groups by default on first use.
+- Moves scientific signals, specialist quick tools, and traceability detail into secondary drawers.
+- Preserves v0.48.0 probabilistic analysis, v0.47.0 Graph Studio, and v1.0.0 platform compatibility without changing scientific computation boundaries.
+
 ## 1.0.0 — Connected Scientific Research and Compute Platform
 
 - Stabilizes the public research, compute, interoperability, governance, security, recovery, accessibility, and SDK contracts for the 1.0 support line.
