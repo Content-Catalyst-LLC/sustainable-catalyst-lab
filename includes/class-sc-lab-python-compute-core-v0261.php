@@ -51,6 +51,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_studio_probabilistic_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_probabilistic_normalize'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/model-studio/probabilistic/analyze', array('methods'=>'POST','callback'=>array(__CLASS__,'model_studio_probabilistic_analyze'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/health', array('methods'=>'GET','callback'=>array(__CLASS__,'model_handoff_health'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'model_handoff_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/models/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'model_handoff_model_normalize'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/outbound/workbench', array('methods'=>'POST','callback'=>array(__CLASS__,'model_handoff_outbound_workbench'),'permission_callback'=>'__return_true'));
+        register_rest_route(self::NAMESPACE, '/compute/core/model-handoff/inbound/workbench', array('methods'=>'POST','callback'=>array(__CLASS__,'model_handoff_inbound_workbench'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/health', array('methods'=>'GET','callback'=>array(__CLASS__,'graph_studio_health'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/policies', array('methods'=>'GET','callback'=>array(__CLASS__,'graph_studio_policies'),'permission_callback'=>'__return_true'));
         register_rest_route(self::NAMESPACE, '/compute/core/graph-studio/graphs/normalize', array('methods'=>'POST','callback'=>array(__CLASS__,'graph_studio_graph_normalize'),'permission_callback'=>'__return_true'));
@@ -877,6 +882,11 @@ final class SC_Lab_Python_Compute_Core_V0261 {
     public static function model_studio_probabilistic_policies(){return self::proxy('/v1/model-studio/probabilistic/policies');}
     public static function model_studio_probabilistic_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/normalize','POST',$p,16777216);}
     public static function model_studio_probabilistic_analyze(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-studio/probabilistic/analyze','POST',$p,33554432);}
+    public static function model_handoff_health(){return self::proxy('/v1/model-handoff/health');}
+    public static function model_handoff_policies(){return self::proxy('/v1/model-handoff/policies');}
+    public static function model_handoff_model_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-handoff/models/normalize','POST',$p,2097152);}
+    public static function model_handoff_outbound_workbench(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-handoff/outbound/workbench','POST',$p,2097152);}
+    public static function model_handoff_inbound_workbench(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/model-handoff/inbound/workbench','POST',$p,2097152);}
     public static function graph_studio_health(){return self::proxy('/v1/graph-studio/health');}
     public static function graph_studio_policies(){return self::proxy('/v1/graph-studio/policies');}
     public static function graph_studio_graph_normalize(WP_REST_Request $request){$p=self::model_studio_payload($request);return is_wp_error($p)?$p:self::proxy('/v1/graph-studio/graphs/normalize','POST',$p,16777216);}

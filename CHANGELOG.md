@@ -1,3 +1,15 @@
+## 0.49.0 — Lab ↔ Workbench Model Handoff & Shared Computational Contract
+
+- Added a versioned shared computational-model contract for Lab and Workbench.
+- Added governed Lab → Workbench model export and Workbench → Lab model import.
+- Preserves equations/registered references, variables, units, parameter values/bounds, constants, initial conditions, dataset bindings, assumptions, limitations, provenance, and integrity hashes.
+- Revalidates inbound Workbench models through Model Studio and the safe declarative equation grammar before loading.
+- Added same-origin local transport plus compatibility with the historical `sc_workbench_handoff` key/event.
+- Added FastAPI and WordPress model-handoff health, policy, normalization, outbound, and inbound routes.
+- Added a compact Model Studio exchange surface without changing v0.48.3 contextual navigation, the Graph Studio front door, or the three related-application cards.
+- Preserved platform compatibility v1.0.0 and all v0.42–v0.48 scientific/modeling capabilities.
+- Keeps arbitrary code, remote callbacks, shell execution, and automatic remote delivery disabled.
+
 ## 0.48.1 — Graph Studio Front Door & Scientific Workspace Presentation Repair
 
 - Preserves the three-card Workbench / Decision Studio / Site Intelligence application row while tightening its institutional presentation.

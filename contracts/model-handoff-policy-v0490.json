@@ -1,0 +1,28 @@
+{
+  "schema": "sc-catalyst-model-handoff-policy/0.49.0",
+  "version": "0.49.0",
+  "directions": ["lab-to-workbench", "workbench-to-lab"],
+  "transport": {
+    "primary": "same-origin-local-storage",
+    "storageKey": "sc_catalyst_model_handoff_v0490",
+    "legacyStorageKey": "sc_workbench_handoff",
+    "event": "sc:catalyst-model-handoff",
+    "legacyEvent": "sc:workbench-handoff",
+    "automaticRemoteDelivery": false
+  },
+  "security": {
+    "arbitraryCode": false,
+    "arbitraryPython": false,
+    "arbitraryJavaScript": false,
+    "shellExecution": false,
+    "remoteCallbacks": false,
+    "safeDeclarativeEquationsOnly": true,
+    "revalidateInModelStudioOnImport": true,
+    "verifyPacketIntegrity": true,
+    "maximumPacketBytes": 2097152
+  },
+  "compatibility": {
+    "typedResearchModelContract": "sc-research-model/1.0",
+    "legacyWorkbenchHandoff": "sc-lab-workbench-handoff/1.0"
+  }
+}

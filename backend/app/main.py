@@ -33,6 +33,7 @@ from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
+from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1065,6 +1066,29 @@ def model_studio_equation_preview_route(payload: dict[str, Any]):
     try: return preview_model_studio_equation(payload)
     except ModelStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+@app.get("/v1/model-handoff/health")
+def model_handoff_health_route():
+    return model_handoff_health()
+
+@app.get("/v1/model-handoff/policies")
+def model_handoff_policies_route():
+    return model_handoff_policies()
+
+@app.post("/v1/model-handoff/models/normalize")
+def model_handoff_model_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "model": normalize_shared_model(payload)}
+    except ModelHandoffError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-handoff/outbound/workbench")
+def model_handoff_outbound_workbench_route(payload: dict[str, Any]):
+    try: return build_workbench_handoff(payload)
+    except ModelHandoffError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-handoff/inbound/workbench")
+def model_handoff_inbound_workbench_route(payload: dict[str, Any]):
+    try: return import_workbench_handoff(payload)
+    except ModelHandoffError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 @app.get("/v1/model-studio/diagnostics/health")
 def model_studio_diagnostics_health_route():

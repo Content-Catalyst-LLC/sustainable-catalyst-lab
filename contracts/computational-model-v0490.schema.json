@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/computational-model-v0490.schema.json",
+  "title": "Sustainable Catalyst Shared Computational Model v0.49.0",
+  "type": "object",
+  "required": ["schema", "version", "recordType", "id", "title", "modelKind", "scientificDefinition", "variables", "parameters", "provenance", "sharedModelHash"],
+  "properties": {
+    "schema": {"const": "sc-catalyst-computational-model/0.49.0"},
+    "version": {"const": "0.49.0"},
+    "recordType": {"const": "computational-model"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 120},
+    "title": {"type": "string", "minLength": 1, "maxLength": 180},
+    "status": {"type": "string"},
+    "modelKind": {"enum": ["algebraic", "statistical", "registered"]},
+    "scientificDefinition": {
+      "type": "object",
+      "required": ["family", "equation", "registeredModelId", "safeDeclarative"],
+      "properties": {
+        "family": {"type": "string"},
+        "equation": {"type": "string", "maxLength": 2000},
+        "registeredModelId": {"type": "string", "maxLength": 160},
+        "outputSymbol": {"type": "string", "maxLength": 64},
+        "functions": {"type": "array", "items": {"type": "string"}},
+        "safeDeclarative": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "variables": {"type": "array", "items": {"type": "object"}},
+    "parameters": {"type": "array", "items": {"type": "object"}},
+    "constants": {"type": "array", "items": {"type": "object"}},
+    "initialConditions": {"type": "array", "items": {"type": "object"}},
+    "dataset": {"type": "object"},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "provenance": {"type": "object"},
+    "source": {"type": "object"},
+    "compatibility": {"type": "object"},
+    "sharedModelHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

@@ -1,5 +1,11 @@
 # Sustainable Catalyst Lab
 
+## v0.49.0 Lab ↔ Workbench model-handoff feature layer
+
+This source tree includes **Lab ↔ Workbench Model Handoff & Shared Computational Contract v0.49.0** over the validated v0.48.3 contextual-navigation and v0.48.0 probabilistic-analysis stack. Lab can package the current Model Studio model into a governed computational contract for Workbench and can import a compatible Workbench model back into Model Studio after revalidation.
+
+The exchange preserves scientific definition, variables and units, parameter values and bounds, constants, initial conditions, dataset bindings, assumptions, limitations, provenance, and integrity hashes. It retains the historical `sc_workbench_handoff` browser transport for compatibility while adding the versioned `sc_catalyst_model_handoff_v0490` contract. Arbitrary code and automatic remote delivery remain disabled. Stable platform compatibility remains v1.0.0.
+
 ## v0.48.1 presentation-repair feature layer
 
 This source tree includes **Graph Studio Front Door & Scientific Workspace Presentation Repair v0.48.1** over the validated v0.48.0 probabilistic-analysis stack. The outer WordPress Lab frame keeps the three related-application cards for Prototyping Workbench, Decision Studio, and Site Intelligence, while the Lab application itself now opens with a persistent primary-workspace switcher and a large Graph Studio scientific-canvas preview.

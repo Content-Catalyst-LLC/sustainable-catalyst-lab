@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-handoff-v0490.schema.json",
+  "title": "Sustainable Catalyst Computational Model Handoff v0.49.0",
+  "type": "object",
+  "required": ["schema", "version", "recordType", "id", "source", "target", "intent", "transport", "model", "modelHash", "packetHash"],
+  "properties": {
+    "schema": {"const": "sc-catalyst-model-handoff/0.49.0"},
+    "version": {"const": "0.49.0"},
+    "recordType": {"const": "computational-model-handoff"},
+    "id": {"type": "string", "minLength": 1},
+    "createdAt": {"type": "string"},
+    "source": {"type": "object", "required": ["product", "role"]},
+    "target": {"type": "object", "required": ["product", "role"]},
+    "intent": {"type": "string"},
+    "typedResearchContract": {"const": "sc-research-model/1.0"},
+    "transport": {"type": "object"},
+    "model": {"$ref": "computational-model-v0490.schema.json"},
+    "modelHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "provenance": {"type": "object"},
+    "packetHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}
