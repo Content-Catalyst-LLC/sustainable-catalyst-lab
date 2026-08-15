@@ -71,6 +71,7 @@ from .multi_instance_operations import MultiInstanceOperationsManager, Operation
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
 from .scientific_compute_hardening import ScientificComputeHardeningError, ScientificComputeManager, assess_workload as assess_scientific_workload, dataset_window as scientific_dataset_window, policies as scientific_compute_policies
 from .scientific_audit_v0590 import ScientificAuditError, build_redacted_export as build_scientific_redacted_export, data_minimization_review as scientific_data_minimization_review, health as scientific_audit_health, policies as scientific_audit_policies, reproducibility_audit as run_reproducibility_audit_v0590, scan_surface as scan_scientific_audit_surface, scientific_audit as run_scientific_audit_v0590, verify_audit as verify_scientific_audit_v0590
+from .integrated_research_beta_v0600 import IntegratedResearchBetaError, beta_readiness as integrated_beta_readiness, build_beta_packet as build_integrated_beta_packet, capability_matrix as integrated_beta_capabilities, health as integrated_beta_health, policies as integrated_beta_policies, research_journey as integrated_research_journey, verify_beta_packet as verify_integrated_beta_packet
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
 from .public_release_hardening import PublicReleaseHardeningManager, PublicReleaseHardeningError, policies as public_release_hardening_policies
@@ -1129,6 +1130,45 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
     except AdvancedExperimentalDesignError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
+
+
+# v0.60.0 Integrated Scientific Research Beta
+
+@app.get("/v1/integrated-research/v0600/health")
+def integrated_research_beta_v0600_health_route():
+    body = integrated_beta_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/integrated-research/v0600/policies")
+def integrated_research_beta_v0600_policies_route():
+    return integrated_beta_policies()
+
+@app.get("/v1/integrated-research/v0600/capabilities")
+def integrated_research_beta_v0600_capabilities_route():
+    return integrated_beta_capabilities()
+
+@app.post("/v1/integrated-research/v0600/journey")
+def integrated_research_beta_v0600_journey_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return integrated_research_journey(payload)
+    except IntegratedResearchBetaError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/integrated-research/v0600/readiness")
+def integrated_research_beta_v0600_readiness_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return integrated_beta_readiness(payload)
+    except IntegratedResearchBetaError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/integrated-research/v0600/packet")
+def integrated_research_beta_v0600_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_integrated_beta_packet(payload)
+    except IntegratedResearchBetaError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/integrated-research/v0600/verify")
+def integrated_research_beta_v0600_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_integrated_beta_packet(payload)
+    except IntegratedResearchBetaError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # v0.59.0 Security, Privacy, Reproducibility & Scientific Audit

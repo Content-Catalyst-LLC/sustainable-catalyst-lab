@@ -1,3 +1,7 @@
+## v0.60.0 — Integrated Scientific Research Beta
+
+This beta milestone integrates the v0.49–v0.59 scientific feature line into a metadata-only project readiness contract. Lab can assess the active research journey across data, modeling, validation, workflow, reproducibility, and scientific audit, build a deterministic tamper-evident beta evidence packet, verify that packet, and save the evidence to the project. Raw datasets, credentials, and arbitrary executable inputs are excluded from the beta packet, and human review remains mandatory.
+
 ## v0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair
 
 This repair keeps the Lab product release at **v0.59.0** while correcting the validation environment used to certify the Security, Privacy, Reproducibility & Scientific Audit release. The inherited v0.39.1 security/privacy contract tests require `jsonschema`; R1 declares that validation dependency, verifies it during installer preflight, and uses a dedicated v0.59.0-R1 validation environment so an incomplete pre-R1 environment is not reused. Scientific audit behavior, navigation, and platform compatibility remain unchanged.

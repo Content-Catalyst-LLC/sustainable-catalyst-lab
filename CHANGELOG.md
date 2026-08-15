@@ -1,3 +1,12 @@
+# v0.60.0 — Integrated Scientific Research Beta
+
+- Added metadata-only integrated research journey and beta-readiness assessment.
+- Added capability matrix across model exchange, reproducibility, statistics, Bayesian inference, uncertainty, transformations, experimental design, Graph Studio, workflow composition, compute hardening, and scientific audit.
+- Added deterministic tamper-evident beta evidence packet and verification.
+- Added contextual beta UI inside Scientific Workflows without expanding the six-destination rail.
+- Preserved v0.59.0 R1 `jsonschema` validation dependency repair.
+- Automatic scientific certification, publication, high-stakes decisions, and arbitrary code remain disabled.
+
 # Changelog
 
 ## 0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair

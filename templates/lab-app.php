@@ -1985,6 +1985,25 @@ P=1:9:bar</textarea></label>
 
       <section class="sc-lab-panel sc-wf0321" data-lab-module="workflow-orchestration" data-module-panel="workflow-orchestration" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW ORCHESTRATION / v0.32.1</p><h3>Workflow Checkpoints, Conditional Execution, and Partial Recovery</h3><p>Build dependency-aware scientific workflows with safe declarative conditions, durable checkpoint history, resumable node context, and lineage-preserving recovery runs that reuse successful work while restarting only affected branches.</p></header>
+        <details class="sc-beta0600" data-integrated-research-beta-v0600 open>
+          <summary>Integrated Scientific Research Beta <span class="sc-beta0600__badge">v0.60.0</span></summary>
+          <div class="sc-beta0600__body">
+            <div class="sc-beta0600__intro"><div><h4>One coherent research journey across the Lab</h4><p>Assess whether the active project has the metadata evidence needed to move coherently from data and models through validation, uncertainty, experiments, figures, workflows, reproducibility, compute hardening, and scientific audit. v0.60 evaluates evidence only; it does not certify science or authorize publication.</p></div><span class="sc-beta0600__badge">PROJECT / BETA</span></div>
+            <p class="sc-beta0600__status" data-beta-v0600-status role="status" aria-live="polite">Integrated beta loading…</p>
+            <div class="sc-beta0600__actions">
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-beta-v0600-assess>Assess integrated research journey</button>
+              <button type="button" class="sc-lab-button" data-beta-v0600-packet>Build beta evidence packet</button>
+              <button type="button" class="sc-lab-button" data-beta-v0600-verify>Verify packet hash</button>
+              <button type="button" class="sc-lab-button" data-beta-v0600-save>Save beta evidence</button>
+            </div>
+            <div class="sc-beta0600__metrics" data-beta-v0600-metrics></div>
+            <div class="sc-beta0600__grid">
+              <section class="sc-beta0600__card"><h5>Integrated research journey</h5><div class="sc-beta0600__journey" data-beta-v0600-journey><p>No beta journey assessment yet.</p></div></section>
+              <section class="sc-beta0600__card"><h5>Readiness / packet evidence</h5><pre class="sc-beta0600__output" data-beta-v0600-output>No integrated beta evidence has been generated yet.</pre></section>
+            </div>
+            <p class="sc-beta0600__note">The beta packet contains metadata, counts, contract hashes, and evidence hashes only. Raw datasets, credentials, and scientific inputs are excluded. Human review remains mandatory.</p>
+          </div>
+        </details>
         <details class="sc-wfc0570" data-scientific-workflow-v0570 open>
           <summary>Scientific Workflow Composer <span class="sc-wfc0570__badge">v0.57.0</span></summary>
           <div class="sc-wfc0570__body">
