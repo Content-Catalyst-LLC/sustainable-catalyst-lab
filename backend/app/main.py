@@ -75,6 +75,7 @@ from .integrated_research_beta_v0600 import IntegratedResearchBetaError, beta_re
 from .beta_field_diagnostics_v0601 import BetaFieldDiagnosticsError, analyze_soak as beta_field_analyze_soak, build_diagnostic_packet as build_beta_field_diagnostic_packet, health as beta_field_diagnostics_health, integration_probe as beta_field_integration_probe, policies as beta_field_diagnostics_policies, scenarios as beta_field_diagnostic_scenarios, verify_diagnostic_packet as verify_beta_field_diagnostic_packet
 from .scientific_claims_traceability_v0620 import ScientificClaimsTraceabilityError, build_traceability_packet as build_scientific_traceability_packet_v0620, evaluate_matrix as evaluate_scientific_evidence_matrix_v0620, health as scientific_claims_traceability_health_v0620, normalize_claim as normalize_scientific_claim_v0620, normalize_conclusion as normalize_scientific_conclusion_v0620, policies as scientific_claims_traceability_policies_v0620, record_claim_review as record_scientific_claim_review_v0620, record_conclusion_review as record_scientific_conclusion_review_v0620, verify_traceability_packet as verify_scientific_traceability_packet_v0620
 from .scientific_literature_provenance_v0630 import ScientificLiteratureProvenanceError, build_provenance_packet as build_scientific_literature_packet_v0630, evaluate_provenance as evaluate_scientific_literature_v0630, health as scientific_literature_health_v0630, normalize_citation_edge as normalize_scientific_citation_edge_v0630, normalize_claim_link as normalize_scientific_claim_link_v0630, normalize_source as normalize_scientific_literature_source_v0630, policies as scientific_literature_policies_v0630, record_source_review as record_scientific_literature_source_review_v0630, verify_provenance_packet as verify_scientific_literature_packet_v0630
+from .systematic_evidence_synthesis_v0640 import SystematicEvidenceSynthesisError, build_synthesis_packet as build_evidence_synthesis_packet_v0640, health as evidence_synthesis_health_v0640, meta_analyze as meta_analyze_v0640, normalize_effect as normalize_study_effect_v0640, normalize_protocol as normalize_synthesis_protocol_v0640, policies as evidence_synthesis_policies_v0640, record_synthesis_review as record_synthesis_review_v0640, verify_synthesis_packet as verify_evidence_synthesis_packet_v0640
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1136,6 +1137,51 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
 
 
 
+
+# v0.64.0 Replication, Systematic Evidence Synthesis & Meta-Analysis
+@app.get("/v1/evidence-synthesis/v0640/health")
+def evidence_synthesis_v0640_health_route():
+    body=evidence_synthesis_health_v0640(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/evidence-synthesis/v0640/policies")
+def evidence_synthesis_v0640_policies_route():
+    return evidence_synthesis_policies_v0640()
+
+@app.post("/v1/evidence-synthesis/v0640/normalize-protocol")
+def evidence_synthesis_v0640_normalize_protocol_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"protocol":normalize_synthesis_protocol_v0640(payload.get("protocol") if isinstance(payload,dict) else {})}
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/evidence-synthesis/v0640/normalize-effect")
+def evidence_synthesis_v0640_normalize_effect_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"effect":normalize_study_effect_v0640(payload.get("effect") if isinstance(payload,dict) else {})}
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/evidence-synthesis/v0640/review")
+def evidence_synthesis_v0640_review_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_synthesis_review_v0640(payload)
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/evidence-synthesis/v0640/meta-analysis")
+def evidence_synthesis_v0640_meta_analysis_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return meta_analyze_v0640(payload)
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/evidence-synthesis/v0640/packet")
+def evidence_synthesis_v0640_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_evidence_synthesis_packet_v0640(payload)
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/evidence-synthesis/v0640/verify")
+def evidence_synthesis_v0640_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_evidence_synthesis_packet_v0640(payload)
+    except SystematicEvidenceSynthesisError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 # v0.63.0 Scientific Literature, Citation Graph & Source-to-Claim Provenance
 

@@ -1,3 +1,7 @@
+## v0.64.0 — Replication, Systematic Evidence Synthesis & Meta-Analysis
+
+Adds governed aggregate-effect synthesis, replication assessment, fixed/random-effects meta-analysis, heterogeneity and leave-one-out diagnostics, human synthesis review, and tamper-evident metadata-only evidence packets on top of v0.63 literature provenance.
+
 ## v0.63.0 — Scientific Literature, Citation Graph & Source-to-Claim Provenance
 
 - Adds governed literature source records, human source review, source-to-claim provenance, and a source-to-source citation graph.

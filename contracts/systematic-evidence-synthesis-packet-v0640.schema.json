@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-systematic-evidence-synthesis-packet/0.64.0",
+  "type": "object",
+  "required": [
+    "ok",
+    "version",
+    "schema",
+    "protocolId",
+    "packetHash"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "version": {
+      "const": "0.64.0"
+    },
+    "schema": {
+      "const": "sc-lab-systematic-evidence-synthesis-packet/0.64.0"
+    },
+    "packetHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

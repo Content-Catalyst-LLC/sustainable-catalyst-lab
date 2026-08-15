@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-study-effect-estimate/0.64.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "sourceId",
+    "effectMetric",
+    "effect",
+    "standardError",
+    "effectHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-study-effect-estimate/0.64.0"
+    },
+    "version": {
+      "const": "0.64.0"
+    },
+    "effect": {
+      "type": "number"
+    },
+    "standardError": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "effectHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

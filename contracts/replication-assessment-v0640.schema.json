@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-replication-assessment/0.64.0",
+  "type": "object",
+  "properties": {
+    "replicationEffectId": {
+      "type": "string"
+    },
+    "originalSourceId": {
+      "type": "string"
+    },
+    "gate": {
+      "type": "string"
+    },
+    "differenceZ": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

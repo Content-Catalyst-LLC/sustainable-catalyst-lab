@@ -1,0 +1,12 @@
+{
+  "version": "0.64.0",
+  "systematicEvidenceSynthesis": true,
+  "aggregateEffectsOnly": true,
+  "rawParticipantDataAccepted": false,
+  "automaticStudyQualityScoringAuthorized": false,
+  "automaticPublicationBiasCorrectionAuthorized": false,
+  "automaticTruthInferenceAuthorized": false,
+  "automaticCausalCertificationAuthorized": false,
+  "humanSynthesisReviewRequired": true,
+  "contradictoryFindingsPreserved": true
+}

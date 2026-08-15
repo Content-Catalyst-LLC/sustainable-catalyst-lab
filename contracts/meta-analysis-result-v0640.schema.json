@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-meta-analysis-result/0.64.0",
+  "type": "object",
+  "required": [
+    "ok",
+    "version",
+    "gate",
+    "synthesisHash"
+  ],
+  "properties": {
+    "ok": {
+      "const": true
+    },
+    "version": {
+      "const": "0.64.0"
+    },
+    "gate": {
+      "type": "string"
+    },
+    "synthesisHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

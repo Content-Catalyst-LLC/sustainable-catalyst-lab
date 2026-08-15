@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-systematic-evidence-synthesis-protocol/0.64.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "effectMetric",
+    "modelChoice",
+    "protocolHash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-systematic-evidence-synthesis-protocol/0.64.0"
+    },
+    "version": {
+      "const": "0.64.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "researchQuestion": {
+      "type": "string"
+    },
+    "claimIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "effectMetric": {
+      "type": "string"
+    },
+    "modelChoice": {
+      "enum": [
+        "fixed-effect",
+        "random-effects"
+      ]
+    },
+    "minStudies": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "protocolHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}
