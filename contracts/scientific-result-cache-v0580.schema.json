@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-result-cache-v0580.schema.json",
+  "title":"Scientific Result Cache v0.58.0",
+  "type":"object",
+  "required":["schema","version","records","bytes","ttlSeconds","maxRecords"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-result-cache/0.58.0"},
+    "version":{"const":"0.58.0"},
+    "records":{"type":"integer","minimum":0},
+    "bytes":{"type":"integer","minimum":0},
+    "ttlSeconds":{"type":"integer","minimum":60},
+    "maxRecords":{"type":"integer","minimum":1}
+  },
+  "additionalProperties":true
+}

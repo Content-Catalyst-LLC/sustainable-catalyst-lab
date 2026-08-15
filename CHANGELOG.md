@@ -1,3 +1,13 @@
+## 0.58.0 — Large-Model, Large-Dataset & Compute Hardening
+
+- Added bounded asynchronous execution for registered Lab scientific adapters.
+- Added deterministic persistent result caching with semantic request keys, TTLs, size caps, and record caps.
+- Added workload assessment with interactive, async-recommended, and reject dispositions plus explicit hard limits.
+- Added bounded dataset windowing, job status/results, queue inspection, and cooperative cancellation without force-killing running scientific code.
+- Added contextual compute-hardening controls inside the existing Scientific Workflows workspace with timer-based polling only while jobs are active.
+- Preserved the v0.48.3 six-destination rail, Graph Studio front door, three related-application cards, and platform compatibility v1.0.0.
+- Kept arbitrary code execution, automatic remote compute, automatic scaling, and destructive force termination disabled.
+
 ## 0.57.0 — Scientific Workflow Composer
 
 - Added a bounded DAG-based scientific workflow composer for saved, rerunnable in-project research pipelines.

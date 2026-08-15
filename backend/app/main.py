@@ -69,6 +69,7 @@ from .institutional_governance import InstitutionalGovernanceError, Institutiona
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
 from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
+from .scientific_compute_hardening import ScientificComputeHardeningError, ScientificComputeManager, assess_workload as assess_scientific_workload, dataset_window as scientific_dataset_window, policies as scientific_compute_policies
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
 from .public_release_hardening import PublicReleaseHardeningManager, PublicReleaseHardeningError, policies as public_release_hardening_policies
@@ -158,6 +159,24 @@ performance_validation = PerformanceChaosManager(
     settings.performance_validation_default_p95_ms,
     settings.performance_validation_default_error_rate_ppm / 1_000_000.0,
 )
+scientific_compute = ScientificComputeManager(
+    settings.scientific_compute_db_path,
+    {
+        "workflow.run": run_scientific_workflow,
+        "statistics.fit": fit_advanced_statistical_model,
+        "bayesian.fit": fit_bayesian_model,
+        "probabilistic.analyze": run_probabilistic_analysis,
+        "correlated-uncertainty.analyze": run_correlated_uncertainty,
+        "dynamic-systems.simulate": simulate_dynamic_systems_v0540,
+        "experimental-design.generate": generate_optimal_design,
+        "data-transformations.run": transform_scientific_dataset,
+    },
+    max_workers=settings.scientific_compute_workers,
+    max_queued=settings.scientific_compute_max_queued,
+    cache_ttl_seconds=settings.scientific_compute_cache_ttl_seconds,
+    max_cache_records=settings.scientific_compute_max_cache_records,
+    max_result_bytes=settings.scientific_compute_max_result_bytes,
+)
 connected_platform_beta = ConnectedPlatformBetaManager(
     settings.platform_beta_db_path,
     settings.platform_beta_persistent_disk_mounted,
@@ -240,6 +259,8 @@ async def request_limits(request: Request, call_next):
             limit = settings.artifact_chunk_bytes
         elif request.url.path.startswith("/v1/surrogate-rom/"):
             limit = settings.surrogate_rom_max_request_bytes
+        elif request.url.path.startswith("/v1/compute-hardening/v0580/"):
+            limit = settings.scientific_compute_max_request_bytes
         else:
             limit = settings.max_request_bytes
         if len(body) > limit:
@@ -1105,6 +1126,71 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
     del auth
     try: return verify_advanced_experimental_design(payload)
     except AdvancedExperimentalDesignError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+
+# v0.58.0 Large-Model, Large-Dataset & Compute Hardening
+
+@app.get("/v1/compute-hardening/v0580/health")
+def scientific_compute_hardening_health_route():
+    body = scientific_compute.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/compute-hardening/v0580/policies")
+def scientific_compute_hardening_policies_route():
+    return scientific_compute_policies()
+
+@app.post("/v1/compute-hardening/v0580/assess")
+def scientific_compute_hardening_assess_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return assess_scientific_workload(payload)
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/compute-hardening/v0580/dataset-window")
+def scientific_compute_hardening_dataset_window_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scientific_dataset_window(payload)
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/compute-hardening/v0580/run")
+def scientific_compute_hardening_run_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scientific_compute.execute(payload.get("operation"), payload.get("payload") or {}, use_cache=bool(payload.get("useCache", True)))
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/compute-hardening/v0580/jobs")
+def scientific_compute_hardening_submit_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scientific_compute.submit(payload.get("operation"), payload.get("payload") or {})
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.get("/v1/compute-hardening/v0580/jobs")
+def scientific_compute_hardening_jobs_route(limit: int = Query(30, ge=1, le=200)):
+    return scientific_compute.list_jobs(limit)
+
+@app.get("/v1/compute-hardening/v0580/jobs/{job_id}")
+def scientific_compute_hardening_job_route(job_id: str):
+    try: return {"ok": True, "version": "0.58.0", "job": scientific_compute.status(job_id)}
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+@app.get("/v1/compute-hardening/v0580/jobs/{job_id}/result")
+def scientific_compute_hardening_job_result_route(job_id: str):
+    try: return scientific_compute.result(job_id)
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+@app.post("/v1/compute-hardening/v0580/jobs/{job_id}/cancel")
+def scientific_compute_hardening_job_cancel_route(job_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scientific_compute.cancel(job_id)
+    except ScientificComputeHardeningError as exc: raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+@app.get("/v1/compute-hardening/v0580/cache")
+def scientific_compute_hardening_cache_route():
+    return scientific_compute.cache_stats()
+
+@app.post("/v1/compute-hardening/v0580/cache/clear")
+def scientific_compute_hardening_cache_clear_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return scientific_compute.clear_cache()
 
 
 # v0.57.0 Scientific Workflow Composer

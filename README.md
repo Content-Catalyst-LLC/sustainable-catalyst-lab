@@ -1,3 +1,7 @@
+## v0.58.0 Large-Model, Large-Dataset & Compute Hardening
+
+Lab v0.58.0 adds a bounded scientific-compute layer for larger datasets and longer workflows. Registered scientific operations can be assessed before execution, queued asynchronously, cancelled cooperatively, and reused through deterministic result caching. The interface remains contextual inside Scientific Workflows and does not expand the permanent navigation. Dataset previews are bounded, queue/cache limits are explicit, and running scientific code is never force-terminated. Arbitrary code execution, automatic remote compute, and silent automatic scaling remain disabled.
+
 ## v0.57.0 Scientific Workflow Composer
 
 Lab v0.57.0 connects the existing scientific stack into saved, rerunnable in-project research workflows. A bounded DAG can bind project/run inputs and prior-stage results across dataset profiling, data transformations, model fitting, validation, Bayesian analysis, uncertainty, dynamics, response surfaces, experimental design, Graph Studio normalization, reproducible model packages, registry projections, and report bundles. Each run records deterministic workflow, request, semantic-output, and run hashes for reproducibility comparison.

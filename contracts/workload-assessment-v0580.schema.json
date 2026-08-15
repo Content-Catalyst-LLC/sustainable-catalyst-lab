@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/workload-assessment-v0580.schema.json",
+  "title":"Scientific Workload Assessment v0.58.0",
+  "type":"object",
+  "required":["schema","version","disposition","score","shape","hardLimits"],
+  "properties":{
+    "schema":{"const":"sc-lab-workload-assessment/0.58.0"},
+    "version":{"const":"0.58.0"},
+    "disposition":{"enum":["interactive","async-recommended","reject"]},
+    "score":{"type":"integer","minimum":0},
+    "shape":{"type":"object","required":["rows","columns","estimatedCells"]},
+    "warnings":{"type":"array","items":{"type":"string"}},
+    "violations":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}

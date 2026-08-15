@@ -2012,6 +2012,23 @@ P=1:9:bar</textarea></label>
             <details class="sc-wfc0570__advanced"><summary>Workflow definition and run inputs</summary><div class="sc-wfc0570__advanced-grid"><label>Workflow JSON<textarea data-wfc-v0570-definition aria-label="Scientific workflow definition">{}</textarea></label><label>Run inputs JSON<textarea data-wfc-v0570-inputs aria-label="Scientific workflow inputs">{}</textarea></label></div><h5>Latest run record</h5><pre data-wfc-v0570-output>No workflow run yet.</pre></details>
           </div>
         </details>
+        <details class="sc-ch0580" data-compute-hardening-v0580>
+          <summary>Large workload &amp; compute hardening <span class="sc-ch0580__badge">v0.58.0</span></summary>
+          <div class="sc-ch0580__body">
+            <div class="sc-ch0580__intro"><div><h4>Keep scientific workflows responsive at scale</h4><p>Assess workload size before execution, queue large runs without blocking the interface, reuse deterministic cached results, inspect bounded dataset windows, and request cooperative cancellation. Running scientific code is never force-terminated and arbitrary executable jobs remain disabled.</p></div><span class="sc-ch0580__badge">PROJECT / COMPUTE</span></div>
+            <p class="sc-ch0580__status" data-ch-v0580-status role="status" aria-live="polite">Compute hardening loading…</p>
+            <div class="sc-ch0580__actions">
+              <button type="button" class="sc-lab-button" data-ch-v0580-assess>Assess current workflow</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-ch-v0580-queue>Queue workflow asynchronously</button>
+              <button type="button" class="sc-lab-button" data-ch-v0580-refresh>Refresh compute jobs</button>
+            </div>
+            <div class="sc-ch0580__metrics" data-ch-v0580-metrics></div>
+            <div class="sc-ch0580__grid">
+              <section class="sc-ch0580__card"><h5>Recent hardened compute jobs</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Job</th><th>Operation</th><th>Status</th><th>Cache</th><th>Action</th></tr></thead><tbody data-ch-v0580-jobs><tr><td colspan="5">No hardened compute jobs yet.</td></tr></tbody></table></div></section>
+              <section class="sc-ch0580__card"><h5>Assessment / result evidence</h5><pre class="sc-ch0580__output" data-ch-v0580-output>Assess the current workflow or queue it for bounded asynchronous execution.</pre></section>
+            </div>
+          </div>
+        </details>
         <p class="sc-wf0321-status" data-wf-v0321-status role="status" aria-live="polite">Workflow recovery loading…</p>
         <div class="sc-wf0321-metrics" data-wf-v0321-metrics></div>
         <div class="sc-wf0321-grid">

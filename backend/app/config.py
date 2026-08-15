@@ -208,6 +208,13 @@ class Settings:
     performance_validation_default_p95_ms: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_P95_MS", 250, 1, 60000)
     performance_validation_default_error_rate_ppm: int = _int("SC_LAB_PERFORMANCE_VALIDATION_DEFAULT_ERROR_RATE_PPM", 10000, 0, 1000000)
     performance_validation_persistent_disk_mounted: bool = os.getenv("SC_LAB_PERFORMANCE_VALIDATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_MULTI_INSTANCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    scientific_compute_db_path: str = os.getenv("SC_LAB_SCIENTIFIC_COMPUTE_DB_PATH", "./data/sc-lab-scientific-compute-v0580.sqlite3").strip()
+    scientific_compute_workers: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_WORKERS", 2, 1, 8)
+    scientific_compute_max_queued: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_MAX_QUEUED", 12, 1, 100)
+    scientific_compute_cache_ttl_seconds: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_CACHE_TTL_SECONDS", 86400, 60, 2592000)
+    scientific_compute_max_cache_records: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_MAX_CACHE_RECORDS", 128, 1, 5000)
+    scientific_compute_max_result_bytes: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_MAX_RESULT_BYTES", 16777216, 65536, 67108864)
+    scientific_compute_max_request_bytes: int = _int("SC_LAB_SCIENTIFIC_COMPUTE_MAX_REQUEST_BYTES", 67108864, 262144, 67108864)
     platform_beta_db_path: str = os.getenv("SC_LAB_PLATFORM_BETA_DB_PATH", "./data/sc-lab-platform-beta.sqlite3").strip()
     platform_beta_telemetry_enabled: bool = os.getenv("SC_LAB_PLATFORM_BETA_TELEMETRY_ENABLED", "0").lower() in {"1", "true", "yes"}
     platform_beta_history_limit: int = _int("SC_LAB_PLATFORM_BETA_HISTORY_LIMIT", 250000, 100, 5000000)
