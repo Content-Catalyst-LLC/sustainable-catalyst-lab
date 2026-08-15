@@ -1,0 +1,19 @@
+[data-ds-v0540-root]{margin-top:18px;border-top:1px solid rgba(0,0,0,.14);padding-top:14px}
+[data-ds-v0540-root]>summary{cursor:pointer;font-weight:700;letter-spacing:.01em}
+.sc-ds0540__intro{max-width:78ch;margin:10px 0 14px;color:var(--sc-lab-muted,#555)}
+.sc-ds0540__grid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(360px,1.2fr);gap:16px}
+.sc-ds0540__controls,.sc-ds0540__evidence{border:1px solid rgba(0,0,0,.12);padding:14px;background:#fff}
+.sc-ds0540__controls label{display:block;margin:0 0 10px;font-size:.84rem;font-weight:650}
+.sc-ds0540__controls input,.sc-ds0540__controls textarea{width:100%;box-sizing:border-box;margin-top:5px}
+.sc-ds0540__controls textarea{min-height:108px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem}
+.sc-ds0540__inline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sc-ds0540__actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.sc-ds0540__summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.sc-ds0540__summary article{border:1px solid rgba(0,0,0,.1);padding:9px;min-width:0}
+.sc-ds0540__summary span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:#666}.sc-ds0540__summary strong{display:block;margin-top:4px;font-size:.95rem;overflow-wrap:anywhere}
+.sc-ds0540__canvas{min-height:330px;border:1px solid rgba(0,0,0,.12);padding:8px;background:#fff}
+.sc-ds0540__note{font-size:.78rem;line-height:1.45;border-left:3px solid #111;padding:8px 10px;margin-top:10px;background:#f7f7f7}.sc-ds0540__note strong{display:block;margin-bottom:3px}
+[data-ds-v0540-status][data-tone="error"]{color:#9f1c1c}
+[data-ds-v0540-record]{max-height:320px;overflow:auto;white-space:pre-wrap;font-size:.72rem}
+@media(max-width:900px){.sc-ds0540__grid{grid-template-columns:1fr}.sc-ds0540__summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.sc-ds0540__inline{grid-template-columns:1fr}.sc-ds0540__summary{grid-template-columns:1fr}}

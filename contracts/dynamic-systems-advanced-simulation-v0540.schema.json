@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Dynamic Systems II Simulation",
+  "required": [
+    "schema",
+    "version",
+    "study",
+    "rows",
+    "eventsDetected",
+    "regimesApplied"
+  ],
+  "properties": {
+    "schema": {},
+    "version": {
+      "const": "0.54.0"
+    },
+    "study": {},
+    "rows": {},
+    "eventsDetected": {},
+    "regimesApplied": {}
+  }
+}

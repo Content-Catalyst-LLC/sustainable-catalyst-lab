@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Dynamic Systems II Study",
+  "required": [
+    "schema",
+    "version",
+    "system",
+    "events",
+    "regimes"
+  ],
+  "properties": {
+    "schema": {},
+    "version": {
+      "const": "0.54.0"
+    },
+    "system": {},
+    "events": {},
+    "regimes": {}
+  }
+}

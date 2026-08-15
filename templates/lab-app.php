@@ -1877,6 +1877,37 @@ P=1:9:bar</textarea></label>
                 <details><summary>Dynamic-system / estimation record</summary><pre class="sc-ms0460-contract" data-ms-v0460-dynamic-record>No dynamic-system record yet.</pre></details>
               </div>
             </div>
+
+            <details class="sc-ds0540" data-ds-v0540-root>
+              <summary>Dynamic Systems II — events, regimes, bifurcation &amp; phase analysis <small>v0.54.0</small></summary>
+              <p class="sc-ds0540__intro">Extend the governed ODE definition above with safe event functions, evidence-backed scheduled regime changes, bounded numerical parameter sweeps, and two-state autonomous phase-plane diagnostics. These tools remain deterministic and declarative; no arbitrary Python or executable callbacks are accepted.</p>
+              <p data-ds-v0540-status role="status" aria-live="polite">Dynamic Systems II ready. Configure the base ODE above, then add advanced analysis only where scientifically appropriate.</p>
+              <div class="sc-ds0540__grid">
+                <div class="sc-ds0540__controls">
+                  <label>Events as JSON <small>expression is zero at the event; direction -1, 0, or 1</small><textarea data-ds-v0540-events spellcheck="false">[]</textarea></label>
+                  <label>Scheduled regime changes as JSON <small>time + parameterValues and/or stateValues + evidence</small><textarea data-ds-v0540-regimes spellcheck="false">[]</textarea></label>
+                  <div class="sc-ds0540__actions"><button type="button" class="sc-lab-button" data-ds-v0540-example>Load advanced example controls</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ds-v0540-simulate>Simulate events &amp; regimes</button></div>
+                  <hr><h5>Numerical bifurcation scan</h5>
+                  <div class="sc-ds0540__inline"><label>Parameter<input data-ds-v0540-sweep-parameter placeholder="r"></label><label>State<input data-ds-v0540-sweep-state placeholder="N"></label></div>
+                  <div class="sc-ds0540__inline"><label>Lower<input type="number" step="any" data-ds-v0540-sweep-lower value="0.1"></label><label>Upper<input type="number" step="any" data-ds-v0540-sweep-upper value="1"></label></div>
+                  <div class="sc-ds0540__inline"><label>Parameter points<input type="number" min="3" max="121" value="41" data-ds-v0540-sweep-points></label><label>Transient fraction<input type="number" min="0.25" max="0.97" step="0.05" value="0.7" data-ds-v0540-transient></label></div>
+                  <button type="button" class="sc-lab-button" data-ds-v0540-bifurcation>Run numerical bifurcation scan</button>
+                  <hr><h5>Advanced two-state phase analysis</h5>
+                  <label>Phase domain JSON<textarea data-ds-v0540-phase-domain spellcheck="false">{
+  "x": {"min": 0, "max": 10, "points": 25},
+  "y": {"min": 0, "max": 10, "points": 25}
+}</textarea></label>
+                  <button type="button" class="sc-lab-button" data-ds-v0540-phase>Analyze phase plane</button>
+                  <div class="sc-ds0540__note"><strong>Scientific boundary</strong>Numerical sweeps can reveal candidate regime transitions but are not formal bifurcation proofs. Equilibrium stability is local numerical evidence. Delay equations, SDEs, PDEs, automatic regime inference, and automatic control actions remain outside this release.</div>
+                </div>
+                <div class="sc-ds0540__evidence">
+                  <div class="sc-ds0540__summary" data-ds-v0540-summary><article><span>Evidence</span><strong>—</strong></article><article><span>Events</span><strong>—</strong></article><article><span>Regimes</span><strong>—</strong></article><article><span>Equilibria</span><strong>—</strong></article><article><span>Solver</span><strong>—</strong></article><article><span>Review</span><strong>required</strong></article></div>
+                  <div class="sc-ds0540__canvas" data-ds-v0540-canvas><div class="sc-lab-data-note">Run an event/regime simulation, numerical bifurcation scan, or phase analysis to generate scientific evidence.</div></div>
+                  <div class="sc-ds0540__actions"><button type="button" class="sc-lab-button" data-ds-v0540-graph-studio>Open current figure in Graph Studio</button><button type="button" class="sc-lab-button" data-ds-v0540-save>Save Dynamic Systems II evidence</button></div>
+                  <details><summary>Dynamic Systems II record</summary><pre data-ds-v0540-record>No v0.54 analysis yet.</pre></details>
+                </div>
+              </div>
+            </details>
           </section>
         </div>
       </section>

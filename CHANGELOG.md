@@ -1,3 +1,13 @@
+# v0.54.0 — Dynamic Systems II: Events, Regime Changes, Bifurcation & Advanced Phase Analysis
+
+- Added safe declarative ODE event functions with direction filters and optional terminal stopping.
+- Added evidence-backed scheduled regime changes with bounded piecewise-constant parameter updates and governed state resets.
+- Added bounded numerical bifurcation scans using tail minimum/mean/maximum evidence after a declared transient fraction.
+- Added two-state autonomous phase analysis with phase-speed heatmaps, approximate nullclines, numerical equilibrium search, finite-difference Jacobians, and local eigenvalue-based stability classification.
+- Added shared Graph Studio handoffs and project-scoped analysis packets for v0.50 reproducible research packaging.
+- Preserved the v0.48.3 navigation architecture, Graph Studio front door, and three related-application cards.
+- Kept DDEs, SDEs, PDEs, automatic regime inference/control actions, arbitrary code, and claims of formal bifurcation/global stability proof outside the release boundary.
+
 # v0.53.0 — Correlated Uncertainty & Probabilistic Dependency Models
 
 - Added evidence-backed correlation/covariance dependency models through a Gaussian copula.

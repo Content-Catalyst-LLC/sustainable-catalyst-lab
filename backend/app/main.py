@@ -30,6 +30,7 @@ from .model_calibration import ModelCalibrationError, build_report as build_cali
 from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
 from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
 from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate_dynamic_system_parameters, health as dynamic_systems_health, normalize_definition as normalize_dynamic_system, policies as dynamic_systems_policies, simulate as simulate_dynamic_system, templates as dynamic_system_templates
+from .dynamic_systems_v0540 import DynamicSystemsV0540Error, bifurcation_scan as dynamic_systems_v0540_bifurcation, health as dynamic_systems_v0540_health, normalize_study as normalize_dynamic_systems_v0540, phase_analysis as dynamic_systems_v0540_phase, policies as dynamic_systems_v0540_policies, simulate as simulate_dynamic_systems_v0540
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
@@ -1188,6 +1189,42 @@ def model_studio_dynamic_systems_simulate_route(payload: dict[str, Any]):
 def model_studio_dynamic_systems_estimate_route(payload: dict[str, Any]):
     try: return estimate_dynamic_system_parameters(payload)
     except DynamicSystemError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.get("/v1/model-studio/dynamic-systems/v0540/health")
+def model_studio_dynamic_systems_v0540_health_route():
+    return dynamic_systems_v0540_health()
+
+@app.get("/v1/model-studio/dynamic-systems/v0540/policies")
+def model_studio_dynamic_systems_v0540_policies_route():
+    return dynamic_systems_v0540_policies()
+
+@app.post("/v1/model-studio/dynamic-systems/v0540/normalize")
+def model_studio_dynamic_systems_v0540_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "study": normalize_dynamic_systems_v0540(payload.get("study") or payload)}
+    except DynamicSystemsV0540Error as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0540/simulate")
+def model_studio_dynamic_systems_v0540_simulate_route(payload: dict[str, Any]):
+    try:
+        return simulate_dynamic_systems_v0540(payload)
+    except DynamicSystemsV0540Error as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0540/bifurcation")
+def model_studio_dynamic_systems_v0540_bifurcation_route(payload: dict[str, Any]):
+    try:
+        return dynamic_systems_v0540_bifurcation(payload)
+    except DynamicSystemsV0540Error as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0540/phase")
+def model_studio_dynamic_systems_v0540_phase_route(payload: dict[str, Any]):
+    try:
+        return dynamic_systems_v0540_phase(payload)
+    except DynamicSystemsV0540Error as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-studio/response-surfaces/health")

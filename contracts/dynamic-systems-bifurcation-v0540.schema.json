@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Dynamic Systems Bifurcation Scan",
+  "required": [
+    "schema",
+    "version",
+    "study",
+    "sweep",
+    "rows"
+  ],
+  "properties": {
+    "schema": {},
+    "version": {
+      "const": "0.54.0"
+    },
+    "study": {},
+    "sweep": {},
+    "rows": {}
+  }
+}

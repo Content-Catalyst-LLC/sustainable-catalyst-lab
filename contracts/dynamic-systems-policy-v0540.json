@@ -1,0 +1,25 @@
+{
+  "schema": "sc-lab-dynamic-systems-policy/0.54.0",
+  "version": "0.54.0",
+  "capabilities": {
+    "safeStateEvents": true,
+    "terminalEvents": true,
+    "scheduledRegimeChanges": true,
+    "piecewiseConstantParameterProfiles": true,
+    "governedStateResetsAtRegimeBoundaries": true,
+    "numericalBifurcationScans": true,
+    "twoStateAutonomousPhaseAnalysis": true,
+    "equilibriumSearch": true,
+    "localStabilityClassification": true,
+    "nullclineApproximation": true
+  },
+  "boundaries": {
+    "arbitraryCode": false,
+    "delayDifferentialEquations": false,
+    "stochasticDifferentialEquations": false,
+    "partialDifferentialEquations": false,
+    "formalBifurcationProof": false,
+    "automaticRegimeInference": false,
+    "automaticControlActions": false
+  }
+}
