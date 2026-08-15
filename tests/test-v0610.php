@@ -1,0 +1,32 @@
+<?php
+$root=dirname(__DIR__);$bootstrap=file_get_contents($root.'/sustainable-catalyst-lab.php');$plugin=file_get_contents($root.'/includes/class-sc-lab-plugin.php');$template=file_get_contents($root.'/templates/lab-app.php');$class=file_get_contents($root.'/includes/class-sc-lab-scientific-study-lifecycle-v0610.php');$compute=file_get_contents($root.'/includes/class-sc-lab-python-compute-core-v0261.php');
+$checks=array(
+ 'v0.61 study lifecycle PHP class'=>is_file($root.'/includes/class-sc-lab-scientific-study-lifecycle-v0610.php'),
+ 'v0.61 backend module'=>is_file($root.'/backend/app/scientific_study_lifecycle_v0610.py'),
+ 'v0.61 backend regression test'=>is_file($root.'/backend/tests/test_scientific_study_lifecycle_v0610.py'),
+ 'v0.61 JS module'=>is_file($root.'/assets/js/modules/scientific-study-lifecycle-v0610.js'),
+ 'v0.61 stylesheet'=>is_file($root.'/assets/css/sc-lab-scientific-study-lifecycle-v0610.css'),
+ 'Scientific study schema'=>is_file($root.'/contracts/scientific-study-v0610.schema.json'),
+ 'Scientific study lifecycle schema'=>is_file($root.'/contracts/scientific-study-lifecycle-v0610.schema.json'),
+ 'Stage review schema'=>is_file($root.'/contracts/scientific-study-stage-review-v0610.schema.json'),
+ 'Study evidence packet schema'=>is_file($root.'/contracts/scientific-study-evidence-packet-v0610.schema.json'),
+ 'Study lifecycle policy'=>is_file($root.'/contracts/scientific-study-lifecycle-policy-v0610.json'),
+ 'WordPress plugin header reports v0.61.0'=>preg_match('/^\s*\*\s*Version:\s*0\.61\.0\s*$/m',$bootstrap)===1,
+ 'Release constant reports v0.61.0'=>strpos($bootstrap,"define('SC_LAB_RELEASE_VERSION', '0.61.0')")!==false,
+ 'Platform compatibility remains v1.0.0'=>strpos($bootstrap,"define('SC_LAB_PLATFORM_VERSION', '1.0.0')")!==false,
+ 'Bootstrap initializes study lifecycle'=>strpos($bootstrap,'SC_Lab_Scientific_Study_Lifecycle_V0610::init()')!==false,
+ 'v0.60.1 beta field diagnostics retained'=>strpos($bootstrap,'SC_Lab_Beta_Field_Diagnostics_V0601::init()')!==false,
+ 'Study lifecycle remains contextual in workflow workspace'=>strpos($template,'data-scientific-study-lifecycle-v0610')!==false,
+ 'Three application row preserved'=>strpos($template,'Prototyping Workbench')!==false&&strpos($template,'Decision Studio')!==false&&strpos($template,'Site Intelligence')!==false,
+ 'Six destination rail preserved'=>substr_count($template,'data-v0483-primary=')===6,
+ 'Health requires human stage review'=>strpos($class,"'humanStageReviewRequired'=>true")!==false,
+ 'Health disables automatic scientific certification'=>strpos($class,"'automaticScientificCertification'=>false")!==false,
+ 'Health disables automatic causal claims'=>strpos($class,"'automaticCausalClaim'=>false")!==false,
+ 'Health disables automatic experiment execution'=>strpos($class,"'automaticExperimentExecution'=>false")!==false,
+ 'Study evaluate proxy route'=>strpos($compute,"/compute/core/scientific-studies/v0610/evaluate")!==false,
+ 'Study review proxy route'=>strpos($compute,"/compute/core/scientific-studies/v0610/review")!==false,
+ 'Study packet proxy route'=>strpos($compute,"/compute/core/scientific-studies/v0610/packet")!==false,
+ 'v0.61 stylesheet enqueued'=>strpos($plugin,'sc-lab-scientific-study-lifecycle-v0610')!==false,
+ 'v0.61 JS module registered'=>strpos($plugin,"'scientific-study-lifecycle-v0610'")!==false,
+);
+foreach($checks as $label=>$ok){if(!$ok){fwrite(STDERR,"FAIL - $label\n");exit(1);}echo "PASS - $label\n";}

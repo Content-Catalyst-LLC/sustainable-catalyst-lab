@@ -1,3 +1,13 @@
+# v0.61.0 — End-to-End Scientific Study & Research Project Lifecycle
+
+- Adds an active-project scientific study record across question, protocol, data, analysis, validation, uncertainty, experiment, figures, conclusions, reproducibility, and audit.
+- Separates evidence completeness from explicit human stage acceptance; required stages cannot self-certify.
+- Adds observational, experimental, computational, and mixed study templates.
+- Adds deterministic study/lifecycle hashes, tamper-evident review hashes, and a metadata-only final study packet.
+- Stores study definitions in `scientificStudiesV0610` and lifecycle evidence in `analysisPackets`.
+- Preserves the six-destination rail, Graph Studio front door, three related application cards, and no-MutationObserver runtime boundary.
+- Automatic scientific certification, causal claims, publication, experiment execution, and arbitrary code remain disabled.
+
 # v0.60.1 — Beta Field Diagnostics, Integration Soak & Runtime Repair
 
 - Added metadata-only runtime snapshots and cross-studio failure localization.

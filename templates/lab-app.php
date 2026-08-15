@@ -2004,6 +2004,47 @@ P=1:9:bar</textarea></label>
             <p class="sc-beta0600__note">The beta packet contains metadata, counts, contract hashes, and evidence hashes only. Raw datasets, credentials, and scientific inputs are excluded. Human review remains mandatory.</p>
           </div>
         </details>
+        <details class="sc-slc0610" data-scientific-study-lifecycle-v0610 open>
+          <summary>End-to-End Scientific Study &amp; Research Project Lifecycle <span class="sc-slc0610__badge">v0.61.0</span></summary>
+          <div class="sc-slc0610__body">
+            <div class="sc-slc0610__intro"><div><h4>Turn the integrated Lab project into one governed scientific study</h4><p>Define the research question and protocol, connect existing project evidence, review each required lifecycle stage, preserve conclusions and limitations, and build a tamper-evident study packet. v0.61 records scientific project state; it does not certify science, infer causality, authorize physical experiments, or publish automatically.</p></div><span class="sc-slc0610__badge">PROJECT / STUDY</span></div>
+            <p class="sc-slc0610__status" data-slc-v0610-status role="status" aria-live="polite">Scientific study lifecycle loading…</p>
+            <div class="sc-slc0610__actions">
+              <label>Study template <select data-slc-v0610-template></select></label>
+              <button type="button" class="sc-lab-button" data-slc-v0610-load-template>Load template</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-slc-v0610-evaluate>Evaluate study lifecycle</button>
+              <button type="button" class="sc-lab-button" data-slc-v0610-save-study>Save study</button>
+              <button type="button" class="sc-lab-button" data-slc-v0610-packet>Build study packet</button>
+              <button type="button" class="sc-lab-button" data-slc-v0610-verify>Verify packet</button>
+              <button type="button" class="sc-lab-button" data-slc-v0610-save-evidence>Save lifecycle evidence</button>
+            </div>
+            <div class="sc-slc0610__metrics" data-slc-v0610-metrics></div>
+            <div class="sc-slc0610__grid">
+              <section class="sc-slc0610__card"><h5>Scientific study definition</h5>
+                <div class="sc-slc0610__fields">
+                  <label>Study ID<input data-slc-v0610-id></label><label>Study type<select data-slc-v0610-type><option value="observational">Observational</option><option value="experimental">Experimental</option><option value="computational">Computational</option><option value="mixed">Mixed</option></select></label>
+                  <label class="is-wide">Study title<input data-slc-v0610-title></label><label>Study status<select data-slc-v0610-study-status><option value="draft">Draft</option><option value="active">Active</option><option value="review">Review</option><option value="complete">Complete</option><option value="archived">Archived</option></select></label>
+                  <label class="is-wide">Research question<textarea data-slc-v0610-question></textarea></label>
+                  <label class="is-wide">Rationale<textarea data-slc-v0610-rationale></textarea></label>
+                  <label class="is-wide">Hypotheses / expectations — one per line<textarea data-slc-v0610-hypotheses></textarea></label>
+                  <label class="is-wide">Methods / protocol summary<textarea data-slc-v0610-methods></textarea></label>
+                  <label class="is-wide">Analysis and validation plan<textarea data-slc-v0610-analysis-plan></textarea></label>
+                  <label class="is-wide">Uncertainty plan<textarea data-slc-v0610-uncertainty></textarea></label>
+                  <label class="is-wide">Conclusion summary — entered by the researcher<textarea data-slc-v0610-conclusion></textarea></label>
+                  <label class="is-wide">Limitations<textarea data-slc-v0610-limitations></textarea></label>
+                  <label class="is-wide">Open questions / follow-up<textarea data-slc-v0610-open-questions></textarea></label>
+                </div>
+              </section>
+              <section class="sc-slc0610__card"><h5>Study lifecycle and human review</h5><div class="sc-slc0610__stages" data-slc-v0610-stages><p>No lifecycle assessment yet.</p></div>
+                <div class="sc-slc0610__review"><label>Stage<select data-slc-v0610-review-stage><option value="">Choose stage</option><option value="question">Research question &amp; hypotheses</option><option value="protocol">Protocol &amp; analysis plan</option><option value="data">Data &amp; provenance</option><option value="analysis">Analysis / modeling</option><option value="validation">Validation &amp; diagnostics</option><option value="uncertainty">Uncertainty &amp; limitations</option><option value="experiment">Experimental evidence</option><option value="figure">Scientific figures</option><option value="conclusion">Conclusions &amp; limitations</option><option value="reproducibility">Reproducibility package</option><option value="audit">Scientific audit</option></select></label><label>Decision<select data-slc-v0610-review-decision><option value="accept">Accept stage evidence</option><option value="block">Block stage</option><option value="reopen">Reopen stage</option></select></label><label class="is-wide">Review rationale<textarea data-slc-v0610-review-rationale placeholder="Explain the evidence reviewed and the basis for this stage decision."></textarea></label><div class="is-wide"><button type="button" class="sc-lab-button sc-lab-button-primary" data-slc-v0610-review>Record stage review</button></div></div>
+              </section>
+              <section class="sc-slc0610__card"><h5>Saved project studies</h5><div class="sc-slc0610__saved" data-slc-v0610-saved></div></section>
+              <section class="sc-slc0610__card"><h5>Lifecycle / packet evidence</h5><pre class="sc-slc0610__output" data-slc-v0610-output>No scientific study lifecycle evidence generated yet.</pre></section>
+            </div>
+            <p class="sc-slc0610__note">Study packets contain study metadata, stage states, evidence references/hashes, and review hashes. Raw datasets, credentials, arbitrary code, and automatic scientific claims are excluded.</p>
+          </div>
+        </details>
+
         <details class="sc-bfd0601" data-beta-field-diagnostics-v0601>
           <summary>Beta Field Diagnostics, Integration Soak &amp; Runtime Repair <span class="sc-bfd0601__badge">v0.60.1</span></summary>
           <div class="sc-bfd0601__body">
