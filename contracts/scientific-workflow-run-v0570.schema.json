@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Scientific Workflow Run v0.57.0",
+  "type": "object",
+  "required": ["schema", "version", "id", "workflowId", "workflowHash", "status", "results", "runHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-workflow-run/0.57.0"},
+    "version": {"const": "0.57.0"},
+    "status": {"enum": ["completed"]},
+    "runHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "results": {"type": "object"}
+  }
+}

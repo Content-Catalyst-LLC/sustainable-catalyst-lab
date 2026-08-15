@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sustainable Catalyst Lab Scientific Workflow Stage Result v0.57.0",
+  "type": "object",
+  "required": ["schema", "version", "stageId", "kind", "status", "outputHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-workflow-stage-result/0.57.0"},
+    "version": {"const": "0.57.0"},
+    "status": {"enum": ["completed", "skipped"]},
+    "outputHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

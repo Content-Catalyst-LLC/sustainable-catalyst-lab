@@ -1,3 +1,9 @@
+## v0.57.0 Scientific Workflow Composer
+
+Lab v0.57.0 connects the existing scientific stack into saved, rerunnable in-project research workflows. A bounded DAG can bind project/run inputs and prior-stage results across dataset profiling, data transformations, model fitting, validation, Bayesian analysis, uncertainty, dynamics, response surfaces, experimental design, Graph Studio normalization, reproducible model packages, registry projections, and report bundles. Each run records deterministic workflow, request, semantic-output, and run hashes for reproducibility comparison.
+
+This feature is intentionally separate from the older v0.32.1 operational workflow orchestrator: v0.57 composes scientific research stages, while v0.32.1 continues to own queues, checkpoints, schedules, recovery, and distributed operational execution. Arbitrary code/callback execution, automatic experiment execution, automatic registry promotion, automatic publication, and automatic workflow scheduling remain disabled. The v0.48.3 navigation architecture and three related-application cards remain unchanged. Internal platform compatibility remains v1.0.0.
+
 ## v0.56.0 Advanced Experimental Design & Sequential Experimentation
 
 The current experimental-design layer adds bounded D-optimal and maximin initial designs, information-matrix diagnostics, balanced blocking, explicit center replication, and proposal-only sequential experiment planning. Sequential proposals can prioritize information gain or use a response-guided local model heuristic when sufficient completed responses exist. Automatic experiment execution and automatic stopping remain disabled; all proposals require scientific review.

@@ -28,6 +28,7 @@ from .external_discovery import DiscoveryError, build_openurl as build_discovery
 from .experiment_framework import ExperimentFrameworkError, build_report as build_experiment_report, build_run as build_experiment_run, compare_runs as compare_experiment_runs, health as experiment_framework_health, normalize_protocol, policies as experiment_framework_policies, validate_protocol, verify as verify_experiment_record
 from .design_studies import DesignStudyError, analyze_results as analyze_design_results, build_batch as build_design_batch, generate_design, health as design_studies_health, normalize_study, policies as design_studies_policies, recommend_design, verify as verify_design_record
 from .advanced_experimental_design import AdvancedExperimentalDesignError, generate_optimal_design, health as advanced_experimental_design_health, normalize_spec as normalize_advanced_experimental_design, policies as advanced_experimental_design_policies, sequential_plan as build_sequential_experiment_plan, verify_record as verify_advanced_experimental_design
+from .scientific_workflow_composer import ScientificWorkflowComposerError, catalog as scientific_workflow_catalog, compare_runs as compare_scientific_workflow_runs, health as scientific_workflow_composer_health, normalize_workflow as normalize_scientific_workflow, policies as scientific_workflow_composer_policies, run_workflow as run_scientific_workflow, templates as scientific_workflow_templates
 from .model_calibration import ModelCalibrationError, build_report as build_calibration_report, calibrate as calibrate_model, compare_models, health as model_calibration_health, normalize_study as normalize_calibration_study, policies as model_calibration_policies, validate_result as validate_calibration_result, verify as verify_calibration_record
 from .model_studio import ModelStudioError, build_bundle as build_model_studio_bundle, health as model_studio_health, normalize_graph as normalize_model_studio_graph, normalize_model as normalize_model_studio_model, policies as model_studio_policies, preview_equation_model as preview_model_studio_equation, validate_equation as validate_model_studio_equation
 from .model_diagnostics import ModelDiagnosticsError, compare as compare_scientific_models, cross_validate as cross_validate_scientific_model, diagnose as diagnose_scientific_model, health as model_diagnostics_health, policies as model_diagnostics_policies
@@ -1104,6 +1105,43 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
     del auth
     try: return verify_advanced_experimental_design(payload)
     except AdvancedExperimentalDesignError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+# v0.57.0 Scientific Workflow Composer
+
+@app.get("/v1/workflows/v0570/health")
+def scientific_workflow_composer_health_route():
+    body = scientific_workflow_composer_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/workflows/v0570/policies")
+def scientific_workflow_composer_policies_route():
+    return scientific_workflow_composer_policies()
+
+@app.get("/v1/workflows/v0570/catalog")
+def scientific_workflow_composer_catalog_route():
+    return scientific_workflow_catalog()
+
+@app.get("/v1/workflows/v0570/templates")
+def scientific_workflow_composer_templates_route():
+    return scientific_workflow_templates()
+
+@app.post("/v1/workflows/v0570/normalize")
+def scientific_workflow_composer_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "version": "0.57.0", "workflow": normalize_scientific_workflow(payload)}
+    except ScientificWorkflowComposerError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/workflows/v0570/run")
+def scientific_workflow_composer_run_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return run_scientific_workflow(payload)
+    except ScientificWorkflowComposerError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/workflows/v0570/compare")
+def scientific_workflow_composer_compare_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return compare_scientific_workflow_runs(payload)
+    except ScientificWorkflowComposerError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-studio/health")

@@ -1,0 +1,17 @@
+{
+  "version": "0.57.0",
+  "architecture": "bounded-scientific-workflow-composer",
+  "maximumStages": 24,
+  "acyclicGraphRequired": true,
+  "explicitBindings": true,
+  "deterministicRunHash": true,
+  "projectSavedDefinitions": true,
+  "projectSavedRuns": true,
+  "legacyOperationalOrchestrator": "workflow-orchestration-v0321",
+  "arbitraryCode": false,
+  "arbitraryCallbacks": false,
+  "automaticExperimentExecution": false,
+  "automaticRegistryPromotion": false,
+  "automaticPublication": false,
+  "automaticWorkflowScheduling": false
+}

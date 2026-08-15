@@ -1985,6 +1985,33 @@ P=1:9:bar</textarea></label>
 
       <section class="sc-lab-panel sc-wf0321" data-lab-module="workflow-orchestration" data-module-panel="workflow-orchestration" hidden>
         <header class="sc-lab-module-header"><p class="sc-lab-kicker">PROJECT / WORKFLOW ORCHESTRATION / v0.32.1</p><h3>Workflow Checkpoints, Conditional Execution, and Partial Recovery</h3><p>Build dependency-aware scientific workflows with safe declarative conditions, durable checkpoint history, resumable node context, and lineage-preserving recovery runs that reuse successful work while restarting only affected branches.</p></header>
+        <details class="sc-wfc0570" data-scientific-workflow-v0570 open>
+          <summary>Scientific Workflow Composer <span class="sc-wfc0570__badge">v0.57.0</span></summary>
+          <div class="sc-wfc0570__body">
+            <div class="sc-wfc0570__intro"><div><h4>Compose reproducible scientific pipelines</h4><p>Connect governed Lab stages into a saved, rerunnable research workflow. v0.57 executes registered scientific adapters only; arbitrary code, external callbacks, automatic experiment execution, registry promotion, and publication remain disabled.</p></div><span class="sc-wfc0570__badge">PROJECT / WORKFLOW</span></div>
+            <p class="sc-wfc0570__status" data-wfc-v0570-status role="status" aria-live="polite">Workflow Composer loading…</p>
+            <div class="sc-wfc0570__toolbar">
+              <label>Template<select data-wfc-v0570-template></select></label>
+              <label>Workflow title<input data-wfc-v0570-title value="Scientific workflow"></label>
+              <div class="sc-wfc0570__actions"><button type="button" class="sc-lab-button" data-wfc-v0570-load-template>Load template</button><button type="button" class="sc-lab-button" data-wfc-v0570-use-dataset>Use project dataset</button></div>
+            </div>
+            <div class="sc-wfc0570__catalog" data-wfc-v0570-catalog aria-label="Registered scientific workflow stages"></div>
+            <div class="sc-wfc0570__pipeline" data-wfc-v0570-pipeline><p>No workflow loaded.</p></div>
+            <div class="sc-wfc0570__actions">
+              <button type="button" class="sc-lab-button" data-wfc-v0570-validate>Validate workflow</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-wfc-v0570-run>Run workflow</button>
+              <button type="button" class="sc-lab-button" data-wfc-v0570-rerun>Rerun / compare</button>
+              <button type="button" class="sc-lab-button" data-wfc-v0570-save-workflow>Save workflow</button>
+              <button type="button" class="sc-lab-button" data-wfc-v0570-save-run>Save run evidence</button>
+            </div>
+            <div class="sc-wfc0570__metrics" data-wfc-v0570-metrics></div>
+            <div class="sc-wfc0570__grid">
+              <section class="sc-wfc0570__card"><h5>Stage timeline</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Stage</th><th>Kind</th><th>Status</th><th>ms</th><th>Output hash</th></tr></thead><tbody data-wfc-v0570-timeline><tr><td colspan="5">No workflow run yet.</td></tr></tbody></table></div></section>
+              <section class="sc-wfc0570__card"><h5>Saved project workflows</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Workflow</th><th>Stages</th><th>Hash</th><th>Action</th></tr></thead><tbody data-wfc-v0570-saved><tr><td colspan="4">No saved v0.57 workflows in this project.</td></tr></tbody></table></div></section>
+            </div>
+            <details class="sc-wfc0570__advanced"><summary>Workflow definition and run inputs</summary><div class="sc-wfc0570__advanced-grid"><label>Workflow JSON<textarea data-wfc-v0570-definition aria-label="Scientific workflow definition">{}</textarea></label><label>Run inputs JSON<textarea data-wfc-v0570-inputs aria-label="Scientific workflow inputs">{}</textarea></label></div><h5>Latest run record</h5><pre data-wfc-v0570-output>No workflow run yet.</pre></details>
+          </div>
+        </details>
         <p class="sc-wf0321-status" data-wf-v0321-status role="status" aria-live="polite">Workflow recovery loading…</p>
         <div class="sc-wf0321-metrics" data-wf-v0321-metrics></div>
         <div class="sc-wf0321-grid">

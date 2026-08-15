@@ -1,3 +1,13 @@
+## 0.57.0 — Scientific Workflow Composer
+
+- Added a bounded DAG-based scientific workflow composer for saved, rerunnable in-project research pipelines.
+- Added explicit stage bindings, registered scientific adapters, deterministic workflow/request/output/run hashes, and rerun comparison evidence.
+- Connected dataset profiling/transformation, model fitting/validation, Bayesian analysis, uncertainty, dynamics, response surfaces, experimental design, Graph Studio normalization, reproducible packages, registry projection, and report bundling without arbitrary code execution.
+- Added project-scoped `scientificWorkflowsV0570` and `scientificWorkflowRunsV0570` persistence plus compact workflow evidence in `analysisPackets`.
+- Kept v0.32.1 operational workflow orchestration as a separate layer for queues, checkpoints, schedules, recovery, and distributed execution.
+- Preserved the v0.48.3 six-destination rail, Graph Studio front door, three related-application cards, and platform compatibility v1.0.0.
+- Kept arbitrary code/callbacks, automatic experiment execution, automatic registry promotion, automatic publication, and automatic workflow scheduling disabled.
+
 # v0.56.0 — Advanced Experimental Design & Sequential Experimentation
 
 - Added bounded D-optimal and maximin design generation inside the existing Design Studies workspace.
