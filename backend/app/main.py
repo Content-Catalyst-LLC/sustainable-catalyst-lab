@@ -70,6 +70,7 @@ from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyM
 from .multi_instance_operations import MultiInstanceOperationsManager, OperationsError, policies as multi_instance_operations_policies
 from .performance_chaos_validation import PerformanceChaosManager, ValidationError as PerformanceValidationError, policies as performance_validation_policies
 from .scientific_compute_hardening import ScientificComputeHardeningError, ScientificComputeManager, assess_workload as assess_scientific_workload, dataset_window as scientific_dataset_window, policies as scientific_compute_policies
+from .scientific_audit_v0590 import ScientificAuditError, build_redacted_export as build_scientific_redacted_export, data_minimization_review as scientific_data_minimization_review, health as scientific_audit_health, policies as scientific_audit_policies, reproducibility_audit as run_reproducibility_audit_v0590, scan_surface as scan_scientific_audit_surface, scientific_audit as run_scientific_audit_v0590, verify_audit as verify_scientific_audit_v0590
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
 from .public_release_hardening import PublicReleaseHardeningManager, PublicReleaseHardeningError, policies as public_release_hardening_policies
@@ -1127,6 +1128,54 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
     try: return verify_advanced_experimental_design(payload)
     except AdvancedExperimentalDesignError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+
+
+# v0.59.0 Security, Privacy, Reproducibility & Scientific Audit
+
+@app.get("/v1/scientific-audit/v0590/health")
+def scientific_audit_v0590_health_route():
+    body = scientific_audit_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/scientific-audit/v0590/policies")
+def scientific_audit_v0590_policies_route():
+    return scientific_audit_policies()
+
+@app.post("/v1/scientific-audit/v0590/scan")
+def scientific_audit_v0590_scan_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scan_scientific_audit_surface(payload.get("target") if "target" in payload else payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-audit/v0590/minimize")
+def scientific_audit_v0590_minimize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return scientific_data_minimization_review(payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-audit/v0590/redact-export")
+def scientific_audit_v0590_redact_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_redacted_export(payload.get("target") if "target" in payload else payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-audit/v0590/reproducibility")
+def scientific_audit_v0590_reproducibility_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return run_reproducibility_audit_v0590(payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-audit/v0590/audit")
+def scientific_audit_v0590_audit_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return run_scientific_audit_v0590(payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-audit/v0590/verify")
+def scientific_audit_v0590_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_scientific_audit_v0590(payload.get("report") if isinstance(payload.get("report"), dict) else payload)
+    except ScientificAuditError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # v0.58.0 Large-Model, Large-Dataset & Compute Hardening

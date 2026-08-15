@@ -1,3 +1,7 @@
+## v0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair
+
+This repair keeps the Lab product release at **v0.59.0** while correcting the validation environment used to certify the Security, Privacy, Reproducibility & Scientific Audit release. The inherited v0.39.1 security/privacy contract tests require `jsonschema`; R1 declares that validation dependency, verifies it during installer preflight, and uses a dedicated v0.59.0-R1 validation environment so an incomplete pre-R1 environment is not reused. Scientific audit behavior, navigation, and platform compatibility remain unchanged.
+
 ## v0.58.0 Large-Model, Large-Dataset & Compute Hardening
 
 Lab v0.58.0 adds a bounded scientific-compute layer for larger datasets and longer workflows. Registered scientific operations can be assessed before execution, queued asynchronously, cancelled cooperatively, and reused through deterministic result caching. The interface remains contextual inside Scientific Workflows and does not expand the permanent navigation. Dataset previews are bounded, queue/cache limits are explicit, and running scientific code is never force-terminated. Arbitrary code execution, automatic remote compute, and silent automatic scaling remain disabled.

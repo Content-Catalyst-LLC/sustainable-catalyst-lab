@@ -1,0 +1,1 @@
+{"schema":"sc-lab-scientific-audit-policy/0.59.0","automaticCertificationAuthorized":false,"automaticPublicationAuthorized":false,"automaticDeletionAuthorized":false,"automaticHighStakesDecisionAuthorized":false,"arbitraryCodeExecutionAuthorized":false,"rawSensitiveValuesInFindings":false,"requiredHumanReviewForSensitiveOrHighStakesResearch":true}

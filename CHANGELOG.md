@@ -1,3 +1,21 @@
+# Changelog
+
+## 0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair
+
+- Adds `jsonschema>=4.20,<5` to the governed backend validation dependency set required by inherited security/privacy contract tests.
+- Adds an explicit R1 dependency regression test so future release gates fail before packaging if the validator dependency is omitted.
+- Requires `jsonschema` in the macOS installer dependency preflight.
+- Uses a dedicated `.sc-lab-v0590-r1-venv` validation environment to avoid reusing the incomplete pre-R1 environment.
+- Keeps the WordPress product release at 0.59.0 and platform compatibility at 1.0.0; no scientific runtime or interface behavior changes.
+
+## 0.59.0 — Security, Privacy, Reproducibility & Scientific Audit
+
+- Adds path-only threat-surface and privacy findings without sensitive-value echo.
+- Adds explicit research data-minimization review and deterministic redacted exports.
+- Audits reproducible model packages and scientific workflow run evidence.
+- Adds tamper-evident scientific audit reports and contextual project audit controls.
+- Preserves v0.48.3 navigation, v0.58 compute hardening, and platform compatibility 1.0.0.
+
 ## 0.58.0 — Large-Model, Large-Dataset & Compute Hardening
 
 - Added bounded asynchronous execution for registered Lab scientific adapters.

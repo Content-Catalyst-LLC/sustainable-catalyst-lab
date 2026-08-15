@@ -2029,6 +2029,28 @@ P=1:9:bar</textarea></label>
             </div>
           </div>
         </details>
+        <details class="sc-audit0590" data-scientific-audit-v0590>
+          <summary>Security, privacy, reproducibility &amp; scientific audit <span class="sc-audit0590__badge">v0.59.0</span></summary>
+          <div class="sc-audit0590__body">
+            <div class="sc-audit0590__intro"><div><h4>Audit research evidence before preservation or external sharing</h4><p>Scan the active scientific workflow for prohibited executable fields, secret/credential leakage, direct identifiers, data-minimization concerns, and missing reproducibility evidence. Findings record paths and categories only; sensitive values are not echoed into the audit report.</p></div><span class="sc-audit0590__badge">PROJECT / AUDIT</span></div>
+            <p class="sc-audit0590__status" data-audit-v0590-status role="status" aria-live="polite">Scientific audit loading…</p>
+            <div class="sc-audit0590__controls">
+              <label>Research purpose / minimization note<textarea rows="2" data-audit-v0590-purpose placeholder="State why the dataset fields are necessary for this scientific workflow."></textarea></label>
+              <label>Required dataset columns<input data-audit-v0590-required placeholder="temperature, canopy, site_id"></label>
+            </div>
+            <div class="sc-audit0590__actions">
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-audit-v0590-audit>Audit current workflow</button>
+              <button type="button" class="sc-lab-button" data-audit-v0590-minimize>Review dataset minimization</button>
+              <button type="button" class="sc-lab-button" data-audit-v0590-redact>Build redacted export</button>
+              <button type="button" class="sc-lab-button" data-audit-v0590-verify>Verify audit hash</button>
+              <button type="button" class="sc-lab-button" data-audit-v0590-save>Save audit evidence</button>
+              <button type="button" class="sc-lab-button" data-audit-v0590-download>Download redacted export</button>
+            </div>
+            <div class="sc-audit0590__metrics" data-audit-v0590-metrics></div>
+            <pre class="sc-audit0590__output" data-audit-v0590-output>No v0.59 scientific audit has been run yet.</pre>
+            <p class="sc-audit0590__note">Audit results are decision support, not certification. Automatic publication, deletion, high-stakes decisions, and scientific certification remain disabled.</p>
+          </div>
+        </details>
         <p class="sc-wf0321-status" data-wf-v0321-status role="status" aria-live="polite">Workflow recovery loading…</p>
         <div class="sc-wf0321-metrics" data-wf-v0321-metrics></div>
         <div class="sc-wf0321-grid">
