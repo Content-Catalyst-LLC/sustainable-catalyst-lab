@@ -20,6 +20,7 @@ from .jobs import InvalidJobStateError, PersistentJobQueue, ProjectLimitError, Q
 from .precision import policy_catalog, recommend
 from .visualization import VisualizationInputError, build_spec as build_visualization_spec, catalog as visualization_catalog, csv_text as visualization_csv
 from .datasets import DatasetProfileError, health as dataset_health_payload, profile_dataset
+from .data_transformations import DataTransformationError, health as data_transformations_health, join_datasets as join_scientific_datasets, normalize_plan as normalize_data_transformation_plan, policies as data_transformations_policies, transform_dataset as transform_scientific_dataset
 from .reproducibility import ReproducibilityError, build_manifest as build_reproducibility_manifest, compare_manifests, environment_fingerprint, health as reproducibility_health_payload, verify_manifest
 from .research_provenance import ProvenanceError, health as research_provenance_health, normalize_source, normalize_evidence, verify_record as verify_provenance_record, build_provenance
 from .research_quality import QualityReviewError, compare_reviews as compare_quality_reviews, evaluate_review as evaluate_quality_review, health as research_quality_health, normalize_review as normalize_quality_review, policies as research_quality_policies, verify_review as verify_quality_review
@@ -478,6 +479,39 @@ def datasets_profile(payload: dict[str, Any], auth: dict[str, str] = Depends(req
     try:
         return profile_dataset(payload)
     except DatasetProfileError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/datasets/v0550/health")
+def data_transformations_health_route():
+    body = data_transformations_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/datasets/v0550/policies")
+def data_transformations_policies_route():
+    return data_transformations_policies()
+
+@app.post("/v1/datasets/v0550/normalize")
+def data_transformations_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return {"ok": True, "version": "0.55.0", "plan": normalize_data_transformation_plan(payload.get("plan") or payload)}
+    except DataTransformationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/datasets/v0550/transform")
+def data_transformations_transform_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return transform_scientific_dataset(payload)
+    except DataTransformationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/datasets/v0550/join")
+def data_transformations_join_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try:
+        return join_scientific_datasets(payload)
+    except DataTransformationError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 

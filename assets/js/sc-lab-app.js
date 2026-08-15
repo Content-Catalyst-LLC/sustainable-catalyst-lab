@@ -462,6 +462,8 @@
 
 
     function loadDataset(dataset){ currentDataset=dataset; openModule('dataset-inspector'); renderDataset(); }
+    root._scLabGetCurrentDataset=()=>currentDataset;
+    root._scLabSetCurrentDataset=(dataset)=>{currentDataset=dataset;renderDataset();};
     root.addEventListener('sc-lab:dataset',event=>loadDataset(Lab.Datasets.fromRecords(event.detail.records,{title:event.detail.title,source:event.detail.source})));
     if (!observeOwned) {
       qs(root,'[data-feed-to-dataset]').addEventListener('click',()=>loadDataset(Lab.Datasets.fromRecords(currentFeedRecords,{title:'Scientific observation board',source:feedSource.value,query:{q:feedQuery.value,limit:Number(feedLimit.value)}})));

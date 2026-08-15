@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-data-join-v0550.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Data Join v0.55.0",
+  "type": "object",
+  "required": ["schema", "version", "how", "leftKey", "rightKey", "rows", "leftHash", "rightHash", "outputHash", "joinHash", "arbitraryCode"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-data-join/0.55.0"},
+    "version": {"const": "0.55.0"},
+    "how": {"enum": ["left", "inner"]},
+    "rows": {"type": "array", "maxItems": 10000, "items": {"type": "object"}},
+    "leftHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rightHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "outputHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "joinHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "arbitraryCode": {"const": false}
+  },
+  "additionalProperties": true
+}

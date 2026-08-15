@@ -1,3 +1,14 @@
+# v0.55.0 — Scientific Data Transformation & Derived Variables
+
+- Added governed, reproducible scientific data transformation plans with per-operation input/output hashes and lineage.
+- Added safe derived variables using the existing v0.42 declarative equation grammar rather than arbitrary code.
+- Added explicit filtering, rename/select/drop, casting, z-score/centering/min-max scaling, and explicit constant/mean/median imputation.
+- Added a governed unit-conversion catalog with dimensional-compatibility checks and affine temperature conversion.
+- Added bounded left/inner dataset joins with collision suffixing and multiplicity limits.
+- Added transformed-data preview, current-dataset promotion, project persistence, transformation analysis packets, and Graph Studio handoff from the existing Dataset Inspector.
+- Preserved the v0.48.3 six-destination rail, Graph Studio front door, and three related-application cards.
+- Kept arbitrary code/SQL, automatic unit inference, automatic imputation, and automatic feature engineering outside the release boundary.
+
 # v0.54.0 — Dynamic Systems II: Events, Regime Changes, Bifurcation & Advanced Phase Analysis
 
 - Added safe declarative ODE event functions with direction filters and optional terminal stopping.

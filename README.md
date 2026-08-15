@@ -1,5 +1,13 @@
 # Sustainable Catalyst Lab
 
+## v0.55.0 Scientific Data Transformation & Derived Variables
+
+This source tree adds a governed scientific data-preparation layer to the existing Dataset Inspector. Transformation plans are ordered, bounded, content-hashed, and reproducible. Derived variables reuse Lab's safe declarative equation grammar; unit conversions are restricted to a dimensional compatibility catalog; explicit filtering, casting, scaling, imputation, selection, renaming, and bounded left/inner joins preserve transformation lineage for later review and reproducible model packaging.
+
+The v0.48.3 navigation architecture remains unchanged: six primary Lab destinations, the Graph Studio front door, and the Prototyping Workbench / Decision Studio / Site Intelligence application row are preserved. Arbitrary code and SQL, automatic feature engineering, automatic unit inference, and automatic imputation remain disabled. Internal platform compatibility remains v1.0.0.
+
+# Sustainable Catalyst Lab
+
 ## v0.52.0 Bayesian Inference, Posterior Diagnostics & Posterior Predictive Modeling
 
 This source tree adds governed Bayesian regression to Model Studio for Gaussian, binomial-logit, and Poisson-log response families. The release supports explicit normal coefficient priors, term-specific normal priors, inverse-gamma Gaussian residual-variance priors, multi-chain posterior sampling, split-Rhat screening, autocorrelation effective sample size, Monte Carlo standard error, acceptance-rate and trace review, central credible intervals, posterior-predictive distributions, and posterior-predictive checks.

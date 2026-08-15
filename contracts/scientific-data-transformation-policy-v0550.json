@@ -1,0 +1,16 @@
+{
+  "version": "0.55.0",
+  "architecture": "governed-reproducible-transformation-lineage",
+  "allowedOperations": ["cast", "derive", "drop", "filter", "impute", "rename", "scale", "select", "unit-convert"],
+  "allowedJoinModes": ["left", "inner"],
+  "limits": {"inputRows": 5000, "outputRows": 10000, "columns": 200, "operations": 100},
+  "safety": {
+    "arbitraryCode": false,
+    "arbitrarySql": false,
+    "automaticUnitInference": false,
+    "automaticImputation": false,
+    "automaticFeatureEngineering": false,
+    "derivedVariablesUseSafeEquationGrammar": true,
+    "lineageHashesRequired": true
+  }
+}

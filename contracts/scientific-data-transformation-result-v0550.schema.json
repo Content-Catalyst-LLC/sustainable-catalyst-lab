@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-data-transformation-result-v0550.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Data Transformation Result v0.55.0",
+  "type": "object",
+  "required": ["schema", "version", "plan", "planHash", "inputHash", "outputHash", "resultHash", "rows", "columns", "lineage", "arbitraryCode"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-data-transformation-result/0.55.0"},
+    "version": {"const": "0.55.0"},
+    "planHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "inputHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "outputHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "resultHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rows": {"type": "array", "maxItems": 10000, "items": {"type": "object"}},
+    "columns": {"type": "array", "maxItems": 200, "items": {"type": "string"}},
+    "units": {"type": "object", "additionalProperties": {"type": "string"}},
+    "derivedVariables": {"type": "array", "items": {"type": "object"}},
+    "lineage": {"type": "array", "maxItems": 100, "items": {"type": "object", "required": ["index", "type", "operationHash", "inputHash", "outputHash"]}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "arbitraryCode": {"const": false}
+  },
+  "additionalProperties": true
+}
