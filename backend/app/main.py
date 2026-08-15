@@ -34,6 +34,7 @@ from .response_surfaces import ResponseSurfaceError, explore as explore_response
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
+from .reproducible_model_package import ReproducibleModelPackageError, build_package as build_reproducible_model_package, build_research_bundle as build_model_research_bundle, health as reproducible_model_package_health, policies as reproducible_model_package_policies, registry_projection as reproducible_model_registry_projection, verify_package as verify_reproducible_model_package
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1089,6 +1090,50 @@ def model_handoff_outbound_workbench_route(payload: dict[str, Any]):
 def model_handoff_inbound_workbench_route(payload: dict[str, Any]):
     try: return import_workbench_handoff(payload)
     except ModelHandoffError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/model-packages/health")
+def reproducible_model_package_health_route():
+    return reproducible_model_package_health()
+
+@app.get("/v1/model-packages/policies")
+def reproducible_model_package_policies_route():
+    return reproducible_model_package_policies()
+
+@app.post("/v1/model-packages/build")
+def reproducible_model_package_build_route(payload: dict[str, Any]):
+    try: return build_reproducible_model_package(payload)
+    except ReproducibleModelPackageError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-packages/verify")
+def reproducible_model_package_verify_route(payload: dict[str, Any]):
+    try: return verify_reproducible_model_package(payload)
+    except ReproducibleModelPackageError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-packages/research-bundle")
+def reproducible_model_package_bundle_route(payload: dict[str, Any]):
+    try: return build_model_research_bundle(payload)
+    except ReproducibleModelPackageError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-packages/registry-projection")
+def reproducible_model_package_registry_projection_route(payload: dict[str, Any]):
+    try:
+        package = payload.get("package") if isinstance(payload.get("package"), dict) else build_reproducible_model_package(payload)["package"]
+        return {"ok": True, "projection": reproducible_model_registry_projection(package)}
+    except ReproducibleModelPackageError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-packages/register")
+def reproducible_model_package_register_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try:
+        package = payload.get("package") if isinstance(payload.get("package"), dict) else build_reproducible_model_package(payload)["package"]
+        verified = verify_reproducible_model_package(package)
+        if not verified.get("ok"):
+            raise ReproducibleModelPackageError("Reproducible package integrity verification failed before registry registration.")
+        projection = reproducible_model_registry_projection(package)
+        registered = model_registry.register(projection, auth.get("subject", "operator"))
+        return {"ok": True, "package": package, "verification": verified, "registry": registered}
+    except ReproducibleModelPackageError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ModelRegistryError as exc: raise _model_registry_http_error(exc) from exc
 
 @app.get("/v1/model-studio/diagnostics/health")
 def model_studio_diagnostics_health_route():

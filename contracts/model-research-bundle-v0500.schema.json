@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/model-research-bundle-v0500.schema.json",
+  "title": "Sustainable Catalyst Lab Model Research Bundle v0.50.0",
+  "type": "object",
+  "required": ["schema", "version", "filename", "mimeType", "sizeBytes", "sha256", "contentBase64", "packageId", "packageHash", "fileCount"],
+  "properties": {
+    "schema": {"const": "sc-lab-model-research-bundle/0.50.0"},
+    "version": {"const": "0.50.0"},
+    "mimeType": {"const": "application/zip"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "contentBase64": {"type": "string", "minLength": 1},
+    "fileCount": {"type": "integer", "minimum": 1}
+  },
+  "additionalProperties": true
+}

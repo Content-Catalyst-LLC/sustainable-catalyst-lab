@@ -1,0 +1,12 @@
+{
+  "schema": "sc-lab-model-package-policy/0.50.0",
+  "version": "0.50.0",
+  "architecture": "reproducible-model-package-registry-research-bundle",
+  "immutablePackageHash": true,
+  "componentHashVerification": true,
+  "sharedComputationalModelContract": "0.49.0",
+  "portableExports": ["json", "zip"],
+  "registryIntegration": true,
+  "limits": {"maximumPackageBytes": 8388608, "maximumDatasetRows": 5000, "maximumMethods": 100, "maximumResults": 100, "maximumFigures": 50},
+  "boundaries": {"arbitraryCode": false, "embeddedExecutables": false, "automaticPublication": false, "automaticRegistryPromotion": false, "automaticRemoteDelivery": false}
+}
