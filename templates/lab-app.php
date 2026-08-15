@@ -29,6 +29,11 @@
       <button type="button" data-open-module="scientific-feeds" data-v0481-workspace="scientific-feeds"><span>OBSERVE</span><strong>Observations</strong></button>
     </nav>
 
+    <nav class="sc-lab-context-nav-v0483" aria-label="Contextual Lab tools" data-v0483-context-nav hidden>
+      <span class="sc-lab-context-label-v0483" data-v0483-context-label>Workspace</span>
+      <div class="sc-lab-context-items-v0483" data-v0483-context-items></div>
+    </nav>
+
     <div class="sc-lab-commandbar">
       <div class="sc-lab-command-search">
         <label class="screen-reader-text" for="sc-lab-command-input">Search Lab tools and modules</label>
@@ -45,7 +50,20 @@
   </header>
 
   <div class="sc-lab-layout">
-    <nav id="sc-lab-module-nav" class="sc-lab-nav" aria-label="Lab modules" data-lab-nav>
+    <nav id="sc-lab-module-nav" class="sc-lab-nav sc-lab-nav-v0483" aria-label="Lab workspaces" data-lab-nav data-v0483-rail>
+      <div class="sc-lab-primary-rail-v0483" data-v0483-primary-rail>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="overview" data-v0483-primary="overview" data-rail-symbol="O"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">O</span><span class="sc-lab-rail-label-v0483">Overview</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="model-studio" data-v0483-primary="model-studio" data-rail-symbol="M"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">M</span><span class="sc-lab-rail-label-v0483">Model Studio</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="graph-studio" data-v0483-primary="graph-studio" data-rail-symbol="G"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">G</span><span class="sc-lab-rail-label-v0483">Graph Studio</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="experiments" data-v0483-primary="experiments" data-rail-symbol="E"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">E</span><span class="sc-lab-rail-label-v0483">Experiments</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="scientific-feeds" data-v0483-primary="scientific-feeds" data-rail-symbol="O"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">O</span><span class="sc-lab-rail-label-v0483">Observations</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483" data-open-module="notebook" data-v0483-primary="notebook" data-rail-symbol="N"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">N</span><span class="sc-lab-rail-label-v0483">Notebook</span></button>
+        <div class="sc-lab-rail-separator-v0483" aria-hidden="true"></div>
+        <button type="button" class="sc-lab-rail-item-v0483 sc-lab-rail-item-v0483--utility" data-v0483-tools-toggle aria-expanded="false" aria-controls="sc-lab-tools-v0483"><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">⋯</span><span class="sc-lab-rail-label-v0483">More tools</span></button>
+        <button type="button" class="sc-lab-rail-item-v0483 sc-lab-rail-item-v0483--utility" data-v0483-search><span class="sc-lab-rail-symbol-v0483" aria-hidden="true">⌕</span><span class="sc-lab-rail-label-v0483">Search</span></button>
+        <button type="button" class="sc-lab-rail-collapse-v0483" data-v0483-rail-collapse aria-pressed="false"><span aria-hidden="true">⇤</span><span class="sc-lab-rail-label-v0483">Collapse rail</span></button>
+      </div>
+
       <?php
       $groups = array(
         'Project' => array(
@@ -149,7 +167,15 @@
           'system-status' => 'Connector status',
         ),
       );
-      foreach ($groups as $group => $items): ?>
+      ?>
+      <section id="sc-lab-tools-v0483" class="sc-lab-tools-launcher-v0483" data-v0483-tools hidden aria-label="Scientific tools launcher">
+        <div class="sc-lab-tools-head-v0483">
+          <div><span class="sc-lab-section-code">LAB / TOOLS</span><strong>Scientific tools</strong></div>
+          <button type="button" class="sc-lab-button" data-v0483-tools-close aria-label="Close scientific tools">Close</button>
+        </div>
+        <label class="sc-lab-tools-search-v0483"><span>Find a module</span><input type="search" data-v0483-tools-search placeholder="Search scientific tools…" autocomplete="off"></label>
+        <div class="sc-lab-tools-groups-v0483" data-v0483-tools-groups>
+      <?php foreach ($groups as $group => $items): ?>
         <div class="sc-lab-nav-group" data-lab-nav-group="<?php echo esc_attr($group); ?>">
           <button type="button" class="sc-lab-nav-heading sc-lab-nav-group-toggle" data-lab-nav-group-toggle aria-expanded="true"><?php echo esc_html($group); ?></button>
           <?php foreach ($items as $key => $label): ?>
@@ -163,6 +189,8 @@
         <a data-route="decisionStudio" href="#">Decision Studio</a>
         <a data-route="siteIntelligence" href="#">Site Intelligence</a>
       </div>
+        </div>
+      </section>
     </nav>
 
     <main class="sc-lab-main">
