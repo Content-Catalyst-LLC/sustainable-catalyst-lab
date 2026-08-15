@@ -363,6 +363,40 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
           <section class="sc-doe0301-card"><h4>Saved studies</h4><div class="sc-doe0301-list" data-doe-v0301-studies></div></section>
           <section class="sc-doe0301-card"><h4>Governed output</h4><pre class="sc-doe0301-output" data-doe-v0301-output>No design generated.</pre></section>
         </div>
+
+        <details class="sc-doe0560" data-advanced-design-v0560>
+          <summary>Advanced experimental design &amp; sequential experimentation</summary>
+          <div class="sc-doe0560__body">
+            <p class="sc-doe0560__intro">Generate bounded D-optimal or maximin designs, inspect information-matrix diagnostics, assign balanced blocks and center replicates, and propose sequential augmentation without automatically executing or stopping an experiment.</p>
+            <p class="sc-doe0560__status" data-doe-v0560-status role="status" aria-live="polite">Advanced experimental design ready. The factor definition above remains the source of truth.</p>
+            <div class="sc-doe0560__metrics" data-doe-v0560-metrics></div>
+            <div class="sc-doe0560__grid">
+              <section class="sc-doe0560__card is-wide"><h4>Optimal initial design</h4><div class="sc-doe0560__fields">
+                <label>Criterion<select data-doe-v0560-criterion><option value="d-optimal" selected>D-optimal information</option><option value="maximin">Maximin space filling</option></select></label>
+                <label>Model order<select data-doe-v0560-model-order><option value="linear">Linear main effects</option><option value="interaction">Main effects + interactions</option><option value="quadratic" selected>Quadratic response surface</option></select></label>
+                <label>Initial run budget<input type="number" min="2" max="500" value="12" data-doe-v0560-runs></label>
+                <label>Candidate pool<input type="number" min="12" max="1500" value="240" data-doe-v0560-candidates></label>
+                <label>Blocks<input type="number" min="1" max="20" value="1" data-doe-v0560-blocks></label>
+                <label>Center replicates<input type="number" min="0" max="20" value="2" data-doe-v0560-centers></label>
+                <label>Seed<input type="number" value="42" data-doe-v0560-seed></label>
+                <label>Objective<select data-doe-v0560-objective><option value="explore" selected>Explore</option><option value="maximize">Maximize</option><option value="minimize">Minimize</option><option value="target">Target</option></select></label>
+                <label>Target value<input type="number" step="any" data-doe-v0560-target></label>
+                <label class="is-wide"><span><input type="checkbox" checked data-doe-v0560-randomize> Randomize proposed run order</span></label>
+                <label class="is-wide">Design evidence / protocol note<textarea rows="3" data-doe-v0560-evidence placeholder="Why these factor bounds, model order, blocks, replication, and stopping criteria are scientifically justified."></textarea></label>
+              </div><div class="sc-doe0560__actions"><button type="button" class="sc-lab-button" data-doe-v0560-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-doe-v0560-generate>Generate advanced design</button><button type="button" class="sc-lab-button" data-doe-v0560-save-design>Save design evidence</button><button type="button" class="sc-lab-button" data-doe-v0560-graph>Graph design space</button><button type="button" class="sc-lab-button" data-doe-v0560-graph-studio>Open in Graph Studio</button></div></section>
+              <section class="sc-doe0560__card is-wide"><div class="sc-lab-panel-head"><h4>Initial design and observed response</h4><span>Responses remain editable evidence</span></div><div class="sc-doe0560__table"><table><thead><tr data-doe-v0560-matrix-head><th>Run</th><th>Design</th></tr></thead><tbody data-doe-v0560-matrix><tr><td>No advanced design generated.</td></tr></tbody></table></div></section>
+              <section class="sc-doe0560__card"><h4>Optimality diagnostics</h4><pre class="sc-doe0560__output" data-doe-v0560-diagnostics>No diagnostics yet.</pre><div class="sc-doe0560__canvas" data-doe-v0560-canvas><div class="sc-lab-data-note">Generate a design, then graph its coded design space.</div></div></section>
+              <section class="sc-doe0560__card"><h4>Sequential augmentation</h4><div class="sc-doe0560__fields">
+                <label>Strategy<select data-doe-v0560-strategy><option value="information-gain" selected>Information gain</option><option value="response-guided">Response-guided heuristic</option></select></label>
+                <label>Next batch<input type="number" min="1" max="50" value="3" data-doe-v0560-batch></label>
+                <label>Maximum total runs<input type="number" min="2" max="500" value="18" data-doe-v0560-max-total></label>
+                <label>Minimum relative information gain<input type="number" min="0" step="0.001" value="0" data-doe-v0560-min-gain></label>
+                <label>Exploration weight<input type="number" min="0" step="0.1" value="1" data-doe-v0560-exploration></label>
+              </div><div class="sc-doe0560__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-doe-v0560-sequential>Propose next batch</button><button type="button" class="sc-lab-button" data-doe-v0560-save-plan>Save sequential proposal</button></div><div class="sc-doe0560__review" data-doe-v0560-stopping><strong>REVIEW</strong><span>Stopping evidence appears here. Lab never stops or executes the experiment automatically.</span></div></section>
+              <section class="sc-doe0560__card is-wide"><h4>Sequential proposal</h4><div class="sc-doe0560__table"><table><thead><tr data-doe-v0560-proposal-head><th>Run</th><th>Proposal</th></tr></thead><tbody data-doe-v0560-proposal><tr><td>No sequential proposal yet.</td></tr></tbody></table></div><details><summary>Governed record</summary><pre class="sc-doe0560__output" data-doe-v0560-record>No advanced design record yet.</pre></details></section>
+            </div>
+          </div>
+        </details>
       </section>
 
       <section class="sc-lab-panel sc-lab-provenance-v0290" data-lab-module="research-provenance" data-module-panel="research-provenance" hidden>

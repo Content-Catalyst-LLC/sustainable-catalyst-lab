@@ -1,0 +1,17 @@
+{
+  "version": "0.56.0",
+  "execution": "proposal-only",
+  "criteria": ["d-optimal", "maximin"],
+  "modelOrders": ["linear", "interaction", "quadratic"],
+  "sequentialStrategies": ["information-gain", "response-guided"],
+  "limits": {"factors": 10, "runs": 500, "candidatePool": 1500, "sequentialBatch": 50},
+  "automaticExperimentExecution": false,
+  "automaticStopping": false,
+  "formalOptimalityProof": false,
+  "arbitraryCode": false,
+  "notes": [
+    "D-optimal selection is a bounded numerical candidate-search heuristic, not a formal proof of global optimality.",
+    "Response-guided sequential proposals depend on the fitted local response model and require scientific review.",
+    "Stopping evidence is advisory; Lab does not automatically terminate an experiment campaign."
+  ]
+}

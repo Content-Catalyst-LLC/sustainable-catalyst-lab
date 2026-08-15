@@ -1,3 +1,13 @@
+# v0.56.0 — Advanced Experimental Design & Sequential Experimentation
+
+- Added bounded D-optimal and maximin design generation inside the existing Design Studies workspace.
+- Added linear, interaction, and quadratic model-order declarations with rank, conditioning, information, leverage, D-efficiency, and spacing diagnostics.
+- Added balanced blocking, explicit center replication, deterministic randomization, and reproducible design hashes.
+- Added proposal-only sequential augmentation using information gain or a response-guided local model heuristic.
+- Added human-review stopping evidence while explicitly disabling automatic experiment execution and automatic stopping.
+- Added Graph Studio design-space handoff and project analysis packets compatible with v0.50 reproducible research packaging.
+- Preserved the v0.48.3 six-destination rail, Graph Studio front door, and three related-application cards.
+
 # v0.55.0 — Scientific Data Transformation & Derived Variables
 
 - Added governed, reproducible scientific data transformation plans with per-operation input/output hashes and lineage.

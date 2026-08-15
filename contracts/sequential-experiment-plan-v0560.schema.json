@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sequential-experiment-plan-v0560.schema.json",
+  "title": "Sustainable Catalyst Lab Sequential Experiment Plan v0.56.0",
+  "type": "object",
+  "required": ["schema", "version", "strategy", "existingRunCount", "proposedRows", "recommendation", "execution", "automaticExecutionAuthorized", "automaticStoppingAuthorized", "planHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-sequential-experiment-plan/0.56.0"},
+    "version": {"const": "0.56.0"},
+    "strategy": {"enum": ["information-gain", "response-guided"]},
+    "recommendation": {"enum": ["continue", "review", "stop"]},
+    "existingRunCount": {"type": "integer", "minimum": 1},
+    "proposedRows": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "execution": {"const": "proposal-only"},
+    "automaticExecutionAuthorized": {"const": false},
+    "automaticStoppingAuthorized": {"const": false},
+    "planHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/advanced-experimental-design-v0560.schema.json",
+  "title": "Sustainable Catalyst Lab Advanced Experimental Design v0.56.0",
+  "type": "object",
+  "required": ["schema", "version", "id", "criterion", "modelOrder", "factorNames", "rows", "diagnostics", "execution", "designHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-advanced-experimental-design/0.56.0"},
+    "version": {"const": "0.56.0"},
+    "id": {"type": "string"},
+    "criterion": {"enum": ["d-optimal", "maximin"]},
+    "modelOrder": {"enum": ["linear", "interaction", "quadratic"]},
+    "factorNames": {"type": "array", "items": {"type": "string"}, "maxItems": 10},
+    "rows": {"type": "array", "maxItems": 500, "items": {"type": "object"}},
+    "diagnostics": {"type": "object"},
+    "execution": {"const": "proposal-only"},
+    "designHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

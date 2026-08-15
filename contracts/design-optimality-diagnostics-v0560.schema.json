@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/design-optimality-diagnostics-v0560.schema.json",
+  "title": "Sustainable Catalyst Lab Design Optimality Diagnostics v0.56.0",
+  "type": "object",
+  "required": ["schema", "version", "modelOrder", "runCount", "modelTermCount", "rank", "fullRank", "dEfficiencyIndex", "warnings"],
+  "properties": {
+    "schema": {"const": "sc-lab-design-optimality-diagnostics/0.56.0"},
+    "version": {"const": "0.56.0"},
+    "modelOrder": {"enum": ["linear", "interaction", "quadratic"]},
+    "runCount": {"type": "integer", "minimum": 1},
+    "modelTermCount": {"type": "integer", "minimum": 1},
+    "rank": {"type": "integer", "minimum": 0},
+    "fullRank": {"type": "boolean"},
+    "dEfficiencyIndex": {"type": "number", "minimum": 0},
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

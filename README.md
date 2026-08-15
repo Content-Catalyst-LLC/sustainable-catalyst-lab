@@ -1,3 +1,7 @@
+## v0.56.0 Advanced Experimental Design & Sequential Experimentation
+
+The current experimental-design layer adds bounded D-optimal and maximin initial designs, information-matrix diagnostics, balanced blocking, explicit center replication, and proposal-only sequential experiment planning. Sequential proposals can prioritize information gain or use a response-guided local model heuristic when sufficient completed responses exist. Automatic experiment execution and automatic stopping remain disabled; all proposals require scientific review.
+
 # Sustainable Catalyst Lab
 
 ## v0.55.0 Scientific Data Transformation & Derived Variables
