@@ -1,0 +1,17 @@
+{
+  "version":"0.62.0",
+  "scientificClaimsEvidenceMatrix":true,
+  "conclusionTraceability":true,
+  "explicitEvidenceLinkingRequired":true,
+  "contradictingEvidencePreserved":true,
+  "uncertaintyAndLimitationsPreserved":true,
+  "humanClaimReviewRequired":true,
+  "humanConclusionReviewRequired":true,
+  "automaticClaimInferenceAuthorized":false,
+  "automaticScientificCertificationAuthorized":false,
+  "automaticCausalClaimAuthorized":false,
+  "automaticConclusionGenerationAuthorized":false,
+  "automaticPublicationAuthorized":false,
+  "rawScientificDataAccepted":false,
+  "arbitraryCodeExecutionAuthorized":false
+}

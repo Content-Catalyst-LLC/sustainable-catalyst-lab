@@ -1,3 +1,11 @@
+## v0.62.0 — Scientific Claims, Evidence Matrix & Conclusion Traceability
+
+- Adds researcher-authored scientific claims with explicit supporting, contradicting, uncertainty, limitation, validation, and figure/context evidence links.
+- Adds human claim and conclusion review, a deterministic claim × evidence matrix, and tamper-evident conclusion traceability packets.
+- Preserves contradictions and orphan claims instead of hiding them.
+- Blocks causal claims outside experimental/mixed v0.61 study designs; never auto-certifies scientific validity or generates conclusions.
+- Keeps the v0.48.3 six-destination rail and contextual Scientific Workflows architecture unchanged.
+
 # v0.61.0 — End-to-End Scientific Study & Research Project Lifecycle
 
 - Adds an active-project scientific study record across question, protocol, data, analysis, validation, uncertainty, experiment, figures, conclusions, reproducibility, and audit.

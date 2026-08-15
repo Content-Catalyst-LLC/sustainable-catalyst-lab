@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-claim-review-v0620.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Claim Review v0.62.0",
+  "type":"object","required":["id","decision","rationale","reviewerRole","reviewedAt","evidenceRefs","reviewHash"],
+  "properties":{"id":{"type":"string"},"decision":{"enum":["accept","accept-with-qualification","block","reject","reopen"]},"rationale":{"type":"string","maxLength":1800},"reviewerRole":{"type":"string","maxLength":80},"reviewedAt":{"type":"string","maxLength":64},"evidenceRefs":{"type":"array","maxItems":80,"items":{"type":"string"}},"reviewHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}},"additionalProperties":false
+}

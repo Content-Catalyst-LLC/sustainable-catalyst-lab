@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-claim-v0620.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Claim v0.62.0",
+  "type":"object",
+  "required":["schema","version","id","studyId","statement","claimType","status","evidenceLinks","reviewHistory","claimHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-claim/0.62.0"},"version":{"const":"0.62.0"},
+    "id":{"type":"string","minLength":1,"maxLength":160},"studyId":{"type":"string","minLength":1,"maxLength":160},
+    "statement":{"type":"string","maxLength":4000},
+    "claimType":{"enum":["descriptive","associational","comparative","predictive","mechanistic","causal","methodological","null"]},
+    "status":{"enum":["draft","active","withdrawn","superseded"]},"scopeNote":{"type":"string","maxLength":2400},
+    "evidenceLinks":{"type":"array","maxItems":400,"items":{"type":"object","required":["id","role","sourceType","ref","hash","note","linkHash"],"properties":{"id":{"type":"string"},"role":{"enum":["supports","contradicts","contextualizes","validates","uncertainty","limitation"]},"sourceType":{"enum":["dataset","analysis","model","experiment","figure","workflow","reproducibility","audit","study","external-reference"]},"ref":{"type":"string"},"hash":{"type":"string","pattern":"^$|^[a-f0-9]{64}$"},"note":{"type":"string"},"linkHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}}}},
+    "conclusionIds":{"type":"array","maxItems":80,"items":{"type":"string"}},"reviewHistory":{"type":"array","maxItems":250,"items":{"type":"object"}},
+    "claimHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },"additionalProperties":false
+}

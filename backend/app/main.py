@@ -73,6 +73,7 @@ from .scientific_compute_hardening import ScientificComputeHardeningError, Scien
 from .scientific_audit_v0590 import ScientificAuditError, build_redacted_export as build_scientific_redacted_export, data_minimization_review as scientific_data_minimization_review, health as scientific_audit_health, policies as scientific_audit_policies, reproducibility_audit as run_reproducibility_audit_v0590, scan_surface as scan_scientific_audit_surface, scientific_audit as run_scientific_audit_v0590, verify_audit as verify_scientific_audit_v0590
 from .integrated_research_beta_v0600 import IntegratedResearchBetaError, beta_readiness as integrated_beta_readiness, build_beta_packet as build_integrated_beta_packet, capability_matrix as integrated_beta_capabilities, health as integrated_beta_health, policies as integrated_beta_policies, research_journey as integrated_research_journey, verify_beta_packet as verify_integrated_beta_packet
 from .beta_field_diagnostics_v0601 import BetaFieldDiagnosticsError, analyze_soak as beta_field_analyze_soak, build_diagnostic_packet as build_beta_field_diagnostic_packet, health as beta_field_diagnostics_health, integration_probe as beta_field_integration_probe, policies as beta_field_diagnostics_policies, scenarios as beta_field_diagnostic_scenarios, verify_diagnostic_packet as verify_beta_field_diagnostic_packet
+from .scientific_claims_traceability_v0620 import ScientificClaimsTraceabilityError, build_traceability_packet as build_scientific_traceability_packet_v0620, evaluate_matrix as evaluate_scientific_evidence_matrix_v0620, health as scientific_claims_traceability_health_v0620, normalize_claim as normalize_scientific_claim_v0620, normalize_conclusion as normalize_scientific_conclusion_v0620, policies as scientific_claims_traceability_policies_v0620, record_claim_review as record_scientific_claim_review_v0620, record_conclusion_review as record_scientific_conclusion_review_v0620, verify_traceability_packet as verify_scientific_traceability_packet_v0620
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1133,6 +1134,59 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
 
 
 
+
+
+# v0.62.0 Scientific Claims, Evidence Matrix & Conclusion Traceability
+
+@app.get("/v1/scientific-claims/v0620/health")
+def scientific_claims_v0620_health_route():
+    body = scientific_claims_traceability_health_v0620(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/scientific-claims/v0620/policies")
+def scientific_claims_v0620_policies_route():
+    return scientific_claims_traceability_policies_v0620()
+
+@app.post("/v1/scientific-claims/v0620/normalize-claim")
+def scientific_claims_v0620_normalize_claim_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "claim": normalize_scientific_claim_v0620(payload.get("claim") if isinstance(payload, dict) else {})}
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/review-claim")
+def scientific_claims_v0620_review_claim_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_claim_review_v0620(payload)
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/normalize-conclusion")
+def scientific_claims_v0620_normalize_conclusion_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "conclusion": normalize_scientific_conclusion_v0620(payload.get("conclusion") if isinstance(payload, dict) else {})}
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/review-conclusion")
+def scientific_claims_v0620_review_conclusion_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_conclusion_review_v0620(payload)
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/evaluate")
+def scientific_claims_v0620_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_scientific_evidence_matrix_v0620(payload)
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/packet")
+def scientific_claims_v0620_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_traceability_packet_v0620(payload)
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-claims/v0620/verify")
+def scientific_claims_v0620_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_scientific_traceability_packet_v0620(payload)
+    except ScientificClaimsTraceabilityError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # v0.61.0 End-to-End Scientific Study & Research Project Lifecycle

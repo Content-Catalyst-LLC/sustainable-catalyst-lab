@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-conclusion-v0620.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Conclusion v0.62.0",
+  "type":"object","required":["schema","version","id","studyId","statement","claimIds","limitationRefs","caveats","reviewHistory","conclusionHash"],
+  "properties":{"schema":{"const":"sc-lab-scientific-conclusion/0.62.0"},"version":{"const":"0.62.0"},"id":{"type":"string"},"studyId":{"type":"string"},"statement":{"type":"string","maxLength":5000},"claimIds":{"type":"array","maxItems":100,"items":{"type":"string"}},"limitationRefs":{"type":"array","maxItems":100,"items":{"type":"string"}},"caveats":{"type":"string","maxLength":3000},"reviewHistory":{"type":"array","maxItems":250,"items":{"type":"object"}},"conclusionHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}},
+  "additionalProperties":false
+}

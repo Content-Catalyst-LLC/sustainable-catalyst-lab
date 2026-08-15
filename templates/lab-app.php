@@ -2045,6 +2045,59 @@ P=1:9:bar</textarea></label>
           </div>
         </details>
 
+        <details class="sc-sct0620" data-scientific-claims-v0620 open>
+          <summary>Scientific Claims, Evidence Matrix &amp; Conclusion Traceability <span class="sc-sct0620__badge">v0.62.0</span></summary>
+          <div class="sc-sct0620__body">
+            <div class="sc-sct0620__intro"><div><h4>Trace every scientific conclusion back through explicit evidence</h4><p>Record claims as researcher-authored statements, link supporting and contradicting evidence, preserve uncertainty and limitations, and connect final conclusions to reviewed claims. v0.62 evaluates traceability and evidence completeness; it does not infer claims, certify scientific validity, or authorize causal conclusions.</p></div><span class="sc-sct0620__badge">PROJECT / CLAIMS</span></div>
+            <p class="sc-sct0620__status" data-sct-v0620-status role="status" aria-live="polite">Scientific claims traceability loading…</p>
+            <div class="sc-sct0620__boundary"><strong>Governance boundary:</strong> a <em>traceable</em> claim means its evidence, uncertainty, contradictions, limitations, and review lineage are explicit. It is not an automatic truth, causal-validity, or publication claim.</div>
+            <div class="sc-sct0620__actions">
+              <button type="button" class="sc-lab-button" data-sct-v0620-evaluate>Evaluate evidence matrix</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-sct-v0620-packet>Build conclusion traceability packet</button>
+              <button type="button" class="sc-lab-button" data-sct-v0620-verify>Verify packet hash</button>
+              <button type="button" class="sc-lab-button" data-sct-v0620-save-evidence>Save traceability evidence</button>
+            </div>
+            <div class="sc-sct0620__metrics" data-sct-v0620-metrics></div>
+            <div class="sc-sct0620__grid">
+              <section class="sc-sct0620__card"><h5>Scientific claim</h5>
+                <div class="sc-sct0620__actions"><button type="button" class="sc-lab-button" data-sct-v0620-new-claim>New claim</button><button type="button" class="sc-lab-button" data-sct-v0620-save-claim>Save claim</button></div>
+                <div class="sc-sct0620__fields">
+                  <label>Claim ID<input data-sct-v0620-claim-id value="claim-1"></label><label>Claim type<select data-sct-v0620-claim-type><option value="descriptive">Descriptive</option><option value="associational">Associational</option><option value="comparative">Comparative</option><option value="predictive">Predictive</option><option value="mechanistic">Mechanistic</option><option value="causal">Causal</option><option value="methodological">Methodological</option><option value="null">Null / no-effect</option></select></label>
+                  <label>Status<select data-sct-v0620-claim-status><option value="active">Active</option><option value="draft">Draft</option><option value="withdrawn">Withdrawn</option><option value="superseded">Superseded</option></select></label><label class="is-wide">Claim statement<textarea data-sct-v0620-claim-statement placeholder="State the bounded scientific claim. Do not overstate causality or scope."></textarea></label>
+                  <label class="is-wide">Scope / population / domain note<textarea data-sct-v0620-claim-scope></textarea></label>
+                  <label class="is-wide">Supporting evidence refs — one per line<textarea data-sct-v0620-support placeholder="analysis-1"></textarea></label>
+                  <label class="is-wide">Contradicting evidence refs<textarea data-sct-v0620-contradict></textarea></label>
+                  <label>Validation evidence refs<textarea data-sct-v0620-validate></textarea></label><label>Uncertainty evidence refs<textarea data-sct-v0620-uncertainty></textarea></label>
+                  <label>Limitation evidence refs<textarea data-sct-v0620-limit></textarea></label><label>Figure / context refs<textarea data-sct-v0620-figure></textarea></label>
+                  <label>Claim review<select data-sct-v0620-claim-review-decision><option value="accept">Accept traceability</option><option value="accept-with-qualification">Accept with qualification</option><option value="block">Block claim</option><option value="reject">Reject claim</option><option value="reopen">Reopen claim</option></select></label>
+                  <label class="is-wide">Claim review rationale<textarea data-sct-v0620-claim-review-rationale placeholder="Explain the supporting, contradicting, uncertainty, and limitation evidence reviewed."></textarea></label>
+                </div>
+                <button type="button" class="sc-lab-button sc-lab-button-primary" data-sct-v0620-review-claim>Record claim review</button>
+              </section>
+              <section class="sc-sct0620__card"><h5>Conclusion trace</h5>
+                <div class="sc-sct0620__actions"><button type="button" class="sc-lab-button" data-sct-v0620-new-conclusion>New conclusion</button><button type="button" class="sc-lab-button" data-sct-v0620-save-conclusion>Save conclusion</button></div>
+                <div class="sc-sct0620__fields">
+                  <label>Conclusion ID<input data-sct-v0620-conclusion-id value="conclusion-1"></label><label class="is-wide">Conclusion statement<textarea data-sct-v0620-conclusion-statement placeholder="Write the conclusion in language bounded by the linked claims and limitations."></textarea></label>
+                  <label class="is-wide">Linked claim IDs — one per line<textarea data-sct-v0620-conclusion-claims placeholder="claim-1"></textarea></label>
+                  <label class="is-wide">Limitation evidence refs<textarea data-sct-v0620-conclusion-limits></textarea></label>
+                  <label class="is-wide">Caveats / scope / unresolved uncertainty<textarea data-sct-v0620-conclusion-caveats></textarea></label>
+                  <label>Conclusion review<select data-sct-v0620-conclusion-review-decision><option value="accept">Accept conclusion trace</option><option value="block">Block conclusion</option><option value="reopen">Reopen conclusion</option></select></label>
+                  <label class="is-wide">Conclusion review rationale<textarea data-sct-v0620-conclusion-review-rationale placeholder="Explain why the conclusion wording is justified by the reviewed claim set."></textarea></label>
+                </div>
+                <button type="button" class="sc-lab-button sc-lab-button-primary" data-sct-v0620-review-conclusion>Record conclusion review</button>
+              </section>
+              <section class="sc-sct0620__card"><h5>Project evidence catalog</h5><p class="sc-sct0620__note">Click an evidence record to copy its reference. Only metadata, IDs, titles, and existing hashes are cataloged here; raw scientific values are not sent to the traceability evaluator.</p><div class="sc-sct0620__catalog" data-sct-v0620-catalog></div></section>
+              <section class="sc-sct0620__card"><h5>Saved claims</h5><div class="sc-sct0620__saved" data-sct-v0620-saved-claims></div><h5>Saved conclusions</h5><div class="sc-sct0620__saved" data-sct-v0620-saved-conclusions></div></section>
+            </div>
+            <div class="sc-sct0620__tables">
+              <section class="sc-sct0620__card"><h5>Claim × evidence matrix</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Claim</th><th>Type</th><th>Gate</th><th>Primary support</th><th>Contradictions</th><th>Uncertainty / limits</th><th>Conclusions</th></tr></thead><tbody data-sct-v0620-claim-matrix><tr><td colspan="7">No claims evaluated.</td></tr></tbody></table></div></section>
+              <section class="sc-sct0620__card"><h5>Conclusion traceability</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Conclusion</th><th>Gate</th><th>Claims</th><th>Review</th></tr></thead><tbody data-sct-v0620-conclusion-matrix><tr><td colspan="4">No conclusions evaluated.</td></tr></tbody></table></div></section>
+            </div>
+            <section class="sc-sct0620__card"><h5>Matrix / packet evidence</h5><pre class="sc-sct0620__output" data-sct-v0620-output>No scientific claim traceability evidence generated yet.</pre></section>
+            <p class="sc-sct0620__note">Contradicting evidence is retained rather than suppressed. Figure links provide context/presentation lineage but do not substitute for primary support. Causal claims are blocked when the active v0.61 study design is not experimental or mixed.</p>
+          </div>
+        </details>
+
         <details class="sc-bfd0601" data-beta-field-diagnostics-v0601>
           <summary>Beta Field Diagnostics, Integration Soak &amp; Runtime Repair <span class="sc-bfd0601__badge">v0.60.1</span></summary>
           <div class="sc-bfd0601__body">

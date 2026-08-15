@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/conclusion-traceability-packet-v0620.schema.json",
+  "title":"Sustainable Catalyst Lab Conclusion Traceability Packet v0.62.0",
+  "type":"object","required":["schema","version","studyId","studyHash","projectEvidenceHash","matrixHash","gate","claimHashes","conclusionHashes","claimGates","conclusionGates","boundaries","packetHash"],
+  "properties":{"schema":{"const":"sc-lab-conclusion-traceability-packet/0.62.0"},"version":{"const":"0.62.0"},"studyId":{"type":"string"},"studyHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},"projectEvidenceHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},"matrixHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},"gate":{"enum":["blocked","needs-evidence","contested","needs-review","traceable"]},"claimHashes":{"type":"object"},"conclusionHashes":{"type":"object"},"claimGates":{"type":"object"},"conclusionGates":{"type":"object"},"traceableClaimIds":{"type":"array","items":{"type":"string"}},"traceableConclusionIds":{"type":"array","items":{"type":"string"}},"contestedClaimIds":{"type":"array","items":{"type":"string"}},"orphanClaimIds":{"type":"array","items":{"type":"string"}},"boundaries":{"type":"object"},"packetHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}},"additionalProperties":false
+}
