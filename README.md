@@ -1,5 +1,15 @@
 # Sustainable Catalyst Lab
 
+## v0.51.0 Advanced Statistical Modeling & Generalized Regression
+
+This source tree adds a governed advanced-statistics layer to Model Studio: Gaussian OLS/WLS, Huber robust regression, ridge/lasso/elastic-net regularization, binomial-logit and Poisson-log generalized linear models, Gaussian cubic splines, deterministic repeated k-fold validation, model comparison, coefficient evidence, and shared-engine scientific figures. Statistical evidence is project-scoped and travels with the v0.50 reproducible-model-package workflow.
+
+The v0.48.3 contextual-navigation architecture remains unchanged: six primary Lab destinations, the Graph Studio front door, and the Prototyping Workbench / Decision Studio / Site Intelligence application row are preserved. Arbitrary executable formulas/code, automatic feature selection, causal claims, and automatic publication remain disabled. Internal platform compatibility remains v1.0.0.
+
+## v0.50.0 Reproducible Model Packages, Registry & Research Bundles
+
+The v0.50 layer freezes Model Studio definitions, dataset references/snapshots, methods, results, figures, environment evidence, assumptions, limitations, provenance, and integrity hashes into reproducible research packages with portable ZIP export and Model Registry projection.
+
 ## v0.49.0 Lab ↔ Workbench model-handoff feature layer
 
 This source tree includes **Lab ↔ Workbench Model Handoff & Shared Computational Contract v0.49.0** over the validated v0.48.3 contextual-navigation and v0.48.0 probabilistic-analysis stack. Lab can package the current Model Studio model into a governed computational contract for Workbench and can import a compatible Workbench model back into Model Studio after revalidation.

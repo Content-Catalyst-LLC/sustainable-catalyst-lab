@@ -1,3 +1,19 @@
+## 0.51.0 — Advanced Statistical Modeling & Generalized Regression
+
+- Added governed Gaussian OLS/WLS, Huber robust regression, ridge/lasso/elastic-net, binomial-logit GLM, Poisson-log GLM, and Gaussian cubic-spline regression.
+- Added deterministic repeated k-fold validation, family-appropriate metrics, coefficient evidence, scientific candidate comparison, and shared-engine statistical figures.
+- Added FastAPI and WordPress compute-core statistical health, policy, normalization, fitting, prediction, validation, and comparison routes.
+- Added a contextual Model Studio statistical workspace without changing the v0.48.3 six-destination rail, Graph Studio front door, or three related-application cards.
+- Statistical evidence is stored in project analysis packets and is now included by the v0.50 reproducible-model-package collector.
+- Preserves the v0.49 Lab ↔ Workbench computational-model contract and platform compatibility v1.0.0.
+- Keeps arbitrary code/formula execution, automatic feature selection, causal claims, and automatic publication disabled.
+
+## 0.50.0 — Reproducible Model Packages, Registry & Research Bundles
+
+- Added immutable reproducible model packages with model/data/method/result/figure/environment/provenance components and component hashes.
+- Added portable research ZIP bundles with manifest and SHA256SUMS plus Model Registry projection and semantic model registration.
+- Preserved the v0.49 shared computational-model handoff and v0.48.3 interface architecture.
+
 ## 0.49.0 — Lab ↔ Workbench Model Handoff & Shared Computational Contract
 
 - Added a versioned shared computational-model contract for Lab and Workbench.

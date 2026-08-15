@@ -1720,6 +1720,37 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
             </section>
             <details><summary>Model contract</summary><pre class="sc-ms0460-contract" data-ms-v0460-contract>No model contract yet.</pre></details>
           </section>
+
+          <section class="sc-ms0510" data-advanced-statistical-modeling-v0510 aria-label="Advanced statistical modeling and generalized regression">
+            <div class="sc-ms0510__head"><div><span class="sc-lab-section-code">MODEL / STATISTICS</span><h4>Advanced statistical modeling &amp; generalized regression</h4><p>Fit multivariable Gaussian regressions, robust and regularized models, binomial and Poisson generalized linear models, and cubic splines. Validation, coefficient evidence, scientific figures, and candidate comparison stay connected to the active Lab project and reproducible-model workflow.</p></div><span class="sc-ms0510__contract">STATISTICS 0.51.0</span></div>
+            <div class="sc-ms0510__layout">
+              <div class="sc-ms0510__controls">
+                <label>Study title<input data-stats-v0510-title value="Advanced statistical model"></label>
+                <div class="sc-ms0510__inline"><label>Response family<select data-stats-v0510-family><option value="gaussian">Gaussian</option><option value="binomial-logit">Binomial · logit</option><option value="poisson-log">Poisson · log</option></select></label><label>Estimator<select data-stats-v0510-estimator><option value="ols">OLS</option></select></label></div>
+                <div class="sc-ms0510__inline"><label>Model type<select data-stats-v0510-model-type><option value="linear">Linear</option><option value="cubic-spline">Cubic spline</option></select></label><label>Weight column<input data-stats-v0510-weight placeholder="WLS only"></label></div>
+                <label>Feature columns <small>comma separated</small><input data-stats-v0510-features value="x,z"></label>
+                <div class="sc-ms0510__inline"><label>Response column<input data-stats-v0510-response value="y"></label><label>Spline feature<input data-stats-v0510-spline-feature value="x"></label></div>
+                <div class="sc-ms0510__inline"><label>Regularization α<input type="number" step="any" min="0" value="0.2" data-stats-v0510-alpha></label><label>Elastic-net L1 ratio<input type="number" step="0.05" min="0" max="1" value="0.5" data-stats-v0510-l1-ratio></label></div>
+                <div class="sc-ms0510__inline"><label>Interior spline knots<input type="number" min="0" max="12" value="4" data-stats-v0510-knots></label><label class="sc-ms0510__check"><input type="checkbox" data-stats-v0510-standardize> Standardize design columns</label></div>
+                <label>Dataset rows as JSON<textarea data-stats-v0510-rows spellcheck="false">[]</textarea></label>
+                <div class="sc-ms0510__actions"><button type="button" class="sc-lab-button" data-stats-v0510-example>Load statistical example</button><button type="button" class="sc-lab-button" data-stats-v0510-current>Use current Model Studio rows</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-stats-v0510-fit>Fit model</button></div>
+                <div class="sc-ms0510__inline"><label>CV folds<input type="number" min="2" max="20" value="5" data-stats-v0510-folds></label><label>Repeats<input type="number" min="1" max="10" value="1" data-stats-v0510-repeats></label></div>
+                <label>Validation seed<input type="number" value="42" data-stats-v0510-seed></label>
+                <div class="sc-ms0510__actions"><button type="button" class="sc-lab-button" data-stats-v0510-validate>Cross-validate</button><button type="button" class="sc-lab-button" data-stats-v0510-compare>Compare baseline / robust / regularized</button><button type="button" class="sc-lab-button" data-stats-v0510-save>Save evidence</button></div>
+                <p class="sc-ms0510__status" data-stats-v0510-status role="status" aria-live="polite">Advanced statistical modeling loading…</p>
+                <p class="sc-ms0510__boundary"><strong>Scientific boundary.</strong> Model coefficients describe associations under the declared model and data. Lab does not infer causality, automatically select features, execute arbitrary formulas, or attach classical p-values to regularized or Huber estimates.</p>
+              </div>
+              <div class="sc-ms0510__evidence">
+                <div class="sc-ms0510__summary" data-stats-v0510-summary></div>
+                <div class="sc-ms0510__graph-tabs" aria-label="Statistical figure selector"><button type="button" data-stats-v0510-graph="observedPredicted" aria-pressed="true">Observed / predicted</button><button type="button" data-stats-v0510-graph="residualVsFitted" aria-pressed="false">Residuals</button><button type="button" data-stats-v0510-graph="coefficients" aria-pressed="false">Coefficients</button><button type="button" data-stats-v0510-graph="splineCurve" aria-pressed="false">Spline</button><button type="button" class="sc-lab-button" data-stats-v0510-graph-studio>Open figure in Graph Studio</button></div>
+                <div class="sc-ms0510__canvas" data-stats-v0510-canvas><div class="sc-lab-data-note">Fit a statistical model to generate scientific figures.</div></div>
+                <div class="sc-ms0510__table" data-stats-v0510-coefficients></div>
+                <div class="sc-ms0510__table" data-stats-v0510-comparison></div>
+                <details><summary>Statistical model / validation record</summary><pre data-stats-v0510-record>No advanced statistical result yet.</pre></details>
+              </div>
+            </div>
+          </section>
+
           <section class="sc-ms0460-card sc-ms0460-diagnostics-card"><h4>Diagnostics &amp; model evidence</h4>
             <p>Fit registered model forms against observed response values, inspect residual behavior, estimate out-of-sample performance, and compare alternatives using the same deterministic validation policy.</p>
             <div class="sc-ms0460-diagnostic-controls">

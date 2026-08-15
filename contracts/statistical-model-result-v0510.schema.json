@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-statistical-model-result/0.51.0",
+  "title": "Sustainable Catalyst Lab Advanced Statistical Model Result v0.51.0",
+  "type": "object",
+  "required": ["schema", "version", "study", "coefficients", "metrics", "graphs", "governance", "resultHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-statistical-model-result/0.51.0"},
+    "version": {"const": "0.51.0"},
+    "study": {"type": "object"},
+    "coefficients": {"type": "array"},
+    "metrics": {"type": "object"},
+    "graphs": {"type": "object"},
+    "inference": {"type": "object"},
+    "governance": {"type": "object"},
+    "resultHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}

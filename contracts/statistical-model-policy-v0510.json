@@ -1,0 +1,13 @@
+{
+  "schema": "sc-lab-statistical-model-policy/0.51.0",
+  "version": "0.51.0",
+  "families": ["gaussian", "binomial-logit", "poisson-log"],
+  "estimators": ["ols", "weighted-least-squares", "huber", "ridge", "lasso", "elastic-net", "glm"],
+  "modelTypes": ["linear", "cubic-spline"],
+  "regularizedClassicalPValues": false,
+  "automaticFeatureSelection": false,
+  "automaticCausalClaims": false,
+  "namedDatasetColumnsOnly": true,
+  "arbitraryFormulaExecution": false,
+  "arbitraryCode": false
+}

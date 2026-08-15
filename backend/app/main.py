@@ -35,6 +35,7 @@ from .graph_studio import GraphStudioError, build_workspace as build_graph_studi
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
 from .reproducible_model_package import ReproducibleModelPackageError, build_package as build_reproducible_model_package, build_research_bundle as build_model_research_bundle, health as reproducible_model_package_health, policies as reproducible_model_package_policies, registry_projection as reproducible_model_registry_projection, verify_package as verify_reproducible_model_package
+from .advanced_statistical_modeling import AdvancedStatisticalModelingError, compare as compare_advanced_statistical_models, cross_validate as cross_validate_advanced_statistical_model, fit as fit_advanced_statistical_model, health as advanced_statistical_modeling_health, normalize_study as normalize_advanced_statistical_study, policies as advanced_statistical_modeling_policies, predict as predict_advanced_statistical_model
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1215,6 +1216,50 @@ def model_studio_response_surfaces_optimize_route(payload: dict[str, Any]):
     try: return optimize_response_surface(payload)
     except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+
+@app.get("/v1/model-studio/statistics/health")
+def model_studio_statistics_health_route():
+    return advanced_statistical_modeling_health()
+
+@app.get("/v1/model-studio/statistics/policies")
+def model_studio_statistics_policies_route():
+    return advanced_statistical_modeling_policies()
+
+@app.post("/v1/model-studio/statistics/normalize")
+def model_studio_statistics_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "study": normalize_advanced_statistical_study(payload.get("study") or payload)}
+    except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/statistics/fit")
+def model_studio_statistics_fit_route(payload: dict[str, Any]):
+    try:
+        return fit_advanced_statistical_model(payload)
+    except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/statistics/predict")
+def model_studio_statistics_predict_route(payload: dict[str, Any]):
+    try:
+        return predict_advanced_statistical_model(payload)
+    except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/statistics/cross-validate")
+def model_studio_statistics_cross_validate_route(payload: dict[str, Any]):
+    try:
+        return cross_validate_advanced_statistical_model(payload)
+    except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/statistics/compare")
+def model_studio_statistics_compare_route(payload: dict[str, Any]):
+    try:
+        return compare_advanced_statistical_models(payload)
+    except AdvancedStatisticalModelingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 @app.get("/v1/model-studio/probabilistic/health")
 def model_studio_probabilistic_health_route():
