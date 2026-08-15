@@ -1,0 +1,15 @@
+{
+  "schema":"sc-lab-scientific-literature-policy/0.63.0",
+  "version":"0.63.0",
+  "humanSourceReviewRequired":true,
+  "contradictingLiteraturePreserved":true,
+  "automaticLiteratureTruthScoringAuthorized":false,
+  "automaticBibliometricAuthorityRankingAuthorized":false,
+  "automaticRetractionVerificationAuthorized":false,
+  "automaticClaimInferenceAuthorized":false,
+  "automaticScientificCertificationAuthorized":false,
+  "automaticPublicationAuthorized":false,
+  "networkFetchDuringEvaluationAuthorized":false,
+  "rawFullTextAccepted":false,
+  "arbitraryCodeExecutionAuthorized":false
+}

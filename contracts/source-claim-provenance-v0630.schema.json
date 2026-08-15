@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/source-claim-provenance-v0630.schema.json",
+  "title":"Sustainable Catalyst Lab Source-to-Claim Provenance v0.63.0",
+  "type":"object",
+  "required":["schema","version","id","claimId","sourceId","role","linkHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-source-claim-provenance/0.63.0"},
+    "version":{"const":"0.63.0"},
+    "id":{"type":"string"},
+    "claimId":{"type":"string"},
+    "sourceId":{"type":"string"},
+    "role":{"enum":["supports","contradicts","contextualizes","methodological-background","uncertainty","limitation","replication","non-replication"]},
+    "locator":{"type":"string","maxLength":500},
+    "note":{"type":"string","maxLength":1800},
+    "linkHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":true
+}

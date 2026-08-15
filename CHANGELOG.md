@@ -1,3 +1,12 @@
+## v0.63.0 — Scientific Literature, Citation Graph & Source-to-Claim Provenance
+
+- Adds governed literature source records, human source review, source-to-claim provenance, and a source-to-source citation graph.
+- Preserves contradictory/non-replication literature, unresolved references, orphan sources, and duplicate identifiers instead of silently reconciling them.
+- Requires human source inclusion/applicability review and qualified claim review when contradictory literature is present.
+- Adds deterministic citation-graph/evaluation/packet hashes and metadata-only `analysisPackets` evidence.
+- Disables automatic truth scoring, authority ranking, retraction verification, network fetching during evaluation, and raw/full-text packet capture.
+- Preserves the six-destination rail, Graph Studio front door, and three related application cards.
+
 ## v0.62.0 — Scientific Claims, Evidence Matrix & Conclusion Traceability
 
 - Adds researcher-authored scientific claims with explicit supporting, contradicting, uncertainty, limitation, validation, and figure/context evidence links.

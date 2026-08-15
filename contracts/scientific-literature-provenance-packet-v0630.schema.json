@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-literature-provenance-packet-v0630.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Literature Provenance Packet v0.63.0",
+  "type":"object",
+  "required":["schema","version","gate","sourceRecords","claimLinks","citationEdges","citationGraphHash","evaluationHash","packetHash","boundaries"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-literature-provenance-packet/0.63.0"},
+    "version":{"const":"0.63.0"},
+    "gate":{"enum":["literature-unlinked","needs-source","needs-source-review","contested","traceable"]},
+    "sourceRecords":{"type":"array"},
+    "claimLinks":{"type":"array"},
+    "citationEdges":{"type":"array"},
+    "citationGraphHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "evaluationHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "packetHash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "boundaries":{"type":"object"}
+  },
+  "additionalProperties":true
+}

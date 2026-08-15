@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-literature-source-v0630.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Literature Source v0.63.0",
+  "type":"object",
+  "required":["schema","version","id","sourceType","title","status","peerReviewStatus","sourceHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-literature-source/0.63.0"},
+    "version":{"const":"0.63.0"},
+    "id":{"type":"string","minLength":1,"maxLength":180},
+    "sourceType":{"enum":["journal-article","preprint","report","dataset","book","book-chapter","thesis","conference-paper","standard","government-publication","repository-record","archive-record","other"]},
+    "title":{"type":"string","maxLength":1200},
+    "authors":{"type":"array","maxItems":80,"items":{"type":"string","maxLength":180}},
+    "publicationYear":{"type":["integer","null"],"minimum":0,"maximum":2200},
+    "identifiers":{"type":"object","additionalProperties":{"type":"string","maxLength":300}},
+    "sourceUrl":{"type":"string","maxLength":2048},
+    "status":{"enum":["active","corrected","retracted","withdrawn","unknown"]},
+    "peerReviewStatus":{"enum":["peer-reviewed","not-peer-reviewed","preprint","unknown","not-applicable"]},
+    "sourceHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":true
+}

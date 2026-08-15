@@ -2098,6 +2098,50 @@ P=1:9:bar</textarea></label>
           </div>
         </details>
 
+        <details class="sc-lit0630" data-scientific-literature-v0630>
+          <summary>Scientific Literature, Citation Graph &amp; Source-to-Claim Provenance <span class="sc-lit0630__badge">v0.63.0</span></summary>
+          <div class="sc-lit0630__body">
+            <div class="sc-lit0630__intro"><div><h4>Extend claim traceability outward to published and archival sources</h4><p>Register bibliographic metadata, review source applicability, connect literature to v0.62 scientific claims, preserve contradictory findings, and record source-to-source citation relations. v0.63 traces provenance; it does not rank authority, determine truth, verify retractions automatically, or fetch literature during evaluation.</p></div><span class="sc-lit0630__badge">PROJECT / LITERATURE</span></div>
+            <p class="sc-lit0630__status" data-lit-v0630-status role="status" aria-live="polite">Scientific literature provenance loading…</p>
+            <div class="sc-lit0630__boundary"><strong>Governance boundary:</strong> source status, peer-review state, applicability, and inclusion are declared/reviewed metadata. Lab does not infer bibliometric authority or treat citation counts as scientific validity.</div>
+            <div class="sc-lit0630__actions">
+              <button type="button" class="sc-lab-button" data-lit-v0630-evaluate>Evaluate literature provenance</button>
+              <button type="button" class="sc-lab-button sc-lab-button-primary" data-lit-v0630-packet>Build provenance packet</button>
+              <button type="button" class="sc-lab-button" data-lit-v0630-verify>Verify packet hash</button>
+              <button type="button" class="sc-lab-button" data-lit-v0630-save-evidence>Save provenance evidence</button>
+            </div>
+            <div class="sc-lit0630__metrics" data-lit-v0630-metrics></div>
+            <div class="sc-lit0630__grid">
+              <section class="sc-lit0630__card"><h5>Literature source record</h5>
+                <div class="sc-lit0630__actions"><button type="button" class="sc-lab-button" data-lit-v0630-new-source>New source</button><button type="button" class="sc-lab-button" data-lit-v0630-save-source>Save source</button></div>
+                <div class="sc-lit0630__fields">
+                  <label>Source ID<input data-lit-v0630-source-id value="source-1"></label><label>Source type<select data-lit-v0630-source-type><option value="journal-article">Journal article</option><option value="preprint">Preprint</option><option value="report">Report</option><option value="dataset">Dataset</option><option value="book">Book</option><option value="book-chapter">Book chapter</option><option value="thesis">Thesis</option><option value="conference-paper">Conference paper</option><option value="standard">Standard</option><option value="government-publication">Government publication</option><option value="repository-record">Repository record</option><option value="archive-record">Archive record</option><option value="other">Other</option></select></label>
+                  <label class="is-wide">Title<input data-lit-v0630-title></label><label class="is-wide">Authors — one per line<textarea data-lit-v0630-authors></textarea></label>
+                  <label>Publication year<input type="number" min="0" max="2200" data-lit-v0630-year></label><label>Journal / collection / container<input data-lit-v0630-container></label><label>Publisher<input data-lit-v0630-publisher></label><label>Origin<select data-lit-v0630-origin><option value="manual">Manual</option><option value="research-library">Research Library</option><option value="doi">DOI</option><option value="crossref">Crossref</option><option value="pubmed">PubMed</option><option value="openalex">OpenAlex</option><option value="repository">Repository</option><option value="archive">Archive</option><option value="other">Other</option></select></label>
+                  <label>DOI<input data-lit-v0630-doi></label><label>PMID<input data-lit-v0630-pmid></label><label>arXiv<input data-lit-v0630-arxiv></label><label>ISBN<input data-lit-v0630-isbn></label>
+                  <label class="is-wide">Source URL<input type="url" data-lit-v0630-url></label><label>Research Library record ref<input data-lit-v0630-library-ref></label>
+                  <label>Source status<select data-lit-v0630-source-status><option value="unknown">Unknown</option><option value="active">Active</option><option value="corrected">Corrected</option><option value="retracted">Retracted</option><option value="withdrawn">Withdrawn</option></select></label><label>Peer review status<select data-lit-v0630-peer-review><option value="unknown">Unknown</option><option value="peer-reviewed">Peer reviewed</option><option value="not-peer-reviewed">Not peer reviewed</option><option value="preprint">Preprint</option><option value="not-applicable">Not applicable</option></select></label>
+                  <label class="is-wide">Scope / applicability note<textarea data-lit-v0630-scope placeholder="Population, methods, jurisdiction, time period, or applicability notes."></textarea></label>
+                  <label>Source review<select data-lit-v0630-review-decision><option value="include">Include</option><option value="include-with-caution">Include with caution</option><option value="exclude">Exclude</option><option value="reopen">Reopen</option></select></label><label class="is-wide">Source review rationale<textarea data-lit-v0630-review-rationale></textarea></label>
+                </div>
+                <button type="button" class="sc-lab-button sc-lab-button-primary" data-lit-v0630-review-source>Record source review</button>
+              </section>
+              <section class="sc-lit0630__card"><h5>Saved literature sources</h5><div class="sc-lit0630__saved" data-lit-v0630-sources></div>
+                <h5>Source → claim provenance</h5><div class="sc-lit0630__fields">
+                  <label>Claim<select data-lit-v0630-link-claim></select></label><label>Literature source<select data-lit-v0630-link-source></select></label><label>Role<select data-lit-v0630-link-role><option value="supports">Supports</option><option value="contradicts">Contradicts</option><option value="contextualizes">Contextualizes</option><option value="methodological-background">Methodological background</option><option value="uncertainty">Uncertainty</option><option value="limitation">Limitation</option><option value="replication">Replication</option><option value="non-replication">Non-replication</option></select></label><label>Locator<input data-lit-v0630-link-locator placeholder="p. 14; Results §3.2"></label><label class="is-wide">Provenance note<textarea data-lit-v0630-link-note></textarea></label>
+                </div><button type="button" class="sc-lab-button" data-lit-v0630-add-link>Add source-to-claim link</button>
+                <h5>Citation graph edge</h5><div class="sc-lit0630__fields"><label>From source<select data-lit-v0630-edge-from></select></label><label>Relation<select data-lit-v0630-edge-relation><option value="cites">Cites</option><option value="supports">Supports</option><option value="contradicts">Contradicts</option><option value="extends">Extends</option><option value="replicates">Replicates</option><option value="fails-to-replicate">Fails to replicate</option><option value="corrects">Corrects</option><option value="retracts">Retracts</option><option value="uses-data-from">Uses data from</option><option value="uses-method-from">Uses method from</option><option value="related">Related</option></select></label><label>To source<select data-lit-v0630-edge-to></select></label><label>Locator<input data-lit-v0630-edge-locator></label><label class="is-wide">Relation note<textarea data-lit-v0630-edge-note></textarea></label></div><button type="button" class="sc-lab-button" data-lit-v0630-add-edge>Add citation edge</button>
+              </section>
+            </div>
+            <div class="sc-lit0630__tables">
+              <section class="sc-lit0630__card"><h5>Claim × literature provenance</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Claim</th><th>Gate</th><th>Sources</th><th>Reviewed</th><th>Contradictions</th><th>Unresolved</th></tr></thead><tbody data-lit-v0630-claim-matrix><tr><td colspan="6">No literature provenance evaluated.</td></tr></tbody></table></div></section>
+              <section class="sc-lit0630__card"><h5>Source-to-claim links</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>Claim</th><th>Role</th><th>Source</th><th>Locator</th></tr></thead><tbody data-lit-v0630-links><tr><td colspan="4">No links saved.</td></tr></tbody></table></div><h5>Citation graph</h5><div class="sc-lab-table-wrap"><table><thead><tr><th>From</th><th>Relation</th><th>To</th></tr></thead><tbody data-lit-v0630-edges><tr><td colspan="3">No citation edges saved.</td></tr></tbody></table></div></section>
+            </div>
+            <section class="sc-lit0630__card"><h5>Literature / citation provenance evidence</h5><pre class="sc-lit0630__output" data-lit-v0630-output>No literature provenance evidence generated yet.</pre></section>
+            <p class="sc-lit0630__note">Full-text documents are not copied into this packet. Citation counts are not authority scores. Retraction/correction status is declared metadata unless a separate governed connector verifies it. Contradicting and non-replication sources remain visible.</p>
+          </div>
+        </details>
+
         <details class="sc-bfd0601" data-beta-field-diagnostics-v0601>
           <summary>Beta Field Diagnostics, Integration Soak &amp; Runtime Repair <span class="sc-bfd0601__badge">v0.60.1</span></summary>
           <div class="sc-bfd0601__body">

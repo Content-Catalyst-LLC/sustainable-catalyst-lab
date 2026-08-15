@@ -74,6 +74,7 @@ from .scientific_audit_v0590 import ScientificAuditError, build_redacted_export 
 from .integrated_research_beta_v0600 import IntegratedResearchBetaError, beta_readiness as integrated_beta_readiness, build_beta_packet as build_integrated_beta_packet, capability_matrix as integrated_beta_capabilities, health as integrated_beta_health, policies as integrated_beta_policies, research_journey as integrated_research_journey, verify_beta_packet as verify_integrated_beta_packet
 from .beta_field_diagnostics_v0601 import BetaFieldDiagnosticsError, analyze_soak as beta_field_analyze_soak, build_diagnostic_packet as build_beta_field_diagnostic_packet, health as beta_field_diagnostics_health, integration_probe as beta_field_integration_probe, policies as beta_field_diagnostics_policies, scenarios as beta_field_diagnostic_scenarios, verify_diagnostic_packet as verify_beta_field_diagnostic_packet
 from .scientific_claims_traceability_v0620 import ScientificClaimsTraceabilityError, build_traceability_packet as build_scientific_traceability_packet_v0620, evaluate_matrix as evaluate_scientific_evidence_matrix_v0620, health as scientific_claims_traceability_health_v0620, normalize_claim as normalize_scientific_claim_v0620, normalize_conclusion as normalize_scientific_conclusion_v0620, policies as scientific_claims_traceability_policies_v0620, record_claim_review as record_scientific_claim_review_v0620, record_conclusion_review as record_scientific_conclusion_review_v0620, verify_traceability_packet as verify_scientific_traceability_packet_v0620
+from .scientific_literature_provenance_v0630 import ScientificLiteratureProvenanceError, build_provenance_packet as build_scientific_literature_packet_v0630, evaluate_provenance as evaluate_scientific_literature_v0630, health as scientific_literature_health_v0630, normalize_citation_edge as normalize_scientific_citation_edge_v0630, normalize_claim_link as normalize_scientific_claim_link_v0630, normalize_source as normalize_scientific_literature_source_v0630, policies as scientific_literature_policies_v0630, record_source_review as record_scientific_literature_source_review_v0630, verify_provenance_packet as verify_scientific_literature_packet_v0630
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1134,6 +1135,59 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
 
 
 
+
+
+# v0.63.0 Scientific Literature, Citation Graph & Source-to-Claim Provenance
+
+@app.get("/v1/scientific-literature/v0630/health")
+def scientific_literature_v0630_health_route():
+    body = scientific_literature_health_v0630(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/scientific-literature/v0630/policies")
+def scientific_literature_v0630_policies_route():
+    return scientific_literature_policies_v0630()
+
+@app.post("/v1/scientific-literature/v0630/normalize-source")
+def scientific_literature_v0630_normalize_source_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "source": normalize_scientific_literature_source_v0630(payload.get("source") if isinstance(payload, dict) else {})}
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/review-source")
+def scientific_literature_v0630_review_source_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_literature_source_review_v0630(payload)
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/normalize-claim-link")
+def scientific_literature_v0630_normalize_claim_link_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "link": normalize_scientific_claim_link_v0630(payload.get("link") if isinstance(payload, dict) else {})}
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/normalize-citation-edge")
+def scientific_literature_v0630_normalize_citation_edge_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "edge": normalize_scientific_citation_edge_v0630(payload.get("edge") if isinstance(payload, dict) else {})}
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/evaluate")
+def scientific_literature_v0630_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_scientific_literature_v0630(payload)
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/packet")
+def scientific_literature_v0630_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_literature_packet_v0630(payload)
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-literature/v0630/verify")
+def scientific_literature_v0630_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_scientific_literature_packet_v0630(payload)
+    except ScientificLiteratureProvenanceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # v0.62.0 Scientific Claims, Evidence Matrix & Conclusion Traceability

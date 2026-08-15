@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-literature-review-v0630.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Literature Review v0.63.0",
+  "type":"object",
+  "required":["id","decision","rationale","reviewHash"],
+  "properties":{
+    "id":{"type":"string"},
+    "decision":{"enum":["include","include-with-caution","exclude","reopen"]},
+    "rationale":{"type":"string","maxLength":2000},
+    "reviewerRole":{"type":"string","maxLength":80},
+    "reviewedAt":{"type":"string","maxLength":64},
+    "reviewHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":false
+}

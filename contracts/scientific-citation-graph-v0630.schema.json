@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/scientific-citation-graph-v0630.schema.json",
+  "title":"Sustainable Catalyst Lab Scientific Citation Graph v0.63.0",
+  "type":"object",
+  "required":["schema","version","id","fromSourceId","toSourceId","relation","edgeHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-citation-graph/0.63.0"},
+    "version":{"const":"0.63.0"},
+    "id":{"type":"string"},
+    "fromSourceId":{"type":"string"},
+    "toSourceId":{"type":"string"},
+    "relation":{"enum":["cites","supports","contradicts","extends","replicates","fails-to-replicate","corrects","retracts","uses-data-from","uses-method-from","related"]},
+    "locator":{"type":"string","maxLength":500},
+    "note":{"type":"string","maxLength":1600},
+    "edgeHash":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":false
+}
