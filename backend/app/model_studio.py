@@ -106,6 +106,8 @@ def policies() -> dict[str, Any]:
             "boundedDynamicParameterEstimation": True,
             "responseSurfaces": True,
             "boundedDesignSpaceOptimization": True,
+            "probabilisticAnalysis": True,
+            "integratedUncertaintySensitivity": True,
         },
     }
 
@@ -125,6 +127,8 @@ def health() -> dict[str, Any]:
         "odeParameterEstimation": True,
         "responseSurfaces": True,
         "designSpaceOptimization": True,
+        "probabilisticAnalysis": True,
+        "integratedUncertaintySensitivity": True,
         "arbitraryCode": False,
         "arbitraryFormulaExecution": False,
         "safeDeclarativeExpressionExecution": True,
@@ -378,7 +382,7 @@ def build_bundle(payload: dict[str, Any]) -> dict[str, Any]:
         "model": model,
         "graphs": graphs,
         "result": result,
-        "handoffTargets": ["response-surfaces", "dynamic-systems", "model-diagnostics", "model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
+        "handoffTargets": ["response-surfaces", "dynamic-systems", "probabilistic-analysis", "model-diagnostics", "model-calibration", "design-studies", "ensemble-uncertainty", "model-registry", "workbench"],
         "boundaries": {"arbitraryCode": False, "arbitraryFormulaExecution": False, "safeDeclarativeExpressionExecution": True},
     }
     bundle["bundleHash"] = _digest(bundle)

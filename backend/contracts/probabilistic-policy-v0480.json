@@ -1,0 +1,12 @@
+{
+  "version": "0.48.0",
+  "studySchema": "sc-lab-probabilistic-study/0.48.0",
+  "resultSchema": "sc-lab-probabilistic-analysis/0.48.0",
+  "graphSchema": "sc-lab-scientific-graph/0.46.0",
+  "designs": ["monte-carlo", "latin-hypercube", "sobol", "saltelli-sobol"],
+  "distributions": ["uniform", "normal", "lognormal", "triangular"],
+  "independentInputs": true,
+  "safeDeclarativeModels": true,
+  "arbitraryCode": false,
+  "legacyRegisteredModelEnsembles": "0.34.1"
+}

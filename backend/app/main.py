@@ -32,6 +32,7 @@ from .model_diagnostics import ModelDiagnosticsError, compare as compare_scienti
 from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate_dynamic_system_parameters, health as dynamic_systems_health, normalize_definition as normalize_dynamic_system, policies as dynamic_systems_policies, simulate as simulate_dynamic_system, templates as dynamic_system_templates
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
+from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .distributed_dispatcher import DispatcherError, policies as distributed_dispatcher_policies
 from .persistent_dispatch_queue import PersistentDistributedDispatcher
 from .worker_agent_runtime import WorkerAgentError, policies as worker_agent_policies
@@ -1145,6 +1146,28 @@ def model_studio_response_surfaces_optimize_route(payload: dict[str, Any]):
     try: return optimize_response_surface(payload)
     except ResponseSurfaceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+@app.get("/v1/model-studio/probabilistic/health")
+def model_studio_probabilistic_health_route():
+    return probabilistic_analysis_health()
+
+@app.get("/v1/model-studio/probabilistic/policies")
+def model_studio_probabilistic_policies_route():
+    return probabilistic_analysis_policies()
+
+@app.post("/v1/model-studio/probabilistic/normalize")
+def model_studio_probabilistic_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "study": normalize_probabilistic_study(payload.get("study") or payload)}
+    except ProbabilisticAnalysisError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=str(exc)) from exc
+
+@app.post("/v1/model-studio/probabilistic/analyze")
+def model_studio_probabilistic_analyze_route(payload: dict[str, Any]):
+    try:
+        return run_probabilistic_analysis(payload.get("study") if isinstance(payload.get("study"), dict) else payload)
+    except ProbabilisticAnalysisError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=str(exc)) from exc
 
 @app.get("/v1/graph-studio/health")
 def graph_studio_health_route():

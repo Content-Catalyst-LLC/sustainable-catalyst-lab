@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-probabilistic-analysis/0.48.0",
+  "title": "Sustainable Catalyst Lab Probabilistic Analysis v0.48.0",
+  "type": "object",
+  "required": ["schema", "version", "study", "summary", "sensitivity", "graphs", "governance", "analysisHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-probabilistic-analysis/0.48.0"},
+    "version": {"const": "0.48.0"},
+    "study": {"type": "object"},
+    "summary": {"type": "object"},
+    "sensitivity": {"type": "object"},
+    "graphs": {"type": "object"},
+    "curve": {"type": ["array", "null"]},
+    "samplePreview": {"type": "array"},
+    "governance": {"type": "object"},
+    "analysisHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}
