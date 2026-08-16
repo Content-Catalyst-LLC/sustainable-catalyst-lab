@@ -1,0 +1,23 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-scientific-evidence-grading-assessment/0.65.0",
+  "title":"Scientific Evidence Grading Assessment v0.65.0",
+  "type":"object",
+  "required":["schema","version","id","title","claimIds","boundaryStatement","reviewHistory","assessmentHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-evidence-grading-assessment/0.65.0"},
+    "version":{"const":"0.65.0"},
+    "id":{"type":"string","minLength":1,"maxLength":180},
+    "title":{"type":"string","maxLength":600},
+    "claimIds":{"type":"array","maxItems":100,"items":{"type":"string"}},
+    "synthesisProtocolIds":{"type":"array","maxItems":100,"items":{"type":"string"}},
+    "scopePopulation":{"type":"string","maxLength":1200},
+    "scopeContext":{"type":"string","maxLength":1200},
+    "scopeOutcome":{"type":"string","maxLength":1200},
+    "boundaryStatement":{"type":"string","maxLength":5000},
+    "qualificationNote":{"type":"string","maxLength":4000},
+    "reviewHistory":{"type":"array","maxItems":100,"items":{"type":"object"}},
+    "assessmentHash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  },
+  "additionalProperties":false
+}

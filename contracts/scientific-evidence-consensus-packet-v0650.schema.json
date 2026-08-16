@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-scientific-evidence-consensus-packet/0.65.0",
+  "title":"Scientific Evidence Consensus Packet v0.65.0",
+  "type":"object",
+  "required":["ok","version","schema","assessmentId","assessmentHash","gate","evaluationHash","claimGrades","contradictions","consensusBoundary","boundaries","packetHash"],
+  "properties":{
+    "ok":{"const":true},
+    "version":{"const":"0.65.0"},
+    "schema":{"const":"sc-lab-scientific-evidence-consensus-packet/0.65.0"},
+    "assessmentId":{"type":"string"},
+    "assessmentHash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "gate":{"type":"string"},
+    "evaluationHash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "claimGrades":{"type":"array","items":{"type":"object"}},
+    "contradictions":{"type":"array","items":{"type":"object"}},
+    "consensusBoundary":{"type":"object"},
+    "boundaries":{"type":"object"},
+    "packetHash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  },
+  "additionalProperties":false
+}

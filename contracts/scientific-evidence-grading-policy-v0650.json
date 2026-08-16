@@ -1,0 +1,19 @@
+{
+  "schema":"sc-lab-scientific-evidence-grading-policy/0.65.0",
+  "version":"0.65.0",
+  "transparentRuleBasedEvidenceGrading":true,
+  "contradictionsPreserved":true,
+  "replicationDisagreementPreserved":true,
+  "heterogeneityPreserved":true,
+  "humanBoundaryReviewRequired":true,
+  "numericTruthScoreAuthorized":false,
+  "automaticConsensusCertificationAuthorized":false,
+  "automaticStudyQualityScoringAuthorized":false,
+  "citationCountAuthorityScoringAuthorized":false,
+  "journalPrestigeScoringAuthorized":false,
+  "automaticCausalCertificationAuthorized":false,
+  "automaticPublicationAuthorized":false,
+  "networkFetchDuringEvaluationAuthorized":false,
+  "rawScientificDataAccepted":false,
+  "arbitraryCodeExecutionAuthorized":false
+}

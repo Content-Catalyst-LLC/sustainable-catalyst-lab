@@ -1,0 +1,24 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-scientific-consensus-boundary/0.65.0",
+  "title":"Scientific Consensus Boundary v0.65.0",
+  "type":"object",
+  "required":["schema","assessmentId","gate","boundaryStatement","qualificationNote","scope","claimIds","gradeCounts","humanBoundaryReviewRequired","automaticConsensusCertification","boundaryHash"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-consensus-boundary/0.65.0"},
+    "assessmentId":{"type":"string"},
+    "gate":{"enum":["blocked","needs-evidence","contested","needs-review","consensus-bounded","consensus-bounded-with-qualification"]},
+    "boundaryStatement":{"type":"string"},
+    "qualificationNote":{"type":"string"},
+    "scope":{"type":"object"},
+    "claimIds":{"type":"array","items":{"type":"string"}},
+    "unresolvedClaimIds":{"type":"array","items":{"type":"string"}},
+    "gradeCounts":{"type":"object"},
+    "humanBoundaryReviewDecision":{"type":["string","null"]},
+    "humanBoundaryReviewRequired":{"const":true},
+    "automaticConsensusCertification":{"const":false},
+    "numericTruthScore":{"type":"null"},
+    "boundaryHash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  },
+  "additionalProperties":false
+}
