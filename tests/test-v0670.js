@@ -1,0 +1,20 @@
+const fs=require('fs'),path=require('path'),root=path.join(__dirname,'..');
+function text(p){return fs.readFileSync(path.join(root,p),'utf8')} function pass(x,m){if(!x)throw new Error('FAIL - '+m);console.log('PASS - '+m)}
+const js=text('assets/js/modules/causal-inference-v0670.js'),tpl=text('templates/lab-app.php'),plugin=text('includes/class-sc-lab-plugin.php'),core=text('includes/class-sc-lab-python-compute-core-v0261.php');
+pass(js.includes("VERSION='0.67.0'"),'v0.67 browser module version');
+pass(js.includes('scientificCausalDesignsV0670'),'causal design project collection');
+pass(js.includes('scientificCausalEstimatesV0670'),'aggregate causal estimate collection');
+pass(js.includes('scientificCausalDiagnosticsV0670'),'causal diagnostic collection');
+pass(js.includes("recordType:'causal-inference-v0670'"),'causal inference packet enters analysisPackets');
+pass(js.includes('scientificClaimsV0620'),'v0.62 claim context reused');
+pass(js.includes('scientificStudiesV0610'),'v0.61 study context reused');
+pass(js.includes('difference-in-differences')&&js.includes('regression-discontinuity'),'quasi-experimental methods exposed');
+pass(js.includes('no automatic causal proof'),'automatic causal-proof boundary explicit');
+pass(!js.includes('MutationObserver'),'v0.67 introduces no MutationObserver');
+pass(tpl.includes('data-causal-inference-v0670'),'contextual causal-inference panel present');
+pass((tpl.match(/data-v0483-primary=/g)||[]).length===6,'six-destination rail preserved');
+pass(tpl.includes('Prototyping Workbench')&&tpl.includes('Decision Studio')&&tpl.includes('Site Intelligence'),'three application card row preserved');
+pass(tpl.includes('GRAPH STUDIO / PROJECT FIGURE'),'Graph Studio front door preserved');
+pass(plugin.includes("'causal-inference-v0670'"),'v0.67 JS module registered');
+pass(plugin.includes('sc-lab-causal-inference-v0670'),'v0.67 stylesheet registered');
+pass(core.includes('/compute/core/causal-inference/v0670/evaluate'),'WordPress v0.67 evaluate proxy registered');

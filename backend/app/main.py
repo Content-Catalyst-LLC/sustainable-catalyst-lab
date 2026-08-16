@@ -78,6 +78,7 @@ from .scientific_literature_provenance_v0630 import ScientificLiteratureProvenan
 from .systematic_evidence_synthesis_v0640 import SystematicEvidenceSynthesisError, build_synthesis_packet as build_evidence_synthesis_packet_v0640, health as evidence_synthesis_health_v0640, meta_analyze as meta_analyze_v0640, normalize_effect as normalize_study_effect_v0640, normalize_protocol as normalize_synthesis_protocol_v0640, policies as evidence_synthesis_policies_v0640, record_synthesis_review as record_synthesis_review_v0640, verify_synthesis_packet as verify_evidence_synthesis_packet_v0640
 from .scientific_evidence_grading_v0650 import ScientificEvidenceGradingError, build_consensus_packet as build_scientific_consensus_packet_v0650, evaluate_evidence as evaluate_scientific_evidence_v0650, health as scientific_evidence_grading_health_v0650, normalize_assessment as normalize_scientific_evidence_assessment_v0650, policies as scientific_evidence_grading_policies_v0650, record_boundary_review as record_scientific_boundary_review_v0650, verify_consensus_packet as verify_scientific_consensus_packet_v0650
 from .scientific_argumentation_v0660 import ScientificArgumentationError, build_argumentation_packet as build_scientific_argumentation_packet_v0660, evaluate_argumentation as evaluate_scientific_argumentation_v0660, health as scientific_argumentation_health_v0660, normalize_case as normalize_scientific_argumentation_case_v0660, normalize_discriminating_test as normalize_discriminating_test_v0660, normalize_evidence_link as normalize_argument_evidence_link_v0660, normalize_hypothesis as normalize_scientific_hypothesis_v0660, policies as scientific_argumentation_policies_v0660, record_case_review as record_scientific_argumentation_case_review_v0660, record_hypothesis_review as record_scientific_hypothesis_review_v0660, verify_argumentation_packet as verify_scientific_argumentation_packet_v0660
+from .causal_inference_v0670 import CausalInferenceError, build_packet as build_causal_inference_packet_v0670, evaluate as evaluate_causal_inference_v0670, health as causal_inference_health_v0670, normalize_design as normalize_causal_design_v0670, normalize_diagnostic as normalize_causal_diagnostic_v0670, normalize_estimate as normalize_causal_estimate_v0670, policies as causal_inference_policies_v0670, record_review as record_causal_review_v0670, verify_packet as verify_causal_inference_packet_v0670
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1201,6 +1202,57 @@ def scientific_argumentation_v0660_verify_route(payload: dict[str, Any], auth: d
     try: return verify_scientific_argumentation_packet_v0660(payload)
     except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+# v0.67.0 Causal Inference & Quasi-Experimental Methods
+@app.get("/v1/causal-inference/v0670/health")
+def causal_inference_v0670_health_route():
+    body=causal_inference_health_v0670(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/causal-inference/v0670/policies")
+def causal_inference_v0670_policies_route():
+    return causal_inference_policies_v0670()
+
+@app.post("/v1/causal-inference/v0670/normalize-design")
+def causal_inference_v0670_normalize_design_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"design":normalize_causal_design_v0670(payload.get("design") if isinstance(payload,dict) else {})}
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/normalize-estimate")
+def causal_inference_v0670_normalize_estimate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"estimate":normalize_causal_estimate_v0670(payload.get("estimate") if isinstance(payload,dict) else {})}
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/normalize-diagnostic")
+def causal_inference_v0670_normalize_diagnostic_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"diagnostic":normalize_causal_diagnostic_v0670(payload.get("diagnostic") if isinstance(payload,dict) else {})}
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/review")
+def causal_inference_v0670_review_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_causal_review_v0670(payload)
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/evaluate")
+def causal_inference_v0670_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_causal_inference_v0670(payload)
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/packet")
+def causal_inference_v0670_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_causal_inference_packet_v0670(payload)
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/causal-inference/v0670/verify")
+def causal_inference_v0670_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_causal_inference_packet_v0670(payload)
+    except CausalInferenceError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 # v0.65.0 Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
 @app.get("/v1/evidence-grading/v0650/health")

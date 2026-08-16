@@ -1,3 +1,7 @@
+## 0.67.0 — Causal Inference & Quasi-Experimental Methods
+
+Adds governed matching/weighting, difference-in-differences, interrupted time-series, and regression-discontinuity design records with explicit identification assumptions, aggregate estimates, method diagnostics, sensitivity checks, human review, and metadata-only causal provenance. Automatic causal proof remains disabled.
+
 ## v0.66.0 — Competing Hypotheses & Scientific Argumentation
 
 Adds project-scoped rival hypotheses, explicit predictions, governed hypothesis-evidence links, discriminating tests, falsifying-evidence challenges, unresolved-alternative preservation, human hypothesis review, and human-reviewed argument maps on top of the v0.62–v0.65 evidence chain. No automatic hypothesis proof, hidden winner selection, automatic falsification, numeric truth score, or causal certification is introduced.
