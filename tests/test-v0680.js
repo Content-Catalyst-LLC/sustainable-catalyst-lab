@@ -1,0 +1,21 @@
+const fs=require('fs'),path=require('path'),root=path.join(__dirname,'..');
+function text(p){return fs.readFileSync(path.join(root,p),'utf8')} function pass(x,m){if(!x)throw new Error('FAIL - '+m);console.log('PASS - '+m)}
+const js=text('assets/js/modules/hierarchical-modeling-v0680.js'),tpl=text('templates/lab-app.php'),plugin=text('includes/class-sc-lab-plugin.php'),core=text('includes/class-sc-lab-python-compute-core-v0261.php');
+pass(js.includes("VERSION='0.68.0'"),'v0.68 browser module version');
+pass(js.includes('scientificHierarchicalModelsV0680'),'hierarchical model project collection');
+pass(js.includes('scientificHierarchicalUnitEstimatesV0680'),'aggregate unit-estimate collection');
+pass(js.includes("recordType:'hierarchical-modeling-v0680'"),'hierarchical modeling packet enters analysisPackets');
+pass(js.includes('scientificClaimsV0620'),'v0.62 claim context reused');
+pass(js.includes('scientificEvidenceSynthesisProtocolsV0640'),'v0.64 synthesis context reused');
+pass(js.includes('scientificStudiesV0610'),'v0.61 study context reused');
+pass(js.includes('cross-study-meta-regression')&&js.includes('random-intercept'),'multilevel/cross-study model types exposed');
+pass(js.includes('partial pooling and generalization boundaries remain explicit'),'generalization boundary explicit');
+pass(!js.includes('MutationObserver'),'v0.68 introduces no MutationObserver');
+pass(tpl.includes('data-hierarchical-modeling-v0680'),'contextual hierarchical-modeling panel present');
+pass(tpl.includes('participant-level records are outside this release boundary'),'aggregate-only UI boundary present');
+pass((tpl.match(/data-v0483-primary=/g)||[]).length===6,'six-destination rail preserved');
+pass(tpl.includes('Prototyping Workbench')&&tpl.includes('Decision Studio')&&tpl.includes('Site Intelligence'),'three application card row preserved');
+pass(tpl.includes('GRAPH STUDIO / PROJECT FIGURE'),'Graph Studio front door preserved');
+pass(plugin.includes("'hierarchical-modeling-v0680'"),'v0.68 JS module registered');
+pass(plugin.includes('sc-lab-hierarchical-modeling-v0680'),'v0.68 stylesheet registered');
+pass(core.includes('/compute/core/hierarchical-modeling/v0680/evaluate'),'WordPress v0.68 evaluate proxy registered');

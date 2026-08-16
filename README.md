@@ -1,3 +1,7 @@
+## v0.68.0 — Hierarchical, Multilevel & Cross-Study Modeling
+
+Adds governed aggregate partial pooling, random-intercept cluster models, random-slope/meta-regression, cross-study pooling, heterogeneity and shrinkage diagnostics, explicit population/generalization boundaries, and human model review. Automatic generalization, ecological inference, participant-level data ingestion, and automatic causal proof remain disabled.
+
 ## v0.67.0 — Causal Inference & Quasi-Experimental Methods
 
 Adds governed matching/weighting, difference-in-differences, interrupted time-series, and regression-discontinuity design records with explicit identification assumptions, aggregate estimates, method diagnostics, sensitivity checks, human review, and metadata-only causal provenance. Automatic causal proof remains disabled.
