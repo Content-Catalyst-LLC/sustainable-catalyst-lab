@@ -1,6 +1,15 @@
+## 0.69.0 — Scientific Theory & Conceptual Model Workspace
+
+- Added governed theory, construct, relation, prediction, graph, review, evaluation, and packet contracts.
+- Added contextual Scientific Theory workspace linked to v0.61 studies, v0.62 claims, v0.66 hypotheses, and v0.68 models.
+- Requires explicit construct definitions, operationalization boundaries, causal mechanisms, testable predictions, falsification conditions, evidence linkage, scope, and human review.
+- Automatic theory proof, causal certification, universal generalization, raw scientific data, network fetching, and arbitrary code remain disabled.
+
+
 ## v0.68.0 — Hierarchical, Multilevel & Cross-Study Modeling
 
 Adds governed aggregate partial pooling, random-intercept cluster models, random-slope/meta-regression, cross-study pooling, heterogeneity and shrinkage diagnostics, explicit population/generalization boundaries, and human model review. Automatic generalization, ecological inference, participant-level data ingestion, and automatic causal proof remain disabled.
+
 
 ## 0.67.0 — Causal Inference & Quasi-Experimental Methods
 

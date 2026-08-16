@@ -1,0 +1,22 @@
+const fs=require('fs'),path=require('path'),root=path.join(__dirname,'..');
+function text(p){return fs.readFileSync(path.join(root,p),'utf8')} function pass(x,m){if(!x)throw new Error('FAIL - '+m);console.log('PASS - '+m)}
+const js=text('assets/js/modules/scientific-theory-v0690.js'),tpl=text('templates/lab-app.php'),plugin=text('includes/class-sc-lab-plugin.php'),core=text('includes/class-sc-lab-python-compute-core-v0261.php');
+pass(js.includes("VERSION='0.69.0'"),'v0.69 browser module version');
+pass(js.includes('scientificTheoriesV0690'),'scientific theory project collection');
+pass(js.includes('scientificTheoryConstructsV0690'),'theory construct collection');
+pass(js.includes('scientificTheoryRelationsV0690'),'theory relation collection');
+pass(js.includes('scientificTheoryPredictionsV0690'),'theory prediction collection');
+pass(js.includes("recordType:'scientific-theory-v0690'"),'scientific theory packet enters analysisPackets');
+pass(js.includes('scientificClaimsV0620'),'v0.62 claim context reused');
+pass(js.includes('scientificHypothesesV0660'),'v0.66 hypothesis context reused');
+pass(js.includes('scientificHierarchicalModelsV0680'),'v0.68 model context reused');
+pass(!js.includes('MutationObserver'),'v0.69 introduces no MutationObserver');
+pass(tpl.includes('data-scientific-theory-v0690'),'contextual scientific-theory panel present');
+pass(tpl.includes('conceptual coherence is not scientific proof'),'non-proof theory boundary present');
+pass((tpl.match(/data-v0483-primary=/g)||[]).length===6,'six-destination rail preserved');
+pass(tpl.includes('Prototyping Workbench')&&tpl.includes('Decision Studio')&&tpl.includes('Site Intelligence'),'three application card row preserved');
+pass(tpl.includes('GRAPH STUDIO / PROJECT FIGURE'),'Graph Studio front door preserved');
+pass(plugin.includes("'scientific-theory-v0690'"),'v0.69 JS module registered');
+pass(plugin.includes('sc-lab-scientific-theory-v0690'),'v0.69 stylesheet registered');
+pass(core.includes('/compute/core/scientific-theory/v0690/evaluate'),'WordPress v0.69 evaluate proxy registered');
+pass(core.includes('/compute/core/scientific-theory/v0690/graph'),'WordPress v0.69 conceptual graph proxy registered');

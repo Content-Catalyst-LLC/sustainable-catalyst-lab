@@ -80,6 +80,7 @@ from .scientific_evidence_grading_v0650 import ScientificEvidenceGradingError, b
 from .scientific_argumentation_v0660 import ScientificArgumentationError, build_argumentation_packet as build_scientific_argumentation_packet_v0660, evaluate_argumentation as evaluate_scientific_argumentation_v0660, health as scientific_argumentation_health_v0660, normalize_case as normalize_scientific_argumentation_case_v0660, normalize_discriminating_test as normalize_discriminating_test_v0660, normalize_evidence_link as normalize_argument_evidence_link_v0660, normalize_hypothesis as normalize_scientific_hypothesis_v0660, policies as scientific_argumentation_policies_v0660, record_case_review as record_scientific_argumentation_case_review_v0660, record_hypothesis_review as record_scientific_hypothesis_review_v0660, verify_argumentation_packet as verify_scientific_argumentation_packet_v0660
 from .causal_inference_v0670 import CausalInferenceError, build_packet as build_causal_inference_packet_v0670, evaluate as evaluate_causal_inference_v0670, health as causal_inference_health_v0670, normalize_design as normalize_causal_design_v0670, normalize_diagnostic as normalize_causal_diagnostic_v0670, normalize_estimate as normalize_causal_estimate_v0670, policies as causal_inference_policies_v0670, record_review as record_causal_review_v0670, verify_packet as verify_causal_inference_packet_v0670
 from .hierarchical_modeling_v0680 import HierarchicalModelingError, build_packet as build_hierarchical_modeling_packet_v0680, evaluate as evaluate_hierarchical_modeling_v0680, fit_model as fit_hierarchical_model_v0680, health as hierarchical_modeling_health_v0680, normalize_model as normalize_hierarchical_model_v0680, normalize_unit as normalize_hierarchical_unit_v0680, policies as hierarchical_modeling_policies_v0680, record_review as record_hierarchical_modeling_review_v0680, verify_packet as verify_hierarchical_modeling_packet_v0680
+from .scientific_theory_v0690 import ScientificTheoryError, build_graph as build_scientific_theory_graph_v0690, build_packet as build_scientific_theory_packet_v0690, evaluate as evaluate_scientific_theory_v0690, health as scientific_theory_health_v0690, normalize_construct as normalize_theory_construct_v0690, normalize_prediction as normalize_theory_prediction_v0690, normalize_relation as normalize_theory_relation_v0690, normalize_theory as normalize_scientific_theory_v0690, policies as scientific_theory_policies_v0690, record_review as record_scientific_theory_review_v0690, verify_packet as verify_scientific_theory_packet_v0690
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1305,6 +1306,69 @@ def hierarchical_modeling_v0680_verify_route(payload: dict[str, Any], auth: dict
     del auth
     try: return verify_hierarchical_modeling_packet_v0680(payload)
     except HierarchicalModelingError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+# v0.69.0 Scientific Theory & Conceptual Model Workspace
+@app.get("/v1/scientific-theory/v0690/health")
+def scientific_theory_v0690_health_route():
+    body=scientific_theory_health_v0690(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/scientific-theory/v0690/policies")
+def scientific_theory_v0690_policies_route():
+    return scientific_theory_policies_v0690()
+
+@app.post("/v1/scientific-theory/v0690/normalize-theory")
+def scientific_theory_v0690_normalize_theory_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"theory":normalize_scientific_theory_v0690(payload.get("theory") if isinstance(payload,dict) else {})}
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/normalize-construct")
+def scientific_theory_v0690_normalize_construct_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"construct":normalize_theory_construct_v0690(payload.get("construct") if isinstance(payload,dict) else {})}
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/normalize-relation")
+def scientific_theory_v0690_normalize_relation_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"relation":normalize_theory_relation_v0690(payload.get("relation") if isinstance(payload,dict) else {})}
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/normalize-prediction")
+def scientific_theory_v0690_normalize_prediction_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"prediction":normalize_theory_prediction_v0690(payload.get("prediction") if isinstance(payload,dict) else {})}
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/graph")
+def scientific_theory_v0690_graph_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_theory_graph_v0690(payload)
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/review")
+def scientific_theory_v0690_review_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_theory_review_v0690(payload)
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/evaluate")
+def scientific_theory_v0690_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_scientific_theory_v0690(payload)
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/packet")
+def scientific_theory_v0690_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_theory_packet_v0690(payload)
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-theory/v0690/verify")
+def scientific_theory_v0690_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_scientific_theory_packet_v0690(payload)
+    except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 # v0.65.0 Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
 @app.get("/v1/evidence-grading/v0650/health")
