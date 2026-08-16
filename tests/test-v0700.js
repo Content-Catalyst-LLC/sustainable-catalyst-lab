@@ -1,0 +1,24 @@
+const fs=require('fs'),path=require('path'),root=path.join(__dirname,'..');
+function text(p){return fs.readFileSync(path.join(root,p),'utf8')} function pass(x,m){if(!x)throw new Error('FAIL - '+m);console.log('PASS - '+m)}
+const js=text('assets/js/modules/preregistration-v0700.js'),tpl=text('templates/lab-app.php'),plugin=text('includes/class-sc-lab-plugin.php'),core=text('includes/class-sc-lab-python-compute-core-v0261.php');
+pass(js.includes("VERSION='0.70.0'"),'v0.70 browser module version');
+pass(js.includes('scientificResearchQuestionsV0700'),'research-question project collection');
+pass(js.includes('scientificHypothesisRegistryV0700'),'hypothesis registry collection');
+pass(js.includes('scientificPreregistrationsV0700'),'preregistration collection');
+pass(js.includes('scientificPreregistrationFreezesV0700'),'immutable freeze collection');
+pass(js.includes('scientificPreregistrationDeviationsV0700'),'timestamped deviation collection');
+pass(js.includes("recordType:'preregistration-v0700'"),'preregistration packet enters analysisPackets');
+pass(js.includes('scientificStudiesV0610'),'v0.61 study context reused');
+pass(js.includes('scientificClaimsV0620'),'v0.62 claim context reused');
+pass(js.includes('scientificHypothesesV0660'),'v0.66 argument-hypothesis context reused');
+pass(js.includes('scientificTheoriesV0690')&&js.includes('scientificTheoryPredictionsV0690'),'v0.69 theory context reused');
+pass(!js.includes('MutationObserver'),'v0.70 introduces no MutationObserver');
+pass(tpl.includes('data-preregistration-v0700'),'contextual preregistration panel present');
+pass(tpl.includes('preregistration-bounded does not mean the hypothesis is true'),'non-proof registration boundary present');
+pass((tpl.match(/data-v0483-primary=/g)||[]).length===6,'six-destination rail preserved');
+pass(tpl.includes('Prototyping Workbench')&&tpl.includes('Decision Studio')&&tpl.includes('Site Intelligence'),'three application card row preserved');
+pass(tpl.includes('GRAPH STUDIO / PROJECT FIGURE'),'Graph Studio front door preserved');
+pass(plugin.includes("'preregistration-v0700'"),'v0.70 JS module registered');
+pass(plugin.includes('sc-lab-preregistration-v0700'),'v0.70 stylesheet registered');
+pass(core.includes('/compute/core/preregistration/v0700/freeze'),'WordPress v0.70 freeze proxy registered');
+pass(core.includes('/compute/core/preregistration/v0700/evaluate'),'WordPress v0.70 evaluate proxy registered');

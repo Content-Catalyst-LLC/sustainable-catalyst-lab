@@ -81,6 +81,7 @@ from .scientific_argumentation_v0660 import ScientificArgumentationError, build_
 from .causal_inference_v0670 import CausalInferenceError, build_packet as build_causal_inference_packet_v0670, evaluate as evaluate_causal_inference_v0670, health as causal_inference_health_v0670, normalize_design as normalize_causal_design_v0670, normalize_diagnostic as normalize_causal_diagnostic_v0670, normalize_estimate as normalize_causal_estimate_v0670, policies as causal_inference_policies_v0670, record_review as record_causal_review_v0670, verify_packet as verify_causal_inference_packet_v0670
 from .hierarchical_modeling_v0680 import HierarchicalModelingError, build_packet as build_hierarchical_modeling_packet_v0680, evaluate as evaluate_hierarchical_modeling_v0680, fit_model as fit_hierarchical_model_v0680, health as hierarchical_modeling_health_v0680, normalize_model as normalize_hierarchical_model_v0680, normalize_unit as normalize_hierarchical_unit_v0680, policies as hierarchical_modeling_policies_v0680, record_review as record_hierarchical_modeling_review_v0680, verify_packet as verify_hierarchical_modeling_packet_v0680
 from .scientific_theory_v0690 import ScientificTheoryError, build_graph as build_scientific_theory_graph_v0690, build_packet as build_scientific_theory_packet_v0690, evaluate as evaluate_scientific_theory_v0690, health as scientific_theory_health_v0690, normalize_construct as normalize_theory_construct_v0690, normalize_prediction as normalize_theory_prediction_v0690, normalize_relation as normalize_theory_relation_v0690, normalize_theory as normalize_scientific_theory_v0690, policies as scientific_theory_policies_v0690, record_review as record_scientific_theory_review_v0690, verify_packet as verify_scientific_theory_packet_v0690
+from .preregistration_v0700 import PreregistrationError, build_packet as build_preregistration_packet_v0700, evaluate as evaluate_preregistration_v0700, freeze_preregistration as freeze_preregistration_v0700, health as preregistration_health_v0700, normalize_deviation as normalize_preregistration_deviation_v0700, normalize_hypothesis as normalize_registered_hypothesis_v0700, normalize_preregistration as normalize_preregistration_v0700, normalize_question as normalize_research_question_v0700, policies as preregistration_policies_v0700, record_review as record_preregistration_review_v0700, verify_freeze as verify_preregistration_freeze_v0700, verify_packet as verify_preregistration_packet_v0700
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1369,6 +1370,75 @@ def scientific_theory_v0690_verify_route(payload: dict[str, Any], auth: dict[str
     del auth
     try: return verify_scientific_theory_packet_v0690(payload)
     except ScientificTheoryError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+# v0.70.0 Research Questions, Hypothesis Registry & Preregistration
+@app.get("/v1/preregistration/v0700/health")
+def preregistration_v0700_health_route():
+    body=preregistration_health_v0700(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/preregistration/v0700/policies")
+def preregistration_v0700_policies_route():
+    return preregistration_policies_v0700()
+
+@app.post("/v1/preregistration/v0700/normalize-question")
+def preregistration_v0700_normalize_question_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"question":normalize_research_question_v0700(payload.get("question") if isinstance(payload,dict) else {})}
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/normalize-hypothesis")
+def preregistration_v0700_normalize_hypothesis_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"hypothesis":normalize_registered_hypothesis_v0700(payload.get("hypothesis") if isinstance(payload,dict) else {})}
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/normalize-preregistration")
+def preregistration_v0700_normalize_preregistration_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"preregistration":normalize_preregistration_v0700(payload.get("preregistration") if isinstance(payload,dict) else {})}
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/normalize-deviation")
+def preregistration_v0700_normalize_deviation_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"deviation":normalize_preregistration_deviation_v0700(payload.get("deviation") if isinstance(payload,dict) else {})}
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/freeze")
+def preregistration_v0700_freeze_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return freeze_preregistration_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/verify-freeze")
+def preregistration_v0700_verify_freeze_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_preregistration_freeze_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/review")
+def preregistration_v0700_review_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_preregistration_review_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/evaluate")
+def preregistration_v0700_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_preregistration_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/packet")
+def preregistration_v0700_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_preregistration_packet_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/preregistration/v0700/verify")
+def preregistration_v0700_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_preregistration_packet_v0700(payload)
+    except PreregistrationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 # v0.65.0 Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
 @app.get("/v1/evidence-grading/v0650/health")

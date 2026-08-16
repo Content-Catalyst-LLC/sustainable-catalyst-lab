@@ -1,3 +1,8 @@
+## v0.70.0 — Research Questions, Hypothesis Registry & Preregistration
+
+v0.70.0 adds governed research-question and hypothesis registries, a pre-result preregistration plan, tamper-evident freeze snapshots, timestamped post-freeze deviation disclosure, and human review. A `preregistration-bounded` result describes registration integrity within the stated scope; it does not validate a hypothesis, prove absence of bias, or convert post-hoc findings into confirmatory evidence.
+
+
 ## v0.69.0 — Scientific Theory & Conceptual Model Workspace
 
 v0.69.0 connects constructs, mechanisms, hypotheses, equations/model references, claims, evidence, predictions, falsification conditions, and explicit scope boundaries into human-reviewed scientific theories. Theory evaluation is metadata-only and preserves the six-destination Lab architecture; a `theory-bounded` result is not scientific proof or automatic causal certification.

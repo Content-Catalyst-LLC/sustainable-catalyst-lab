@@ -1,3 +1,24 @@
+## v0.70.0 R1 — Repository Runtime-Health Scope, Plugin Identity & Route-Alias Repair
+
+- Separates Git/source-checkout certification from live WordPress plugin identity validation.
+- Accepts noncanonical repository checkout folder names during `repository-validation` without weakening live WordPress folder identity.
+- Restricts repository validation to the current source checkout so sibling development repositories are not false duplicate-plugin candidates.
+- Preserves strict duplicate-plugin detection inside the live WordPress plugin directory.
+- Makes `marine`, `climate`, `evidence`, and `astronomy-observations` canonical alias checks self-contained and promotion-blocking.
+- Adds R1 runtime-health metadata and repository/live-WordPress regression contracts.
+- Preserves the WordPress release at v0.70.0 and all preregistration/scientific semantics.
+
+## v0.70.0 — Research Questions, Hypothesis Registry & Preregistration
+
+- Adds governed research-question and hypothesis registry objects linked to the existing scientific study, claims, argumentation, and theory line.
+- Adds primary/secondary outcome hierarchy, analysis plans, inclusion/exclusion rules, stopping rules, sample/information-size rationale, missing-data, multiplicity, and sensitivity plans.
+- Adds explicit pre-result attestation and immutable hash-bound preregistration freeze snapshots.
+- Detects post-freeze mutation as `freeze-integrity-failure` instead of silently accepting a rewritten plan.
+- Adds timestamped deviation records so post-freeze changes remain visible without altering the original registration.
+- Adds human preregistration review and metadata-only tamper-evident analysis packets.
+- Preserves the six-destination rail, Graph Studio front door, contextual Scientific Workflows surface, and v0.69 theory layer.
+- Automatic hypothesis validation, automatic post-hoc preregistration, raw/participant-level data, arbitrary code, and network fetching during evaluation remain disabled.
+
 ## 0.69.0 — Scientific Theory & Conceptual Model Workspace
 
 - Added governed theory, construct, relation, prediction, graph, review, evaluation, and packet contracts.

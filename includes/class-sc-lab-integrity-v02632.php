@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Integrity_V02632 {
     const VERSION = '0.26.3.2';
+    const REPAIR_LINE = '0.70.0-r1';
     const MANIFEST_RELATIVE = 'build/sc-lab-release-manifest.json';
     const EXPECTED_BASENAME = 'sustainable-catalyst-lab/sustainable-catalyst-lab.php';
     private static $initialized = false;
@@ -21,6 +22,11 @@ final class SC_Lab_Integrity_V02632 {
         add_filter('do_shortcode_tag', array(__CLASS__, 'annotate_app'), PHP_INT_MAX, 4);
         add_action('rest_api_init', array(__CLASS__, 'routes'));
         add_action('admin_notices', array(__CLASS__, 'admin_notice'));
+    }
+
+    private static function runtime_context() {
+        $context = defined('SC_LAB_INTEGRITY_CONTEXT') ? sanitize_key((string) SC_LAB_INTEGRITY_CONTEXT) : 'wordpress-plugin';
+        return in_array($context, array('wordpress-plugin', 'repository-validation'), true) ? $context : 'wordpress-plugin';
     }
 
     private static function is_lab_request() {
@@ -117,6 +123,19 @@ final class SC_Lab_Integrity_V02632 {
     }
 
     private static function plugin_candidates() {
+        $context = self::runtime_context();
+        if ($context === 'repository-validation') {
+            if (!defined('SC_LAB_FILE') || !is_file(SC_LAB_FILE)) { return array(); }
+            return array(array(
+                'basename' => defined('SC_LAB_PLUGIN_BASENAME') ? SC_LAB_PLUGIN_BASENAME : basename(dirname(SC_LAB_FILE)) . '/' . basename(SC_LAB_FILE),
+                'folder' => defined('SC_LAB_DIR') ? basename(rtrim(SC_LAB_DIR, '/\\')) : basename(dirname(SC_LAB_FILE)),
+                'version' => self::plugin_header_version(SC_LAB_FILE),
+                'active' => false,
+                'current' => true,
+                'sha256' => hash_file('sha256', SC_LAB_FILE),
+                'scope' => 'current-source-checkout',
+            ));
+        }
         if (!defined('WP_PLUGIN_DIR') || !is_dir(WP_PLUGIN_DIR)) { return array(); }
         $active = (array) get_option('active_plugins', array());
         $network = function_exists('is_multisite') && is_multisite() ? array_keys((array) get_site_option('active_sitewide_plugins', array())) : array();
@@ -130,6 +149,7 @@ final class SC_Lab_Integrity_V02632 {
                 'active' => in_array($basename, $active, true) || in_array($basename, $network, true),
                 'current' => defined('SC_LAB_FILE') && realpath($file) === realpath(SC_LAB_FILE),
                 'sha256' => hash_file('sha256', $file),
+                'scope' => 'wordpress-plugin-directory',
             );
         }
         usort($records, function($a, $b) { return strcmp($a['basename'], $b['basename']); });
@@ -146,17 +166,38 @@ final class SC_Lab_Integrity_V02632 {
         return $modules;
     }
 
+    private static function route_contracts() {
+        return array(
+            'marine' => 'marine-biology',
+            'climate' => 'climate-maps',
+            'evidence' => 'evidence-decisions',
+            'astronomy-observations' => 'space-telescopes',
+        );
+    }
+
+    private static function resolve_route_alias($alias) {
+        $alias = sanitize_key((string) $alias);
+        if (class_exists('SC_Lab_Runtime_Repair_V02631') && method_exists('SC_Lab_Runtime_Repair_V02631', 'canonical_module')) {
+            return array('resolved' => SC_Lab_Runtime_Repair_V02631::canonical_module($alias), 'resolver' => 'runtime-alias-map');
+        }
+        $contracts = self::route_contracts();
+        return array('resolved' => isset($contracts[$alias]) ? $contracts[$alias] : $alias, 'resolver' => 'integrity-contract-fallback');
+    }
+
     private static function route_checks() {
         $modules = self::template_modules();
-        $aliases = class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::alias_map() : array();
         $checks = array();
-        foreach (array('marine' => 'marine-biology', 'climate' => 'climate-maps', 'evidence' => 'evidence-decisions', 'astronomy-observations' => 'space-telescopes') as $alias => $canonical) {
-            $resolved = isset($aliases[$alias]) ? sanitize_key((string) $aliases[$alias]) : $alias;
+        foreach (self::route_contracts() as $alias => $canonical) {
+            $resolution = self::resolve_route_alias($alias);
+            $resolved = sanitize_key((string) $resolution['resolved']);
+            $present = in_array($canonical, $modules, true);
             $checks[$alias] = array(
                 'expected' => $canonical,
                 'resolved' => $resolved,
-                'canonicalPanelPresent' => in_array($canonical, $modules, true),
-                'ok' => $resolved === $canonical && in_array($canonical, $modules, true),
+                'resolver' => $resolution['resolver'],
+                'aliasMapped' => $resolved === $canonical,
+                'canonicalPanelPresent' => $present,
+                'ok' => $resolved === $canonical && $present,
             );
         }
         return $checks;
@@ -197,16 +238,22 @@ final class SC_Lab_Integrity_V02632 {
     }
 
     private static function identity() {
+        $context = self::runtime_context();
         $actual_basename = defined('SC_LAB_PLUGIN_BASENAME') ? SC_LAB_PLUGIN_BASENAME : (defined('SC_LAB_FILE') ? plugin_basename(SC_LAB_FILE) : null);
         $actual_folder = defined('SC_LAB_DIR') ? basename(rtrim(SC_LAB_DIR, '/\\')) : null;
         $bootstrap = defined('SC_LAB_FILE') ? realpath(SC_LAB_FILE) : null;
+        $folder_required = $context === 'wordpress-plugin';
+        $folder_matches = !$folder_required || $actual_folder === 'sustainable-catalyst-lab';
         return array(
+            'runtimeContext' => $context,
             'expectedBasename' => self::EXPECTED_BASENAME,
             'actualBasename' => $actual_basename,
             'basenameMatches' => $actual_basename === self::EXPECTED_BASENAME,
             'expectedFolder' => 'sustainable-catalyst-lab',
             'actualFolder' => $actual_folder,
-            'folderMatches' => $actual_folder === 'sustainable-catalyst-lab',
+            'folderRequired' => $folder_required,
+            'folderMatches' => $folder_matches,
+            'sourceCheckoutFolderAccepted' => $context === 'repository-validation' && $actual_folder !== 'sustainable-catalyst-lab',
             'bootstrap' => $bootstrap,
             'bootstrapExists' => $bootstrap && is_file($bootstrap),
         );
@@ -239,15 +286,23 @@ final class SC_Lab_Integrity_V02632 {
         $release_consistent = $versions['release'] === $versions['featureRelease'] && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'];
         $platform_consistent = $versions['platformCompatibility'] === $versions['pluginConstant'] && $versions['platformCompatibility'] === $versions['manifestPlatform'];
         $version_consistent = $release_consistent && $platform_consistent;
-        $duplicate_risk = count($candidates) > 1;
-        $partial = !$version_consistent || empty($verification['ok']) || empty($identity['basenameMatches']) || empty($identity['folderMatches']);
+        $context = self::runtime_context();
+        $duplicate_risk = $context === 'wordpress-plugin' && count($candidates) > 1;
+        $route_checks = self::route_checks();
+        $route_ok = !empty($route_checks);
+        foreach ($route_checks as $check) { if (empty($check['ok'])) { $route_ok = false; break; } }
+        $partial = !$version_consistent || empty($verification['ok']) || empty($identity['basenameMatches']) || empty($identity['folderMatches']) || !$route_ok;
         return array(
             'ok' => !$partial && !$duplicate_risk,
             'state' => $partial ? 'partial-or-mismatched' : ($duplicate_risk ? 'duplicate-plugin-risk' : 'verified'),
+            'runtimeContext' => $context,
+            'repairLine' => self::REPAIR_LINE,
             'partialInstallRisk' => $partial,
             'releaseVersionConsistent' => $release_consistent,
             'platformVersionConsistent' => $platform_consistent,
             'duplicatePluginRisk' => $duplicate_risk,
+            'pluginCandidateScope' => $context === 'repository-validation' ? 'current-source-checkout' : 'wordpress-plugin-directory',
+            'routeIntegrityVerified' => $route_ok,
             'versions' => $versions,
             'identity' => $identity,
             'manifest' => array(
@@ -257,7 +312,7 @@ final class SC_Lab_Integrity_V02632 {
                 'verification' => $verification,
             ),
             'pluginCandidates' => $candidates,
-            'routeChecks' => self::route_checks(),
+            'routeChecks' => $route_checks,
             'assetStrategy' => 'content-sha256-query-versioning',
             'integrityScope' => 'wordpress-plugin-files-only',
             'rollback' => array(
@@ -277,6 +332,8 @@ final class SC_Lab_Integrity_V02632 {
             'version' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION,
             'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : SC_LAB_VERSION,
             'integrityVersion' => self::VERSION,
+            'repairLine' => self::REPAIR_LINE,
+            'runtimeContext' => self::runtime_context(),
             'recordedAt' => gmdate('c'),
         ), false);
     }
@@ -307,6 +364,8 @@ final class SC_Lab_Integrity_V02632 {
             'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null)),
             'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null),
             'integrityRuntimeVersion' => self::VERSION,
+            'repairLine' => self::REPAIR_LINE,
+            'runtimeContext' => self::runtime_context(),
             'manifest' => $manifest,
             'verification' => self::verify_manifest(),
         ));
@@ -317,8 +376,8 @@ final class SC_Lab_Integrity_V02632 {
         $state = self::release_state();
         if (!empty($state['ok'])) { return; }
         $issues = array();
-        if (!empty($state['partialInstallRisk'])) { $issues[] = 'release files or version markers do not match'; }
-        if (!empty($state['duplicatePluginRisk'])) { $issues[] = 'more than one Sustainable Catalyst Lab plugin folder exists'; }
+        if (!empty($state['partialInstallRisk'])) { $issues[] = 'release files, version markers, plugin identity, or canonical route contracts do not match'; }
+        if (!empty($state['duplicatePluginRisk'])) { $issues[] = 'more than one Sustainable Catalyst Lab plugin folder exists in the WordPress plugin directory'; }
         echo '<div class="notice notice-error"><p><strong>Sustainable Catalyst Lab integrity warning:</strong> ' . esc_html(implode('; ', $issues)) . '. Check <code>/wp-json/sc-lab/v1/runtime/health</code> before continuing upgrades.</p></div>';
     }
 }
