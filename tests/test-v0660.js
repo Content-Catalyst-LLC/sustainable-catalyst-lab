@@ -1,0 +1,20 @@
+const fs=require('fs'),path=require('path'),root=path.join(__dirname,'..');
+function text(p){return fs.readFileSync(path.join(root,p),'utf8')} function pass(x,m){if(!x)throw new Error('FAIL - '+m);console.log('PASS - '+m)}
+const js=text('assets/js/modules/scientific-argumentation-v0660.js'),tpl=text('templates/lab-app.php'),plugin=text('includes/class-sc-lab-plugin.php'),core=text('includes/class-sc-lab-python-compute-core-v0261.php');
+pass(js.includes("VERSION='0.66.0'"),'v0.66 browser module version');
+pass(js.includes('scientificArgumentationCasesV0660'),'argument case project collection');
+pass(js.includes('scientificHypothesesV0660'),'competing hypothesis project collection');
+pass(js.includes('scientificArgumentEvidenceLinksV0660'),'hypothesis evidence-link collection');
+pass(js.includes('scientificDiscriminatingTestsV0660'),'discriminating-test collection');
+pass(js.includes("recordType:'scientific-argumentation-v0660'"),'argumentation packet enters analysisPackets');
+pass(js.includes('scientificEvidenceGradingAssessmentsV0650'),'v0.65 evidence-boundary records reused');
+pass(js.includes('scientificClaimsV0620'),'v0.62 claims reused');
+pass(js.includes('no automatic winner or proof'),'automatic proof/winner boundary explicit');
+pass(!js.includes('MutationObserver'),'v0.66 introduces no MutationObserver');
+pass(tpl.includes('data-scientific-argumentation-v0660'),'contextual scientific argumentation panel present');
+pass((tpl.match(/data-v0483-primary=/g)||[]).length===6,'six-destination rail preserved');
+pass(tpl.includes('Prototyping Workbench')&&tpl.includes('Decision Studio')&&tpl.includes('Site Intelligence'),'three application card row preserved');
+pass(tpl.includes('GRAPH STUDIO / PROJECT FIGURE'),'Graph Studio front door preserved');
+pass(plugin.includes("'scientific-argumentation-v0660'"),'v0.66 JS module registered');
+pass(plugin.includes('sc-lab-scientific-argumentation-v0660'),'v0.66 stylesheet registered');
+pass(core.includes('/compute/core/scientific-argumentation/v0660/evaluate'),'WordPress v0.66 evaluate proxy registered');

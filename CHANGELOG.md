@@ -1,3 +1,7 @@
+## v0.66.0 — Competing Hypotheses & Scientific Argumentation
+
+Adds project-scoped rival hypotheses, explicit predictions, governed hypothesis-evidence links, discriminating tests, falsifying-evidence challenges, unresolved-alternative preservation, human hypothesis review, and human-reviewed argument maps on top of the v0.62–v0.65 evidence chain. No automatic hypothesis proof, hidden winner selection, automatic falsification, numeric truth score, or causal certification is introduced.
+
 ## v0.65.0 — Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
 
 Adds transparent evidence-state grading, contradiction analysis, replication/heterogeneity boundaries, source-caution preservation, and explicit human-reviewed consensus-boundary statements on top of the v0.62–v0.64 claims/literature/synthesis chain. No numeric truth score, citation-count authority ranking, journal-prestige ranking, automatic consensus certification, or automatic causal certification is introduced.

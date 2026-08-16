@@ -77,6 +77,7 @@ from .scientific_claims_traceability_v0620 import ScientificClaimsTraceabilityEr
 from .scientific_literature_provenance_v0630 import ScientificLiteratureProvenanceError, build_provenance_packet as build_scientific_literature_packet_v0630, evaluate_provenance as evaluate_scientific_literature_v0630, health as scientific_literature_health_v0630, normalize_citation_edge as normalize_scientific_citation_edge_v0630, normalize_claim_link as normalize_scientific_claim_link_v0630, normalize_source as normalize_scientific_literature_source_v0630, policies as scientific_literature_policies_v0630, record_source_review as record_scientific_literature_source_review_v0630, verify_provenance_packet as verify_scientific_literature_packet_v0630
 from .systematic_evidence_synthesis_v0640 import SystematicEvidenceSynthesisError, build_synthesis_packet as build_evidence_synthesis_packet_v0640, health as evidence_synthesis_health_v0640, meta_analyze as meta_analyze_v0640, normalize_effect as normalize_study_effect_v0640, normalize_protocol as normalize_synthesis_protocol_v0640, policies as evidence_synthesis_policies_v0640, record_synthesis_review as record_synthesis_review_v0640, verify_synthesis_packet as verify_evidence_synthesis_packet_v0640
 from .scientific_evidence_grading_v0650 import ScientificEvidenceGradingError, build_consensus_packet as build_scientific_consensus_packet_v0650, evaluate_evidence as evaluate_scientific_evidence_v0650, health as scientific_evidence_grading_health_v0650, normalize_assessment as normalize_scientific_evidence_assessment_v0650, policies as scientific_evidence_grading_policies_v0650, record_boundary_review as record_scientific_boundary_review_v0650, verify_consensus_packet as verify_scientific_consensus_packet_v0650
+from .scientific_argumentation_v0660 import ScientificArgumentationError, build_argumentation_packet as build_scientific_argumentation_packet_v0660, evaluate_argumentation as evaluate_scientific_argumentation_v0660, health as scientific_argumentation_health_v0660, normalize_case as normalize_scientific_argumentation_case_v0660, normalize_discriminating_test as normalize_discriminating_test_v0660, normalize_evidence_link as normalize_argument_evidence_link_v0660, normalize_hypothesis as normalize_scientific_hypothesis_v0660, policies as scientific_argumentation_policies_v0660, record_case_review as record_scientific_argumentation_case_review_v0660, record_hypothesis_review as record_scientific_hypothesis_review_v0660, verify_argumentation_packet as verify_scientific_argumentation_packet_v0660
 from .scientific_study_lifecycle_v0610 import ScientificStudyLifecycleError, build_study_packet as build_scientific_study_packet_v0610, evaluate_lifecycle as evaluate_scientific_study_lifecycle_v0610, health as scientific_study_lifecycle_health_v0610, normalize_study as normalize_scientific_study_v0610, policies as scientific_study_lifecycle_policies_v0610, record_stage_review as record_scientific_study_stage_review_v0610, templates as scientific_study_templates_v0610, verify_study_packet as verify_scientific_study_packet_v0610
 from .connected_platform_beta import ConnectedPlatformBetaManager, BetaPlatformError, policies as connected_platform_beta_policies
 from .interface_finalization import InterfaceFinalizationManager, InterfaceFinalizationError, policies as interface_finalization_policies
@@ -1135,6 +1136,70 @@ def advanced_experimental_design_verify_route(payload: dict[str, Any], auth: dic
     try: return verify_advanced_experimental_design(payload)
     except AdvancedExperimentalDesignError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+
+
+# v0.66.0 Competing Hypotheses & Scientific Argumentation
+@app.get("/v1/scientific-argumentation/v0660/health")
+def scientific_argumentation_v0660_health_route():
+    body=scientific_argumentation_health_v0660(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/scientific-argumentation/v0660/policies")
+def scientific_argumentation_v0660_policies_route():
+    return scientific_argumentation_policies_v0660()
+
+@app.post("/v1/scientific-argumentation/v0660/normalize-case")
+def scientific_argumentation_v0660_normalize_case_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"case":normalize_scientific_argumentation_case_v0660(payload.get("case") if isinstance(payload,dict) else {})}
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/normalize-hypothesis")
+def scientific_argumentation_v0660_normalize_hypothesis_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"hypothesis":normalize_scientific_hypothesis_v0660(payload.get("hypothesis") if isinstance(payload,dict) else {})}
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/normalize-evidence-link")
+def scientific_argumentation_v0660_normalize_evidence_link_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"evidenceLink":normalize_argument_evidence_link_v0660(payload.get("evidenceLink") if isinstance(payload,dict) else {})}
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/normalize-test")
+def scientific_argumentation_v0660_normalize_test_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok":True,"test":normalize_discriminating_test_v0660(payload.get("test") if isinstance(payload,dict) else {})}
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/review-hypothesis")
+def scientific_argumentation_v0660_review_hypothesis_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_hypothesis_review_v0660(payload)
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/review-case")
+def scientific_argumentation_v0660_review_case_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return record_scientific_argumentation_case_review_v0660(payload)
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/evaluate")
+def scientific_argumentation_v0660_evaluate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return evaluate_scientific_argumentation_v0660(payload)
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/packet")
+def scientific_argumentation_v0660_packet_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return build_scientific_argumentation_packet_v0660(payload)
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/scientific-argumentation/v0660/verify")
+def scientific_argumentation_v0660_verify_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return verify_scientific_argumentation_packet_v0660(payload)
+    except ScientificArgumentationError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # v0.65.0 Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
