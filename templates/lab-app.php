@@ -205,19 +205,60 @@
         </div>
 
         <section class="sc-lab-overview-stage-v0481" aria-label="Graph Studio front door">
-          <div class="sc-lab-overview-figure-v0481">
+          <div class="sc-lab-overview-figure-v0481 sc-lab-overview-figure-v0710">
             <div class="sc-lab-overview-figure-head-v0481">
               <div>
-                <span class="sc-lab-section-code">GRAPH STUDIO / PROJECT FIGURE</span>
-                <h4 data-v0481-preview-title>Scientific figure workspace</h4>
-                <p data-v0481-preview-meta>Latest saved project figure, or an illustrative scientific preview.</p>
+                <span class="sc-lab-section-code">ADVANCED VISUALIZATION / 4D PROJECTION</span>
+                <h4>Multidimensional response field <span class="sc-lab-v0710-title-tag">Illustrative</span></h4>
+                <p>Explore a browser-rendered 4D response surface, vector field, uncertainty envelope, contours, and projected tesseract before opening Graph Studio.</p>
               </div>
               <div class="sc-lab-overview-figure-actions-v0481">
-                <button type="button" class="sc-lab-button" data-v0481-open-latest>Latest figure</button>
+                <button type="button" class="sc-lab-button" data-v0481-open-latest>Latest saved figure</button>
                 <button type="button" class="sc-lab-button sc-lab-button-primary" data-open-module="graph-studio">Open Graph Studio</button>
               </div>
             </div>
-            <div class="sc-lab-overview-canvas-v0481" data-v0481-overview-canvas aria-label="Scientific figure preview"></div>
+
+            <div class="sc-lab-v0710-visualizer" data-v0710-visualizer>
+              <div class="sc-lab-v0710-toolbar">
+                <div class="sc-lab-v0710-toolbar-group" aria-label="Visualization layers">
+                  <button type="button" aria-pressed="true" disabled>4D surface</button>
+                  <button type="button" data-v0710-layer="vector" aria-pressed="true">Vector field</button>
+                  <button type="button" data-v0710-layer="uncertainty" aria-pressed="true">Uncertainty</button>
+                  <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
+                </div>
+                <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
+              </div>
+
+              <div class="sc-lab-v0710-body">
+                <div class="sc-lab-v0710-canvas-wrap">
+                  <canvas class="sc-lab-v0710-canvas" data-v0710-canvas aria-label="Interactive illustrative four-dimensional scientific response field projected into three dimensions"></canvas>
+                  <div class="sc-lab-v0710-overlay" aria-hidden="true">
+                    <span class="sc-lab-v0710-chip"><strong>4D</strong> x · y · z · w</span>
+                    <span class="sc-lab-v0710-chip">Browser rendered</span>
+                    <span class="sc-lab-v0710-chip">No compute required</span>
+                  </div>
+                  <div class="sc-lab-v0710-readout" data-v0710-readout>Projected 4D response field</div>
+                  <div class="sc-lab-v0710-pointer" data-v0710-pointer>Move over the field to inspect coordinates</div>
+                </div>
+
+                <aside class="sc-lab-v0710-controls" aria-label="Higher-dimensional visualization controls">
+                  <h5>Dimensional context</h5>
+                  <p>The fourth dimension is represented by hyperslicing and 4D-to-3D projection, not as a literal fourth spatial axis.</p>
+                  <label class="sc-lab-v0710-control"><span>W hyperslice <output>−1 ↔ +1</output></span><input data-v0710-w type="range" min="-1" max="1" step="0.01" value="0.37"></label>
+                  <label class="sc-lab-v0710-control"><span>XW rotation <output>4D plane</output></span><input data-v0710-xw type="range" min="-1.4" max="1.4" step="0.01" value="0.34"></label>
+                  <label class="sc-lab-v0710-control"><span>YW rotation <output>4D plane</output></span><input data-v0710-yw type="range" min="-1.4" max="1.4" step="0.01" value="-0.22"></label>
+                  <button type="button" class="sc-lab-v0710-animate" data-v0710-animate aria-pressed="false">Animate 4D sweep</button>
+                </aside>
+              </div>
+
+              <div class="sc-lab-v0710-metrics" aria-label="Illustrative visualization diagnostics">
+                <div class="sc-lab-v0710-metric"><small>Peak response</small><strong data-v0710-metric="peak">2.48</strong><em>relative illustrative units</em></div>
+                <div class="sc-lab-v0710-metric"><small>W hyperslice</small><strong data-v0710-metric="slice">0.37</strong><em>active 4D slice</em></div>
+                <div class="sc-lab-v0710-metric"><small>Field density</small><strong>31×31</strong><em>browser sampling grid</em></div>
+                <div class="sc-lab-v0710-metric"><small>Layers</small><strong>5</strong><em>surface · vector · uncertainty · contour · polytope</em></div>
+              </div>
+            </div>
+            <p class="sc-lab-v0710-note">This front-door visualization is an illustrative scientific interface demonstration. Saved project figures and computed results remain explicitly identified and are opened in Graph Studio.</p>
           </div>
 
           <aside class="sc-lab-overview-launcher-v0481" aria-label="Primary research workspaces">

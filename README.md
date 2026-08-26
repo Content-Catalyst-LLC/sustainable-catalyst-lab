@@ -1,3 +1,7 @@
+## v0.71.0 — Advanced Scientific Visualization Front Door & 4D Projection
+
+v0.71.0 replaces the older landing-page line/scatter preview with an interactive browser-rendered 4D scientific visualization: response surface, vector field, uncertainty guides, contours, W hyperslicing, XW/YW rotation, 4D sweep animation, and a projected tesseract. It also changes transient Python Compute Core startup failures from immediate “Lab recovery” warnings into non-blocking “Compute reconnecting” states while preserving queued-job recovery and escalation for persistent failures.
+
 ## v0.70.0 — Research Questions, Hypothesis Registry & Preregistration
 
 v0.70.0 adds governed research-question and hypothesis registries, a pre-result preregistration plan, tamper-evident freeze snapshots, timestamped post-freeze deviation disclosure, and human review. A `preregistration-bounded` result describes registration integrity within the stated scope; it does not validate a hypothesis, prove absence of bias, or convert post-hoc findings into confirmatory evidence.

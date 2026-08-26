@@ -1,3 +1,13 @@
+## v0.71.0 — Advanced Scientific Visualization Front Door & 4D Projection
+
+- Replaces the legacy Graph Studio landing preview with an interactive browser-rendered 4D response-field front door.
+- Adds W hyperslicing, XW/YW rotation, projected tesseract geometry, vector fields, contours, uncertainty guides, coordinate inspection, and 4D sweep animation.
+- Labels the landing visualization as illustrative and keeps saved/computed project figures distinct.
+- Keeps the front-door renderer operational when Python Compute Core is unavailable.
+- Changes the first two compute health failures to a non-blocking `Compute reconnecting` state.
+- Adds bounded 5/10/20/40/60-second compute retry backoff and reserves `Lab recovery` escalation for repeated failures.
+- Preserves v0.70.0 R1 runtime-health repairs, preregistration semantics, and platform compatibility v1.0.0.
+
 ## v0.70.0 R1 — Repository Runtime-Health Scope, Plugin Identity & Route-Alias Repair
 
 - Separates Git/source-checkout certification from live WordPress plugin identity validation.

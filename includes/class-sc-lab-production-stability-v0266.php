@@ -82,7 +82,7 @@ final class SC_Lab_Production_Stability_V0266 {
             'stressModules' => array('overview','climate-maps','marine-biology','astronomy-observations','astronomy','microbiology-laboratory','chemistry','physics','biology','energy-engineering'),
             'strings' => array(
                 'safeMode' => __('Safe mode is active. Persisted projects are not loaded or modified in this browser lifecycle.', 'sustainable-catalyst-lab'),
-                'backendOffline' => __('Python Compute Core is temporarily unavailable. Active jobs will be checked again automatically.', 'sustainable-catalyst-lab'),
+                'backendOffline' => __('Python Compute Core is reconnecting. Browser-local Lab tools remain available, and active jobs will be checked again automatically.', 'sustainable-catalyst-lab'),
                 'jobsRestored' => __('Queued compute jobs were restored after page reload.', 'sustainable-catalyst-lab'),
                 'storageRepaired' => __('Damaged project storage was quarantined and a clean workspace was started.', 'sustainable-catalyst-lab'),
             ),
