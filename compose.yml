@@ -1,0 +1,44 @@
+services:
+  lab:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: sc-lab
+    restart: unless-stopped
+
+    env_file:
+      - .env.production
+
+    environment:
+      PORT: "8092"
+      SC_LAB_JOB_DB_PATH: "/app/data/sc-lab-compute-jobs.sqlite3"
+
+    volumes:
+      - lab_data:/app/data
+
+    networks:
+      - sc-internal
+
+    ports:
+      - "127.0.0.1:8092:8092"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8092/health', timeout=5)"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  lab_data:
+    name: sc-lab-data
+
+networks:
+  sc-internal:
+    external: true
+    name: sc-internal

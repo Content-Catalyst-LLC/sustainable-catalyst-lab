@@ -10,4 +10,4 @@ COPY --chown=appuser:appuser scripts ./scripts
 COPY --chown=appuser:appuser contracts ./contracts
 RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 USER appuser
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --http h11"]
