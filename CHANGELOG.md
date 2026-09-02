@@ -1,3 +1,13 @@
+## v0.72.0 — Homepage 4D Biodiversity Modeling Preview
+
+- Adds `[sc_lab_home_preview]` and `[sc_lab_home_biodiversity]` public shortcodes.
+- Reuses the existing v0.71 4D renderer rather than creating a second scientific visualization engine.
+- Adds a deterministic synthetic biodiversity profile across habitat quality, climate stress, biodiversity response, and time/disturbance progression.
+- Adds synthetic sample markers, biodiversity-specific axes and coordinate inspection, time slicing, XW/YW controls, and optional time-sweep animation.
+- Loads only the visualization assets needed by the homepage widget; Python Compute Core is not required.
+- Preserves explicit scientific boundaries: the public preview is not measurement, forecast, species estimate, or conservation conclusion.
+- Preserves platform compatibility v1.0.0 and all v0.71 scientific capabilities.
+
 ## v0.71.0 — Advanced Scientific Visualization Front Door & 4D Projection
 
 - Replaces the legacy Graph Studio landing preview with an interactive browser-rendered 4D response-field front door.

@@ -1,3 +1,7 @@
+## v0.72.0 — Homepage 4D Biodiversity Modeling Preview
+
+v0.72.0 adds a dedicated public homepage Lab widget that reuses the v0.71 4D scientific visualization renderer with an explicitly synthetic biodiversity profile. The preview models habitat quality, climate stress, relative biodiversity response, and time/disturbance progression together, with surface, contour, vector, uncertainty, tesseract-projection, time-slice, XW/YW rotation, and animation controls. Use `[sc_lab_home_preview]` on the homepage.
+
 ## v0.71.0 — Advanced Scientific Visualization Front Door & 4D Projection
 
 v0.71.0 replaces the older landing-page line/scatter preview with an interactive browser-rendered 4D scientific visualization: response surface, vector field, uncertainty guides, contours, W hyperslicing, XW/YW rotation, 4D sweep animation, and a projected tesseract. It also changes transient Python Compute Core startup failures from immediate “Lab recovery” warnings into non-blocking “Compute reconnecting” states while preserving queued-job recovery and escalation for persistent failures.
