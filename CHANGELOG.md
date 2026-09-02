@@ -1,3 +1,7 @@
+## v0.72.1 — Homepage Biodiversity Time-Sweep Loop
+
+v0.72.1 makes the public 4D biodiversity homepage preview start its existing time/disturbance sweep automatically and continue on a seamless loop. The pause control remains available, reduced-motion preferences disable autoplay, and `[sc_lab_home_preview autoplay="false"]` provides an explicit opt-out. Scientific data and backend boundaries are unchanged.
+
 ## v0.72.0 — Homepage 4D Biodiversity Modeling Preview
 
 - Adds `[sc_lab_home_preview]` and `[sc_lab_home_biodiversity]` public shortcodes.

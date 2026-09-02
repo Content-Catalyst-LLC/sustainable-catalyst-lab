@@ -1,3 +1,7 @@
+## v0.72.1 — Homepage Biodiversity Time-Sweep Loop
+
+v0.72.1 makes the public 4D biodiversity homepage preview start its existing time/disturbance sweep automatically and continue on a seamless loop. The pause control remains available, reduced-motion preferences disable autoplay, and `[sc_lab_home_preview autoplay="false"]` provides an explicit opt-out. Scientific data and backend boundaries are unchanged.
+
 ## v0.72.0 — Homepage 4D Biodiversity Modeling Preview
 
 v0.72.0 adds a dedicated public homepage Lab widget that reuses the v0.71 4D scientific visualization renderer with an explicitly synthetic biodiversity profile. The preview models habitat quality, climate stress, relative biodiversity response, and time/disturbance progression together, with surface, contour, vector, uncertainty, tesseract-projection, time-slice, XW/YW rotation, and animation controls. Use `[sc_lab_home_preview]` on the homepage.

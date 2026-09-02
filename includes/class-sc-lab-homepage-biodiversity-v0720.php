@@ -1,9 +1,9 @@
 <?php
-/** Sustainable Catalyst Lab v0.72.0 Public Homepage 4D Biodiversity Preview. */
+/** Sustainable Catalyst Lab v0.72.1 Public Homepage 4D Biodiversity Preview with looping time sweep. */
 if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Homepage_Biodiversity_V0720 {
-    const VERSION = '0.72.0';
+    const VERSION = '0.72.1';
     private static $initialized = false;
 
     public static function init() {
@@ -24,6 +24,7 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
         $v0710_css = 'assets/css/sc-lab-advanced-visualization-front-door-v0710.css';
         $v0710_js = 'assets/js/modules/advanced-visualization-front-door-v0710.js';
         $v0720_css = 'assets/css/sc-lab-homepage-biodiversity-v0720.css';
+        $v0721_js = 'assets/js/modules/homepage-biodiversity-loop-v0721.js';
 
         wp_enqueue_style(
             'sc-lab-advanced-visualization-front-door-v0710',
@@ -44,6 +45,13 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
             self::asset_version($v0710_js),
             true
         );
+        wp_enqueue_script(
+            'sc-lab-homepage-biodiversity-loop-v0721',
+            SC_LAB_URL . $v0721_js,
+            array('sc-lab-advanced-visualization-front-door-v0710'),
+            self::asset_version($v0721_js),
+            true
+        );
     }
 
     public static function routes() {
@@ -59,6 +67,7 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
             'includes/class-sc-lab-homepage-biodiversity-v0720.php',
             'assets/css/sc-lab-homepage-biodiversity-v0720.css',
             'assets/js/modules/advanced-visualization-front-door-v0710.js',
+            'assets/js/modules/homepage-biodiversity-loop-v0721.js',
         );
         $state = array();
         $ok = true;
@@ -83,6 +92,9 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
             'renderer' => 'advanced-visualization-front-door-v0710',
             'browserRendered' => true,
             'computeRequired' => false,
+            'timeSweepLoop' => true,
+            'autoplayDefault' => true,
+            'reducedMotionHonored' => true,
             'dataBoundary' => 'Deterministic synthetic illustration only; not observations, forecasts, or ecological measurements.',
             'files' => $state,
             'time' => gmdate('c'),
@@ -94,7 +106,10 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
             'title' => '4D Biodiversity Modeling',
             'lab_url' => '/lab/',
             'graph_url' => '/lab/',
+            'autoplay' => 'true',
         ), $atts, 'sc_lab_home_preview');
+
+        $autoplay = !in_array(strtolower(trim((string) $atts['autoplay'])), array('0', 'false', 'no', 'off'), true);
 
         self::enqueue_assets();
         $id = function_exists('wp_unique_id') ? wp_unique_id('sc-lab-home-v0720-') : 'sc-lab-home-v0720';
@@ -102,7 +117,7 @@ final class SC_Lab_Homepage_Biodiversity_V0720 {
 
         ob_start();
         ?>
-        <section id="lab" class="sc-lab-home-v0720" aria-labelledby="<?php echo esc_attr($title_id); ?>" data-sc-lab-home-v0720>
+        <section id="lab" class="sc-lab-home-v0720" aria-labelledby="<?php echo esc_attr($title_id); ?>" data-sc-lab-home-v0720 data-v0721-autoplay-loop="<?php echo $autoplay ? '1' : '0'; ?>">
           <header class="sc-lab-home-v0720__head">
             <div>
               <p class="sc-lab-home-v0720__kicker">Research Lab · 4D scientific modeling</p>
