@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-spatial-raster/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 raster layer",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "crs",
+    "width",
+    "height",
+    "cellCount",
+    "bounds",
+    "values",
+    "statistics",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-spatial-raster/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "crs": {
+      "type": "object"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "cellCount": {
+      "type": "integer",
+      "maximum": 1048576
+    },
+    "bounds": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "values": {
+      "type": "array"
+    },
+    "nodata": {},
+    "statistics": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

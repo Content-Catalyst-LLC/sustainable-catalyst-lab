@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-spatial-viewport/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 spatial viewport",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "bounds",
+    "crs",
+    "width",
+    "height"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-spatial-viewport/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "bounds": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "crs": {
+      "type": "object"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 8192
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 8192
+    },
+    "preserveAspect": {
+      "type": "boolean"
+    },
+    "clipToBounds": {
+      "type": "boolean"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

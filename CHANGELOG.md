@@ -1,3 +1,11 @@
+## 0.80.0 — Spatial, Geospatial & Raster Visualization
+
+- Added the `canvas-spatial` renderer to Visualization Engine 2.7.0.
+- Added declared CRS metadata, explicit spatial viewports, GeoJSON-style point/line/polygon vector geometry, raster grids, nodata preservation, and deterministic bounding-box selection.
+- Added mixed vector + raster scientific figures and v0.79 linked-view composition compatibility.
+- Added v0.80 FastAPI and WordPress health/schema integration plus Graph Studio spatial/raster controls.
+- Automatic CRS inference/reprojection, geocoding, spatial joins, topology repair, raster interpolation/resampling, nodata imputation, network basemaps, WebGL claims, and arbitrary code remain disabled.
+
 ## 0.79.0 — Linked Views, Faceting & Figure Composition
 
 - Added declared selection, filter, and state-axis links across Graph Studio views.

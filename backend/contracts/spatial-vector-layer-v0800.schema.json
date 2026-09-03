@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-spatial-vector-layer/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 vector layer",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "crs",
+    "features",
+    "featureCount",
+    "coordinateCount",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-spatial-vector-layer/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "crs": {
+      "type": "object"
+    },
+    "features": {
+      "type": "array"
+    },
+    "featureCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 50000
+    },
+    "coordinateCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 500000
+    },
+    "bounds": {
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

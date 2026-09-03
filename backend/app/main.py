@@ -43,6 +43,7 @@ from .large_data_visualization_v0760 import LargeDataVisualizationError, adapt_d
 from .scientific_scene_v0770 import ScientificSceneError, build_figure as build_scientific_scene_figure_v0770, build_workspace as build_scientific_scene_workspace_v0770, health as scientific_scene_health_v0770, normalize_camera as normalize_scientific_scene_camera_v0770, normalize_scene as normalize_scientific_scene_v0770, policies as scientific_scene_policies_v0770, scene_from_dataset as scientific_scene_from_dataset_v0770
 from .time_parameter_space_v0780 import TimeParameterSpaceError, build_figure as build_time_parameter_figure_v0780, build_workspace as build_time_parameter_workspace_v0780, health as time_parameter_health_v0780, normalize_axis as normalize_state_axis_v0780, normalize_projection as normalize_4d_projection_v0780, normalize_state_space as normalize_state_space_v0780, policies as time_parameter_policies_v0780, slice_state_space as slice_state_space_v0780, state_space_from_dataset as state_space_from_dataset_v0780
 from .linked_views_v0790 import LinkedViewsError, apply_link_event as apply_link_event_v0790, build_workspace as build_linked_workspace_v0790, facet_dataset as facet_dataset_v0790, health as linked_views_health_v0790, normalize_composition as normalize_linked_composition_v0790, normalize_facet as normalize_facet_v0790, normalize_link as normalize_view_link_v0790, normalize_view as normalize_linked_view_v0790, policies as linked_views_policies_v0790
+from .spatial_geospatial_raster_v0800 import SpatialVisualizationError, bbox_select as bbox_select_v0800, build_spatial_figure as build_spatial_figure_v0800, build_workspace as build_spatial_workspace_v0800, health as spatial_health_v0800, normalize_crs as normalize_crs_v0800, normalize_raster as normalize_raster_v0800, normalize_vector_layer as normalize_vector_layer_v0800, normalize_viewport as normalize_viewport_v0800, policies as spatial_policies_v0800
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -5888,3 +5889,44 @@ def connected_platform_timeline_route(auth: dict[str, str] = Depends(require_com
 def connected_platform_dashboard_route(auth: dict[str, str] = Depends(require_compute_auth)):
     del auth
     return connected_platform.dashboard()
+
+@app.get("/v1/visualization/v0800/health")
+def spatial_v0800_health_route(): return spatial_health_v0800()
+
+@app.get("/v1/visualization/v0800/policies")
+def spatial_v0800_policies_route(): return spatial_policies_v0800()
+
+@app.post("/v1/visualization/v0800/crs/normalize")
+def spatial_v0800_crs_route(payload: dict[str, Any]):
+    try: return {"ok": True, "crs": normalize_crs_v0800(payload.get("crs") or payload)}
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/viewports/normalize")
+def spatial_v0800_viewport_route(payload: dict[str, Any]):
+    try: return {"ok": True, "viewport": normalize_viewport_v0800(payload.get("viewport") or payload)}
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/vectors/normalize")
+def spatial_v0800_vector_route(payload: dict[str, Any]):
+    try: return {"ok": True, "layer": normalize_vector_layer_v0800(payload.get("layer") or payload)}
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/rasters/normalize")
+def spatial_v0800_raster_route(payload: dict[str, Any]):
+    try: return {"ok": True, "raster": normalize_raster_v0800(payload.get("raster") or payload)}
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/selections/bbox")
+def spatial_v0800_bbox_route(payload: dict[str, Any]):
+    try: return bbox_select_v0800(payload)
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/figures/build")
+def spatial_v0800_figure_route(payload: dict[str, Any]):
+    try: return build_spatial_figure_v0800(payload.get("figure") or payload)
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0800/workspaces/build")
+def spatial_v0800_workspace_route(payload: dict[str, Any]):
+    try: return build_spatial_workspace_v0800(payload)
+    except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

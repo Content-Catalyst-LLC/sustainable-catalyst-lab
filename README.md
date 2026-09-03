@@ -1,6 +1,10 @@
-## Current visualization release: v0.79.0
+## Current visualization release: v0.80.0
 
-Graph Studio now supports governed linked views, deterministic faceting, and mixed-renderer figure composition on top of the v0.78 4D/time/parameter-space line. View coordination requires declared keys/channels; automatic joins or inferred scientific relationships are not performed.
+Graph Studio now supports governed spatial, geospatial, and raster visualization through the `canvas-spatial` renderer on top of the v0.79 linked-view composition line. v0.80 accepts explicit vector geometry, explicit raster cells, declared coordinate-reference metadata, explicit viewports, and bounding-box selection. Automatic CRS inference, reprojection, geocoding, spatial joins, topology repair, raster interpolation/resampling, nodata imputation, and network basemaps remain disabled.
+
+## v0.80.0 — Spatial, Geospatial & Raster Visualization
+
+Visualization Engine 2.7.0 adds `canvas-spatial` to the existing `svg2d`, `canvas3d`, and `canvas4d` registry. Spatial figures preserve per-layer CRS metadata, geometry/raster fingerprints, viewport bounds, nodata state, provenance, and explicit no-reprojection/no-interpolation boundaries. Mixed vector/raster figures can participate in v0.79 linked compositions without turning visual proximity into a data join or scientific relationship.
 
 
 ## v0.77.0 — 3D Scientific Scene Engine

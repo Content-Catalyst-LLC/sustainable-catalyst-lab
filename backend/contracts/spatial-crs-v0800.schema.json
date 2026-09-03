@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-spatial-crs/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 declared CRS",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "axisOrder",
+    "units",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-spatial-crs/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "axisOrder": {
+      "enum": [
+        "xy",
+        "yx"
+      ]
+    },
+    "units": {
+      "type": "string"
+    },
+    "geographic": {
+      "type": "boolean"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "wkt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

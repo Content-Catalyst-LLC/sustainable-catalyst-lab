@@ -1,0 +1,35 @@
+{
+  "schema": "sc-lab-spatial-visualization-policy/0.80.0",
+  "version": "0.80.0",
+  "engineVersion": "2.7.0",
+  "renderer": "canvas-spatial",
+  "capabilities": {
+    "spatialVisualization": true,
+    "geospatialVisualization": true,
+    "vectorGeometry": true,
+    "rasterVisualization": true,
+    "coordinateReferenceMetadata": true,
+    "explicitViewport": true,
+    "bboxSelection": true,
+    "mixedRendererComposition": true
+  },
+  "boundaries": {
+    "automaticCRSInference": false,
+    "automaticReprojection": false,
+    "automaticGeocoding": false,
+    "automaticSpatialJoin": false,
+    "topologyRepair": false,
+    "rasterInterpolation": false,
+    "rasterResampling": false,
+    "nodataImputation": false,
+    "networkBasemaps": false,
+    "webgl": false,
+    "arbitraryCode": false
+  },
+  "limits": {
+    "features": 50000,
+    "coordinatePairs": 500000,
+    "rasterCells": 1048576,
+    "layers": 32
+  }
+}

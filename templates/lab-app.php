@@ -1725,7 +1725,7 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.79.0</p><h3>Scientific Visualization Workspace</h3><p>Build governed 2D, 3D, and 4D scientific figures from real datasets. v0.79 adds linked selections, declared cross-view filters, synchronized state axes, deterministic faceting, and mixed-renderer scientific figure composition while preserving the v0.78 4D/time/parameter layer and the v0.77 native 3D scene engine.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.80.0</p><h3>Scientific Visualization Workspace</h3><p>Build governed 2D, 3D, 4D, spatial, geospatial, and raster scientific figures from explicit datasets and geometry. v0.80 adds declared CRS metadata, vector geometry, raster grids, explicit viewports, and bounding-box selection while preserving v0.79 linked views/faceting/composition and the existing 2D/3D/4D renderer line.</p></header>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
         <div class="sc-gs0470-shell">
           <aside class="sc-gs0470-controls" aria-label="Figure controls">
@@ -1793,6 +1793,23 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
                 <div class="sc-gs0790-preview" data-gs-v0790-preview><div>2D view</div><div>Diagnostics</div><div>3D scene</div><div>4D state space</div></div>
                 <p class="sc-gs0790-boundary">Views coordinate only through declared keys and channels. Lab does not infer joins, statistical coupling, causal relationships, or synthetic panels. Facets retain source-row indexes rather than silently copying or transforming authoritative data. Mixed 2D/3D/4D panels preserve their own renderer and provenance.</p>
               </section>
+              <section class="sc-gs0800-spatial" aria-label="Spatial, geospatial and raster controls">
+                <div class="sc-gs0800-head"><strong>SPATIAL / GEOSPATIAL / RASTER</strong><span>v0.80 · canvas-spatial · declared CRS</span></div>
+                <div class="sc-gs0800-grid">
+                  <label>CRS identifier<input data-gs-v0800-crs value="EPSG:4326" placeholder="EPSG:4326, LOCAL:..." /></label>
+                  <label>CRS name<input data-gs-v0800-crs-name value="WGS 84 · declared" /></label>
+                  <label>Axis order<select data-gs-v0800-axis-order><option value="xy" selected>X / Y</option><option value="yx">Y / X</option></select></label>
+                  <label>Coordinate units<input data-gs-v0800-units value="degrees" placeholder="degrees, m, km…" /></label>
+                  <label><input type="checkbox" checked data-gs-v0800-geographic /> Geographic coordinates</label>
+                  <label>Viewport bounds<input data-gs-v0800-bounds value="-90,-45,90,45" placeholder="minX,minY,maxX,maxY" /></label>
+                </div>
+                <label>Vector geometry JSON <small>explicit GeoJSON FeatureCollection or layer object</small><textarea rows="8" spellcheck="false" data-gs-v0800-vector></textarea></label>
+                <label>Raster grid JSON <small>explicit bounds + values; no interpolation or resampling</small><textarea rows="8" spellcheck="false" data-gs-v0800-raster></textarea></label>
+                <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0800-example>Load spatial + raster example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0800-build>Build spatial figure</button></div>
+                <canvas class="sc-gs0800-canvas" width="960" height="540" data-gs-v0800-canvas aria-label="Spatial scientific canvas"></canvas>
+                <details><summary>Spatial figure contract</summary><pre class="sc-gs0800-summary" data-gs-v0800-summary>No spatial figure rendered.</pre></details>
+                <p class="sc-gs0800-boundary">v0.80 visualizes supplied geometry and raster cells in their already-declared coordinate reference system. Lab does not silently geocode, infer a CRS, reproject layers, spatially join unrelated records, repair topology, interpolate or resample raster cells, impute nodata, or fetch network basemaps. Bounding-box selection is an explicit display/query operation over supplied feature bounds.</p>
+              </section>
               <label>Dataset rows JSON<textarea data-gs-v0470-rows spellcheck="false"></textarea></label>
               <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0470-example>Load bound 2D example</button><button type="button" class="sc-lab-button" data-gs-v0770-example-3d>Load 3D mesh example</button><button type="button" class="sc-lab-button" data-gs-v0730-example-4d>Load bound 4D example</button><button type="button" class="sc-lab-button" data-gs-v0780-example-state>Load time-state example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-render>Transform + bind + render</button></div>
             </section>
@@ -1805,12 +1822,12 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
               <label>Tags<input data-gs-v0470-tags placeholder="diagnostics, publication, response-surface"></label>
               <div class="sc-gs0470-checks"><label><input type="checkbox" checked data-gs-v0470-grid> Grid</label><label><input type="checkbox" checked data-gs-v0470-legend> Legend</label></div>
             </section>
-            <section class="sc-gs0470-card"><h4>Figure actions</h4><p class="sc-lab-data-note">Every saved v0.79 figure preserves its renderer-aware specification and provenance. Dataset-bound figures retain transformation/adaptive lineage; 3D scenes retain camera and explicit geometry; 4D state spaces retain source fingerprints, state-axis definitions, projection rotations, observed-state indexes, and no-interpolation boundaries. SVG/PNG/CSV/JSON remain available for 2D; canvas3d and canvas4d use PNG/JSON.</p>
+            <section class="sc-gs0470-card"><h4>Figure actions</h4><p class="sc-lab-data-note">Every saved v0.80 figure preserves its renderer-aware specification and provenance. Spatial figures additionally preserve declared CRS, viewport, explicit vector/raster layer fingerprints, nodata policy, and no-reprojection/no-interpolation boundaries. Dataset-bound figures retain transformation/adaptive lineage; 3D scenes retain camera and explicit geometry; 4D state spaces retain source fingerprints, state-axis definitions, projection rotations, observed-state indexes, and no-interpolation boundaries. SVG/PNG/CSV/JSON remain available for 2D; canvas3d and canvas4d use PNG/JSON.</p>
               <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-save>Save figure</button><button type="button" class="sc-lab-button" data-gs-v0470-duplicate>Duplicate draft</button><button type="button" class="sc-lab-button" data-gs-v0470-latest>Open latest graph</button><button type="button" class="sc-lab-button" data-gs-v0470-notebook>Add to notebook</button><button type="button" class="sc-lab-button" data-gs-v0470-report>Send to report</button></div>
             </section>
           </aside>
           <div class="sc-gs0470-workspace">
-            <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge" data-gs-v0730-renderer-badge>Engine 2.5 · svg2d · DATA BINDING</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
+            <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge" data-gs-v0730-renderer-badge>Engine 2.7 · svg2d / canvas3d / canvas4d / canvas-spatial</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
             <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
             <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
           </div>

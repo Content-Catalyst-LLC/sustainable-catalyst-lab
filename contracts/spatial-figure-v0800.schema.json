@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-spatial-figure/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 spatial figure",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "renderer",
+    "crs",
+    "viewport",
+    "layers",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-spatial-figure/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "engineVersion": {
+      "const": "2.7.0"
+    },
+    "renderer": {
+      "const": "canvas-spatial"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "crs": {
+      "type": "object"
+    },
+    "viewport": {
+      "type": "object"
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32
+    },
+    "layerCount": {
+      "type": "integer"
+    },
+    "publication": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "boundaries": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

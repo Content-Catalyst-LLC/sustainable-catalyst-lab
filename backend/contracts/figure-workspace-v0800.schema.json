@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-figure-workspace/0.80.0",
+  "title": "Sustainable Catalyst Lab v0.80 spatial figure workspace",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "rendererRegistry",
+    "spatialFigure"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-figure-workspace/0.80.0"
+    },
+    "version": {
+      "const": "0.80.0"
+    },
+    "engineVersion": {
+      "const": "2.7.0"
+    },
+    "rendererRegistry": {
+      "type": "array"
+    },
+    "spatialFigure": {
+      "type": "object"
+    },
+    "linkedComposition": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "controls": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  }
+}

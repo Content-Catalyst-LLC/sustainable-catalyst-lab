@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync('assets/js/modules/spatial-geospatial-raster-v0800.js','utf8'),gs=fs.readFileSync('assets/js/modules/graph-studio-v0800.js','utf8');
+const c={console,window:{SCLab:{}}};c.window.window=c.window;vm.createContext(c);vm.runInContext(src,c);const S=c.window.SCLab.SpatialGeospatialRasterV0800;
+assert(S);assert.strictEqual(S.version,'0.80.0');assert.strictEqual(S.engineVersion,'2.7.0');assert.strictEqual(S.renderer,'canvas-spatial');
+const crs={id:'EPSG:4326',units:'degrees',axisOrder:'xy',geographic:true};
+const v=S.normalizeVectorLayer({id:'v',crs,features:[{type:'Feature',id:'p',properties:{},geometry:{type:'Point',coordinates:[-80,20]}},{type:'Feature',id:'l',properties:{},geometry:{type:'LineString',coordinates:[[-10,0],[10,4]]}}]});
+assert.strictEqual(v.featureCount,2);assert.strictEqual(v.coordinateCount,3);assert.strictEqual(JSON.stringify(v.features[0].geometry.coordinates),'[-80,20]');
+const r=S.normalizeRaster({id:'r',crs,bounds:[-90,-45,90,45],nodata:-9999,values:[[1,2,-9999],[3,4,5]]});assert.strictEqual(r.cellCount,6);assert.strictEqual(r.values[0][2],null);assert.strictEqual(r.statistics.nodataCellCount,1);
+const f=S.buildFigure({crs,viewport:{bounds:[-90,-45,90,45],crs},layers:[{kind:'raster',id:'r',crs,bounds:[-90,-45,90,45],values:[[1,2],[3,4]]},{kind:'vector',id:'v',crs,features:[{type:'Feature',id:'p',geometry:{type:'Point',coordinates:[0,0]},properties:{}}]}]});
+assert.strictEqual(f.renderer,'canvas-spatial');assert.strictEqual(f.layerCount,2);assert.strictEqual(f.boundaries.automaticReprojection,false);assert.strictEqual(f.boundaries.rasterInterpolation,false);assert.strictEqual(f.boundaries.networkBasemaps,false);
+const sel=S.bboxSelect({id:'v',crs,features:[{type:'Feature',id:'a',geometry:{type:'Point',coordinates:[0,0]},properties:{}},{type:'Feature',id:'b',geometry:{type:'Point',coordinates:[80,40]},properties:{}}]},[-5,-5,5,5]);assert.strictEqual(sel.selectionCount,1);assert.strictEqual(sel.featureIds[0],'a');
+for(const n of ['0.80.0','2.7.0','buildSpatialFigure','loadSpatialExample','canvas-spatial','Graph Studio v0.80'])assert(gs.includes(n),`Graph Studio v0.80 missing ${n}`);
+console.log('PASS - Spatial/Geospatial/Raster v0.80 browser contract');console.log('PASS - explicit vector/raster normalization and bounding-box selection');console.log('PASS - no-reprojection/no-interpolation browser boundaries');
