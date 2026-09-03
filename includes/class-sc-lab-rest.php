@@ -11,6 +11,7 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/feeds/(?P<source>[a-z0-9-]+)', array('methods'=>'GET','callback'=>array($this,'feed'),'permission_callback'=>'__return_true','args'=>array('source'=>array('sanitize_callback'=>'sanitize_key'))));
 
         register_rest_route('sc-lab/v1', '/compute/status', array('methods'=>'GET','callback'=>array($this,'compute_status'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/compute/health', array('methods'=>'GET','callback'=>array($this,'compute_status'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/languages', array('methods'=>'GET','callback'=>array($this,'compute_languages'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/methods', array('methods'=>'GET','callback'=>array($this,'compute_methods'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/compute/execute', array('methods'=>'POST','callback'=>array($this,'compute_execute'),'permission_callback'=>'__return_true'));
