@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-uncertainty-figure/0.82.0",
+  "title": "Scientific Uncertainty Figure v0.82.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "baseFigure",
+    "baseFigureFingerprint",
+    "uncertaintyLayers",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-uncertainty-figure/0.82.0"
+    },
+    "version": {
+      "const": "0.82.0"
+    },
+    "engineVersion": {
+      "const": "2.9.0"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

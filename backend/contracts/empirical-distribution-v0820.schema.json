@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-empirical-distribution/0.82.0",
+  "title": "Empirical Distribution Visualization v0.82.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "semantics",
+    "samples",
+    "histogram",
+    "ecdf",
+    "quantiles",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-empirical-distribution/0.82.0"
+    },
+    "version": {
+      "const": "0.82.0"
+    },
+    "semantics": {
+      "enum": [
+        "observed",
+        "bootstrap",
+        "posterior",
+        "ensemble",
+        "residual",
+        "custom"
+      ]
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

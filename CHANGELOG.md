@@ -1306,3 +1306,7 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 ## 0.81.0
 - Added Annotation, Measurement & Scientific Markup to Visualization Engine 2.8.0.
 - Added governed markup layers, coordinate/distance/polyline/angle/area measurements, base-figure preservation, WordPress health/schema routes, FastAPI routes, Graph Studio controls, and explicit non-observation/no-geodesic/no-unit-conversion boundaries.
+
+## 0.82.0
+- Added Uncertainty, Ensemble & Distribution Visualization to Visualization Engine 2.9.0.
+- Added interval/quantile uncertainty, empirical histogram/ECDF/box summaries, posterior-sample visualization, explicit ensemble trajectories/envelopes, provenance boundaries, WordPress health/schema routes, FastAPI routes, and Graph Studio controls.

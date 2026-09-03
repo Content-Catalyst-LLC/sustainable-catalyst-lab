@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-uncertainty-series/0.82.0",
+  "title": "Scientific Uncertainty Series v0.82.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "type",
+    "semantics",
+    "records",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-uncertainty-series/0.82.0"
+    },
+    "version": {
+      "const": "0.82.0"
+    },
+    "type": {
+      "enum": [
+        "interval",
+        "quantile-ribbon"
+      ]
+    },
+    "semantics": {
+      "enum": [
+        "confidence",
+        "credible",
+        "prediction",
+        "bootstrap",
+        "custom"
+      ]
+    },
+    "level": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0,
+      "exclusiveMaximum": 1
+    },
+    "records": {
+      "type": "array"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

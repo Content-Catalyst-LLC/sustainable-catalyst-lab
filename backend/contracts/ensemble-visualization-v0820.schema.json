@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-ensemble-visualization/0.82.0",
+  "title": "Ensemble Visualization v0.82.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "members",
+    "memberCount",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-ensemble-visualization/0.82.0"
+    },
+    "version": {
+      "const": "0.82.0"
+    },
+    "members": {
+      "type": "array"
+    },
+    "memberCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "envelope": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

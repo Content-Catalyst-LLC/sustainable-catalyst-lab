@@ -1,0 +1,31 @@
+{
+  "schema": "sc-lab-uncertainty-visualization-policy/0.82.0",
+  "version": "0.82.0",
+  "engineVersion": "2.9.0",
+  "capabilities": {
+    "intervalBands": true,
+    "confidenceIntervals": true,
+    "credibleIntervals": true,
+    "predictionIntervals": true,
+    "quantileRibbons": true,
+    "empiricalHistogram": true,
+    "ecdf": true,
+    "boxSummary": true,
+    "posteriorSamples": true,
+    "ensembleTrajectories": true,
+    "ensembleEnvelopes": true
+  },
+  "boundaries": {
+    "automaticUncertaintyInference": false,
+    "automaticDistributionAssumption": false,
+    "automaticParametricFit": false,
+    "automaticKDE": false,
+    "automaticIntervalConversion": false,
+    "automaticEnsembleAlignment": false,
+    "temporalInterpolation": false,
+    "spatialInterpolation": false,
+    "syntheticSamples": false,
+    "forecasting": false,
+    "arbitraryCode": false
+  }
+}

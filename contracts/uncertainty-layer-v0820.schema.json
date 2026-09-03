@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-uncertainty-layer/0.82.0",
+  "title": "Uncertainty Visualization Layer v0.82.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "uncertaintySeries",
+    "distributions",
+    "ensembles",
+    "fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-uncertainty-layer/0.82.0"
+    },
+    "version": {
+      "const": "0.82.0"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

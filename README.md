@@ -906,3 +906,7 @@ Graph Studio now supports governed observed 4D state spaces, discrete time-state
 ## v0.81.0 — Annotation, Measurement & Scientific Markup
 
 Graph Studio now supports governed scientific markup overlays: explicit annotations, declared-coordinate measurements, markup provenance, and base-figure preservation. Annotations remain non-observational; geographic distance/area is not approximated. Visualization Engine 2 is now 2.8.0.
+
+## v0.82.0 — Uncertainty, Ensemble & Distribution Visualization
+
+Graph Studio now treats explicit uncertainty, empirical distributions, posterior samples, and ensembles as governed visualization objects. Visualization Engine 2 is now 2.9.0.
