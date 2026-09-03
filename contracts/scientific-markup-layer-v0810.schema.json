@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-markup-layer/0.81.0",
+  "title": "Scientific Markup Layer v0.81.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "annotations",
+    "measurements"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-markup-layer/0.81.0"
+    },
+    "version": {
+      "const": "0.81.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "annotations": {
+      "type": "array",
+      "maxItems": 2000
+    },
+    "measurements": {
+      "type": "array",
+      "maxItems": 2000
+    },
+    "scientificRole": {
+      "const": "markup-overlay"
+    }
+  }
+}

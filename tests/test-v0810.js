@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync('assets/js/modules/scientific-markup-v0810.js','utf8'),gs=fs.readFileSync('assets/js/modules/graph-studio-v0810.js','utf8');
+const c={console,window:{SCLab:{}}};c.window.window=c.window;vm.createContext(c);vm.runInContext(src,c);const M=c.window.SCLab.ScientificMarkupV0810;
+assert(M);assert.strictEqual(M.version,'0.81.0');assert.strictEqual(M.engineVersion,'2.8.0');assert.strictEqual(M.rendererOverlay,'scientific-markup');
+const a=M.normalizeAnnotation({type:'label',points:[[.2,.3]],coordinateSpace:'screen-normalized',text:'review'});assert.strictEqual(a.isObservation,false);assert.strictEqual(a.scientificRole,'annotation');
+const d=M.computeMeasurement({type:'distance',points:[[0,0],[3,4]],units:'m',coordinateSpace:'projected'});assert.strictEqual(d.value,5);assert.strictEqual(d.outputUnits,'m');assert.strictEqual(d.isObservation,false);
+const angle=M.computeMeasurement({type:'angle',points:[[1,0],[0,0],[0,1]],units:'m'});assert(Math.abs(angle.value-90)<1e-9);
+const area=M.computeMeasurement({type:'area',points:[[0,0],[4,0],[4,3],[0,3]],units:'m',coordinateSpace:'projected'});assert.strictEqual(area.value,12);assert.strictEqual(area.outputUnits,'m^2');
+assert.throws(()=>M.computeMeasurement({type:'distance',points:[[0,0],[1,1]],coordinateSpace:'geographic',units:'degrees'}),/geodesy/);
+const f=M.attachMarkup({baseFigure:{renderer:'canvas-spatial',fingerprint:'base',title:'F'},markupLayers:[{annotations:[{type:'point',points:[[.5,.5]],coordinateSpace:'screen-normalized'}]}]});assert.strictEqual(f.baseFigureFingerprint,'base');assert.strictEqual(f.boundaries.baseFigureMutation,false);assert.strictEqual(f.boundaries.annotationIsObservation,false);
+for(const n of ['0.81.0','2.8.0','buildScientificMarkup','loadMarkupExample','scientific-markup','Graph Studio v0.81'])assert(gs.includes(n),`Graph Studio v0.81 missing ${n}`);
+console.log('PASS - Annotation/Measurement/Scientific Markup v0.81 browser contract');console.log('PASS - explicit coordinate measurement and non-observation boundaries');console.log('PASS - geographic distance refuses ungoverned geodesic approximation');

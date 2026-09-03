@@ -1302,3 +1302,7 @@ Adds governed aggregate-effect synthesis, replication assessment, fixed/random-e
 ## v0.31.0 — Distributed Compute Dispatcher
 
 Adds worker capability discovery, governed workload routing, signed leases, heartbeat/load tracking, project-aware dispatch records, and browser/Render/local/Raspberry Pi/institutional worker profiles.
+
+## 0.81.0
+- Added Annotation, Measurement & Scientific Markup to Visualization Engine 2.8.0.
+- Added governed markup layers, coordinate/distance/polyline/angle/area measurements, base-figure preservation, WordPress health/schema routes, FastAPI routes, Graph Studio controls, and explicit non-observation/no-geodesic/no-unit-conversion boundaries.

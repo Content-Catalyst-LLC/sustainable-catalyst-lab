@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-annotation/0.81.0",
+  "title": "Scientific Annotation v0.81.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "type",
+    "coordinateSpace",
+    "points",
+    "scientificRole",
+    "isObservation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-annotation/0.81.0"
+    },
+    "version": {
+      "const": "0.81.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "point",
+        "label",
+        "arrow",
+        "line",
+        "polyline",
+        "region",
+        "threshold-x",
+        "threshold-y"
+      ]
+    },
+    "coordinateSpace": {
+      "enum": [
+        "screen-normalized",
+        "data-2d",
+        "data-3d",
+        "state-4d",
+        "projected",
+        "geographic"
+      ]
+    },
+    "points": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2000,
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 4,
+        "items": {
+          "type": "number"
+        }
+      }
+    },
+    "text": {
+      "type": "string"
+    },
+    "scientificRole": {
+      "const": "annotation"
+    },
+    "isObservation": {
+      "const": false
+    }
+  }
+}

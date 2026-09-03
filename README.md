@@ -902,3 +902,7 @@ The platform continues to reject unrestricted executable payloads, credentials, 
 ### Visualization Engine 2.5 — v0.78.0
 
 Graph Studio now supports governed observed 4D state spaces, discrete time-state playback, parameter sweeps, W hyperslicing, and XW/YW/ZW projection controls through the Canvas4D v0.78 renderer. v0.78 preserves original coordinates and source/pipeline provenance; it does not synthesize intermediate frames, interpolate unobserved time or parameter states, infer trajectories/surfaces, forecast, or execute arbitrary code.
+
+## v0.81.0 — Annotation, Measurement & Scientific Markup
+
+Graph Studio now supports governed scientific markup overlays: explicit annotations, declared-coordinate measurements, markup provenance, and base-figure preservation. Annotations remain non-observational; geographic distance/area is not approximated. Visualization Engine 2 is now 2.8.0.

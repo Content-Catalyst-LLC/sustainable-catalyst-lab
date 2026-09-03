@@ -1,0 +1,32 @@
+{
+  "schema": "sc-lab-scientific-markup-policy/0.81.0",
+  "version": "0.81.0",
+  "engineVersion": "2.8.0",
+  "capabilities": {
+    "scientificAnnotation": true,
+    "scientificMeasurement": true,
+    "scientificMarkupLayers": true,
+    "coordinateMeasurement": true,
+    "distanceMeasurement": true,
+    "polylineLengthMeasurement": true,
+    "angleMeasurement": true,
+    "areaMeasurement": true,
+    "annotationProvenance": true
+  },
+  "boundaries": {
+    "annotationIsObservation": false,
+    "automaticObservationCreation": false,
+    "automaticScientificInterpretation": false,
+    "automaticUnitConversion": false,
+    "automaticGeodesicMeasurement": false,
+    "automaticGeometrySnapping": false,
+    "automaticUncertaintyInference": false,
+    "arbitraryCode": false
+  },
+  "limits": {
+    "annotationsPerLayer": 2000,
+    "measurementsPerLayer": 2000,
+    "markupLayers": 32,
+    "pointsPerMark": 2000
+  }
+}

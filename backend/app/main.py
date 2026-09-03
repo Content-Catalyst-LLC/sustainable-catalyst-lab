@@ -44,6 +44,7 @@ from .scientific_scene_v0770 import ScientificSceneError, build_figure as build_
 from .time_parameter_space_v0780 import TimeParameterSpaceError, build_figure as build_time_parameter_figure_v0780, build_workspace as build_time_parameter_workspace_v0780, health as time_parameter_health_v0780, normalize_axis as normalize_state_axis_v0780, normalize_projection as normalize_4d_projection_v0780, normalize_state_space as normalize_state_space_v0780, policies as time_parameter_policies_v0780, slice_state_space as slice_state_space_v0780, state_space_from_dataset as state_space_from_dataset_v0780
 from .linked_views_v0790 import LinkedViewsError, apply_link_event as apply_link_event_v0790, build_workspace as build_linked_workspace_v0790, facet_dataset as facet_dataset_v0790, health as linked_views_health_v0790, normalize_composition as normalize_linked_composition_v0790, normalize_facet as normalize_facet_v0790, normalize_link as normalize_view_link_v0790, normalize_view as normalize_linked_view_v0790, policies as linked_views_policies_v0790
 from .spatial_geospatial_raster_v0800 import SpatialVisualizationError, bbox_select as bbox_select_v0800, build_spatial_figure as build_spatial_figure_v0800, build_workspace as build_spatial_workspace_v0800, health as spatial_health_v0800, normalize_crs as normalize_crs_v0800, normalize_raster as normalize_raster_v0800, normalize_vector_layer as normalize_vector_layer_v0800, normalize_viewport as normalize_viewport_v0800, policies as spatial_policies_v0800
+from .annotation_measurement_markup_v0810 import ScientificMarkupError, attach_markup as attach_markup_v0810, build_workspace as build_markup_workspace_v0810, compute_measurement as compute_measurement_v0810, health as scientific_markup_health_v0810, normalize_annotation as normalize_annotation_v0810, normalize_markup_layer as normalize_markup_layer_v0810, policies as scientific_markup_policies_v0810
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -5930,3 +5931,34 @@ def spatial_v0800_figure_route(payload: dict[str, Any]):
 def spatial_v0800_workspace_route(payload: dict[str, Any]):
     try: return build_spatial_workspace_v0800(payload)
     except SpatialVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/visualization/v0810/health")
+def scientific_markup_v0810_health_route(): return scientific_markup_health_v0810()
+
+@app.get("/v1/visualization/v0810/policies")
+def scientific_markup_v0810_policies_route(): return scientific_markup_policies_v0810()
+
+@app.post("/v1/visualization/v0810/annotations/normalize")
+def scientific_markup_v0810_annotation_route(payload: dict[str, Any]):
+    try: return {"ok": True, "annotation": normalize_annotation_v0810(payload.get("annotation") or payload)}
+    except ScientificMarkupError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0810/measurements/compute")
+def scientific_markup_v0810_measurement_route(payload: dict[str, Any]):
+    try: return {"ok": True, "measurement": compute_measurement_v0810(payload.get("measurement") or payload)}
+    except ScientificMarkupError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0810/layers/normalize")
+def scientific_markup_v0810_layer_route(payload: dict[str, Any]):
+    try: return {"ok": True, "layer": normalize_markup_layer_v0810(payload.get("layer") or payload)}
+    except ScientificMarkupError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0810/figures/attach")
+def scientific_markup_v0810_figure_route(payload: dict[str, Any]):
+    try: return attach_markup_v0810(payload)
+    except ScientificMarkupError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0810/workspaces/build")
+def scientific_markup_v0810_workspace_route(payload: dict[str, Any]):
+    try: return build_markup_workspace_v0810(payload)
+    except ScientificMarkupError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-measurement/0.81.0",
+  "title": "Scientific Measurement v0.81.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "type",
+    "points",
+    "value",
+    "method",
+    "isObservation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-measurement/0.81.0"
+    },
+    "version": {
+      "const": "0.81.0"
+    },
+    "type": {
+      "enum": [
+        "coordinate",
+        "distance",
+        "polyline-length",
+        "angle",
+        "area"
+      ]
+    },
+    "coordinateSpace": {
+      "type": "string"
+    },
+    "units": {
+      "type": "string"
+    },
+    "points": {
+      "type": "array"
+    },
+    "value": {},
+    "outputUnits": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "isObservation": {
+      "const": false
+    },
+    "derivedFromExplicitMarkupCoordinates": {
+      "const": true
+    }
+  }
+}

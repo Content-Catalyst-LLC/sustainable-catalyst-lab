@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-marked-scientific-figure/0.81.0",
+  "title": "Marked Scientific Figure v0.81.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "rendererOverlay",
+    "baseFigure",
+    "baseFigureFingerprint",
+    "markupLayers"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-marked-scientific-figure/0.81.0"
+    },
+    "version": {
+      "const": "0.81.0"
+    },
+    "engineVersion": {
+      "const": "2.8.0"
+    },
+    "rendererOverlay": {
+      "const": "scientific-markup"
+    },
+    "baseFigure": {
+      "type": "object"
+    },
+    "baseFigureFingerprint": {
+      "type": "string"
+    },
+    "markupLayers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32
+    }
+  }
+}
