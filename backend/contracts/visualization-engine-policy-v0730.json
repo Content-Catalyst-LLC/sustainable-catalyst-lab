@@ -1,0 +1,19 @@
+{
+  "version": "0.73.0",
+  "engineVersion": "2.0.0",
+  "specSchema": "sc-lab-scientific-visualization/0.73.0",
+  "figureSchema": "sc-lab-scientific-figure/0.73.0",
+  "workspaceSchema": "sc-lab-figure-workspace/0.73.0",
+  "legacyGraphContract": "sc-lab-scientific-graph/0.46.0",
+  "renderers": {
+    "svg2d": {"version": "0.44.0", "kinds": ["line", "scatter", "line-scatter", "histogram", "horizontal-bars", "heatmap"], "exports": ["svg", "png", "csv", "json"]},
+    "canvas4d": {"version": "0.71.0", "kinds": ["surface-4d"], "exports": ["png", "json"]}
+  },
+  "boundaries": {
+    "arbitraryCode": false,
+    "remoteImageFetch": false,
+    "surface4dProjectDataBinding": false,
+    "surface4dSyntheticProfilesOnly": true,
+    "rendererSelectionExplicit": true
+  }
+}

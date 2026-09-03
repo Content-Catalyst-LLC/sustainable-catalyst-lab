@@ -36,6 +36,7 @@ from .dynamic_systems import DynamicSystemError, estimate_parameters as estimate
 from .dynamic_systems_v0540 import DynamicSystemsV0540Error, bifurcation_scan as dynamic_systems_v0540_bifurcation, health as dynamic_systems_v0540_health, normalize_study as normalize_dynamic_systems_v0540, phase_analysis as dynamic_systems_v0540_phase, policies as dynamic_systems_v0540_policies, simulate as simulate_dynamic_systems_v0540
 from .response_surfaces import ResponseSurfaceError, explore as explore_response_surface, fit as fit_response_surface, health as response_surfaces_health, normalize_study as normalize_response_surface_study, optimize as optimize_response_surface, policies as response_surfaces_policies
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
+from .visualization_engine_v0730 import VisualizationEngineError, build_workspace as build_visualization_workspace_v0730, health as visualization_engine_health_v0730, normalize_figure as normalize_visualization_figure_v0730, normalize_spec as normalize_visualization_spec_v0730, policies as visualization_engine_policies_v0730
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -2268,6 +2269,36 @@ def graph_studio_figure_normalize_route(payload: dict[str, Any]):
 def graph_studio_workspace_build_route(payload: dict[str, Any]):
     try: return build_graph_studio_workspace(payload)
     except GraphStudioError as exc: raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/visualization/v0730/health")
+def visualization_engine_v0730_health_route():
+    return visualization_engine_health_v0730()
+
+@app.get("/v1/visualization/v0730/policies")
+def visualization_engine_v0730_policies_route():
+    return visualization_engine_policies_v0730()
+
+@app.post("/v1/visualization/v0730/specs/normalize")
+def visualization_engine_v0730_spec_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "spec": normalize_visualization_spec_v0730(payload.get("spec") or payload.get("graph") or payload)}
+    except VisualizationEngineError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0730/figures/normalize")
+def visualization_engine_v0730_figure_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "figure": normalize_visualization_figure_v0730(payload.get("figure") or payload)}
+    except VisualizationEngineError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0730/workspaces/build")
+def visualization_engine_v0730_workspace_build_route(payload: dict[str, Any]):
+    try:
+        return build_visualization_workspace_v0730(payload)
+    except VisualizationEngineError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/model-calibration/health")

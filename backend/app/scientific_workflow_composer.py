@@ -20,7 +20,7 @@ from .correlated_uncertainty import analyze as correlated_uncertainty
 from .dynamic_systems_v0540 import simulate as dynamic_simulate, bifurcation_scan as dynamic_bifurcation, phase_analysis as dynamic_phase
 from .response_surfaces import fit as response_surface_fit, optimize as response_surface_optimize
 from .advanced_experimental_design import generate_optimal_design, sequential_plan
-from .graph_studio import normalize_graph, normalize_figure
+from .visualization_engine_v0730 import normalize_spec as normalize_graph, normalize_figure
 from .reproducible_model_package import build_package, build_research_bundle, registry_projection
 
 VERSION = "0.57.0"

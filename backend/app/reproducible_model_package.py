@@ -11,7 +11,7 @@ import re
 from typing import Any
 import zipfile
 
-from .graph_studio import GraphStudioError, normalize_figure
+from .visualization_engine_v0730 import VisualizationEngineError, normalize_figure
 from .model_registry import capture_environment
 from .shared_model_handoff import ModelHandoffError, normalize_shared_model
 
@@ -143,7 +143,7 @@ def _normalize_figures(values: Any) -> list[dict[str, Any]]:
     for index, row in enumerate(values):
         try:
             figures.append(normalize_figure(row))
-        except GraphStudioError as exc:
+        except VisualizationEngineError as exc:
             raise ReproducibleModelPackageError(f"figures[{index}]: {exc}") from exc
     return figures
 

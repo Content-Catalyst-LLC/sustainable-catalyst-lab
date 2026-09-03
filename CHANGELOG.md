@@ -1,3 +1,13 @@
+## 0.73.0 — Scientific Visualization Engine 2, Unified Graph Contract & Graph Studio Renderer Architecture
+
+- Adds the renderer-aware `sc-lab-scientific-visualization/0.73.0` contract and Visualization Engine 2 registry.
+- Preserves v0.44 SVG rendering as the `svg2d` compatibility adapter for line, scatter, line-scatter, histogram, horizontal-bar, and heatmap figures.
+- Promotes the existing v0.71 4D scientific canvas to the `canvas4d` renderer and makes `surface-4d` a first-class Graph Studio figure kind.
+- Persists 4D hyperslice, rotation, visualization-layer state, dimensions, publication metadata, data boundary, and renderer provenance in saved v0.73 figures.
+- Adds mixed-renderer figure-workspace contracts, WordPress health/schema routes, FastAPI normalization/workspace routes, browser compatibility with v0.47 figures, and reproducible-workflow/package compatibility.
+- Keeps current 4D profiles explicitly synthetic; arbitrary project-data surface binding remains out of scope until the data-binding release.
+- Stable platform compatibility remains v1.0.0 and arbitrary code remains disabled.
+
 ## v0.72.1 — Homepage Biodiversity Time-Sweep Loop
 
 v0.72.1 makes the public 4D biodiversity homepage preview start its existing time/disturbance sweep automatically and continue on a seamless loop. The pause control remains available, reduced-motion preferences disable autoplay, and `[sc_lab_home_preview autoplay="false"]` provides an explicit opt-out. Scientific data and backend boundaries are unchanged.

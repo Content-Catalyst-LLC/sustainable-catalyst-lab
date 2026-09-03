@@ -1725,20 +1725,21 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.47.0</p><h3>Scientific Figure Workspace</h3><p>Build, inspect, refine, save, and reuse scientific figures on a dedicated large-format canvas. Graph Studio consumes governed Lab graph specifications from Model Studio and other analysis modules without changing the underlying scientific result.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.73.0</p><h3>Scientific Visualization Workspace</h3><p>Build, inspect, refine, save, and reuse governed 2D and higher-dimensional scientific figures through one renderer-aware Graph Studio contract. Existing SVG figures remain compatible while 4D surfaces become first-class saved project figures.</p></header>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
         <div class="sc-gs0470-shell">
           <aside class="sc-gs0470-controls" aria-label="Figure controls">
             <section class="sc-gs0470-card"><h4>Figure definition</h4>
-              <label>Graph type<select data-gs-v0470-kind><option value="line-scatter">Scatter + fitted line</option><option value="line">Line</option><option value="scatter">Scatter</option><option value="histogram">Histogram</option><option value="horizontal-bars">Horizontal bars</option><option value="heatmap">Heatmap / response surface</option></select></label>
+              <label>Visualization type<select data-gs-v0470-kind><option value="line-scatter">Scatter + fitted line · SVG</option><option value="line">Line · SVG</option><option value="scatter">Scatter · SVG</option><option value="histogram">Histogram · SVG</option><option value="horizontal-bars">Horizontal bars · SVG</option><option value="heatmap">Heatmap / response surface · SVG</option><option value="surface-4d">4D response surface · Canvas</option></select></label>
               <label>Figure title<input data-gs-v0470-title value="Scientific figure"></label>
               <label>Subtitle<input data-gs-v0470-subtitle placeholder="Optional scientific context"></label>
               <div class="sc-gs0470-inline"><label>X field<input data-gs-v0470-x value="x"></label><label>Primary Y field<input data-gs-v0470-y value="y"></label></div>
-              <label>Series <small>key:label:mode, comma separated</small><input data-gs-v0470-series value="observed:Observed:points,fit:Fitted model:line"></label>
-              <div class="sc-gs0470-inline"><label>Z field <small>heatmap</small><input data-gs-v0470-z value="z"></label><label>Histogram bins<input type="number" min="4" max="40" value="12" data-gs-v0470-bins></label></div>
+              <div data-gs-v0730-tabular-only><label>Series <small>key:label:mode, comma separated</small><input data-gs-v0470-series value="observed:Observed:points,fit:Fitted model:line"></label>
+              <div class="sc-gs0470-inline"><label>Z field <small>heatmap</small><input data-gs-v0470-z value="z"></label><label>Histogram bins<input type="number" min="4" max="40" value="12" data-gs-v0470-bins></label></div></div>
               <div class="sc-gs0470-inline"><label>X-axis label<input data-gs-v0470-x-label value="Time (s)"></label><label>Y-axis label<input data-gs-v0470-y-label value="Response (mg/L)"></label></div>
-              <label>Figure data JSON<textarea data-gs-v0470-rows spellcheck="false"></textarea></label>
-              <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0470-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-render>Render figure</button></div>
+              <div data-gs-v0730-surface-only hidden><label>4D renderer profile<select data-gs-v0730-profile><option value="generic">Generic response field</option><option value="biodiversity">Biodiversity demonstration</option></select></label><div class="sc-gs0470-inline"><label>Z-axis label<input data-gs-v0730-z-label value="Response"></label><label>Fourth dimension label<input data-gs-v0730-w-label value="Fourth dimension"></label></div><p class="sc-lab-data-note">v0.73 makes the existing 4D canvas a saved Graph Studio figure. Project-data surface binding follows in v0.75; the two current profiles remain explicitly synthetic.</p></div>
+              <label data-gs-v0730-tabular-only>Figure data JSON<textarea data-gs-v0470-rows spellcheck="false"></textarea></label>
+              <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0470-example>Load 2D example</button><button type="button" class="sc-lab-button" data-gs-v0730-example-4d>Load 4D biodiversity</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-render>Render figure</button></div>
             </section>
             <section class="sc-gs0470-card"><h4>Publication metadata</h4>
               <label>Aspect ratio<select data-gs-v0470-aspect><option value="16:9">16:9 landscape</option><option value="3:2">3:2 landscape</option><option value="4:3">4:3 figure</option><option value="1:1">1:1 square</option></select></label>
@@ -1749,12 +1750,12 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
               <label>Tags<input data-gs-v0470-tags placeholder="diagnostics, publication, response-surface"></label>
               <div class="sc-gs0470-checks"><label><input type="checkbox" checked data-gs-v0470-grid> Grid</label><label><input type="checkbox" checked data-gs-v0470-legend> Legend</label></div>
             </section>
-            <section class="sc-gs0470-card"><h4>Figure actions</h4><p class="sc-lab-data-note">SVG, 2× PNG, CSV, JSON, zoom, pan, crosshair, series controls, and accessible tables are available directly in the graph toolbar.</p>
+            <section class="sc-gs0470-card"><h4>Figure actions</h4><p class="sc-lab-data-note">Renderer-aware exports are available directly in the figure canvas: SVG/PNG/CSV/JSON for legacy 2D figures and PNG/JSON snapshots for the first-class 4D canvas.</p>
               <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-save>Save figure</button><button type="button" class="sc-lab-button" data-gs-v0470-duplicate>Duplicate draft</button><button type="button" class="sc-lab-button" data-gs-v0470-latest>Open latest graph</button><button type="button" class="sc-lab-button" data-gs-v0470-notebook>Add to notebook</button><button type="button" class="sc-lab-button" data-gs-v0470-report>Send to report</button></div>
             </section>
           </aside>
           <div class="sc-gs0470-workspace">
-            <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge">Shared graph engine v0.44</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
+            <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge" data-gs-v0730-renderer-badge>Engine 2 · svg2d</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
             <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
             <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
           </div>

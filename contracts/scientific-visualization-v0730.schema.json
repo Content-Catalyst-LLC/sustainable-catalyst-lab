@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-visualization/0.73.0",
+  "title": "Sustainable Catalyst Lab Scientific Visualization Specification v0.73.0",
+  "type": "object",
+  "required": ["schema", "version", "kind", "renderer", "title", "publication"],
+  "properties": {
+    "schema": {"const": "sc-lab-scientific-visualization/0.73.0"},
+    "version": {"const": "0.73.0"},
+    "recordType": {"const": "scientific-visualization-spec"},
+    "kind": {"enum": ["line", "scatter", "line-scatter", "histogram", "horizontal-bars", "heatmap", "surface-4d"]},
+    "renderer": {"enum": ["svg2d", "canvas4d"]},
+    "title": {"type": "string", "minLength": 1, "maxLength": 180},
+    "subtitle": {"type": "string", "maxLength": 240},
+    "dimensions": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "role"],
+        "properties": {
+          "key": {"type": "string", "minLength": 1, "maxLength": 80},
+          "label": {"type": "string", "minLength": 1, "maxLength": 120},
+          "role": {"type": "string", "maxLength": 40},
+          "unit": {"type": "string", "maxLength": 80}
+        },
+        "additionalProperties": true
+      }
+    },
+    "surface": {"type": "object"},
+    "publication": {"type": "object"},
+    "interaction": {"type": "object"},
+    "rendering": {"type": "object"},
+    "dataBoundary": {"type": "string", "maxLength": 1200}
+  },
+  "additionalProperties": true
+}

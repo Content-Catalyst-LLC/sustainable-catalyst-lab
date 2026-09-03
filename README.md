@@ -1,3 +1,7 @@
+## v0.73.0 — Scientific Visualization Engine 2 & Unified Graph Contract
+
+v0.73.0 establishes the renderer-aware architecture for Lab's advanced scientific visualization roadmap. Graph Studio now routes legacy 2D figures through the proven v0.44 SVG engine and first-class `surface-4d` figures through the existing v0.71 canvas renderer under one `sc-lab-scientific-visualization/0.73.0` contract. New saved figures preserve renderer identity, dimensional semantics, 4D hyperslice/rotation/layer state, publication metadata, and provenance while remaining compatible with older v0.47 figures. The current 4D profiles remain deterministic synthetic demonstrations; project-data surface binding is intentionally deferred to v0.75.0.
+
 ## v0.72.1 — Homepage Biodiversity Time-Sweep Loop
 
 v0.72.1 makes the public 4D biodiversity homepage preview start its existing time/disturbance sweep automatically and continue on a seamless loop. The pause control remains available, reduced-motion preferences disable autoplay, and `[sc_lab_home_preview autoplay="false"]` provides an explicit opt-out. Scientific data and backend boundaries are unchanged.
