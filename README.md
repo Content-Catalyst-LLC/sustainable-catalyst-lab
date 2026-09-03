@@ -910,3 +910,7 @@ Graph Studio now supports governed scientific markup overlays: explicit annotati
 ## v0.82.0 — Uncertainty, Ensemble & Distribution Visualization
 
 Graph Studio now treats explicit uncertainty, empirical distributions, posterior samples, and ensembles as governed visualization objects. Visualization Engine 2 is now 2.9.0.
+
+## v0.82.1 — Canonical Release Identity & Release Console Repair
+
+The Lab product release now derives from `build/sc-lab-release-manifest.json`; the public Release Console consumes runtime `releaseVersion`, while platform, Visualization Engine, Compute Core, queue, and integrity versions remain explicitly labeled independent component versions.

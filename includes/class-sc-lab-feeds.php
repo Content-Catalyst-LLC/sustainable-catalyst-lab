@@ -33,7 +33,7 @@ class SC_Lab_Feeds {
             'httpversion' => '1.1',
             'headers' => array(
                 'Accept' => 'application/json',
-                'User-Agent' => 'SustainableCatalystLab/' . (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : '0.26.3.4') . ' (+https://sustainablecatalyst.com/lab/)',
+                'User-Agent' => 'SustainableCatalystLab/' . (defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.82.1') . ' (+https://sustainablecatalyst.com/lab/)',
             ),
         ));
         $last_error = null;
@@ -69,7 +69,7 @@ class SC_Lab_Feeds {
             'observedAt' => $observed,
             'retrievedAt' => gmdate('c'),
             'url' => esc_url_raw($url),
-            'provenance' => array('source'=>$source, 'retrievedAt'=>gmdate('c'), 'connectorVersion'=>SC_LAB_VERSION),
+            'provenance' => array('source'=>$source, 'retrievedAt'=>gmdate('c'), 'labRelease'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:null), 'connectorCompatibilityVersion'=>(defined('SC_LAB_PLATFORM_COMPAT_VERSION')?SC_LAB_PLATFORM_COMPAT_VERSION:null)),
             'freshness' => 'retrieved',
         ), $extra);
     }

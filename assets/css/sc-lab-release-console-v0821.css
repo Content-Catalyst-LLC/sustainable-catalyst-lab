@@ -1,0 +1,17 @@
+.sc-lab-release-console-v0821{margin:0 0 18px;border:1px solid var(--lab-line-dark);background:var(--lab-white)}
+.sc-lab-release-console-v0821__hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;padding:20px;border-bottom:1px solid var(--lab-line)}
+.sc-lab-release-console-v0821__eyebrow{display:block;margin-bottom:6px;font:750 10px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--lab-muted)}
+.sc-lab-release-console-v0821__release{display:block;font:800 clamp(28px,5vw,52px)/.95 var(--lab-display,Spartan,Arial,sans-serif);letter-spacing:-.045em;color:var(--lab-ink)}
+.sc-lab-release-console-v0821__state{font:750 10px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--lab-ok)}
+.sc-lab-release-console-v0821__state[data-state="review"]{color:var(--lab-warn)}
+.sc-lab-release-console-v0821__section{padding:16px 20px;border-bottom:1px solid var(--lab-line)}
+.sc-lab-release-console-v0821__section:last-child{border-bottom:0}
+.sc-lab-release-console-v0821__section>h4{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.sc-lab-release-console-v0821__components{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--lab-line)}
+.sc-lab-release-console__component{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--lab-white);font-size:12px}
+.sc-lab-release-console__component strong{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.sc-lab-release-console-v0821__integrity{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px}
+.sc-lab-release-console__check{display:flex;gap:8px;align-items:center;font-size:12px}
+.sc-lab-release-console__check>span{display:grid;place-items:center;width:18px;height:18px;border:1px solid currentColor;font:800 10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--lab-ok)}
+.sc-lab-release-console__check[data-state="fail"]>span{color:var(--lab-warn)}
+@media(max-width:760px){.sc-lab-release-console-v0821__hero{grid-template-columns:1fr}.sc-lab-release-console-v0821__components,.sc-lab-release-console-v0821__integrity{grid-template-columns:1fr}}

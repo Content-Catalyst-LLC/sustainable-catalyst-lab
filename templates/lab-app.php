@@ -1614,6 +1614,14 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
 
       <section class="sc-lab-panel" data-lab-module="system-status" hidden>
         <div class="sc-lab-panel-head"><div><span class="sc-lab-section-code">LAB/STATUS</span><h3>System and connector status</h3></div><button class="sc-lab-button sc-lab-button-primary" data-status-refresh>Run checks</button></div>
+        <section class="sc-lab-release-console-v0821" data-sc-lab-release-console data-sc-lab-canonical-release-source="build/sc-lab-release-manifest.json">
+          <div class="sc-lab-release-console-v0821__hero">
+            <div><span class="sc-lab-release-console-v0821__eyebrow">Sustainable Catalyst Lab · Public Release</span><strong class="sc-lab-release-console-v0821__release" data-sc-lab-console-release>v<?php echo esc_html(defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : 'unknown'); ?></strong></div>
+            <span class="sc-lab-release-console-v0821__state" data-sc-lab-console-state>Checking release integrity…</span>
+          </div>
+          <div class="sc-lab-release-console-v0821__section"><h4>Components</h4><div class="sc-lab-release-console-v0821__components" data-sc-lab-console-components><div class="sc-lab-release-console__component"><span>Lab Platform</span><strong><?php echo esc_html(defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : 'unknown'); ?></strong></div><div class="sc-lab-release-console__component"><span>Platform Compatibility</span><strong><?php echo esc_html(defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : 'unknown'); ?></strong></div></div></div>
+          <div class="sc-lab-release-console-v0821__section"><h4>Release Integrity</h4><div class="sc-lab-release-console-v0821__integrity" data-sc-lab-console-integrity><div class="sc-lab-release-console__check"><span>…</span><strong>Checking canonical release identity</strong></div></div></div>
+        </section>
         <div class="sc-lab-status-table" data-system-status></div>
       </section>
 

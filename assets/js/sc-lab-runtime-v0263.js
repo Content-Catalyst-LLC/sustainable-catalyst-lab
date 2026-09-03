@@ -43,7 +43,7 @@
     const app = labRoot();
     return {
       version: '0.26.3',
-      pluginVersion: config.pluginVersion || W.SCLabConfig?.version || null,
+      releaseVersion: config.releaseVersion || W.SCLabConfig?.releaseVersion || W.SCLabConfig?.version || null, platformCompatibilityVersion: config.platformCompatibilityVersion || W.SCLabConfig?.platformVersion || null,
       mode: 'isolated-module-calculator-repair',
       activeModule: active,
       appReady: app?.dataset.scLabAppReady === '1',

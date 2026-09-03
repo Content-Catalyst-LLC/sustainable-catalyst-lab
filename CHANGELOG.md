@@ -1310,3 +1310,9 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 ## 0.82.0
 - Added Uncertainty, Ensemble & Distribution Visualization to Visualization Engine 2.9.0.
 - Added interval/quantile uncertainty, empirical histogram/ECDF/box summaries, posterior-sample visualization, explicit ensemble trajectories/envelopes, provenance boundaries, WordPress health/schema routes, FastAPI routes, and Graph Studio controls.
+
+## 0.82.1
+- Made the release manifest the canonical runtime Lab product-version source.
+- Added explicit platform-compatibility naming and deprecated the generic `SC_LAB_VERSION` product-version interpretation.
+- Added a canonical Release Console and runtime component-version registry.
+- Added release-console consistency and 0.82.1 → 0.83.0 visible-version regression certification.

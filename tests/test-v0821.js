@@ -1,0 +1,15 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync('assets/js/modules/release-console-v0821.js','utf8');
+const document={readyState:'loading',addEventListener(){},querySelectorAll(){return[];}};
+const window={SCLabReleaseConsoleConfigV0821:{releaseVersion:'0.82.1'},SCLabConfig:{version:'0.82.1'},location:{hostname:'sustainablecatalyst.com'}};window.window=window;
+const context={console,window,document,globalThis:window,fetch:async()=>{throw new Error('network disabled in contract test')}};vm.createContext(context);vm.runInContext(src,context);
+const R=window.SCLabReleaseConsoleV0821;assert(R,'Release Console API missing');assert.strictEqual(R.version,'0.82.1');
+assert.strictEqual(R.resolveReleaseVersion({releaseVersion:'0.82.1'},'1.0.0'),'0.82.1');
+assert.strictEqual(R.resolveReleaseVersion({releaseVersion:'0.83.0'},'1.0.0'),'0.83.0');
+assert.notStrictEqual(R.resolveReleaseVersion({releaseVersion:'0.82.1'}),R.resolveReleaseVersion({releaseVersion:'0.83.0'}));
+const a=R.buildView({ok:true,state:'verified',releaseVersion:'0.82.1',releaseVersionConsistent:true,releaseConsoleVersionConsistent:true,versions:{pluginHeader:'0.82.1',manifestRelease:'0.82.1'},componentVersions:{visualizationEngine:'2.9.0',queueGateway:'0.27.3',platformCompatibility:'1.0.0'},manifest:{verification:{ok:true}},routeIntegrityVerified:true,identity:{basenameMatches:true,folderMatches:true}},{ok:true,status:'ready',version:'1.0.0'},{engineVersion:'2.9.0'},'1.0.0');
+assert.strictEqual(a.release,'0.82.1');assert.strictEqual(a.components[0][1],'0.82.1');assert.strictEqual(a.components[4][1],'1.0.0');
+assert(src.includes("runtime?.releaseVersion"),'Console must source product release from runtime.releaseVersion');
+assert(!/Public Release[^\n]*1\.0\.0/.test(src),'Console must not hardcode platform compatibility as product release');
+console.log('PASS - v0.82.1 Release Console consumes canonical runtime releaseVersion');
+console.log('PASS - simulated 0.82.1 -> 0.83.0 changes visible Release Console release identity');

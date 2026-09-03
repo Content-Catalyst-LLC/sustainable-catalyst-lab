@@ -40,7 +40,8 @@ final class SC_Lab_Runtime_Repair_V0263 {
         wp_enqueue_script('sc-lab-runtime-v0263', SC_LAB_URL . $script, array(), self::asset_version($script), true);
         wp_localize_script('sc-lab-runtime-v0263', 'SCLabRuntimeConfigV0263', array(
             'version' => self::VERSION,
-            'pluginVersion' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : self::VERSION,
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : self::VERSION,
+            'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'module' => self::requested_module(),
             'safeStart' => isset($_GET['sc_lab_safe']),
             'nodeBudget' => 6500,
@@ -213,7 +214,8 @@ final class SC_Lab_Runtime_Repair_V0263 {
         }
         return rest_ensure_response(array(
             'ok' => true,
-            'pluginVersion' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'runtimeVersion' => self::VERSION,
             'mode' => 'isolated-module-calculator-repair',
             'singlePanel' => true,

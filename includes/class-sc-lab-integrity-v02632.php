@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Integrity_V02632 {
     const VERSION = '0.26.3.2';
-    const REPAIR_LINE = '0.70.0-r1';
+    const REPAIR_LINE = '0.82.1-canonical-release-identity';
     const MANIFEST_RELATIVE = 'build/sc-lab-release-manifest.json';
     const EXPECTED_BASENAME = 'sustainable-catalyst-lab/sustainable-catalyst-lab.php';
     private static $initialized = false;
@@ -72,7 +72,7 @@ final class SC_Lab_Integrity_V02632 {
         wp_enqueue_script('sc-lab-integrity-v02632', SC_LAB_URL . $script, array('sc-lab-runtime-v02631'), self::asset_token($script), true);
         wp_localize_script('sc-lab-integrity-v02632', 'SCLabIntegrityConfigV02632', array(
             'version' => self::VERSION,
-            'pluginVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null)),
+            'wordpressIntegrationVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
             'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null),
             'panelRuntimeVersion' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
             'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/runtime/health')),
@@ -86,8 +86,9 @@ final class SC_Lab_Integrity_V02632 {
         if ($tag !== 'sc_lab_app' || is_admin()) { return $output; }
         $manifest = self::manifest();
         $summary = array(
-            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null)),
-            'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null),
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'canonicalReleaseSource' => self::MANIFEST_RELATIVE,
+            'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'integrityVersion' => self::VERSION,
             'pluginVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null)),
             'panelRuntimeVersion' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
@@ -266,25 +267,35 @@ final class SC_Lab_Integrity_V02632 {
         $candidates = self::plugin_candidates();
         $release_version = defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null));
         $platform_version = defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null);
+        $visualization_engine = class_exists('SC_Lab_Uncertainty_Ensemble_Distribution_V0820') ? SC_Lab_Uncertainty_Ensemble_Distribution_V0820::ENGINE_VERSION : null;
         $versions = array(
             'release' => $release_version,
             'featureRelease' => defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : $release_version,
+            'pluginHeader' => defined('SC_LAB_FILE') ? self::plugin_header_version(SC_LAB_FILE) : null,
+            'manifestRelease' => isset($manifest['releaseVersion']) ? $manifest['releaseVersion'] : null,
+            'consoleRelease' => $release_version,
+            'platformCompatibility' => $platform_version,
+            'manifestPlatform' => isset($manifest['platformVersion']) ? $manifest['platformVersion'] : null,
+            'legacyPlatformAlias' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
+            'integrityRuntime' => self::VERSION,
+            'panelRuntime' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
+            'productionStability' => class_exists('SC_Lab_Production_Stability_V0266') ? SC_Lab_Production_Stability_V0266::VERSION : null,
+        );
+        $component_versions = array(
+            'labRelease' => $release_version,
+            'wordpressIntegration' => $versions['pluginHeader'],
+            'releaseManifest' => $versions['manifestRelease'],
+            'visualizationEngine' => $visualization_engine,
+            'computeGateway' => class_exists('SC_Lab_Python_Compute_Core_V0260') ? SC_Lab_Python_Compute_Core_V0260::VERSION : null,
+            'queueGateway' => class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::VERSION : null,
             'platformCompatibility' => $platform_version,
             'integrityRuntime' => self::VERSION,
-            'pluginConstant' => defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null,
-            'pluginHeader' => defined('SC_LAB_FILE') ? self::plugin_header_version(SC_LAB_FILE) : null,
-            'panelRuntime' => class_exists('SC_Lab_Runtime_Repair_V02631') ? SC_Lab_Runtime_Repair_V02631::VERSION : null,
-            'computeCore' => class_exists('SC_Lab_Python_Compute_Core_V0260') ? SC_Lab_Python_Compute_Core_V0260::VERSION : null,
-            'queueCore' => class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::VERSION : null,
-            'productionStability' => class_exists('SC_Lab_Production_Stability_V0266') ? SC_Lab_Production_Stability_V0266::VERSION : null,
-            'manifestRelease' => isset($manifest['releaseVersion']) ? $manifest['releaseVersion'] : null,
-            'manifestPlatform' => isset($manifest['platformVersion']) ? $manifest['platformVersion'] : null,
         );
-        // WordPress-facing release markers must agree with each other. The stable-platform
-        // compatibility marker is validated independently and is not required to equal the
-        // feature release number.
-        $release_consistent = $versions['release'] === $versions['featureRelease'] && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'];
-        $platform_consistent = $versions['platformCompatibility'] === $versions['pluginConstant'] && $versions['platformCompatibility'] === $versions['manifestPlatform'];
+        // Product release identity is manifest-authoritative. Platform compatibility remains
+        // an independently versioned subsystem marker and is never substituted for the release.
+        $release_consistent = $versions['release'] === $versions['featureRelease'] && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'] && $versions['release'] === $versions['consoleRelease'];
+        $console_consistent = $versions['consoleRelease'] === $versions['manifestRelease'];
+        $platform_consistent = $versions['platformCompatibility'] === $versions['legacyPlatformAlias'] && $versions['platformCompatibility'] === $versions['manifestPlatform'];
         $version_consistent = $release_consistent && $platform_consistent;
         $context = self::runtime_context();
         $duplicate_risk = $context === 'wordpress-plugin' && count($candidates) > 1;
@@ -297,13 +308,23 @@ final class SC_Lab_Integrity_V02632 {
             'state' => $partial ? 'partial-or-mismatched' : ($duplicate_risk ? 'duplicate-plugin-risk' : 'verified'),
             'runtimeContext' => $context,
             'repairLine' => self::REPAIR_LINE,
+            'releaseVersion' => $release_version,
+            'canonicalReleaseSource' => self::MANIFEST_RELATIVE,
+            'componentVersions' => $component_versions,
             'partialInstallRisk' => $partial,
             'releaseVersionConsistent' => $release_consistent,
+            'releaseConsoleVersionConsistent' => $console_consistent,
             'platformVersionConsistent' => $platform_consistent,
             'duplicatePluginRisk' => $duplicate_risk,
             'pluginCandidateScope' => $context === 'repository-validation' ? 'current-source-checkout' : 'wordpress-plugin-directory',
             'routeIntegrityVerified' => $route_ok,
             'versions' => $versions,
+            'versionFieldPolicy' => array(
+                'releaseVersion' => 'canonical Lab product release from build/sc-lab-release-manifest.json',
+                'componentVersions' => 'independently versioned subsystems; never product-release substitutes',
+                'legacySC_LAB_VERSION' => 'deprecated platform-compatibility alias only',
+                'releaseConsoleSource' => 'runtime.releaseVersion',
+            ),
             'identity' => $identity,
             'manifest' => array(
                 'sourceCommit' => isset($manifest['sourceCommit']) ? $manifest['sourceCommit'] : null,
@@ -361,8 +382,9 @@ final class SC_Lab_Integrity_V02632 {
         $manifest = self::manifest();
         return rest_ensure_response(array(
             'ok' => !empty($manifest),
-            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null)),
-            'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null),
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'canonicalReleaseSource' => self::MANIFEST_RELATIVE,
+            'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'integrityRuntimeVersion' => self::VERSION,
             'repairLine' => self::REPAIR_LINE,
             'runtimeContext' => self::runtime_context(),

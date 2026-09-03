@@ -70,6 +70,7 @@ final class SC_Lab_Plugin {
         $this->assets_enqueued = true;
 
         wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), $this->asset_version('assets/css/sc-lab-app.css'));
+        wp_enqueue_style('sc-lab-release-console-v0821', SC_LAB_URL . 'assets/css/sc-lab-release-console-v0821.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-release-console-v0821.css'));
   wp_enqueue_style('sc-lab-v0100', SC_LAB_URL . 'assets/css/sc-lab-v0100.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0100.css'));
   wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0110.css')); wp_enqueue_style('sc-lab-v0120', SC_LAB_URL . 'assets/css/sc-lab-v0120.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0120.css'));
   wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v095.css'));
@@ -189,8 +190,9 @@ final class SC_Lab_Plugin {
 
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults());
         wp_localize_script('sc-lab-app', 'SCLabConfig', array(
-            'version' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION,
-            'platformVersion' => defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : SC_LAB_VERSION,
+            'version' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'platformVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'restBase' => esc_url_raw(rest_url('sc-lab/v1/')),
             'nonce' => wp_create_nonce('wp_rest'),
             'elementsUrl' => esc_url_raw(SC_LAB_URL . 'assets/data/elements.json'),
@@ -294,6 +296,13 @@ final class SC_Lab_Plugin {
                 'networkError' => __('The scientific source could not be reached.', 'sustainable-catalyst-lab'),
                 'saved' => __('Saved to the active Lab project.', 'sustainable-catalyst-lab'),
             ),
+        ));
+        wp_enqueue_script('sc-lab-release-console-v0821', SC_LAB_URL . 'assets/js/modules/release-console-v0821.js', array('sc-lab-app'), $this->asset_version('assets/js/modules/release-console-v0821.js'), true);
+        wp_localize_script('sc-lab-release-console-v0821', 'SCLabReleaseConsoleConfigV0821', array(
+            'version' => '0.82.1',
+            'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,
+            'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
+            'restBase' => esc_url_raw(rest_url('sc-lab/v1/')),
         ));
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_front(); }
     }
