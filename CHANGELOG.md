@@ -1,3 +1,11 @@
+## 0.79.0 — Linked Views, Faceting & Figure Composition
+
+- Added declared selection, filter, and state-axis links across Graph Studio views.
+- Added deterministic bounded faceting using authoritative source-row indexes.
+- Added mixed svg2d/canvas3d/canvas4d figure compositions with per-view provenance.
+- Added v0.79 FastAPI and WordPress health/schema integration; Visualization Engine 2 advances to 2.6.0.
+- Automatic link inference, cross-dataset joins, inferred statistical coupling, synthetic panels, and arbitrary code remain disabled.
+
 ## 0.78.0 — 4D, Time & Parameter-Space Visualization
 
 - Added governed Canvas4D state spaces for observed x/y/z/w data, discrete time-state playback, parameter sweeps, hyperslicing, and XW/YW/ZW rotations.

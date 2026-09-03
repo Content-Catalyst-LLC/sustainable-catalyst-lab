@@ -1,0 +1,17 @@
+<?php
+/** Sustainable Catalyst Lab v0.79.0 — Linked Views, Faceting & Figure Composition. */
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Linked_Views_V0790 {
+    const VERSION='0.79.0'; const ENGINE_VERSION='2.6.0'; private static $initialized=false;
+    public static function init(){ if(self::$initialized){return;} self::$initialized=true; add_action('rest_api_init',array(__CLASS__,'routes')); }
+    public static function routes(){
+      register_rest_route('sc-lab/v1','/visualization/v0790/health',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'health'),'permission_callback'=>'__return_true'));
+      register_rest_route('sc-lab/v1','/visualization/v0790/schema',array('methods'=>WP_REST_Server::READABLE,'callback'=>array(__CLASS__,'schema'),'permission_callback'=>'__return_true'));
+    }
+    private static function file_state($r){$p=SC_LAB_DIR.ltrim((string)$r,'/');return array('exists'=>is_file($p),'sha256'=>is_file($p)?hash_file('sha256',$p):null);}
+    public static function schema(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'engineVersion'=>self::ENGINE_VERSION,'compositionSchema'=>'sc-lab-linked-figure-composition/0.79.0','viewSchema'=>'sc-lab-linked-view/0.79.0','linkSchema'=>'sc-lab-view-link/0.79.0','facetSchema'=>'sc-lab-facet-spec/0.79.0','workspaceSchema'=>'sc-lab-figure-workspace/0.79.0','channels'=>array('selection','filter','state-axis'),'layouts'=>array('grid','rows','columns','freeform'),'renderers'=>array('svg2d','canvas3d','canvas4d'),'limits'=>array('views'=>24,'facets'=>64,'links'=>128,'sourceRows'=>250000),'capabilities'=>array('linkedViews'=>true,'linkedSelection'=>true,'linkedFiltering'=>true,'linkedStateAxis'=>true,'faceting'=>true,'mixedRendererComposition'=>true),'boundaries'=>array('automaticLinkInference'=>false,'crossDatasetJoin'=>false,'statisticalCouplingInference'=>false,'syntheticPanels'=>false,'arbitraryCode'=>false)));}
+    public static function health(){
+      $required=array('backend/app/linked_views_v0790.py','backend/tests/test_linked_views_v0790.py','assets/js/modules/linked-views-v0790.js','assets/js/modules/graph-studio-v0790.js','assets/css/sc-lab-linked-views-v0790.css','contracts/linked-view-v0790.schema.json','contracts/view-link-v0790.schema.json','contracts/facet-spec-v0790.schema.json','contracts/linked-figure-composition-v0790.schema.json','contracts/figure-workspace-v0790.schema.json');$files=array();$ok=true;foreach($required as $r){$files[$r]=self::file_state($r);if(empty($files[$r]['exists'])){$ok=false;}}
+      return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'linked-views-faceting-composition-ready':'incomplete','version'=>self::VERSION,'release'=>defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:null,'platformVersion'=>defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:null,'engineVersion'=>self::ENGINE_VERSION,'rendererRegistry'=>array('svg2d','canvas3d','canvas4d'),'linkedViews'=>true,'linkedSelection'=>true,'linkedFiltering'=>true,'linkedStateAxis'=>true,'faceting'=>true,'mixedRendererComposition'=>true,'v0780TimeParameterCompatibility'=>true,'v0770SceneCompatibility'=>true,'v0760AdaptiveCompatibility'=>true,'v0750DataBindingCompatibility'=>true,'automaticLinkInference'=>false,'crossDatasetJoin'=>false,'statisticalCouplingInference'=>false,'syntheticPanels'=>false,'arbitraryCode'=>false,'files'=>$files,'time'=>gmdate('c')));
+    }
+}

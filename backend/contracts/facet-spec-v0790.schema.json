@@ -1,0 +1,41 @@
+{
+  "$id": "sc-lab-facet-spec/0.79.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "columns": {
+      "maximum": 8,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "field": {
+      "type": "string"
+    },
+    "limit": {
+      "maximum": 64,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "order": {
+      "enum": [
+        "ascending",
+        "descending",
+        "source"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-facet-spec/0.79.0"
+    },
+    "version": {
+      "const": "0.79.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "field",
+    "order",
+    "columns",
+    "limit"
+  ],
+  "type": "object"
+}

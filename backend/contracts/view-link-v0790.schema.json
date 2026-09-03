@@ -1,0 +1,49 @@
+{
+  "$id": "sc-lab-view-link/0.79.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "channel": {
+      "enum": [
+        "selection",
+        "filter",
+        "state-axis"
+      ]
+    },
+    "direction": {
+      "enum": [
+        "forward",
+        "bidirectional"
+      ]
+    },
+    "key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-view-link/0.79.0"
+    },
+    "sourceViewId": {
+      "type": "string"
+    },
+    "targetViewIds": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "version": {
+      "const": "0.79.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "sourceViewId",
+    "targetViewIds",
+    "channel"
+  ],
+  "type": "object"
+}

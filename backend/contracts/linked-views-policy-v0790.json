@@ -1,0 +1,24 @@
+{
+  "boundaries": {
+    "arbitraryCode": false,
+    "automaticLinkInference": false,
+    "crossDatasetJoin": false,
+    "statisticalCouplingInference": false,
+    "syntheticPanels": false
+  },
+  "capabilities": {
+    "faceting": true,
+    "linkedFiltering": true,
+    "linkedSelection": true,
+    "linkedStateAxis": true,
+    "mixedRendererComposition": true
+  },
+  "engineVersion": "2.6.0",
+  "limits": {
+    "facets": 64,
+    "links": 128,
+    "sourceRows": 250000,
+    "views": 24
+  },
+  "version": "0.79.0"
+}

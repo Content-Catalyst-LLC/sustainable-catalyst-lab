@@ -1,0 +1,40 @@
+{
+  "$id": "sc-lab-linked-figure-composition/0.79.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "boundaries": {
+      "type": "object"
+    },
+    "engineVersion": {
+      "const": "2.6.0"
+    },
+    "layout": {
+      "type": "object"
+    },
+    "links": {
+      "maxItems": 128,
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-linked-figure-composition/0.79.0"
+    },
+    "version": {
+      "const": "0.79.0"
+    },
+    "views": {
+      "maxItems": 24,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "views",
+    "links",
+    "layout",
+    "boundaries"
+  ],
+  "type": "object"
+}

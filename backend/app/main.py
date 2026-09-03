@@ -42,6 +42,7 @@ from .scientific_data_binding_v0750 import ScientificDataBindingError, bind_visu
 from .large_data_visualization_v0760 import LargeDataVisualizationError, adapt_dataset as adapt_large_dataset_v0760, bind_visualization as bind_large_visualization_v0760, build_figure as build_large_figure_v0760, build_workspace as build_large_workspace_v0760, health as large_data_visualization_health_v0760, normalize_plan as normalize_adaptive_render_plan_v0760, policies as large_data_visualization_policies_v0760
 from .scientific_scene_v0770 import ScientificSceneError, build_figure as build_scientific_scene_figure_v0770, build_workspace as build_scientific_scene_workspace_v0770, health as scientific_scene_health_v0770, normalize_camera as normalize_scientific_scene_camera_v0770, normalize_scene as normalize_scientific_scene_v0770, policies as scientific_scene_policies_v0770, scene_from_dataset as scientific_scene_from_dataset_v0770
 from .time_parameter_space_v0780 import TimeParameterSpaceError, build_figure as build_time_parameter_figure_v0780, build_workspace as build_time_parameter_workspace_v0780, health as time_parameter_health_v0780, normalize_axis as normalize_state_axis_v0780, normalize_projection as normalize_4d_projection_v0780, normalize_state_space as normalize_state_space_v0780, policies as time_parameter_policies_v0780, slice_state_space as slice_state_space_v0780, state_space_from_dataset as state_space_from_dataset_v0780
+from .linked_views_v0790 import LinkedViewsError, apply_link_event as apply_link_event_v0790, build_workspace as build_linked_workspace_v0790, facet_dataset as facet_dataset_v0790, health as linked_views_health_v0790, normalize_composition as normalize_linked_composition_v0790, normalize_facet as normalize_facet_v0790, normalize_link as normalize_view_link_v0790, normalize_view as normalize_linked_view_v0790, policies as linked_views_policies_v0790
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -2507,6 +2508,48 @@ def time_parameter_space_v0780_workspace_route(payload: dict[str, Any]):
         return build_time_parameter_workspace_v0780(payload)
     except TimeParameterSpaceError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/visualization/v0790/health")
+def linked_views_v0790_health_route(): return linked_views_health_v0790()
+
+@app.get("/v1/visualization/v0790/policies")
+def linked_views_v0790_policies_route(): return linked_views_policies_v0790()
+
+@app.post("/v1/visualization/v0790/views/normalize")
+def linked_views_v0790_view_route(payload: dict[str, Any]):
+    try: return {"ok": True, "view": normalize_linked_view_v0790(payload.get("view") or payload)}
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/links/normalize")
+def linked_views_v0790_link_route(payload: dict[str, Any]):
+    try: return {"ok": True, "link": normalize_view_link_v0790(payload.get("link") or payload)}
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/facets/normalize")
+def linked_views_v0790_facet_route(payload: dict[str, Any]):
+    try: return {"ok": True, "facet": normalize_facet_v0790(payload.get("facet") or payload)}
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/facets/build")
+def linked_views_v0790_facet_build_route(payload: dict[str, Any]):
+    try: return facet_dataset_v0790(payload)
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/compositions/normalize")
+def linked_views_v0790_composition_route(payload: dict[str, Any]):
+    try: return {"ok": True, "composition": normalize_linked_composition_v0790(payload.get("composition") or payload)}
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/interactions/propagate")
+def linked_views_v0790_propagate_route(payload: dict[str, Any]):
+    try: return apply_link_event_v0790(payload)
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0790/workspaces/build")
+def linked_views_v0790_workspace_route(payload: dict[str, Any]):
+    try: return build_linked_workspace_v0790(payload)
+    except LinkedViewsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
 
 
 @app.get("/v1/visualization/v0730/health")

@@ -1,3 +1,7 @@
+## Current visualization release: v0.79.0
+
+Graph Studio now supports governed linked views, deterministic faceting, and mixed-renderer figure composition on top of the v0.78 4D/time/parameter-space line. View coordination requires declared keys/channels; automatic joins or inferred scientific relationships are not performed.
+
 
 ## v0.77.0 — 3D Scientific Scene Engine
 
