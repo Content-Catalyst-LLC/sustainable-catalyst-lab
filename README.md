@@ -890,3 +890,7 @@ Sustainable Catalyst Lab v1.0.0 promotes the connected research platform to a st
 
 The platform continues to reject unrestricted executable payloads, credentials, restricted dataset bytes, destructive API restores, and force-push deployment behavior.
 
+
+### Visualization Engine 2.5 — v0.78.0
+
+Graph Studio now supports governed observed 4D state spaces, discrete time-state playback, parameter sweeps, W hyperslicing, and XW/YW/ZW projection controls through the Canvas4D v0.78 renderer. v0.78 preserves original coordinates and source/pipeline provenance; it does not synthesize intermediate frames, interpolate unobserved time or parameter states, infer trajectories/surfaces, forecast, or execute arbitrary code.

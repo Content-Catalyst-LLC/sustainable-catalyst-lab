@@ -1,3 +1,11 @@
+## 0.78.0 — 4D, Time & Parameter-Space Visualization
+
+- Added governed Canvas4D state spaces for observed x/y/z/w data, discrete time-state playback, parameter sweeps, hyperslicing, and XW/YW/ZW rotations.
+- Added v0.78 FastAPI health/policy/axis/projection/state-space/slice/figure/workspace routes and mirrored WordPress health/schema routes.
+- Preserved v0.75 transformation provenance and v0.76 deterministic large-data reduction without transforming after sampling.
+- Added Graph Studio v0.78 controls and a discrete observed time-state example.
+- Explicitly disables synthetic frames, temporal/parameter interpolation, inferred trajectories, surface interpolation, forecasting, and arbitrary code.
+
 # 0.77.0 — 3D Scientific Scene Engine
 
 - Adds the `canvas3d` renderer and governed 3D scene/camera/object contracts to Graph Studio.
@@ -13,6 +21,7 @@
 - Supports LTTB, grid, quantile, stride, and full strategies with explicit source/render row counts.
 - Preserves source dataset authority and forbids scientific transformation after sampling.
 - Extends Graph Studio and Visualization Engine 2 to engine version 2.3.0.
+
 
 ## 0.75.0 — Scientific Data Binding & Transformation Pipeline
 

@@ -1,0 +1,33 @@
+{
+  "boundaries": {
+    "arbitraryCode": false,
+    "automaticTrajectories": false,
+    "forecasting": false,
+    "parameterInterpolation": false,
+    "surfaceInterpolation": false,
+    "syntheticFrames": false,
+    "temporalInterpolation": false
+  },
+  "capabilities": {
+    "fourDimensionalProjection": true,
+    "hyperslicing": true,
+    "observedStatePlayback": true,
+    "parameterSweep": true,
+    "timeStatePlayback": true
+  },
+  "engineVersion": "2.5.0",
+  "limits": {
+    "browserInlineRows": 5000,
+    "observedStates": 2000,
+    "renderPoints": 5000,
+    "sourceRows": 250000
+  },
+  "modes": [
+    "4d-points",
+    "time-sequence",
+    "parameter-sweep"
+  ],
+  "renderer": "canvas4d",
+  "schema": "sc-lab-4d-time-parameter-policy/0.78.0",
+  "version": "0.78.0"
+}

@@ -1,0 +1,33 @@
+{
+  "$id": "sc-lab-4d-projection/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "hyperslice": {
+      "type": "object"
+    },
+    "normalizeForProjection": {
+      "type": "boolean"
+    },
+    "preserveOriginalCoordinates": {
+      "const": true
+    },
+    "rotations": {
+      "required": [
+        "xw",
+        "yw",
+        "zw"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-4d-projection/0.78.0"
+    }
+  },
+  "required": [
+    "schema",
+    "rotations",
+    "hyperslice",
+    "preserveOriginalCoordinates"
+  ],
+  "type": "object"
+}

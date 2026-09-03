@@ -1,0 +1,45 @@
+{
+  "$id": "sc-lab-state-axis/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "field": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "time",
+        "parameter",
+        "dimension"
+      ]
+    },
+    "label": {
+      "type": "string"
+    },
+    "scale": {
+      "enum": [
+        "index",
+        "elapsed",
+        "timestamp",
+        "numeric",
+        "categorical"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-state-axis/0.78.0"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "values": {
+      "maxItems": 2000,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "kind",
+    "scale",
+    "label"
+  ],
+  "type": "object"
+}

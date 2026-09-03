@@ -1,0 +1,29 @@
+{
+  "$id": "sc-lab-figure-workspace/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "controls": {
+      "type": "object"
+    },
+    "engineVersion": {
+      "const": "2.5.0"
+    },
+    "figures": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-figure-workspace/0.78.0"
+    },
+    "version": {
+      "const": "0.78.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "figures",
+    "controls"
+  ],
+  "type": "object"
+}

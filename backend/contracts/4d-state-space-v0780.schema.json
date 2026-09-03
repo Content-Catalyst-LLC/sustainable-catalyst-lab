@@ -1,0 +1,54 @@
+{
+  "$id": "sc-lab-4d-state-space/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "axis": {
+      "type": "object"
+    },
+    "boundaries": {
+      "type": "object"
+    },
+    "engineVersion": {
+      "const": "2.5.0"
+    },
+    "frames": {
+      "maxItems": 2000,
+      "type": "array"
+    },
+    "mode": {
+      "enum": [
+        "4d-points",
+        "time-sequence",
+        "parameter-sweep"
+      ]
+    },
+    "points": {
+      "maxItems": 5000,
+      "type": "array"
+    },
+    "projection": {
+      "type": "object"
+    },
+    "renderer": {
+      "const": "canvas4d"
+    },
+    "schema": {
+      "const": "sc-lab-4d-state-space/0.78.0"
+    },
+    "version": {
+      "const": "0.78.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "renderer",
+    "mode",
+    "axis",
+    "projection",
+    "points",
+    "boundaries"
+  ],
+  "type": "object"
+}

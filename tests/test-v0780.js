@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const stateSource=fs.readFileSync('assets/js/modules/time-parameter-space-v0780.js','utf8');
+const graphSource=fs.readFileSync('assets/js/modules/graph-studio-v0780.js','utf8');
+const context={console,setInterval,clearInterval,window:{SCLab:{}},document:{}};context.window.window=context.window;vm.createContext(context);vm.runInContext(stateSource,context);
+const E=context.window.SCLab.TimeParameterSpaceV0780;assert(E,'v0.78 state-space runtime exported');assert.strictEqual(E.version,'0.78.0');assert.strictEqual(E.engineVersion,'2.5.0');assert.strictEqual(E.renderer,'canvas4d');
+const state=E.normalizeStateSpace({mode:'time-sequence',axis:{kind:'time',scale:'index',label:'Observed time'},projection:{rotations:{xw:30,yw:-20,zw:10}},points:[{x:0,y:0,z:0,w:0,time:0},{x:1,y:0,z:.2,w:.5,time:0},{x:0,y:1,z:.4,w:1,time:1},{x:1,y:1,z:.6,w:1.5,time:1}]});
+assert.strictEqual(state.schema,'sc-lab-4d-state-space/0.78.0');assert.strictEqual(state.frameCount,2);assert.strictEqual(state.frames[0].pointCount,2);assert.strictEqual(state.playback.interpolate,false);assert.strictEqual(state.boundaries.temporalInterpolation,false);assert.strictEqual(state.boundaries.parameterInterpolation,false);
+const bound=E.fromDataset({dataset:{id:'d',rows:[{x:1,y:2,z:3,w:4,t:0},{x:2,y:3,z:4,w:5,t:1}]},binding:{x:'x',y:'y',z:'z',w:'w',time:'t'},mode:'time-sequence',axis:{kind:'time',scale:'index',field:'t'}});assert.strictEqual(bound.stateSpace.pointCount,2);assert.strictEqual(bound.stateSpace.source.transformAfterSampling,false);
+for(const needle of ["function timeParameterDefinition()","q78('mode')","q78('xw')","q78('example-state')",'scientific-figure-v0780','Graph Studio v0.78','TimeParameterSpaceV0780'])assert(graphSource.includes(needle),`Graph Studio v0.78 missing ${needle}`);
+console.log('PASS - 4D, Time & Parameter-Space v0.78 browser contract');
+console.log('PASS - observed-state indexing and no-interpolation boundaries');
+console.log('PASS - Graph Studio v0.78 state-space controls');

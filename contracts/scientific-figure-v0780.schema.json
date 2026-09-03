@@ -1,0 +1,39 @@
+{
+  "$id": "sc-lab-scientific-figure/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "engineVersion": {
+      "const": "2.5.0"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "renderer": {
+      "enum": [
+        "svg2d",
+        "canvas3d",
+        "canvas4d"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-scientific-figure/0.78.0"
+    },
+    "stateSpace": {
+      "type": "object"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.78.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "renderer",
+    "title"
+  ],
+  "type": "object"
+}

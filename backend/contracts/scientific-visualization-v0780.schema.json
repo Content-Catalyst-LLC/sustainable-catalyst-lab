@@ -1,0 +1,28 @@
+{
+  "$id": "sc-lab-scientific-visualization/0.78.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "renderer": {
+      "enum": [
+        "svg2d",
+        "canvas3d",
+        "canvas4d"
+      ]
+    },
+    "stateSpace": {
+      "type": "object"
+    },
+    "version": {
+      "const": "0.78.0"
+    },
+    "visualizationEngine": {
+      "const": "2.5.0"
+    }
+  },
+  "required": [
+    "version",
+    "visualizationEngine",
+    "renderer"
+  ],
+  "type": "object"
+}
