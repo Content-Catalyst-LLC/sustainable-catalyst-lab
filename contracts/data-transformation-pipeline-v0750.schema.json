@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-data-transformation-pipeline/0.75.0",
+  "title":"Sustainable Catalyst Lab Scientific Data Transformation Pipeline v0.75.0",
+  "type":"object",
+  "required":["schema","version","recordType","id","operations","boundaries","fingerprint"],
+  "properties":{
+    "schema":{"const":"sc-lab-data-transformation-pipeline/0.75.0"},
+    "version":{"const":"0.75.0"},
+    "recordType":{"const":"scientific-data-transformation-pipeline-v0750"},
+    "id":{"type":"string","minLength":1,"maxLength":160},
+    "title":{"type":"string","minLength":1,"maxLength":240},
+    "operations":{"type":"array","maxItems":100,"items":{"type":"object","required":["type"],"properties":{"type":{"enum":["derive","filter","rename","select","drop","scale","unit-convert","cast","impute","sort","aggregate","bin","drop-missing"]}},"additionalProperties":true}},
+    "boundaries":{"type":"object"},
+    "fingerprint":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":true
+}

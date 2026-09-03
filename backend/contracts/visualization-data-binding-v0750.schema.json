@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-visualization-data-binding/0.75.0",
+  "title":"Sustainable Catalyst Lab Visualization Data Binding v0.75.0",
+  "type":"object",
+  "required":["schema","version","recordType","id","kind","mappings","series","options","fingerprint"],
+  "properties":{
+    "schema":{"const":"sc-lab-visualization-data-binding/0.75.0"},
+    "version":{"const":"0.75.0"},
+    "recordType":{"const":"visualization-data-binding-v0750"},
+    "id":{"type":"string","minLength":1,"maxLength":160},
+    "kind":{"type":"string","minLength":1,"maxLength":40},
+    "mappings":{"type":"object","propertyNames":{"enum":["x","y","z","w","yLow","yHigh","xLow","xHigh","group","label","size","weight","value","level"]},"additionalProperties":{"type":"string"}},
+    "series":{"type":"array","maxItems":64},
+    "options":{"type":"object"},
+    "fingerprint":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":true
+}

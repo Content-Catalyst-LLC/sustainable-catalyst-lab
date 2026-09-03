@@ -1,0 +1,9 @@
+{
+  "version":"0.75.0",
+  "engineVersion":"2.2.0",
+  "contract":"sc-lab-scientific-data-binding-policy/0.75.0",
+  "pipeline":{"legacyEngine":"0.55.0","operations":["derive","filter","rename","select","drop","scale","unit-convert","cast","impute","sort","aggregate","bin","drop-missing"]},
+  "bindings":{"roles":["x","y","z","w","yLow","yHigh","xLow","xHigh","group","label","size","weight","value","level"],"realProjectData2d":true,"realProjectData4dPointProjection":true},
+  "provenance":{"datasetFingerprint":true,"pipelineFingerprint":true,"pipelineResultFingerprint":true,"bindingFingerprint":true,"figureFingerprint":true,"perStageLineage":true},
+  "boundaries":{"arbitraryCode":false,"arbitrarySql":false,"network":false,"filesystem":false,"automaticImputation":false,"automaticUnitInference":false,"surfaceInterpolation":false,"surfaceForecasting":false,"polarRadar":false,"dualAxis":false}
+}

@@ -1,3 +1,7 @@
+## v0.75.0 — Scientific Data Binding & Transformation Pipeline
+
+v0.75.0 turns Graph Studio from a sophisticated figure constructor into a governed data-to-figure system. Real datasets now carry explicit column/unit/source metadata and SHA-256 identity; transformations are replayable and lineage-hashed; visual roles are bound explicitly to columns; and saved figures retain dataset → transformation → binding provenance. The release binds real project data across the v0.74 2D grammar and adds 4D observed-point projection without pretending the points form an interpolated scientific surface.
+
 ## v0.74.0 — Advanced 2D Scientific Plot Grammar
 
 v0.74.0 turns Graph Studio's unified SVG path into a broad governed Cartesian scientific plotting system. The release adds distribution, interval, diagnostic, binned-field, bar, cumulative, and advanced series grammars plus explicit scale/unit/tick metadata while preserving the v0.44 SVG compatibility renderer and v0.73 4D canvas. Polar/radar and dual-axis figures remain deliberately deferred; general dataset binding and transformation provenance follow in v0.75.0.

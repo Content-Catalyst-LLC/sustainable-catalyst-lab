@@ -1,3 +1,12 @@
+## 0.75.0 — Scientific Data Binding & Transformation Pipeline
+
+- Adds governed scientific dataset, transformation pipeline, visualization binding, figure, and workspace contracts with deterministic fingerprints.
+- Reuses the established v0.55 transformation semantics for derive/filter/rename/select/drop/scale/unit conversion/cast/impute and adds reproducible sort, aggregate, bin, and drop-missing stages with per-stage lineage hashes.
+- Binds real project rows and unit metadata into the complete v0.74 Advanced 2D Plot Grammar through explicit x/y/z/w, interval, group, label, value, size, weight, and contour-level roles.
+- Adds project-data 4D point projection with original source domains preserved and normalized projection coordinates; no interpolated surface, uncertainty field, or forecast is fabricated.
+- Saves dataset, pipeline, transformed-output, binding, renderer, and figure provenance/fingerprints with Graph Studio v0.75 figures.
+- Adds v0.75 WordPress/FastAPI health, schema, dataset-normalization, pipeline-execution, binding, figure, and workspace endpoints while keeping arbitrary code, SQL, network access, automatic imputation, and automatic unit inference disabled.
+
 ## 0.74.0 — Advanced 2D Scientific Plot Grammar
 
 - Expands the unified `svg2d` renderer with a governed Cartesian plot grammar for step/area, grouped and stacked bars, density/KDE, box/violin, interval plots, contour/hexbin, ECDF/Q-Q/residual, waterfall, and Pareto figures.

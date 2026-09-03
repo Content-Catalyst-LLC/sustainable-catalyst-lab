@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-scientific-visualization/0.75.0",
+  "title":"Sustainable Catalyst Lab Scientific Visualization Specification v0.75.0",
+  "type":"object",
+  "required":["schema","version","kind","renderer","title","rendering","dataBinding"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-visualization/0.75.0"},
+    "version":{"const":"0.75.0"},
+    "recordType":{"const":"scientific-visualization-spec"},
+    "kind":{"type":"string"},
+    "renderer":{"enum":["svg2d","canvas4d"]},
+    "title":{"type":"string","minLength":1,"maxLength":180},
+    "visualizationEngine":{"const":"2.2.0"},
+    "dataBinding":{"type":"object"},
+    "rendering":{"type":"object"},
+    "fingerprint":{"type":"string","pattern":"^[a-f0-9]{64}$"}
+  },
+  "additionalProperties":true
+}

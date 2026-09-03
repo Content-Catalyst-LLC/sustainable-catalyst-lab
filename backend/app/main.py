@@ -38,6 +38,7 @@ from .response_surfaces import ResponseSurfaceError, explore as explore_response
 from .graph_studio import GraphStudioError, build_workspace as build_graph_studio_workspace, health as graph_studio_health, normalize_figure as normalize_graph_studio_figure, normalize_graph as normalize_graph_studio_graph, policies as graph_studio_policies
 from .visualization_engine_v0730 import VisualizationEngineError, build_workspace as build_visualization_workspace_v0730, health as visualization_engine_health_v0730, normalize_figure as normalize_visualization_figure_v0730, normalize_spec as normalize_visualization_spec_v0730, policies as visualization_engine_policies_v0730
 from .visualization_engine_v0740 import VisualizationGrammarError, build_workspace as build_visualization_workspace_v0740, health as visualization_engine_health_v0740, normalize_figure as normalize_visualization_figure_v0740, normalize_spec as normalize_visualization_spec_v0740, policies as visualization_engine_policies_v0740
+from .scientific_data_binding_v0750 import ScientificDataBindingError, bind_visualization as bind_visualization_v0750, build_figure as build_bound_figure_v0750, build_workspace as build_bound_workspace_v0750, execute_pipeline as execute_data_pipeline_v0750, health as scientific_data_binding_health_v0750, normalize_binding as normalize_data_binding_v0750, normalize_dataset as normalize_scientific_dataset_v0750, normalize_pipeline as normalize_data_pipeline_v0750, policies as scientific_data_binding_policies_v0750
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -2300,6 +2301,64 @@ def visualization_engine_v0740_workspace_build_route(payload: dict[str, Any]):
         return build_visualization_workspace_v0740(payload)
     except VisualizationGrammarError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.get("/v1/visualization/v0750/health")
+def scientific_data_binding_v0750_health_route():
+    return scientific_data_binding_health_v0750()
+
+@app.get("/v1/visualization/v0750/policies")
+def scientific_data_binding_v0750_policies_route():
+    return scientific_data_binding_policies_v0750()
+
+@app.post("/v1/visualization/v0750/datasets/normalize")
+def scientific_data_binding_v0750_dataset_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "dataset": normalize_scientific_dataset_v0750(payload.get("dataset") or payload)}
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/pipelines/normalize")
+def scientific_data_binding_v0750_pipeline_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "pipeline": normalize_data_pipeline_v0750(payload.get("pipeline") or payload)}
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/pipelines/execute")
+def scientific_data_binding_v0750_pipeline_execute_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "result": execute_data_pipeline_v0750(payload)}
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/bindings/normalize")
+def scientific_data_binding_v0750_binding_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "binding": normalize_data_binding_v0750(payload.get("binding") or payload)}
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/specs/bind")
+def scientific_data_binding_v0750_spec_bind_route(payload: dict[str, Any]):
+    try:
+        return bind_visualization_v0750(payload)
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/figures/build")
+def scientific_data_binding_v0750_figure_build_route(payload: dict[str, Any]):
+    try:
+        return build_bound_figure_v0750(payload)
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0750/workspaces/build")
+def scientific_data_binding_v0750_workspace_build_route(payload: dict[str, Any]):
+    try:
+        return build_bound_workspace_v0750(payload)
+    except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
 
 @app.get("/v1/visualization/v0730/health")
 def visualization_engine_v0730_health_route():
