@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const adaptiveSource=fs.readFileSync('assets/js/modules/large-data-visualization-v0760.js','utf8');
+const graphSource=fs.readFileSync('assets/js/modules/graph-studio-v0760.js','utf8');
+const context={console,window:{SCLab:{}}};context.window.window=context.window;vm.createContext(context);vm.runInContext(adaptiveSource,context);
+const E=context.window.SCLab.LargeDataVisualizationV0760;assert(E,'v0.76 large-data runtime exported');assert.strictEqual(E.version,'0.76.0');assert.strictEqual(E.engineVersion,'2.3.0');
+const rows=[];for(let i=0;i<12000;i++)rows.push({x:i,y:Math.sin(i/31),z:Math.cos(i/47),w:i/11999});
+const line=E.adapt({id:'large',rows},{id:'b',kind:'line',mappings:{x:'x',y:'y'}},{strategy:'auto',pointBudget:1200,progressive:true});
+assert.strictEqual(line.renderPlan.strategy,'lttb');assert(line.renderedRowCount<=1200);assert.strictEqual(line.sourceRowCount,12000);assert.deepStrictEqual(line.rows,E.adapt({id:'large',rows},{id:'b',kind:'line',mappings:{x:'x',y:'y'}},{strategy:'auto',pointBudget:1200,progressive:true}).rows);
+const scatter=E.adapt({id:'large',rows},{id:'b',kind:'scatter',mappings:{x:'x',y:'y'}},{strategy:'auto',pointBudget:900});assert.strictEqual(scatter.renderPlan.strategy,'grid');assert(scatter.renderedRowCount<=900);
+for(const needle of ["q76('strategy')","q76('budget')","q76('progressive')",'scientific-figure-v0760','Large-Data Visualization v0.76.0'])assert(graphSource.includes(needle),`Graph Studio v0.76 missing ${needle}`);
+console.log('PASS - Large-Data Visualization v0.76 browser contract');
+console.log('PASS - deterministic LTTB / grid adaptive representations');
+console.log('PASS - Graph Studio v0.76 adaptive rendering controls');

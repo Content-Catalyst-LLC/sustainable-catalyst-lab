@@ -1,3 +1,10 @@
+# 0.76.0 — Large-Data Visualization & Adaptive Rendering
+
+- Adds deterministic adaptive render plans and progressive representations for large scientific datasets.
+- Supports LTTB, grid, quantile, stride, and full strategies with explicit source/render row counts.
+- Preserves source dataset authority and forbids scientific transformation after sampling.
+- Extends Graph Studio and Visualization Engine 2 to engine version 2.3.0.
+
 ## 0.75.0 — Scientific Data Binding & Transformation Pipeline
 
 - Adds governed scientific dataset, transformation pipeline, visualization binding, figure, and workspace contracts with deterministic fingerprints.

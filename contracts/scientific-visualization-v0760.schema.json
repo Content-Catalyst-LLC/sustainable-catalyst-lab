@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"sc-lab-scientific-visualization/0.76.0","type":"object","required":["schema","version","kind","renderer"],"properties":{"schema":{"const":"sc-lab-scientific-visualization/0.76.0"},"version":{"const":"0.76.0"},"kind":{"type":"string"},"renderer":{"enum":["svg2d","canvas4d"]},"rendering":{"type":"object"}}}

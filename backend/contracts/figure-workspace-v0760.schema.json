@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"sc-lab-figure-workspace/0.76.0","type":"object","required":["schema","version","figure"],"properties":{"schema":{"const":"sc-lab-figure-workspace/0.76.0"},"version":{"const":"0.76.0"},"figure":{"type":"object"},"adaptiveRendering":{"type":["object","null"]}}}

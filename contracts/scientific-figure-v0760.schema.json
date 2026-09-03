@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"sc-lab-scientific-figure/0.76.0","type":"object","required":["schema","version","graph","provenance"],"properties":{"schema":{"const":"sc-lab-scientific-figure/0.76.0"},"version":{"const":"0.76.0"},"graph":{"type":"object"},"adaptiveRendering":{"type":["object","null"]},"provenance":{"type":"object"}}}

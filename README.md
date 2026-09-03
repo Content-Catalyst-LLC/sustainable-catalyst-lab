@@ -1,3 +1,8 @@
+
+## v0.76.0 — Large-Data Visualization & Adaptive Rendering
+
+Graph Studio can adapt large real datasets into deterministic, provenance-aware render representations using plot-aware LTTB, grid, quantile, stride, or full strategies. The authoritative dataset is never silently mutated; adaptive reduction is stored as figure provenance.
+
 ## v0.75.0 — Scientific Data Binding & Transformation Pipeline
 
 v0.75.0 turns Graph Studio from a sophisticated figure constructor into a governed data-to-figure system. Real datasets now carry explicit column/unit/source metadata and SHA-256 identity; transformations are replayable and lineage-hashed; visual roles are bound explicitly to columns; and saved figures retain dataset → transformation → binding provenance. The release binds real project data across the v0.74 2D grammar and adds 4D observed-point projection without pretending the points form an interpolated scientific surface.

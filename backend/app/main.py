@@ -39,6 +39,7 @@ from .graph_studio import GraphStudioError, build_workspace as build_graph_studi
 from .visualization_engine_v0730 import VisualizationEngineError, build_workspace as build_visualization_workspace_v0730, health as visualization_engine_health_v0730, normalize_figure as normalize_visualization_figure_v0730, normalize_spec as normalize_visualization_spec_v0730, policies as visualization_engine_policies_v0730
 from .visualization_engine_v0740 import VisualizationGrammarError, build_workspace as build_visualization_workspace_v0740, health as visualization_engine_health_v0740, normalize_figure as normalize_visualization_figure_v0740, normalize_spec as normalize_visualization_spec_v0740, policies as visualization_engine_policies_v0740
 from .scientific_data_binding_v0750 import ScientificDataBindingError, bind_visualization as bind_visualization_v0750, build_figure as build_bound_figure_v0750, build_workspace as build_bound_workspace_v0750, execute_pipeline as execute_data_pipeline_v0750, health as scientific_data_binding_health_v0750, normalize_binding as normalize_data_binding_v0750, normalize_dataset as normalize_scientific_dataset_v0750, normalize_pipeline as normalize_data_pipeline_v0750, policies as scientific_data_binding_policies_v0750
+from .large_data_visualization_v0760 import LargeDataVisualizationError, adapt_dataset as adapt_large_dataset_v0760, bind_visualization as bind_large_visualization_v0760, build_figure as build_large_figure_v0760, build_workspace as build_large_workspace_v0760, health as large_data_visualization_health_v0760, normalize_plan as normalize_adaptive_render_plan_v0760, policies as large_data_visualization_policies_v0760
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -2357,6 +2358,50 @@ def scientific_data_binding_v0750_workspace_build_route(payload: dict[str, Any])
     try:
         return build_bound_workspace_v0750(payload)
     except ScientificDataBindingError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/visualization/v0760/health")
+def large_data_visualization_v0760_health_route():
+    return large_data_visualization_health_v0760()
+
+@app.get("/v1/visualization/v0760/policies")
+def large_data_visualization_v0760_policies_route():
+    return large_data_visualization_policies_v0760()
+
+@app.post("/v1/visualization/v0760/plans/normalize")
+def large_data_visualization_v0760_plan_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "plan": normalize_adaptive_render_plan_v0760(payload.get("renderPlan") or payload.get("plan") or payload, kind=str(payload.get("kind") or "line-scatter"), row_count=int(payload.get("rowCount") or 0))}
+    except LargeDataVisualizationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0760/datasets/adapt")
+def large_data_visualization_v0760_dataset_adapt_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "result": adapt_large_dataset_v0760(payload)}
+    except LargeDataVisualizationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0760/specs/bind")
+def large_data_visualization_v0760_spec_bind_route(payload: dict[str, Any]):
+    try:
+        return bind_large_visualization_v0760(payload)
+    except LargeDataVisualizationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0760/figures/build")
+def large_data_visualization_v0760_figure_build_route(payload: dict[str, Any]):
+    try:
+        return build_large_figure_v0760(payload)
+    except LargeDataVisualizationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0760/workspaces/build")
+def large_data_visualization_v0760_workspace_build_route(payload: dict[str, Any]):
+    try:
+        return build_large_workspace_v0760(payload)
+    except LargeDataVisualizationError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
