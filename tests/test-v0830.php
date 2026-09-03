@@ -1,0 +1,4 @@
+<?php
+function must0830($ok,$m){if(!$ok){fwrite(STDERR,"FAIL - $m\n");exit(1);}echo "PASS - $m\n";}
+$main=file_get_contents(__DIR__.'/../sustainable-catalyst-lab.php');$plugin=file_get_contents(__DIR__.'/../includes/class-sc-lab-plugin.php');$tpl=file_get_contents(__DIR__.'/../templates/lab-app.php');$console=file_get_contents(__DIR__.'/../assets/js/modules/release-console-v0821.js');
+must0830(strpos($main,'Version: 0.83.0')!==false,'plugin header v0.83.0');must0830(strpos($main,'class-sc-lab-provenance-aware-figures-v0830.php')!==false,'v0.83 WordPress module wired');must0830(strpos($plugin,"'provenance-aware-figures-v0830'")!==false,'v0.83 browser runtime enqueued');must0830(strpos($tpl,'data-gs-v0830-provenance')!==false,'Graph Studio provenance controls present');must0830(strpos($console,"visualization/v0830/health")!==false,'Release Console reports current visualization engine');

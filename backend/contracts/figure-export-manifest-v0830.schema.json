@@ -1,0 +1,34 @@
+{
+  "$id": "sc-lab-figure-export-manifest/0.83.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "format": {
+      "enum": [
+        "json",
+        "svg",
+        "png",
+        "pdf",
+        "tiff"
+      ]
+    },
+    "provenanceVerified": {
+      "type": "boolean"
+    },
+    "schema": {
+      "const": "sc-lab-figure-export-manifest/0.83.0"
+    },
+    "version": {
+      "const": "0.83.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "format",
+    "figureFingerprint",
+    "lineageFingerprint",
+    "provenanceVerified"
+  ],
+  "title": "Scientific Figure Export Manifest v0.83.0",
+  "type": "object"
+}

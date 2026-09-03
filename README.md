@@ -914,3 +914,8 @@ Graph Studio now treats explicit uncertainty, empirical distributions, posterior
 ## v0.82.1 — Canonical Release Identity & Release Console Repair
 
 The Lab product release now derives from `build/sc-lab-release-manifest.json`; the public Release Console consumes runtime `releaseVersion`, while platform, Visualization Engine, Compute Core, queue, and integrity versions remain explicitly labeled independent component versions.
+
+
+## v0.83.0 — Provenance-Aware Scientific Figures
+
+Graph Studio now fingerprints explicit dataset, transformation, model, renderer, state, annotation, uncertainty and export lineage. Broken lineage is reported, never silently repaired. Visualization Engine 2.10.0.

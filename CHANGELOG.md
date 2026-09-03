@@ -1316,3 +1316,10 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added explicit platform-compatibility naming and deprecated the generic `SC_LAB_VERSION` product-version interpretation.
 - Added a canonical Release Console and runtime component-version registry.
 - Added release-console consistency and 0.82.1 → 0.83.0 visible-version regression certification.
+
+
+## 0.83.0
+
+- Added provenance-aware scientific figures, lineage verification, renderer/state provenance and export manifests.
+- Advanced Visualization Engine 2 to 2.10.0.
+- Release Console now queries the v0.83 visualization health surface while retaining canonical product release identity from runtime/health.

@@ -1,0 +1,25 @@
+{
+  "boundaries": {
+    "arbitraryCode": false,
+    "automaticProvenanceRepair": false,
+    "automaticSourceInference": false,
+    "hiddenTransformations": false,
+    "silentFingerprintOverride": false,
+    "unverifiableClaimAsVerified": false
+  },
+  "capabilities": {
+    "annotationLineage": true,
+    "baseFigurePreservation": true,
+    "datasetFingerprinting": true,
+    "exportManifest": true,
+    "interactionStateFingerprinting": true,
+    "lineageVerification": true,
+    "modelFingerprinting": true,
+    "rendererProvenance": true,
+    "transformationFingerprinting": true,
+    "uncertaintyLineage": true
+  },
+  "engineVersion": "2.10.0",
+  "schema": "sc-lab-figure-provenance-policy/0.83.0",
+  "version": "0.83.0"
+}

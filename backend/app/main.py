@@ -46,6 +46,7 @@ from .linked_views_v0790 import LinkedViewsError, apply_link_event as apply_link
 from .spatial_geospatial_raster_v0800 import SpatialVisualizationError, bbox_select as bbox_select_v0800, build_spatial_figure as build_spatial_figure_v0800, build_workspace as build_spatial_workspace_v0800, health as spatial_health_v0800, normalize_crs as normalize_crs_v0800, normalize_raster as normalize_raster_v0800, normalize_vector_layer as normalize_vector_layer_v0800, normalize_viewport as normalize_viewport_v0800, policies as spatial_policies_v0800
 from .annotation_measurement_markup_v0810 import ScientificMarkupError, attach_markup as attach_markup_v0810, build_workspace as build_markup_workspace_v0810, compute_measurement as compute_measurement_v0810, health as scientific_markup_health_v0810, normalize_annotation as normalize_annotation_v0810, normalize_markup_layer as normalize_markup_layer_v0810, policies as scientific_markup_policies_v0810
 from .uncertainty_ensemble_distribution_v0820 import UncertaintyVisualizationError, attach_uncertainty as attach_uncertainty_v0820, build_workspace as build_uncertainty_workspace_v0820, health as uncertainty_health_v0820, normalize_distribution as normalize_distribution_v0820, normalize_ensemble as normalize_ensemble_v0820, normalize_layer as normalize_uncertainty_layer_v0820, normalize_uncertainty as normalize_uncertainty_v0820, policies as uncertainty_policies_v0820
+from .provenance_aware_figures_v0830 import FigureProvenanceError, attach_provenance as attach_provenance_v0830, build_export_manifest as build_export_manifest_v0830, build_workspace as build_provenance_workspace_v0830, health as provenance_health_v0830, normalize_provenance as normalize_provenance_v0830, policies as provenance_policies_v0830, verify_provenance as verify_provenance_v0830
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -6000,3 +6001,35 @@ def uncertainty_v0820_figure_route(payload: dict[str, Any]):
 def uncertainty_v0820_workspace_route(payload: dict[str, Any]):
     try: return build_uncertainty_workspace_v0820(payload)
     except UncertaintyVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.get("/v1/visualization/v0830/health")
+def provenance_v0830_health_route(): return provenance_health_v0830()
+
+@app.get("/v1/visualization/v0830/policies")
+def provenance_v0830_policies_route(): return provenance_policies_v0830()
+
+@app.post("/v1/visualization/v0830/provenance/normalize")
+def provenance_v0830_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "provenance": normalize_provenance_v0830(payload.get("provenance") or payload)}
+    except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0830/figures/attach")
+def provenance_v0830_attach_route(payload: dict[str, Any]):
+    try: return {"ok": True, "figure": attach_provenance_v0830(payload)}
+    except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0830/figures/verify")
+def provenance_v0830_verify_route(payload: dict[str, Any]):
+    try: return verify_provenance_v0830(payload)
+    except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0830/exports/manifest")
+def provenance_v0830_export_route(payload: dict[str, Any]):
+    try: return build_export_manifest_v0830(payload)
+    except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0830/workspaces/build")
+def provenance_v0830_workspace_route(payload: dict[str, Any]):
+    try: return build_provenance_workspace_v0830(payload)
+    except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc

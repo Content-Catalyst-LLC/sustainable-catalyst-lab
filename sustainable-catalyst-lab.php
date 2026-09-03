@@ -3,7 +3,7 @@
  * Plugin Name: Sustainable Catalyst Lab
  * Plugin URI: https://sustainablecatalyst.com/lab/
  * Description: Modular scientific workspace for natural science and engineering feeds, climate maps, chemistry, physics, biology, astronomy, materials, Earth systems, climate, ocean, marine science, energy, universal visualization and export, selectable-text PDF reports, Decision Studio handoff packets, portable method contracts, governed Python Compute Core, scientific model studio, shared scientific visualization, scientific computing, numerical methods, numerical validation and benchmark libraries, precision and solver governance, accessible scientific visualization, checkpointed long-running jobs, result caching, curated multi-language execution, workspace data management, production recovery, incident diagnostics, experiments, evidence, notebooks, scientific workflow orchestration, dependency graphs, declarative workflow conditions, checkpoint history, partial recovery, durable schedules, authenticated event triggers, missed-run recovery, concurrency controls, adaptive experiment campaigns, sequential design, Gaussian-process surrogate modeling, Bayesian optimization, active learning, predictive uncertainty, resource-aware trial search, budget-aware orchestration, closed-loop simulation and instrument campaigns, signed measurement ingestion, safety interlocks, operator-approved setpoints, shared research projects, role-governed team workspaces, single-use invitations, collaboration-safe resource linking, append-only review discussions, review assignments, approval gates, immutable scientific sign-off, immutable workspace version history, named research branches, three-way merge, conflict resolution, protected-branch approval gates, institutional node federation, local-data execution, signed execution envelopes, node attestations, offline field research, sealed work packages, resumable edge synchronization, conflict-safe reconciliation, field-device provenance, reproducibility packages, research publication rendering, citation exports, verification manifests, scientific publication sign-off, typed cross-product research handoffs, stable public research APIs, signed webhooks, expiring research embeds, Python and TypeScript research SDKs, institutional administration, human and service identity records, role bindings, workspace classification, retention governance, approval workflows, policy evaluation, encrypted secrets, replay protection, signed audit chains, privacy workflows, stable instance identity, consistent backups, staged restore, migration journals, cross-instance transfer, disaster-recovery drills, performance budgets, load validation, safe chaos scenarios, capacity evidence, institutional beta cohorts, guided research journeys, end-to-end scientific study lifecycles, human-reviewed stage evidence, scientific claims, explicit evidence matrices, conclusion traceability, scientific literature registries, citation graphs, source-to-claim provenance, systematic evidence synthesis, replication assessment, fixed/random-effects meta-analysis, heterogeneity and sensitivity diagnostics, transparent scientific evidence grading, contradiction analysis, human-reviewed consensus boundaries, competing hypotheses, explicit predictions, discriminating tests, falsifying evidence challenges, human-reviewed scientific argument maps, scientific theory and conceptual-model workspaces, explicit constructs and mechanisms, falsification boundaries, research-question and hypothesis registries, preregistration freeze snapshots, timestamped deviation logs, privacy-minimized product telemetry, feedback and known-limitations operations, support pathways, beta release-readiness gates, and data-connected documentation.
- * Version: 0.82.1
+ * Version: 0.83.0
  * Update URI: https://sustainablecatalyst.com/lab/
  * Author: Content Catalyst LLC
  * License: GPL-2.0-or-later
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) { exit; }
 
 require_once __DIR__ . '/includes/sc-lab-release-bootstrap.php';
 $sc_lab_release_manifest = sc_lab_read_release_manifest(__DIR__);
-define('SC_LAB_RELEASE_VERSION', sc_lab_manifest_semver($sc_lab_release_manifest, 'releaseVersion', '0.82.1'));
+define('SC_LAB_RELEASE_VERSION', sc_lab_manifest_semver($sc_lab_release_manifest, 'releaseVersion', '0.83.0'));
 define('SC_LAB_FEATURE_VERSION', sc_lab_manifest_semver($sc_lab_release_manifest, 'featureVersion', SC_LAB_RELEASE_VERSION));
 define('SC_LAB_PLATFORM_COMPAT_VERSION', sc_lab_manifest_semver($sc_lab_release_manifest, 'platformVersion', '1.0.0'));
 define('SC_LAB_PLATFORM_VERSION', SC_LAB_PLATFORM_COMPAT_VERSION);
@@ -175,6 +175,8 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-annotation-measu
 SC_Lab_Annotation_Measurement_Markup_V0810::init();
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-uncertainty-ensemble-distribution-v0820.php';
 SC_Lab_Uncertainty_Ensemble_Distribution_V0820::init();
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-provenance-aware-figures-v0830.php';
+SC_Lab_Provenance_Aware_Figures_V0830::init();
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-probabilistic-analysis-v0480.php';
 SC_Lab_Probabilistic_Analysis_V0480::init();

@@ -1,0 +1,50 @@
+{
+  "$id": "sc-lab-figure-provenance/0.83.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "annotations": {
+      "type": "array"
+    },
+    "datasets": {
+      "type": "array"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "models": {
+      "type": "array"
+    },
+    "renderer": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-figure-provenance/0.83.0"
+    },
+    "selections": {
+      "type": "array"
+    },
+    "stateFingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "transformations": {
+      "type": "array"
+    },
+    "uncertainty": {
+      "type": "array"
+    },
+    "version": {
+      "const": "0.83.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "renderer",
+    "stateFingerprint",
+    "fingerprint"
+  ],
+  "title": "Sustainable Catalyst Lab Figure Provenance v0.83.0",
+  "type": "object"
+}

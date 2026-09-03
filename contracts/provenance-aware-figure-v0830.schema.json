@@ -1,0 +1,41 @@
+{
+  "$id": "sc-lab-provenance-aware-figure/0.83.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "baseFigure": {
+      "type": "object"
+    },
+    "baseFigureFingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "figureProvenance": {
+      "type": "object"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "lineageFingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-provenance-aware-figure/0.83.0"
+    },
+    "version": {
+      "const": "0.83.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "baseFigure",
+    "baseFigureFingerprint",
+    "figureProvenance",
+    "lineageFingerprint",
+    "fingerprint"
+  ],
+  "title": "Provenance-Aware Scientific Figure v0.83.0",
+  "type": "object"
+}
