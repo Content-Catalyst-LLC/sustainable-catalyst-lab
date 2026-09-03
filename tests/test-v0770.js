@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const sceneSource=fs.readFileSync('assets/js/modules/scientific-scene-engine-v0770.js','utf8');
+const graphSource=fs.readFileSync('assets/js/modules/graph-studio-v0770.js','utf8');
+const context={console,window:{SCLab:{}},document:{}};context.window.window=context.window;vm.createContext(context);vm.runInContext(sceneSource,context);
+const E=context.window.SCLab.ScientificSceneEngineV0770;assert(E,'v0.77 scene runtime exported');assert.strictEqual(E.version,'0.77.0');assert.strictEqual(E.engineVersion,'2.4.0');assert.strictEqual(E.renderer,'canvas3d');
+const scene=E.normalizeScene({id:'scene',title:'3D test',camera:{projection:'perspective',position:[3,2,4],target:[0,0,0]},objects:[{id:'points',type:'point-cloud',vertices:[[0,0,0],[1,1,1]],labels:['a','b']},{id:'mesh',type:'mesh',vertices:[[0,0,0],[1,0,0],[0,1,0]],triangles:[[0,1,2]]}]});
+assert.strictEqual(scene.schema,'sc-lab-scientific-scene/0.77.0');assert.strictEqual(scene.renderer,'canvas3d');assert.strictEqual(scene.objectCount,2);assert.deepStrictEqual(Array.from(scene.bounds.min),[0,0,0]);assert.deepStrictEqual(Array.from(scene.bounds.max),[1,1,1]);assert.strictEqual(scene.objects[1].triangles.length,1);
+assert.throws(()=>E.normalizeScene({objects:[{id:'mesh',type:'mesh',vertices:[[0,0,0],[1,0,0],[0,1,0]]}]}),/explicit triangle topology/i);
+const spec=E.spec({kind:'mesh-3d',scene});assert.strictEqual(spec.renderer,'canvas3d');assert.strictEqual(spec.visualizationEngine,'2.4.0');assert.strictEqual(spec.rendering.webgl,false);
+for(const needle of ["function buildScene3d()","q77('projection')","q77('faces')","q77('example-3d')",'scientific-figure-v0770','Graph Studio v0.77','canvas3d'])assert(graphSource.includes(needle),`Graph Studio v0.77 missing ${needle}`);
+console.log('PASS - 3D Scientific Scene Engine v0.77 browser contract');
+console.log('PASS - explicit 3D camera / mesh / point-cloud normalization');
+console.log('PASS - Graph Studio v0.77 native 3D scene controls');

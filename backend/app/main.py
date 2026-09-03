@@ -40,6 +40,7 @@ from .visualization_engine_v0730 import VisualizationEngineError, build_workspac
 from .visualization_engine_v0740 import VisualizationGrammarError, build_workspace as build_visualization_workspace_v0740, health as visualization_engine_health_v0740, normalize_figure as normalize_visualization_figure_v0740, normalize_spec as normalize_visualization_spec_v0740, policies as visualization_engine_policies_v0740
 from .scientific_data_binding_v0750 import ScientificDataBindingError, bind_visualization as bind_visualization_v0750, build_figure as build_bound_figure_v0750, build_workspace as build_bound_workspace_v0750, execute_pipeline as execute_data_pipeline_v0750, health as scientific_data_binding_health_v0750, normalize_binding as normalize_data_binding_v0750, normalize_dataset as normalize_scientific_dataset_v0750, normalize_pipeline as normalize_data_pipeline_v0750, policies as scientific_data_binding_policies_v0750
 from .large_data_visualization_v0760 import LargeDataVisualizationError, adapt_dataset as adapt_large_dataset_v0760, bind_visualization as bind_large_visualization_v0760, build_figure as build_large_figure_v0760, build_workspace as build_large_workspace_v0760, health as large_data_visualization_health_v0760, normalize_plan as normalize_adaptive_render_plan_v0760, policies as large_data_visualization_policies_v0760
+from .scientific_scene_v0770 import ScientificSceneError, build_figure as build_scientific_scene_figure_v0770, build_workspace as build_scientific_scene_workspace_v0770, health as scientific_scene_health_v0770, normalize_camera as normalize_scientific_scene_camera_v0770, normalize_scene as normalize_scientific_scene_v0770, policies as scientific_scene_policies_v0770, scene_from_dataset as scientific_scene_from_dataset_v0770
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -2402,6 +2403,50 @@ def large_data_visualization_v0760_workspace_build_route(payload: dict[str, Any]
     try:
         return build_large_workspace_v0760(payload)
     except LargeDataVisualizationError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/v1/visualization/v0770/health")
+def scientific_scene_v0770_health_route():
+    return scientific_scene_health_v0770()
+
+@app.get("/v1/visualization/v0770/policies")
+def scientific_scene_v0770_policies_route():
+    return scientific_scene_policies_v0770()
+
+@app.post("/v1/visualization/v0770/cameras/normalize")
+def scientific_scene_v0770_camera_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "camera": normalize_scientific_scene_camera_v0770(payload.get("camera") or payload)}
+    except ScientificSceneError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0770/scenes/normalize")
+def scientific_scene_v0770_scene_normalize_route(payload: dict[str, Any]):
+    try:
+        return {"ok": True, "scene": normalize_scientific_scene_v0770(payload.get("scene") or payload)}
+    except ScientificSceneError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0770/scenes/from-dataset")
+def scientific_scene_v0770_scene_from_dataset_route(payload: dict[str, Any]):
+    try:
+        return scientific_scene_from_dataset_v0770(payload)
+    except ScientificSceneError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0770/figures/build")
+def scientific_scene_v0770_figure_build_route(payload: dict[str, Any]):
+    try:
+        return build_scientific_scene_figure_v0770(payload)
+    except ScientificSceneError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+@app.post("/v1/visualization/v0770/workspaces/build")
+def scientific_scene_v0770_workspace_build_route(payload: dict[str, Any]):
+    try:
+        return build_scientific_scene_workspace_v0770(payload)
+    except ScientificSceneError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 

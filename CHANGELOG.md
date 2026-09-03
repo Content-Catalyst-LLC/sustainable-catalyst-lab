@@ -1,3 +1,12 @@
+# 0.77.0 — 3D Scientific Scene Engine
+
+- Adds the `canvas3d` renderer and governed 3D scene/camera/object contracts to Graph Studio.
+- Supports dataset-bound point clouds, ordered trajectories, vector fields, line segments, and explicit triangle meshes.
+- Adds perspective and orthographic cameras, orbit/zoom interaction, explicit clipping intent, scene bounds, depth ordering, and PNG/JSON scene export.
+- Preserves v0.75 transformation lineage and v0.76 adaptive-rendering provenance for dataset-bound 3D scenes.
+- Requires explicit mesh triangle topology; automatic triangulation, surface interpolation, WebGL, hidden-surface guarantees, and arbitrary code remain disabled.
+- Extends Visualization Engine 2 to engine version 2.4.0 while preserving `svg2d` and `canvas4d` compatibility.
+
 # 0.76.0 — Large-Data Visualization & Adaptive Rendering
 
 - Adds deterministic adaptive render plans and progressive representations for large scientific datasets.

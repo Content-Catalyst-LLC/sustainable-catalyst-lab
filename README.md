@@ -1,4 +1,7 @@
 
+## v0.77.0 — 3D Scientific Scene Engine
+
+Graph Studio now has a governed `canvas3d` renderer for real three-dimensional scientific coordinates. v0.77 supports point clouds, ordered trajectories, vector fields, line segments, explicit triangle meshes, perspective/orthographic cameras, orbit/zoom interaction, clipping intent, scene bounds, PNG/JSON export, and scene provenance. Mesh topology is never inferred from scattered observations; the browser renderer uses painter depth sorting and does not claim WebGL depth-buffer or hidden-surface guarantees. v0.75 data transformations and v0.76 adaptive representations remain upstream compatibility layers.
 ## v0.76.0 — Large-Data Visualization & Adaptive Rendering
 
 Graph Studio can adapt large real datasets into deterministic, provenance-aware render representations using plot-aware LTTB, grid, quantile, stride, or full strategies. The authoritative dataset is never silently mutated; adaptive reduction is stored as figure provenance.
