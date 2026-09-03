@@ -1,0 +1,11 @@
+{
+  "version": "0.74.0",
+  "engineVersion": "2.1.0",
+  "contract": "sc-lab-advanced-2d-plot-grammar/0.74.0",
+  "coordinateSystem": "cartesian-2d",
+  "plotKinds": ["line","scatter","line-scatter","step","area","stacked-area","bar","grouped-bar","stacked-bar","histogram","horizontal-bars","density","box","violin","error-bar","confidence-band","heatmap","contour","hexbin","ecdf","qq","residual","waterfall","pareto"],
+  "axisScales": ["linear","log","symlog","probability","datetime","categorical"],
+  "tickFormats": ["auto","scientific","si","plain","percent"],
+  "publicationExports": ["svg","png","csv","json"],
+  "boundaries": {"polarRadar": false, "dualAxis": false, "arbitraryCode": false, "remoteImageFetch": false, "rawDataTransformationPipeline": "v0.75.0"}
+}

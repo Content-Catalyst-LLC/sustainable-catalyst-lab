@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-scientific-visualization/0.74.0",
+  "title":"Sustainable Catalyst Lab Scientific Visualization Specification v0.74.0",
+  "type":"object",
+  "required":["schema","version","kind","renderer","title","publication"],
+  "properties":{
+    "schema":{"const":"sc-lab-scientific-visualization/0.74.0"},
+    "version":{"const":"0.74.0"},
+    "recordType":{"const":"scientific-visualization-spec"},
+    "grammar":{"type":"string"},
+    "kind":{"enum":["line","scatter","line-scatter","step","area","stacked-area","bar","grouped-bar","stacked-bar","histogram","horizontal-bars","density","box","violin","error-bar","confidence-band","heatmap","contour","hexbin","ecdf","qq","residual","waterfall","pareto","surface-4d"]},
+    "renderer":{"enum":["svg2d","canvas4d"]},
+    "title":{"type":"string","minLength":1,"maxLength":180},
+    "subtitle":{"type":"string","maxLength":240},
+    "axes":{"type":"object","properties":{"x":{"$ref":"#/$defs/axis"},"y":{"$ref":"#/$defs/axis"}},"additionalProperties":false},
+    "series":{"type":"array"},"bars":{"type":"array"},"boxes":{"type":"array"},"violins":{"type":"array"},"cells":{"type":"array"},"contours":{"type":"array"},"bins":{"type":"array"},
+    "surface":{"type":"object"},"publication":{"type":"object"},"interaction":{"type":"object"},"rendering":{"type":"object"},"warnings":{"type":"array","items":{"type":"string"}}
+  },
+  "$defs":{"axis":{"type":"object","required":["scale","label","tickFormat","inverted"],"properties":{"scale":{"enum":["linear","log","symlog","probability","datetime","categorical"]},"label":{"type":"string","maxLength":120},"unit":{"type":"string","maxLength":80},"tickFormat":{"enum":["auto","scientific","si","plain","percent"]},"inverted":{"type":"boolean"},"domain":{"type":["array","null"],"minItems":2,"maxItems":2},"categories":{"type":"array","items":{"type":"string"}}},"additionalProperties":true}},
+  "additionalProperties":true
+}

@@ -1,0 +1,24 @@
+const fs=require('fs');
+function read(p){return fs.readFileSync(p,'utf8')}
+const engine=read('assets/js/modules/scientific-visualization-engine-v0740.js');
+const graph=read('assets/js/modules/graph-studio-v0740.js');
+const template=read('templates/lab-app.php');
+const bootstrap=read('sustainable-catalyst-lab.php');
+const plugin=read('includes/class-sc-lab-plugin.php');
+const requiredKinds=['step','area','stacked-area','grouped-bar','stacked-bar','density','box','violin','error-bar','confidence-band','contour','hexbin','ecdf','qq','residual','waterfall','pareto'];
+if(!engine.includes("VERSION='0.74.0'")||!engine.includes("ENGINE='2.1.0'"))throw new Error('v0.74 browser engine identity missing');
+requiredKinds.forEach(k=>{if(!engine.includes(`'${k}'`)||!template.includes(`value=\"${k}\"`))throw new Error(`missing advanced kind ${k}`)});
+['linear','log','symlog','probability','datetime','categorical'].forEach(k=>{if(!engine.includes(`'${k}'`)||!template.includes(`>${k}<`))throw new Error(`missing axis scale ${k}`)});
+if(!engine.includes('ScientificVisualizationEngineV0440'))throw new Error('legacy SVG compatibility delegation missing');
+if(!engine.includes('ScientificVisualizationEngineV0730'))throw new Error('canvas4d compatibility delegation missing');
+if(!graph.includes('ScientificVisualizationEngineV0740'))throw new Error('Graph Studio does not use v0.74 engine');
+if(!graph.includes("recordType:'scientific-figure-v0740'"))throw new Error('saved figure record type not upgraded');
+if(!template.includes('polar/radar and dual-axis figures are deferred'))throw new Error('coordinate-system boundary missing');
+if(!bootstrap.includes("SC_LAB_RELEASE_VERSION', '0.74.0'"))throw new Error('release identity not upgraded');
+if(!plugin.includes("'graph-studio-v0740'"))throw new Error('Graph Studio v0.74 not wired');
+if(plugin.includes("'graph-studio-v0730','probabilistic-analysis"))throw new Error('old Graph Studio still active in module chain');
+console.log('PASS - Advanced 2D Scientific Plot Grammar browser contract');
+console.log('PASS - Graph Studio v0.74 advanced plot construction');
+console.log('PASS - axis scale, unit and formatting controls');
+console.log('PASS - legacy SVG and canvas4d compatibility adapters');
+console.log('PASS - Cartesian coordinate-system boundaries remain explicit');

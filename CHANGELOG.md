@@ -1,3 +1,11 @@
+## 0.74.0 — Advanced 2D Scientific Plot Grammar
+
+- Expands the unified `svg2d` renderer with a governed Cartesian plot grammar for step/area, grouped and stacked bars, density/KDE, box/violin, interval plots, contour/hexbin, ECDF/Q-Q/residual, waterfall, and Pareto figures.
+- Adds explicit axis scale, unit, tick-format, inversion, category, and domain metadata.
+- Preserves legacy v0.44 SVG compatibility, v0.73 first-class `canvas4d` surfaces, project figure persistence, publication exports, and accessibility tables.
+- Adds v0.74 browser/backend contracts, Graph Studio controls, WordPress/FastAPI health and schema routes, and compatibility coverage.
+- Keeps polar/radar, dual-axis, general data-binding/transformation provenance, and 4D project-data binding explicitly deferred rather than represented ambiguously.
+
 ## 0.73.0 — Scientific Visualization Engine 2, Unified Graph Contract & Graph Studio Renderer Architecture
 
 - Adds the renderer-aware `sc-lab-scientific-visualization/0.73.0` contract and Visualization Engine 2 registry.

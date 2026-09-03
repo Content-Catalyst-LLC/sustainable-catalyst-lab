@@ -1,3 +1,7 @@
+## v0.74.0 — Advanced 2D Scientific Plot Grammar
+
+v0.74.0 turns Graph Studio's unified SVG path into a broad governed Cartesian scientific plotting system. The release adds distribution, interval, diagnostic, binned-field, bar, cumulative, and advanced series grammars plus explicit scale/unit/tick metadata while preserving the v0.44 SVG compatibility renderer and v0.73 4D canvas. Polar/radar and dual-axis figures remain deliberately deferred; general dataset binding and transformation provenance follow in v0.75.0.
+
 ## v0.73.0 — Scientific Visualization Engine 2 & Unified Graph Contract
 
 v0.73.0 establishes the renderer-aware architecture for Lab's advanced scientific visualization roadmap. Graph Studio now routes legacy 2D figures through the proven v0.44 SVG engine and first-class `surface-4d` figures through the existing v0.71 canvas renderer under one `sc-lab-scientific-visualization/0.73.0` contract. New saved figures preserve renderer identity, dimensional semantics, 4D hyperslice/rotation/layer state, publication metadata, and provenance while remaining compatible with older v0.47 figures. The current 4D profiles remain deterministic synthetic demonstrations; project-data surface binding is intentionally deferred to v0.75.0.
