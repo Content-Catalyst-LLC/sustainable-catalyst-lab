@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "engineVersion": {
+      "const": "2.11.0"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "renderers": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-renderer-registry/0.84.0"
+    },
+    "version": {
+      "const": "0.84.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "engineVersion",
+    "renderers",
+    "fingerprint"
+  ],
+  "title": "Renderer Registry v0.84.0",
+  "type": "object"
+}

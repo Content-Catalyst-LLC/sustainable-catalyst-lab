@@ -1323,3 +1323,16 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added provenance-aware scientific figures, lineage verification, renderer/state provenance and export manifests.
 - Advanced Visualization Engine 2 to 2.10.0.
 - Release Console now queries the v0.83 visualization health surface while retaining canonical product release identity from runtime/health.
+
+## 0.84.0
+
+- Added Visualization Engine 2.11.0 GPU Renderer Architecture.
+- Added governed renderer capability registry covering SVG, Canvas, WebGL2 and WebGPU targets.
+- Added browser GPU/API feature detection without treating detection as production renderer readiness.
+- Added explicit renderer negotiation and recorded fallback decisions.
+- Added typed GPU buffer planning with per-buffer and workspace memory budgets.
+- Added fingerprint-only approved shader descriptors; arbitrary shader source remains prohibited.
+- Added governed picking contracts and renderer diagnostics.
+- Added Graph Studio GPU capability and negotiation controls.
+- Preserved v0.83 provenance-aware figures and v0.75–v0.82 visualization compatibility.
+- WebGL2 and WebGPU production rendering remain explicitly deferred to v0.85 and v0.86.

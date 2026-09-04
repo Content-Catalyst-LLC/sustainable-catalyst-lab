@@ -1,0 +1,5 @@
+.sc-gs0840-gpu{border:1px solid rgba(17,24,39,.15);border-radius:12px;padding:14px;margin-top:14px;background:rgba(248,250,252,.76)}
+.sc-gs0840-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;font-size:.82rem;letter-spacing:.04em}.sc-gs0840-head strong{font-weight:800}.sc-gs0840-head span{opacity:.72}
+.sc-gs0840-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sc-gs0840-grid label{display:grid;gap:5px;font-size:.8rem}.sc-gs0840-grid input{width:100%}
+.sc-gs0840-status{font-size:.82rem;margin:.75rem 0}.sc-gs0840-status[data-state="error"]{font-weight:700}.sc-gs0840-summary{max-height:280px;overflow:auto;white-space:pre-wrap}.sc-gs0840-boundary{font-size:.78rem;opacity:.78;line-height:1.5}
+@media(max-width:780px){.sc-gs0840-grid{grid-template-columns:1fr}.sc-gs0840-head{align-items:flex-start;flex-direction:column}}

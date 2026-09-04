@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "maxResults": {
+      "maximum": 4096,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "mode": {
+      "enum": [
+        "point",
+        "object",
+        "cell",
+        "triangle",
+        "feature"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-picking-contract/0.84.0"
+    }
+  },
+  "required": [
+    "schema",
+    "mode",
+    "maxResults",
+    "fingerprint"
+  ],
+  "title": "Picking Contract v0.84.0",
+  "type": "object"
+}

@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const window={navigator:{gpu:{}},window:null};window.window=window;
+const fakeCanvas={getContext(type){return type==='2d'||type==='webgl2'?{}:null;}};
+const document={createElementNS(){return{}},createElement(){return fakeCanvas;},readyState:'complete',querySelector(){return null;},querySelectorAll(){return[];}};
+const context={window,document,globalThis:window,console,JSON,Math,Error,String,Array,Object,Number,Set};vm.createContext(context);
+vm.runInContext(fs.readFileSync('assets/js/modules/gpu-renderer-architecture-v0840.js','utf8'),context);
+const G=window.SCLabGPURendererArchitectureV0840;assert(G);assert.strictEqual(G.version,'0.84.0');assert.strictEqual(G.engineVersion,'2.11.0');
+const caps=G.detectCapabilities();assert.strictEqual(caps.detected.webgl2,true);assert.strictEqual(caps.detected.webgpu,true);
+const reg=G.getRegistry();const byId=Object.fromEntries(reg.renderers.map(x=>[x.id,x]));assert.strictEqual(byId.webgl2.implementationReady,false);assert.strictEqual(byId.webgpu.implementationReady,false);assert.strictEqual(byId.canvas3d.implementationReady,true);
+const n=G.negotiateRenderer({browserCapabilities:caps,requiredFeatures:['3d'],preferredRenderers:['webgpu','webgl2','canvas3d'],allowFallback:true});assert.strictEqual(n.selectedRenderer,'canvas3d');assert.strictEqual(n.fallbackUsed,true);assert.strictEqual(n.fallbackRecorded,true);assert.strictEqual(n.scientificContractPreserved,true);
+const b=G.planBuffer({dataType:'float32',length:100,components:3,usage:'vertex'});assert.strictEqual(b.byteLength,1200);
+assert.throws(()=>G.normalizeShaderDescriptor({id:'bad',language:'glsl',stage:'vertex',sourceFingerprint:'a'.repeat(64),source:'void main(){}'}));
+assert.strictEqual(G.boundaries.gpuRequiredForScientificCorrectness,false);assert.strictEqual(G.boundaries.silentRendererFallback,false);
+console.log('PASS - v0.84.0 browser GPU capability detection, explicit fallback and bounded buffer contracts');

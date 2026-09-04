@@ -47,6 +47,7 @@ from .spatial_geospatial_raster_v0800 import SpatialVisualizationError, bbox_sel
 from .annotation_measurement_markup_v0810 import ScientificMarkupError, attach_markup as attach_markup_v0810, build_workspace as build_markup_workspace_v0810, compute_measurement as compute_measurement_v0810, health as scientific_markup_health_v0810, normalize_annotation as normalize_annotation_v0810, normalize_markup_layer as normalize_markup_layer_v0810, policies as scientific_markup_policies_v0810
 from .uncertainty_ensemble_distribution_v0820 import UncertaintyVisualizationError, attach_uncertainty as attach_uncertainty_v0820, build_workspace as build_uncertainty_workspace_v0820, health as uncertainty_health_v0820, normalize_distribution as normalize_distribution_v0820, normalize_ensemble as normalize_ensemble_v0820, normalize_layer as normalize_uncertainty_layer_v0820, normalize_uncertainty as normalize_uncertainty_v0820, policies as uncertainty_policies_v0820
 from .provenance_aware_figures_v0830 import FigureProvenanceError, attach_provenance as attach_provenance_v0830, build_export_manifest as build_export_manifest_v0830, build_workspace as build_provenance_workspace_v0830, health as provenance_health_v0830, normalize_provenance as normalize_provenance_v0830, policies as provenance_policies_v0830, verify_provenance as verify_provenance_v0830
+from .gpu_renderer_architecture_v0840 import GPURendererArchitectureError, build_diagnostics as build_renderer_diagnostics_v0840, build_workspace as build_gpu_workspace_v0840, health as gpu_renderer_health_v0840, negotiate_renderer as negotiate_renderer_v0840, normalize_browser_capabilities as normalize_browser_capabilities_v0840, normalize_picking_contract as normalize_picking_v0840, normalize_shader_descriptor as normalize_shader_v0840, plan_buffer as plan_gpu_buffer_v0840, policies as gpu_renderer_policies_v0840, renderer_registry as renderer_registry_v0840
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -6033,3 +6034,48 @@ def provenance_v0830_export_route(payload: dict[str, Any]):
 def provenance_v0830_workspace_route(payload: dict[str, Any]):
     try: return build_provenance_workspace_v0830(payload)
     except FigureProvenanceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.get("/v1/visualization/v0840/health")
+def gpu_renderer_v0840_health_route(): return gpu_renderer_health_v0840()
+
+@app.get("/v1/visualization/v0840/policies")
+def gpu_renderer_v0840_policies_route(): return gpu_renderer_policies_v0840()
+
+@app.get("/v1/visualization/v0840/renderers/registry")
+def gpu_renderer_v0840_registry_route(): return {"ok": True, "registry": renderer_registry_v0840()}
+
+@app.post("/v1/visualization/v0840/capabilities/normalize")
+def gpu_renderer_v0840_capabilities_route(payload: dict[str, Any]):
+    try: return {"ok": True, "capabilities": normalize_browser_capabilities_v0840(payload.get("browserCapabilities") or payload)}
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/renderers/negotiate")
+def gpu_renderer_v0840_negotiate_route(payload: dict[str, Any]):
+    try: return {"ok": True, "negotiation": negotiate_renderer_v0840(payload)}
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/buffers/plan")
+def gpu_renderer_v0840_buffer_route(payload: dict[str, Any]):
+    try: return {"ok": True, "bufferPlan": plan_gpu_buffer_v0840(payload)}
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/shaders/normalize")
+def gpu_renderer_v0840_shader_route(payload: dict[str, Any]):
+    try: return {"ok": True, "shader": normalize_shader_v0840(payload)}
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/picking/normalize")
+def gpu_renderer_v0840_picking_route(payload: dict[str, Any]):
+    try: return {"ok": True, "picking": normalize_picking_v0840(payload)}
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/diagnostics/build")
+def gpu_renderer_v0840_diagnostics_route(payload: dict[str, Any]):
+    try: return build_renderer_diagnostics_v0840(payload)
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0840/workspaces/build")
+def gpu_renderer_v0840_workspace_route(payload: dict[str, Any]):
+    try: return build_gpu_workspace_v0840(payload)
+    except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc

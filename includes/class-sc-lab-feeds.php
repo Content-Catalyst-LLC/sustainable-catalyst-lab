@@ -33,7 +33,7 @@ class SC_Lab_Feeds {
             'httpversion' => '1.1',
             'headers' => array(
                 'Accept' => 'application/json',
-                'User-Agent' => 'SustainableCatalystLab/' . (defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.83.0') . ' (+https://sustainablecatalyst.com/lab/)',
+                'User-Agent' => 'SustainableCatalystLab/' . (defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.84.0') . ' (+https://sustainablecatalyst.com/lab/)',
             ),
         ));
         $last_error = null;

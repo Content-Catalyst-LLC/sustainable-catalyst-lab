@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "language": {
+      "enum": [
+        "glsl",
+        "wgsl"
+      ]
+    },
+    "schema": {
+      "const": "sc-lab-shader-descriptor/0.84.0"
+    },
+    "sourceFingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "stage": {
+      "enum": [
+        "vertex",
+        "fragment",
+        "compute"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "language",
+    "stage",
+    "sourceFingerprint",
+    "approved",
+    "fingerprint"
+  ],
+  "title": "Shader Descriptor v0.84.0",
+  "type": "object"
+}

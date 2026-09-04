@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "byteLength": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "dataType": {
+      "enum": [
+        "float32",
+        "float64",
+        "int8",
+        "uint8",
+        "int16",
+        "uint16",
+        "int32",
+        "uint32"
+      ]
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "length": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "schema": {
+      "const": "sc-lab-gpu-buffer-plan/0.84.0"
+    },
+    "usage": {
+      "enum": [
+        "vertex",
+        "index",
+        "uniform",
+        "storage",
+        "readback",
+        "texture-staging"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "dataType",
+    "length",
+    "byteLength",
+    "usage",
+    "fingerprint"
+  ],
+  "title": "GPU Buffer Plan v0.84.0",
+  "type": "object"
+}

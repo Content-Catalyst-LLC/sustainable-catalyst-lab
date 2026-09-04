@@ -1,0 +1,28 @@
+{
+  "architecture": "gpu-renderer-architecture",
+  "boundaries": {
+    "arbitraryShaderSource": false,
+    "automaticScientificSemanticsChange": false,
+    "gpuRequiredForScientificCorrectness": false,
+    "serverAssumesBrowserGPU": false,
+    "silentRendererFallback": false
+  },
+  "capabilities": {
+    "browserFeatureDetection": true,
+    "explicitFallbackRecording": true,
+    "gpuBufferContracts": true,
+    "memoryBudgets": true,
+    "pickingContracts": true,
+    "rendererCapabilityRegistry": true,
+    "rendererDiagnostics": true,
+    "safeRendererNegotiation": true,
+    "shaderRegistryContracts": true,
+    "webgl2CapabilityDetection": true,
+    "webgl2ProductionRendererReady": false,
+    "webgpuCapabilityDetection": true,
+    "webgpuProductionRendererReady": false
+  },
+  "engineVersion": "2.11.0",
+  "schema": "sc-lab-gpu-renderer-policy/0.84.0",
+  "version": "0.84.0"
+}

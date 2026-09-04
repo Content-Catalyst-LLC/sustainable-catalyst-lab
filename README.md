@@ -919,3 +919,7 @@ The Lab product release now derives from `build/sc-lab-release-manifest.json`; t
 ## v0.83.0 — Provenance-Aware Scientific Figures
 
 Graph Studio now fingerprints explicit dataset, transformation, model, renderer, state, annotation, uncertainty and export lineage. Broken lineage is reported, never silently repaired. Visualization Engine 2.10.0.
+
+## v0.84.0 — GPU Renderer Architecture
+
+Graph Studio now includes a governed renderer-capability layer for the advanced GPU visualization roadmap. It can detect WebGL2/WebGPU support, negotiate among declared renderer capabilities, record fallbacks, plan bounded typed buffers, register approved shader fingerprints, and expose picking/diagnostic contracts. v0.84 is deliberately an architecture release: WebGL2 and WebGPU are visible candidate backends but are not yet production renderers. Scientific correctness remains independent of GPU availability.

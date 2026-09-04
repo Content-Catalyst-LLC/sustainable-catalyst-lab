@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "fallbackUsed": {
+      "type": "boolean"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-renderer-negotiation/0.84.0"
+    },
+    "scientificContractPreserved": {
+      "const": true
+    },
+    "selectedRenderer": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "selectedRenderer",
+    "fallbackUsed",
+    "scientificContractPreserved",
+    "fingerprint"
+  ],
+  "title": "Renderer Negotiation v0.84.0",
+  "type": "object"
+}
