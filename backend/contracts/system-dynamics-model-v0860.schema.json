@@ -1,0 +1,77 @@
+{
+  "$id": "sc-lab-system-dynamics-model/0.86.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "auxiliaries": {
+      "maxItems": 256,
+      "type": "array"
+    },
+    "engineVersion": {
+      "const": "1.0.0"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "flows": {
+      "maxItems": 256,
+      "type": "array"
+    },
+    "parameters": {
+      "maxItems": 256,
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-system-dynamics-model/0.86.0"
+    },
+    "stocks": {
+      "maxItems": 64,
+      "minItems": 1,
+      "type": "array"
+    },
+    "time": {
+      "properties": {
+        "dt": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "end": {
+          "type": "number"
+        },
+        "method": {
+          "enum": [
+            "euler",
+            "rk4"
+          ]
+        },
+        "start": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "dt",
+        "method"
+      ],
+      "type": "object"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.86.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "stocks",
+    "flows",
+    "time",
+    "fingerprint"
+  ],
+  "title": "System Dynamics Stock-Flow Model v0.86.0",
+  "type": "object"
+}

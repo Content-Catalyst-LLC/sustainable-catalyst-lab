@@ -18,7 +18,7 @@
   function resolveReleaseVersion(runtime, fallback) {
     return runtime?.releaseVersion || runtime?.versions?.release || fallback || null;
   }
-  function buildView(runtime, compute, visualization, fallback) {
+  function buildView(runtime, compute, visualization, fallback, modeling) {
     const release = resolveReleaseVersion(runtime, fallback);
     const versions = runtime?.versions || {};
     const components = runtime?.componentVersions || {};
@@ -34,7 +34,8 @@
         ['Visualization Engine', visualization?.engineVersion || components.visualizationEngine],
         ['Python Compute Core', compute?.version || null],
         ['Queue Gateway', components.queueGateway || null],
-        ['Platform Compatibility', components.platformCompatibility || versions.platformCompatibility || null]
+        ['Platform Compatibility', components.platformCompatibility || versions.platformCompatibility || null],
+        ['Systems Modeling Engine', modeling?.engineVersion || components.systemDynamicsEngine || null]
       ],
       integrity: [
         ['Release identity consistent', runtime?.releaseVersionConsistent === true],
@@ -61,13 +62,14 @@
   async function refresh(root) {
     if (!root) return;
     root.dataset.state = 'loading';
-    const [runtimeResult, computeResult, visualizationResult] = await Promise.allSettled([
-      json('runtime/health'), json('compute/status'), json('visualization/v0850/health')
+    const [runtimeResult, computeResult, visualizationResult, modelingResult] = await Promise.allSettled([
+      json('runtime/health'), json('compute/status'), json('visualization/v0850/health'), json('modeling/v0860/health')
     ]);
     const runtime = runtimeResult.status === 'fulfilled' ? runtimeResult.value : {};
     const compute = computeResult.status === 'fulfilled' ? computeResult.value : {};
     const visualization = visualizationResult.status === 'fulfilled' ? visualizationResult.value : {};
-    render(root, buildView(runtime, compute, visualization, C.releaseVersion || W.SCLabConfig?.version || null));
+    const modeling = modelingResult.status === 'fulfilled' ? modelingResult.value : {};
+    render(root, buildView(runtime, compute, visualization, C.releaseVersion || W.SCLabConfig?.version || null, modeling));
     root.dataset.state = runtimeResult.status === 'fulfilled' ? 'ready' : 'degraded';
   }
   function init() {

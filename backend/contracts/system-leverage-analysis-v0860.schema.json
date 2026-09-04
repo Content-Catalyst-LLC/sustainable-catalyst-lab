@@ -1,0 +1,31 @@
+{
+  "$id": "sc-lab-system-leverage-analysis/0.86.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "boundaries": {
+      "type": "object"
+    },
+    "indicators": {
+      "type": "array"
+    },
+    "ok": {
+      "const": true
+    },
+    "schema": {
+      "const": "sc-lab-system-leverage-analysis/0.86.0"
+    },
+    "version": {
+      "const": "0.86.0"
+    }
+  },
+  "required": [
+    "ok",
+    "schema",
+    "version",
+    "indicators",
+    "boundaries"
+  ],
+  "title": "System Leverage Analysis v0.86.0",
+  "type": "object"
+}

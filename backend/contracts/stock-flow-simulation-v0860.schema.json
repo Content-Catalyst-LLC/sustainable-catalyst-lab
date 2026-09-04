@@ -1,0 +1,44 @@
+{
+  "$id": "sc-lab-stock-flow-simulation/0.86.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "finalStocks": {
+      "type": "object"
+    },
+    "method": {
+      "enum": [
+        "euler",
+        "rk4"
+      ]
+    },
+    "modelFingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "ok": {
+      "const": true
+    },
+    "rows": {
+      "maxItems": 100001,
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-stock-flow-simulation/0.86.0"
+    },
+    "version": {
+      "const": "0.86.0"
+    }
+  },
+  "required": [
+    "ok",
+    "schema",
+    "version",
+    "modelFingerprint",
+    "method",
+    "rows",
+    "finalStocks"
+  ],
+  "title": "Stock Flow Simulation v0.86.0",
+  "type": "object"
+}

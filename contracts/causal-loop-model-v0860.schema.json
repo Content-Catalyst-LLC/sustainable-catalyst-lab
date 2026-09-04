@@ -1,0 +1,35 @@
+{
+  "$id": "sc-lab-causal-loop-model/0.86.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "links": {
+      "maxItems": 1024,
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-causal-loop-model/0.86.0"
+    },
+    "variables": {
+      "maxItems": 256,
+      "minItems": 1,
+      "type": "array"
+    },
+    "version": {
+      "const": "0.86.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "variables",
+    "links",
+    "fingerprint"
+  ],
+  "title": "Causal Loop Model v0.86.0",
+  "type": "object"
+}

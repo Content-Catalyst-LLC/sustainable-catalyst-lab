@@ -49,6 +49,7 @@ from .uncertainty_ensemble_distribution_v0820 import UncertaintyVisualizationErr
 from .provenance_aware_figures_v0830 import FigureProvenanceError, attach_provenance as attach_provenance_v0830, build_export_manifest as build_export_manifest_v0830, build_workspace as build_provenance_workspace_v0830, health as provenance_health_v0830, normalize_provenance as normalize_provenance_v0830, policies as provenance_policies_v0830, verify_provenance as verify_provenance_v0830
 from .gpu_renderer_architecture_v0840 import GPURendererArchitectureError, build_diagnostics as build_renderer_diagnostics_v0840, build_workspace as build_gpu_workspace_v0840, health as gpu_renderer_health_v0840, negotiate_renderer as negotiate_renderer_v0840, normalize_browser_capabilities as normalize_browser_capabilities_v0840, normalize_picking_contract as normalize_picking_v0840, normalize_shader_descriptor as normalize_shader_v0840, plan_buffer as plan_gpu_buffer_v0840, policies as gpu_renderer_policies_v0840, renderer_registry as renderer_registry_v0840
 from .webgl2_scientific_renderer_v0850 import WebGL2ScientificRendererError, build_render_plan as build_webgl2_render_plan_v0850, build_workspace as build_webgl2_workspace_v0850, health as webgl2_health_v0850, normalize_camera as normalize_webgl2_camera_v0850, normalize_draw_call as normalize_webgl2_draw_call_v0850, normalize_picking as normalize_webgl2_picking_v0850, policies as webgl2_policies_v0850, renderer_descriptor as webgl2_renderer_descriptor_v0850
+from .system_dynamics_feedback_v0860 import SystemDynamicsV0860Error, analyze_feedback as analyze_system_feedback_v0860, analyze_leverage as analyze_system_leverage_v0860, build_workspace as build_system_dynamics_workspace_v0860, health as system_dynamics_health_v0860, normalize_causal_loop as normalize_causal_loop_v0860, normalize_stock_flow as normalize_stock_flow_v0860, policies as system_dynamics_policies_v0860, simulate_stock_flow as simulate_stock_flow_v0860
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -6115,3 +6116,40 @@ def webgl2_v0850_picking_route(payload: dict[str, Any]):
 def webgl2_v0850_workspace_route(payload: dict[str, Any]):
     try: return build_webgl2_workspace_v0850(payload)
     except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.get("/v1/model-studio/dynamic-systems/v0860/health")
+def system_dynamics_v0860_health_route(): return system_dynamics_health_v0860()
+
+@app.get("/v1/model-studio/dynamic-systems/v0860/policies")
+def system_dynamics_v0860_policies_route(): return system_dynamics_policies_v0860()
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/causal-loops/normalize")
+def system_dynamics_v0860_causal_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "model": normalize_causal_loop_v0860(payload.get("model") or payload)}
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/feedback/analyze")
+def system_dynamics_v0860_feedback_route(payload: dict[str, Any]):
+    try: return analyze_system_feedback_v0860(payload)
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/stock-flow/normalize")
+def system_dynamics_v0860_stock_flow_normalize_route(payload: dict[str, Any]):
+    try: return {"ok": True, "model": normalize_stock_flow_v0860(payload.get("model") or payload)}
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/stock-flow/simulate")
+def system_dynamics_v0860_simulate_route(payload: dict[str, Any]):
+    try: return simulate_stock_flow_v0860(payload)
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/leverage/analyze")
+def system_dynamics_v0860_leverage_route(payload: dict[str, Any]):
+    try: return analyze_system_leverage_v0860(payload)
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/model-studio/dynamic-systems/v0860/workspaces/build")
+def system_dynamics_v0860_workspace_route(payload: dict[str, Any]):
+    try: return build_system_dynamics_workspace_v0860(payload)
+    except SystemDynamicsV0860Error as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc

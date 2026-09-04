@@ -1,0 +1,26 @@
+{
+  "boundaries": {
+    "arbitraryCode": false,
+    "automaticEquationGeneration": false,
+    "automaticLeveragePointRanking": false,
+    "automaticUnitConversion": false,
+    "causalLinkInference": false,
+    "hiddenDelays": false,
+    "paradigmInference": false,
+    "silentStockClamping": false
+  },
+  "capabilities": {
+    "causalLoopDiagrams": true,
+    "eulerIntegration": true,
+    "explicitDelays": true,
+    "graphStudioHandoff": true,
+    "reinforcingBalancingLoops": true,
+    "rk4Integration": true,
+    "safeEquationEvaluation": true,
+    "stockFlowModels": true,
+    "structuralLeverageAnalysis": true
+  },
+  "engineVersion": "1.0.0",
+  "schema": "sc-lab-system-dynamics-policy/0.86.0",
+  "version": "0.86.0"
+}

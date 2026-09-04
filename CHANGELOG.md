@@ -187,6 +187,12 @@ Adds governed aggregate-effect synthesis, replication assessment, fixed/random-e
 
 # Changelog
 
+## 0.86.0 — System Dynamics, Feedback Loops & Stock-Flow Modeling
+- Added governed causal-loop and stock-flow modeling with reinforcing/balancing loop detection.
+- Added Euler/RK4 scenario simulation, structural leverage indicators, WordPress proxy routes, and Model Studio UI.
+- Preserved WebGL2 Visualization Engine 2.12.0 as a separate component.
+
+
 ## 0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair
 
 - Adds `jsonschema>=4.20,<5` to the governed backend validation dependency set required by inherited security/privacy contract tests.

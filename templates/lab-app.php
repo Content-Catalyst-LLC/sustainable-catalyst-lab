@@ -2138,6 +2138,20 @@ P=1:9:bar</textarea></label>
                 </div>
               </div>
             </details>
+
+            <details class="sc-sd0860" data-sd-v0860-root open>
+              <summary>System Dynamics, Feedback Loops &amp; Stock-Flow Modeling <small>v0.86.0</small></summary>
+              <p class="sc-sd0860__intro">Build Meadows-style causal-loop and stock-flow models with explicit polarity, delays, safe equations, Euler/RK4 simulation, and structural leverage indicators. Causal links and leverage meaning remain human-declared; Lab detects structure but does not invent causal relationships or rank policy leverage automatically.</p>
+              <p class="sc-sd0860__status" data-sd-v0860-status role="status" aria-live="polite">System dynamics workspace ready.</p>
+              <div class="sc-sd0860__actions"><button type="button" class="sc-lab-button" data-sd-v0860-example>Load Meadows-style example</button><button type="button" class="sc-lab-button" data-sd-v0860-feedback>Analyze feedback loops</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-sd-v0860-simulate>Simulate stock-flow model</button><button type="button" class="sc-lab-button" data-sd-v0860-leverage>Structural leverage indicators</button><button type="button" class="sc-lab-button" data-sd-v0860-workspace>Build governed workspace</button></div>
+              <div class="sc-sd0860__grid">
+                <label>Causal-loop model JSON<textarea data-sd-v0860-causal spellcheck="false">{}</textarea></label>
+                <label>Stock-flow model JSON<textarea data-sd-v0860-stock spellcheck="false">{}</textarea></label>
+              </div>
+              <div class="sc-sd0860__chart" data-sd-v0860-chart>Run a stock-flow simulation to visualize stock trajectories.</div>
+              <div class="sc-ds0540__note"><strong>Scientific boundary</strong> Feedback-loop classification uses only declared link polarity. Structural leverage indicators are not a Meadows leverage-point ranking, policy recommendation, or paradigm inference. Stock values are never silently clamped, and equations execute only through Lab's safe scientific expression engine.</div>
+              <details><summary>System dynamics record</summary><pre data-sd-v0860-output>No v0.86 system analysis yet.</pre></details>
+            </details>
           </section>
         </div>
       </section>

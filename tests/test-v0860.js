@@ -1,0 +1,10 @@
+const fs=require('fs'),assert=require('assert');
+const src=fs.readFileSync('assets/js/modules/system-dynamics-v0860.js','utf8');
+assert(src.includes("VERSION='0.86.0'"),'v0.86 browser version missing');
+assert(src.includes('feedback/analyze'),'feedback endpoint missing');
+assert(src.includes('stock-flow/simulate'),'stock-flow simulation endpoint missing');
+assert(src.includes('leverage/analyze'),'leverage endpoint missing');
+assert(src.includes('automaticLeveragePointRanking:false'),'leverage boundary missing');
+assert(src.includes('silentStockClamping:false'),'stock-clamping boundary missing');
+assert(!src.includes('eval('),'browser module must not use eval');
+console.log('PASS - v0.86 browser systems modeling contract');
