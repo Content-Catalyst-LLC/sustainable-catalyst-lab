@@ -48,6 +48,7 @@ from .annotation_measurement_markup_v0810 import ScientificMarkupError, attach_m
 from .uncertainty_ensemble_distribution_v0820 import UncertaintyVisualizationError, attach_uncertainty as attach_uncertainty_v0820, build_workspace as build_uncertainty_workspace_v0820, health as uncertainty_health_v0820, normalize_distribution as normalize_distribution_v0820, normalize_ensemble as normalize_ensemble_v0820, normalize_layer as normalize_uncertainty_layer_v0820, normalize_uncertainty as normalize_uncertainty_v0820, policies as uncertainty_policies_v0820
 from .provenance_aware_figures_v0830 import FigureProvenanceError, attach_provenance as attach_provenance_v0830, build_export_manifest as build_export_manifest_v0830, build_workspace as build_provenance_workspace_v0830, health as provenance_health_v0830, normalize_provenance as normalize_provenance_v0830, policies as provenance_policies_v0830, verify_provenance as verify_provenance_v0830
 from .gpu_renderer_architecture_v0840 import GPURendererArchitectureError, build_diagnostics as build_renderer_diagnostics_v0840, build_workspace as build_gpu_workspace_v0840, health as gpu_renderer_health_v0840, negotiate_renderer as negotiate_renderer_v0840, normalize_browser_capabilities as normalize_browser_capabilities_v0840, normalize_picking_contract as normalize_picking_v0840, normalize_shader_descriptor as normalize_shader_v0840, plan_buffer as plan_gpu_buffer_v0840, policies as gpu_renderer_policies_v0840, renderer_registry as renderer_registry_v0840
+from .webgl2_scientific_renderer_v0850 import WebGL2ScientificRendererError, build_render_plan as build_webgl2_render_plan_v0850, build_workspace as build_webgl2_workspace_v0850, health as webgl2_health_v0850, normalize_camera as normalize_webgl2_camera_v0850, normalize_draw_call as normalize_webgl2_draw_call_v0850, normalize_picking as normalize_webgl2_picking_v0850, policies as webgl2_policies_v0850, renderer_descriptor as webgl2_renderer_descriptor_v0850
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -6079,3 +6080,38 @@ def gpu_renderer_v0840_diagnostics_route(payload: dict[str, Any]):
 def gpu_renderer_v0840_workspace_route(payload: dict[str, Any]):
     try: return build_gpu_workspace_v0840(payload)
     except GPURendererArchitectureError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.get("/v1/visualization/v0850/health")
+def webgl2_v0850_health_route(): return webgl2_health_v0850()
+
+@app.get("/v1/visualization/v0850/policies")
+def webgl2_v0850_policies_route(): return webgl2_policies_v0850()
+
+@app.get("/v1/visualization/v0850/renderers/webgl2")
+def webgl2_v0850_descriptor_route(): return {"ok": True, "renderer": webgl2_renderer_descriptor_v0850()}
+
+@app.post("/v1/visualization/v0850/cameras/normalize")
+def webgl2_v0850_camera_route(payload: dict[str, Any]):
+    try: return {"ok": True, "camera": normalize_webgl2_camera_v0850(payload.get("camera") or payload)}
+    except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0850/draw-calls/normalize")
+def webgl2_v0850_draw_route(payload: dict[str, Any]):
+    try: return {"ok": True, "drawCall": normalize_webgl2_draw_call_v0850(payload.get("drawCall") or payload)}
+    except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0850/render-plans/build")
+def webgl2_v0850_plan_route(payload: dict[str, Any]):
+    try: return {"ok": True, "renderPlan": build_webgl2_render_plan_v0850(payload)}
+    except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0850/picking/normalize")
+def webgl2_v0850_picking_route(payload: dict[str, Any]):
+    try: return {"ok": True, "picking": normalize_webgl2_picking_v0850(payload)}
+    except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/visualization/v0850/workspaces/build")
+def webgl2_v0850_workspace_route(payload: dict[str, Any]):
+    try: return build_webgl2_workspace_v0850(payload)
+    except WebGL2ScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc

@@ -1,0 +1,27 @@
+{
+  "boundaries": {
+    "arbitraryShaderSource": false,
+    "automaticScientificSemanticsChange": false,
+    "automaticSpatialInterpolation": false,
+    "automaticSurfaceGeneration": false,
+    "automaticTemporalInterpolation": false,
+    "gpuRequiredForScientificCorrectness": false,
+    "silentRendererFallback": false,
+    "webgpuProductionRendererReady": false
+  },
+  "engineVersion": "2.12.0",
+  "limits": {
+    "maxBufferBytes": 536870912,
+    "maxClippingPlanes": 6,
+    "maxDrawCalls": 4096,
+    "maxIndices": 30000000,
+    "maxInstances": 1000000,
+    "maxRasterPixels": 67108864,
+    "maxTotalBufferBytes": 1073741824,
+    "maxVertices": 10000000
+  },
+  "productionRendererReady": true,
+  "renderer": "webgl2",
+  "schema": "sc-lab-webgl2-renderer-policy/0.85.0",
+  "version": "0.85.0"
+}

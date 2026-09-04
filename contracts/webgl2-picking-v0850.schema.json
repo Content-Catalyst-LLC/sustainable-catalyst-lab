@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "boundaries": {
+      "type": "object"
+    },
+    "mode": {
+      "enum": [
+        "object",
+        "feature"
+      ]
+    },
+    "preserveSourceIdentity": {
+      "const": true
+    },
+    "renderer": {
+      "const": "webgl2"
+    },
+    "schema": {
+      "const": "sc-lab-webgl2-picking/0.85.0"
+    },
+    "strategy": {
+      "const": "rgba8-framebuffer-object-id"
+    },
+    "version": {
+      "const": "0.85.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "renderer",
+    "mode",
+    "strategy",
+    "preserveSourceIdentity",
+    "boundaries"
+  ],
+  "title": "WebGL2 Picking v0.85.0",
+  "type": "object"
+}

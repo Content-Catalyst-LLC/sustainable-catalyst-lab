@@ -1865,6 +1865,16 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
                 <details><summary>Renderer negotiation</summary><pre class="sc-gs0840-summary" data-gs-v0840-negotiation>No renderer negotiated.</pre></details>
                 <p class="sc-gs0840-boundary">v0.84 creates the governed GPU architecture, not the production GPU renderer. WebGL2 and WebGPU may be detected by the browser, but they remain implementation-gated until v0.85/v0.86. Scientific correctness never depends on GPU availability; any fallback is explicit and recorded. Arbitrary shader source is not accepted.</p>
               </section>
+              <section class="sc-gs0850-webgl" aria-label="WebGL2 scientific renderer controls">
+                <div class="sc-gs0850-head"><strong>WEBGL2 SCIENTIFIC RENDERER</strong><span>v0.85 · engine 2.12 · production GPU renderer</span></div>
+                <div class="sc-gs0850-metrics"><span>Depth-buffered 3D</span><span>GPU point clouds</span><span>Meshes + instancing</span><span>Framebuffer picking</span></div>
+                <div class="sc-gs0850-canvas-wrap"><canvas class="sc-gs0850-canvas" width="960" height="540" data-gs-v0850-canvas aria-label="WebGL2 scientific visualization preview"></canvas></div>
+                <div class="sc-gs0850-actions"><button type="button" class="sc-lab-button" data-gs-v0850-diagnose>Diagnose WebGL2</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0850-render>Render explicit GPU example</button></div>
+                <p class="sc-gs0850-status" data-gs-v0850-status>Awaiting WebGL2 renderer diagnostics.</p>
+                <details><summary>WebGL2 renderer diagnostics</summary><pre class="sc-gs0850-summary" data-gs-v0850-summary>No diagnostics yet.</pre></details>
+                <details><summary>Last GPU pick</summary><pre class="sc-gs0850-summary" data-gs-v0850-pick>Click a rendered object to inspect source identity.</pre></details>
+                <p class="sc-gs0850-boundary">v0.85 executes a real WebGL2 production renderer while preserving the scientific figure contract. GPU availability is optional; fallback remains explicit. The renderer does not generate scientific surfaces, interpolate observations, reinterpret data, or execute arbitrary user shader source. Clicking/picking is interaction metadata, not a scientific observation. WebGPU remains gated for v0.86.</p>
+              </section>
               <label>Dataset rows JSON<textarea data-gs-v0470-rows spellcheck="false"></textarea></label>
               <div class="sc-gs0470-actions"><button type="button" class="sc-lab-button" data-gs-v0470-example>Load bound 2D example</button><button type="button" class="sc-lab-button" data-gs-v0770-example-3d>Load 3D mesh example</button><button type="button" class="sc-lab-button" data-gs-v0730-example-4d>Load bound 4D example</button><button type="button" class="sc-lab-button" data-gs-v0780-example-state>Load time-state example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-gs-v0470-render>Transform + bind + render</button></div>
             </section>
