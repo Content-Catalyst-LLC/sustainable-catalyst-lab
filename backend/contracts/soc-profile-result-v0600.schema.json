@@ -1,0 +1,51 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/soc-profile-result-v0600.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "area_ha": {
+      "exclusiveMinimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "domain_version": {
+      "const": "0.6.0"
+    },
+    "lab_release_version": {
+      "const": "0.89.0"
+    },
+    "result_fingerprint": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-soc-profile-result/0.6.0"
+    },
+    "soc_stock_Mg_C_ha": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "soc_stock_Mg_C_total": {
+      "minimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "domain_version",
+    "lab_release_version",
+    "model",
+    "layer_count",
+    "depth",
+    "layers",
+    "soc_stock_Mg_C_ha",
+    "guardrails",
+    "result_fingerprint"
+  ],
+  "title": "SOC Profile Result v0.6.0",
+  "type": "object"
+}

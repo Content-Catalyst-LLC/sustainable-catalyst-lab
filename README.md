@@ -941,3 +941,7 @@ Graph Studio now fingerprints explicit dataset, transformation, model, renderer,
 ## v0.84.0 — GPU Renderer Architecture
 
 Graph Studio now includes a governed renderer-capability layer for the advanced GPU visualization roadmap. It can detect WebGL2/WebGPU support, negotiate among declared renderer capabilities, record fallbacks, plan bounded typed buffers, register approved shader fingerprints, and expose picking/diagnostic contracts. v0.84 is deliberately an architecture release: WebGL2 and WebGPU are visible candidate backends but are not yet production renderers. Scientific correctness remains independent of GPU availability.
+
+## Carbon & Nature Intelligence v0.6.0 / Lab v0.89.0
+
+Lab now includes a Soil Organic Carbon foundation for fixed-depth, fine-earth-corrected SOC stock calculations, profile aggregation, deterministic provenance, Graph Studio handoff, and Carbon Project model-run packets. See `RELEASE_NOTES_0.89.0_SOIL_ORGANIC_CARBON_LAB_FOUNDATION.md`.

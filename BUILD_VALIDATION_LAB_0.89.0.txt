@@ -1,0 +1,25 @@
+SUSTAINABLE CATALYST LAB v0.89.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.6.0 — Soil Organic Carbon Lab Foundation
+Date: 2026-09-10
+
+PASS — PHP contract test: tests/test-v0890.php
+PASS — Browser contract test: tests/test-v0890.js
+PASS — Retained v0.75/v0.80/v0.82/v0.83/v0.86/v0.87/v0.88 browser compatibility tests
+PASS — 133 selected backend/SOC scientific compatibility tests
+PASS — FastAPI route topology
+PASS — 78.0 Mg C/ha reference fixture (2% SOC, 1.30 g/cm3 bulk density, 0–30 cm, 0% coarse fragments)
+PASS — Duplicated JSON contracts parse and match byte-for-byte
+PASS — Release identity: Lab v0.89.0 / Carbon & Nature v0.6.0 / Compute Core v1.0.0
+PASS — Manifest integrity: 1747 WordPress/source files + 581 backend files
+
+Scientific guardrails retained:
+- fixed-depth basis is explicit
+- equivalent-soil-mass correction is not implemented
+- stock change is not inferred
+- sequestration rate is not inferred
+- CO2e is not inferred
+- uncertainty is not inferred
+- methodology is not selected automatically
+- additionality/permanence/credit eligibility are not determined
+- verification is not performed
+- supplied measurements are not treated as verified observations

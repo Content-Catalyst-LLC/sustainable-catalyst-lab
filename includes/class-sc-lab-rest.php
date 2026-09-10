@@ -36,6 +36,14 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/compute/workers', array('methods'=>'GET','callback'=>array($this,'compute_workers'),'permission_callback'=>'__return_true'));
 
 
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/health', array('methods'=>'GET','callback'=>array($this,'soc_v0600_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/schema', array('methods'=>'GET','callback'=>array($this,'soc_v0600_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/policies', array('methods'=>'GET','callback'=>array($this,'soc_v0600_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/layer-stock', array('methods'=>'POST','callback'=>array($this,'soc_v0600_layer_stock'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/profile-stock', array('methods'=>'POST','callback'=>array($this,'soc_v0600_profile_stock'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0600_project_packet'),'permission_callback'=>'__return_true'));
+
+
         register_rest_route(
             'sc-lab/v1',
             '/compute/civil/methods',
@@ -67,7 +75,7 @@ class SC_Lab_REST {
             'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','carbonNatureProjectHandoff')
         ));
     }
 
@@ -205,6 +213,47 @@ class SC_Lab_REST {
         $status = wp_remote_retrieve_response_code($response); $raw = wp_remote_retrieve_body($response); $decoded = json_decode($raw,true);
         if (!is_array($decoded)) { $decoded = array('error'=>array('code'=>'invalid_backend_response','message'=>'The compute service returned an invalid response.')); }
         return new WP_REST_Response($decoded,$status);
+    }
+
+
+
+    private function clean_soc_value($value, $depth = 0, &$nodes = 0) {
+        $nodes++;
+        if ($nodes > 5000 || $depth > 10) { return new WP_Error('soc_payload_too_complex','The SOC payload is too complex.',array('status'=>422)); }
+        if (is_null($value) || is_bool($value) || is_int($value) || is_float($value)) { return $value; }
+        if (is_string($value)) { return substr(wp_strip_all_tags($value, true), 0, 4000); }
+        if (!is_array($value)) { return null; }
+        $clean = array();
+        foreach ($value as $key => $item) {
+            $clean_key = is_int($key) ? $key : substr(preg_replace('/[^A-Za-z0-9._-]/', '', (string) $key), 0, 96);
+            if ($clean_key === '') { continue; }
+            $clean_item = $this->clean_soc_value($item, $depth + 1, $nodes);
+            if (is_wp_error($clean_item)) { return $clean_item; }
+            $clean[$clean_key] = $clean_item;
+        }
+        return $clean;
+    }
+
+    private function clean_soc_payload($body) {
+        if (!is_array($body)) { return new WP_Error('invalid_soc_payload','A JSON object is required.',array('status'=>422)); }
+        $nodes = 0;
+        return $this->clean_soc_value($body, 0, $nodes);
+    }
+
+    public function soc_v0600_health() { return $this->proxy('/v1/carbon-nature/soc/v0600/health'); }
+    public function soc_v0600_schema() { return $this->proxy('/v1/carbon-nature/soc/v0600/schema'); }
+    public function soc_v0600_policies() { return $this->proxy('/v1/carbon-nature/soc/v0600/policies'); }
+    public function soc_v0600_layer_stock(WP_REST_Request $request) {
+        $payload = $this->clean_soc_payload($request->get_json_params());
+        return is_wp_error($payload) ? $payload : $this->proxy('/v1/carbon-nature/soc/v0600/layer-stock','POST',$payload,1048576);
+    }
+    public function soc_v0600_profile_stock(WP_REST_Request $request) {
+        $payload = $this->clean_soc_payload($request->get_json_params());
+        return is_wp_error($payload) ? $payload : $this->proxy('/v1/carbon-nature/soc/v0600/profile-stock','POST',$payload,2097152);
+    }
+    public function soc_v0600_project_packet(WP_REST_Request $request) {
+        $payload = $this->clean_soc_payload($request->get_json_params());
+        return is_wp_error($payload) ? $payload : $this->proxy('/v1/carbon-nature/soc/v0600/project-packet','POST',$payload,4194304);
     }
 
     public function compute_status() {

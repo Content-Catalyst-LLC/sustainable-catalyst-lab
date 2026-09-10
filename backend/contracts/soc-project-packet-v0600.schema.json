@@ -1,0 +1,78 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/soc-project-packet-v0600.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "actor_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assumption_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "input_object_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "measure_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "methodology_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "model_run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parcel_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "profile": {
+      "$ref": "soc-profile-input-v0600.schema.json"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "run_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "project_id",
+    "profile"
+  ],
+  "title": "SOC Project Handoff v0.6.0",
+  "type": "object"
+}

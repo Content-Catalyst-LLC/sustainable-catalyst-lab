@@ -93,6 +93,9 @@
           'astronomy-observations' => 'Space & astronomy observations',
           'marine-biology' => 'Marine biology',
         ),
+        'Carbon & Nature' => array(
+          'soil-organic-carbon' => 'Soil organic carbon',
+        ),
         'Analyze' => array(
           'dataset-inspector' => 'Dataset inspector',
           'numerical-methods' => 'Numerical Methods Studio',
@@ -1067,6 +1070,43 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
         </div>
       </section>
 
+
+
+      <section class="sc-lab-panel" data-lab-module="soil-organic-carbon" hidden>
+        <div class="sc-soc0600" data-soc-v0600-root>
+          <div class="sc-soc0600__hero">
+            <div><span class="sc-lab-section-code">CARBON &amp; NATURE / SOC / v0.6.0</span><h3>Soil Organic Carbon Lab Foundation</h3><p>Normalize soil measurements and calculate explicit fixed-depth SOC stocks by layer and profile. This foundation preserves units, depth intervals, coarse-fragment correction, fingerprints, and Carbon Project handoff provenance without inferring sequestration or credit eligibility.</p></div>
+            <div class="sc-soc0600__badges"><span class="sc-soc0600__badge">Lab v0.89.0</span><span class="sc-soc0600__badge">Mg C/ha</span><span class="sc-soc0600__badge">Fixed depth</span><span class="sc-soc0600__badge">Backend: <b data-soc-v0600-backend>checking</b></span></div>
+          </div>
+          <div class="sc-soc0600__notice"><strong>Scientific boundary:</strong> v0.6.0 calculates SOC stock only. It does not infer stock change, sequestration rate, CO₂e, uncertainty, additionality, permanence, methodology eligibility, verification, or credits. Equivalent-soil-mass correction is deferred.</div>
+          <div class="sc-soc0600__grid">
+            <div class="sc-soc0600__card">
+              <h4>Soil profile inputs</h4>
+              <div class="sc-soc0600__packet-fields">
+                <label class="sc-soc0600__field">Profile ID<input data-soc-v0600-profile-id value="soc-profile-1"></label>
+                <label class="sc-soc0600__field">Parcel area (ha, optional)<input type="number" min="0" step="0.01" data-soc-v0600-area></label>
+              </div>
+              <div data-soc-v0600-rows></div>
+              <div class="sc-soc0600__actions"><button type="button" class="sc-lab-button" data-soc-v0600-add>Add layer</button><button type="button" class="sc-lab-button" data-soc-v0600-example>Load illustrative profile</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v0600-calculate>Calculate SOC stock</button></div>
+              <p class="sc-soc0600__status" data-soc-v0600-status role="status" aria-live="polite">SOC workspace ready.</p>
+            </div>
+            <div class="sc-soc0600__card">
+              <h4>Fixed-depth result</h4>
+              <div class="sc-soc0600__summary"><div class="sc-soc0600__metric"><small>Profile stock</small><strong><span data-soc-v0600-stock>—</span> Mg C/ha</strong></div><div class="sc-soc0600__metric"><small>Parcel stock</small><strong><span data-soc-v0600-total>—</span> Mg C</strong></div><div class="sc-soc0600__metric"><small>Depth coverage</small><strong data-soc-v0600-depth>—</strong></div><div class="sc-soc0600__metric"><small>Layers</small><strong data-soc-v0600-layers-count>—</strong></div></div>
+              <div class="sc-soc0600__profile" data-soc-v0600-profile aria-label="SOC stock by layer"></div>
+              <div class="sc-soc0600__actions"><button type="button" class="sc-lab-button" data-soc-v0600-save>Save to project</button><button type="button" class="sc-lab-button" data-soc-v0600-graph>Open in Graph Studio</button></div>
+              <details><summary>Calculation record</summary><pre data-soc-v0600-output>No SOC calculation yet.</pre></details>
+            </div>
+          </div>
+          <div class="sc-soc0600__card">
+            <h4>Carbon Project provenance handoff</h4>
+            <p>Package the calculation as a draft <code>model-run</code> object compatible with the Carbon &amp; Nature v0.4+ project-object contract. Input object IDs are linked only when you supply them.</p>
+            <div class="sc-soc0600__packet-fields"><label class="sc-soc0600__field">Project ID<input data-soc-v0600-project-id placeholder="project:..." /></label><label class="sc-soc0600__field">Parcel ID (optional)<input data-soc-v0600-parcel-id placeholder="parcel:..." /></label><label class="sc-soc0600__field wide">Input object IDs (comma separated, optional)<input data-soc-v0600-input-objects placeholder="observation:soc-1, observation:bulk-density-1" /></label></div>
+            <div class="sc-soc0600__actions"><button type="button" class="sc-lab-button" data-soc-v0600-packet-button>Build project packet</button></div>
+            <details><summary>Project packet</summary><pre data-soc-v0600-packet>No project packet yet.</pre></details>
+          </div>
+        </div>
+      </section>
 
       <section class="sc-lab-panel" data-lab-module="earth-systems" hidden>
         <div class="sc-lab-panel-head">

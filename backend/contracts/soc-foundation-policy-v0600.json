@@ -1,0 +1,25 @@
+{
+  "calculationBasis": "fixed-depth-fine-earth-corrected",
+  "canonicalUnits": {
+    "SOC": "g/kg",
+    "bulkDensity": "g/cm3",
+    "depth": "cm",
+    "stock": "Mg C/ha"
+  },
+  "domainVersion": "0.6.0",
+  "formula": "SOC_g_per_kg \u00d7 bulk_density_g_cm3 \u00d7 thickness_cm \u00d7 0.1 \u00d7 (1 - coarse_fragments_percent/100)",
+  "guardrails": {
+    "additionalityNotDetermined": true,
+    "co2eNotInferred": true,
+    "creditEligibilityNotDetermined": true,
+    "equivalentSoilMassNotImplemented": true,
+    "methodologyNotSelectedAutomatically": true,
+    "permanenceNotDetermined": true,
+    "sequestrationRateNotInferred": true,
+    "stockChangeNotInferred": true,
+    "uncertaintyNotInferred": true,
+    "verificationNotPerformed": true
+  },
+  "labReleaseVersion": "0.89.0",
+  "schema": "sc-carbon-nature-soc-foundation-policy/0.6.0"
+}

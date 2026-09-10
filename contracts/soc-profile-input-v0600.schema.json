@@ -1,0 +1,40 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/soc-profile-input-v0600.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "area_ha": {
+      "exclusiveMinimum": 0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "layers": {
+      "items": {
+        "$ref": "soc-layer-input-v0600.schema.json"
+      },
+      "maxItems": 200,
+      "minItems": 1,
+      "type": "array"
+    },
+    "profile_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "type": "array"
+    }
+  },
+  "required": [
+    "layers"
+  ],
+  "title": "SOC Profile Input v0.6.0",
+  "type": "object"
+}

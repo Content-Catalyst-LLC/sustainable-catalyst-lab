@@ -1,0 +1,95 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/soc-layer-input-v0600.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bottom_depth": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "bulk_density_unit": {
+      "enum": [
+        "g/cm3",
+        "Mg/m3",
+        "t/m3",
+        "kg/m3"
+      ]
+    },
+    "bulk_density_value": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "coarse_fragments_percent": {
+      "exclusiveMaximum": 100,
+      "minimum": 0,
+      "type": "number"
+    },
+    "depth_unit": {
+      "enum": [
+        "cm",
+        "mm",
+        "m"
+      ]
+    },
+    "layer_id": {
+      "maxLength": 160,
+      "type": "string"
+    },
+    "methodology_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "maxLength": 2000,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sample_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "soc_unit": {
+      "enum": [
+        "g/kg",
+        "mg/g",
+        "percent",
+        "%",
+        "fraction"
+      ]
+    },
+    "soc_value": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "type": "array"
+    },
+    "top_depth": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "bottom_depth",
+    "soc_value",
+    "bulk_density_value"
+  ],
+  "title": "SOC Layer Input v0.6.0",
+  "type": "object"
+}

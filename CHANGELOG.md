@@ -1,3 +1,8 @@
+
+## 0.89.0 — 2026-09-10
+- Added Carbon & Nature Intelligence v0.6.0 Soil Organic Carbon Lab Foundation.
+- Added fixed-depth SOC layer/profile stock computation, unit normalization, coarse-fragment correction, project handoff packets, browser UI, and provenance guardrails.
+
 ## 0.88.0 R1 — WebGPU Pipeline Validation & Hardware Certification Repair
 
 - Repairs four missing WGSL return-statement semicolons found by real Apple Metal/WebGPU validation.
