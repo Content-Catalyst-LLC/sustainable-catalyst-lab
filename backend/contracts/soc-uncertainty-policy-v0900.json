@@ -1,0 +1,27 @@
+{
+  "capabilities": [
+    "replicate-stock-summary",
+    "student-t-confidence-intervals",
+    "coordinate-coverage-diagnostics",
+    "area-weighted-stratified-estimation",
+    "paired-change-uncertainty",
+    "independent-change-uncertainty",
+    "first-order-input-uncertainty-propagation"
+  ],
+  "domainVersion": "0.9.0",
+  "guardrails": [
+    "sample-uncertainty-is-not-total-uncertainty",
+    "no-automatic-outlier-removal",
+    "no-spatial-representativeness-inference",
+    "no-kriging-or-variogram-inference",
+    "no-causal-attribution",
+    "no-credit-eligibility"
+  ],
+  "labReleaseVersion": "0.92.0",
+  "schema": "sc-carbon-nature-soc-uncertainty-policy/0.9.0",
+  "supportedConfidenceLevels": [
+    0.9,
+    0.95,
+    0.99
+  ]
+}

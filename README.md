@@ -1,6 +1,6 @@
-## Current Lab release: v0.91.0
+## Current Lab release: v0.92.0
 
-**Carbon & Nature Intelligence v0.8.0:** SOC Change & Sequestration Model adds exact-depth matched baseline/follow-up SOC stock comparison, annualized stock-change rates, multi-date change series, Graph Studio handoff, and Carbon Project model-run provenance. Positive stock change remains a gross accumulation signal rather than automatic proof of intervention-attributable or creditable sequestration.
+**Carbon & Nature Intelligence v0.9.0:** SOC Spatial Variability & Uncertainty adds replicate stock statistics, Student-t confidence intervals, coordinate coverage diagnostics, area-weighted stratified estimates, paired/independent stock-change uncertainty, and bounded first-order input-uncertainty propagation. Statistical separation does not establish intervention attribution, verification, or credit eligibility.
 
 ## Current visualization release: v0.88.0
 

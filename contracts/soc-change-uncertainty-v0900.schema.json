@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "analysis_id": {
+      "type": "string"
+    },
+    "baseline_observations": {
+      "minItems": 2,
+      "type": "array"
+    },
+    "confidence_level": {
+      "enum": [
+        0.9,
+        0.95,
+        0.99
+      ]
+    },
+    "elapsed_years": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "followup_observations": {
+      "minItems": 2,
+      "type": "array"
+    },
+    "mode": {
+      "enum": [
+        "paired",
+        "independent"
+      ]
+    },
+    "pairs": {
+      "minItems": 2,
+      "type": "array"
+    }
+  },
+  "title": "SOC stock-change uncertainty v0.9.0",
+  "type": "object"
+}

@@ -1,3 +1,11 @@
+## 0.92.0 — 2026-09-10
+- Added Carbon & Nature Intelligence v0.9.0 SOC Spatial Variability & Uncertainty.
+- Added replicate stock summaries, Student-t intervals, coordinate coverage diagnostics, area-weighted stratified estimates, paired/independent change uncertainty, and first-order input uncertainty propagation.
+- Added explicit uncertainty boundaries: sample variability is not total uncertainty; no automatic outlier removal, representativeness inference, variogram/kriging, causality, verification, or crediting inference.
+- Preserved v0.89.0 SOC stock, v0.90.0 field sampling, and v0.91.0 change/sequestration capabilities.
+- Restored and release-gated the retained 118-element periodic-table static asset that was absent from the packaged v0.91.0 baseline.
+
+
 ## 0.91.0 — 2026-09-10
 - Added Carbon & Nature Intelligence v0.8.0 SOC Change & Sequestration Model.
 - Added exact normalized fixed-depth matching for baseline/follow-up SOC profiles before temporal comparison.

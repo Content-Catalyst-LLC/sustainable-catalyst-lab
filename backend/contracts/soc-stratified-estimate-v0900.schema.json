@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "confidence_level": {
+      "enum": [
+        0.9,
+        0.95,
+        0.99
+      ]
+    },
+    "strata": {
+      "items": {
+        "properties": {
+          "area_ha": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "observations": {
+            "minItems": 2,
+            "type": "array"
+          },
+          "stratum_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stratum_id",
+          "area_ha",
+          "observations"
+        ],
+        "type": "object"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "strata"
+  ],
+  "title": "SOC stratified estimate v0.9.0",
+  "type": "object"
+}

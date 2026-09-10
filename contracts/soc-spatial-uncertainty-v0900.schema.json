@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "confidence_level": {
+      "enum": [
+        0.9,
+        0.95,
+        0.99
+      ]
+    },
+    "estimate_id": {
+      "type": "string"
+    },
+    "observations": {
+      "items": {
+        "anyOf": [
+          {
+            "required": [
+              "stock_Mg_C_ha"
+            ]
+          },
+          {
+            "required": [
+              "profile"
+            ]
+          }
+        ],
+        "properties": {
+          "latitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "longitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "observation_id": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "object"
+          },
+          "stock_Mg_C_ha": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "stratum_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "observation_id"
+        ],
+        "type": "object"
+      },
+      "maxItems": 2000,
+      "minItems": 2,
+      "type": "array"
+    },
+    "spatial_unit_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "observations"
+  ],
+  "title": "SOC Spatial Variability & Uncertainty replicate estimate v0.9.0",
+  "type": "object"
+}

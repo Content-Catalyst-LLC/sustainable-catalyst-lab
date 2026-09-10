@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "bulk_density_standard_uncertainty": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "coarse_fragments_standard_uncertainty_percent": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "confidence_level": {
+      "enum": [
+        0.9,
+        0.95,
+        0.99
+      ]
+    },
+    "layer": {
+      "type": "object"
+    },
+    "soc_standard_uncertainty": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "thickness_standard_uncertainty": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "layer"
+  ],
+  "title": "SOC layer first-order input uncertainty v0.9.0",
+  "type": "object"
+}
