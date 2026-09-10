@@ -411,3 +411,6 @@ echo "Current release validation passed for v$CURRENT_VERSION."
 
 echo "==> v0.90.0 Carbon & Nature SOC sampling extension gate"
 PYTHON_BIN="$PYTHON_BIN" bash scripts/test_v0900_release.sh
+
+echo "==> v0.91.0 Carbon & Nature SOC change extension gate"
+PYTHON_BIN="$PYTHON_BIN" bash scripts/test_v0910_release.sh

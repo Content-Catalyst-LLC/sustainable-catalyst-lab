@@ -51,6 +51,12 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/design', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_design'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/profile-handoff', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_profile_handoff'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/field-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_field_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/health', array('methods'=>'GET','callback'=>array($this,'soc_v0800_change_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/schema', array('methods'=>'GET','callback'=>array($this,'soc_v0800_change_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/policies', array('methods'=>'GET','callback'=>array($this,'soc_v0800_change_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/compare', array('methods'=>'POST','callback'=>array($this,'soc_v0800_change_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/series', array('methods'=>'POST','callback'=>array($this,'soc_v0800_change_series'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0800/change/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0800_change_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -84,7 +90,7 @@ class SC_Lab_REST {
             'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','socSamplingFieldMeasurement','carbonNatureProjectHandoff')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','socSamplingFieldMeasurement','socStockChangeModel','carbonNatureProjectHandoff')
         ));
     }
 
@@ -275,6 +281,18 @@ class SC_Lab_REST {
     public function soc_v0700_sampling_design(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/design',4194304); }
     public function soc_v0700_sampling_profile_handoff(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/profile-handoff',4194304); }
     public function soc_v0700_sampling_field_packet(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/field-packet',8388608); }
+
+    public function soc_v0800_change_health() { return $this->proxy('/v1/carbon-nature/soc/v0800/change/health'); }
+    public function soc_v0800_change_schema() { return $this->proxy('/v1/carbon-nature/soc/v0800/change/schema'); }
+    public function soc_v0800_change_policies() { return $this->proxy('/v1/carbon-nature/soc/v0800/change/policies'); }
+    private function soc_v0800_post(WP_REST_Request $request, $path, $max=4194304) {
+        $payload=$request->get_json_params();
+        if (!is_array($payload)) { return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400)); }
+        return $this->proxy($path,'POST',$payload,$max);
+    }
+    public function soc_v0800_change_compare(WP_REST_Request $request) { return $this->soc_v0800_post($request,'/v1/carbon-nature/soc/v0800/change/compare',4194304); }
+    public function soc_v0800_change_series(WP_REST_Request $request) { return $this->soc_v0800_post($request,'/v1/carbon-nature/soc/v0800/change/series',8388608); }
+    public function soc_v0800_change_project_packet(WP_REST_Request $request) { return $this->soc_v0800_post($request,'/v1/carbon-nature/soc/v0800/change/project-packet',8388608); }
 
     public function compute_status() {
         $settings = $this->settings();

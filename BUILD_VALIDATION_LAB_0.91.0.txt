@@ -1,0 +1,75 @@
+SUSTAINABLE CATALYST LAB v0.91.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.8.0 — SOC Change & Sequestration Model
+Date: 2026-09-10
+Baseline: Sustainable Catalyst Lab v0.90.0 / Carbon & Nature v0.7.0
+Compute Core: 1.0.0
+
+RELEASE-SPECIFIC GATE: PASS
+
+Browser/PHP contracts:
+- PASS Lab v0.91.0 / Carbon & Nature v0.8.0 PHP contracts
+- PASS Lab v0.91.0 / Carbon & Nature v0.8.0 browser contracts
+- PASS retained v0.90.0, v0.89.0, v0.88.x, v0.87.0, and v0.86.0 browser compatibility contracts selected by the release gate
+
+Python scientific/backend compatibility:
+- 135 selected tests passed
+- 18 v0.91.0 SOC change tests
+- 29 retained v0.90.0 SOC sampling tests
+- 17 retained v0.89.0 SOC stock tests
+- 71 retained scientific visualization / provenance / uncertainty / spatial / data-binding compatibility tests
+
+Deterministic scientific fixtures:
+- PASS baseline: 2.0% SOC × 1.30 g/cm3 × 30 cm = 78.0 Mg C/ha
+- PASS follow-up: 2.2% SOC × 1.30 g/cm3 × 30 cm = 85.8 Mg C/ha
+- PASS matched stock change = +7.8 Mg C/ha
+- PASS positive stock change does not establish intervention attribution
+
+Route topology:
+- PASS v0.6.0 fixed-depth profile route retained
+- PASS v0.7.0 sampling profile handoff retained
+- PASS v0.8.0 health/schema/policies routes
+- PASS v0.8.0 compare/series/project-packet routes
+
+Contract integrity:
+- PASS soc-stock-change-v0800.schema.json parses and mirrors backend copy byte-for-byte
+- PASS soc-change-series-v0800.schema.json parses and mirrors backend copy byte-for-byte
+- PASS soc-change-policy-v0800.json parses and mirrors backend copy byte-for-byte
+
+Release manifest:
+- PASS Lab releaseVersion 0.91.0
+- PASS featureVersion 0.91.0
+- PASS Carbon & Nature domain version 0.8.0
+- PASS critical-file SHA-256 verification
+
+Syntax:
+- PASS Python compile checks for v0.91.0 module and backend main
+- PASS PHP syntax for modified/new plugin files and template
+- PASS Node syntax for v0.91.0 browser module
+- PASS Bash syntax for release gate and Contabo upgrader
+
+Historical monolithic suite note:
+`scripts/test_release_current.sh` still stops at `FAIL: Missing backend/app/executor.py`. The v0.90.0 baseline package also lacks that file, so this is an inherited historical-suite dependency and not introduced by v0.91.0. The governed v0.91.0 release gate does not claim that historical monolithic suite is green.
+
+SCIENTIFIC BOUNDARIES
+- exact normalized fixed-depth intervals are required for change comparison
+- equivalent-soil-mass correction is not implemented
+- uncertainty is not inferred
+- CO2e is not inferred
+- a positive stock change is not automatically treated as intervention-attributable sequestration
+- counterfactual, additionality, leakage, permanence, verification, methodology eligibility, whole-farm GHG benefit, and carbon-credit eligibility are not established
+
+RESULT: PASS — v0.91.0 release-specific gate is green and ready for packaging / clean-baseline installer rehearsal.
+
+CLEAN-BASELINE INSTALLER REHEARSAL: PASS
+- baseline package: Sustainable Catalyst Lab v0.90.0 repository distribution
+- simulated Git branch: main
+- simulated origin: local bare Sustainable Catalyst Lab repository
+- installer validated v0.90.0 / Carbon & Nature v0.7.0 baseline
+- full v0.91.0 release gate passed during installer execution
+- generated WordPress and backend deployment ZIPs
+- commit created: 5ca66a1 (simulation only; not the user's GitHub repository)
+- main push succeeded to simulated origin
+- annotated tag lab-v0.91.0 created and pushed to simulated origin
+- final simulated working tree clean
+
+The rehearsal confirms installer mechanics only; it does not claim the user's GitHub repository or Contabo deployment has been updated.

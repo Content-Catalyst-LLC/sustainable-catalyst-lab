@@ -1135,6 +1135,53 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
             </div>
           </div>
         </div>
+
+        <div class="sc-soc0800" data-soc-v0800-root>
+          <div class="sc-soc0800__hero">
+            <div><span class="sc-lab-section-code">CARBON &amp; NATURE / SOC / v0.8.0</span><h3>SOC Change &amp; Sequestration Model</h3><p>Compare matched fixed-depth SOC profiles through time, calculate explicit stock change and annualized stock-change rates, preserve temporal and spatial identity, and package the calculation as a Carbon Project model run.</p></div>
+            <div class="sc-soc0800__badges"><span class="sc-soc0800__badge">Lab v0.91.0</span><span class="sc-soc0800__badge">Δ Mg C/ha</span><span class="sc-soc0800__badge">Matched depth</span><span class="sc-soc0800__badge">Backend: <b data-soc-v0800-backend>checking</b></span></div>
+          </div>
+          <div class="sc-soc0800__notice"><strong>Interpretation boundary:</strong> a positive matched SOC stock change is a gross accumulation signal, not proof of intervention-attributable, additional, permanent, verified, or creditable sequestration. v0.8.0 does not infer uncertainty or CO₂e, and it does not implement equivalent-soil-mass correction.</div>
+          <div class="sc-soc0800__grid">
+            <div class="sc-soc0800__card">
+              <h4>Matched baseline and follow-up</h4>
+              <div class="sc-soc0800__fields">
+                <label>Comparison ID<input data-soc-v0800-comparison-id value="comparison:soc-change"></label>
+                <label>Spatial unit ID<input data-soc-v0800-spatial-unit placeholder="parcel:..."></label>
+                <label>Area ha (optional)<input type="number" min="0" step="0.01" data-soc-v0800-area></label>
+                <label>Baseline profile ID<input data-soc-v0800-baseline-profile value="profile:soc-baseline"></label>
+                <label>Baseline date<input type="date" data-soc-v0800-baseline-at></label>
+                <label>Baseline object ref<input data-soc-v0800-baseline-ref placeholder="baseline:..."></label>
+                <label>Follow-up profile ID<input data-soc-v0800-followup-profile value="profile:soc-followup"></label>
+                <label>Follow-up date<input type="date" data-soc-v0800-followup-at></label>
+                <label>Intervention ref<input data-soc-v0800-intervention-ref placeholder="intervention:..."></label>
+              </div>
+              <div data-soc-v0800-rows></div>
+              <div class="sc-soc0800__actions"><button type="button" class="sc-lab-button" data-soc-v0800-add>Add matched layer</button><button type="button" class="sc-lab-button" data-soc-v0800-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v0800-compare>Calculate change</button></div>
+              <p class="sc-soc0800__status" data-soc-v0800-status role="status" aria-live="polite">SOC change workspace ready.</p>
+            </div>
+            <div class="sc-soc0800__card">
+              <h4>Matched stock-change result</h4>
+              <div class="sc-soc0800__summary">
+                <div class="sc-soc0800__metric"><small>Baseline stock</small><strong><span data-soc-v0800-baseline-stock>—</span> Mg C/ha</strong></div>
+                <div class="sc-soc0800__metric"><small>Follow-up stock</small><strong><span data-soc-v0800-followup-stock>—</span> Mg C/ha</strong></div>
+                <div class="sc-soc0800__metric"><small>Stock change</small><strong><span data-soc-v0800-change>—</span> Mg C/ha</strong></div>
+                <div class="sc-soc0800__metric"><small>Annualized</small><strong><span data-soc-v0800-annualized>—</span> Mg C/ha/yr</strong></div>
+                <div class="sc-soc0800__metric"><small>Elapsed</small><strong data-soc-v0800-elapsed>—</strong></div>
+                <div class="sc-soc0800__metric"><small>Direction</small><strong data-soc-v0800-direction>—</strong></div>
+              </div>
+              <div class="sc-soc0800__actions"><button type="button" class="sc-lab-button" data-soc-v0800-save>Save to project</button><button type="button" class="sc-lab-button" data-soc-v0800-graph>Open in Graph Studio</button></div>
+              <details><summary>Stock-change record</summary><pre data-soc-v0800-output>No comparison yet.</pre></details>
+            </div>
+          </div>
+          <div class="sc-soc0800__card">
+            <h4>Carbon Project provenance handoff</h4>
+            <p>Package the matched change calculation as a draft <code>model-run</code> object. Input object IDs are linked only when supplied; the packet does not establish verification, additionality, permanence, or credit eligibility.</p>
+            <div class="sc-soc0800__packet-fields"><label>Project ID<input data-soc-v0800-project-id placeholder="project:..."></label><label>Input object IDs<input data-soc-v0800-input-objects placeholder="model-run:baseline, model-run:followup"></label></div>
+            <div class="sc-soc0800__actions"><button type="button" class="sc-lab-button" data-soc-v0800-packet>Build project packet</button></div>
+            <details><summary>Carbon Project packet</summary><pre data-soc-v0800-packet-output>No packet yet.</pre></details>
+          </div>
+        </div>
         </div>
       </section>
 

@@ -1,0 +1,13 @@
+const fs=require('fs'),assert=require('assert'),p=require('path');
+const root=p.resolve(__dirname,'..');
+const js=fs.readFileSync(p.join(root,'assets/js/modules/soil-carbon-change-v0910.js'),'utf8');
+const tpl=fs.readFileSync(p.join(root,'templates/lab-app.php'),'utf8');
+assert(js.includes("DOMAIN='0.8.0'"));
+assert(js.includes("VERSION='0.91.0'"));
+assert(js.includes('compareUrl'));
+assert(js.includes('projectPacketUrl'));
+assert(js.includes('Positive stock change is not by itself proof'));
+assert(tpl.includes('data-soc-v0800-root'));
+assert(tpl.includes('SOC Change &amp; Sequestration Model'));
+assert(tpl.includes('positive matched SOC stock change is a gross accumulation signal'));
+console.log('PASS - Lab v0.91.0 / Carbon & Nature v0.8.0 browser contracts');

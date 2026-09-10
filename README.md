@@ -1,6 +1,6 @@
-## Current Lab release: v0.90.0
+## Current Lab release: v0.91.0
 
-**Carbon & Nature Intelligence v0.7.0:** SOC Sampling & Field Measurement Studio extends the v0.89.0 fixed-depth SOC foundation with governed sampling records, field provenance, core bulk-density calculation, and profile/project handoffs.
+**Carbon & Nature Intelligence v0.8.0:** SOC Change & Sequestration Model adds exact-depth matched baseline/follow-up SOC stock comparison, annualized stock-change rates, multi-date change series, Graph Studio handoff, and Carbon Project model-run provenance. Positive stock change remains a gross accumulation signal rather than automatic proof of intervention-attributable or creditable sequestration.
 
 ## Current visualization release: v0.88.0
 

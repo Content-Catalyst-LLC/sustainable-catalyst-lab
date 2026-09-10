@@ -52,6 +52,7 @@ from .webgl2_scientific_renderer_v0850 import WebGL2ScientificRendererError, bui
 from .system_dynamics_feedback_v0860 import SystemDynamicsV0860Error, analyze_feedback as analyze_system_feedback_v0860, analyze_leverage as analyze_system_leverage_v0860, build_workspace as build_system_dynamics_workspace_v0860, health as system_dynamics_health_v0860, normalize_causal_loop as normalize_causal_loop_v0860, normalize_stock_flow as normalize_stock_flow_v0860, policies as system_dynamics_policies_v0860, simulate_stock_flow as simulate_stock_flow_v0860
 from .soil_organic_carbon_v0890 import SoilOrganicCarbonV0600Error, build_project_packet as build_soc_project_packet_v0600, calculate_layer_stock as calculate_soc_layer_stock_v0600, calculate_profile_stock as calculate_soc_profile_stock_v0600, health as soil_organic_carbon_health_v0600, policies as soil_organic_carbon_policies_v0600, schema as soil_organic_carbon_schema_v0600
 from .soil_carbon_sampling_v0900 import SoilCarbonSamplingV0700Error, build_field_packet as build_soc_field_packet_v0700, build_profile_handoff as build_soc_profile_handoff_v0700, build_sampling_design as build_soc_sampling_design_v0700, calculate_bulk_density as calculate_soc_bulk_density_v0700, health as soc_sampling_health_v0700, normalize_batch as normalize_soc_sample_batch_v0700, normalize_sample as normalize_soc_sample_v0700, policies as soc_sampling_policies_v0700, schema as soc_sampling_schema_v0700
+from .soil_carbon_change_v0910 import SoilCarbonChangeV0800Error, build_change_series as build_soc_change_series_v0800, build_project_packet as build_soc_change_project_packet_v0800, compare_profiles as compare_soc_profiles_v0800, health as soc_change_health_v0800, policies as soc_change_policies_v0800, schema as soc_change_schema_v0800
 from .webgpu_scientific_renderer_v0870 import WebGPUScientificRendererError, build_compute_plan as build_webgpu_compute_plan_v0870, build_render_plan as build_webgpu_render_plan_v0870, build_workspace as build_webgpu_workspace_v0870, health as webgpu_health_v0870, normalize_compute_dispatch as normalize_webgpu_compute_dispatch_v0870, normalize_render_pass as normalize_webgpu_render_pass_v0870, policies as webgpu_policies_v0870, renderer_descriptor as webgpu_renderer_descriptor_v0870
 from .advanced_scientific_scene_v0880 import AdvancedScientificSceneError, build_render_plan as build_advanced_scene_render_plan_v0880, build_workspace as build_advanced_scene_workspace_v0880, health as advanced_scene_health_v0880, normalize_camera as normalize_advanced_scene_camera_v0880, normalize_light as normalize_advanced_scene_light_v0880, normalize_material as normalize_advanced_scene_material_v0880, normalize_scene as normalize_advanced_scene_v0880, policies as advanced_scene_policies_v0880, scene_descriptor as advanced_scene_descriptor_v0880
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
@@ -6215,6 +6216,43 @@ def soc_sampling_v0700_profile_handoff_route(payload: dict[str, Any]):
 @app.post("/v1/carbon-nature/soc/v0700/sampling/field-packet", dependencies=[Depends(require_compute_auth)])
 def soc_sampling_v0700_field_packet_route(payload: dict[str, Any]):
     return _soc_sampling_call(build_soc_field_packet_v0700, payload)
+
+
+@app.get("/v1/carbon-nature/soc/v0800/change/health")
+def soc_change_v0800_health_route():
+    return soc_change_health_v0800()
+
+
+@app.get("/v1/carbon-nature/soc/v0800/change/schema")
+def soc_change_v0800_schema_route():
+    return soc_change_schema_v0800()
+
+
+@app.get("/v1/carbon-nature/soc/v0800/change/policies")
+def soc_change_v0800_policies_route():
+    return soc_change_policies_v0800()
+
+
+def _soc_change_call(fn, payload):
+    try:
+        return fn(payload)
+    except SoilCarbonChangeV0800Error as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.post("/v1/carbon-nature/soc/v0800/change/compare", dependencies=[Depends(require_compute_auth)])
+def soc_change_v0800_compare_route(payload: dict[str, Any]):
+    return _soc_change_call(compare_soc_profiles_v0800, payload)
+
+
+@app.post("/v1/carbon-nature/soc/v0800/change/series", dependencies=[Depends(require_compute_auth)])
+def soc_change_v0800_series_route(payload: dict[str, Any]):
+    return _soc_change_call(build_soc_change_series_v0800, payload)
+
+
+@app.post("/v1/carbon-nature/soc/v0800/change/project-packet", dependencies=[Depends(require_compute_auth)])
+def soc_change_v0800_project_packet_route(payload: dict[str, Any]):
+    return _soc_change_call(build_soc_change_project_packet_v0800, payload)
 
 @app.get("/v1/model-studio/dynamic-systems/v0860/health")
 def system_dynamics_v0860_health_route(): return system_dynamics_health_v0860()

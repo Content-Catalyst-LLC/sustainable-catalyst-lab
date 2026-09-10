@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/soc-change-series-v0800.schema.json",
+  "title": "Carbon & Nature v0.8.0 SOC Stock Change Series",
+  "type": "object",
+  "required": ["schema", "domain_version", "lab_release_version", "series_id", "spatial_unit_id", "point_count", "points", "pairwise_changes", "overall", "guardrails", "result_fingerprint"],
+  "properties": {
+    "schema": {"const": "sc-carbon-nature-soc-stock-change-series/0.8.0"},
+    "domain_version": {"const": "0.8.0"},
+    "lab_release_version": {"const": "0.91.0"},
+    "point_count": {"type": "integer", "minimum": 2, "maximum": 100},
+    "points": {"type": "array", "minItems": 2, "maxItems": 100},
+    "pairwise_changes": {"type": "array", "minItems": 1, "maxItems": 99},
+    "overall": {"type": "object"},
+    "guardrails": {"type": "object"},
+    "result_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": true
+}

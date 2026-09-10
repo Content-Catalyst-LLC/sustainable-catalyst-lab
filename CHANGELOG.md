@@ -1,3 +1,12 @@
+## 0.91.0 — 2026-09-10
+- Added Carbon & Nature Intelligence v0.8.0 SOC Change & Sequestration Model.
+- Added exact normalized fixed-depth matching for baseline/follow-up SOC profiles before temporal comparison.
+- Added stock difference, annualized stock-change rate, relative change, direction, optional parcel totals, and multi-date change series.
+- Added Carbon Project model-run handoff, deterministic fingerprints, Graph Studio integration, and Lab project persistence.
+- Positive stock change is explicitly not treated as intervention attribution, additionality, permanence, verification, net GHG benefit, or carbon-credit eligibility.
+- Equivalent-soil-mass correction, uncertainty inference, and CO2e conversion remain deferred.
+
+
 ## 0.90.0 — 2026-09-10
 - Added Carbon & Nature Intelligence v0.7.0 SOC Sampling & Field Measurement Studio.
 - Added governed field-sample records, sampling-plan identities, core bulk-density calculation, chain-of-custody metadata, profile handoff, and Carbon Project sample/observation packets.
