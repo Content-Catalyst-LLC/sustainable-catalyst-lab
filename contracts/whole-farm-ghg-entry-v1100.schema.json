@@ -1,0 +1,67 @@
+{
+  "$id": "sc-carbon-nature-whole-farm-ghg-entry-v1100.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "activity_unit": {
+      "type": "string"
+    },
+    "activity_value": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "category": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "co2e_kg": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "direction": {
+      "enum": [
+        "emission",
+        "removal"
+      ]
+    },
+    "emission_factor_kg_co2e_per_unit": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "entry_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "factor_source_ref": {
+      "type": "string"
+    },
+    "gas": {
+      "type": "string"
+    },
+    "gwp100": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "gwp_source_ref": {
+      "type": "string"
+    },
+    "mass_kg": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "type": "array"
+    }
+  },
+  "required": [
+    "entry_id",
+    "category",
+    "direction"
+  ],
+  "title": "Whole-Farm GHG Entry v0.11.0",
+  "type": "object"
+}

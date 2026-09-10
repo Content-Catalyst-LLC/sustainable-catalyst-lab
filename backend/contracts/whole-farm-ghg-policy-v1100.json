@@ -1,0 +1,19 @@
+{
+  "domain_version": "0.11.0",
+  "lab_release_version": "0.94.0",
+  "release": "Whole-Farm GHG Balance",
+  "rules": {
+    "activity_factor_source_required": true,
+    "additionality_not_determined": true,
+    "causal_attribution_not_established": true,
+    "credit_eligibility_not_determined": true,
+    "inventory_completeness_not_inferred": true,
+    "leakage_not_determined": true,
+    "no_default_activity_emission_factors": true,
+    "no_default_non_co2_gwp_factors": true,
+    "permanence_not_determined": true,
+    "soc_stock_change_inclusion_is_explicit": true,
+    "whole_farm_balance_is_not_verification": true
+  },
+  "schema": "sc-carbon-nature-whole-farm-ghg-policy/0.11.0"
+}

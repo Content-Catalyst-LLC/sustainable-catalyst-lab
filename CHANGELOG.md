@@ -1,3 +1,10 @@
+# v0.94.0 — Carbon & Nature v0.11.0 Whole-Farm GHG Balance
+
+- Added provenance-first whole-farm greenhouse-gas accounting with direct CO2e, explicit gas-mass GWP conversion, and sourced activity factors.
+- Added optional explicit SOC stock-change integration using 44/12, category/gas aggregation, area intensity, and explicit-period annualization.
+- Added Carbon Project model-run packet handoff, browser workspace, Graph Studio handoff, contracts, tests, and deployment validation.
+- No default non-CO2 GWP factors or activity emission factors; balance does not imply verification, completeness, attribution, additionality, leakage, permanence, or credit eligibility.
+
 ## 0.93.0 — 2026-09-10
 - Added Carbon & Nature Intelligence v0.10.0 SOC Management Scenario Studio.
 - Added constant annual stock-change, compound relative-change, and explicit annual schedule models driven only by user-supplied assumptions.

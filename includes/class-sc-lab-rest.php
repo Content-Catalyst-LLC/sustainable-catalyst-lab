@@ -72,6 +72,12 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/compare', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_compare'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/sensitivity', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_sensitivity'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/health', array('methods'=>'GET','callback'=>array($this,'ghg_v1100_balance_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/schema', array('methods'=>'GET','callback'=>array($this,'ghg_v1100_balance_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/policies', array('methods'=>'GET','callback'=>array($this,'ghg_v1100_balance_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/entry', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_entry'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/calculate', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_calculate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/project-packet', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -327,6 +333,14 @@ class SC_Lab_REST {
     public function soc_v1000_scenarios_compare(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/compare');}
     public function soc_v1000_scenarios_sensitivity(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/sensitivity');}
     public function soc_v1000_scenarios_project_packet(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/project-packet');}
+
+    public function ghg_v1100_balance_health(){return $this->proxy('/v1/carbon-nature/ghg/v1100/balance/health');}
+    public function ghg_v1100_balance_schema(){return $this->proxy('/v1/carbon-nature/ghg/v1100/balance/schema');}
+    public function ghg_v1100_balance_policies(){return $this->proxy('/v1/carbon-nature/ghg/v1100/balance/policies');}
+    private function ghg_v1100_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function ghg_v1100_balance_entry(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/entry',2097152);}
+    public function ghg_v1100_balance_calculate(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/calculate');}
+    public function ghg_v1100_balance_project_packet(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

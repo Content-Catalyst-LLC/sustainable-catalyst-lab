@@ -1237,6 +1237,38 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
             <div class="sc-soc1000__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v1000-compare>Compare scenarios</button><button type="button" class="sc-lab-button" data-soc-v1000-sensitivity>Run supplied-rate sensitivity</button></div>
             <div style="overflow:auto"><table><thead><tr><th>Scenario / input</th><th>Final stock</th><th>Cumulative change</th><th>Mean annual</th></tr></thead><tbody data-soc-v1000-comparison><tr><td colspan="4">No comparison yet.</td></tr></tbody></table></div>
           </div>
+
+          <div class="sc-ghg1100" data-ghg-v1100-root>
+            <div class="sc-ghg1100__hero">
+              <div><span class="sc-ghg1100__eyebrow">CARBON &amp; NATURE / GHG / v0.11.0</span><h3>Whole-Farm GHG Balance</h3><p>Aggregate explicit greenhouse-gas emissions and removals across a farm, retain source and factor provenance, optionally integrate SOC stock change, and produce an inspectable accounting balance.</p></div>
+              <div class="sc-ghg1100__badges"><span class="sc-ghg1100__badge">Lab v0.94.0</span><span class="sc-ghg1100__badge">CO₂e accounting</span><span class="sc-ghg1100__badge">Explicit factors</span><span class="sc-ghg1100__badge">Backend: <b data-ghg-v1100-backend>checking</b></span></div>
+            </div>
+            <div class="sc-ghg1100__notice"><strong>Accounting boundary:</strong> Sustainable Catalyst supplies no default non-CO₂ GWP or activity emission factors. Whole-farm balance ≠ verification. Inventory completeness, causal attribution, additionality, leakage, permanence, and carbon-credit eligibility are not inferred.</div>
+            <div class="sc-ghg1100__grid">
+              <div class="sc-ghg1100__card">
+                <h4>Farm GHG inputs</h4>
+                <div class="sc-ghg1100__fields"><label>Balance ID<input data-ghg-v1100-balance-id value="ghg-balance:whole-farm-ui"></label><label>Farm ID<input data-ghg-v1100-farm-id placeholder="farm:example"></label><label>Farm area (ha)<input type="number" min="0" step="any" data-ghg-v1100-area></label><label>Project ID for packet<input data-ghg-v1100-project-id placeholder="project:example"></label></div>
+                <label>Direct CO₂e records<textarea data-ghg-v1100-direct placeholder="energy | emission | 1000 | evidence:metered-energy"></textarea></label><p class="sc-ghg1100__format">Format: category | emission/removal | kg CO₂e | source ref</p>
+                <label>Gas-mass records<textarea data-ghg-v1100-gas placeholder="livestock | CH4 | 10 | emission | evidence:methane-record"></textarea></label><p class="sc-ghg1100__format">Format: category | gas | kg gas | emission/removal | source ref. Non-CO₂ gas mass requires an explicit GWP below.</p>
+                <label>Activity × emission-factor records<textarea data-ghg-v1100-activity placeholder="fertilizer | 100 | kg N | 5.0 | emission | factor:source | evidence:activity"></textarea></label><p class="sc-ghg1100__format">Format: category | activity value | unit | kg CO₂e/unit factor | direction | factor source | record source</p>
+                <h4>Explicit GWP set</h4>
+                <div class="sc-ghg1100__fields"><label>GWP set name<input data-ghg-v1100-gwp-name placeholder="IPCC source/version"></label><label>GWP source reference<input data-ghg-v1100-gwp-source placeholder="source:authoritative-reference"></label><label>CH₄ GWP100<input type="number" min="0" step="any" data-ghg-v1100-gwp-ch4></label><label>N₂O GWP100<input type="number" min="0" step="any" data-ghg-v1100-gwp-n2o></label></div>
+                <h4>Optional SOC stock-change contribution</h4>
+                <div class="sc-ghg1100__fields"><label>SOC change (Mg C/ha)<input type="number" step="any" data-ghg-v1100-soc-change></label><label>SOC area (ha)<input type="number" min="0" step="any" data-ghg-v1100-soc-area></label><label>Basis<select data-ghg-v1100-soc-basis><option value="measured-change">Measured change</option><option value="scenario">Scenario</option><option value="user-supplied-estimate">User-supplied estimate</option></select></label><label>SOC source references<textarea data-ghg-v1100-soc-sources placeholder="model-run:soc-change"></textarea></label><label class="sc-ghg1100__check"><input type="checkbox" data-ghg-v1100-soc-include> Include SOC contribution in net farm balance</label></div>
+                <h4>Optional accounting period</h4>
+                <div class="sc-ghg1100__fields"><label>Start date<input type="date" data-ghg-v1100-start></label><label>End date<input type="date" data-ghg-v1100-end></label><label class="sc-ghg1100__check"><input type="checkbox" data-ghg-v1100-annualize> Annualize totals over the explicit period</label></div>
+                <div class="sc-ghg1100__actions"><button type="button" class="sc-lab-button" data-ghg-v1100-example>Load illustrative fixture</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-ghg-v1100-calculate>Calculate balance</button><button type="button" class="sc-lab-button" data-ghg-v1100-packet>Build project packet</button></div>
+                <p class="sc-ghg1100__status" data-ghg-v1100-status role="status" aria-live="polite">Whole-Farm GHG Balance ready.</p>
+              </div>
+              <div class="sc-ghg1100__card">
+                <h4>Accounting result</h4>
+                <div class="sc-ghg1100__summary"><div class="sc-ghg1100__metric"><small>Gross emissions</small><strong><span data-ghg-v1100-gross-emissions>—</span> kg CO₂e</strong></div><div class="sc-ghg1100__metric"><small>Gross removals</small><strong><span data-ghg-v1100-gross-removals>—</span> kg CO₂e</strong></div><div class="sc-ghg1100__metric"><small>Net balance</small><strong><span data-ghg-v1100-net>—</span> kg CO₂e</strong></div><div class="sc-ghg1100__metric"><small>Net direction</small><strong data-ghg-v1100-direction>—</strong></div><div class="sc-ghg1100__metric"><small>Net intensity</small><strong><span data-ghg-v1100-intensity>—</span> kg CO₂e/ha</strong></div></div>
+                <div class="sc-ghg1100__actions"><button type="button" class="sc-lab-button" data-ghg-v1100-save>Save to project</button><button type="button" class="sc-lab-button" data-ghg-v1100-graph>Open in Graph Studio</button></div>
+                <details open><summary>Full GHG balance</summary><pre data-ghg-v1100-output>No balance calculated yet.</pre></details>
+                <details><summary>Carbon Project packet</summary><pre data-ghg-v1100-packet-output>No packet yet.</pre></details>
+              </div>
+            </div>
+          </div>
         </div>
         </div>
         </div>

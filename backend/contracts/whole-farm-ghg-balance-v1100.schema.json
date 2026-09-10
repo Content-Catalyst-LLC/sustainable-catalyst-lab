@@ -1,0 +1,42 @@
+{
+  "$id": "sc-carbon-nature-whole-farm-ghg-balance-v1100.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "annualize": {
+      "type": "boolean"
+    },
+    "area_ha": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "balance_id": {
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "$ref": "sc-carbon-nature-whole-farm-ghg-entry-v1100.schema.json"
+      },
+      "maxItems": 1000,
+      "minItems": 1,
+      "type": "array"
+    },
+    "farm_id": {
+      "type": "string"
+    },
+    "gwp_set": {
+      "type": "object"
+    },
+    "period": {
+      "type": "object"
+    },
+    "soc_stock_change": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "entries"
+  ],
+  "title": "Whole-Farm GHG Balance v0.11.0",
+  "type": "object"
+}

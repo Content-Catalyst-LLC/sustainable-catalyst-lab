@@ -1,0 +1,14 @@
+const fs=require('fs'),assert=require('assert');
+const js=fs.readFileSync('assets/js/modules/whole-farm-ghg-v0940.js','utf8');
+const tpl=fs.readFileSync('templates/lab-app.php','utf8');
+assert(js.includes("VERSION='0.94.0',DOMAIN='0.11.0'"));
+assert(js.includes('wholeFarmGhg'));
+assert(js.includes('calculateUrl'));
+assert(js.includes('projectPacketUrl'));
+assert(js.includes('source:replace-with-authoritative-gwp'));
+assert(js.includes('test values only'));
+assert(js.includes('WholeFarmGHGV1100'));
+assert(tpl.includes('Whole-Farm GHG Balance'));
+assert(tpl.includes('data-ghg-v1100-calculate'));
+assert(tpl.includes('data-ghg-v1100-packet'));
+console.log('PASS - Lab v0.94.0 / Carbon & Nature v0.11.0 browser contracts');
