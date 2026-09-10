@@ -63,7 +63,7 @@
     if (!root) return;
     root.dataset.state = 'loading';
     const [runtimeResult, computeResult, visualizationResult, modelingResult] = await Promise.allSettled([
-      json('runtime/health'), json('compute/status'), json('visualization/v0870/health'), json('modeling/v0860/health')
+      json('runtime/health'), json('compute/status'), json('visualization/v0880/health'), json('modeling/v0860/health')
     ]);
     const runtime = runtimeResult.status === 'fulfilled' ? runtimeResult.value : {};
     const compute = computeResult.status === 'fulfilled' ? computeResult.value : {};

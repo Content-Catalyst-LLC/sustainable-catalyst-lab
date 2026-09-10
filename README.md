@@ -1,3 +1,11 @@
+## Current visualization release: v0.88.0
+
+Graph Studio now includes **Advanced 3D Scientific Scene Engine II** on top of the production-certified v0.87 WebGPU renderer. Visualization Engine 2.14.0 adds governed scene graphs, cameras, scientific lighting, explicit materials, GPU instancing, native WebGPU mesh/line/point rendering, orbit/pan/zoom interaction state, and a Three.js compatibility adapter when a local Three.js runtime is present. Lab never loads Three.js from a CDN automatically, and Three.js/WebGPU availability never changes scientific correctness.
+
+## v0.88.0 — Advanced 3D Scientific Scene Engine II
+
+The v0.88 scene layer unifies the earlier v0.77 3D scientific semantics with the v0.87 WebGPU execution path. Geometry, topology, normals, units, and scientific meaning remain explicit; lighting, materials, camera state, and interaction remain presentation metadata rather than observations. The independent System Dynamics Engine remains at 1.0.0.
+
 ## Current visualization release: v0.87.0
 
 Graph Studio now includes a governed production WebGPU renderer and browser GPU-compute path on top of the v0.85 WebGL2 fallback. v0.87 uses real `navigator.gpu` adapter/device acquisition, renderer-owned WGSL pipelines, explicit WebGL2 fallback, and approved compute kernels for filtering, histograms, reductions, and spatial binning. GPU availability never changes scientific semantics, and arbitrary WGSL remains disabled. The v0.86 System Dynamics Engine remains independently versioned at 1.0.0.

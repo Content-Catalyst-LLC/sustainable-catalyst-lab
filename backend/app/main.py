@@ -51,6 +51,7 @@ from .gpu_renderer_architecture_v0840 import GPURendererArchitectureError, build
 from .webgl2_scientific_renderer_v0850 import WebGL2ScientificRendererError, build_render_plan as build_webgl2_render_plan_v0850, build_workspace as build_webgl2_workspace_v0850, health as webgl2_health_v0850, normalize_camera as normalize_webgl2_camera_v0850, normalize_draw_call as normalize_webgl2_draw_call_v0850, normalize_picking as normalize_webgl2_picking_v0850, policies as webgl2_policies_v0850, renderer_descriptor as webgl2_renderer_descriptor_v0850
 from .system_dynamics_feedback_v0860 import SystemDynamicsV0860Error, analyze_feedback as analyze_system_feedback_v0860, analyze_leverage as analyze_system_leverage_v0860, build_workspace as build_system_dynamics_workspace_v0860, health as system_dynamics_health_v0860, normalize_causal_loop as normalize_causal_loop_v0860, normalize_stock_flow as normalize_stock_flow_v0860, policies as system_dynamics_policies_v0860, simulate_stock_flow as simulate_stock_flow_v0860
 from .webgpu_scientific_renderer_v0870 import WebGPUScientificRendererError, build_compute_plan as build_webgpu_compute_plan_v0870, build_render_plan as build_webgpu_render_plan_v0870, build_workspace as build_webgpu_workspace_v0870, health as webgpu_health_v0870, normalize_compute_dispatch as normalize_webgpu_compute_dispatch_v0870, normalize_render_pass as normalize_webgpu_render_pass_v0870, policies as webgpu_policies_v0870, renderer_descriptor as webgpu_renderer_descriptor_v0870
+from .advanced_scientific_scene_v0880 import AdvancedScientificSceneError, build_render_plan as build_advanced_scene_render_plan_v0880, build_workspace as build_advanced_scene_workspace_v0880, health as advanced_scene_health_v0880, normalize_camera as normalize_advanced_scene_camera_v0880, normalize_light as normalize_advanced_scene_light_v0880, normalize_material as normalize_advanced_scene_material_v0880, normalize_scene as normalize_advanced_scene_v0880, policies as advanced_scene_policies_v0880, scene_descriptor as advanced_scene_descriptor_v0880
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
 from .correlated_uncertainty import CorrelatedUncertaintyError, analyze as run_correlated_uncertainty, estimate_dependency as estimate_probabilistic_dependency, health as correlated_uncertainty_health, normalize_study as normalize_correlated_uncertainty_study, policies as correlated_uncertainty_policies
 from .shared_model_handoff import ModelHandoffError, build_workbench_handoff, health as model_handoff_health, import_workbench_handoff, normalize_shared_model, policies as model_handoff_policies
@@ -6188,3 +6189,42 @@ def webgpu_v0870_compute_plan_route(payload: dict[str, Any]):
 def webgpu_v0870_workspace_route(payload: dict[str, Any]):
     try: return build_webgpu_workspace_v0870(payload)
     except WebGPUScientificRendererError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/visualization/v0880/health")
+def advanced_scene_v0880_health_route(): return advanced_scene_health_v0880()
+
+@app.get("/v1/visualization/v0880/policies")
+def advanced_scene_v0880_policies_route(): return advanced_scene_policies_v0880()
+
+@app.get("/v1/visualization/v0880/scene-engine")
+def advanced_scene_v0880_descriptor_route(): return {"ok": True, "sceneEngine": advanced_scene_descriptor_v0880()}
+
+@app.post("/v1/visualization/v0880/cameras/normalize")
+def advanced_scene_v0880_camera_route(payload: dict[str, Any]):
+    try: return {"ok": True, "camera": normalize_advanced_scene_camera_v0880(payload.get("camera") or payload)}
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0880/lights/normalize")
+def advanced_scene_v0880_light_route(payload: dict[str, Any]):
+    try: return {"ok": True, "light": normalize_advanced_scene_light_v0880(payload.get("light") or payload)}
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0880/materials/normalize")
+def advanced_scene_v0880_material_route(payload: dict[str, Any]):
+    try: return {"ok": True, "material": normalize_advanced_scene_material_v0880(payload.get("material") or payload)}
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0880/scenes/normalize")
+def advanced_scene_v0880_scene_route(payload: dict[str, Any]):
+    try: return {"ok": True, "scene": normalize_advanced_scene_v0880(payload.get("scene") or payload)}
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0880/render-plans/build")
+def advanced_scene_v0880_render_plan_route(payload: dict[str, Any]):
+    try: return build_advanced_scene_render_plan_v0880(payload)
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/visualization/v0880/workspaces/build")
+def advanced_scene_v0880_workspace_route(payload: dict[str, Any]):
+    try: return build_advanced_scene_workspace_v0880(payload)
+    except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

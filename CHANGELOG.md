@@ -1,3 +1,12 @@
+## 0.88.0 — Advanced 3D Scientific Scene Engine II
+
+- Advances Visualization Engine 2 to 2.14.0 on the production-certified v0.87 WebGPU line.
+- Adds governed nested scene graphs, perspective/orthographic cameras, ambient/directional/point lighting, explicit scientific materials, GPU instancing, and orbit/pan/zoom interaction state.
+- Adds native WebGPU point, line, line-strip, and triangle pipelines for advanced scientific 3D scenes plus a local-runtime Three.js compatibility adapter.
+- Adds v0.88 FastAPI/WordPress health and schema contracts, Graph Studio Advanced 3D diagnostics, scene inspection, and provenance-aware render/workspace plans.
+- Three.js is not loaded from a CDN and is not required for scientific correctness; WebGL2/canvas fallbacks remain explicit.
+- Automatic geometry/topology/normal/unit/scientific-semantic inference, arbitrary shader source, silent fallback, and observation creation from interaction remain disabled.
+
 ## 0.87.0 — WebGPU Scientific Renderer & GPU Compute
 
 - Promotes WebGPU to a governed production renderer in Visualization Engine 2.13.0 while retaining WebGL2 as the explicit fallback.
