@@ -1105,6 +1105,36 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
             <div class="sc-soc0600__actions"><button type="button" class="sc-lab-button" data-soc-v0600-packet-button>Build project packet</button></div>
             <details><summary>Project packet</summary><pre data-soc-v0600-packet>No project packet yet.</pre></details>
           </div>
+        <div class="sc-soc0700" data-soc-v0700-root>
+          <div class="sc-soc0700__hero">
+            <div><span class="sc-lab-section-code">CARBON &amp; NATURE / SOC / v0.7.0</span><h3>SOC Sampling &amp; Field Measurement Studio</h3><p>Plan governed sampling identities, normalize field samples, calculate core bulk density, retain field provenance and chain-of-custody metadata, and hand profile-ready measurements to the v0.6.0 fixed-depth SOC stock engine.</p></div>
+            <div class="sc-soc0700__badges"><span class="sc-soc0700__badge">Lab v0.90.0</span><span class="sc-soc0700__badge">Field → profile</span><span class="sc-soc0700__badge">EPSG:4326</span><span class="sc-soc0700__badge">Backend: <b data-soc-v0700-backend>checking</b></span></div>
+          </div>
+          <div class="sc-soc0700__notice"><strong>Sampling boundary:</strong> this release records declared designs and measurements. It does not judge sample-size adequacy, perform power analysis, generate random coordinates, average replicates, infer uncertainty, or infer sequestration.</div>
+          <div class="sc-soc0700__grid">
+            <div class="sc-soc0700__card">
+              <h4>Field sample register</h4>
+              <div class="sc-soc0700__fields">
+                <label>Batch ID<input data-soc-v0700-batch-id value="batch:soc-field"></label><label>Project ID<input data-soc-v0700-project-id placeholder="project:..."></label><label>Parcel ID<input data-soc-v0700-parcel-id placeholder="parcel:..."></label>
+                <label>Profile ID<input data-soc-v0700-profile-id value="profile:soc-field"></label><label>Area ha<input type="number" min="0" step="0.01" data-soc-v0700-area></label><label>Collector<input data-soc-v0700-collector placeholder="actor:..."></label>
+                <label>Collected at<input data-soc-v0700-collected-at placeholder="2026-09-10T12:00:00+00:00"></label><label>Sampling method<select data-soc-v0700-method><option value="stratified-random">Stratified random</option><option value="simple-random">Simple random</option><option value="systematic-grid">Systematic grid</option><option value="transect">Transect</option><option value="paired">Paired</option><option value="composite">Composite</option><option value="purposive">Purposive</option><option value="other">Other</option></select></label><label>Sample type<select data-soc-v0700-sample-type><option value="intact-core">Intact core</option><option value="bulk-disturbed">Bulk disturbed</option><option value="auger">Auger</option><option value="composite">Composite</option><option value="other">Other</option></select></label>
+              </div>
+              <div data-soc-v0700-rows></div>
+              <div class="sc-soc0700__actions"><button type="button" class="sc-lab-button" data-soc-v0700-add>Add sample</button><button type="button" class="sc-lab-button" data-soc-v0700-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v0700-normalize>Normalize &amp; QA</button><button type="button" class="sc-lab-button" data-soc-v0700-handoff>Build profile handoff</button><button type="button" class="sc-lab-button" data-soc-v0700-packet>Build project packet</button><button type="button" class="sc-lab-button" data-soc-v0700-save>Save</button></div>
+              <p class="sc-soc0700__status" data-soc-v0700-status role="status" aria-live="polite">Sampling Studio ready.</p>
+            </div>
+            <div class="sc-soc0700__card">
+              <h4>Sampling design</h4>
+              <div class="sc-soc0700__fields"><label>Design ID<input data-soc-v0700-design-id value="design:soc-field"></label><label>Strata + target counts<input data-soc-v0700-strata value="upland:5,lowland:5"></label></div>
+              <div class="sc-soc0700__actions"><button type="button" class="sc-lab-button" data-soc-v0700-design>Register sampling plan</button></div>
+              <div class="sc-soc0700__summary"><div class="sc-soc0700__metric"><small>Samples</small><strong data-soc-v0700-sample-count>—</strong></div><div class="sc-soc0700__metric"><small>Profile-ready</small><strong data-soc-v0700-ready-count>—</strong></div><div class="sc-soc0700__metric"><small>Planned IDs</small><strong data-soc-v0700-planned-count>—</strong></div><div class="sc-soc0700__metric"><small>Handoff stock</small><strong><span data-soc-v0700-handoff-stock>—</span> Mg C/ha</strong></div></div>
+              <details><summary>Sampling plan</summary><pre data-soc-v0700-design-output>No plan yet.</pre></details>
+              <details><summary>Normalized batch</summary><pre data-soc-v0700-batch-output>No batch yet.</pre></details>
+              <details><summary>Profile handoff</summary><pre data-soc-v0700-handoff-output>No handoff yet.</pre></details>
+              <details><summary>Carbon Project packet</summary><pre data-soc-v0700-packet-output>No packet yet.</pre></details>
+            </div>
+          </div>
+        </div>
         </div>
       </section>
 

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "design_id": {
+      "type": "string"
+    },
+    "sampling_method": {
+      "enum": [
+        "composite",
+        "other",
+        "paired",
+        "purposive",
+        "simple-random",
+        "stratified-random",
+        "systematic-grid",
+        "transect"
+      ]
+    },
+    "strata": {
+      "items": {
+        "properties": {
+          "stratum_id": {
+            "type": "string"
+          },
+          "target_samples": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "stratum_id",
+          "target_samples"
+        ],
+        "type": "object"
+      },
+      "maxItems": 500,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "design_id",
+    "sampling_method",
+    "strata"
+  ],
+  "title": "SOC Sampling Design v0.7.0",
+  "type": "object"
+}

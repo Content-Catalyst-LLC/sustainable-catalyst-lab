@@ -42,6 +42,15 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/layer-stock', array('methods'=>'POST','callback'=>array($this,'soc_v0600_layer_stock'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/profile-stock', array('methods'=>'POST','callback'=>array($this,'soc_v0600_profile_stock'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0600/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0600_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/health', array('methods'=>'GET','callback'=>array($this,'soc_v0700_sampling_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/schema', array('methods'=>'GET','callback'=>array($this,'soc_v0700_sampling_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/policies', array('methods'=>'GET','callback'=>array($this,'soc_v0700_sampling_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/sample/normalize', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_sample'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/samples/normalize', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_batch'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/bulk-density', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_bulk_density'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/design', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_design'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/profile-handoff', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_profile_handoff'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0700/sampling/field-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0700_sampling_field_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -75,7 +84,7 @@ class SC_Lab_REST {
             'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','carbonNatureProjectHandoff')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','socSamplingFieldMeasurement','carbonNatureProjectHandoff')
         ));
     }
 
@@ -255,6 +264,17 @@ class SC_Lab_REST {
         $payload = $this->clean_soc_payload($request->get_json_params());
         return is_wp_error($payload) ? $payload : $this->proxy('/v1/carbon-nature/soc/v0600/project-packet','POST',$payload,4194304);
     }
+
+    public function soc_v0700_sampling_health() { return $this->proxy('/v1/carbon-nature/soc/v0700/sampling/health'); }
+    public function soc_v0700_sampling_schema() { return $this->proxy('/v1/carbon-nature/soc/v0700/sampling/schema'); }
+    public function soc_v0700_sampling_policies() { return $this->proxy('/v1/carbon-nature/soc/v0700/sampling/policies'); }
+    private function soc_v0700_post(WP_REST_Request $request, $path, $limit=4194304) { $payload=$this->clean_soc_payload($request->get_json_params()); return is_wp_error($payload)?$payload:$this->proxy($path,'POST',$payload,$limit); }
+    public function soc_v0700_sampling_sample(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/sample/normalize',1048576); }
+    public function soc_v0700_sampling_batch(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/samples/normalize',4194304); }
+    public function soc_v0700_sampling_bulk_density(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/bulk-density',1048576); }
+    public function soc_v0700_sampling_design(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/design',4194304); }
+    public function soc_v0700_sampling_profile_handoff(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/profile-handoff',4194304); }
+    public function soc_v0700_sampling_field_packet(WP_REST_Request $request) { return $this->soc_v0700_post($request,'/v1/carbon-nature/soc/v0700/sampling/field-packet',8388608); }
 
     public function compute_status() {
         $settings = $this->settings();

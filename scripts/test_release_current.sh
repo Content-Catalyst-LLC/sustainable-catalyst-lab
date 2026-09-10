@@ -409,5 +409,5 @@ php tests/test-v0253.php
 
 echo "Current release validation passed for v$CURRENT_VERSION."
 
-echo "==> v0.89.0 Carbon & Nature SOC extension gate"
-PYTHON_BIN="$PYTHON_BIN" bash scripts/test_v0890_release.sh
+echo "==> v0.90.0 Carbon & Nature SOC sampling extension gate"
+PYTHON_BIN="$PYTHON_BIN" bash scripts/test_v0900_release.sh

@@ -1,0 +1,79 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/soc-field-sample-v0700.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "bottom_depth": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "bulk_density_value": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "core_volume_cm3": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "depth_unit": {
+      "enum": [
+        "cm",
+        "mm",
+        "m"
+      ]
+    },
+    "dry_mass_g": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "latitude": {
+      "maximum": 90,
+      "minimum": -90,
+      "type": "number"
+    },
+    "longitude": {
+      "maximum": 180,
+      "minimum": -180,
+      "type": "number"
+    },
+    "sample_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "sample_type": {
+      "enum": [
+        "auger",
+        "bulk-disturbed",
+        "composite",
+        "intact-core",
+        "other"
+      ]
+    },
+    "sampling_method": {
+      "enum": [
+        "composite",
+        "other",
+        "paired",
+        "purposive",
+        "simple-random",
+        "stratified-random",
+        "systematic-grid",
+        "transect"
+      ]
+    },
+    "soc_value": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "top_depth": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "sample_id",
+    "bottom_depth"
+  ],
+  "title": "SOC Field Sample v0.7.0",
+  "type": "object"
+}

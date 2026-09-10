@@ -1,3 +1,7 @@
+## Current Lab release: v0.90.0
+
+**Carbon & Nature Intelligence v0.7.0:** SOC Sampling & Field Measurement Studio extends the v0.89.0 fixed-depth SOC foundation with governed sampling records, field provenance, core bulk-density calculation, and profile/project handoffs.
+
 ## Current visualization release: v0.88.0
 
 **R1 hardware-certification repair:** real Apple Metal/WebGPU validation exposed four missing WGSL return-statement semicolons in the native Advanced 3D shader modules. The repaired runtime now validates shader/pipeline creation, waits for GPU queue completion, and refuses to return `ok: true` when WebGPU validation fails. The canonical product release remains v0.88.0 / Visualization Engine 2.14.0.

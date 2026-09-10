@@ -1,3 +1,10 @@
+## 0.90.0 — 2026-09-10
+- Added Carbon & Nature Intelligence v0.7.0 SOC Sampling & Field Measurement Studio.
+- Added governed field-sample records, sampling-plan identities, core bulk-density calculation, chain-of-custody metadata, profile handoff, and Carbon Project sample/observation packets.
+- Preserves v0.89.0 fixed-depth SOC stock engine and scientific guardrails; no sample-size adequacy, spatial randomization, replicate aggregation, stock-change, sequestration, uncertainty, or credit inference.
+- Restored the certified v0.88.0 R2 118-element periodic-table static asset required by retained Graph Studio compatibility tests.
+- Narrowed distribution packaging exclusions so mutable runtime data stays out while static `assets/data/` resources remain packaged.
+
 
 ## 0.89.0 — 2026-09-10
 - Added Carbon & Nature Intelligence v0.6.0 Soil Organic Carbon Lab Foundation.

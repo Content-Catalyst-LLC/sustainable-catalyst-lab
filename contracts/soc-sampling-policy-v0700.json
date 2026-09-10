@@ -1,0 +1,38 @@
+{
+  "domainVersion": "0.7.0",
+  "guardrails": {
+    "chainOfCustodyNotDigitallySigned": true,
+    "coordinatesNotGenerated": true,
+    "creditEligibilityNotDetermined": true,
+    "fieldMeasurementsNotTreatedAsVerified": true,
+    "replicateAggregationNotInferred": true,
+    "sampleSizeAdequacyNotDetermined": true,
+    "sequestrationRateNotInferred": true,
+    "spatialRandomizationNotInferred": true,
+    "stockChangeNotInferred": true,
+    "uncertaintyNotInferred": true
+  },
+  "labReleaseVersion": "0.90.0",
+  "massBases": [
+    "fine-earth-only",
+    "whole-dry-soil"
+  ],
+  "sampleTypes": [
+    "auger",
+    "bulk-disturbed",
+    "composite",
+    "intact-core",
+    "other"
+  ],
+  "samplingMethods": [
+    "composite",
+    "other",
+    "paired",
+    "purposive",
+    "simple-random",
+    "stratified-random",
+    "systematic-grid",
+    "transect"
+  ],
+  "schema": "sc-carbon-nature-soc-sampling-policy/0.7.0"
+}

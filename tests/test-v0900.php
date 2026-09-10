@@ -1,0 +1,8 @@
+<?php
+$root=dirname(__DIR__); function must($c,$m){if(!$c){fwrite(STDERR,"FAIL: $m\n");exit(1);}}
+$main=file_get_contents($root.'/sustainable-catalyst-lab.php'); must((bool)preg_match('/^ \* Version: 0\\.90\\.0$/m',$main),'plugin header v0.90.0'); must(strpos($main,'SC_Lab_SOC_Sampling_V0900::init();')!==false,'sampling module initialized');
+$plugin=file_get_contents($root.'/includes/class-sc-lab-plugin.php'); must(strpos($plugin,"'socSampling' => array(")!==false,'browser sampling config exists'); must(strpos($plugin,'soil-carbon-sampling-v0900')!==false,'sampling browser asset enqueued');
+$rest=file_get_contents($root.'/includes/class-sc-lab-rest.php'); foreach(array('/carbon-nature/soc/v0700/sampling/health','/carbon-nature/soc/v0700/sampling/schema','/carbon-nature/soc/v0700/sampling/policies','/carbon-nature/soc/v0700/sampling/sample/normalize','/carbon-nature/soc/v0700/sampling/samples/normalize','/carbon-nature/soc/v0700/sampling/bulk-density','/carbon-nature/soc/v0700/sampling/design','/carbon-nature/soc/v0700/sampling/profile-handoff','/carbon-nature/soc/v0700/sampling/field-packet') as $route){must(strpos($rest,$route)!==false,"REST route $route exists");}
+$template=file_get_contents($root.'/templates/lab-app.php'); must(strpos($template,'data-soc-v0700-root')!==false,'sampling workspace exists'); must(strpos($template,'SOC Sampling &amp; Field Measurement Studio')!==false,'sampling title exists');
+$class=file_get_contents($root.'/includes/class-sc-lab-soc-sampling-v0900.php'); must(strpos($class,"const DOMAIN_VERSION = '0.7.0'")!==false,'domain v0.7.0'); must(strpos($class,'sampleSizeAdequacyNotDetermined')!==false,'sampling adequacy guardrail');
+echo "PASS - Lab v0.90.0 / Carbon & Nature v0.7.0 PHP contracts\n";

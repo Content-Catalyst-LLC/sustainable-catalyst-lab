@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "domain_version": {
+      "const": "0.7.0"
+    },
+    "packet": {
+      "required": [
+        "schema",
+        "objects",
+        "provenance",
+        "links"
+      ],
+      "type": "object"
+    },
+    "packet_fingerprint": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-soc-field-project-handoff/0.7.0"
+    }
+  },
+  "required": [
+    "schema",
+    "domain_version",
+    "packet",
+    "packet_fingerprint"
+  ],
+  "title": "SOC Field Project Handoff v0.7.0",
+  "type": "object"
+}
