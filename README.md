@@ -1,6 +1,6 @@
-## Current Lab release: v0.92.0
+## Current Lab release: v0.93.0
 
-**Carbon & Nature Intelligence v0.9.0:** SOC Spatial Variability & Uncertainty adds replicate stock statistics, Student-t confidence intervals, coordinate coverage diagnostics, area-weighted stratified estimates, paired/independent stock-change uncertainty, and bounded first-order input-uncertainty propagation. Statistical separation does not establish intervention attribution, verification, or credit eligibility.
+**Carbon & Nature Intelligence v0.10.0:** SOC Management Scenario Studio projects transparent SOC trajectories from explicit user-supplied assumptions, compares multiple scenarios without ranking them, runs user-supplied sensitivity sweeps, supports optional assumption envelopes, and packages scenario results as provenance-ready Carbon Project model runs. Sustainable Catalyst supplies no default SOC change rate, and a projected increase is not a forecast, verified sequestration, additionality finding, or carbon-credit claim.
 
 ## Current visualization release: v0.88.0
 

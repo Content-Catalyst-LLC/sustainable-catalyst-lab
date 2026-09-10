@@ -1,0 +1,13 @@
+const fs=require('fs'),assert=require('assert');
+const js=fs.readFileSync('assets/js/modules/soil-carbon-scenarios-v0930.js','utf8');
+const tpl=fs.readFileSync('templates/lab-app.php','utf8');
+assert(js.includes("VERSION='0.93.0',DOMAIN='0.10.0'"));
+assert(js.includes('projectUrl'));
+assert(js.includes('compareUrl'));
+assert(js.includes('sensitivityUrl'));
+assert(js.includes('projectPacketUrl'));
+assert(js.includes('scenario projection') || js.includes('assumption-driven'));
+assert(tpl.includes('SOC Management Scenario Studio'));
+assert(tpl.includes('data-soc-v1000-project'));
+assert(tpl.includes('data-soc-v1000-compare'));
+console.log('PASS - Lab v0.93.0 / Carbon & Nature v0.10.0 browser contracts');

@@ -1,3 +1,12 @@
+## 0.93.0 — 2026-09-10
+- Added Carbon & Nature Intelligence v0.10.0 SOC Management Scenario Studio.
+- Added constant annual stock-change, compound relative-change, and explicit annual schedule models driven only by user-supplied assumptions.
+- Added multi-scenario comparison, user-supplied sensitivity sweeps, optional assumption envelopes, parcel-scale projections, Graph Studio handoff, and Carbon Project model-run packets.
+- Measure references remain provenance metadata and never inject default sequestration/change rates.
+- Scenario projections are explicitly not forecasts, causal attribution, verified sequestration, additionality, permanence, verification, or credit-eligibility determinations.
+- Preserved v0.89.0 SOC stock, v0.90.0 sampling, v0.91.0 change, and v0.92.0 uncertainty capabilities.
+
+
 ## 0.92.0 — 2026-09-10
 - Added Carbon & Nature Intelligence v0.9.0 SOC Spatial Variability & Uncertainty.
 - Added replicate stock summaries, Student-t intervals, coordinate coverage diagnostics, area-weighted stratified estimates, paired/independent change uncertainty, and first-order input uncertainty propagation.

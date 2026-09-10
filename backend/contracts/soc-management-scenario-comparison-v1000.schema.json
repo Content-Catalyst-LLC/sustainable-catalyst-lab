@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-carbon-nature-soc-management-scenario-comparison/0.10.0",
+  "title": "SOC Management Scenario Comparison v0.10.0",
+  "type": "object",
+  "required": ["scenarios"],
+  "properties": {
+    "comparison_id": {"type": "string"},
+    "baseline_stock_Mg_C_ha": {"type": "number", "minimum": 0},
+    "baseline_profile": {"type": "object"},
+    "area_ha": {"type": "number", "exclusiveMinimum": 0},
+    "base_year": {"type": "integer"},
+    "scenarios": {"type": "array", "minItems": 2, "maxItems": 50, "items": {"type": "object"}}
+  },
+  "additionalProperties": true
+}

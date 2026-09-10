@@ -54,6 +54,7 @@ from .soil_organic_carbon_v0890 import SoilOrganicCarbonV0600Error, build_projec
 from .soil_carbon_sampling_v0900 import SoilCarbonSamplingV0700Error, build_field_packet as build_soc_field_packet_v0700, build_profile_handoff as build_soc_profile_handoff_v0700, build_sampling_design as build_soc_sampling_design_v0700, calculate_bulk_density as calculate_soc_bulk_density_v0700, health as soc_sampling_health_v0700, normalize_batch as normalize_soc_sample_batch_v0700, normalize_sample as normalize_soc_sample_v0700, policies as soc_sampling_policies_v0700, schema as soc_sampling_schema_v0700
 from .soil_carbon_change_v0910 import SoilCarbonChangeV0800Error, build_change_series as build_soc_change_series_v0800, build_project_packet as build_soc_change_project_packet_v0800, compare_profiles as compare_soc_profiles_v0800, health as soc_change_health_v0800, policies as soc_change_policies_v0800, schema as soc_change_schema_v0800
 from .soil_carbon_uncertainty_v0920 import SoilCarbonUncertaintyV0900Error, build_project_packet as build_soc_uncertainty_project_packet_v0900, change_uncertainty as calculate_soc_change_uncertainty_v0900, health as soc_uncertainty_health_v0900, policies as soc_uncertainty_policies_v0900, propagate_layer_uncertainty as propagate_soc_layer_uncertainty_v0900, schema as soc_uncertainty_schema_v0900, stratified_estimate as calculate_soc_stratified_estimate_v0900, summarize_replicates as summarize_soc_replicates_v0900
+from .soil_carbon_scenarios_v0930 import SoilCarbonScenarioV01000Error, build_project_packet as build_soc_scenario_project_packet_v1000, compare_scenarios as compare_soc_management_scenarios_v1000, health as soc_scenario_health_v1000, policies as soc_scenario_policies_v1000, project_scenario as project_soc_management_scenario_v1000, schema as soc_scenario_schema_v1000, sensitivity_sweep as soc_management_sensitivity_v1000
 from .webgpu_scientific_renderer_v0870 import WebGPUScientificRendererError, build_compute_plan as build_webgpu_compute_plan_v0870, build_render_plan as build_webgpu_render_plan_v0870, build_workspace as build_webgpu_workspace_v0870, health as webgpu_health_v0870, normalize_compute_dispatch as normalize_webgpu_compute_dispatch_v0870, normalize_render_pass as normalize_webgpu_render_pass_v0870, policies as webgpu_policies_v0870, renderer_descriptor as webgpu_renderer_descriptor_v0870
 from .advanced_scientific_scene_v0880 import AdvancedScientificSceneError, build_render_plan as build_advanced_scene_render_plan_v0880, build_workspace as build_advanced_scene_workspace_v0880, health as advanced_scene_health_v0880, normalize_camera as normalize_advanced_scene_camera_v0880, normalize_light as normalize_advanced_scene_light_v0880, normalize_material as normalize_advanced_scene_material_v0880, normalize_scene as normalize_advanced_scene_v0880, policies as advanced_scene_policies_v0880, scene_descriptor as advanced_scene_descriptor_v0880
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
@@ -378,7 +379,7 @@ def health():
         "accessibilityMobileOfflineInterfaceFinalization": {"version":"0.40.1","responsiveAudits":True,"accessibilityPreferences":True,"browserLocalSnapshots":True,"idempotentOfflineQueue":True,"explicitConflictReconciliation":True,"optInOfflineShell":True,"restrictedDataMayBeCached":False},
         "migrationCompatibilityPublicReleaseHardening": {"version":"0.40.2","upgradeAssessment":True,"compatibilityMatrices":True,"deprecationRegistry":True,"cleanInstallCertification":True,"rollbackEvidence":True,"releaseCandidateGate":True,"forcePushPermitted":False},
         "connectedScientificResearchComputePlatform": {"version":"1.0.0","releaseStage":"general-availability","stableContracts":True,"upgradeCertification":True,"productionAttestation":True,"incidentReadiness":True,"supportLifecycle":True},
-        "soilOrganicCarbon": {"domainVersion":"0.7.0","labReleaseVersion":"0.90.0","fixedDepthStock":True,"profileAggregation":True,"samplingFieldMeasurement":True,"samplingPlanRegistry":True,"bulkDensityCoreCalculation":True,"chainOfCustodyMetadata":True,"projectPacketHandoff":True,"equivalentSoilMass":False,"sampleSizeAdequacyInference":False,"spatialRandomization":False,"stockChangeInference":False,"sequestrationRateInference":False,"co2eInference":False},
+        "soilOrganicCarbon": {"domainVersion":"0.10.0","labReleaseVersion":"0.93.0","fixedDepthStock":True,"profileAggregation":True,"samplingFieldMeasurement":True,"samplingPlanRegistry":True,"bulkDensityCoreCalculation":True,"chainOfCustodyMetadata":True,"stockChangeModel":True,"spatialVariabilityUncertainty":True,"managementScenarioStudio":True,"multiScenarioComparison":True,"userSuppliedSensitivitySweep":True,"projectPacketHandoff":True,"equivalentSoilMass":False,"sampleSizeAdequacyInference":False,"spatialRandomization":False,"scenarioForecastInference":False,"causalAttributionInference":False,"wholeFarmGhgBalance":False,"co2eInference":False,"creditEligibilityInference":False},
         "extensionLoading": settings.extension_loading,
         "extensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
         "queue": {
@@ -6301,6 +6302,48 @@ def soc_uncertainty_v0900_layer_route(payload: dict[str, Any]):
 @app.post("/v1/carbon-nature/soc/v0900/uncertainty/project-packet", dependencies=[Depends(require_compute_auth)])
 def soc_uncertainty_v0900_project_packet_route(payload: dict[str, Any]):
     return _soc_uncertainty_call(build_soc_uncertainty_project_packet_v0900, payload)
+
+
+@app.get("/v1/carbon-nature/soc/v1000/scenarios/health")
+def soc_scenario_v1000_health_route():
+    return soc_scenario_health_v1000()
+
+
+@app.get("/v1/carbon-nature/soc/v1000/scenarios/schema")
+def soc_scenario_v1000_schema_route():
+    return soc_scenario_schema_v1000()
+
+
+@app.get("/v1/carbon-nature/soc/v1000/scenarios/policies")
+def soc_scenario_v1000_policies_route():
+    return soc_scenario_policies_v1000()
+
+
+def _soc_scenario_call(fn, payload):
+    try:
+        return fn(payload)
+    except SoilCarbonScenarioV01000Error as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+
+@app.post("/v1/carbon-nature/soc/v1000/scenarios/project", dependencies=[Depends(require_compute_auth)])
+def soc_scenario_v1000_project_route(payload: dict[str, Any]):
+    return _soc_scenario_call(project_soc_management_scenario_v1000, payload)
+
+
+@app.post("/v1/carbon-nature/soc/v1000/scenarios/compare", dependencies=[Depends(require_compute_auth)])
+def soc_scenario_v1000_compare_route(payload: dict[str, Any]):
+    return _soc_scenario_call(compare_soc_management_scenarios_v1000, payload)
+
+
+@app.post("/v1/carbon-nature/soc/v1000/scenarios/sensitivity", dependencies=[Depends(require_compute_auth)])
+def soc_scenario_v1000_sensitivity_route(payload: dict[str, Any]):
+    return _soc_scenario_call(soc_management_sensitivity_v1000, payload)
+
+
+@app.post("/v1/carbon-nature/soc/v1000/scenarios/project-packet", dependencies=[Depends(require_compute_auth)])
+def soc_scenario_v1000_project_packet_route(payload: dict[str, Any]):
+    return _soc_scenario_call(build_soc_scenario_project_packet_v1000, payload)
 
 @app.get("/v1/model-studio/dynamic-systems/v0860/health")
 def system_dynamics_v0860_health_route(): return system_dynamics_health_v0860()

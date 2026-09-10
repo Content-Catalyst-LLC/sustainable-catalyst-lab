@@ -418,3 +418,6 @@ PYTHON_BIN="$PYTHON_BIN" bash scripts/test_v0910_release.sh
 
 echo "==> v0.92.0 Carbon & Nature SOC uncertainty extension gate"
 PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0920_release.sh
+
+echo "==> v0.93.0 Carbon & Nature SOC management scenario extension gate"
+PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0930_release.sh

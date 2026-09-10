@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-carbon-nature-soc-management-scenario/0.10.0",
+  "title": "SOC Management Scenario v0.10.0",
+  "type": "object",
+  "required": ["scenario_id", "horizon_years", "model_type"],
+  "properties": {
+    "scenario_id": {"type": "string", "minLength": 1},
+    "label": {"type": "string"},
+    "baseline_stock_Mg_C_ha": {"type": "number", "minimum": 0},
+    "baseline_profile": {"type": "object"},
+    "horizon_years": {"type": "integer", "minimum": 1, "maximum": 100},
+    "base_year": {"type": "integer", "minimum": 1800, "maximum": 2500},
+    "area_ha": {"type": "number", "exclusiveMinimum": 0},
+    "model_type": {"enum": ["constant-annual-change", "compound-relative-change", "annual-change-schedule"]},
+    "annual_change_Mg_C_ha_yr": {"type": "number"},
+    "annual_relative_change_percent": {"type": "number", "exclusiveMinimum": -100},
+    "annual_changes_Mg_C_ha": {"type": "array", "items": {"type": "number"}},
+    "measure_refs": {"type": "array", "items": {"type": "string"}},
+    "assumption_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "anyOf": [
+    {"required": ["baseline_stock_Mg_C_ha"]},
+    {"required": ["baseline_profile"]}
+  ],
+  "additionalProperties": true
+}

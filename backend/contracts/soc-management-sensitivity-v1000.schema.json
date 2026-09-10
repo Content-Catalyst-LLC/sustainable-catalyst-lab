@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-carbon-nature-soc-management-sensitivity/0.10.0",
+  "title": "SOC Management Sensitivity Sweep v0.10.0",
+  "type": "object",
+  "required": ["horizon_years", "model_type", "values"],
+  "properties": {
+    "baseline_stock_Mg_C_ha": {"type": "number", "minimum": 0},
+    "baseline_profile": {"type": "object"},
+    "horizon_years": {"type": "integer", "minimum": 1, "maximum": 100},
+    "model_type": {"enum": ["constant-annual-change", "compound-relative-change"]},
+    "values": {"type": "array", "minItems": 1, "maxItems": 101, "items": {"type": "number"}}
+  },
+  "additionalProperties": true
+}

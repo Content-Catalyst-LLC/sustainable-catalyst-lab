@@ -1194,6 +1194,50 @@ pressure|continuous|1|3||bar</textarea></label><label class="is-wide">Notes<text
               <h4>Stock-change uncertainty</h4><div class="sc-soc0900__fields"><label>Design<select data-soc-v0900-mode><option value="paired">Paired</option><option value="independent">Independent</option></select></label><label>Elapsed years (optional)<input type="number" step="0.01" min="0" data-soc-v0900-years></label></div><label>Baseline stocks<textarea data-soc-v0900-baseline></textarea></label><label>Follow-up stocks<textarea data-soc-v0900-followup></textarea></label><div class="sc-soc0900__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v0900-change-btn>Calculate change uncertainty</button></div><p class="sc-soc0900__status" data-soc-v0900-status role="status" aria-live="polite">SOC uncertainty workspace ready.</p></div>
             <div class="sc-soc0900__card"><h4>Uncertainty result</h4><div class="sc-soc0900__summary"><div class="sc-soc0900__metric"><small>Mean stock</small><strong><span data-soc-v0900-mean>—</span> Mg C/ha</strong></div><div class="sc-soc0900__metric"><small>Sample SD</small><strong><span data-soc-v0900-sd>—</span></strong></div><div class="sc-soc0900__metric"><small>Standard error</small><strong><span data-soc-v0900-se>—</span></strong></div><div class="sc-soc0900__metric"><small>Stock CI</small><strong data-soc-v0900-ci>—</strong></div><div class="sc-soc0900__metric"><small>Mean change</small><strong><span data-soc-v0900-change>—</span> Mg C/ha</strong></div><div class="sc-soc0900__metric"><small>Change CI</small><strong data-soc-v0900-change-ci>—</strong></div></div><div class="sc-soc0900__actions"><button type="button" class="sc-lab-button" data-soc-v0900-save>Save to project</button><button type="button" class="sc-lab-button" data-soc-v0900-graph>Open in Graph Studio</button></div><details><summary>Full uncertainty record</summary><pre data-soc-v0900-output>No uncertainty analysis yet.</pre></details></div>
           </div>
+
+        <div class="sc-soc1000" data-soc-v1000-root>
+          <div class="sc-soc1000__hero">
+            <div><span class="sc-lab-section-code">CARBON &amp; NATURE / SOC / v0.10.0</span><h3>SOC Management Scenario Studio</h3><p>Build transparent SOC management scenarios from explicit user-supplied assumptions, compare trajectories, test sensitivity to alternative rates, and preserve model provenance without converting scenarios into forecasts or carbon-credit claims.</p></div>
+            <div class="sc-soc1000__badges"><span class="sc-soc1000__badge">Lab v0.93.0</span><span class="sc-soc1000__badge">Scenario trajectories</span><span class="sc-soc1000__badge">Sensitivity</span><span class="sc-soc1000__badge">Backend: <b data-soc-v1000-backend>checking</b></span></div>
+          </div>
+          <div class="sc-soc1000__notice"><strong>Scenario boundary:</strong> Sustainable Catalyst supplies no default SOC change rate. Measure references do not inject rates. A projected increase is not a forecast, causal attribution, verified sequestration, additionality finding, permanence finding, or carbon-credit eligibility determination.</div>
+          <div class="sc-soc1000__grid">
+            <div class="sc-soc1000__card">
+              <h4>Define a management scenario</h4>
+              <div class="sc-soc1000__fields">
+                <label>Scenario ID<input data-soc-v1000-id value="scenario:soc-management-ui"></label>
+                <label>Label<input data-soc-v1000-label value="SOC management scenario"></label>
+                <label>Baseline stock (Mg C/ha)<input type="number" step="any" min="0" data-soc-v1000-baseline></label>
+                <label>Horizon (years)<input type="number" step="1" min="1" max="100" data-soc-v1000-horizon></label>
+                <label>Base year (optional)<input type="number" step="1" data-soc-v1000-base-year></label>
+                <label>Area (ha, optional)<input type="number" step="any" min="0" data-soc-v1000-area></label>
+                <label>Model<select data-soc-v1000-model><option value="constant-annual-change">Constant annual stock change</option><option value="compound-relative-change">Compound relative change</option><option value="annual-change-schedule">Annual change schedule</option></select></label>
+                <label data-soc-v1000-rate-wrap>Rate (<span data-soc-v1000-rate-unit>Mg C/ha/yr</span>)<input type="number" step="any" data-soc-v1000-rate></label>
+              </div>
+              <div class="sc-soc1000__fields" data-soc-v1000-envelope-wrap><label>Lower assumption<input type="number" step="any" data-soc-v1000-lower></label><label>Upper assumption<input type="number" step="any" data-soc-v1000-upper></label></div>
+              <label data-soc-v1000-schedule-wrap hidden>Annual stock changes (one per year, Mg C/ha)<textarea data-soc-v1000-schedule placeholder="1.5, 1.4, 1.3, ..."></textarea></label>
+              <div class="sc-soc1000__fields"><label>Measure references<textarea data-soc-v1000-measures placeholder="cover-crop-system"></textarea></label><label>Assumption references<textarea data-soc-v1000-assumptions placeholder="assumption:rate-source"></textarea></label><label>Evidence references<textarea data-soc-v1000-evidence placeholder="evidence:... "></textarea></label><label>Project ID for packet<input data-soc-v1000-project-id placeholder="project:..."></label></div>
+              <div class="sc-soc1000__actions"><button type="button" class="sc-lab-button" data-soc-v1000-example>Load example</button><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v1000-project>Project scenario</button><button type="button" class="sc-lab-button" data-soc-v1000-packet>Build project packet</button></div>
+              <p class="sc-soc1000__status" data-soc-v1000-status role="status" aria-live="polite">SOC Management Scenario Studio ready.</p>
+            </div>
+            <div class="sc-soc1000__card">
+              <h4>Scenario result</h4>
+              <div class="sc-soc1000__summary"><div class="sc-soc1000__metric"><small>Final stock</small><strong><span data-soc-v1000-final>—</span> Mg C/ha</strong></div><div class="sc-soc1000__metric"><small>Cumulative change</small><strong><span data-soc-v1000-change>—</span> Mg C/ha</strong></div><div class="sc-soc1000__metric"><small>Mean annual change</small><strong><span data-soc-v1000-annual>—</span> Mg C/ha/yr</strong></div><div class="sc-soc1000__metric"><small>Relative change</small><strong data-soc-v1000-relative>—</strong></div></div>
+              <div class="sc-soc1000__actions"><button type="button" class="sc-lab-button" data-soc-v1000-save>Save to project</button><button type="button" class="sc-lab-button" data-soc-v1000-graph>Open in Graph Studio</button></div>
+              <details><summary>Full scenario record</summary><pre data-soc-v1000-output>No scenario analysis yet.</pre></details>
+              <details><summary>Carbon Project packet</summary><pre data-soc-v1000-packet-output>No packet yet.</pre></details>
+            </div>
+          </div>
+          <div class="sc-soc1000__card">
+            <h4>Compare assumptions</h4>
+            <p>Quick comparison uses constant annual stock-change assumptions entered as <code>Label: rate</code>. Results are shown in input order; Lab does not rank or recommend a scenario.</p>
+            <div class="sc-soc1000__fields"><label>Comparison scenarios<textarea data-soc-v1000-compare-rates placeholder="Lower assumption: 1
+Central assumption: 2
+Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-soc-v1000-sensitivity-values placeholder="0, 1, 2, 3"></textarea></label></div>
+            <div class="sc-soc1000__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-soc-v1000-compare>Compare scenarios</button><button type="button" class="sc-lab-button" data-soc-v1000-sensitivity>Run supplied-rate sensitivity</button></div>
+            <div style="overflow:auto"><table><thead><tr><th>Scenario / input</th><th>Final stock</th><th>Cumulative change</th><th>Mean annual</th></tr></thead><tbody data-soc-v1000-comparison><tr><td colspan="4">No comparison yet.</td></tr></tbody></table></div>
+          </div>
+        </div>
         </div>
         </div>
       </section>

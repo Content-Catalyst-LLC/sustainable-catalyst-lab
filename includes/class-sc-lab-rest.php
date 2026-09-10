@@ -65,6 +65,13 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0900/uncertainty/change', array('methods'=>'POST','callback'=>array($this,'soc_v0900_uncertainty_change'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0900/uncertainty/layer-propagation', array('methods'=>'POST','callback'=>array($this,'soc_v0900_uncertainty_layer'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/soc/v0900/uncertainty/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v0900_uncertainty_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/health', array('methods'=>'GET','callback'=>array($this,'soc_v1000_scenarios_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/schema', array('methods'=>'GET','callback'=>array($this,'soc_v1000_scenarios_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/policies', array('methods'=>'GET','callback'=>array($this,'soc_v1000_scenarios_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/project', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_project'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/compare', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/sensitivity', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_sensitivity'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/soc/v1000/scenarios/project-packet', array('methods'=>'POST','callback'=>array($this,'soc_v1000_scenarios_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -98,7 +105,7 @@ class SC_Lab_REST {
             'version'=>(defined('SC_LAB_RELEASE_VERSION')?SC_LAB_RELEASE_VERSION:SC_LAB_VERSION),'platformVersion'=>(defined('SC_LAB_PLATFORM_VERSION')?SC_LAB_PLATFORM_VERSION:SC_LAB_VERSION),
             'time'=>gmdate('c'),
             'compute'=>array('enabled'=>!empty($settings['enable_remote_compute']),'configured'=>!empty($settings['compute_backend_url'])),
-            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','socSamplingFieldMeasurement','socStockChangeModel','carbonNatureProjectHandoff')
+            'modules'=>array('scientificFeeds','climateMaps','spaceTelescopes','marineBiology','chemistry','spectrometry','calculators','experiments','evidence','notebook','documentation','commandSearch','interactiveTraceability','projectActivity','datasetInspector','observationBoard','sourceRegistry','mapViews','universalVisualization','dimensionalScenes','workspaceDataManagement','methodContracts','codeSwitcher','stablePluginIdentity','renderComputeDispatcher','multiLanguageWorkers','crossLanguageValidation','pdfReports','decisionStudioReportHandoff','reportPacketValidation','reportComposer','visualizationAccessibility','restoreValidation','migrationValidation','pythonComputeCore','registeredMethodRegistry','computeProvenance','hmacRequestSigning','persistentJobQueue','isolatedComputeWorkers','jobRetryPolicy','jobCancellation','workerHealthMonitoring','soilOrganicCarbonFoundation','socSamplingFieldMeasurement','socStockChangeModel','socSpatialVariabilityUncertainty','socManagementScenarioStudio','carbonNatureProjectHandoff')
         ));
     }
 
@@ -311,6 +318,15 @@ class SC_Lab_REST {
     public function soc_v0900_uncertainty_change(WP_REST_Request $request){return $this->soc_v0900_post($request,'/v1/carbon-nature/soc/v0900/uncertainty/change');}
     public function soc_v0900_uncertainty_layer(WP_REST_Request $request){return $this->soc_v0900_post($request,'/v1/carbon-nature/soc/v0900/uncertainty/layer-propagation');}
     public function soc_v0900_uncertainty_project_packet(WP_REST_Request $request){return $this->soc_v0900_post($request,'/v1/carbon-nature/soc/v0900/uncertainty/project-packet');}
+
+    public function soc_v1000_scenarios_health(){return $this->proxy('/v1/carbon-nature/soc/v1000/scenarios/health');}
+    public function soc_v1000_scenarios_schema(){return $this->proxy('/v1/carbon-nature/soc/v1000/scenarios/schema');}
+    public function soc_v1000_scenarios_policies(){return $this->proxy('/v1/carbon-nature/soc/v1000/scenarios/policies');}
+    private function soc_v1000_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function soc_v1000_scenarios_project(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/project');}
+    public function soc_v1000_scenarios_compare(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/compare');}
+    public function soc_v1000_scenarios_sensitivity(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/sensitivity');}
+    public function soc_v1000_scenarios_project_packet(WP_REST_Request $request){return $this->soc_v1000_post($request,'/v1/carbon-nature/soc/v1000/scenarios/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

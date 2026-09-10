@@ -1,0 +1,21 @@
+{
+  "schema": "sc-carbon-nature-soc-management-scenario-policy/0.10.0",
+  "domain_version": "0.10.0",
+  "lab_release_version": "0.93.0",
+  "rate_policy": "All SOC change assumptions are supplied explicitly by the user or imported with provenance. Measure references never inject a default rate.",
+  "guardrails": {
+    "no_default_soc_change_rate": true,
+    "scenario_projection_is_not_forecast": true,
+    "projected_increase_is_not_verified_sequestration": true,
+    "soil_capacity_or_saturation_not_inferred": true,
+    "uncertainty_not_inferred_from_scenario_spread": true,
+    "co2e_not_inferred": true,
+    "whole_farm_ghg_balance_not_calculated": true,
+    "causal_attribution_not_established": true,
+    "additionality_not_determined": true,
+    "leakage_not_determined": true,
+    "permanence_not_determined": true,
+    "verification_not_performed": true,
+    "credit_eligibility_not_determined": true
+  }
+}
