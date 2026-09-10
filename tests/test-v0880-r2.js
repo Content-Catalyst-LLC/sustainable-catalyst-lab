@@ -1,0 +1,21 @@
+const fs=require('fs'),assert=require('assert');
+const graph=fs.readFileSync('assets/js/modules/graph-studio-v0790.js','utf8');
+const binding=fs.readFileSync('assets/js/modules/scientific-data-binding-v0750.js','utf8');
+const webgpu=fs.readFileSync('assets/js/modules/advanced-scientific-scene-v0880.js','utf8');
+const elements=JSON.parse(fs.readFileSync('assets/data/elements.json','utf8'));
+assert(graph.includes("if(kind==='surface-4d')"),'Graph Studio must conditionally bind z/w for 4D only');
+assert(graph.includes("else if(kind==='heatmap')"),'Graph Studio must retain z for heatmap');
+assert(binding.includes('function required2dColumns(b)'),'Scientific data binding must calculate required 2D columns');
+assert(binding.includes('required.every(c=>!missing(r[c]))'),'Missingness gate must use required columns only');
+assert.strictEqual(elements.length,118,'Periodic table must contain 118 elements');
+assert.strictEqual(elements[0].symbol,'H');
+assert.strictEqual(elements[117].symbol,'Og');
+// Preserve R1 hardware-validation repair.
+assert(webgpu.includes('return o;}@fragment'));
+assert(webgpu.includes('{return i.c;}`'));
+assert(webgpu.includes('createRenderPipelineAsync'));
+assert(webgpu.includes("pushErrorScope('validation')"));
+assert(webgpu.includes('onSubmittedWorkDone'));
+assert(webgpu.includes('gpuValidationPassed:true'));
+assert(webgpu.includes('gpuQueueCompleted:true'));
+console.log('PASS - v0.88.0 R2 Graph Studio bootstrap/static asset repair with R1 WebGPU validation preserved');

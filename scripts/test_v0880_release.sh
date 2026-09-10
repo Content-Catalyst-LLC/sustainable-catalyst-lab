@@ -7,6 +7,8 @@ echo "==> v0.88.0 PHP + browser contracts"
 php tests/test-v0880.php
 node tests/test-v0880.js
 node tests/test-v0880-r1.js
+node tests/test-v0880-r2.js
+node tests/test-v0750.js
 node tests/test-v0870.js
 node tests/test-v0860.js
 node tests/test-v0850.js

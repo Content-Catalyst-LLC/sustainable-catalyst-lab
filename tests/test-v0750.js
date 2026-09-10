@@ -12,6 +12,9 @@ const transformed=E.executePipeline(dataset,{operations:[{type:'derive',name:'ra
 assert.strictEqual(transformed.rows[0].time,3);assert.strictEqual(transformed.rows[0].ratio,2);assert.strictEqual(transformed.lineage.length,2);assert(/^[a-f0-9]{64}$/.test(transformed.fingerprint));
 const bound=E.bind({dataset,pipeline:{operations:[{type:'filter',column:'time',operator:'gte',value:2}]},binding:{kind:'line',mappings:{x:'time',y:'response',group:'group'}},figure:{title:'Bound line'}});
 assert.strictEqual(bound.spec.schema,'sc-lab-scientific-visualization/0.75.0');assert.strictEqual(bound.spec.visualizationEngine,'2.2.0');assert.strictEqual(bound.spec.rendering.dataMode,'project-data-bound');assert.strictEqual(bound.spec.series.length,2);assert.strictEqual(bound.provenance.datasetId,'d1');
+const bandDataset={id:'band',rows:[{time:0,observed:10,lower:9,upper:11},{time:1,observed:8,lower:7,upper:9}]};
+const band=E.bind({dataset:bandDataset,binding:{kind:'confidence-band',mappings:{x:'time',y:'observed',z:'z',w:'w',yLow:'lower',yHigh:'upper'}},figure:{title:'Confidence band'}});
+assert.strictEqual(band.spec.series[0].points.length,2,'irrelevant z/w mappings must not eliminate valid 2D rows');
 const four=E.bind({dataset,binding:{kind:'surface-4d',mappings:{x:'time',y:'response',z:'z',w:'w',label:'group'}},figure:{title:'4D observed'}});
 assert.strictEqual(four.spec.profile,'project-data');assert.strictEqual(four.spec.dataBinding.pointCount,3);assert.strictEqual(four.spec.surface.layers.surface,false);assert(four.spec.dataBoundary.includes('does not interpolate'));
 for(const needle of ["q75('pipeline')","q75('dataset-id')","q75('surface-mode')",'scientific-figure-v0750','Engine ${ENGINE}'])assert(graphSource.includes(needle),`Graph Studio v0.75 missing ${needle}`);

@@ -17,7 +17,7 @@
     "atomicMass": 4.003,
     "group": 18,
     "period": 1,
-    "block": "p",
+    "block": "s",
     "category": "noble gas",
     "state": "gas"
   },
@@ -932,7 +932,7 @@
     "period": 6,
     "block": "p",
     "category": "halogen",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 86,
@@ -954,7 +954,7 @@
     "period": 7,
     "block": "s",
     "category": "alkali metal",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 88,
@@ -965,7 +965,7 @@
     "period": 7,
     "block": "s",
     "category": "alkaline earth metal",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 89,
@@ -976,7 +976,7 @@
     "period": 7,
     "block": "d",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 90,
@@ -987,7 +987,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 91,
@@ -998,7 +998,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 92,
@@ -1009,7 +1009,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 93,
@@ -1020,7 +1020,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 94,
@@ -1031,7 +1031,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 95,
@@ -1042,7 +1042,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 96,
@@ -1053,7 +1053,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 97,
@@ -1064,7 +1064,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 98,
@@ -1075,7 +1075,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 99,
@@ -1086,7 +1086,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 100,
@@ -1097,7 +1097,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 101,
@@ -1108,7 +1108,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 102,
@@ -1119,7 +1119,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 103,
@@ -1130,7 +1130,7 @@
     "period": 7,
     "block": "f",
     "category": "actinide",
-    "state": "solid"
+    "state": "unknown"
   },
   {
     "atomicNumber": 104,
