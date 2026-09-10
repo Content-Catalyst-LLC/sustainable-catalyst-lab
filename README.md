@@ -1,3 +1,11 @@
+## Current visualization release: v0.87.0
+
+Graph Studio now includes a governed production WebGPU renderer and browser GPU-compute path on top of the v0.85 WebGL2 fallback. v0.87 uses real `navigator.gpu` adapter/device acquisition, renderer-owned WGSL pipelines, explicit WebGL2 fallback, and approved compute kernels for filtering, histograms, reductions, and spatial binning. GPU availability never changes scientific semantics, and arbitrary WGSL remains disabled. The v0.86 System Dynamics Engine remains independently versioned at 1.0.0.
+
+## v0.87.0 — WebGPU Scientific Renderer & GPU Compute
+
+Visualization Engine 2.13.0 promotes WebGPU from capability detection to a production renderer/compute path while preserving all v0.85 WebGL2 and v0.86 systems-modeling contracts. Derived GPU compute results remain distinct from observations and fallbacks are always explicit.
+
 ## Current visualization release: v0.80.0
 
 Graph Studio now supports governed spatial, geospatial, and raster visualization through the `canvas-spatial` renderer on top of the v0.79 linked-view composition line. v0.80 accepts explicit vector geometry, explicit raster cells, declared coordinate-reference metadata, explicit viewports, and bounding-box selection. Automatic CRS inference, reprojection, geocoding, spatial joins, topology repair, raster interpolation/resampling, nodata imputation, and network basemaps remain disabled.

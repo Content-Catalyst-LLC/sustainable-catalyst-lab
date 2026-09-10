@@ -1,3 +1,12 @@
+## 0.87.0 — WebGPU Scientific Renderer & GPU Compute
+
+- Promotes WebGPU to a governed production renderer in Visualization Engine 2.13.0 while retaining WebGL2 as the explicit fallback.
+- Adds real browser WebGPU adapter/device/context acquisition, renderer-owned WGSL render pipelines, GPU command submission, and Graph Studio WebGPU diagnostics.
+- Adds approved compute kernels for threshold filtering, histograms, reductions, and spatial binning with bounded dispatch/workgroup and buffer policies.
+- Adds v0.87 FastAPI and WordPress health/schema contracts plus Release Console integration.
+- Preserves v0.86 System Dynamics Engine 1.0.0 and all v0.85/v0.84/v0.83 compatibility boundaries.
+- Arbitrary WGSL, silent renderer fallback, scientific-semantic mutation, interpolation, imputation, forecasting, and observation creation from GPU compute remain disabled.
+
 ## 0.80.0 — Spatial, Geospatial & Raster Visualization
 
 - Added the `canvas-spatial` renderer to Visualization Engine 2.7.0.

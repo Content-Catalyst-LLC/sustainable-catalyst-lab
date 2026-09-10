@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-webgpu-renderer/0.87.0",
+  "title":"Sustainable Catalyst Lab WebGPU Renderer v0.87.0",
+  "type":"object",
+  "required":["version","engineVersion","id","productionRendererReady","fallbackRenderer"],
+  "properties":{
+    "version":{"const":"0.87.0"},
+    "engineVersion":{"const":"2.13.0"},
+    "id":{"const":"webgpu"},
+    "productionRendererReady":{"const":true},
+    "fallbackRenderer":{"const":"webgl2"},
+    "features":{"type":"array","items":{"type":"string"}},
+    "renderPipelines":{"type":"array"},
+    "computeKernels":{"type":"array"},
+    "limits":{"type":"object"},
+    "boundaries":{"type":"object"}
+  },
+  "additionalProperties":true
+}

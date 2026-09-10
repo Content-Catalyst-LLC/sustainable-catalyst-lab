@@ -267,7 +267,7 @@ final class SC_Lab_Integrity_V02632 {
         $candidates = self::plugin_candidates();
         $release_version = defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : (defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null));
         $platform_version = defined('SC_LAB_PLATFORM_VERSION') ? SC_LAB_PLATFORM_VERSION : (defined('SC_LAB_VERSION') ? SC_LAB_VERSION : null);
-        $visualization_engine = class_exists('SC_Lab_WebGL2_Scientific_Renderer_V0850') ? SC_Lab_WebGL2_Scientific_Renderer_V0850::ENGINE_VERSION : (class_exists('SC_Lab_GPU_Renderer_Architecture_V0840') ? SC_Lab_GPU_Renderer_Architecture_V0840::ENGINE_VERSION : (class_exists('SC_Lab_Provenance_Aware_Figures_V0830') ? SC_Lab_Provenance_Aware_Figures_V0830::ENGINE_VERSION : (class_exists('SC_Lab_Uncertainty_Ensemble_Distribution_V0820') ? SC_Lab_Uncertainty_Ensemble_Distribution_V0820::ENGINE_VERSION : null)));
+        $visualization_engine = class_exists('SC_Lab_WebGPU_Scientific_Renderer_V0870') ? SC_Lab_WebGPU_Scientific_Renderer_V0870::ENGINE_VERSION : (class_exists('SC_Lab_WebGL2_Scientific_Renderer_V0850') ? SC_Lab_WebGL2_Scientific_Renderer_V0850::ENGINE_VERSION : (class_exists('SC_Lab_GPU_Renderer_Architecture_V0840') ? SC_Lab_GPU_Renderer_Architecture_V0840::ENGINE_VERSION : (class_exists('SC_Lab_Provenance_Aware_Figures_V0830') ? SC_Lab_Provenance_Aware_Figures_V0830::ENGINE_VERSION : (class_exists('SC_Lab_Uncertainty_Ensemble_Distribution_V0820') ? SC_Lab_Uncertainty_Ensemble_Distribution_V0820::ENGINE_VERSION : null))));
         $versions = array(
             'release' => $release_version,
             'featureRelease' => defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : $release_version,
@@ -286,6 +286,7 @@ final class SC_Lab_Integrity_V02632 {
             'wordpressIntegration' => $versions['pluginHeader'],
             'releaseManifest' => $versions['manifestRelease'],
             'visualizationEngine' => $visualization_engine,
+            'systemDynamicsEngine' => class_exists('SC_Lab_System_Dynamics_Feedback_V0860') ? SC_Lab_System_Dynamics_Feedback_V0860::ENGINE_VERSION : null,
             'computeGateway' => class_exists('SC_Lab_Python_Compute_Core_V0260') ? SC_Lab_Python_Compute_Core_V0260::VERSION : null,
             'queueGateway' => class_exists('SC_Lab_Python_Compute_Core_V0261') ? SC_Lab_Python_Compute_Core_V0261::VERSION : null,
             'platformCompatibility' => $platform_version,

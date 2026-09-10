@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-webgpu-compute-plan/0.87.0",
+  "title":"WebGPU Scientific Compute Plan v0.87.0",
+  "type":"object",
+  "required":["schema","version","engineVersion","dispatches","execution","fallback","boundaries"],
+  "properties":{
+    "schema":{"const":"sc-lab-webgpu-compute-plan/0.87.0"},
+    "version":{"const":"0.87.0"},
+    "engineVersion":{"const":"2.13.0"},
+    "dispatches":{"type":"array","maxItems":4096,"items":{"type":"object"}},
+    "execution":{"const":"browser-webgpu"},
+    "fallback":{"type":"object"},
+    "boundaries":{"type":"object"}
+  },
+  "additionalProperties":true
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "sc-lab-webgpu-renderer-policy/0.87.0",
+  "version": "0.87.0",
+  "engineVersion": "2.13.0",
+  "renderer": "webgpu",
+  "productionRendererReady": true,
+  "fallbackRenderer": "webgl2",
+  "approvedRenderPipelines": ["scientific-points-v0870","scientific-lines-v0870","scientific-mesh-v0870","scientific-raster-v0870","scientific-picking-v0870"],
+  "approvedComputeKernels": ["filter-threshold-v0870","histogram-v0870","minmax-v0870","sum-v0870","spatial-bin-v0870"],
+  "boundaries": {
+    "gpuRequiredForScientificCorrectness": false,
+    "silentRendererFallback": false,
+    "arbitraryWGSLSource": false,
+    "automaticScientificSemanticsChange": false,
+    "automaticInterpolation": false,
+    "automaticImputation": false,
+    "automaticForecasting": false,
+    "computeResultCreatesObservation": false,
+    "webgl2FallbackPreservesScientificContract": true
+  }
+}

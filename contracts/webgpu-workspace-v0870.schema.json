@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-webgpu-workspace/0.87.0",
+  "title":"WebGPU Scientific Workspace v0.87.0",
+  "type":"object",
+  "required":["schema","version","engineVersion","renderPlan","computePlan","compatibility","boundaries"],
+  "properties":{
+    "schema":{"const":"sc-lab-webgpu-workspace/0.87.0"},
+    "version":{"const":"0.87.0"},
+    "engineVersion":{"const":"2.13.0"},
+    "renderPlan":{"type":"object"},
+    "computePlan":{"type":"object"},
+    "compatibility":{"type":"object"},
+    "boundaries":{"type":"object"}
+  },
+  "additionalProperties":true
+}

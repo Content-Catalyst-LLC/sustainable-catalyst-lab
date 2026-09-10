@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-webgpu-render-plan/0.87.0",
+  "title":"WebGPU Scientific Render Plan v0.87.0",
+  "type":"object",
+  "required":["schema","version","engineVersion","renderer","renderPasses","buffers","fallback"],
+  "properties":{
+    "schema":{"const":"sc-lab-webgpu-render-plan/0.87.0"},
+    "version":{"const":"0.87.0"},
+    "engineVersion":{"const":"2.13.0"},
+    "renderer":{"const":"webgpu"},
+    "renderPasses":{"type":"array","maxItems":8192,"items":{"type":"object"}},
+    "buffers":{"type":"array","items":{"type":"object"}},
+    "fallback":{"type":"object","required":["renderer","mustBeRecorded","scientificContractPreserved"]}
+  },
+  "additionalProperties":true
+}
