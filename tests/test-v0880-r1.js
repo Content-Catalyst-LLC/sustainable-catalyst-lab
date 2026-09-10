@@ -1,0 +1,13 @@
+const fs=require('fs'),assert=require('assert');
+const s=fs.readFileSync('assets/js/modules/advanced-scientific-scene-v0880.js','utf8');
+assert(s.includes('return o;}@fragment'));
+assert(s.includes('{return i.c;}`'));
+assert(!s.includes('return o}@fragment'));
+assert(!s.includes('{return i.c}`'));
+assert(s.includes("createRenderPipelineAsync"));
+assert(s.includes("getCompilationInfo"));
+assert(s.includes("pushErrorScope('validation')"));
+assert(s.includes('onSubmittedWorkDone'));
+assert(s.includes('gpuValidationPassed:true'));
+assert(s.includes('gpuQueueCompleted:true'));
+console.log('PASS - v0.88.0 R1 static WGSL semicolon and hardware-validation guard');

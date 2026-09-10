@@ -1,5 +1,7 @@
 ## Current visualization release: v0.88.0
 
+**R1 hardware-certification repair:** real Apple Metal/WebGPU validation exposed four missing WGSL return-statement semicolons in the native Advanced 3D shader modules. The repaired runtime now validates shader/pipeline creation, waits for GPU queue completion, and refuses to return `ok: true` when WebGPU validation fails. The canonical product release remains v0.88.0 / Visualization Engine 2.14.0.
+
 Graph Studio now includes **Advanced 3D Scientific Scene Engine II** on top of the production-certified v0.87 WebGPU renderer. Visualization Engine 2.14.0 adds governed scene graphs, cameras, scientific lighting, explicit materials, GPU instancing, native WebGPU mesh/line/point rendering, orbit/pan/zoom interaction state, and a Three.js compatibility adapter when a local Three.js runtime is present. Lab never loads Three.js from a CDN automatically, and Three.js/WebGPU availability never changes scientific correctness.
 
 ## v0.88.0 — Advanced 3D Scientific Scene Engine II

@@ -11,3 +11,7 @@ must0880(strpos($integrity,'SC_Lab_Advanced_Scientific_Scene_V0880::ENGINE_VERSI
 must0880(strpos($browser,"createRenderPipeline")!==false && strpos($browser,"triangle-list")!==false && strpos($browser,"line-list")!==false && strpos($browser,"point-list")!==false,'browser runtime contains Advanced 3D GPU pipelines');
 must0880(strpos($browser,'createThreeJSAdapter')!==false && strpos($browser,'Three.js runtime is not present')!==false,'Three.js adapter is explicit and local-runtime gated');
 must0880(strpos($browser,'interactionCreatesObservation:false')!==false && strpos($browser,'arbitraryShaderSource:false')!==false,'scientific interaction and shader boundaries preserved');
+
+must0880(strpos($browser,'return o;}@fragment')!==false && strpos($browser,'{return i.c;}`')!==false,'WGSL return statements terminate with semicolons');
+must0880(strpos($browser,'createRenderPipelineAsync')!==false && strpos($browser,"pushErrorScope('validation')")!==false,'render pipelines require explicit WebGPU validation');
+must0880(strpos($browser,'onSubmittedWorkDone')!==false && strpos($browser,'gpuValidationPassed:true')!==false,'renderer waits for GPU queue and reports validated success only');

@@ -1,3 +1,10 @@
+## 0.88.0 R1 — WebGPU Pipeline Validation & Hardware Certification Repair
+
+- Repairs four missing WGSL return-statement semicolons found by real Apple Metal/WebGPU validation.
+- Rejects shader/pipeline validation failures before rendering and waits for submitted GPU work to complete before returning success.
+- Adds explicit `gpuValidationPassed` and `gpuQueueCompleted` success evidence and strengthens the v0.88 browser release gate.
+- Backend/API contracts are unchanged; this is a WordPress/browser-only corrective release on canonical Lab v0.88.0 / Visualization Engine 2.14.0.
+
 ## 0.88.0 — Advanced 3D Scientific Scene Engine II
 
 - Advances Visualization Engine 2 to 2.14.0 on the production-certified v0.87 WebGPU line.
