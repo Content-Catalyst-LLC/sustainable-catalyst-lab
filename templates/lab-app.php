@@ -1294,6 +1294,65 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
               <div class="sc-mrv1200__card"><h4>Descriptive comparison</h4><p>Enter 2–20 method keys. Lab preserves input order and exposes differences without ranking or recommendation.</p><textarea data-mrv-v1200-compare-keys placeholder="soc-direct-measurement&#10;hybrid-measurement-modeling"></textarea><div class="sc-mrv1200__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1200-compare>Compare methods</button></div><details open><summary>Comparison record</summary><pre data-mrv-v1200-compare-output>No comparison yet.</pre></details></div>
             </div>
           </div>
+
+          <div class="sc-mrv1300" data-mrv-v1300-root>
+            <div class="sc-mrv1300__hero">
+              <div><span class="sc-mrv1300__eyebrow">CARBON &amp; NATURE / MRV / v0.13.0</span><h3>MRV Protocol Builder</h3><p>Turn an explicitly selected MRV foundation method into a versioned monitoring protocol scaffold with scope, responsibilities, measurement steps, QA/QC, uncertainty, data provenance, schedule, reporting, and change control.</p></div>
+              <div class="sc-mrv1300__badges"><span class="sc-mrv1300__badge">Lab v0.96.0</span><span class="sc-mrv1300__badge">9 governed sections</span><span class="sc-mrv1300__badge">Internal review readiness</span><span class="sc-mrv1300__badge">Backend: <b data-mrv-v1300-backend>checking</b></span></div>
+            </div>
+            <div class="sc-mrv1300__notice"><strong>Protocol boundary:</strong> this builder creates a Sustainable Catalyst research/MRV scaffold. It does not select a method automatically, reproduce an external methodology, establish current-program compliance, approve verification, or determine carbon-credit eligibility.</div>
+            <div class="sc-mrv1300__grid">
+              <div class="sc-mrv1300__card">
+                <h4>Protocol identity &amp; monitoring frame</h4>
+                <div class="sc-mrv1300__fields">
+                  <label>Method key<input data-mrv-v1300-method placeholder="soc-direct-measurement"></label>
+                  <label>Project ID<input data-mrv-v1300-project-id placeholder="project:..."></label>
+                  <label>Protocol ID<input data-mrv-v1300-protocol-id placeholder="generated when blank"></label>
+                  <label>Title<input data-mrv-v1300-title placeholder="SOC monitoring protocol"></label>
+                  <label>Spatial boundary reference<input data-mrv-v1300-boundary placeholder="parcel:..."></label>
+                  <label>Monitoring frequency<input data-mrv-v1300-frequency placeholder="Baseline + repeat campaign; record deviations"></label>
+                  <label>Start date<input type="date" data-mrv-v1300-start></label>
+                  <label>End date<input type="date" data-mrv-v1300-end></label>
+                </div>
+                <label>Objective<textarea data-mrv-v1300-objective placeholder="State what will be measured or estimated, for which boundary and purpose."></textarea></label>
+                <label>Responsible roles <small>one per line: role | actor_ref | responsibility</small><textarea data-mrv-v1300-roles placeholder="field lead | actor:field-team | Field sampling and custody"></textarea></label>
+                <div class="sc-mrv1300__actions"><button type="button" class="sc-lab-button" data-mrv-v1300-template>Load method requirements</button><button type="button" class="sc-lab-button" data-mrv-v1300-example>Load SOC example</button></div>
+              </div>
+              <div class="sc-mrv1300__card">
+                <h4>Method documentation</h4>
+                <label>Available inputs<textarea data-mrv-v1300-inputs placeholder="sampling-design&#10;soc-concentration&#10;bulk-density"></textarea></label>
+                <label>Available evidence<textarea data-mrv-v1300-evidence placeholder="field-records&#10;laboratory-results"></textarea></label>
+                <label>Methodology references<textarea data-mrv-v1300-methodology-refs placeholder="library-methodology:soc-direct-measurement"></textarea></label>
+                <label>Source references<textarea data-mrv-v1300-source-refs placeholder="evidence:field-plan"></textarea></label>
+                <details><summary>Method-derived template</summary><pre data-mrv-v1300-template-output>No method template loaded.</pre></details>
+              </div>
+              <div class="sc-mrv1300__card sc-mrv1300__card--wide">
+                <h4>Governed protocol sections</h4>
+                <div class="sc-mrv1300__sections">
+                  <label>Objective &amp; scope<textarea data-mrv-v1300-section-objective_and_scope></textarea></label>
+                  <label>Measurement &amp; sampling plan<textarea data-mrv-v1300-section-measurement_and_sampling_plan></textarea></label>
+                  <label>Calculation plan<textarea data-mrv-v1300-section-calculation_plan></textarea></label>
+                  <label>Uncertainty plan<textarea data-mrv-v1300-section-uncertainty_plan></textarea></label>
+                  <label>QA/QC plan<textarea data-mrv-v1300-section-quality_control_plan></textarea></label>
+                  <label>Data &amp; provenance plan<textarea data-mrv-v1300-section-data_management_plan></textarea></label>
+                  <label>Monitoring schedule<textarea data-mrv-v1300-section-monitoring_schedule></textarea></label>
+                  <label>Reporting plan<textarea data-mrv-v1300-section-reporting_plan></textarea></label>
+                  <label>Change-control plan<textarea data-mrv-v1300-section-change_control_plan></textarea></label>
+                </div>
+                <div class="sc-mrv1300__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1300-build>Build protocol</button><button type="button" class="sc-lab-button" data-mrv-v1300-validate>Validate</button><button type="button" class="sc-lab-button" data-mrv-v1300-save>Save to project</button><button type="button" class="sc-lab-button" data-mrv-v1300-packet>Build project packet</button></div>
+                <p class="sc-mrv1300__status" data-mrv-v1300-status role="status" aria-live="polite">MRV Protocol Builder ready.</p>
+              </div>
+              <div class="sc-mrv1300__card">
+                <h4>Protocol readiness</h4>
+                <div class="sc-mrv1300__summary"><div class="sc-mrv1300__metric"><small>Protocol</small><strong data-mrv-v1300-state>not built</strong></div><div class="sc-mrv1300__metric"><small>Structure</small><strong data-mrv-v1300-structural-state>not checked</strong></div><div class="sc-mrv1300__metric"><small>Method documentation</small><strong data-mrv-v1300-method-state>not checked</strong></div></div>
+                <h5>Unresolved items</h5><pre data-mrv-v1300-missing>No validation yet.</pre>
+                <details><summary>Validation record</summary><pre data-mrv-v1300-validation-output>No validation yet.</pre></details>
+              </div>
+              <div class="sc-mrv1300__card">
+                <h4>Protocol record</h4><details open><summary>Built protocol</summary><pre data-mrv-v1300-output>No protocol built yet.</pre></details><details><summary>Carbon Project monitoring-record packet</summary><pre data-mrv-v1300-packet-output>No packet yet.</pre></details>
+              </div>
+            </div>
+          </div>
         </div>
         </div>
         </div>

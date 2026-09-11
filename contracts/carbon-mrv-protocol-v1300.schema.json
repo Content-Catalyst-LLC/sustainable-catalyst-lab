@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-protocol-v1300.schema.json",
+  "title": "Sustainable Catalyst Carbon & Nature MRV Protocol v0.13.0",
+  "type": "object",
+  "required": ["schema", "protocol_id", "protocol_version", "status", "method_key", "sections", "method_documentation_readiness", "guardrails", "protocol_fingerprint"],
+  "properties": {
+    "schema": {"const": "sc-carbon-nature-mrv-protocol/0.13.0"},
+    "protocol_id": {"type": "string", "minLength": 1, "maxLength": 240},
+    "protocol_version": {"const": "1.0.0"},
+    "status": {"enum": ["draft", "ready-for-internal-review"]},
+    "project_id": {"type": ["string", "null"]},
+    "title": {"type": ["string", "null"]},
+    "objective": {"type": ["string", "null"]},
+    "method_key": {"type": "string", "minLength": 1},
+    "method_title": {"type": "string"},
+    "library_methodology_key": {"type": "string"},
+    "spatial_boundary_ref": {"type": ["string", "null"]},
+    "monitoring_period": {
+      "type": "object",
+      "required": ["start_date", "end_date"],
+      "properties": {
+        "start_date": {"type": ["string", "null"], "format": "date"},
+        "end_date": {"type": ["string", "null"], "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "monitoring_frequency": {"type": ["string", "null"]},
+    "responsible_roles": {"type": "array", "items": {"type": "object"}},
+    "available_inputs": {"type": "array", "items": {"type": "string"}},
+    "available_evidence": {"type": "array", "items": {"type": "string"}},
+    "methodology_refs": {"type": "array", "items": {"type": "string"}},
+    "source_refs": {"type": "array", "items": {"type": "string"}},
+    "sections": {"type": "object"},
+    "method_documentation_readiness": {"type": "object"},
+    "method_requirements": {"type": "object"},
+    "interpretation": {"type": "string"},
+    "guardrails": {"type": "object"},
+    "protocol_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

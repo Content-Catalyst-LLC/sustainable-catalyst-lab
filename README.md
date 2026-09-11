@@ -1,6 +1,11 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.95.0 — Carbon & Nature Intelligence v0.12.0, Carbon MRV Method Registry.**
+**Current release: v0.96.0 — Carbon & Nature Intelligence v0.13.0, MRV Protocol Builder.**
+
+
+## v0.96.0 — MRV Protocol Builder
+
+Carbon & Nature Intelligence v0.13.0 turns the governed MRV Method Registry into a protocol-construction workflow. Users explicitly select a foundation method, then document monitoring scope, boundary, period/frequency, responsibilities, method inputs/evidence, nine protocol sections, provenance, and change control. Lab reports structural and documentation gaps and can mark a protocol `ready-for-internal-review`, but does not infer external methodology compliance, verification, certification, or carbon-credit eligibility.
 
 ## Current Lab release: v0.93.0
 

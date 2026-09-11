@@ -1,0 +1,53 @@
+SUSTAINABLE CATALYST LAB v0.96.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.13.0 — MRV Protocol Builder
+
+Baseline
+- Lab v0.95.0 / Carbon & Nature v0.12.0 retained.
+- Compute Core compatibility remains 1.0.0.
+
+Release-specific validation
+- PASS: PHP contract tests for v0.96.0.
+- PASS: browser contract tests for v0.96.0 plus retained v0.89.0–v0.95.0 Carbon & Nature interfaces.
+- PASS: 172 selected Python backend/scientific tests.
+- PASS: 7 v0.12 MRV method profiles remain available as protocol-template sources.
+- PASS: 9 governed protocol sections: objective/scope, measurement/sampling, calculation, uncertainty, quality control, data management, monitoring schedule, reporting, and change control.
+- PASS: protocol builder derives scaffolds from an explicitly selected method; it does not select a method automatically.
+- PASS: structural validation recomputes completeness and surfaces core-field, section, methodology/source-reference, required-input, and required-evidence gaps.
+- PASS: complete governed fixture reaches ready-for-internal-review only when all required structural documentation is present.
+- PASS: ready-for-internal-review remains explicitly distinct from external methodology compliance, verification/certification, and carbon-credit eligibility.
+- PASS: deterministic protocol fingerprinting and Carbon Project monitoring-record handoff.
+- PASS: Carbon MRV Protocol contracts parse and mirror byte-for-byte between repository and backend copies.
+- PASS: retained periodic-table static asset contains 118 elements.
+- PASS: canonical release identity = Lab 0.96.0 / Carbon & Nature 0.13.0.
+- PASS: 1,129 WordPress runtime critical-file hashes and 621 backend static-file hashes verified by the release manifest.
+- PASS: FastAPI application exposes 957 routes at build validation time.
+
+WordPress package hardening
+- Slim runtime-only packaging continues from v0.95.0.
+- Final v0.96.0 WordPress package contains 1,131 files and approximately 2.2 MB compressed.
+- Repository tests, Python backend source, scripts, SDKs, examples, and release-history documentation are excluded from the WordPress ZIP.
+- Static application data including assets/data/elements.json is retained.
+- PASS: package contains no .venv directories, Python bytecode, __pycache__, or pytest-cache files.
+- This avoids reintroducing the stale Python virtual-environment files that previously interfered with WordPress plugin replacement on Bluehost.
+- PASS: tiny-patch installer rehearsal applied to an isolated clean v0.95.0 Git baseline, reran the full v0.96.0 release gate, generated the certified 1,131-file WordPress package, committed the 29-file patch, pushed simulated main, and created/pushed simulated lab-v0.96.0.
+- The rehearsal used a local bare Git remote only; no user GitHub repository or production service was modified.
+
+Backend package
+- Final backend ZIP contains 621 files and approximately 1.3 MB compressed.
+- Mutable backend/data runtime state, virtual environments, Python bytecode, and test caches are excluded.
+- Contabo upgrader preserves the existing compose configuration and .env.production, backs up the current backend, replaces backend code only, rebuilds the lab service, and verifies Carbon & Nature v0.6.0 through v0.13.0 endpoints.
+- The upgrader does not assume or rename a Docker volume; existing compose volume declarations are left unchanged.
+
+Scientific and governance boundaries
+- A generated protocol is a Sustainable Catalyst planning/research artifact, not an external methodology or approved protocol.
+- No automatic MRV method selection.
+- No external methodology-eligibility or compliance determination.
+- No verification or certification determination.
+- No carbon-credit eligibility determination.
+- No assertion that current program rules have been satisfied.
+- No hidden measurement, sampling, emission-factor, or GWP defaults.
+- No causal-attribution inference.
+- No uncertainty inference without supplied inputs/evidence.
+
+Result
+PASS — Sustainable Catalyst Lab v0.96.0 / Carbon & Nature Intelligence v0.13.0 MRV Protocol Builder release gate.

@@ -1,0 +1,29 @@
+{
+  "schema": "sc-carbon-nature-mrv-protocol-policy/0.13.0",
+  "domain_version": "0.13.0",
+  "lab_release_version": "0.96.0",
+  "protocol_version": "1.0.0",
+  "required_internal_review_sections": [
+    "objective_and_scope",
+    "measurement_and_sampling_plan",
+    "calculation_plan",
+    "uncertainty_plan",
+    "quality_control_plan",
+    "data_management_plan",
+    "monitoring_schedule",
+    "reporting_plan",
+    "change_control_plan"
+  ],
+  "guardrails": {
+    "protocol_is_not_external_methodology": true,
+    "no_automatic_method_selection": true,
+    "no_methodology_eligibility_determination": true,
+    "no_verification_determination": true,
+    "no_credit_eligibility_determination": true,
+    "no_current_program_rule_assertion": true,
+    "no_hidden_measurement_or_sampling_defaults": true,
+    "no_hidden_emission_or_gwp_factors": true,
+    "no_causal_attribution_inference": true,
+    "no_uncertainty_inference_without_inputs": true
+  }
+}

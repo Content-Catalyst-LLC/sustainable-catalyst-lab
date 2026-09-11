@@ -86,6 +86,13 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/compare', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_compare'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/readiness', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_readiness'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/health', array('methods'=>'GET','callback'=>array($this,'mrv_v1300_protocol_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/schema', array('methods'=>'GET','callback'=>array($this,'mrv_v1300_protocol_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/policies', array('methods'=>'GET','callback'=>array($this,'mrv_v1300_protocol_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/template/(?P<method_key>[a-z0-9-]+)', array('methods'=>'GET','callback'=>array($this,'mrv_v1300_protocol_template'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_build'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -359,6 +366,15 @@ class SC_Lab_REST {
     public function mrv_v1200_registry_compare(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/compare');}
     public function mrv_v1200_registry_readiness(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/readiness');}
     public function mrv_v1200_registry_project_packet(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/project-packet');}
+
+    public function mrv_v1300_protocol_health(){return $this->proxy('/v1/carbon-nature/mrv/v1300/protocol/health');}
+    public function mrv_v1300_protocol_schema(){return $this->proxy('/v1/carbon-nature/mrv/v1300/protocol/schema');}
+    public function mrv_v1300_protocol_policies(){return $this->proxy('/v1/carbon-nature/mrv/v1300/protocol/policies');}
+    public function mrv_v1300_protocol_template(WP_REST_Request $request){$key=sanitize_key((string)$request->get_param('method_key'));return $this->proxy('/v1/carbon-nature/mrv/v1300/protocol/template/'.rawurlencode($key));}
+    private function mrv_v1300_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function mrv_v1300_protocol_build(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/build');}
+    public function mrv_v1300_protocol_validate(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/validate');}
+    public function mrv_v1300_protocol_project_packet(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

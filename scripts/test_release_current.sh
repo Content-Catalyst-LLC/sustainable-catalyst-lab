@@ -426,3 +426,6 @@ bash scripts/test_v0940_release.sh
 
 echo "==> v0.95.0 Carbon & Nature MRV Method Registry extension gate"
 PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0950_release.sh
+
+echo "==> v0.96.0 Carbon & Nature MRV Protocol Builder extension gate"
+PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0960_release.sh

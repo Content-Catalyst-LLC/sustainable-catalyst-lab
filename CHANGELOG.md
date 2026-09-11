@@ -1,3 +1,7 @@
+# v0.96.0 — Carbon & Nature v0.13.0 MRV Protocol Builder
+
+Adds method-derived MRV protocol templates, nine governed monitoring-plan sections, structural and method-documentation gap analysis, deterministic protocol fingerprints, internal-review readiness, and Carbon Project monitoring-record handoff while preserving the boundary between Sustainable Catalyst scaffolds and external methodology compliance.
+
 # v0.95.0 — Carbon & Nature v0.12.0 Carbon MRV Method Registry
 
 Adds a governed MRV method registry, method comparison, documentation-readiness contracts, Library methodology crosswalks, Carbon Project monitoring-record handoff, and a slimmer WordPress deployment package.
