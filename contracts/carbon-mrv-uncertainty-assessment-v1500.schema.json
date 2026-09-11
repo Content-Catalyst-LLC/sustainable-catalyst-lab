@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assessment_id": {
+      "type": "string"
+    },
+    "assessment_version": {
+      "const": "1.0.0"
+    },
+    "change_detection": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "detection_sample_size": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "methodology_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "metric": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "monitoring_plan_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "protocol_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready-for-internal-review"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "uncertainty_budget": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "assessment_id",
+    "assessment_version",
+    "status",
+    "metric",
+    "unit"
+  ],
+  "title": "Carbon MRV uncertainty and detection assessment v0.15.0",
+  "type": "object"
+}

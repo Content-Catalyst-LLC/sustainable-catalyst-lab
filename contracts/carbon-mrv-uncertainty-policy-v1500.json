@@ -1,0 +1,18 @@
+{
+  "domain": "Carbon & Nature Intelligence",
+  "domain_version": "0.15.0",
+  "guardrails": {
+    "correlation_requires_explicit_covariance": true,
+    "detection_threshold_is_not_verification": true,
+    "no_causal_attribution_inference": true,
+    "no_credit_eligibility_determination": true,
+    "no_hidden_confidence_or_coverage_defaults": true,
+    "no_methodology_eligibility_determination": true,
+    "no_verification_determination": true,
+    "sample_size_is_planning_estimate_not_power_guarantee": true,
+    "uncertainty_budget_requires_explicit_components": true,
+    "uncertainty_is_not_automatically_a_deduction_factor": true
+  },
+  "lab_release_version": "0.98.0",
+  "release": "MRV Uncertainty & Detection Engine"
+}

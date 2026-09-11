@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseline_sd": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "design": {
+      "enum": [
+        "paired",
+        "independent-equal"
+      ]
+    },
+    "expected_sd_change": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "followup_sd": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "minimum_detectable_change": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "z_alpha": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "z_power": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "design",
+    "minimum_detectable_change",
+    "z_alpha",
+    "z_power"
+  ],
+  "title": "Carbon MRV detection sample-size plan v0.15.0",
+  "type": "object"
+}

@@ -432,3 +432,6 @@ PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0960_release.sh
 
 echo "==> v0.97.0 Carbon & Nature Monitoring Plan & Sampling Designer extension gate"
 PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0970_release.sh
+
+echo "==> v0.98.0 Carbon & Nature MRV Uncertainty & Detection Engine extension gate"
+PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0980_release.sh

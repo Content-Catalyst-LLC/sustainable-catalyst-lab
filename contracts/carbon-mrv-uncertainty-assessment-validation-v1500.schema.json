@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assessment_id": {
+      "type": "string"
+    },
+    "assessment_readiness": {
+      "enum": [
+        "draft-incomplete",
+        "ready-for-internal-review"
+      ]
+    },
+    "credit_eligibility": {
+      "type": "null"
+    },
+    "deduction_factor": {
+      "type": "null"
+    },
+    "external_methodology_compliance": {
+      "type": "null"
+    },
+    "missing_core_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ready_for_internal_review": {
+      "type": "boolean"
+    },
+    "verification_status": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "assessment_readiness",
+    "ready_for_internal_review",
+    "missing_core_fields"
+  ],
+  "title": "Carbon MRV uncertainty assessment validation v0.15.0",
+  "type": "object"
+}

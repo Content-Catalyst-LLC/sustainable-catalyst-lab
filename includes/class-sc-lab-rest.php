@@ -102,6 +102,15 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_build'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_validate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/health', array('methods'=>'GET','callback'=>array($this,'mrv_v1500_uncertainty_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/schema', array('methods'=>'GET','callback'=>array($this,'mrv_v1500_uncertainty_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/policies', array('methods'=>'GET','callback'=>array($this,'mrv_v1500_uncertainty_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/budget', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_budget'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/change-detection', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_change_detection'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/detection-sample-size', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_sample_size'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_build'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -394,6 +403,17 @@ class SC_Lab_REST {
     public function mrv_v1400_monitoring_build(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/build');}
     public function mrv_v1400_monitoring_validate(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/validate');}
     public function mrv_v1400_monitoring_project_packet(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/project-packet');}
+
+    public function mrv_v1500_uncertainty_health(){return $this->proxy('/v1/carbon-nature/mrv/v1500/uncertainty/health');}
+    public function mrv_v1500_uncertainty_schema(){return $this->proxy('/v1/carbon-nature/mrv/v1500/uncertainty/schema');}
+    public function mrv_v1500_uncertainty_policies(){return $this->proxy('/v1/carbon-nature/mrv/v1500/uncertainty/policies');}
+    private function mrv_v1500_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function mrv_v1500_uncertainty_budget(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/budget');}
+    public function mrv_v1500_uncertainty_change_detection(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/change-detection');}
+    public function mrv_v1500_uncertainty_sample_size(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/detection-sample-size');}
+    public function mrv_v1500_uncertainty_build(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/build');}
+    public function mrv_v1500_uncertainty_validate(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/validate');}
+    public function mrv_v1500_uncertainty_project_packet(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

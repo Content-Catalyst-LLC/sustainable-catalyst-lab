@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseline_sd": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "critical_value": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "design": {
+      "enum": [
+        "paired",
+        "independent"
+      ]
+    },
+    "followup_sd": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "n_baseline": {
+      "minimum": 2,
+      "type": "integer"
+    },
+    "n_followup": {
+      "minimum": 2,
+      "type": "integer"
+    },
+    "n_pairs": {
+      "minimum": 2,
+      "type": "integer"
+    },
+    "observed_change": {
+      "type": "number"
+    },
+    "sd_change": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "design",
+    "observed_change",
+    "critical_value"
+  ],
+  "title": "Carbon MRV change detection v0.15.0",
+  "type": "object"
+}

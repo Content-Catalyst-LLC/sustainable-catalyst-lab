@@ -962,3 +962,6 @@ Graph Studio now includes a governed renderer-capability layer for the advanced 
 ## Carbon & Nature Intelligence v0.6.0 / Lab v0.89.0
 
 Lab now includes a Soil Organic Carbon foundation for fixed-depth, fine-earth-corrected SOC stock calculations, profile aggregation, deterministic provenance, Graph Studio handoff, and Carbon Project model-run packets. See `RELEASE_NOTES_0.89.0_SOIL_ORGANIC_CARBON_LAB_FOUNDATION.md`.
+
+### Lab v0.98.0 / Carbon & Nature Intelligence v0.15.0
+The MRV Uncertainty & Detection Engine adds explicit uncertainty budgets, observed-change detectability checks, detection-oriented sample-size planning, and provenance-ready project handoffs. Statistical detection remains distinct from external verification or carbon-credit eligibility.

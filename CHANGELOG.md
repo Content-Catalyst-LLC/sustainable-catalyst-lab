@@ -1424,3 +1424,8 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added Graph Studio GPU capability and negotiation controls.
 - Preserved v0.83 provenance-aware figures and v0.75–v0.82 visualization compatibility.
 - WebGL2 and WebGPU production rendering remain explicitly deferred to v0.85 and v0.86.
+
+## 0.98.0 — Carbon & Nature Intelligence v0.15.0
+- Added MRV Uncertainty & Detection Engine with explicit uncertainty budgets, covariance terms, paired/independent detection, and detection-oriented sample-size planning.
+- Added governed assessment validation and Carbon Project model-run handoff.
+- Preserved explicit scientific boundaries: no hidden confidence, coverage, power, correlation, verification, or crediting assumptions.

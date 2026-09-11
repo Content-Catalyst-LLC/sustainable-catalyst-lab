@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "components": {
+      "items": {
+        "anyOf": [
+          {
+            "required": [
+              "standard_uncertainty"
+            ]
+          },
+          {
+            "required": [
+              "relative_percent"
+            ]
+          }
+        ],
+        "properties": {
+          "component_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "relative_percent": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "standard_uncertainty": {
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "component_key"
+        ],
+        "type": "object"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "type": "array"
+    },
+    "covariance_terms": {
+      "items": {
+        "properties": {
+          "component_a": {
+            "type": "string"
+          },
+          "component_b": {
+            "type": "string"
+          },
+          "covariance": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "component_a",
+          "component_b",
+          "covariance"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "coverage_factor": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "estimate": {
+      "type": "number"
+    },
+    "unit": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "estimate",
+    "unit",
+    "components"
+  ],
+  "title": "Carbon MRV uncertainty budget v0.15.0",
+  "type": "object"
+}
