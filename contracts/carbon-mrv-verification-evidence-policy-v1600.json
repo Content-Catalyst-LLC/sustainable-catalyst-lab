@@ -1,0 +1,38 @@
+{
+  "domain_version": "0.16.0",
+  "evidence_types": [
+    "field-observation",
+    "sample-record",
+    "chain-of-custody",
+    "laboratory-result",
+    "quality-control",
+    "calculation-output",
+    "model-run",
+    "monitoring-record",
+    "protocol",
+    "methodology-reference",
+    "document",
+    "image",
+    "other"
+  ],
+  "guardrails": {
+    "external_file_digest_must_be_explicit_when_claimed": true,
+    "internal_review_state_is_not_certification": true,
+    "ledger_integrity_is_not_external_verification": true,
+    "no_automatic_evidence_acceptance": true,
+    "no_credit_eligibility_determination": true,
+    "no_evidence_content_is_fabricated": true,
+    "no_hidden_required_evidence_types": true,
+    "no_methodology_eligibility_determination": true,
+    "tamper_check_only_recomputes_declared_chain": true
+  },
+  "lab_release_version": "0.99.0",
+  "release": "Verification Evidence Ledger",
+  "review_states": [
+    "unreviewed",
+    "accepted-for-internal-review",
+    "flagged",
+    "rejected-for-internal-review"
+  ],
+  "schema": "sc-carbon-nature-mrv-verification-evidence-policy/0.16.0"
+}

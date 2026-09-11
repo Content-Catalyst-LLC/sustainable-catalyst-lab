@@ -965,3 +965,7 @@ Lab now includes a Soil Organic Carbon foundation for fixed-depth, fine-earth-co
 
 ### Lab v0.98.0 / Carbon & Nature Intelligence v0.15.0
 The MRV Uncertainty & Detection Engine adds explicit uncertainty budgets, observed-change detectability checks, detection-oriented sample-size planning, and provenance-ready project handoffs. Statistical detection remains distinct from external verification or carbon-credit eligibility.
+
+### Lab v0.99.0 / Carbon & Nature Intelligence v0.16.0
+
+**Verification Evidence Ledger** adds structured MRV evidence records, explicit protocol-requirement linkage, internal review states, optional external-artifact SHA-256 digests, deterministic chained entry hashes, a ledger root hash, tamper checks, and Carbon Project `verification-record` handoff. Ledger integrity and internal-review readiness remain explicitly distinct from external verification, certification, methodology compliance, and credit eligibility.

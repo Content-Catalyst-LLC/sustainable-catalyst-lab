@@ -435,3 +435,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0970_release.sh
 
 echo "==> v0.98.0 Carbon & Nature MRV Uncertainty & Detection Engine extension gate"
 PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0980_release.sh
+
+
+echo "==> v0.99.0 Carbon & Nature Verification Evidence Ledger extension gate"
+PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0990_release.sh

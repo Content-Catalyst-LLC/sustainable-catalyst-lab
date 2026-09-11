@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "certification_status": {
+      "type": "null"
+    },
+    "chain_valid": {
+      "type": "boolean"
+    },
+    "credit_eligibility": {
+      "type": "null"
+    },
+    "evidence_type_mismatches": {
+      "type": "array"
+    },
+    "external_artifacts_without_sha256": {
+      "type": "array"
+    },
+    "external_verification_status": {
+      "type": "null"
+    },
+    "flagged_or_rejected_evidence_ids": {
+      "type": "array"
+    },
+    "ledger_readiness": {
+      "enum": [
+        "draft-incomplete",
+        "ready-for-internal-review"
+      ]
+    },
+    "methodology_compliance": {
+      "type": "null"
+    },
+    "missing_core_fields": {
+      "type": "array"
+    },
+    "missing_required_evidence": {
+      "type": "array"
+    },
+    "ready_for_internal_review": {
+      "type": "boolean"
+    },
+    "result_fingerprint": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-verification-evidence-validation/0.16.0"
+    },
+    "unreviewed_evidence_ids": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "ledger_readiness",
+    "ready_for_internal_review",
+    "chain_valid",
+    "missing_required_evidence",
+    "external_verification_status",
+    "credit_eligibility"
+  ],
+  "title": "Carbon MRV verification evidence validation v0.16.0",
+  "type": "object"
+}

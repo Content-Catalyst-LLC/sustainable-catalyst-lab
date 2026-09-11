@@ -60,6 +60,7 @@ from .carbon_mrv_registry_v0950 import CarbonMRVRegistryV01200Error, assess_read
 from .carbon_mrv_protocol_v0960 import CarbonMRVProtocolV01300Error, build_project_packet as build_carbon_mrv_protocol_project_packet_v1300, build_protocol as build_carbon_mrv_protocol_v1300, health as carbon_mrv_protocol_health_v1300, policies as carbon_mrv_protocol_policies_v1300, protocol_template as carbon_mrv_protocol_template_v1300, schema as carbon_mrv_protocol_schema_v1300, validate_protocol as validate_carbon_mrv_protocol_v1300
 from .carbon_mrv_monitoring_v0970 import CarbonMRVMonitoringV01400Error, allocate_strata as allocate_carbon_mrv_strata_v1400, build_plan as build_carbon_mrv_monitoring_plan_v1400, build_project_packet as build_carbon_mrv_monitoring_project_packet_v1400, health as carbon_mrv_monitoring_health_v1400, plan_template as carbon_mrv_monitoring_template_v1400, policies as carbon_mrv_monitoring_policies_v1400, sample_size_plan as carbon_mrv_sample_size_v1400, schema as carbon_mrv_monitoring_schema_v1400, validate_plan as validate_carbon_mrv_monitoring_plan_v1400
 from .carbon_mrv_uncertainty_v0980 import CarbonMRVUncertaintyV01500Error, build_assessment as build_carbon_mrv_uncertainty_assessment_v1500, build_project_packet as build_carbon_mrv_uncertainty_project_packet_v1500, change_detection as carbon_mrv_change_detection_v1500, health as carbon_mrv_uncertainty_health_v1500, policies as carbon_mrv_uncertainty_policies_v1500, required_sample_size as carbon_mrv_detection_sample_size_v1500, schema as carbon_mrv_uncertainty_schema_v1500, uncertainty_budget as carbon_mrv_uncertainty_budget_v1500, validate_assessment as validate_carbon_mrv_uncertainty_assessment_v1500
+from .carbon_mrv_verification_ledger_v0990 import CarbonMRVVerificationLedgerV01600Error, build_ledger as build_carbon_mrv_verification_ledger_v1600, build_project_packet as build_carbon_mrv_verification_project_packet_v1600, health as carbon_mrv_verification_health_v1600, normalize_evidence_entry as normalize_carbon_mrv_evidence_entry_v1600, policies as carbon_mrv_verification_policies_v1600, schema as carbon_mrv_verification_schema_v1600, validate_ledger as validate_carbon_mrv_verification_ledger_v1600, verify_chain as verify_carbon_mrv_verification_chain_v1600
 from .webgpu_scientific_renderer_v0870 import WebGPUScientificRendererError, build_compute_plan as build_webgpu_compute_plan_v0870, build_render_plan as build_webgpu_render_plan_v0870, build_workspace as build_webgpu_workspace_v0870, health as webgpu_health_v0870, normalize_compute_dispatch as normalize_webgpu_compute_dispatch_v0870, normalize_render_pass as normalize_webgpu_render_pass_v0870, policies as webgpu_policies_v0870, renderer_descriptor as webgpu_renderer_descriptor_v0870
 from .advanced_scientific_scene_v0880 import AdvancedScientificSceneError, build_render_plan as build_advanced_scene_render_plan_v0880, build_workspace as build_advanced_scene_workspace_v0880, health as advanced_scene_health_v0880, normalize_camera as normalize_advanced_scene_camera_v0880, normalize_light as normalize_advanced_scene_light_v0880, normalize_material as normalize_advanced_scene_material_v0880, normalize_scene as normalize_advanced_scene_v0880, policies as advanced_scene_policies_v0880, scene_descriptor as advanced_scene_descriptor_v0880
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
@@ -6564,6 +6565,44 @@ def carbon_mrv_v1500_validate_route(payload: dict[str, Any]):
 @app.post("/v1/carbon-nature/mrv/v1500/uncertainty/project-packet", dependencies=[Depends(require_compute_auth)])
 def carbon_mrv_v1500_project_packet_route(payload: dict[str, Any]):
     return _carbon_mrv_uncertainty_call(build_carbon_mrv_uncertainty_project_packet_v1500, payload)
+
+@app.get("/v1/carbon-nature/mrv/v1600/verification-ledger/health")
+def carbon_mrv_v1600_verification_health_route():
+    return carbon_mrv_verification_health_v1600()
+
+@app.get("/v1/carbon-nature/mrv/v1600/verification-ledger/schema")
+def carbon_mrv_v1600_verification_schema_route():
+    return carbon_mrv_verification_schema_v1600()
+
+@app.get("/v1/carbon-nature/mrv/v1600/verification-ledger/policies")
+def carbon_mrv_v1600_verification_policies_route():
+    return carbon_mrv_verification_policies_v1600()
+
+def _carbon_mrv_verification_call(fn, payload):
+    try:
+        return fn(payload)
+    except CarbonMRVVerificationLedgerV01600Error as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/carbon-nature/mrv/v1600/verification-ledger/evidence-entry", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1600_verification_entry_route(payload: dict[str, Any]):
+    return _carbon_mrv_verification_call(normalize_carbon_mrv_evidence_entry_v1600, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1600/verification-ledger/build", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1600_verification_build_route(payload: dict[str, Any]):
+    return _carbon_mrv_verification_call(build_carbon_mrv_verification_ledger_v1600, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1600/verification-ledger/validate", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1600_verification_validate_route(payload: dict[str, Any]):
+    return _carbon_mrv_verification_call(validate_carbon_mrv_verification_ledger_v1600, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1600/verification-ledger/chain-check", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1600_verification_chain_route(payload: dict[str, Any]):
+    return _carbon_mrv_verification_call(verify_carbon_mrv_verification_chain_v1600, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1600/verification-ledger/project-packet", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1600_verification_project_packet_route(payload: dict[str, Any]):
+    return _carbon_mrv_verification_call(build_carbon_mrv_verification_project_packet_v1600, payload)
 
 @app.get("/v1/model-studio/dynamic-systems/v0860/health")
 def system_dynamics_v0860_health_route(): return system_dynamics_health_v0860()

@@ -111,6 +111,14 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_build'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_validate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1500/uncertainty/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1500_uncertainty_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/health', array('methods'=>'GET','callback'=>array($this,'mrv_v1600_verification_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/schema', array('methods'=>'GET','callback'=>array($this,'mrv_v1600_verification_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/policies', array('methods'=>'GET','callback'=>array($this,'mrv_v1600_verification_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/evidence-entry', array('methods'=>'POST','callback'=>array($this,'mrv_v1600_verification_evidence_entry'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1600_verification_build'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1600_verification_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/chain-check', array('methods'=>'POST','callback'=>array($this,'mrv_v1600_verification_chain_check'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1600/verification-ledger/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1600_verification_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -414,6 +422,16 @@ class SC_Lab_REST {
     public function mrv_v1500_uncertainty_build(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/build');}
     public function mrv_v1500_uncertainty_validate(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/validate');}
     public function mrv_v1500_uncertainty_project_packet(WP_REST_Request $request){return $this->mrv_v1500_post($request,'/v1/carbon-nature/mrv/v1500/uncertainty/project-packet');}
+
+    public function mrv_v1600_verification_health(){return $this->proxy('/v1/carbon-nature/mrv/v1600/verification-ledger/health');}
+    public function mrv_v1600_verification_schema(){return $this->proxy('/v1/carbon-nature/mrv/v1600/verification-ledger/schema');}
+    public function mrv_v1600_verification_policies(){return $this->proxy('/v1/carbon-nature/mrv/v1600/verification-ledger/policies');}
+    private function mrv_v1600_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function mrv_v1600_verification_evidence_entry(WP_REST_Request $request){return $this->mrv_v1600_post($request,'/v1/carbon-nature/mrv/v1600/verification-ledger/evidence-entry');}
+    public function mrv_v1600_verification_build(WP_REST_Request $request){return $this->mrv_v1600_post($request,'/v1/carbon-nature/mrv/v1600/verification-ledger/build');}
+    public function mrv_v1600_verification_validate(WP_REST_Request $request){return $this->mrv_v1600_post($request,'/v1/carbon-nature/mrv/v1600/verification-ledger/validate');}
+    public function mrv_v1600_verification_chain_check(WP_REST_Request $request){return $this->mrv_v1600_post($request,'/v1/carbon-nature/mrv/v1600/verification-ledger/chain-check');}
+    public function mrv_v1600_verification_project_packet(WP_REST_Request $request){return $this->mrv_v1600_post($request,'/v1/carbon-nature/mrv/v1600/verification-ledger/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

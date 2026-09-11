@@ -1429,3 +1429,14 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added MRV Uncertainty & Detection Engine with explicit uncertainty budgets, covariance terms, paired/independent detection, and detection-oriented sample-size planning.
 - Added governed assessment validation and Carbon Project model-run handoff.
 - Preserved explicit scientific boundaries: no hidden confidence, coverage, power, correlation, verification, or crediting assumptions.
+
+## 0.99.0 — Carbon & Nature Intelligence v0.16.0
+
+- Added Verification Evidence Ledger with structured evidence entry normalization.
+- Added explicit evidence requirements and evidence-to-requirement linkage.
+- Added deterministic SHA-256 content fingerprints, chained entry hashes, and ledger root hash.
+- Added chain recomputation/tamper detection without claiming external source authenticity.
+- Added internal evidence review states and readiness validation.
+- Added optional explicit SHA-256 digests for external documents, images, and laboratory results.
+- Added Carbon Project `verification-record` handoff with provenance event `created`.
+- Preserved strict guardrails: internal ledger integrity is not third-party verification, certification, methodology compliance, or carbon-credit eligibility.

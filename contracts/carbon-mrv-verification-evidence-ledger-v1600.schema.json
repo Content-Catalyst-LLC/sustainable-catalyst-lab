@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "entries": {
+      "items": {
+        "$ref": "carbon-mrv-verification-evidence-entry-v1600.schema.json"
+      },
+      "maxItems": 500,
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "object"
+    },
+    "ledger_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "ledger_id": {
+      "type": "string"
+    },
+    "ledger_root_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "ledger_version": {
+      "const": "1.0.0"
+    },
+    "methodology_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "monitoring_plan_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "protocol_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requirements": {
+      "items": {
+        "required": [
+          "requirement_key",
+          "description",
+          "accepted_evidence_types",
+          "required"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-verification-evidence-ledger/0.16.0"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready-for-internal-review"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "uncertainty_assessment_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "ledger_id",
+    "ledger_version",
+    "status",
+    "requirements",
+    "entries",
+    "ledger_root_hash",
+    "guardrails"
+  ],
+  "title": "Carbon MRV verification evidence ledger v0.16.0",
+  "type": "object"
+}

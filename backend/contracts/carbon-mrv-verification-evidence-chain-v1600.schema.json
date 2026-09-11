@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "chain_valid": {
+      "type": "boolean"
+    },
+    "entry_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "issues": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ledger_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recomputed_ledger_root_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "result_fingerprint": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-verification-evidence-chain-check/0.16.0"
+    },
+    "tamper_detected": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema",
+    "ledger_id",
+    "entry_count",
+    "chain_valid",
+    "tamper_detected",
+    "issues",
+    "recomputed_ledger_root_hash"
+  ],
+  "title": "Carbon MRV verification evidence chain check v0.16.0",
+  "type": "object"
+}
