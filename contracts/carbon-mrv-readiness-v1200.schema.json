@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Carbon MRV Documentation Readiness v0.12.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "method_key",
+    "documentation_readiness",
+    "documentation_ready",
+    "missing_inputs",
+    "missing_evidence",
+    "guardrails",
+    "result_fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-carbon-nature-mrv-method-readiness/0.12.0"
+    },
+    "method_key": {
+      "type": "string"
+    },
+    "documentation_readiness": {
+      "enum": [
+        "ready",
+        "incomplete"
+      ]
+    },
+    "documentation_ready": {
+      "type": "boolean"
+    },
+    "missing_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "external_methodology_eligibility": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "verification_status": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "credit_eligibility": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "guardrails": {
+      "type": "object"
+    },
+    "input_fingerprint": {
+      "type": "string"
+    },
+    "result_fingerprint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

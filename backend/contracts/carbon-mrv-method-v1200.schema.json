@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Carbon MRV Method Profile v0.12.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "method_key",
+    "title",
+    "method_type",
+    "status",
+    "required_inputs",
+    "required_evidence",
+    "outputs",
+    "library_methodology_key",
+    "profile_fingerprint"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-carbon-nature-mrv-method/0.12.0"
+    },
+    "method_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "foundation-profile"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "carbon_pools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "measurement_basis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uncertainty_expectations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quality_controls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "library_methodology_key": {
+      "type": "string"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "profile_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

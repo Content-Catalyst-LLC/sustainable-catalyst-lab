@@ -1269,6 +1269,31 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
               </div>
             </div>
           </div>
+
+          <div class="sc-mrv1200" data-mrv-v1200-root>
+            <div class="sc-mrv1200__hero">
+              <div><span class="sc-mrv1200__eyebrow">CARBON &amp; NATURE / MRV / v0.12.0</span><h3>Carbon MRV Method Registry</h3><p>Inspect governed MRV method families, compare documentation requirements, and test whether a research packet contains the named inputs and evidence needed by a Sustainable Catalyst foundation profile.</p></div>
+              <div class="sc-mrv1200__badges"><span class="sc-mrv1200__badge">Lab v0.95.0</span><span class="sc-mrv1200__badge">7 method families</span><span class="sc-mrv1200__badge">No automatic selection</span><span class="sc-mrv1200__badge">Backend: <b data-mrv-v1200-backend>checking</b></span></div>
+            </div>
+            <div class="sc-mrv1200__notice"><strong>MRV boundary:</strong> Registry profile ≠ external protocol. Documentation readiness ≠ methodology eligibility, verification, certification, credit issuance, or current-program compliance. External rules must be checked against their authoritative, current source.</div>
+            <div class="sc-mrv1200__grid">
+              <div class="sc-mrv1200__card">
+                <h4>Method registry</h4>
+                <div class="sc-mrv1200__filters"><label>Method type<input data-mrv-v1200-filter-type placeholder="direct-measurement"></label><label>Carbon pool<input data-mrv-v1200-filter-pool placeholder="soil-organic-carbon"></label><label>Gas<input data-mrv-v1200-filter-gas placeholder="CH4"></label></div>
+                <div class="sc-mrv1200__actions"><button type="button" class="sc-lab-button" data-mrv-v1200-filter>Apply filters</button><button type="button" class="sc-lab-button" data-mrv-v1200-example>Load SOC example</button></div>
+                <div class="sc-mrv1200__table"><table><thead><tr><th>Method</th><th>Type</th><th>Carbon pools</th><th>Gases</th><th>Status</th></tr></thead><tbody data-mrv-v1200-methods><tr><td colspan="5">Loading registry…</td></tr></tbody></table></div>
+                <p class="sc-mrv1200__status" data-mrv-v1200-status role="status" aria-live="polite">Carbon MRV Method Registry ready.</p>
+              </div>
+              <div class="sc-mrv1200__card">
+                <span class="sc-mrv1200__muted" data-mrv-v1200-detail-key>No method selected</span><h4 class="sc-mrv1200__detail-title" data-mrv-v1200-detail-title>Method detail</h4><p data-mrv-v1200-detail-summary>Select a registry row to inspect its measurement basis, required evidence, uncertainty expectations, controls, and Library methodology crosswalk.</p><details><summary>Full method profile</summary><pre data-mrv-v1200-detail>No method selected.</pre></details>
+              </div>
+              <div class="sc-mrv1200__card">
+                <h4>Documentation readiness</h4><div class="sc-mrv1200__fields"><label>Method key<input data-mrv-v1200-readiness-method placeholder="soc-direct-measurement"></label><label>Project ID<input data-mrv-v1200-project-id placeholder="project:example"></label><label>Available inputs<textarea data-mrv-v1200-inputs placeholder="sampling-design&#10;soc-concentration&#10;bulk-density"></textarea></label><label>Available evidence<textarea data-mrv-v1200-evidence placeholder="field-records&#10;laboratory-results"></textarea></label><label>Methodology references<textarea data-mrv-v1200-methodology-refs placeholder="library-methodology:soc-direct-measurement"></textarea></label><label>Source references<textarea data-mrv-v1200-source-refs placeholder="evidence:project-source"></textarea></label></div>
+                <div class="sc-mrv1200__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1200-readiness>Check documentation</button><button type="button" class="sc-lab-button" data-mrv-v1200-save>Save to project</button><button type="button" class="sc-lab-button" data-mrv-v1200-packet>Build project packet</button></div><p>State: <strong class="sc-mrv1200__state" data-mrv-v1200-readiness-state>not checked</strong></p><details open><summary>Readiness record</summary><pre data-mrv-v1200-readiness-output>No readiness check yet.</pre></details><details><summary>Carbon Project monitoring-record packet</summary><pre data-mrv-v1200-packet-output>No packet yet.</pre></details>
+              </div>
+              <div class="sc-mrv1200__card"><h4>Descriptive comparison</h4><p>Enter 2–20 method keys. Lab preserves input order and exposes differences without ranking or recommendation.</p><textarea data-mrv-v1200-compare-keys placeholder="soc-direct-measurement&#10;hybrid-measurement-modeling"></textarea><div class="sc-mrv1200__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1200-compare>Compare methods</button></div><details open><summary>Comparison record</summary><pre data-mrv-v1200-compare-output>No comparison yet.</pre></details></div>
+            </div>
+          </div>
         </div>
         </div>
         </div>

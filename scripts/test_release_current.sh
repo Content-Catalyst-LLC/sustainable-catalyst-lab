@@ -422,3 +422,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0920_release.sh
 echo "==> v0.93.0 Carbon & Nature SOC management scenario extension gate"
 PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0930_release.sh
 bash scripts/test_v0940_release.sh
+
+
+echo "==> v0.95.0 Carbon & Nature MRV Method Registry extension gate"
+PYTHON_BIN="${PYTHON_BIN:-python3}" ./scripts/test_v0950_release.sh

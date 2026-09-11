@@ -1,0 +1,16 @@
+{
+  "schema": "sc-carbon-nature-mrv-method-registry-policy/0.12.0",
+  "domain_version": "0.12.0",
+  "lab_release_version": "0.95.0",
+  "purpose": "Governed Lab-facing registry of Carbon & Nature MRV method families and documentation-readiness contracts.",
+  "guardrails": {
+    "registry_is_not_external_protocol": true,
+    "no_automatic_method_selection": true,
+    "no_methodology_eligibility_determination": true,
+    "no_verification_determination": true,
+    "no_credit_eligibility_determination": true,
+    "no_current_program_rule_assertion": true,
+    "no_automatic_parameter_defaults": true,
+    "no_automatic_recommendation": true
+  }
+}

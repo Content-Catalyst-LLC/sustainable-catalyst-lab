@@ -78,6 +78,14 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/entry', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_entry'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/calculate', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_calculate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/ghg/v1100/balance/project-packet', array('methods'=>'POST','callback'=>array($this,'ghg_v1100_balance_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/health', array('methods'=>'GET','callback'=>array($this,'mrv_v1200_registry_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/schema', array('methods'=>'GET','callback'=>array($this,'mrv_v1200_registry_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/policies', array('methods'=>'GET','callback'=>array($this,'mrv_v1200_registry_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/methods', array('methods'=>'GET','callback'=>array($this,'mrv_v1200_registry_methods'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/methods/(?P<method_key>[a-z0-9-]+)', array('methods'=>'GET','callback'=>array($this,'mrv_v1200_registry_method'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/compare', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_compare'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/readiness', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_readiness'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1200/registry/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1200_registry_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -341,6 +349,16 @@ class SC_Lab_REST {
     public function ghg_v1100_balance_entry(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/entry',2097152);}
     public function ghg_v1100_balance_calculate(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/calculate');}
     public function ghg_v1100_balance_project_packet(WP_REST_Request $request){return $this->ghg_v1100_post($request,'/v1/carbon-nature/ghg/v1100/balance/project-packet');}
+
+    public function mrv_v1200_registry_health(){return $this->proxy('/v1/carbon-nature/mrv/v1200/registry/health');}
+    public function mrv_v1200_registry_schema(){return $this->proxy('/v1/carbon-nature/mrv/v1200/registry/schema');}
+    public function mrv_v1200_registry_policies(){return $this->proxy('/v1/carbon-nature/mrv/v1200/registry/policies');}
+    public function mrv_v1200_registry_methods(WP_REST_Request $request){$query=array();foreach(array('method_type','carbon_pool','gas') as $k){$v=trim((string)$request->get_param($k));if($v!==''){$query[$k]=$v;}}$path='/v1/carbon-nature/mrv/v1200/registry/methods'.($query?'?'.http_build_query($query):'');return $this->proxy($path);}
+    public function mrv_v1200_registry_method(WP_REST_Request $request){$key=sanitize_key((string)$request->get_param('method_key'));return $this->proxy('/v1/carbon-nature/mrv/v1200/registry/methods/'.rawurlencode($key));}
+    private function mrv_v1200_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function mrv_v1200_registry_compare(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/compare');}
+    public function mrv_v1200_registry_readiness(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/readiness');}
+    public function mrv_v1200_registry_project_packet(WP_REST_Request $request){return $this->mrv_v1200_post($request,'/v1/carbon-nature/mrv/v1200/registry/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

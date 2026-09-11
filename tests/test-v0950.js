@@ -1,0 +1,15 @@
+const fs=require('fs'),assert=require('assert');
+const js=fs.readFileSync('assets/js/modules/carbon-mrv-registry-v0950.js','utf8');
+const tpl=fs.readFileSync('templates/lab-app.php','utf8');
+assert(js.includes("VERSION='0.95.0',DOMAIN='0.12.0'"));
+assert(js.includes('carbonMrvRegistry'));
+assert(js.includes('methodsUrl'));
+assert(js.includes('readinessUrl'));
+assert(js.includes('projectPacketUrl'));
+assert(js.includes('No ranking performed'));
+assert(js.includes('CarbonMRVRegistryV1200'));
+assert(tpl.includes('Carbon MRV Method Registry'));
+assert(tpl.includes('data-mrv-v1200-readiness'));
+assert(tpl.includes('data-mrv-v1200-compare'));
+assert(tpl.includes('7 method families'));
+console.log('PASS - Lab v0.95.0 / Carbon & Nature v0.12.0 browser contracts');

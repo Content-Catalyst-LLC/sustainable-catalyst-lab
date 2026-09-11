@@ -1,3 +1,7 @@
+# Sustainable Catalyst Lab
+
+**Current release: v0.95.0 — Carbon & Nature Intelligence v0.12.0, Carbon MRV Method Registry.**
+
 ## Current Lab release: v0.93.0
 
 **Carbon & Nature Intelligence v0.10.0:** SOC Management Scenario Studio projects transparent SOC trajectories from explicit user-supplied assumptions, compares multiple scenarios without ranking them, runs user-supplied sensitivity sweeps, supports optional assumption envelopes, and packages scenario results as provenance-ready Carbon Project model runs. Sustainable Catalyst supplies no default SOC change rate, and a projected increase is not a forecast, verified sequestration, additionality finding, or carbon-credit claim.

@@ -1,3 +1,7 @@
+# v0.95.0 — Carbon & Nature v0.12.0 Carbon MRV Method Registry
+
+Adds a governed MRV method registry, method comparison, documentation-readiness contracts, Library methodology crosswalks, Carbon Project monitoring-record handoff, and a slimmer WordPress deployment package.
+
 # v0.94.0 — Carbon & Nature v0.11.0 Whole-Farm GHG Balance
 
 - Added provenance-first whole-farm greenhouse-gas accounting with direct CO2e, explicit gas-mass GWP conversion, and sourced activity factors.
