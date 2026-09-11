@@ -1,3 +1,7 @@
+# v0.97.0 — Carbon & Nature v0.14.0 Monitoring Plan & Sampling Designer
+
+Adds governed monitoring campaigns, sampling-frame and sample-unit documentation, five sampling-strategy descriptors, precision-based sample-size planning with optional finite-population correction, equal/proportional/Neyman stratified allocation, SOC depth-interval checks, field/laboratory QA/QC planning, method-documentation gap analysis, deterministic plan fingerprints, and Carbon Project monitoring-record handoff. The designer does not invent coordinates or sampling assumptions and does not infer representativeness, power, methodology compliance, verification, or credit eligibility.
+
 # v0.96.0 — Carbon & Nature v0.13.0 MRV Protocol Builder
 
 Adds method-derived MRV protocol templates, nine governed monitoring-plan sections, structural and method-documentation gap analysis, deterministic protocol fingerprints, internal-review readiness, and Carbon Project monitoring-record handoff while preserving the boundary between Sustainable Catalyst scaffolds and external methodology compliance.

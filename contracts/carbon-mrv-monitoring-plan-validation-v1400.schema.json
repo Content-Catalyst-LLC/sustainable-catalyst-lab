@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-monitoring-plan-validation-v1400.schema.json",
+  "title": "Sustainable Catalyst Monitoring Plan Validation v0.14.0",
+  "type": "object",
+  "required": ["schema", "monitoring_plan_id", "method_key", "plan_readiness", "ready_for_internal_review", "missing_core_fields", "guardrails", "result_fingerprint"],
+  "properties": {
+    "schema": {"const": "sc-carbon-nature-monitoring-plan-validation/0.14.0"},
+    "monitoring_plan_id": {"type": "string"},
+    "method_key": {"type": "string"},
+    "plan_readiness": {"enum": ["draft-incomplete", "ready-for-internal-review"]},
+    "ready_for_internal_review": {"type": "boolean"},
+    "missing_core_fields": {"type": "array", "items": {"type": "string"}},
+    "missing_method_inputs": {"type": "array", "items": {"type": "string"}},
+    "missing_method_evidence": {"type": "array", "items": {"type": "string"}},
+    "sampling_representativeness": {"type": "null"},
+    "external_methodology_compliance": {"type": "null"},
+    "verification_status": {"type": "null"},
+    "credit_eligibility": {"type": "null"},
+    "guardrails": {"type": "object"},
+    "result_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

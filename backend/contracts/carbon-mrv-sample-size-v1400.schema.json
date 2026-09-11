@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-sample-size-v1400.schema.json",
+  "title": "Sustainable Catalyst Sampling Planning Estimate v0.14.0",
+  "type": "object",
+  "required": ["schema", "expected_sd", "z_value", "target_half_width", "unadjusted_sample_size", "recommended_planning_sample_size", "guardrails", "result_fingerprint"],
+  "properties": {
+    "schema": {"const": "sc-carbon-nature-sample-size-plan/0.14.0"},
+    "expected_sd": {"type": "number", "exclusiveMinimum": 0},
+    "z_value": {"type": "number", "exclusiveMinimum": 0},
+    "target_half_width": {"type": "number", "exclusiveMinimum": 0},
+    "population_size": {"type": ["integer", "null"], "minimum": 1},
+    "unadjusted_sample_size": {"type": "integer", "minimum": 1},
+    "recommended_planning_sample_size": {"type": "integer", "minimum": 1},
+    "finite_population_correction_applied": {"type": "boolean"},
+    "guardrails": {"type": "object"},
+    "result_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

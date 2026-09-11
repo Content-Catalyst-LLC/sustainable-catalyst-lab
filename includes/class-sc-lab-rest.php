@@ -93,6 +93,15 @@ class SC_Lab_REST {
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_build'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_validate'),'permission_callback'=>'__return_true'));
         register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1300/protocol/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1300_protocol_project_packet'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/health', array('methods'=>'GET','callback'=>array($this,'mrv_v1400_monitoring_health'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/schema', array('methods'=>'GET','callback'=>array($this,'mrv_v1400_monitoring_schema'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/policies', array('methods'=>'GET','callback'=>array($this,'mrv_v1400_monitoring_policies'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/template/(?P<method_key>[a-z0-9-]+)', array('methods'=>'GET','callback'=>array($this,'mrv_v1400_monitoring_template'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/sample-size', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_sample_size'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/strata-allocation', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_strata_allocation'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/build', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_build'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/validate', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_validate'),'permission_callback'=>'__return_true'));
+        register_rest_route('sc-lab/v1', '/carbon-nature/mrv/v1400/monitoring/project-packet', array('methods'=>'POST','callback'=>array($this,'mrv_v1400_monitoring_project_packet'),'permission_callback'=>'__return_true'));
 
 
         register_rest_route(
@@ -375,6 +384,16 @@ class SC_Lab_REST {
     public function mrv_v1300_protocol_build(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/build');}
     public function mrv_v1300_protocol_validate(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/validate');}
     public function mrv_v1300_protocol_project_packet(WP_REST_Request $request){return $this->mrv_v1300_post($request,'/v1/carbon-nature/mrv/v1300/protocol/project-packet');}
+    public function mrv_v1400_monitoring_health(){return $this->proxy('/v1/carbon-nature/mrv/v1400/monitoring/health');}
+    public function mrv_v1400_monitoring_schema(){return $this->proxy('/v1/carbon-nature/mrv/v1400/monitoring/schema');}
+    public function mrv_v1400_monitoring_policies(){return $this->proxy('/v1/carbon-nature/mrv/v1400/monitoring/policies');}
+    public function mrv_v1400_monitoring_template(WP_REST_Request $request){$key=sanitize_key((string)$request->get_param('method_key'));return $this->proxy('/v1/carbon-nature/mrv/v1400/monitoring/template/'.rawurlencode($key));}
+    private function mrv_v1400_post(WP_REST_Request $request,$path,$max=8388608){$payload=$request->get_json_params();if(!is_array($payload)){return new WP_Error('sc_lab_invalid_json','JSON object required',array('status'=>400));}return $this->proxy($path,'POST',$payload,$max);}
+    public function mrv_v1400_monitoring_sample_size(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/sample-size');}
+    public function mrv_v1400_monitoring_strata_allocation(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/strata-allocation');}
+    public function mrv_v1400_monitoring_build(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/build');}
+    public function mrv_v1400_monitoring_validate(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/validate');}
+    public function mrv_v1400_monitoring_project_packet(WP_REST_Request $request){return $this->mrv_v1400_post($request,'/v1/carbon-nature/mrv/v1400/monitoring/project-packet');}
 
     public function compute_status() {
         $settings = $this->settings();

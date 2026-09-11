@@ -1,7 +1,11 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.96.0 — Carbon & Nature Intelligence v0.13.0, MRV Protocol Builder.**
+**Current release: v0.97.0 — Carbon & Nature Intelligence v0.14.0, Monitoring Plan & Sampling Designer.**
 
+
+## v0.97.0 — Monitoring Plan & Sampling Designer
+
+Carbon & Nature Intelligence v0.14.0 turns an explicitly selected MRV method and protocol into a governed monitoring and sampling plan. It adds campaign scheduling, explicit sampling-frame and sample-unit documentation, five sampling-strategy descriptors, precision-based planning sample-size calculations with optional finite-population correction, equal/proportional/Neyman stratum allocation, SOC depth-interval governance, QA/QC records, method-documentation gap analysis, deterministic fingerprints, and Carbon Project monitoring-record handoff. Planning estimates do not establish representativeness, statistical power, external methodology compliance, verification, certification, or carbon-credit eligibility.
 
 ## v0.96.0 — MRV Protocol Builder
 

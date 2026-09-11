@@ -1353,6 +1353,58 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
               </div>
             </div>
           </div>
+
+          <div class="sc-mrv1400" data-mrv-v1400-root>
+            <div class="sc-mrv1400__hero">
+              <div><span class="sc-mrv1400__eyebrow">CARBON &amp; NATURE / MRV / v0.14.0</span><h3>Monitoring Plan &amp; Sampling Designer</h3><p>Translate a selected MRV method and protocol into explicit monitoring campaigns, sampling-frame assumptions, precision-based sample-size planning, stratified allocation, depth design, QA/QC, and a provenance-ready monitoring record.</p></div>
+              <div class="sc-mrv1400__badges"><span class="sc-mrv1400__badge">Lab v0.97.0</span><span class="sc-mrv1400__badge">5 sampling strategies</span><span class="sc-mrv1400__badge">Precision + strata planning</span><span class="sc-mrv1400__badge">Backend: <b data-mrv-v1400-backend>checking</b></span></div>
+            </div>
+            <div class="sc-mrv1400__notice"><strong>Sampling boundary:</strong> the designer records explicit assumptions and computes planning estimates. It does not invent coordinates, infer representativeness, guarantee statistical power, select an external methodology, approve verification, or determine carbon-credit eligibility.</div>
+            <div class="sc-mrv1400__grid">
+              <div class="sc-mrv1400__card">
+                <h4>Plan identity &amp; monitoring frame</h4>
+                <div class="sc-mrv1400__fields">
+                  <label>Method key<input data-mrv-v1400-method placeholder="soc-direct-measurement"></label>
+                  <label>Project ID<input data-mrv-v1400-project-id placeholder="project:..."></label>
+                  <label>Protocol ID<input data-mrv-v1400-protocol-id placeholder="mrv-protocol:..."></label>
+                  <label>Monitoring plan ID<input data-mrv-v1400-plan-id placeholder="generated when blank"></label>
+                  <label>Title<input data-mrv-v1400-title placeholder="SOC monitoring and sampling plan"></label>
+                  <label>Spatial boundary<input data-mrv-v1400-boundary placeholder="parcel:..."></label>
+                  <label>Sampling frame reference<input data-mrv-v1400-frame placeholder="sampling-frame:..."></label>
+                  <label>Sample unit<input data-mrv-v1400-unit placeholder="field core / plot / chamber / activity record"></label>
+                </div>
+                <label>Objective<textarea data-mrv-v1400-objective></textarea></label>
+                <label>Monitoring campaigns <small>campaign_id | purpose | start | end | repeat_of</small><textarea data-mrv-v1400-campaigns placeholder="campaign:baseline | baseline | 2026-04-01 | 2026-04-15 |"></textarea></label>
+                <div class="sc-mrv1400__actions"><button type="button" class="sc-lab-button" data-mrv-v1400-template>Load method requirements</button><button type="button" class="sc-lab-button" data-mrv-v1400-example>Load SOC example</button></div>
+              </div>
+              <div class="sc-mrv1400__card">
+                <h4>Sampling design</h4>
+                <div class="sc-mrv1400__fields"><label>Strategy<select data-mrv-v1400-strategy><option value="">Select explicitly</option><option value="simple-random">Simple random</option><option value="systematic">Systematic</option><option value="stratified-random">Stratified random</option><option value="repeated-location">Repeated location</option><option value="judgmental">Judgmental / purposive</option></select></label><label>Target population<input data-mrv-v1400-population placeholder="Explicit population or domain"></label></div>
+                <label>Depth intervals, cm <small>top | bottom, one interval per line</small><textarea data-mrv-v1400-depths placeholder="0 | 15&#10;15 | 30"></textarea></label>
+                <label>Strata <small>key | size | expected SD</small><textarea data-mrv-v1400-strata placeholder="A | 60 | 10&#10;B | 40 | 20"></textarea></label>
+                <label>Field QA/QC steps<textarea data-mrv-v1400-field-qc></textarea></label><label>Laboratory QA/QC steps<textarea data-mrv-v1400-lab-qc></textarea></label>
+              </div>
+              <div class="sc-mrv1400__card">
+                <h4>Precision-based sample-size planning</h4><p>Supply your own expected variability and precision target. No defaults are inferred.</p>
+                <div class="sc-mrv1400__fields"><label>Expected SD<input type="number" step="any" min="0" data-mrv-v1400-expected-sd></label><label>Z value<input type="number" step="any" min="0" data-mrv-v1400-z-value placeholder="e.g. 1.96"></label><label>Target half-width<input type="number" step="any" min="0" data-mrv-v1400-half-width></label><label>Population size <small>optional FPC</small><input type="number" step="1" min="1" data-mrv-v1400-population-size></label></div>
+                <div class="sc-mrv1400__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1400-sample-calc>Calculate planning n</button></div><p>Planning n: <strong data-mrv-v1400-sample-n>—</strong></p><details><summary>Sample-size record</summary><pre data-mrv-v1400-sample-output>No sample-size calculation yet.</pre></details>
+              </div>
+              <div class="sc-mrv1400__card">
+                <h4>Stratified allocation</h4>
+                <div class="sc-mrv1400__fields"><label>Allocation method<select data-mrv-v1400-allocation-method><option value="">Select explicitly</option><option value="equal">Equal</option><option value="proportional">Proportional</option><option value="neyman">Neyman</option></select></label><label>Total sample size<input type="number" step="1" min="1" data-mrv-v1400-allocation-n></label></div>
+                <div class="sc-mrv1400__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1400-allocate>Allocate samples</button></div><details><summary>Allocation record</summary><pre data-mrv-v1400-allocation-output>No allocation yet.</pre></details>
+              </div>
+              <div class="sc-mrv1400__card sc-mrv1400__card--wide">
+                <h4>Method documentation &amp; evidence</h4>
+                <div class="sc-mrv1400__fields"><label>Available inputs<textarea data-mrv-v1400-inputs></textarea></label><label>Available evidence<textarea data-mrv-v1400-evidence></textarea></label><label>Methodology references<textarea data-mrv-v1400-methodology-refs></textarea></label><label>Source references<textarea data-mrv-v1400-source-refs></textarea></label></div>
+                <details><summary>Method-derived template</summary><pre data-mrv-v1400-template-output>No method template loaded.</pre></details>
+                <div class="sc-mrv1400__actions"><button type="button" class="sc-lab-button sc-lab-button-primary" data-mrv-v1400-build>Build monitoring plan</button><button type="button" class="sc-lab-button" data-mrv-v1400-validate>Validate</button><button type="button" class="sc-lab-button" data-mrv-v1400-save>Save to project</button><button type="button" class="sc-lab-button" data-mrv-v1400-packet>Build project packet</button></div>
+                <p class="sc-mrv1400__status" data-mrv-v1400-status role="status" aria-live="polite">Monitoring Plan &amp; Sampling Designer ready.</p>
+              </div>
+              <div class="sc-mrv1400__card"><h4>Plan readiness</h4><div class="sc-mrv1400__summary"><div class="sc-mrv1400__metric"><small>Plan</small><strong data-mrv-v1400-state>not built</strong></div><div class="sc-mrv1400__metric"><small>Readiness</small><strong data-mrv-v1400-readiness>not checked</strong></div><div class="sc-mrv1400__metric"><small>Planning n</small><strong data-mrv-v1400-sample-n>—</strong></div></div><h5>Unresolved items</h5><pre data-mrv-v1400-missing>No validation yet.</pre><details><summary>Validation record</summary><pre data-mrv-v1400-validation-output>No validation yet.</pre></details></div>
+              <div class="sc-mrv1400__card"><h4>Monitoring-plan record</h4><details open><summary>Built plan</summary><pre data-mrv-v1400-output>No monitoring plan built yet.</pre></details><details><summary>Carbon Project monitoring-record packet</summary><pre data-mrv-v1400-packet-output>No packet yet.</pre></details></div>
+            </div>
+          </div>
         </div>
         </div>
         </div>

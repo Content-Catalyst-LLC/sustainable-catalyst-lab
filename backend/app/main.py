@@ -58,6 +58,7 @@ from .soil_carbon_scenarios_v0930 import SoilCarbonScenarioV01000Error, build_pr
 from .whole_farm_ghg_v0940 import WholeFarmGHGV01100Error, _normalize_gwp_set as normalize_whole_farm_gwp_set_v1100, build_project_packet as build_whole_farm_ghg_project_packet_v1100, calculate_balance as calculate_whole_farm_ghg_balance_v1100, health as whole_farm_ghg_health_v1100, normalize_entry as normalize_whole_farm_ghg_entry_v1100, policies as whole_farm_ghg_policies_v1100, schema as whole_farm_ghg_schema_v1100
 from .carbon_mrv_registry_v0950 import CarbonMRVRegistryV01200Error, assess_readiness as assess_carbon_mrv_readiness_v1200, build_project_packet as build_carbon_mrv_project_packet_v1200, compare_methods as compare_carbon_mrv_methods_v1200, get_method as get_carbon_mrv_method_v1200, health as carbon_mrv_registry_health_v1200, list_methods as list_carbon_mrv_methods_v1200, policies as carbon_mrv_registry_policies_v1200, schema as carbon_mrv_registry_schema_v1200
 from .carbon_mrv_protocol_v0960 import CarbonMRVProtocolV01300Error, build_project_packet as build_carbon_mrv_protocol_project_packet_v1300, build_protocol as build_carbon_mrv_protocol_v1300, health as carbon_mrv_protocol_health_v1300, policies as carbon_mrv_protocol_policies_v1300, protocol_template as carbon_mrv_protocol_template_v1300, schema as carbon_mrv_protocol_schema_v1300, validate_protocol as validate_carbon_mrv_protocol_v1300
+from .carbon_mrv_monitoring_v0970 import CarbonMRVMonitoringV01400Error, allocate_strata as allocate_carbon_mrv_strata_v1400, build_plan as build_carbon_mrv_monitoring_plan_v1400, build_project_packet as build_carbon_mrv_monitoring_project_packet_v1400, health as carbon_mrv_monitoring_health_v1400, plan_template as carbon_mrv_monitoring_template_v1400, policies as carbon_mrv_monitoring_policies_v1400, sample_size_plan as carbon_mrv_sample_size_v1400, schema as carbon_mrv_monitoring_schema_v1400, validate_plan as validate_carbon_mrv_monitoring_plan_v1400
 from .webgpu_scientific_renderer_v0870 import WebGPUScientificRendererError, build_compute_plan as build_webgpu_compute_plan_v0870, build_render_plan as build_webgpu_render_plan_v0870, build_workspace as build_webgpu_workspace_v0870, health as webgpu_health_v0870, normalize_compute_dispatch as normalize_webgpu_compute_dispatch_v0870, normalize_render_pass as normalize_webgpu_render_pass_v0870, policies as webgpu_policies_v0870, renderer_descriptor as webgpu_renderer_descriptor_v0870
 from .advanced_scientific_scene_v0880 import AdvancedScientificSceneError, build_render_plan as build_advanced_scene_render_plan_v0880, build_workspace as build_advanced_scene_workspace_v0880, health as advanced_scene_health_v0880, normalize_camera as normalize_advanced_scene_camera_v0880, normalize_light as normalize_advanced_scene_light_v0880, normalize_material as normalize_advanced_scene_material_v0880, normalize_scene as normalize_advanced_scene_v0880, policies as advanced_scene_policies_v0880, scene_descriptor as advanced_scene_descriptor_v0880
 from .probabilistic_analysis import ProbabilisticAnalysisError, analyze as run_probabilistic_analysis, health as probabilistic_analysis_health, normalize_study as normalize_probabilistic_study, policies as probabilistic_analysis_policies
@@ -6475,6 +6476,51 @@ def carbon_mrv_v1300_validate_route(payload: dict[str, Any]):
 @app.post("/v1/carbon-nature/mrv/v1300/protocol/project-packet", dependencies=[Depends(require_compute_auth)])
 def carbon_mrv_v1300_project_packet_route(payload: dict[str, Any]):
     return _carbon_mrv_protocol_call(build_carbon_mrv_protocol_project_packet_v1300, payload)
+
+@app.get("/v1/carbon-nature/mrv/v1400/monitoring/health")
+def carbon_mrv_v1400_health_route():
+    return carbon_mrv_monitoring_health_v1400()
+
+@app.get("/v1/carbon-nature/mrv/v1400/monitoring/schema")
+def carbon_mrv_v1400_schema_route():
+    return carbon_mrv_monitoring_schema_v1400()
+
+@app.get("/v1/carbon-nature/mrv/v1400/monitoring/policies")
+def carbon_mrv_v1400_policies_route():
+    return carbon_mrv_monitoring_policies_v1400()
+
+@app.get("/v1/carbon-nature/mrv/v1400/monitoring/template/{method_key}")
+def carbon_mrv_v1400_template_route(method_key: str):
+    try:
+        return carbon_mrv_monitoring_template_v1400(method_key)
+    except CarbonMRVMonitoringV01400Error as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+def _carbon_mrv_monitoring_call(fn, payload):
+    try:
+        return fn(payload)
+    except CarbonMRVMonitoringV01400Error as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+@app.post("/v1/carbon-nature/mrv/v1400/monitoring/sample-size", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1400_sample_size_route(payload: dict[str, Any]):
+    return _carbon_mrv_monitoring_call(carbon_mrv_sample_size_v1400, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1400/monitoring/strata-allocation", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1400_strata_allocation_route(payload: dict[str, Any]):
+    return _carbon_mrv_monitoring_call(allocate_carbon_mrv_strata_v1400, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1400/monitoring/build", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1400_build_route(payload: dict[str, Any]):
+    return _carbon_mrv_monitoring_call(build_carbon_mrv_monitoring_plan_v1400, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1400/monitoring/validate", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1400_validate_route(payload: dict[str, Any]):
+    return _carbon_mrv_monitoring_call(validate_carbon_mrv_monitoring_plan_v1400, payload)
+
+@app.post("/v1/carbon-nature/mrv/v1400/monitoring/project-packet", dependencies=[Depends(require_compute_auth)])
+def carbon_mrv_v1400_project_packet_route(payload: dict[str, Any]):
+    return _carbon_mrv_monitoring_call(build_carbon_mrv_monitoring_project_packet_v1400, payload)
 
 @app.get("/v1/model-studio/dynamic-systems/v0860/health")
 def system_dynamics_v0860_health_route(): return system_dynamics_health_v0860()
