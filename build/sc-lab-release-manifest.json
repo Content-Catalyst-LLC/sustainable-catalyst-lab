@@ -658,7 +658,7 @@
   "moduleCount": 142,
   "platformVersion": "1.0.0",
   "releaseLine": "Carbon & Nature Intelligence v0.17.0 \u2014 MRV Reporting & Audit Packets",
-  "releaseVersion": "0.100.0",
+  "releaseVersion": "0.101.0",
   "repairLine": "",
   "repairRevision": "",
   "routeAssertions": 991,
@@ -1826,5 +1826,6 @@
     "includes/sc-lab-release-bootstrap.php": "79a5632917c5de5a79fc51654e1a74e6d75a586424a301b0ab6d7dcddd4aee43",
     "sustainable-catalyst-lab.php": "b5ec80e11b9b18e1ed31789988a30615a683ffbc4716e76109f384d8fcc21f84",
     "templates/lab-app.php": "4c9a0f1c5d26572f90c601fb2f5777d913f626f13fc9a641df0c1a6d0610d999"
-  }
+  },
+  "releaseName": "Energy Systems Target-Side Runtime Consumer"
 }
