@@ -1,3 +1,7 @@
+# v0.100.0 — Carbon & Nature v0.17.0 MRV Reporting & Audit Packets
+
+Adds a governed MRV reporting layer with three internal report types, an eight-section internal reporting scaffold, explicit reporting periods, declared metric lineage, deviation tracking, v0.16 verification-ledger chain integration, deterministic report fingerprints, audit-preparation manifests, artifact SHA-256 indexing, internal audit-preparation readiness, and Carbon Project verification-record handoff. Internal readiness does not establish external verification, auditor approval, methodology compliance, certification, or credit eligibility. The host line uses v0.100.0 rather than reusing the repository's historical v1.0.0 identity.
+
 # v0.97.0 — Carbon & Nature v0.14.0 Monitoring Plan & Sampling Designer
 
 Adds governed monitoring campaigns, sampling-frame and sample-unit documentation, five sampling-strategy descriptors, precision-based sample-size planning with optional finite-population correction, equal/proportional/Neyman stratified allocation, SOC depth-interval checks, field/laboratory QA/QC planning, method-documentation gap analysis, deterministic plan fingerprints, and Carbon Project monitoring-record handoff. The designer does not invent coordinates or sampling assumptions and does not infer representativeness, power, methodology compliance, verification, or credit eligibility.

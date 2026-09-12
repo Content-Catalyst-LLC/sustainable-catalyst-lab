@@ -40,7 +40,7 @@ required={
 '/v1/carbon-nature/mrv/v1500/uncertainty/health','/v1/carbon-nature/mrv/v1500/uncertainty/schema','/v1/carbon-nature/mrv/v1500/uncertainty/policies','/v1/carbon-nature/mrv/v1500/uncertainty/budget','/v1/carbon-nature/mrv/v1500/uncertainty/change-detection','/v1/carbon-nature/mrv/v1500/uncertainty/detection-sample-size','/v1/carbon-nature/mrv/v1500/uncertainty/build','/v1/carbon-nature/mrv/v1500/uncertainty/validate','/v1/carbon-nature/mrv/v1500/uncertainty/project-packet',
 '/v1/carbon-nature/mrv/v1400/monitoring/health','/v1/carbon-nature/mrv/v1300/protocol/health','/v1/carbon-nature/mrv/v1200/registry/health','/v1/carbon-nature/ghg/v1100/balance/health','/v1/carbon-nature/soc/v1000/scenarios/project','/v1/carbon-nature/soc/v0900/uncertainty/health','/v1/carbon-nature/soc/v0800/change/compare','/v1/carbon-nature/soc/v0700/sampling/profile-handoff','/v1/carbon-nature/soc/v0600/profile-stock'}
 assert not sorted(required-paths), sorted(required-paths)
-assert len(app.routes)==975, len(app.routes)
+assert len(app.routes)>=975, len(app.routes)
 b=uncertainty_budget({'estimate':100,'unit':'Mg C/ha','coverage_factor':2,'components':[{'component_key':'sampling','standard_uncertainty':3},{'component_key':'laboratory','standard_uncertainty':4}]})
 assert b['combined_standard_uncertainty']==5 and b['expanded_uncertainty']==10 and b['expanded_interval']==[90,110]
 c=change_detection({'design':'paired','observed_change':4,'critical_value':1.96,'sd_change':8,'n_pairs':16})

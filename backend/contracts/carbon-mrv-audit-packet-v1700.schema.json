@@ -1,0 +1,88 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-audit-packet-v1700.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifacts": {
+      "maxItems": 500,
+      "type": "array"
+    },
+    "audit_packet_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "component_index": {
+      "type": "object"
+    },
+    "credit_eligibility": {
+      "type": "null"
+    },
+    "external_audit_status": {
+      "type": "null"
+    },
+    "external_verification_status": {
+      "type": "null"
+    },
+    "guardrails": {
+      "type": "object"
+    },
+    "methodology_compliance": {
+      "type": "null"
+    },
+    "missing_artifact_digests": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "packet_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "project_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "report_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "report_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-audit-packet/0.17.0"
+    },
+    "section_index": {
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready-for-internal-audit-preparation"
+      ]
+    },
+    "unresolved_items": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "audit_packet_id",
+    "status",
+    "project_id",
+    "report_id",
+    "report_fingerprint",
+    "component_index",
+    "section_index",
+    "artifacts",
+    "unresolved_items",
+    "external_audit_status",
+    "external_verification_status",
+    "packet_fingerprint",
+    "guardrails"
+  ],
+  "title": "Sustainable Catalyst Carbon & Nature MRV Audit Packet v0.17.0",
+  "type": "object"
+}

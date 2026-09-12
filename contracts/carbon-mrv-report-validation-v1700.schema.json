@@ -1,0 +1,73 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-report-validation-v1700.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "evidence_chain_checked": {
+      "type": "boolean"
+    },
+    "evidence_chain_valid": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "external_audit_status": {
+      "type": "null"
+    },
+    "external_verification_status": {
+      "type": "null"
+    },
+    "guardrails": {
+      "type": "object"
+    },
+    "missing_core_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "missing_internal_sections": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "missing_verification_ledger_reference": {
+      "type": "boolean"
+    },
+    "ready_for_internal_review": {
+      "type": "boolean"
+    },
+    "report_readiness": {
+      "enum": [
+        "draft-incomplete",
+        "ready-for-internal-review"
+      ]
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-report-validation/0.17.0"
+    },
+    "unresolved_deviation_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "report_readiness",
+    "ready_for_internal_review",
+    "missing_core_fields",
+    "missing_internal_sections",
+    "unresolved_deviation_ids",
+    "missing_verification_ledger_reference",
+    "evidence_chain_checked",
+    "external_verification_status",
+    "external_audit_status",
+    "guardrails"
+  ],
+  "title": "Sustainable Catalyst Carbon & Nature MRV Report Validation v0.17.0",
+  "type": "object"
+}

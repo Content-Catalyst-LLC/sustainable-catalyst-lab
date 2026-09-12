@@ -39,7 +39,7 @@ required={
 '/v1/carbon-nature/mrv/v1400/monitoring/health','/v1/carbon-nature/mrv/v1400/monitoring/schema','/v1/carbon-nature/mrv/v1400/monitoring/policies','/v1/carbon-nature/mrv/v1400/monitoring/template/{method_key}','/v1/carbon-nature/mrv/v1400/monitoring/sample-size','/v1/carbon-nature/mrv/v1400/monitoring/strata-allocation','/v1/carbon-nature/mrv/v1400/monitoring/build','/v1/carbon-nature/mrv/v1400/monitoring/validate','/v1/carbon-nature/mrv/v1400/monitoring/project-packet',
 '/v1/carbon-nature/mrv/v1300/protocol/health','/v1/carbon-nature/mrv/v1200/registry/health','/v1/carbon-nature/ghg/v1100/balance/health','/v1/carbon-nature/soc/v1000/scenarios/project','/v1/carbon-nature/soc/v0900/uncertainty/health','/v1/carbon-nature/soc/v0800/change/compare','/v1/carbon-nature/soc/v0700/sampling/profile-handoff','/v1/carbon-nature/soc/v0600/profile-stock'}
 assert not sorted(required-paths), sorted(required-paths)
-assert len(app.routes)==966, len(app.routes)
+assert len(app.routes)>=966, len(app.routes)
 assert len(plan_template('soc-direct-measurement')['strategy_options'])==5
 ss=sample_size_plan({'expected_sd':12,'z_value':1.96,'target_half_width':4})
 assert ss['unadjusted_sample_size']==35 and ss['recommended_planning_sample_size']==35

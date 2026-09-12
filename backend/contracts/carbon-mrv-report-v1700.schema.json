@@ -1,0 +1,153 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/carbon-mrv-report-v1700.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "deviations": {
+      "maxItems": 100,
+      "type": "array"
+    },
+    "guardrails": {
+      "type": "object"
+    },
+    "methodology_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "monitoring_plan_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "project_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "protocol_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "report_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "report_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "report_type": {
+      "enum": [
+        "monitoring-report",
+        "verification-preparation-report",
+        "project-period-summary"
+      ]
+    },
+    "reported_metrics": {
+      "maxItems": 250,
+      "type": "array"
+    },
+    "reporting_period": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date",
+          "type": "string"
+        },
+        "start": {
+          "format": "date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-carbon-nature-mrv-report/0.17.0"
+    },
+    "sections": {
+      "items": {
+        "properties": {
+          "content": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "section_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "section_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "section_key",
+          "title",
+          "content",
+          "source_refs",
+          "section_fingerprint"
+        ],
+        "type": "object"
+      },
+      "maxItems": 50,
+      "type": "array"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready-for-internal-review"
+      ]
+    },
+    "title": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "uncertainty_assessment_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "verification_evidence": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "report_id",
+    "report_type",
+    "status",
+    "project_id",
+    "title",
+    "reporting_period",
+    "protocol_ref",
+    "monitoring_plan_ref",
+    "uncertainty_assessment_ref",
+    "verification_evidence",
+    "sections",
+    "reported_metrics",
+    "deviations",
+    "report_fingerprint",
+    "guardrails"
+  ],
+  "title": "Sustainable Catalyst Carbon & Nature MRV Report v0.17.0",
+  "type": "object"
+}

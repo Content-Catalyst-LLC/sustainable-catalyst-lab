@@ -1,0 +1,30 @@
+{
+  "domainVersion": "0.17.0",
+  "guardrails": {
+    "auditPacketEqualsAuditorApproval": false,
+    "automaticEvidenceAuthenticityClaim": false,
+    "automaticMetricRecalculation": false,
+    "creditEligibilityDetermination": false,
+    "hiddenExternalReportingRequirements": false,
+    "internalReportReadinessEqualsExternalVerification": false,
+    "methodologyComplianceDetermination": false
+  },
+  "internalSections": [
+    "project-boundary",
+    "methodology",
+    "monitoring",
+    "quantification",
+    "uncertainty",
+    "evidence",
+    "deviations",
+    "summary"
+  ],
+  "labReleaseVersion": "0.100.0",
+  "release": "MRV Reporting & Audit Packets",
+  "reportTypes": [
+    "monitoring-report",
+    "verification-preparation-report",
+    "project-period-summary"
+  ],
+  "schema": "sc-carbon-nature-mrv-reporting-policy/0.17.0"
+}

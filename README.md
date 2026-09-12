@@ -1,7 +1,10 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.97.0 — Carbon & Nature Intelligence v0.14.0, Monitoring Plan & Sampling Designer.**
+**Current release: v0.100.0 — Carbon & Nature Intelligence v0.17.0, MRV Reporting & Audit Packets.**
 
+## v0.100.0 — MRV Reporting & Audit Packets
+
+Carbon & Nature Intelligence v0.17.0 assembles governed MRV components into structured internal reports and deterministic audit-preparation packets. It preserves reporting periods, protocol/monitoring/uncertainty/evidence references, declared metrics, deviations, section fingerprints, supporting-artifact digests, verification-ledger chain status, and Carbon Project provenance. `ready-for-internal-review` and `ready-for-internal-audit-preparation` are internal workflow states only; they do not establish external verification, auditor approval, methodology compliance, certification, or credit eligibility. The active host line deliberately advances to v0.100.0 instead of reusing the repository's historical v1.0.0 identity.
 
 ## v0.97.0 — Monitoring Plan & Sampling Designer
 
