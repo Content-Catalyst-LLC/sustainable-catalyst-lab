@@ -1,3 +1,7 @@
+## 0.102.0 — Energy Modeling & Uncertainty
+
+Energy Systems v1.4.0 seeded uncertainty design and Workbench-result analysis.
+
 # v0.100.0 — Carbon & Nature v0.17.0 MRV Reporting & Audit Packets
 
 Adds a governed MRV reporting layer with three internal report types, an eight-section internal reporting scaffold, explicit reporting periods, declared metric lineage, deviation tracking, v0.16 verification-ledger chain integration, deterministic report fingerprints, audit-preparation manifests, artifact SHA-256 indexing, internal audit-preparation readiness, and Carbon Project verification-record handoff. Internal readiness does not establish external verification, auditor approval, methodology compliance, certification, or credit eligibility. The host line uses v0.100.0 rather than reusing the repository's historical v1.0.0 identity.

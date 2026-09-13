@@ -6756,6 +6756,10 @@ def advanced_scene_v0880_workspace_route(payload: dict[str, Any]):
     except AdvancedScientificSceneError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 
 
-# Energy Systems Intelligence v1.2.0 target-side runtime consumer.
+# Energy Systems Intelligence target-side runtime consumer.
 from .energy_runtime_consumer import router as energy_runtime_consumer_router
 app.include_router(energy_runtime_consumer_router)
+
+# Energy Systems Intelligence v1.4.0 — Energy Modeling & Uncertainty.
+from .energy_modeling_uncertainty import router as energy_modeling_uncertainty_router
+app.include_router(energy_modeling_uncertainty_router)

@@ -6,7 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-CONSUMER_VERSION = '0.101.0'
+CONSUMER_VERSION = '0.102.0'
 TARGET_KEY = 'lab'
 PRODUCT = 'Lab'
 CONSUMER_CONTRACT = 'sc-energy-runtime-lab-handoff/1.0'
@@ -86,6 +86,8 @@ def framework() -> dict[str, Any]:
             "payload_section_validation": True,
             "deterministic_receipt": True,
             "provenance_preservation": True,
+            "energy_modeling_uncertainty_available": True,
+            "energy_modeling_framework_route": "/v1/energy-modeling/framework",
             "automatic_execution": False,
             "persistence": False,
             "credential_forwarding": False,
