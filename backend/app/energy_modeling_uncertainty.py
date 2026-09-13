@@ -14,9 +14,9 @@ from fastapi import APIRouter, HTTPException
 # introducing a second stochastic engine for Energy Systems.
 from .probabilistic_analysis import _transform, _unit_design
 
-LAB_VERSION = "0.102.0"
-ENERGY_SYSTEMS_VERSION = "1.4.0"
-WORKBENCH_VERSION = "6.2.0"
+LAB_VERSION = "0.103.0"
+ENERGY_SYSTEMS_VERSION = "1.6.0"
+WORKBENCH_VERSION = "6.3.0"
 FRAMEWORK_SCHEMA = "sc-energy-modeling-uncertainty-framework/1.0"
 PLAN_SCHEMA = "sc-energy-modeling-uncertainty-plan/1.0"
 ANALYSIS_SCHEMA = "sc-energy-modeling-uncertainty-analysis/1.0"
@@ -26,12 +26,13 @@ WORKBENCH_CONTRACT = "sc-energy-runtime-workbench-handoff/1.0"
 WORKBENCH_RESULT_SCHEMA = "sc-energy-workbench-result-packet/1.0"
 DESIGNS = {"monte-carlo", "latin-hypercube"}
 DISTRIBUTIONS = {"uniform", "normal", "lognormal", "triangular"}
-EXECUTABLE_SECTIONS = {"numeric_registry", "energy_balance", "economics", "bioenergy_and_carbon"}
+EXECUTABLE_SECTIONS = {"numeric_registry", "energy_balance", "economics", "bioenergy_and_carbon", "grid_storage_reliability"}
 SUPPORTED_OPERATIONS = {
     "unit-conversion", "conversion-chain", "supply-demand-balance", "capacity-factor-generation",
     "energy-cost-comparison", "simple-payback", "net-present-value", "cost-benefit", "cost-efficiency",
     "levelized-energy-cost", "feedstock-energy", "anaerobic-digestion-energy", "biochar-carbon",
-    "biomass-to-oil-energy",
+    "biomass-to-oil-energy", "storage-round-trip", "storage-soc-trajectory", "reserve-margin",
+    "peak-demand-coverage", "loss-of-load-events", "energy-not-served", "adequacy-timeseries",
 }
 MAX_VARIABLES = 24
 MAX_SAMPLES = 4096
@@ -260,6 +261,7 @@ def plan(body: dict[str, Any]) -> dict[str, Any]:
         "energy_balance": {"calculation_requests": []},
         "economics": {"calculation_requests": []},
         "bioenergy_and_carbon": {"calculation_requests": []},
+        "grid_storage_reliability": {"calculation_requests": []},
         "provenance": study["provenance"],
         "review": study["review"],
     }
@@ -340,8 +342,9 @@ def analyze(body: dict[str, Any]) -> dict[str, Any]:
     wb = body.get("workbench_result")
     if not isinstance(wb, dict) or wb.get("schema") != WORKBENCH_RESULT_SCHEMA:
         raise EnergyModelingError(f"workbench_result must be a {WORKBENCH_RESULT_SCHEMA} object")
-    if str(wb.get("workbench_version")) != WORKBENCH_VERSION:
-        raise EnergyModelingError(f"workbench_result.workbench_version must be {WORKBENCH_VERSION}")
+    workbench_version = str(wb.get("workbench_version") or "")
+    if workbench_version not in {"6.2.0", WORKBENCH_VERSION}:
+        raise EnergyModelingError(f"workbench_result.workbench_version must be 6.2.0 or {WORKBENCH_VERSION}")
     result_by_id = {str(r.get("request_id")): r for r in wb.get("results", []) if isinstance(r, dict)}
     evaluation_map = plan_obj.get("evaluation_map") or []
     if len(result_by_id) != len(evaluation_map):

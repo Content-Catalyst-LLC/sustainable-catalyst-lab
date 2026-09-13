@@ -6,13 +6,13 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-CONSUMER_VERSION = '0.102.0'
+CONSUMER_VERSION = '0.103.0'
 TARGET_KEY = 'lab'
 PRODUCT = 'Lab'
 CONSUMER_CONTRACT = 'sc-energy-runtime-lab-handoff/1.0'
 HANDOFF_SCHEMA = "sc-energy-runtime-handoff/1.0"
 RECEIPT_SCHEMA = "sc-energy-runtime-consumer-receipt/1.0"
-EXPECTED_SECTIONS = ['identity', 'technologies_and_resources', 'energy_balance', 'economics', 'bioenergy_and_carbon', 'uncertainty', 'provenance', 'review']
+EXPECTED_SECTIONS = ['identity', 'technologies_and_resources', 'energy_balance', 'economics', 'bioenergy_and_carbon', 'grid_storage_reliability', 'uncertainty', 'provenance', 'review']
 BOUNDARY = 'Handoff acceptance does not execute a model, establish scientific validity, or infer missing assumptions.'
 
 router = APIRouter(prefix="/v1/energy-runtime", tags=["energy-runtime-consumer"])
@@ -50,7 +50,9 @@ def _validate(packet: dict[str, Any]) -> tuple[list[str], list[str], list[str], 
         errors.append(f"target.key must be {TARGET_KEY}")
     if target.get("consumer_contract") != CONSUMER_CONTRACT:
         errors.append(f"target.consumer_contract must be {CONSUMER_CONTRACT}")
-    missing_sections = [s for s in EXPECTED_SECTIONS if s not in payload]
+    source_version = str((packet.get("source") or {}).get("version") or "")
+    required_sections = [s for s in EXPECTED_SECTIONS if s != "grid_storage_reliability" or source_version.startswith("1.6.")]
+    missing_sections = [s for s in required_sections if s not in payload]
     if missing_sections:
         errors.append("payload is missing required target section(s): " + ", ".join(missing_sections))
     unexpected_sections = sorted(set(payload) - set(EXPECTED_SECTIONS))
@@ -88,6 +90,8 @@ def framework() -> dict[str, Any]:
             "provenance_preservation": True,
             "energy_modeling_uncertainty_available": True,
             "energy_modeling_framework_route": "/v1/energy-modeling/framework",
+            "energy_reliability_uncertainty_available": True,
+            "energy_reliability_framework_route": "/v1/energy-reliability/framework",
             "automatic_execution": False,
             "persistence": False,
             "credential_forwarding": False,

@@ -6763,3 +6763,7 @@ app.include_router(energy_runtime_consumer_router)
 # Energy Systems Intelligence v1.4.0 — Energy Modeling & Uncertainty.
 from .energy_modeling_uncertainty import router as energy_modeling_uncertainty_router
 app.include_router(energy_modeling_uncertainty_router)
+
+# Energy Systems v1.6.0 — Grid, Storage & Reliability uncertainty routes.
+from .energy_grid_reliability import router as energy_grid_reliability_router
+app.include_router(energy_grid_reliability_router)
