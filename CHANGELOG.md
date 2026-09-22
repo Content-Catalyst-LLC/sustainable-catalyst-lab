@@ -1,3 +1,13 @@
+# v0.113.0 — Unified Research Session Production Runtime
+
+- Adds deterministic production operation envelopes across fourteen existing Core-facing integration operation families.
+- Adds request hashes, default idempotency keys, correlation references, explicit non-authorized submission plans, and idempotency conflict/replay checks.
+- Adds declared receipts; HTTP status alone never establishes production success.
+- Adds advisory retry and recovery planning without automatic resubmission or conflict resolution.
+- Adds project/session checkpoints, continuity checks, retained-component diagnostics, Core >=3.0.0 readiness checks, and explicit round-trip planning/assessment.
+- Preserves Core as session/reference authority and Lab as scientific execution authority.
+- Does not automatically mutate Core, retry/recover, execute science, certify scientific validity/product quality, or determine truth.
+
 # v0.111.0 — Scientific Investigation Runtime Integration
 
 - Adds a reference-first Platform Core v3 scientific investigation binding bridge across evidence, claims, hypotheses, experiments, models, executions, visuals, validations, packages, protocols, datasets, and sources.

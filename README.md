@@ -1,3 +1,7 @@
+## v0.113.0 — Unified Research Session Production Runtime
+
+Lab v0.113.0 production-hardens the completed Platform Core v3 integration stack with deterministic operation/idempotency identity, explicit submission plans, declared receipts, advisory retries, recovery plans, checkpoints, continuity checks, diagnostics, readiness, and end-to-end research-session round-trip assessment. Core remains the session/reference authority and Lab remains the scientific execution authority; the runtime does not automatically submit, retry, recover, execute science, certify science/product quality, or determine truth.
+
 ## v0.111.0 — Scientific Investigation Runtime Integration
 
 Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference-first investigation runtime while preserving Lab as the underlying scientific investigation authority. Core records investigation identity and explicit evidence/claim/hypothesis references; related executions, visuals, validation records, packages, models, datasets, protocols, and sources remain specialist-layer references. The bridge does not run investigations, infer findings, rank evidence, resolve contradictions, select hypotheses, infer causality, certify scientific validity, or determine truth.

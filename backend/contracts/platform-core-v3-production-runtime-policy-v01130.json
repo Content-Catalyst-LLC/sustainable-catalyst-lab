@@ -1,0 +1,44 @@
+{
+  "schema": "sc-lab-platform-core-v3-production-runtime-policy/0.113.0",
+  "release": "0.113.0",
+  "minimum_core_release": "3.0.0",
+  "product_ref": "product:sustainable-catalyst-lab",
+  "core_runtime_contract": "sc.research.unified-research-scientific-investigation-runtime.v1",
+  "core_certification_contract": "sc.research.platform-integration-certification.v1",
+  "integration_components": {
+    "runtime-adapter": "0.104.0",
+    "object-mapping": "0.105.0",
+    "research-context": "0.106.0",
+    "execution-lineage": "0.107.0",
+    "research-intelligence": "0.108.0",
+    "visual-scene": "0.109.0",
+    "scholarly-package": "0.110.0",
+    "scientific-investigation": "0.111.0",
+    "integration-certification": "0.112.0"
+  },
+  "operational_guarantees": {
+    "deterministic_request_hashes": true,
+    "deterministic_default_idempotency_keys": true,
+    "explicit_receipts": true,
+    "declared_outcomes_only": true,
+    "context_continuity_checks": true,
+    "component_readiness_checks": true,
+    "explicit_retry_plans": true,
+    "explicit_recovery_plans": true,
+    "checkpoint_envelopes": true
+  },
+  "boundaries": {
+    "core_remains_session_reference_authority": true,
+    "lab_remains_scientific_execution_authority": true,
+    "automatic_core_submission": false,
+    "automatic_retry": false,
+    "automatic_recovery": false,
+    "automatic_core_mutation": false,
+    "automatic_scientific_execution": false,
+    "automatic_scientific_certification": false,
+    "automatic_product_quality_certification": false,
+    "automatic_truth_determination": false,
+    "status_code_success_inference": false,
+    "authorization_material_embedded_in_plans": false
+  }
+}

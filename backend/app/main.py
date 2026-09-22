@@ -101,6 +101,7 @@ from .platform_core_v3_visual_scene_v01090 import PlatformCoreV3VisualSceneError
 from .platform_core_v3_scholarly_package_v01100 import PlatformCoreV3ScholarlyPackageError, bridge_citations as bridge_core_v3_citations, bridge_datasets_notebooks as bridge_core_v3_descriptors, build_core_package_binding as build_core_v3_package_binding, build_provenance_manifest as build_core_v3_provenance_manifest, build_publication_binding as build_core_v3_publication_binding, build_scholarly_interoperability_plan as build_core_v3_scholarly_plan, build_scholarly_package_envelope as build_core_v3_scholarly_package, build_validation_record as build_core_v3_scholarly_validation, health as core_v3_scholarly_package_health, manifest as core_v3_scholarly_package_manifest, map_legacy_package as map_core_v3_legacy_package, normalize_package as normalize_core_v3_package
 from .platform_core_v3_scientific_investigation_v01110 import PlatformCoreV3ScientificInvestigationError, bridge_evidence_context as bridge_core_v3_investigation_evidence, bridge_reasoning_context as bridge_core_v3_investigation_reasoning, bridge_scientific_assets as bridge_core_v3_investigation_assets, build_core_investigation_binding as build_core_v3_investigation_binding, build_runtime_integration_plan as build_core_v3_investigation_plan, check_investigation_continuity as check_core_v3_investigation_continuity, health as core_v3_scientific_investigation_health, manifest as core_v3_scientific_investigation_manifest, map_legacy_argumentation_case as map_core_v3_legacy_argumentation_case, map_legacy_scientific_study as map_core_v3_legacy_scientific_study, normalize_investigation as normalize_core_v3_scientific_investigation
 from .platform_core_v3_integration_certification_v01120 import PlatformCoreV3IntegrationCertificationError, assess_roundtrip as assess_core_v3_integration_roundtrip, build_case_plans as build_core_v3_certification_cases, build_case_result_plan as build_core_v3_certification_case_result, build_evidence_plan as build_core_v3_certification_evidence, build_exchange_check_plan as build_core_v3_certification_exchange, build_finding_plan as build_core_v3_certification_finding, build_full_submission_plan as build_core_v3_certification_full_plan, build_product_plan as build_core_v3_certification_product, build_reproduction_check_plan as build_core_v3_certification_reproduction, build_run_plan as build_core_v3_certification_run, build_suite_plan as build_core_v3_certification_suite, build_trace_check_plan as build_core_v3_certification_trace, catalog as core_v3_integration_certification_catalog, compatibility_report as core_v3_integration_certification_compatibility, health as core_v3_integration_certification_health, manifest as core_v3_integration_certification_manifest
+from .platform_core_v3_production_runtime_v01130 import PlatformCoreV3ProductionRuntimeError, assess_diagnostics as assess_core_v3_production_diagnostics, assess_roundtrip as assess_core_v3_production_roundtrip, build_checkpoint as build_core_v3_production_checkpoint, build_receipt as build_core_v3_production_receipt, build_recovery_plan as build_core_v3_production_recovery, build_retry_plan as build_core_v3_production_retry, build_roundtrip_plan as build_core_v3_production_roundtrip_plan, build_submission_plan as build_core_v3_production_submission_plan, catalog as core_v3_production_runtime_catalog, check_continuity as check_core_v3_production_continuity, check_idempotency as check_core_v3_production_idempotency, check_readiness as check_core_v3_production_readiness, health as core_v3_production_runtime_health, manifest as core_v3_production_runtime_manifest, normalize_operation as normalize_core_v3_production_operation
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7315,4 +7316,81 @@ def platform_core_v3_integration_certification_compatibility(payload: dict):
 def platform_core_v3_integration_certification_full(payload: dict):
     try: return build_core_v3_certification_full_plan(payload)
     except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+# Lab v0.113.0 — Unified Research Session Production Runtime
+@app.get("/v1/platform-core-v3-production-runtime/health")
+def platform_core_v3_production_runtime_health():
+    return core_v3_production_runtime_health()
+
+@app.get("/v1/platform-core-v3-production-runtime/manifest")
+def platform_core_v3_production_runtime_manifest():
+    return core_v3_production_runtime_manifest()
+
+@app.get("/v1/platform-core-v3-production-runtime/schema")
+def platform_core_v3_production_runtime_schema():
+    return {"ok": True, "version": "0.113.0", "minimum_core_release": "3.0.0", "core_runtime_contract": "sc.research.unified-research-scientific-investigation-runtime.v1", "explicit_submission_plans_only": True, "automatic_core_submission": False, "automatic_retry": False, "automatic_recovery": False, "automatic_scientific_execution": False, "automatic_scientific_certification": False, "automatic_truth_determination": False}
+
+@app.get("/v1/platform-core-v3-production-runtime/catalog")
+def platform_core_v3_production_runtime_catalog():
+    return core_v3_production_runtime_catalog()
+
+@app.post("/v1/platform-core-v3-production-runtime/operations/normalize")
+def platform_core_v3_production_runtime_normalize(payload: dict):
+    try: return normalize_core_v3_production_operation(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/submissions/plan")
+def platform_core_v3_production_runtime_submission(payload: dict):
+    try: return build_core_v3_production_submission_plan(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/idempotency/check")
+def platform_core_v3_production_runtime_idempotency(payload: dict):
+    try: return check_core_v3_production_idempotency(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/receipts/build")
+def platform_core_v3_production_runtime_receipt(payload: dict):
+    try: return build_core_v3_production_receipt(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/retries/plan")
+def platform_core_v3_production_runtime_retry(payload: dict):
+    try: return build_core_v3_production_retry(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/recovery/plan")
+def platform_core_v3_production_runtime_recovery(payload: dict):
+    try: return build_core_v3_production_recovery(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/checkpoints/build")
+def platform_core_v3_production_runtime_checkpoint(payload: dict):
+    try: return build_core_v3_production_checkpoint(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/continuity/check")
+def platform_core_v3_production_runtime_continuity(payload: dict):
+    try: return check_core_v3_production_continuity(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/diagnostics/assess")
+def platform_core_v3_production_runtime_diagnostics(payload: dict):
+    try: return assess_core_v3_production_diagnostics(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/readiness/check")
+def platform_core_v3_production_runtime_readiness(payload: dict):
+    try: return check_core_v3_production_readiness(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/roundtrip/plan")
+def platform_core_v3_production_runtime_roundtrip_plan(payload: dict):
+    try: return build_core_v3_production_roundtrip_plan(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-production-runtime/roundtrip/assess")
+def platform_core_v3_production_runtime_roundtrip_assess(payload: dict):
+    try: return assess_core_v3_production_roundtrip(payload)
+    except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

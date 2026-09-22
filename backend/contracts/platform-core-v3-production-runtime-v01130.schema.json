@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/platform-core-v3-production-runtime-v01130.schema.json",
+  "title": "Sustainable Catalyst Lab v0.113.0 Unified Research Session Production Runtime",
+  "type": "object",
+  "required": ["operation_type", "context", "payload"],
+  "properties": {
+    "operation_type": {
+      "type": "string",
+      "enum": [
+        "session-registration",
+        "product-context-binding",
+        "object-binding",
+        "execution-binding",
+        "finding-binding",
+        "claim-binding",
+        "evidence-link-binding",
+        "validation-challenge-binding",
+        "replication-binding",
+        "visual-binding",
+        "package-binding",
+        "investigation-binding",
+        "handoff-binding",
+        "certification-plan"
+      ]
+    },
+    "context": {"type": "object"},
+    "payload": {"type": "object"},
+    "operation_ref": {"type": "string"},
+    "idempotency_key": {"type": "string"},
+    "correlation_ref": {"type": "string"},
+    "attempt": {"type": "integer", "minimum": 1, "maximum": 100}
+  },
+  "additionalProperties": true,
+  "x-sustainable-catalyst": {
+    "release": "0.113.0",
+    "minimum_core_release": "3.0.0",
+    "core_runtime_contract": "sc.research.unified-research-scientific-investigation-runtime.v1",
+    "production_semantics": "explicit-plan-receipt-recovery-control-plane",
+    "automatic_core_submission": false,
+    "automatic_retry": false,
+    "automatic_recovery": false,
+    "automatic_scientific_execution": false,
+    "automatic_scientific_certification": false,
+    "automatic_truth_determination": false
+  }
+}
