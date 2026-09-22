@@ -1,0 +1,20 @@
+{
+  "boundaries": {
+    "automaticCoreSubmission": false,
+    "coreCertifiesReproducibility": false,
+    "coreDeterminesTruth": false,
+    "coreExecutesNotebooks": false,
+    "coreInfersAuthorship": false,
+    "coreMintsIdentifiers": false,
+    "corePublishesPackages": false,
+    "coreResolvesCitations": false,
+    "coreTransformsDatasets": false,
+    "coreValidatesScientificContent": false,
+    "labIsUnderlyingPackageAuthority": true
+  },
+  "coreScholarlyContract": "sc.research.scholarly-interoperability-packaging.v1",
+  "coreUnifiedRuntimeContract": "sc.research.unified-research-scientific-investigation-runtime.v1",
+  "minimumCoreRelease": "3.0.0",
+  "schema": "sc-lab-platform-core-v3-reproducibility-scholarly-package-policy/0.110.0",
+  "version": "0.110.0"
+}

@@ -1004,3 +1004,7 @@ Adds explicit seeded Energy Systems uncertainty planning and analysis around Wor
 
 ### Platform Core integration — v0.107.0
 Lab can emit reference-first Platform Core v3 scientific execution lineage envelopes while preserving Lab as the authoritative computation layer. The bridge records runtime/method/environment, input/output references, parameters, assumptions, deterministic hashes, and project/session provenance without automatically executing work or mutating Core.
+
+
+### Platform Core integration — v0.110.0
+Lab now bridges reproducibility packages, scholarly publications, citations, dataset/notebook descriptors, provenance manifests, publication bindings, and declared interoperability validation evidence into Platform Core v3 while preserving Lab as the authority for the underlying scientific package and without automatic publication or reproducibility certification.

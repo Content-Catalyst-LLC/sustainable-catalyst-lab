@@ -1,0 +1,25 @@
+{
+  "$id": "https://sustainablecatalyst.com/schemas/sc-lab-platform-core-v3-reproducibility-scholarly-package-v01100.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "context": {
+      "type": "object"
+    },
+    "core_package_id": {
+      "type": "string"
+    },
+    "package": {
+      "type": "object"
+    },
+    "validation": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "context",
+    "package"
+  ],
+  "title": "Sustainable Catalyst Lab Platform Core v3 Reproducibility & Scholarly Package Bridge",
+  "type": "object"
+}

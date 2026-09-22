@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.110.0 — Reproducibility & Scholarly Package Bridge
+
+- Added Core v3 unified-runtime package bindings for Lab reproducibility packages, scholarly publications, and research compendia.
+- Added Core scholarly-interoperability package envelopes and ordered operation plans for declared citations, datasets/notebooks, provenance manifests, publication bindings, and interoperability validation records.
+- Added legacy mapping for Lab v0.28.2 reproducible runs, v0.37 publication/reproducibility packages, v0.37.1 manuscript assemblies, and v0.50 reproducible model packages.
+- Preserved Lab authority over underlying package bytes, scientific artifacts, execution, and reproducibility evidence.
+- Core does not mint identifiers, publish packages, resolve citations, execute notebooks, transform datasets, certify reproducibility, validate scientific content, infer authorship, or determine truth.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); release verification targets required v0.110 behavior rather than a global route total.
+
 ## 0.109.0 — Visual Reasoning & Scientific Scene Bridge
 
 - Added Core v3 visual-binding envelopes for Lab scientific figures, scenes, linked views, uncertainty views, renderer plans, dashboards, and visual explanations.
@@ -336,6 +345,15 @@ Adds governed aggregate-effect synthesis, replication assessment, fixed/random-e
 
 # Changelog
 
+## 0.110.0 — Reproducibility & Scholarly Package Bridge
+
+- Added Core v3 unified-runtime package bindings for Lab reproducibility packages, scholarly publications, and research compendia.
+- Added Core scholarly-interoperability package envelopes and ordered operation plans for declared citations, datasets/notebooks, provenance manifests, publication bindings, and interoperability validation records.
+- Added legacy mapping for Lab v0.28.2 reproducible runs, v0.37 publication/reproducibility packages, v0.37.1 manuscript assemblies, and v0.50 reproducible model packages.
+- Preserved Lab authority over underlying package bytes, scientific artifacts, execution, and reproducibility evidence.
+- Core does not mint identifiers, publish packages, resolve citations, execute notebooks, transform datasets, certify reproducibility, validate scientific content, infer authorship, or determine truth.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); release verification targets required v0.110 behavior rather than a global route total.
+
 ## 0.86.0 — System Dynamics, Feedback Loops & Stock-Flow Modeling
 - Added governed causal-loop and stock-flow modeling with reinforcing/balancing loop detection.
 - Added Euler/RK4 scenario simulation, structural leverage indicators, WordPress proxy routes, and Model Studio UI.
@@ -595,6 +613,15 @@ Adds governed aggregate-effect synthesis, replication assessment, fixed/random-e
 
 # Changelog
 
+## 0.110.0 — Reproducibility & Scholarly Package Bridge
+
+- Added Core v3 unified-runtime package bindings for Lab reproducibility packages, scholarly publications, and research compendia.
+- Added Core scholarly-interoperability package envelopes and ordered operation plans for declared citations, datasets/notebooks, provenance manifests, publication bindings, and interoperability validation records.
+- Added legacy mapping for Lab v0.28.2 reproducible runs, v0.37 publication/reproducibility packages, v0.37.1 manuscript assemblies, and v0.50 reproducible model packages.
+- Preserved Lab authority over underlying package bytes, scientific artifacts, execution, and reproducibility evidence.
+- Core does not mint identifiers, publish packages, resolve citations, execute notebooks, transform datasets, certify reproducibility, validate scientific content, infer authorship, or determine truth.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); release verification targets required v0.110 behavior rather than a global route total.
+
 ## 0.39.0 — Institutional Administration, Identity, and Governance
 
 - Added institutional, organizational-unit, human-principal, and credential-free service-principal registries.
@@ -612,6 +639,15 @@ Adds governed aggregate-effect synthesis, replication assessment, fixed/random-e
 - Added a WordPress Public Research Integration Studio and health/catalog routes.
 
 # Changelog
+
+## 0.110.0 — Reproducibility & Scholarly Package Bridge
+
+- Added Core v3 unified-runtime package bindings for Lab reproducibility packages, scholarly publications, and research compendia.
+- Added Core scholarly-interoperability package envelopes and ordered operation plans for declared citations, datasets/notebooks, provenance manifests, publication bindings, and interoperability validation records.
+- Added legacy mapping for Lab v0.28.2 reproducible runs, v0.37 publication/reproducibility packages, v0.37.1 manuscript assemblies, and v0.50 reproducible model packages.
+- Preserved Lab authority over underlying package bytes, scientific artifacts, execution, and reproducibility evidence.
+- Core does not mint identifiers, publish packages, resolve citations, execute notebooks, transform datasets, certify reproducibility, validate scientific content, infer authorship, or determine truth.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); release verification targets required v0.110 behavior rather than a global route total.
 
 ## 0.38.1 — Typed Cross-Product Research Handoffs
 
