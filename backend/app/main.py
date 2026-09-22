@@ -104,6 +104,7 @@ from .platform_core_v3_integration_certification_v01120 import PlatformCoreV3Int
 from .platform_core_v3_production_runtime_v01130 import PlatformCoreV3ProductionRuntimeError, assess_diagnostics as assess_core_v3_production_diagnostics, assess_roundtrip as assess_core_v3_production_roundtrip, build_checkpoint as build_core_v3_production_checkpoint, build_receipt as build_core_v3_production_receipt, build_recovery_plan as build_core_v3_production_recovery, build_retry_plan as build_core_v3_production_retry, build_roundtrip_plan as build_core_v3_production_roundtrip_plan, build_submission_plan as build_core_v3_production_submission_plan, catalog as core_v3_production_runtime_catalog, check_continuity as check_core_v3_production_continuity, check_idempotency as check_core_v3_production_idempotency, check_readiness as check_core_v3_production_readiness, health as core_v3_production_runtime_health, manifest as core_v3_production_runtime_manifest, normalize_operation as normalize_core_v3_production_operation
 from .scientific_visualization_design_system_v01140 import VisualizationDesignSystemError, accessibility_metadata as visualization_design_accessibility, apply_profile as visualization_design_apply_profile, audit_figure as visualization_design_audit, build_annotation_plan as visualization_design_annotations, build_export_plan as visualization_design_export_plan, build_publication_figure as visualization_design_publication_figure, catalog as visualization_design_catalog, compose_small_multiples as visualization_design_small_multiples, core_visual_plan as visualization_design_core_visual_plan, design_tokens as visualization_design_tokens, health as visualization_design_health, manifest as visualization_design_manifest, normalize_figure as visualization_design_normalize, renderer_plan as visualization_design_renderer_plan, style_uncertainty as visualization_design_uncertainty
 from .advanced_statistical_uncertainty_graphics_v01150 import AdvancedStatisticalGraphicsError, build_calibration_figure as advanced_stats_calibration, build_coefficient_forest as advanced_stats_coefficients, build_coverage_figure as advanced_stats_coverage, build_distribution_figure as advanced_stats_distribution_figure, build_fan_chart as advanced_stats_fan_chart, build_interval_figure as advanced_stats_interval, build_posterior_figure as advanced_stats_posterior, build_publication_figure as advanced_stats_publication, build_qq_figure as advanced_stats_qq, build_residual_diagnostics as advanced_stats_residuals, build_sensitivity_figure as advanced_stats_sensitivity, build_uncertainty_decomposition as advanced_stats_decomposition, catalog as advanced_stats_catalog, compose_statistical_small_multiples as advanced_stats_small_multiples, explicit_kde as advanced_stats_kde, health as advanced_stats_health, manifest as advanced_stats_manifest, normalize_distribution as advanced_stats_normalize_distribution
+from .interactive_scientific_dashboards_v01160 import InteractiveDashboardError, accessibility_audit as interactive_dashboards_accessibility, build_filter_state as interactive_dashboards_filter_state, build_publication_dashboard as interactive_dashboards_publication, catalog as interactive_dashboards_catalog, compose_small_multiples as interactive_dashboards_small_multiples, core_visual_plan as interactive_dashboards_core_visual_plan, export_plan as interactive_dashboards_export_plan, health as interactive_dashboards_health, manifest as interactive_dashboards_manifest, normalize_control as interactive_dashboards_normalize_control, normalize_dashboard as interactive_dashboards_normalize, normalize_link as interactive_dashboards_normalize_link, propagate_interaction as interactive_dashboards_propagate, provenance_trace as interactive_dashboards_provenance, restore_plan as interactive_dashboards_restore_plan, schema_info as interactive_dashboards_schema, snapshot_state as interactive_dashboards_snapshot, synchronize_scales as interactive_dashboards_sync_scales
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7551,3 +7552,87 @@ def advanced_statistical_uncertainty_graphics_small_multiples(payload: dict):
 def advanced_statistical_uncertainty_graphics_publication(payload: dict):
     try: return advanced_stats_publication(payload)
     except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.116.0 — Interactive Scientific Dashboards & Small Multiples
+@app.get("/v1/interactive-scientific-dashboards/health")
+def interactive_scientific_dashboards_health(): return interactive_dashboards_health()
+
+@app.get("/v1/interactive-scientific-dashboards/manifest")
+def interactive_scientific_dashboards_manifest(): return interactive_dashboards_manifest()
+
+@app.get("/v1/interactive-scientific-dashboards/catalog")
+def interactive_scientific_dashboards_catalog(): return interactive_dashboards_catalog()
+
+@app.get("/v1/interactive-scientific-dashboards/schema")
+def interactive_scientific_dashboards_schema(): return interactive_dashboards_schema()
+
+@app.post("/v1/interactive-scientific-dashboards/dashboard/normalize")
+def interactive_scientific_dashboards_normalize(payload: dict):
+    try: return interactive_dashboards_normalize(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/controls/normalize")
+def interactive_scientific_dashboards_control(payload: dict):
+    try: return {"ok":True,"control":interactive_dashboards_normalize_control(payload)}
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/links/normalize")
+def interactive_scientific_dashboards_link(payload: dict):
+    try: return {"ok":True,"link":interactive_dashboards_normalize_link(payload)}
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/small-multiples/compose")
+def interactive_scientific_dashboards_small_multiples(payload: dict):
+    try: return interactive_dashboards_small_multiples(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/interactions/propagate")
+def interactive_scientific_dashboards_interaction(payload: dict):
+    try: return interactive_dashboards_propagate(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/filters/state")
+def interactive_scientific_dashboards_filters(payload: dict):
+    try: return interactive_dashboards_filter_state(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/scales/synchronize")
+def interactive_scientific_dashboards_scales(payload: dict):
+    try: return interactive_dashboards_sync_scales(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/state/snapshot")
+def interactive_scientific_dashboards_snapshot(payload: dict):
+    try: return interactive_dashboards_snapshot(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/state/restore-plan")
+def interactive_scientific_dashboards_restore(payload: dict):
+    try: return interactive_dashboards_restore_plan(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/provenance/trace")
+def interactive_scientific_dashboards_provenance(payload: dict):
+    try: return interactive_dashboards_provenance(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/accessibility/audit")
+def interactive_scientific_dashboards_accessibility(payload: dict):
+    try: return interactive_dashboards_accessibility(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/export/plan")
+def interactive_scientific_dashboards_export(payload: dict):
+    try: return interactive_dashboards_export_plan(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/publication/build")
+def interactive_scientific_dashboards_publication(payload: dict):
+    try: return interactive_dashboards_publication(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/interactive-scientific-dashboards/core-visual/plan")
+def interactive_scientific_dashboards_core_visual(payload: dict):
+    try: return interactive_dashboards_core_visual_plan(payload)
+    except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

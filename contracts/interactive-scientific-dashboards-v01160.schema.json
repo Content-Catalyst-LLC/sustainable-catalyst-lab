@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/interactive-scientific-dashboards-v01160.schema.json",
+  "title": "Sustainable Catalyst Lab Interactive Scientific Dashboards & Small Multiples v0.116.0",
+  "type": "object",
+  "required": [
+    "panels"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "panels": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 48,
+      "items": {
+        "type": "object"
+      }
+    },
+    "controls": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object"
+      }
+    },
+    "links": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object"
+      }
+    },
+    "layout": {
+      "type": "object"
+    },
+    "shared_context": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

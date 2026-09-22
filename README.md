@@ -1,3 +1,8 @@
+
+## v0.116.0 — Interactive Scientific Dashboards & Small Multiples
+
+Adds coordinated multi-panel scientific dashboards with declared linked brushing/selection/filtering, responsive small multiples, explicit scale synchronization, deterministic dashboard state snapshots, restore planning, provenance tracing, accessibility auditing, publication export planning, and renderer-neutral Core visual plans. The dashboard layer does not infer cross-dataset joins, statistical conclusions, scientific validity, or truth.
+
 ## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
 
 Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.

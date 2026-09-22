@@ -1,3 +1,12 @@
+# v0.116.0 — Interactive Scientific Dashboards & Small Multiples
+
+- Added governed interactive scientific dashboard composition with up to 48 panels.
+- Added linked brushing, selection, filtering, cursor, parameter, state-axis, and time-window interaction channels.
+- Added responsive small multiples and explicit declared-domain scale synchronization.
+- Added deterministic dashboard state snapshots and explicit restore plans.
+- Added dashboard provenance traces, accessibility audits, publication export plans, and Core visual binding plans.
+- Preserved Lab scientific authority and prohibited automatic joins, query execution, Core submission, scientific certification, and truth inference.
+
 # v0.115.0 — Advanced Statistical & Uncertainty Graphics
 
 - Added 16 publication-grade statistical and uncertainty figure families.

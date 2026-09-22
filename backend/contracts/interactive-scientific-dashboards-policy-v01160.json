@@ -1,0 +1,30 @@
+{
+  "schema": "sc-lab-interactive-scientific-dashboards-policy/0.116.0",
+  "version": "0.116.0",
+  "authority": {
+    "dashboard_composition": "lab",
+    "scientific_execution": "lab",
+    "core_visual_identity": "platform-core-reference-only"
+  },
+  "limits": {
+    "panels": 48,
+    "links": 256,
+    "controls": 64,
+    "selection_values": 10000
+  },
+  "requires": {
+    "declared_link_semantics": true,
+    "declared_scale_domains_for_synchronization": true,
+    "explicit_state_restore": true
+  },
+  "forbids": {
+    "automatic_link_inference": true,
+    "automatic_scale_domain_inference": true,
+    "automatic_cross_dataset_join": true,
+    "automatic_query_execution": true,
+    "automatic_state_persistence": true,
+    "automatic_core_submission": true,
+    "automatic_scientific_validity_certification": true,
+    "automatic_truth_determination": true
+  }
+}
