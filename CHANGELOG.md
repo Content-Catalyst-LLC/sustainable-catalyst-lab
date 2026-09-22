@@ -1,3 +1,14 @@
+## 0.106.0 — Unified Project & Research Session Context
+
+- Added canonical Lab project/session context normalization with stable context references and hashes.
+- Added Core v3 session-registration and Lab product-context binding envelopes.
+- Added context-aware Lab object bindings and cross-product handoff bindings.
+- Added researcher, agent, contributor, workflow, and project-state context propagation.
+- Added project/session continuity validation without inference or automatic Core mutation.
+- Core compatibility is minimum-version based (>=3.0.0); global FastAPI route counts are informational, not release gates.
+- Execution lineage remains intentionally deferred to Lab v0.107.0.
+- Corrected WordPress Core-integration health checks so they validate WordPress-shipped contracts/includes rather than backend-only Python files.
+
 # Changelog
 
 ## 0.105.0 — Canonical Research Object Mapping

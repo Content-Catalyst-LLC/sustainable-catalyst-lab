@@ -98,7 +98,6 @@ final class SC_Lab_Platform_Core_V3_Adapter_V01040 {
 
     public static function health() {
         $required = array(
-            'backend/app/platform_core_v3_adapter_v01040.py',
             'contracts/platform-core-v3-runtime-adapter-v01040.schema.json',
             'contracts/platform-core-v3-runtime-adapter-policy-v01040.json',
             'includes/class-sc-lab-platform-core-v3-adapter-v01040.php',

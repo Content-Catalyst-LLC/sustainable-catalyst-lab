@@ -94,6 +94,7 @@ from .research_interoperability import InteroperabilityError, ResearchInteropera
 from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
 from .platform_core_v3_adapter_v01040 import PlatformCoreV3AdapterError, build_contract_product_registration as build_core_v3_contract_registration, build_session_product_binding as build_core_v3_session_product_binding, compatibility_report as core_v3_compatibility_report, health as core_v3_adapter_health, manifest as core_v3_adapter_manifest, normalize_runtime_context as normalize_core_v3_runtime_context, validate_handoff as validate_core_v3_handoff
 from .platform_core_v3_object_mapping_v01050 import PlatformCoreV3ObjectMappingError, build_core_object_binding as build_core_v3_object_binding, build_core_object_binding_batch as build_core_v3_object_binding_batch, catalog as core_v3_object_mapping_catalog, health as core_v3_object_mapping_health, map_legacy_typed_handoff as map_core_v3_legacy_typed_handoff, normalize_object as normalize_core_v3_object
+from .platform_core_v3_research_context_v01060 import PlatformCoreV3ResearchContextError, build_contextual_handoff_binding as build_core_v3_contextual_handoff_binding, build_contextual_object_binding as build_core_v3_contextual_object_binding, build_core_product_context_binding as build_core_v3_product_context_binding, build_core_session_registration as build_core_v3_session_registration, check_context_continuity as check_core_v3_context_continuity, health as core_v3_research_context_health, manifest as core_v3_research_context_manifest, normalize_research_context as normalize_core_v3_research_context
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -4935,6 +4936,62 @@ def platform_core_v3_object_batch_route(payload: dict[str, Any], auth: dict[str,
 def platform_core_v3_legacy_handoff_object_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return map_core_v3_legacy_typed_handoff(payload)
     except PlatformCoreV3ObjectMappingError as exc: raise _platform_core_v3_object_mapping_http_error(exc) from exc
+
+# v0.106.0 Unified Project & Research Session Context
+def _platform_core_v3_research_context_http_error(exc: PlatformCoreV3ResearchContextError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/platform-core-v3-context/health")
+def platform_core_v3_research_context_health_route():
+    body = core_v3_research_context_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-context/manifest")
+def platform_core_v3_research_context_manifest_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = core_v3_research_context_manifest(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-context/schema")
+def platform_core_v3_research_context_schema_route():
+    return {
+        "ok": True,
+        "version": "0.106.0",
+        "contextSchema": "sc-lab-platform-core-v3-research-context/0.106.0",
+        "minimumCoreRelease": "3.0.0",
+        "sessionPath": "/v1/research/unified-runtime/sessions",
+        "productBindingPath": "/v1/research/unified-runtime/product-bindings",
+        "objectBindingPath": "/v1/research/unified-runtime/object-bindings",
+        "handoffBindingPath": "/v1/research/unified-runtime/handoff-bindings",
+    }
+
+@app.post("/v1/platform-core-v3-context/normalize")
+def platform_core_v3_research_context_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_research_context(payload)
+    except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-context/sessions/build")
+def platform_core_v3_research_session_build_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_session_registration(payload)
+    except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-context/products/bind")
+def platform_core_v3_product_context_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_product_context_binding(payload)
+    except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-context/objects/bind")
+def platform_core_v3_contextual_object_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_contextual_object_binding(payload)
+    except (PlatformCoreV3ResearchContextError, PlatformCoreV3ObjectMappingError) as exc:
+        detail = getattr(exc, "detail", str(exc)); status = getattr(exc, "status_code", 400); raise HTTPException(status_code=status, detail=detail) from exc
+
+@app.post("/v1/platform-core-v3-context/handoffs/bind")
+def platform_core_v3_contextual_handoff_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_contextual_handoff_binding(payload)
+    except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-context/continuity/check")
+def platform_core_v3_context_continuity_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return check_core_v3_context_continuity(payload)
+    except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")

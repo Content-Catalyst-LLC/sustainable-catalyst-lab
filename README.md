@@ -1,5 +1,10 @@
 # Sustainable Catalyst Lab
 
+## v0.106.0 — Unified Project & Research Session Context
+
+Adds a Platform Core v3 context bridge for canonical project/session identity, Core session-registration envelopes, per-session Lab product bindings, context-aware object and handoff bindings, researcher/agent/contributor context, and continuity validation. Core remains the session-registry authority; Lab remains the scientific-workspace and compute authority. All Core writes remain explicit/non-submitting. Minimum compatible Core release is 3.0.0; newer compatible Core v3 releases are accepted.
+
+
 **Current release: v0.105.0 — Canonical Research Object Mapping.**
 
 ## v0.105.0 — Canonical Research Object Mapping

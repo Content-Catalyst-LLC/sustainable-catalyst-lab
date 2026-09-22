@@ -1,0 +1,18 @@
+{
+  "schema": "sc-lab-platform-core-v3-research-context-policy/0.106.0",
+  "release": "0.106.0",
+  "minimumCoreRelease": "3.0.0",
+  "productRef": "product:sustainable-catalyst-lab",
+  "coreOwnsSessionRegistry": true,
+  "labOwnsScientificWorkspaceState": true,
+  "referenceFirst": true,
+  "automaticCoreSubmission": false,
+  "automaticScientificExecution": false,
+  "executionLineageDeferredTo": "0.107.0",
+  "paths": {
+    "sessions": "/v1/research/unified-runtime/sessions",
+    "productBindings": "/v1/research/unified-runtime/product-bindings",
+    "objectBindings": "/v1/research/unified-runtime/object-bindings",
+    "handoffBindings": "/v1/research/unified-runtime/handoff-bindings"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/platform-core-v3-research-context-v01060.schema.json",
+  "title": "Sustainable Catalyst Lab Platform Core v3 Unified Project & Research Session Context",
+  "type": "object",
+  "required": [
+    "project_ref"
+  ],
+  "properties": {
+    "context_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "project_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "session_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "workflow_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "project_state_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "runtime_contract_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "certification_suite_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "researcher_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "agent_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contributor_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "visibility": {
+      "enum": [
+        "private",
+        "internal",
+        "public"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

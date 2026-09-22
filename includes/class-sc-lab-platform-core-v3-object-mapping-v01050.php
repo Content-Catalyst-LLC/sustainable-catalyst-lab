@@ -107,7 +107,6 @@ final class SC_Lab_Platform_Core_V3_Object_Mapping_V01050 {
 
     public static function health() {
         $required = array(
-            'backend/app/platform_core_v3_object_mapping_v01050.py',
             'contracts/platform-core-v3-object-mapping-v01050.schema.json',
             'contracts/platform-core-v3-object-mapping-policy-v01050.json',
             'includes/class-sc-lab-platform-core-v3-object-mapping-v01050.php',
