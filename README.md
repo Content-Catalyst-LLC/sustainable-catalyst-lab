@@ -1,3 +1,7 @@
+## v0.111.0 — Scientific Investigation Runtime Integration
+
+Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference-first investigation runtime while preserving Lab as the underlying scientific investigation authority. Core records investigation identity and explicit evidence/claim/hypothesis references; related executions, visuals, validation records, packages, models, datasets, protocols, and sources remain specialist-layer references. The bridge does not run investigations, infer findings, rank evidence, resolve contradictions, select hypotheses, infer causality, certify scientific validity, or determine truth.
+
 # Sustainable Catalyst Lab
 
 **Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**

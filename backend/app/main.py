@@ -99,6 +99,7 @@ from .platform_core_v3_execution_lineage_v01070 import PlatformCoreV3ExecutionLi
 from .platform_core_v3_findings_validation_v01080 import PlatformCoreV3FindingsValidationError, build_core_claim_binding as build_core_v3_claim_binding, build_core_contradiction_binding as build_core_v3_contradiction_binding, build_core_evidence_link_binding as build_core_v3_evidence_link_binding, build_core_finding_binding as build_core_v3_finding_binding, build_core_replication_binding as build_core_v3_replication_binding, build_core_validation_challenge_binding as build_core_v3_validation_challenge_binding, health as core_v3_findings_validation_health, manifest as core_v3_findings_validation_manifest, map_legacy_scientific_claim as map_core_v3_legacy_scientific_claim, normalize_claim as normalize_core_v3_claim, normalize_finding as normalize_core_v3_finding
 from .platform_core_v3_visual_scene_v01090 import PlatformCoreV3VisualSceneError, bridge_linked_views as bridge_core_v3_linked_views, bridge_uncertainty_visual as bridge_core_v3_uncertainty_visual, build_core_scene_contract as build_core_v3_scene_contract, build_core_visual_binding as build_core_v3_visual_binding, health as core_v3_visual_scene_health, manifest as core_v3_visual_scene_manifest, map_legacy_scene as map_core_v3_legacy_scene, negotiate_renderer as negotiate_core_v3_renderer, normalize_scene as normalize_core_v3_scene, normalize_visual as normalize_core_v3_visual, renderer_catalog as core_v3_renderer_catalog
 from .platform_core_v3_scholarly_package_v01100 import PlatformCoreV3ScholarlyPackageError, bridge_citations as bridge_core_v3_citations, bridge_datasets_notebooks as bridge_core_v3_descriptors, build_core_package_binding as build_core_v3_package_binding, build_provenance_manifest as build_core_v3_provenance_manifest, build_publication_binding as build_core_v3_publication_binding, build_scholarly_interoperability_plan as build_core_v3_scholarly_plan, build_scholarly_package_envelope as build_core_v3_scholarly_package, build_validation_record as build_core_v3_scholarly_validation, health as core_v3_scholarly_package_health, manifest as core_v3_scholarly_package_manifest, map_legacy_package as map_core_v3_legacy_package, normalize_package as normalize_core_v3_package
+from .platform_core_v3_scientific_investigation_v01110 import PlatformCoreV3ScientificInvestigationError, bridge_evidence_context as bridge_core_v3_investigation_evidence, bridge_reasoning_context as bridge_core_v3_investigation_reasoning, bridge_scientific_assets as bridge_core_v3_investigation_assets, build_core_investigation_binding as build_core_v3_investigation_binding, build_runtime_integration_plan as build_core_v3_investigation_plan, check_investigation_continuity as check_core_v3_investigation_continuity, health as core_v3_scientific_investigation_health, manifest as core_v3_scientific_investigation_manifest, map_legacy_argumentation_case as map_core_v3_legacy_argumentation_case, map_legacy_scientific_study as map_core_v3_legacy_scientific_study, normalize_investigation as normalize_core_v3_scientific_investigation
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7172,3 +7173,62 @@ def platform_core_v3_scholarly_validation(payload: dict):
 def platform_core_v3_scholarly_legacy_map(payload: dict):
     try: return map_core_v3_legacy_package(payload)
     except PlatformCoreV3ScholarlyPackageError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+# Lab v0.111.0 — Platform Core v3 Scientific Investigation Runtime Integration
+@app.get("/v1/platform-core-v3-scientific-investigations/health")
+def platform_core_v3_scientific_investigations_health():
+    return core_v3_scientific_investigation_health()
+
+@app.get("/v1/platform-core-v3-scientific-investigations/manifest")
+def platform_core_v3_scientific_investigations_manifest():
+    return core_v3_scientific_investigation_manifest()
+
+@app.get("/v1/platform-core-v3-scientific-investigations/schema")
+def platform_core_v3_scientific_investigations_schema():
+    return {"ok": True, "version": "0.111.0", "minimum_core_release": "3.0.0", "core_investigation_binding_endpoint": "/v1/research/unified-runtime/investigation-bindings", "automatic_core_submission": False, "automatic_execution": False, "automatic_scientific_certification": False, "automatic_truth_determination": False}
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/normalize")
+def platform_core_v3_scientific_investigations_normalize(payload: dict):
+    try: return normalize_core_v3_scientific_investigation(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/bind")
+def platform_core_v3_scientific_investigations_bind(payload: dict):
+    try: return build_core_v3_investigation_binding(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/runtime-plan")
+def platform_core_v3_scientific_investigations_plan(payload: dict):
+    try: return build_core_v3_investigation_plan(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/evidence-context")
+def platform_core_v3_scientific_investigations_evidence(payload: dict):
+    try: return bridge_core_v3_investigation_evidence(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/reasoning-context")
+def platform_core_v3_scientific_investigations_reasoning(payload: dict):
+    try: return bridge_core_v3_investigation_reasoning(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/scientific-assets")
+def platform_core_v3_scientific_investigations_assets(payload: dict):
+    try: return bridge_core_v3_investigation_assets(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/investigations/continuity/check")
+def platform_core_v3_scientific_investigations_continuity(payload: dict):
+    try: return check_core_v3_investigation_continuity(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/legacy-study/map")
+def platform_core_v3_scientific_investigations_legacy_study(payload: dict):
+    try: return map_core_v3_legacy_scientific_study(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-scientific-investigations/legacy-argumentation/map")
+def platform_core_v3_scientific_investigations_legacy_argumentation(payload: dict):
+    try: return map_core_v3_legacy_argumentation_case(payload)
+    except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+

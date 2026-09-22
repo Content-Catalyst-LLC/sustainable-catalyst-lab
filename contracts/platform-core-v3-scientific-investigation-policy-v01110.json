@@ -1,0 +1,22 @@
+{
+  "authority": {
+    "reference_orchestration": "platform-core",
+    "underlying_scientific_investigation": "sustainable-catalyst-lab"
+  },
+  "boundaries": {
+    "automatic_core_submission": false,
+    "core_certifies_scientific_validity": false,
+    "core_determines_truth": false,
+    "core_infers_causality": false,
+    "core_infers_findings": false,
+    "core_ranks_evidence": false,
+    "core_resolves_contradictions": false,
+    "core_runs_scientific_investigation": false,
+    "core_selects_hypotheses": false
+  },
+  "core_contract": "sc.research.unified-research-scientific-investigation-runtime.v1",
+  "core_investigation_binding_endpoint": "/v1/research/unified-runtime/investigation-bindings",
+  "minimum_core_release": "3.0.0",
+  "schema": "sc-lab-platform-core-v3-scientific-investigation-policy/0.111.0",
+  "version": "0.111.0"
+}

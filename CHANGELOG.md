@@ -1,3 +1,9 @@
+# v0.111.0 — Scientific Investigation Runtime Integration
+
+- Adds a reference-first Platform Core v3 scientific investigation binding bridge across evidence, claims, hypotheses, experiments, models, executions, visuals, validations, packages, protocols, datasets, and sources.
+- Adds integration planning and continuity validation without Core-side scientific execution, evidence ranking, contradiction resolution, hypothesis selection, causal inference, scientific certification, or truth determination.
+- Adds legacy scientific-study and argumentation-case mapping while preserving Lab authority.
+
 # Changelog
 
 ## 0.110.0 — Reproducibility & Scholarly Package Bridge

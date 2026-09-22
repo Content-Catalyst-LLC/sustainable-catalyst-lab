@@ -1,0 +1,22 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/platform-core-v3-scientific-investigation-v01110.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "context": {
+      "type": "object"
+    },
+    "expected_context": {
+      "type": "object"
+    },
+    "investigation": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "context",
+    "investigation"
+  ],
+  "title": "Sustainable Catalyst Lab v0.111.0 Scientific Investigation Runtime Integration",
+  "type": "object"
+}
