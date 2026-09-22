@@ -92,6 +92,7 @@ from .manuscript_assembly import ManuscriptAssemblyError, ManuscriptAssemblyStud
 from .public_reproduction_portal import PublicReproductionError, PublicReproductionPortal, policies as public_reproduction_policies
 from .research_interoperability import InteroperabilityError, ResearchInteroperabilityLayer, policies as research_interoperability_policies
 from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as typed_cross_product_handoff_policies
+from .platform_core_v3_adapter_v01040 import PlatformCoreV3AdapterError, build_contract_product_registration as build_core_v3_contract_registration, build_session_product_binding as build_core_v3_session_product_binding, compatibility_report as core_v3_compatibility_report, health as core_v3_adapter_health, manifest as core_v3_adapter_manifest, normalize_runtime_context as normalize_core_v3_runtime_context, validate_handoff as validate_core_v3_handoff
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -377,6 +378,7 @@ def health():
         "publicReproductionPortal": {"version":"0.37.2","publicVerificationRecords":True,"safeManifestViews":True,"nonceChallenges":True,"signedReceipts":True,"tamperDetection":True,"publicCodeExecution":False,"embeddedRestrictedData":False},
         "researchInteroperability": {"version":"0.38.0","typedCrossProductHandoffs":True,"canonicalEnvelopes":True,"contractNegotiation":True,"capabilityNegotiation":True,"idempotentImports":True,"signedReceipts":True,"directRemoteCallbacks":False,"embeddedRestrictedData":False},
         "typedCrossProductResearchHandoffs": {"version":"0.38.1","executableAdapterRegistry":True,"productPairRoutePlanning":True,"contractInference":True,"profileAwareSealing":True,"remoteCallbacks":False,"embeddedRestrictedData":False},
+        "platformCoreV3RuntimeAdapter": {"version":"0.104.0","requiredCoreRelease":"3.0.0","productRef":"product:sustainable-catalyst-lab","runtimeContract":"sc.research.unified-runtime-contract.v1","unifiedRuntimeContract":"sc.research.unified-research-scientific-investigation-runtime.v1","capabilityRegistration":True,"sessionContextNormalization":True,"handoffValidation":True,"automaticCoreCalls":False,"automaticExecution":False},
         "publicResearchIntegrations": {"version":"0.38.2","stableApiCatalog":True,"scopedAuthentication":True,"signedWebhooks":True,"ssrfProtection":True,"signedExpiringEmbeds":True,"pythonSdk":True,"typescriptSdk":True,"browserEmbedSdk":True,"outboundDeliveryEnabled":settings.webhook_delivery_enabled},
         "institutionalGovernance": {"version":"0.39.0","institutions":True,"organizationalUnits":True,"humanAndServicePrincipals":True,"roleBindings":True,"workspaceGovernance":True,"classification":True,"retention":True,"approvals":True,"policyEvaluation":True,"secretStorage":True,"singleSignOn":False},
         "securityPrivacyHardening": {"version":"0.39.1","aes256GcmSecrets":True,"credentialHashing":True,"requestNonceReplayProtection":True,"signedAuditChains":True,"privacyScanning":True,"privacyRequests":True},
@@ -465,6 +467,7 @@ def capabilities():
         "scientificModelRegistry": {"version":"0.34.0","modelVersioning":True,"environmentCapture":True,"dependencyLocks":True,"reproductionVerification":True,"promotionChannels":["candidate","production","archived"],"arbitraryCode":False},
         "ensembleSimulation": {"version":"0.34.1","weightedRegisteredModels":True,"samplingDesigns":["monte-carlo","latin-hypercube","sobol","saltelli-sobol"],"uncertaintyPropagation":True,"globalSensitivity":True,"arbitraryCode":False},
         "surrogateReducedOrder": {"version":"0.34.2","algorithms":["polynomial-ridge","radial-basis","gaussian-process"],"properOrthogonalDecomposition":True,"hybridReducedOrderModels":True,"holdoutValidation":True,"errorBounds":True,"registryPublication":True,"arbitraryCode":False},
+        "platformCoreV3RuntimeAdapter": {"version":"0.104.0","requiredCoreRelease":"3.0.0","productRef":"product:sustainable-catalyst-lab","runtimeBindingRef":"lab:runtime:scientific-compute:0.104.0","contractRegistration":True,"sessionProductBinding":True,"runtimeContextNormalization":True,"handoffValidation":True,"compatibilityChecks":True,"automaticSubmission":False,"arbitraryCode":False},
         "provenanceSchema": "sc-lab-compute-provenance/1.1",
         "methodCount": len(catalog()),
         "legacyExtensions": getattr(app.state, "extensions", {"loaded": [], "failed": {}}),
@@ -4847,6 +4850,43 @@ def public_research_embed_create_route(workspace_id: str, payload: dict[str, Any
 def public_research_embed_verify_route(token: str):
     try: return public_research_integrations.verify_embed(token)
     except IntegrationError as exc: raise _public_research_http_error(exc) from exc
+
+# v0.104.0 Platform Core v3 Runtime Adapter & Capability Registration
+def _platform_core_v3_adapter_http_error(exc: PlatformCoreV3AdapterError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/platform-core-v3-adapter/health")
+def platform_core_v3_adapter_health_route():
+    body = core_v3_adapter_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-adapter/manifest")
+def platform_core_v3_adapter_manifest_route():
+    body = core_v3_adapter_manifest(); body["serviceVersion"] = settings.version; return body
+
+@app.post("/v1/platform-core-v3-adapter/registrations/runtime-contract")
+def platform_core_v3_contract_registration_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_contract_registration(payload)
+    except PlatformCoreV3AdapterError as exc: raise _platform_core_v3_adapter_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-adapter/registrations/session")
+def platform_core_v3_session_registration_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_session_product_binding(payload)
+    except PlatformCoreV3AdapterError as exc: raise _platform_core_v3_adapter_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-adapter/runtime-context/normalize")
+def platform_core_v3_runtime_context_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_runtime_context(payload)
+    except PlatformCoreV3AdapterError as exc: raise _platform_core_v3_adapter_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-adapter/handoffs/validate")
+def platform_core_v3_handoff_validation_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return validate_core_v3_handoff(payload)
+    except PlatformCoreV3AdapterError as exc: raise _platform_core_v3_adapter_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-adapter/compatibility/check")
+def platform_core_v3_compatibility_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return core_v3_compatibility_report(payload)
+    except PlatformCoreV3AdapterError as exc: raise _platform_core_v3_adapter_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")

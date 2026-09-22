@@ -1,3 +1,15 @@
+# Changelog
+
+## 0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration
+
+- Added a formal Platform Core v3 specialist-runtime adapter for Research Lab.
+- Added canonical Lab product, adapter, and runtime-binding identities.
+- Added Core runtime-contract product registration and v3 session product-binding payload builders.
+- Added unified runtime-context normalization and Core-to-Lab handoff validation.
+- Added compatibility checks against Core v3.0.0 readiness flags and non-execution boundaries.
+- Preserved the v0.38.0/v0.38.1 interoperability stack and deferred canonical object mapping to v0.105.0.
+- Added WordPress and backend health/manifest surfaces and mirrored adapter contracts.
+
 ## 0.102.0 — Energy Modeling & Uncertainty
 
 Energy Systems v1.4.0 seeded uncertainty design and Workbench-result analysis.

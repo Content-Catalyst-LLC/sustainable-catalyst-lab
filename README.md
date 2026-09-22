@@ -1,6 +1,11 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.100.0 — Carbon & Nature Intelligence v0.17.0, MRV Reporting & Audit Packets.**
+**Current release: v0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration.**
+
+## v0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration
+
+Lab v0.104.0 declares Sustainable Catalyst Lab as the scientific-execution authority for Platform Core v3.0.0. It adds governed capability registration payloads, unified research-session context normalization, Core-to-Lab handoff validation, and Core v3 readiness/boundary compatibility checks. Core remains the reference-first orchestration layer; Lab does not automatically mutate Core or execute scientific work merely because a handoff is validated. Canonical research-object mapping follows in v0.105.0.
+
 
 ## v0.100.0 — MRV Reporting & Audit Packets
 

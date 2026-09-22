@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/platform-core-v3-runtime-adapter-v01040.schema.json",
+  "title": "Sustainable Catalyst Lab Platform Core v3 Runtime Adapter",
+  "type": "object",
+  "required": ["schema", "lab_release_version", "product_ref", "role", "adapter_ref", "runtime_binding_ref", "required_core_release", "contracts", "core_capabilities", "specialist_capabilities", "boundaries"],
+  "properties": {
+    "schema": {"const": "sc-lab-platform-core-v3-runtime-adapter/0.104.0"},
+    "lab_release_version": {"const": "0.104.0"},
+    "product_ref": {"const": "product:sustainable-catalyst-lab"},
+    "role": {"const": "scientific-execution-authority"},
+    "adapter_ref": {"const": "lab:adapter:platform-core-v3:0.104.0"},
+    "runtime_binding_ref": {"const": "lab:runtime:scientific-compute:0.104.0"},
+    "required_core_release": {"const": "3.0.0"},
+    "contracts": {
+      "type": "object",
+      "required": ["runtime_contract", "unified_runtime"],
+      "properties": {
+        "runtime_contract": {"const": "sc.research.unified-runtime-contract.v1"},
+        "unified_runtime": {"const": "sc.research.unified-research-scientific-investigation-runtime.v1"}
+      }
+    },
+    "core_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "specialist_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "boundaries": {"type": "object"}
+  },
+  "additionalProperties": true
+}

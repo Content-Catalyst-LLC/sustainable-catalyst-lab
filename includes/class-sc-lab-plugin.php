@@ -453,6 +453,18 @@ final class SC_Lab_Plugin {
                 'auditPacketUrl' => esc_url_raw(rest_url('sc-lab/v1/carbon-nature/mrv/v1700/reporting/audit-packet/build')),
                 'projectPacketUrl' => esc_url_raw(rest_url('sc-lab/v1/carbon-nature/mrv/v1700/reporting/project-packet')),
             ),
+            'platformCoreV3Adapter' => array(
+                'labReleaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.104.0',
+                'requiredCoreRelease' => '3.0.0',
+                'productRef' => 'product:sustainable-catalyst-lab',
+                'runtimeContract' => 'sc.research.unified-runtime-contract.v1',
+                'unifiedRuntimeContract' => 'sc.research.unified-research-scientific-investigation-runtime.v1',
+                'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01040/health')),
+                'manifestUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01040/manifest')),
+                'schemaUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01040/schema')),
+                'automaticCoreCalls' => false,
+                'automaticExecution' => false,
+            ),
             'longJobs' => array(
                 'version' => '0.27.2',
                 'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0272/health')),
