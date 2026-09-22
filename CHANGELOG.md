@@ -1,3 +1,7 @@
+## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
+
+Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.
+
 # v0.113.0 — Unified Research Session Production Runtime
 
 - Adds deterministic production operation envelopes across fourteen existing Core-facing integration operation families.

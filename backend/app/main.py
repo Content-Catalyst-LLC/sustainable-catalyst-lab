@@ -102,6 +102,7 @@ from .platform_core_v3_scholarly_package_v01100 import PlatformCoreV3ScholarlyPa
 from .platform_core_v3_scientific_investigation_v01110 import PlatformCoreV3ScientificInvestigationError, bridge_evidence_context as bridge_core_v3_investigation_evidence, bridge_reasoning_context as bridge_core_v3_investigation_reasoning, bridge_scientific_assets as bridge_core_v3_investigation_assets, build_core_investigation_binding as build_core_v3_investigation_binding, build_runtime_integration_plan as build_core_v3_investigation_plan, check_investigation_continuity as check_core_v3_investigation_continuity, health as core_v3_scientific_investigation_health, manifest as core_v3_scientific_investigation_manifest, map_legacy_argumentation_case as map_core_v3_legacy_argumentation_case, map_legacy_scientific_study as map_core_v3_legacy_scientific_study, normalize_investigation as normalize_core_v3_scientific_investigation
 from .platform_core_v3_integration_certification_v01120 import PlatformCoreV3IntegrationCertificationError, assess_roundtrip as assess_core_v3_integration_roundtrip, build_case_plans as build_core_v3_certification_cases, build_case_result_plan as build_core_v3_certification_case_result, build_evidence_plan as build_core_v3_certification_evidence, build_exchange_check_plan as build_core_v3_certification_exchange, build_finding_plan as build_core_v3_certification_finding, build_full_submission_plan as build_core_v3_certification_full_plan, build_product_plan as build_core_v3_certification_product, build_reproduction_check_plan as build_core_v3_certification_reproduction, build_run_plan as build_core_v3_certification_run, build_suite_plan as build_core_v3_certification_suite, build_trace_check_plan as build_core_v3_certification_trace, catalog as core_v3_integration_certification_catalog, compatibility_report as core_v3_integration_certification_compatibility, health as core_v3_integration_certification_health, manifest as core_v3_integration_certification_manifest
 from .platform_core_v3_production_runtime_v01130 import PlatformCoreV3ProductionRuntimeError, assess_diagnostics as assess_core_v3_production_diagnostics, assess_roundtrip as assess_core_v3_production_roundtrip, build_checkpoint as build_core_v3_production_checkpoint, build_receipt as build_core_v3_production_receipt, build_recovery_plan as build_core_v3_production_recovery, build_retry_plan as build_core_v3_production_retry, build_roundtrip_plan as build_core_v3_production_roundtrip_plan, build_submission_plan as build_core_v3_production_submission_plan, catalog as core_v3_production_runtime_catalog, check_continuity as check_core_v3_production_continuity, check_idempotency as check_core_v3_production_idempotency, check_readiness as check_core_v3_production_readiness, health as core_v3_production_runtime_health, manifest as core_v3_production_runtime_manifest, normalize_operation as normalize_core_v3_production_operation
+from .scientific_visualization_design_system_v01140 import VisualizationDesignSystemError, accessibility_metadata as visualization_design_accessibility, apply_profile as visualization_design_apply_profile, audit_figure as visualization_design_audit, build_annotation_plan as visualization_design_annotations, build_export_plan as visualization_design_export_plan, build_publication_figure as visualization_design_publication_figure, catalog as visualization_design_catalog, compose_small_multiples as visualization_design_small_multiples, core_visual_plan as visualization_design_core_visual_plan, design_tokens as visualization_design_tokens, health as visualization_design_health, manifest as visualization_design_manifest, normalize_figure as visualization_design_normalize, renderer_plan as visualization_design_renderer_plan, style_uncertainty as visualization_design_uncertainty
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7394,3 +7395,72 @@ def platform_core_v3_production_runtime_roundtrip_assess(payload: dict):
     try: return assess_core_v3_production_roundtrip(payload)
     except PlatformCoreV3ProductionRuntimeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 
+
+
+# Lab v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
+@app.get("/v1/scientific-visualization-design-system/health")
+def scientific_visualization_design_system_health(): return visualization_design_health()
+
+@app.get("/v1/scientific-visualization-design-system/manifest")
+def scientific_visualization_design_system_manifest(): return visualization_design_manifest()
+
+@app.get("/v1/scientific-visualization-design-system/tokens")
+def scientific_visualization_design_system_tokens(): return visualization_design_tokens()
+
+@app.get("/v1/scientific-visualization-design-system/catalog")
+def scientific_visualization_design_system_catalog(): return visualization_design_catalog()
+
+@app.post("/v1/scientific-visualization-design-system/figures/normalize")
+def scientific_visualization_design_system_normalize(payload: dict):
+    try: return visualization_design_normalize(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/figures/profile")
+def scientific_visualization_design_system_profile(payload: dict):
+    try: return visualization_design_apply_profile(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/annotations/plan")
+def scientific_visualization_design_system_annotations(payload: dict):
+    try: return visualization_design_annotations(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/uncertainty/style")
+def scientific_visualization_design_system_uncertainty(payload: dict):
+    try: return visualization_design_uncertainty(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/small-multiples/compose")
+def scientific_visualization_design_system_small_multiples(payload: dict):
+    try: return visualization_design_small_multiples(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/accessibility/build")
+def scientific_visualization_design_system_accessibility(payload: dict):
+    try: return visualization_design_accessibility(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/renderers/plan")
+def scientific_visualization_design_system_renderer(payload: dict):
+    try: return visualization_design_renderer_plan(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/exports/plan")
+def scientific_visualization_design_system_export(payload: dict):
+    try: return visualization_design_export_plan(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/audit")
+def scientific_visualization_design_system_audit(payload: dict):
+    try: return visualization_design_audit(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/publication-figure/build")
+def scientific_visualization_design_system_publication(payload: dict):
+    try: return visualization_design_publication_figure(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/scientific-visualization-design-system/core-visual/plan")
+def scientific_visualization_design_system_core_visual(payload: dict):
+    try: return visualization_design_core_visual_plan(payload)
+    except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

@@ -1,0 +1,17 @@
+{
+  "schema": "sc-lab-scientific-visualization-design-system-policy/0.114.0",
+  "version": "0.114.0",
+  "publicationGradeRendering": true,
+  "vectorFirst": true,
+  "semanticEncoding": true,
+  "uncertaintyFirst": true,
+  "responsiveComposition": true,
+  "accessibilityWithoutColor": true,
+  "provenanceVisible": true,
+  "automaticCoreSubmission": false,
+  "automaticScientificValidityCertification": false,
+  "automaticClaimInference": false,
+  "automaticUncertaintyInference": false,
+  "automaticSourceInference": false,
+  "automaticTruthDetermination": false
+}

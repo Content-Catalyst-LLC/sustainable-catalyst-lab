@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/sc-lab-scientific-visualization-design-system-v01140.schema.json",
+  "title": "Sustainable Catalyst Lab v0.114.0 Scientific Visualization Design System",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "profile": {
+      "enum": [
+        "journal-single",
+        "journal-double",
+        "report-wide",
+        "web-responsive",
+        "slide-wide",
+        "poster"
+      ]
+    },
+    "spec": {
+      "type": "object"
+    },
+    "figure": {
+      "type": "object"
+    },
+    "annotations": {
+      "type": "array"
+    },
+    "uncertainty_layers": {
+      "type": "array"
+    },
+    "formats": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "svg",
+          "pdf",
+          "png",
+          "tiff",
+          "json",
+          "csv"
+        ]
+      }
+    }
+  }
+}

@@ -1,3 +1,7 @@
+## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
+
+Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.
+
 ## v0.113.0 — Unified Research Session Production Runtime
 
 Lab v0.113.0 production-hardens the completed Platform Core v3 integration stack with deterministic operation/idempotency identity, explicit submission plans, declared receipts, advisory retries, recovery plans, checkpoints, continuity checks, diagnostics, readiness, and end-to-end research-session round-trip assessment. Core remains the session/reference authority and Lab remains the scientific execution authority; the runtime does not automatically submit, retry, recover, execute science, certify science/product quality, or determine truth.
