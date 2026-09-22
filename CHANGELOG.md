@@ -1,3 +1,7 @@
+## 0.121.0 — Statistical Modeling & Model Diagnostics Studio
+- Adds governed regression/GLM fitting, diagnostics, prediction evaluation, cross-validation, model comparison, visualization planning, snapshots, and Core plans.
+- Preserves source data and forbids automatic feature/model selection, significance labels, causal claims, validity certification, and Core submission.
+
 # v0.119.0 — Scientific Figure Intelligence & Automatic Layout
 
 - Added deterministic figure-layout intelligence driven only by declared metadata.

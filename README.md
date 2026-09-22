@@ -1043,3 +1043,7 @@ The Lab now includes a publication-grade statistical graphics layer over the v0.
 
 ### Lab v0.120.0 — Exploratory Data Analysis Studio
 Adds reproducible exploratory analysis for tabular scientific data with descriptive profiling, missingness, distributions, correlations, group comparisons, robust outlier flags, transformation previews, PCA exploration, publication-aware visual planning, and immutable-source safeguards.
+
+
+### Lab v0.121.0 — Statistical Modeling & Model Diagnostics Studio
+Adds reproducible statistical modeling and diagnostics over the v0.120 EDA layer, including Gaussian/robust/regularized regression, binomial/Poisson GLMs, residual/influence/calibration diagnostics, explicit model comparison, and publication-aware visual plans.

@@ -1,0 +1,28 @@
+{
+  "boundaries": {
+    "automatic_causal_inference": false,
+    "automatic_core_submission": false,
+    "automatic_feature_selection": false,
+    "automatic_model_selection": false,
+    "automatic_scientific_validity_certification": false,
+    "automatic_significance_labels": false,
+    "determine_truth": false,
+    "source_rows_immutable": true
+  },
+  "schema": "sc-lab-statistical-modeling-diagnostics-policy/0.121.0",
+  "supported_estimators": [
+    "ols",
+    "weighted-least-squares",
+    "huber",
+    "ridge",
+    "lasso",
+    "elastic-net",
+    "glm"
+  ],
+  "supported_families": [
+    "gaussian",
+    "binomial-logit",
+    "poisson-log"
+  ],
+  "version": "0.121.0"
+}

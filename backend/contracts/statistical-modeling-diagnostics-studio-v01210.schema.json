@@ -1,0 +1,24 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/statistical-modeling-diagnostics-studio-v01210.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset": {
+      "type": "object"
+    },
+    "model": {
+      "type": "object"
+    },
+    "result": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-statistical-modeling-diagnostics-studio/0.121.0"
+    },
+    "version": {
+      "const": "0.121.0"
+    }
+  },
+  "title": "Sustainable Catalyst Lab v0.121.0 Statistical Modeling & Model Diagnostics Studio",
+  "type": "object"
+}

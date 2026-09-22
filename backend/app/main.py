@@ -109,6 +109,7 @@ from .advanced_3d_4d_scientific_visualization_v01170 import AdvancedScientificVi
 from .visual_research_narrative_figure_composer_v01180 import VisualResearchNarrativeError, accessibility_audit as narrative_accessibility, build_annotation_layer as narrative_annotations, build_caption_package as narrative_caption, build_core_visual_plan as narrative_core_visual, build_export_plan as narrative_export, build_figure_plate as narrative_figure_plate, build_layout_plan as narrative_layout, build_publication_package as narrative_publication, build_reference_panel as narrative_references, build_research_links as narrative_links, build_revision_snapshot as narrative_snapshot, catalog as narrative_catalog, health as narrative_health, manifest as narrative_manifest, normalize_figure_reference as narrative_figure, normalize_narrative as narrative_normalize, normalize_section as narrative_section, schema_info as narrative_schema, trace_provenance as narrative_provenance
 from .scientific_figure_intelligence_automatic_layout_v01190 import FigureLayoutIntelligenceError, accessibility_audit as figure_layout_accessibility, analyze_figure as figure_layout_analyze, build_core_visual_plan as figure_layout_core_visual, build_export_plan as figure_layout_export, build_figure_intelligence as figure_layout_intelligence, build_snapshot as figure_layout_snapshot, catalog as figure_layout_catalog, collision_audit as figure_layout_collision_audit, explain_layout as figure_layout_explain, health as figure_layout_health, manifest as figure_layout_manifest, normalize_figure_context as figure_layout_normalize, plan_annotations as figure_layout_annotations, plan_axes as figure_layout_axes, plan_layout as figure_layout_plan, plan_legend as figure_layout_legend, plan_panels as figure_layout_panels, plan_print as figure_layout_print, plan_responsive as figure_layout_responsive, quality_audit as figure_layout_quality, schema_info as figure_layout_schema
 from .exploratory_data_analysis_studio_v01200 import EDAStudioError, analyze_correlations as eda_correlations, analyze_distributions as eda_distributions, analyze_missingness as eda_missingness, analyze_outliers as eda_outliers, analyze_pca as eda_pca, analyze_relationship as eda_relationship, build_core_object_plan as eda_core_object, build_export_plan as eda_export, build_snapshot as eda_snapshot, build_studio as eda_studio, build_visualization_plan as eda_visualization, catalog as eda_catalog, compare_groups as eda_groups, health as eda_health, manifest as eda_manifest, normalize_dataset as eda_normalize, plan_transformations as eda_transform_plan, preview_transformations as eda_transform_preview, profile_dataset as eda_profile, schema_info as eda_schema
+from .statistical_modeling_diagnostics_studio_v01210 import StatisticalModelingDiagnosticsError, build_core_object_plan as model_diag_core_object, build_export_plan as model_diag_export, build_snapshot as model_diag_snapshot, build_studio as model_diag_studio, build_visualization_plan as model_diag_visualization, catalog as model_diag_catalog, coefficient_report as model_diag_coefficients, effect_report as model_diag_effects, assumption_audit as model_diag_assumptions, compare_models as model_diag_compare, cross_validate_model as model_diag_cross_validate, diagnose_model as model_diag_diagnose, evaluate_predictions as model_diag_evaluate, fit_model as model_diag_fit, health as model_diag_health, manifest as model_diag_manifest, normalize_model_spec as model_diag_normalize, schema_info as model_diag_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7944,3 +7945,70 @@ def exploratory_data_analysis_export(payload: dict):
 def exploratory_data_analysis_core_object(payload: dict):
     try: return eda_core_object(payload)
     except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.121.0 — Statistical Modeling & Model Diagnostics Studio
+@app.get("/v1/statistical-modeling-diagnostics-studio/health")
+def statistical_modeling_diagnostics_health(): return model_diag_health()
+@app.get("/v1/statistical-modeling-diagnostics-studio/manifest")
+def statistical_modeling_diagnostics_manifest(): return model_diag_manifest()
+@app.get("/v1/statistical-modeling-diagnostics-studio/catalog")
+def statistical_modeling_diagnostics_catalog(): return model_diag_catalog()
+@app.get("/v1/statistical-modeling-diagnostics-studio/schema")
+def statistical_modeling_diagnostics_schema(): return model_diag_schema()
+@app.post("/v1/statistical-modeling-diagnostics-studio/model/normalize")
+def statistical_modeling_diagnostics_normalize(payload: dict):
+    try: return model_diag_normalize(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/model/fit")
+def statistical_modeling_diagnostics_fit(payload: dict):
+    try: return model_diag_fit(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/coefficients/report")
+def statistical_modeling_diagnostics_coefficients(payload: dict):
+    try: return model_diag_coefficients(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/diagnostics/analyze")
+def statistical_modeling_diagnostics_analyze(payload: dict):
+    try: return model_diag_diagnose(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/assumptions/audit")
+def statistical_modeling_diagnostics_assumptions(payload: dict):
+    try: return model_diag_assumptions(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/effects/report")
+def statistical_modeling_diagnostics_effects(payload: dict):
+    try: return model_diag_effects(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/predictions/evaluate")
+def statistical_modeling_diagnostics_evaluate(payload: dict):
+    try: return model_diag_evaluate(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/cross-validation/run")
+def statistical_modeling_diagnostics_cross_validation(payload: dict):
+    try: return model_diag_cross_validate(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/models/compare")
+def statistical_modeling_diagnostics_compare(payload: dict):
+    try: return model_diag_compare(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/visualization/plan")
+def statistical_modeling_diagnostics_visualization(payload: dict):
+    try: return model_diag_visualization(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/studio/build")
+def statistical_modeling_diagnostics_studio_route(payload: dict):
+    try: return model_diag_studio(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/snapshot/build")
+def statistical_modeling_diagnostics_snapshot(payload: dict):
+    try: return model_diag_snapshot(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/export/plan")
+def statistical_modeling_diagnostics_export(payload: dict):
+    try: return model_diag_export(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/statistical-modeling-diagnostics-studio/core-object/plan")
+def statistical_modeling_diagnostics_core_object(payload: dict):
+    try: return model_diag_core_object(payload)
+    except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
