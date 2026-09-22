@@ -1,3 +1,10 @@
+# v0.119.0 — Scientific Figure Intelligence & Automatic Layout
+
+- Added deterministic figure-layout intelligence driven only by declared metadata.
+- Added axis label strategy, legend placement, panel-grid planning, annotation collision avoidance, responsive reflow, print planning, quality/accessibility audits, explainable layout reasons, snapshots, and Core visual plans.
+- Preserved scientific encodings, domains, scales, panel order, annotations, evidence semantics, and source authority.
+- Disabled automatic data transformation, scientific inference, evidence weighting, validity certification, and Core submission.
+
 ## Lab v0.118.0 — Visual Research Narrative & Figure Composer
 
 Reference-first research narrative composition for publication-grade figures, dashboards, and 3D/4D scenes. Adds declared captions, figure plates, methods/findings/evidence/citation linking, provenance traces, accessibility audits, deterministic revision snapshots, publication/export plans, and a renderer-neutral Core visual binding. Underlying scientific artifacts remain authoritative and are never mutated by the composer.

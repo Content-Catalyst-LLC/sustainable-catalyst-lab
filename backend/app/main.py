@@ -107,6 +107,7 @@ from .advanced_statistical_uncertainty_graphics_v01150 import AdvancedStatistica
 from .interactive_scientific_dashboards_v01160 import InteractiveDashboardError, accessibility_audit as interactive_dashboards_accessibility, build_filter_state as interactive_dashboards_filter_state, build_publication_dashboard as interactive_dashboards_publication, catalog as interactive_dashboards_catalog, compose_small_multiples as interactive_dashboards_small_multiples, core_visual_plan as interactive_dashboards_core_visual_plan, export_plan as interactive_dashboards_export_plan, health as interactive_dashboards_health, manifest as interactive_dashboards_manifest, normalize_control as interactive_dashboards_normalize_control, normalize_dashboard as interactive_dashboards_normalize, normalize_link as interactive_dashboards_normalize_link, propagate_interaction as interactive_dashboards_propagate, provenance_trace as interactive_dashboards_provenance, restore_plan as interactive_dashboards_restore_plan, schema_info as interactive_dashboards_schema, snapshot_state as interactive_dashboards_snapshot, synchronize_scales as interactive_dashboards_sync_scales
 from .advanced_3d_4d_scientific_visualization_v01170 import AdvancedScientificVisualizationError, accessibility_audit as advanced_3d_accessibility, build_core_visual_plan as advanced_3d_core_visual, build_dashboard_panel as advanced_3d_dashboard_panel, build_isosurface_plan as advanced_3d_isosurface, build_mesh as advanced_3d_mesh, build_publication_export as advanced_3d_publication, build_renderer_plan as advanced_3d_renderer, build_scalar_field as advanced_3d_scalar_field, build_slice_plan as advanced_3d_slice, build_surface as advanced_3d_surface, build_temporal_frames as advanced_3d_temporal_frames, build_trajectory as advanced_3d_trajectory, build_uncertainty_geometry as advanced_3d_uncertainty, build_vector_field as advanced_3d_vector_field, build_volume as advanced_3d_volume, catalog as advanced_3d_catalog, health as advanced_3d_health, manifest as advanced_3d_manifest, normalize_camera as advanced_3d_camera, normalize_scene as advanced_3d_normalize, schema_info as advanced_3d_schema
 from .visual_research_narrative_figure_composer_v01180 import VisualResearchNarrativeError, accessibility_audit as narrative_accessibility, build_annotation_layer as narrative_annotations, build_caption_package as narrative_caption, build_core_visual_plan as narrative_core_visual, build_export_plan as narrative_export, build_figure_plate as narrative_figure_plate, build_layout_plan as narrative_layout, build_publication_package as narrative_publication, build_reference_panel as narrative_references, build_research_links as narrative_links, build_revision_snapshot as narrative_snapshot, catalog as narrative_catalog, health as narrative_health, manifest as narrative_manifest, normalize_figure_reference as narrative_figure, normalize_narrative as narrative_normalize, normalize_section as narrative_section, schema_info as narrative_schema, trace_provenance as narrative_provenance
+from .scientific_figure_intelligence_automatic_layout_v01190 import FigureLayoutIntelligenceError, accessibility_audit as figure_layout_accessibility, analyze_figure as figure_layout_analyze, build_core_visual_plan as figure_layout_core_visual, build_export_plan as figure_layout_export, build_figure_intelligence as figure_layout_intelligence, build_snapshot as figure_layout_snapshot, catalog as figure_layout_catalog, collision_audit as figure_layout_collision_audit, explain_layout as figure_layout_explain, health as figure_layout_health, manifest as figure_layout_manifest, normalize_figure_context as figure_layout_normalize, plan_annotations as figure_layout_annotations, plan_axes as figure_layout_axes, plan_layout as figure_layout_plan, plan_legend as figure_layout_legend, plan_panels as figure_layout_panels, plan_print as figure_layout_print, plan_responsive as figure_layout_responsive, quality_audit as figure_layout_quality, schema_info as figure_layout_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7788,3 +7789,82 @@ def visual_research_narrative_core_visual(payload: dict):
 def visual_research_narrative_accessibility(payload: dict):
     try: return narrative_accessibility(payload)
     except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.119.0 — Scientific Figure Intelligence & Automatic Layout
+@app.get("/v1/scientific-figure-intelligence-automatic-layout/health")
+def scientific_figure_layout_health(): return figure_layout_health()
+@app.get("/v1/scientific-figure-intelligence-automatic-layout/manifest")
+def scientific_figure_layout_manifest(): return figure_layout_manifest()
+@app.get("/v1/scientific-figure-intelligence-automatic-layout/catalog")
+def scientific_figure_layout_catalog(): return figure_layout_catalog()
+@app.get("/v1/scientific-figure-intelligence-automatic-layout/schema")
+def scientific_figure_layout_schema(): return figure_layout_schema()
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/figure/normalize")
+def scientific_figure_layout_normalize(payload: dict):
+    try: return {"ok":True,"figure":figure_layout_normalize(payload)}
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/figure/analyze")
+def scientific_figure_layout_analyze_route(payload: dict):
+    try: return figure_layout_analyze(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/figure/intelligence")
+def scientific_figure_layout_intelligence_route(payload: dict):
+    try: return figure_layout_intelligence(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/layout/plan")
+def scientific_figure_layout_plan_route(payload: dict):
+    try: return figure_layout_plan(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/axes/plan")
+def scientific_figure_layout_axes_route(payload: dict):
+    try: return figure_layout_axes(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/legend/plan")
+def scientific_figure_layout_legend_route(payload: dict):
+    try: return figure_layout_legend(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/panels/plan")
+def scientific_figure_layout_panels_route(payload: dict):
+    try: return figure_layout_panels(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/annotations/plan")
+def scientific_figure_layout_annotations_route(payload: dict):
+    try: return figure_layout_annotations(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/collisions/audit")
+def scientific_figure_layout_collisions_route(payload: dict):
+    try: return figure_layout_collision_audit(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/responsive/plan")
+def scientific_figure_layout_responsive_route(payload: dict):
+    try: return figure_layout_responsive(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/print/plan")
+def scientific_figure_layout_print_route(payload: dict):
+    try: return figure_layout_print(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/quality/audit")
+def scientific_figure_layout_quality_route(payload: dict):
+    try: return figure_layout_quality(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/accessibility/audit")
+def scientific_figure_layout_accessibility_route(payload: dict):
+    try: return figure_layout_accessibility(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/layout/explain")
+def scientific_figure_layout_explain_route(payload: dict):
+    try: return figure_layout_explain(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/export/plan")
+def scientific_figure_layout_export_route(payload: dict):
+    try: return figure_layout_export(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/snapshot/build")
+def scientific_figure_layout_snapshot_route(payload: dict):
+    try: return figure_layout_snapshot(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-figure-intelligence-automatic-layout/core-visual/plan")
+def scientific_figure_layout_core_route(payload: dict):
+    try: return figure_layout_core_visual(payload)
+    except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

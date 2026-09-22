@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-figure-intelligence-automatic-layout-v01190.schema.json",
+  "title": "Sustainable Catalyst Lab v0.119.0 Scientific Figure Intelligence & Automatic Layout",
+  "type": "object",
+  "properties": {
+    "figure_ref": {
+      "type": "string"
+    },
+    "publication_profile": {
+      "type": "string"
+    },
+    "width_px": {
+      "type": "integer",
+      "minimum": 240
+    },
+    "height_px": {
+      "type": "integer",
+      "minimum": 180
+    },
+    "axes": {
+      "type": "object"
+    },
+    "legend": {
+      "type": "object"
+    },
+    "panels": {
+      "type": "array"
+    },
+    "annotations": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

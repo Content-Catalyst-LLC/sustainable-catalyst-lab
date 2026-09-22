@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-scientific-figure-intelligence-automatic-layout-policy/0.119.0",
+  "version": "0.119.0",
+  "scientificEncodingLocked": true,
+  "automaticDataTransformation": false,
+  "automaticDomainInference": false,
+  "automaticScaleInference": false,
+  "automaticScientificEncodingChanges": false,
+  "automaticEvidenceWeighting": false,
+  "automaticClaimInference": false,
+  "automaticCoreSubmission": false,
+  "scientificValidityCertified": false,
+  "layoutDecisionsMustBeExplainable": true,
+  "unresolvedCollisionsMustBeReported": true
+}
