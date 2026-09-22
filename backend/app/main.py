@@ -108,6 +108,7 @@ from .interactive_scientific_dashboards_v01160 import InteractiveDashboardError,
 from .advanced_3d_4d_scientific_visualization_v01170 import AdvancedScientificVisualizationError, accessibility_audit as advanced_3d_accessibility, build_core_visual_plan as advanced_3d_core_visual, build_dashboard_panel as advanced_3d_dashboard_panel, build_isosurface_plan as advanced_3d_isosurface, build_mesh as advanced_3d_mesh, build_publication_export as advanced_3d_publication, build_renderer_plan as advanced_3d_renderer, build_scalar_field as advanced_3d_scalar_field, build_slice_plan as advanced_3d_slice, build_surface as advanced_3d_surface, build_temporal_frames as advanced_3d_temporal_frames, build_trajectory as advanced_3d_trajectory, build_uncertainty_geometry as advanced_3d_uncertainty, build_vector_field as advanced_3d_vector_field, build_volume as advanced_3d_volume, catalog as advanced_3d_catalog, health as advanced_3d_health, manifest as advanced_3d_manifest, normalize_camera as advanced_3d_camera, normalize_scene as advanced_3d_normalize, schema_info as advanced_3d_schema
 from .visual_research_narrative_figure_composer_v01180 import VisualResearchNarrativeError, accessibility_audit as narrative_accessibility, build_annotation_layer as narrative_annotations, build_caption_package as narrative_caption, build_core_visual_plan as narrative_core_visual, build_export_plan as narrative_export, build_figure_plate as narrative_figure_plate, build_layout_plan as narrative_layout, build_publication_package as narrative_publication, build_reference_panel as narrative_references, build_research_links as narrative_links, build_revision_snapshot as narrative_snapshot, catalog as narrative_catalog, health as narrative_health, manifest as narrative_manifest, normalize_figure_reference as narrative_figure, normalize_narrative as narrative_normalize, normalize_section as narrative_section, schema_info as narrative_schema, trace_provenance as narrative_provenance
 from .scientific_figure_intelligence_automatic_layout_v01190 import FigureLayoutIntelligenceError, accessibility_audit as figure_layout_accessibility, analyze_figure as figure_layout_analyze, build_core_visual_plan as figure_layout_core_visual, build_export_plan as figure_layout_export, build_figure_intelligence as figure_layout_intelligence, build_snapshot as figure_layout_snapshot, catalog as figure_layout_catalog, collision_audit as figure_layout_collision_audit, explain_layout as figure_layout_explain, health as figure_layout_health, manifest as figure_layout_manifest, normalize_figure_context as figure_layout_normalize, plan_annotations as figure_layout_annotations, plan_axes as figure_layout_axes, plan_layout as figure_layout_plan, plan_legend as figure_layout_legend, plan_panels as figure_layout_panels, plan_print as figure_layout_print, plan_responsive as figure_layout_responsive, quality_audit as figure_layout_quality, schema_info as figure_layout_schema
+from .exploratory_data_analysis_studio_v01200 import EDAStudioError, analyze_correlations as eda_correlations, analyze_distributions as eda_distributions, analyze_missingness as eda_missingness, analyze_outliers as eda_outliers, analyze_pca as eda_pca, analyze_relationship as eda_relationship, build_core_object_plan as eda_core_object, build_export_plan as eda_export, build_snapshot as eda_snapshot, build_studio as eda_studio, build_visualization_plan as eda_visualization, catalog as eda_catalog, compare_groups as eda_groups, health as eda_health, manifest as eda_manifest, normalize_dataset as eda_normalize, plan_transformations as eda_transform_plan, preview_transformations as eda_transform_preview, profile_dataset as eda_profile, schema_info as eda_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7868,3 +7869,78 @@ def scientific_figure_layout_snapshot_route(payload: dict):
 def scientific_figure_layout_core_route(payload: dict):
     try: return figure_layout_core_visual(payload)
     except FigureLayoutIntelligenceError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.120.0 — Exploratory Data Analysis Studio
+@app.get("/v1/exploratory-data-analysis-studio/health")
+def exploratory_data_analysis_health(): return eda_health()
+@app.get("/v1/exploratory-data-analysis-studio/manifest")
+def exploratory_data_analysis_manifest(): return eda_manifest()
+@app.get("/v1/exploratory-data-analysis-studio/catalog")
+def exploratory_data_analysis_catalog(): return eda_catalog()
+@app.get("/v1/exploratory-data-analysis-studio/schema")
+def exploratory_data_analysis_schema(): return eda_schema()
+@app.post("/v1/exploratory-data-analysis-studio/dataset/normalize")
+def exploratory_data_analysis_normalize(payload: dict):
+    try: return {"ok":True,"dataset":eda_normalize(payload)}
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/profile/build")
+def exploratory_data_analysis_profile(payload: dict):
+    try: return eda_profile(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/missingness/analyze")
+def exploratory_data_analysis_missingness(payload: dict):
+    try: return eda_missingness(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/distributions/analyze")
+def exploratory_data_analysis_distributions(payload: dict):
+    try: return eda_distributions(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/correlations/analyze")
+def exploratory_data_analysis_correlations(payload: dict):
+    try: return eda_correlations(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/groups/compare")
+def exploratory_data_analysis_groups(payload: dict):
+    try: return eda_groups(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/outliers/analyze")
+def exploratory_data_analysis_outliers(payload: dict):
+    try: return eda_outliers(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/relationship/analyze")
+def exploratory_data_analysis_relationship(payload: dict):
+    try: return eda_relationship(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/transformations/plan")
+def exploratory_data_analysis_transform_plan(payload: dict):
+    try: return eda_transform_plan(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/transformations/preview")
+def exploratory_data_analysis_transform_preview(payload: dict):
+    try: return eda_transform_preview(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/dimensions/pca")
+def exploratory_data_analysis_pca(payload: dict):
+    try: return eda_pca(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/visualization/plan")
+def exploratory_data_analysis_visualization(payload: dict):
+    try: return eda_visualization(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/studio/build")
+def exploratory_data_analysis_studio_route(payload: dict):
+    try: return eda_studio(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/snapshot/build")
+def exploratory_data_analysis_snapshot(payload: dict):
+    try: return eda_snapshot(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/export/plan")
+def exploratory_data_analysis_export(payload: dict):
+    try: return eda_export(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/exploratory-data-analysis-studio/core-object/plan")
+def exploratory_data_analysis_core_object(payload: dict):
+    try: return eda_core_object(payload)
+    except EDAStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

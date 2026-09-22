@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/exploratory-data-analysis-studio-v01200.schema.json",
+  "title": "Sustainable Catalyst Lab Exploratory Data Analysis Studio v0.120.0",
+  "type": "object",
+  "required": ["dataset"],
+  "properties": {
+    "dataset": {
+      "type": "object",
+      "required": ["rows"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 180},
+        "columns": {"type": "array", "maxItems": 256, "items": {"type": "string"}},
+        "rows": {"type": "array", "maxItems": 50000, "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    },
+    "columns": {"type": "array", "maxItems": 256, "items": {"type": "string"}},
+    "method": {"type": "string"},
+    "operations": {"type": "array", "maxItems": 100, "items": {"type": "object"}},
+    "settings": {"type": "object"}
+  },
+  "additionalProperties": true
+}

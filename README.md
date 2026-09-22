@@ -1040,3 +1040,6 @@ Lab v0.112.0 closes the v0.104–v0.111 Core-integration sequence with an 8-laye
 ## Lab v0.115.0 — Advanced Statistical & Uncertainty Graphics
 
 The Lab now includes a publication-grade statistical graphics layer over the v0.114 visualization design system, including distributions, uncertainty ribbons/fan charts, posterior/coefficient forests, calibration, residual/Q-Q diagnostics, sensitivity, variance decomposition and empirical coverage. Statistical assumptions that materially affect a figure remain explicit rather than silently inferred.
+
+### Lab v0.120.0 — Exploratory Data Analysis Studio
+Adds reproducible exploratory analysis for tabular scientific data with descriptive profiling, missingness, distributions, correlations, group comparisons, robust outlier flags, transformation previews, PCA exploration, publication-aware visual planning, and immutable-source safeguards.

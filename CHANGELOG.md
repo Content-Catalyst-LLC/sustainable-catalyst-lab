@@ -1607,3 +1607,7 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Generates non-submitting Core suite/product/case/run/check/evidence/finding plans.
 - Adds declared roundtrip assessment and Core certification-readiness compatibility checks.
 - Keeps certification scoped to runtime-contract conformance; scientific validity, product quality, authorization, ranking, inferred reproducibility, automated remediation, and truth determination remain outside the bridge.
+
+## 0.120.0 — Exploratory Data Analysis Studio
+- Added reproducible EDA profiling, missingness, distributions, associations, group summaries, outlier flags, transformations, PCA, visualization plans, snapshots, exports, and Core artifact planning.
+- Preserved explicit exploratory-not-confirmatory and non-mutating data boundaries.

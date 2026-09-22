@@ -1,0 +1,35 @@
+{
+  "schema": "sc-lab-exploratory-data-analysis-studio-policy/0.120.0",
+  "version": "0.120.0",
+  "engine_version": "4.0.0",
+  "authority": {
+    "source_rows_immutable": true,
+    "exploratory_not_confirmatory": true,
+    "lab_remains_analysis_authority": true,
+    "underlying_dataset_remains_authoritative": true
+  },
+  "allowed": {
+    "descriptive_statistics": true,
+    "missingness_analysis": true,
+    "distribution_analysis": true,
+    "pearson_correlation": true,
+    "spearman_correlation": true,
+    "descriptive_group_comparison": true,
+    "robust_outlier_flagging": true,
+    "transformation_preview": true,
+    "pca_exploration": true,
+    "visualization_planning": true,
+    "reproducible_snapshots": true
+  },
+  "forbidden_automatic_actions": {
+    "mutate_source_dataset": true,
+    "drop_outliers": true,
+    "confirm_hypotheses": true,
+    "claim_statistical_significance": true,
+    "infer_causality": true,
+    "infer_missingness_mechanism": true,
+    "certify_scientific_validity": true,
+    "determine_truth": true,
+    "submit_to_platform_core": true
+  }
+}
