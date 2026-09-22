@@ -113,6 +113,7 @@ from .statistical_modeling_diagnostics_studio_v01210 import StatisticalModelingD
 from .bayesian_analysis_workbench_v01220 import BayesianWorkbenchError, build_core_object_plan as bayes2_core_object, build_export_plan as bayes2_export, build_reproduction_plan as bayes2_reproduction, build_snapshot as bayes2_snapshot, build_visualization_plan as bayes2_visualization, build_workbench as bayes2_workbench, catalog as bayes2_catalog, compare_models as bayes2_compare, convergence_audit as bayes2_convergence, fit_hierarchical_normal as bayes2_hierarchical_fit, fit_posterior as bayes2_fit, health as bayes2_health, hierarchical_summary as bayes2_hierarchical_summary, manifest as bayes2_manifest, normalize_analysis as bayes2_normalize, posterior_predictive_report as bayes2_ppc, prior_posterior_report as bayes2_prior_posterior, probability_report as bayes2_probability, sampler_diagnostics as bayes2_diagnostics, schema_info as bayes2_schema
 from .simulation_monte_carlo_research_studio_v01230 import SimulationStudioError, build_compute_budget_plan as sim_mc_budget, build_core_object_plan as sim_mc_core_object, build_execution_lineage_plan as sim_mc_lineage, build_export_plan as sim_mc_export, build_reproduction_plan as sim_mc_reproduction, build_sampling_plan as sim_mc_sampling, build_snapshot as sim_mc_snapshot, build_studio as sim_mc_studio, build_visualization_plan as sim_mc_visualization, catalog as sim_mc_catalog, convergence_report as sim_mc_convergence, health as sim_mc_health, manifest as sim_mc_manifest, normalize_study as sim_mc_normalize, parameter_sweep_plan as sim_mc_sweep_plan, replication_report as sim_mc_replication, run_parameter_sweep as sim_mc_sweep_run, run_scenario_ensemble as sim_mc_scenarios, run_simulation as sim_mc_run, run_uncertainty_propagation as sim_mc_uncertainty, schema_info as sim_mc_schema, threshold_report as sim_mc_threshold
 from .sensitivity_global_uncertainty_analysis_studio_v01240 import SensitivityStudioError, build_core_object_plan as sens_core_object, build_execution_lineage_plan as sens_lineage, build_export_plan as sens_export, build_reproduction_plan as sens_reproduction, build_snapshot as sens_snapshot, build_studio as sens_studio, build_visualization_plan as sens_visualization, catalog as sens_catalog, correlation_screening_report as sens_correlation, health as sens_health, interaction_screening_report as sens_interactions, interpretation_boundaries_report as sens_boundaries, manifest as sens_manifest, morris_report as sens_morris, normalize_analysis as sens_normalize, response_surface_plan as sens_surface_plan, response_surface_run as sens_surface_run, schema_info as sens_schema, sensitivity_convergence_report as sens_convergence, sensitivity_replication_report as sens_replication, sobol_report as sens_sobol, variance_decomposition_report as sens_variance
+from .causal_research_studio_v01250 import CausalResearchStudioError, balance_report as causal2_balance, build_core_object_plan as causal2_core_object, build_execution_lineage_plan as causal2_lineage, build_export_plan as causal2_export, build_reproduction_plan as causal2_reproduction, build_snapshot as causal2_snapshot, build_studio as causal2_studio, build_visualization_plan as causal2_visualization, catalog as causal2_catalog, counterfactual_report as causal2_counterfactual, dag_adjustment_plan as causal2_adjustment, estimate_did as causal2_did, estimate_its as causal2_its, estimate_matching as causal2_matching, estimate_rd as causal2_rd, estimate_synthetic_control as causal2_synthetic, estimate_weighting as causal2_weighting, fit_propensity as causal2_propensity, governance_review_report as causal2_governance, health as causal2_health, interpretation_boundaries_report as causal2_boundaries, manifest as causal2_manifest, normalize_dag as causal2_dag, normalize_study as causal2_normalize, overlap_report as causal2_overlap, placebo_plan as causal2_placebo, robustness_plan as causal2_robustness, schema_info as causal2_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8252,5 +8253,108 @@ def sensitivity_global_uncertainty_lineage(payload: dict):
 def sensitivity_global_uncertainty_boundaries(payload: dict):
     try: return sens_boundaries(payload)
     except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
-
+@app.get("/v1/causal-research-studio/health")
+def causal_research_studio_health(): return causal2_health()
+@app.get("/v1/causal-research-studio/manifest")
+def causal_research_studio_manifest(): return causal2_manifest()
+@app.get("/v1/causal-research-studio/catalog")
+def causal_research_studio_catalog(): return causal2_catalog()
+@app.get("/v1/causal-research-studio/schema")
+def causal_research_studio_schema(): return causal2_schema()
+@app.post("/v1/causal-research-studio/study/normalize")
+def causal_research_studio_normalize(payload: dict):
+    try: return causal2_normalize(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/dag/normalize")
+def causal_research_studio_dag(payload: dict):
+    try: return causal2_dag(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/dag/adjustment-plan")
+def causal_research_studio_adjustment(payload: dict):
+    try: return causal2_adjustment(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/propensity/fit")
+def causal_research_studio_propensity(payload: dict):
+    try: return causal2_propensity(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/matching/estimate")
+def causal_research_studio_matching(payload: dict):
+    try: return causal2_matching(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/weighting/estimate")
+def causal_research_studio_weighting(payload: dict):
+    try: return causal2_weighting(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/balance/report")
+def causal_research_studio_balance(payload: dict):
+    try: return causal2_balance(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/overlap/report")
+def causal_research_studio_overlap(payload: dict):
+    try: return causal2_overlap(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/did/estimate")
+def causal_research_studio_did(payload: dict):
+    try: return causal2_did(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/its/estimate")
+def causal_research_studio_its(payload: dict):
+    try: return causal2_its(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/rd/estimate")
+def causal_research_studio_rd(payload: dict):
+    try: return causal2_rd(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/synthetic-control/estimate")
+def causal_research_studio_synthetic(payload: dict):
+    try: return causal2_synthetic(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/robustness/plan")
+def causal_research_studio_robustness(payload: dict):
+    try: return causal2_robustness(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/placebo/plan")
+def causal_research_studio_placebo(payload: dict):
+    try: return causal2_placebo(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/counterfactual/report")
+def causal_research_studio_counterfactual(payload: dict):
+    try: return causal2_counterfactual(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/visualization/plan")
+def causal_research_studio_visualization(payload: dict):
+    try: return causal2_visualization(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/studio/build")
+def causal_research_studio_build(payload: dict):
+    try: return causal2_studio(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/snapshot/build")
+def causal_research_studio_snapshot(payload: dict):
+    try: return causal2_snapshot(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/reproduction/plan")
+def causal_research_studio_reproduction(payload: dict):
+    try: return causal2_reproduction(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/export/plan")
+def causal_research_studio_export(payload: dict):
+    try: return causal2_export(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/core-object/plan")
+def causal_research_studio_core(payload: dict):
+    try: return causal2_core_object(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/execution-lineage/plan")
+def causal_research_studio_lineage(payload: dict):
+    try: return causal2_lineage(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/governance/review")
+def causal_research_studio_governance(payload: dict):
+    try: return causal2_governance(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/causal-research-studio/interpretation-boundaries/report")
+def causal_research_studio_boundaries(payload: dict):
+    try: return causal2_boundaries(payload)
+    except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

@@ -1,0 +1,1 @@
+(function(w){'use strict';const cfg=w.SCLabCausalResearchStudioV01250Config||{};w.SCLabCausalResearchStudioV01250={version:'0.125.0',config:cfg,boundaries:{humanCausalReviewRequired:true,automaticCausalProof:false,automaticAssumptionSatisfaction:false,automaticMethodSelection:false,automaticCovariateSelection:false,automaticCoreSubmission:false}};})(window);

@@ -1627,3 +1627,8 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 ## 0.120.0 — Exploratory Data Analysis Studio
 - Added reproducible EDA profiling, missingness, distributions, associations, group summaries, outlier flags, transformations, PCA, visualization plans, snapshots, exports, and Core artifact planning.
 - Preserved explicit exploratory-not-confirmatory and non-mutating data boundaries.
+
+## 0.125.0 — Causal Research Studio II
+- Added executable causal workflows over the v0.67 causal-governance layer.
+- Added DAG/adjustment plans, propensity scoring, matching, IPW, DiD, ITS, RD, synthetic control, diagnostics, robustness/placebo plans, counterfactual reports, reproducible snapshots, and Core plans.
+- Preserved explicit identification assumptions and human causal review; no automatic causal proof or scientific-validity certification.

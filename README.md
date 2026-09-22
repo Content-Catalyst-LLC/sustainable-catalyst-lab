@@ -1057,3 +1057,6 @@ Adds reproducible Monte Carlo and quasi-random simulation studies, convergence/s
 
 ## v0.124.0 Sensitivity & Global Uncertainty Analysis Studio
 Global sensitivity and uncertainty attribution workflows with explicit scientific-interpretation boundaries.
+
+### v0.125.0 — Causal Research Studio II
+Causal research workflows now include DAG-driven design, propensity/matching/weighting, DiD, ITS, RD, synthetic control, diagnostics, robustness/placebo planning, counterfactual reporting, reproducible snapshots, and reference-first Platform Core plans. Causal interpretation remains conditional on explicit assumptions and human review.
