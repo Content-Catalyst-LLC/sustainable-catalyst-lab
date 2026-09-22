@@ -504,6 +504,15 @@ final class SC_Lab_Plugin {
                 'automaticCoreSubmission' => false,
                 'automaticExecution' => false,
             ),
+            'platformCoreV3FindingsValidation' => array(
+                'version' => '0.108.0',
+                'minimumCoreRelease' => '3.0.0',
+                'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01080/research-intelligence/health')),
+                'manifestUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01080/research-intelligence/manifest')),
+                'schemaUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01080/research-intelligence/schema')),
+                'automaticCoreSubmission' => false,
+                'automaticScientificCertification' => false,
+            ),
             'longJobs' => array(
                 'version' => '0.27.2',
                 'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/numerical/v0272/health')),

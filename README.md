@@ -1,11 +1,18 @@
 # Sustainable Catalyst Lab
 
+**Current release: v0.108.0 — Findings, Claims, Evidence & Validation Bridge.**
+
+## v0.108.0 — Findings, Claims, Evidence & Validation Bridge
+
+Lab v0.108.0 connects researcher-declared scientific findings, claims, evidence relationships, contradictions, evidence-boundary assessments, validation challenges, and replication attempts to Platform Core v3 research-intelligence contracts. Core records reference-first intelligence and validation state; Lab remains authoritative for the underlying science. The bridge never generates claims/findings, ranks evidence, resolves contradictions, certifies replication or scientific validity, or determines truth.
+
+## v0.107.0 — Scientific Execution Lineage Bridge
+
+Lab v0.107.0 records method/runtime/environment/input/output lineage in Core-compatible execution-binding envelopes while preserving Lab as the scientific execution authority.
+
 ## v0.106.0 — Unified Project & Research Session Context
 
-Adds a Platform Core v3 context bridge for canonical project/session identity, Core session-registration envelopes, per-session Lab product bindings, context-aware object and handoff bindings, researcher/agent/contributor context, and continuity validation. Core remains the session-registry authority; Lab remains the scientific-workspace and compute authority. All Core writes remain explicit/non-submitting. Minimum compatible Core release is 3.0.0; newer compatible Core v3 releases are accepted.
-
-
-**Current release: v0.105.0 — Canonical Research Object Mapping.**
+Lab v0.106.0 adds canonical project/session identity, session-registration envelopes, per-session Lab product bindings, context-aware object/handoff bindings, contributor context, and continuity validation. Core remains the session-registry authority; Lab remains the scientific-workspace and compute authority.
 
 ## v0.105.0 — Canonical Research Object Mapping
 

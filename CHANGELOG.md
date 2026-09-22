@@ -1,3 +1,22 @@
+# Changelog
+
+## 0.108.0 — Findings, Claims, Evidence & Validation Bridge
+
+- Added Core v3 reference-first bindings for Lab scientific findings and claims.
+- Added Lab v0.62 scientific-claim compatibility mapping without promoting active claims to Core-supported status.
+- Added evidence-link bindings with explicit relation translation and namespaced Lab evidence-grade/boundary metadata.
+- Added declared contradiction bindings without automatic contradiction inference or resolution.
+- Added validation/challenge envelopes for uncertainty, methodological, replication, counterevidence, robustness, sensitivity, reviewer, and other declared challenges.
+- Added replication-attempt bindings that preserve execution/protocol/package/evidence references without certifying replication.
+- Preserved human review boundaries and prohibited automatic claim inference, evidence ranking/judgment, scientific certification, and truth determination.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); release verification targets required routes and behavior, not global route totals.
+
+## 0.107.0 — Scientific Execution Lineage Bridge
+
+- Added Core-compatible scientific execution bindings for runtime, method, environment, canonical inputs/outputs, parameters, assumptions, hashes, and provenance.
+- Preserved Lab as scientific execution authority; Core records references and lineage only.
+- Prohibited automatic Core submission, Core mutation, scientific execution, and validity certification.
+
 ## 0.106.0 — Unified Project & Research Session Context
 
 - Added canonical Lab project/session context normalization with stable context references and hashes.
@@ -6,10 +25,6 @@
 - Added researcher, agent, contributor, workflow, and project-state context propagation.
 - Added project/session continuity validation without inference or automatic Core mutation.
 - Core compatibility is minimum-version based (>=3.0.0); global FastAPI route counts are informational, not release gates.
-- Execution lineage remains intentionally deferred to Lab v0.107.0.
-- Corrected WordPress Core-integration health checks so they validate WordPress-shipped contracts/includes rather than backend-only Python files.
-
-# Changelog
 
 ## 0.105.0 — Canonical Research Object Mapping
 

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/lab/platform-core-v3-findings-validation-v01080.schema.json",
+  "title": "Sustainable Catalyst Lab v0.108.0 Findings, Claims, Evidence & Validation Bridge",
+  "type": "object",
+  "properties": {
+    "context": {"type": "object"},
+    "finding": {"type": "object"},
+    "claim": {"type": "object"},
+    "evidence_link": {"type": "object"},
+    "contradiction": {"type": "object"},
+    "validation": {"type": "object"},
+    "replication": {"type": "object"}
+  },
+  "additionalProperties": true
+}

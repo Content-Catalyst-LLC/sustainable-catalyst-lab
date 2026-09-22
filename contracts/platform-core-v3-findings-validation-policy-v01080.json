@@ -1,0 +1,21 @@
+{
+  "schema": "sc-lab-platform-core-v3-findings-claims-evidence-validation-policy/0.108.0",
+  "release": "0.108.0",
+  "minimum_core_release": "3.0.0",
+  "finding_claim_evidence_contract": "sc.research.finding-claim-evidence.v1",
+  "validation_challenge_contract": "sc.research.validation-challenge.v1",
+  "boundaries": {
+    "lab_declares_findings_claims_evidence_assessments": true,
+    "core_records_reference_first_research_intelligence": true,
+    "lab_remains_authoritative_for_underlying_science": true,
+    "human_review_boundaries_preserved": true,
+    "automatic_core_submission": false,
+    "automatic_claim_inference": false,
+    "automatic_finding_generation": false,
+    "automatic_evidence_judgment": false,
+    "automatic_contradiction_resolution": false,
+    "automatic_replication_certification": false,
+    "scientific_validity_certified_by_bridge": false,
+    "truth_determined_by_bridge": false
+  }
+}

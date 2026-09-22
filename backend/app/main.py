@@ -96,6 +96,7 @@ from .platform_core_v3_adapter_v01040 import PlatformCoreV3AdapterError, build_c
 from .platform_core_v3_object_mapping_v01050 import PlatformCoreV3ObjectMappingError, build_core_object_binding as build_core_v3_object_binding, build_core_object_binding_batch as build_core_v3_object_binding_batch, catalog as core_v3_object_mapping_catalog, health as core_v3_object_mapping_health, map_legacy_typed_handoff as map_core_v3_legacy_typed_handoff, normalize_object as normalize_core_v3_object
 from .platform_core_v3_research_context_v01060 import PlatformCoreV3ResearchContextError, build_contextual_handoff_binding as build_core_v3_contextual_handoff_binding, build_contextual_object_binding as build_core_v3_contextual_object_binding, build_core_product_context_binding as build_core_v3_product_context_binding, build_core_session_registration as build_core_v3_session_registration, check_context_continuity as check_core_v3_context_continuity, health as core_v3_research_context_health, manifest as core_v3_research_context_manifest, normalize_research_context as normalize_core_v3_research_context
 from .platform_core_v3_execution_lineage_v01070 import PlatformCoreV3ExecutionLineageError, build_core_execution_binding as build_core_v3_execution_binding, build_core_execution_binding_batch as build_core_v3_execution_binding_batch, check_execution_lineage as check_core_v3_execution_lineage, health as core_v3_execution_lineage_health, manifest as core_v3_execution_lineage_manifest, map_legacy_execution as map_core_v3_legacy_execution, normalize_execution as normalize_core_v3_execution
+from .platform_core_v3_findings_validation_v01080 import PlatformCoreV3FindingsValidationError, build_core_claim_binding as build_core_v3_claim_binding, build_core_contradiction_binding as build_core_v3_contradiction_binding, build_core_evidence_link_binding as build_core_v3_evidence_link_binding, build_core_finding_binding as build_core_v3_finding_binding, build_core_replication_binding as build_core_v3_replication_binding, build_core_validation_challenge_binding as build_core_v3_validation_challenge_binding, health as core_v3_findings_validation_health, manifest as core_v3_findings_validation_manifest, map_legacy_scientific_claim as map_core_v3_legacy_scientific_claim, normalize_claim as normalize_core_v3_claim, normalize_finding as normalize_core_v3_finding
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -5043,6 +5044,76 @@ def platform_core_v3_execution_lineage_check_route(payload: dict[str, Any], auth
 def platform_core_v3_legacy_execution_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return map_core_v3_legacy_execution(payload)
     except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
+
+# v0.108.0 Findings, Claims, Evidence & Validation Bridge
+def _platform_core_v3_findings_validation_http_error(exc: PlatformCoreV3FindingsValidationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/platform-core-v3-research-intelligence/health")
+def platform_core_v3_findings_validation_health_route():
+    body = core_v3_findings_validation_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-research-intelligence/manifest")
+def platform_core_v3_findings_validation_manifest_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = core_v3_findings_validation_manifest(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-research-intelligence/schema")
+def platform_core_v3_findings_validation_schema_route():
+    return {
+        "ok": True,
+        "version": "0.108.0",
+        "bridgeSchema": "sc-lab-platform-core-v3-findings-claims-evidence-validation/0.108.0",
+        "minimumCoreRelease": "3.0.0",
+        "findingClaimEvidenceContract": "sc.research.finding-claim-evidence.v1",
+        "validationChallengeContract": "sc.research.validation-challenge.v1",
+        "automaticCoreSubmission": False,
+        "automaticScientificCertification": False,
+    }
+
+@app.post("/v1/platform-core-v3-research-intelligence/findings/normalize")
+def platform_core_v3_finding_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_finding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/findings/bind")
+def platform_core_v3_finding_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_finding_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/claims/normalize")
+def platform_core_v3_claim_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_claim(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/claims/bind")
+def platform_core_v3_claim_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_claim_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/evidence-links/bind")
+def platform_core_v3_evidence_link_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_evidence_link_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/contradictions/bind")
+def platform_core_v3_contradiction_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_contradiction_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/validation/bind")
+def platform_core_v3_validation_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_validation_challenge_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/replications/bind")
+def platform_core_v3_replication_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_replication_binding(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-research-intelligence/legacy-claim/map")
+def platform_core_v3_legacy_claim_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return map_core_v3_legacy_scientific_claim(payload)
+    except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")
