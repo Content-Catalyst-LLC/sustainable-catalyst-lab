@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/advanced-3d-4d-scientific-visualization-v01170.schema.json",
+  "title": "Sustainable Catalyst Lab v0.117.0 Advanced 3D/4D Scientific Visualization",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "sc-lab-advanced-3d-4d-scientific-visualization/0.117.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "objects": {
+      "type": "array",
+      "maxItems": 96
+    },
+    "time_axis": {
+      "type": "object"
+    },
+    "camera": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "objects"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "sc-lab-advanced-3d-4d-scientific-visualization-policy/0.117.0",
+  "version": "0.117.0",
+  "principles": [
+    "scientific geometry must be explicit",
+    "mesh topology is never inferred",
+    "4D time axes are declared",
+    "volume transfer functions are explicit",
+    "uncertainty geometry is semantically distinct",
+    "camera and scene state are provenance-bearing",
+    "Core remains renderer-neutral and reference-first"
+  ],
+  "forbiddenAutomaticActions": [
+    "geometry inference",
+    "automatic triangulation",
+    "automatic transfer-function selection",
+    "automatic isovalue selection",
+    "automatic time inference",
+    "automatic uncertainty inference",
+    "automatic Core submission",
+    "scientific validity certification",
+    "truth determination"
+  ]
+}

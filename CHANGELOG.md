@@ -1,3 +1,7 @@
+## Lab v0.117.0 — Advanced 3D/4D Scientific Visualization
+
+Adds explicit scientific surfaces, meshes, vector/scalar fields, volumes, trajectories, temporal 4D scenes, slice/isosurface planning, uncertainty geometry, camera-state provenance, publication export planning, dashboard panels, and Core visual bindings. Scientific geometry and time semantics remain explicit and non-inferred.
+
 # v0.116.0 — Interactive Scientific Dashboards & Small Multiples
 
 - Added governed interactive scientific dashboard composition with up to 48 panels.

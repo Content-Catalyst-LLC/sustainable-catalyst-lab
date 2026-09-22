@@ -1,0 +1,8 @@
+(function(W,D){'use strict';const Lab=W.SustainableCatalystLab=W.SustainableCatalystLab||{};const VERSION='0.117.0',ENGINE='3.3.0';
+ const objectTypes=['surface-grid','triangle-mesh','point-cloud','vector-field','scalar-field','volume','trajectory','streamlines','isosurface','slice-plane','uncertainty-envelope','glyph-field'];
+ function decorate(host,meta={}){if(!host)return meta;host.dataset.scAdvancedSceneVersion=VERSION;host.classList.add('sc-advanced-scene1170');return {...meta,version:VERSION,engineVersion:ENGINE};}
+ function cameraState(scene){return scene?.camera?JSON.parse(JSON.stringify(scene.camera)):null;}
+ function temporalFrame(scene,index){const axis=scene?.time_axis;if(!axis||!Array.isArray(axis.values))return null;if(index<0||index>=axis.values.length)return null;return{index,time:axis.values[index],unit:axis.unit||'',sceneHash:scene.scene_hash||null};}
+ function audit(scene={}){const issues=[];if(!Array.isArray(scene.objects)||!scene.objects.length)issues.push('missing-scene-objects');if(scene.time_axis&&!Array.isArray(scene.time_axis.values))issues.push('invalid-time-axis');return{ok:true,version:VERSION,ready:!issues.length,issues,scientificValidityCertified:false,truthDetermined:false};}
+ Lab.AdvancedScientificVisualizationV01170={version:VERSION,engineVersion:ENGINE,objectTypes,decorate,cameraState,temporalFrame,audit};W.SCLabAdvancedScientificVisualizationV01170=Lab.AdvancedScientificVisualizationV01170;
+})(window,document);

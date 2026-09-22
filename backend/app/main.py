@@ -105,6 +105,7 @@ from .platform_core_v3_production_runtime_v01130 import PlatformCoreV3Production
 from .scientific_visualization_design_system_v01140 import VisualizationDesignSystemError, accessibility_metadata as visualization_design_accessibility, apply_profile as visualization_design_apply_profile, audit_figure as visualization_design_audit, build_annotation_plan as visualization_design_annotations, build_export_plan as visualization_design_export_plan, build_publication_figure as visualization_design_publication_figure, catalog as visualization_design_catalog, compose_small_multiples as visualization_design_small_multiples, core_visual_plan as visualization_design_core_visual_plan, design_tokens as visualization_design_tokens, health as visualization_design_health, manifest as visualization_design_manifest, normalize_figure as visualization_design_normalize, renderer_plan as visualization_design_renderer_plan, style_uncertainty as visualization_design_uncertainty
 from .advanced_statistical_uncertainty_graphics_v01150 import AdvancedStatisticalGraphicsError, build_calibration_figure as advanced_stats_calibration, build_coefficient_forest as advanced_stats_coefficients, build_coverage_figure as advanced_stats_coverage, build_distribution_figure as advanced_stats_distribution_figure, build_fan_chart as advanced_stats_fan_chart, build_interval_figure as advanced_stats_interval, build_posterior_figure as advanced_stats_posterior, build_publication_figure as advanced_stats_publication, build_qq_figure as advanced_stats_qq, build_residual_diagnostics as advanced_stats_residuals, build_sensitivity_figure as advanced_stats_sensitivity, build_uncertainty_decomposition as advanced_stats_decomposition, catalog as advanced_stats_catalog, compose_statistical_small_multiples as advanced_stats_small_multiples, explicit_kde as advanced_stats_kde, health as advanced_stats_health, manifest as advanced_stats_manifest, normalize_distribution as advanced_stats_normalize_distribution
 from .interactive_scientific_dashboards_v01160 import InteractiveDashboardError, accessibility_audit as interactive_dashboards_accessibility, build_filter_state as interactive_dashboards_filter_state, build_publication_dashboard as interactive_dashboards_publication, catalog as interactive_dashboards_catalog, compose_small_multiples as interactive_dashboards_small_multiples, core_visual_plan as interactive_dashboards_core_visual_plan, export_plan as interactive_dashboards_export_plan, health as interactive_dashboards_health, manifest as interactive_dashboards_manifest, normalize_control as interactive_dashboards_normalize_control, normalize_dashboard as interactive_dashboards_normalize, normalize_link as interactive_dashboards_normalize_link, propagate_interaction as interactive_dashboards_propagate, provenance_trace as interactive_dashboards_provenance, restore_plan as interactive_dashboards_restore_plan, schema_info as interactive_dashboards_schema, snapshot_state as interactive_dashboards_snapshot, synchronize_scales as interactive_dashboards_sync_scales
+from .advanced_3d_4d_scientific_visualization_v01170 import AdvancedScientificVisualizationError, accessibility_audit as advanced_3d_accessibility, build_core_visual_plan as advanced_3d_core_visual, build_dashboard_panel as advanced_3d_dashboard_panel, build_isosurface_plan as advanced_3d_isosurface, build_mesh as advanced_3d_mesh, build_publication_export as advanced_3d_publication, build_renderer_plan as advanced_3d_renderer, build_scalar_field as advanced_3d_scalar_field, build_slice_plan as advanced_3d_slice, build_surface as advanced_3d_surface, build_temporal_frames as advanced_3d_temporal_frames, build_trajectory as advanced_3d_trajectory, build_uncertainty_geometry as advanced_3d_uncertainty, build_vector_field as advanced_3d_vector_field, build_volume as advanced_3d_volume, catalog as advanced_3d_catalog, health as advanced_3d_health, manifest as advanced_3d_manifest, normalize_camera as advanced_3d_camera, normalize_scene as advanced_3d_normalize, schema_info as advanced_3d_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7636,3 +7637,82 @@ def interactive_scientific_dashboards_publication(payload: dict):
 def interactive_scientific_dashboards_core_visual(payload: dict):
     try: return interactive_dashboards_core_visual_plan(payload)
     except InteractiveDashboardError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+# Lab v0.117.0 — Advanced 3D/4D Scientific Visualization
+@app.get("/v1/advanced-3d-4d-scientific-visualization/health")
+def advanced_3d_4d_visualization_health(): return advanced_3d_health()
+@app.get("/v1/advanced-3d-4d-scientific-visualization/manifest")
+def advanced_3d_4d_visualization_manifest(): return advanced_3d_manifest()
+@app.get("/v1/advanced-3d-4d-scientific-visualization/catalog")
+def advanced_3d_4d_visualization_catalog(): return advanced_3d_catalog()
+@app.get("/v1/advanced-3d-4d-scientific-visualization/schema")
+def advanced_3d_4d_visualization_schema(): return advanced_3d_schema()
+@app.post("/v1/advanced-3d-4d-scientific-visualization/scene/normalize")
+def advanced_3d_4d_visualization_scene(payload: dict):
+    try: return advanced_3d_normalize(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/surface/figure")
+def advanced_3d_4d_visualization_surface(payload: dict):
+    try: return advanced_3d_surface(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/mesh/figure")
+def advanced_3d_4d_visualization_mesh(payload: dict):
+    try: return advanced_3d_mesh(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/vector-field/figure")
+def advanced_3d_4d_visualization_vector(payload: dict):
+    try: return advanced_3d_vector_field(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/scalar-field/figure")
+def advanced_3d_4d_visualization_scalar(payload: dict):
+    try: return advanced_3d_scalar_field(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/volume/plan")
+def advanced_3d_4d_visualization_volume(payload: dict):
+    try: return advanced_3d_volume(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/trajectory/figure")
+def advanced_3d_4d_visualization_trajectory(payload: dict):
+    try: return advanced_3d_trajectory(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/time/frames")
+def advanced_3d_4d_visualization_frames(payload: dict):
+    try: return advanced_3d_temporal_frames(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/slice/plan")
+def advanced_3d_4d_visualization_slice(payload: dict):
+    try: return advanced_3d_slice(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/isosurface/plan")
+def advanced_3d_4d_visualization_isosurface(payload: dict):
+    try: return advanced_3d_isosurface(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/camera/state")
+def advanced_3d_4d_visualization_camera(payload: dict):
+    try: return {"ok":True,"camera":advanced_3d_camera(payload)}
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/uncertainty/geometry")
+def advanced_3d_4d_visualization_uncertainty(payload: dict):
+    try: return advanced_3d_uncertainty(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/renderer/plan")
+def advanced_3d_4d_visualization_renderer(payload: dict):
+    try: return advanced_3d_renderer(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/publication/export")
+def advanced_3d_4d_visualization_publication(payload: dict):
+    try: return advanced_3d_publication(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/dashboard/panel")
+def advanced_3d_4d_visualization_dashboard(payload: dict):
+    try: return advanced_3d_dashboard_panel(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/core-visual/plan")
+def advanced_3d_4d_visualization_core(payload: dict):
+    try: return advanced_3d_core_visual(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/advanced-3d-4d-scientific-visualization/accessibility/audit")
+def advanced_3d_4d_visualization_accessibility(payload: dict):
+    try: return advanced_3d_accessibility(payload)
+    except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
