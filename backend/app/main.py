@@ -95,6 +95,7 @@ from .typed_cross_product_handoffs import TypedCrossProductHandoffs, policies as
 from .platform_core_v3_adapter_v01040 import PlatformCoreV3AdapterError, build_contract_product_registration as build_core_v3_contract_registration, build_session_product_binding as build_core_v3_session_product_binding, compatibility_report as core_v3_compatibility_report, health as core_v3_adapter_health, manifest as core_v3_adapter_manifest, normalize_runtime_context as normalize_core_v3_runtime_context, validate_handoff as validate_core_v3_handoff
 from .platform_core_v3_object_mapping_v01050 import PlatformCoreV3ObjectMappingError, build_core_object_binding as build_core_v3_object_binding, build_core_object_binding_batch as build_core_v3_object_binding_batch, catalog as core_v3_object_mapping_catalog, health as core_v3_object_mapping_health, map_legacy_typed_handoff as map_core_v3_legacy_typed_handoff, normalize_object as normalize_core_v3_object
 from .platform_core_v3_research_context_v01060 import PlatformCoreV3ResearchContextError, build_contextual_handoff_binding as build_core_v3_contextual_handoff_binding, build_contextual_object_binding as build_core_v3_contextual_object_binding, build_core_product_context_binding as build_core_v3_product_context_binding, build_core_session_registration as build_core_v3_session_registration, check_context_continuity as check_core_v3_context_continuity, health as core_v3_research_context_health, manifest as core_v3_research_context_manifest, normalize_research_context as normalize_core_v3_research_context
+from .platform_core_v3_execution_lineage_v01070 import PlatformCoreV3ExecutionLineageError, build_core_execution_binding as build_core_v3_execution_binding, build_core_execution_binding_batch as build_core_v3_execution_binding_batch, check_execution_lineage as check_core_v3_execution_lineage, health as core_v3_execution_lineage_health, manifest as core_v3_execution_lineage_manifest, map_legacy_execution as map_core_v3_legacy_execution, normalize_execution as normalize_core_v3_execution
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -4992,6 +4993,56 @@ def platform_core_v3_contextual_handoff_bind_route(payload: dict[str, Any], auth
 def platform_core_v3_context_continuity_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return check_core_v3_context_continuity(payload)
     except PlatformCoreV3ResearchContextError as exc: raise _platform_core_v3_research_context_http_error(exc) from exc
+
+# v0.107.0 Scientific Execution Lineage Bridge
+def _platform_core_v3_execution_lineage_http_error(exc: PlatformCoreV3ExecutionLineageError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/platform-core-v3-executions/health")
+def platform_core_v3_execution_lineage_health_route():
+    body = core_v3_execution_lineage_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-executions/manifest")
+def platform_core_v3_execution_lineage_manifest_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = core_v3_execution_lineage_manifest(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-executions/schema")
+def platform_core_v3_execution_lineage_schema_route():
+    return {
+        "ok": True,
+        "version": "0.107.0",
+        "executionSchema": "sc-lab-scientific-execution-lineage/0.107.0",
+        "minimumCoreRelease": "3.0.0",
+        "coreExecutionBindingPath": "/v1/research/unified-runtime/execution-bindings",
+        "referenceFirst": True,
+        "automaticCoreSubmission": False,
+        "automaticScientificExecution": False,
+    }
+
+@app.post("/v1/platform-core-v3-executions/normalize")
+def platform_core_v3_execution_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_execution(payload)
+    except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-executions/bind")
+def platform_core_v3_execution_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_execution_binding(payload)
+    except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-executions/batch")
+def platform_core_v3_execution_batch_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_execution_binding_batch(payload)
+    except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-executions/lineage/check")
+def platform_core_v3_execution_lineage_check_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return check_core_v3_execution_lineage(payload)
+    except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-executions/legacy-run/map")
+def platform_core_v3_legacy_execution_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return map_core_v3_legacy_execution(payload)
+    except PlatformCoreV3ExecutionLineageError as exc: raise _platform_core_v3_execution_lineage_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")

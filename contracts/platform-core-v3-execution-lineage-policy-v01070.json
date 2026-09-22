@@ -1,0 +1,13 @@
+{
+  "schema": "sc-lab-platform-core-v3-execution-lineage-policy/0.107.0",
+  "labReleaseVersion": "0.107.0",
+  "minimumCoreRelease": "3.0.0",
+  "coreExecutionBindingPath": "/v1/research/unified-runtime/execution-bindings",
+  "labIsScientificExecutionAuthority": true,
+  "coreRecordsExecutionReferencesAndLineage": true,
+  "underlyingExecutionRemainsAuthoritativeInLab": true,
+  "automaticCoreSubmission": false,
+  "automaticScientificExecution": false,
+  "scientificValidityCertifiedByBridge": false,
+  "lineageIsDeclaredNotInferred": true
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/platform-core-v3-execution-lineage-v01070.schema.json",
+  "title": "Sustainable Catalyst Lab v0.107.0 Scientific Execution Lineage Bridge",
+  "type": "object",
+  "required": ["context", "execution"],
+  "properties": {
+    "context": {
+      "type": "object",
+      "required": ["project_ref", "session_id"]
+    },
+    "execution": {
+      "type": "object",
+      "required": ["runtime", "environment_ref", "method_ref"],
+      "properties": {
+        "execution_ref": {"type": "string", "minLength": 1},
+        "id": {"type": "string", "minLength": 1},
+        "runtime": {"type": "string", "minLength": 1},
+        "environment_ref": {"type": "string", "minLength": 1},
+        "method_ref": {"type": "string", "minLength": 1},
+        "input_refs": {"type": "array"},
+        "output_refs": {"type": "array"},
+        "parameters": {"type": "object"},
+        "assumptions": {"type": "object"},
+        "environment": {"type": "object"},
+        "metadata": {"type": "object"},
+        "provenance": {"type": "object"},
+        "execution_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

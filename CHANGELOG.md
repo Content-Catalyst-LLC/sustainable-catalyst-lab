@@ -1482,3 +1482,9 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added optional explicit SHA-256 digests for external documents, images, and laboratory results.
 - Added Carbon Project `verification-record` handoff with provenance event `created`.
 - Preserved strict guardrails: internal ledger integrity is not third-party verification, certification, methodology compliance, or carbon-credit eligibility.
+
+## 0.107.0 — Scientific Execution Lineage Bridge
+- Added Core v3 execution-binding envelopes for Lab scientific runs.
+- Added deterministic input, parameter, assumption, environment, output, and lineage hashes.
+- Added context-aware single/batch bindings, legacy run mapping, and declared-lineage checking.
+- Preserved Lab as execution authority; no automatic Core submission or scientific execution.
