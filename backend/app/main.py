@@ -100,6 +100,7 @@ from .platform_core_v3_findings_validation_v01080 import PlatformCoreV3FindingsV
 from .platform_core_v3_visual_scene_v01090 import PlatformCoreV3VisualSceneError, bridge_linked_views as bridge_core_v3_linked_views, bridge_uncertainty_visual as bridge_core_v3_uncertainty_visual, build_core_scene_contract as build_core_v3_scene_contract, build_core_visual_binding as build_core_v3_visual_binding, health as core_v3_visual_scene_health, manifest as core_v3_visual_scene_manifest, map_legacy_scene as map_core_v3_legacy_scene, negotiate_renderer as negotiate_core_v3_renderer, normalize_scene as normalize_core_v3_scene, normalize_visual as normalize_core_v3_visual, renderer_catalog as core_v3_renderer_catalog
 from .platform_core_v3_scholarly_package_v01100 import PlatformCoreV3ScholarlyPackageError, bridge_citations as bridge_core_v3_citations, bridge_datasets_notebooks as bridge_core_v3_descriptors, build_core_package_binding as build_core_v3_package_binding, build_provenance_manifest as build_core_v3_provenance_manifest, build_publication_binding as build_core_v3_publication_binding, build_scholarly_interoperability_plan as build_core_v3_scholarly_plan, build_scholarly_package_envelope as build_core_v3_scholarly_package, build_validation_record as build_core_v3_scholarly_validation, health as core_v3_scholarly_package_health, manifest as core_v3_scholarly_package_manifest, map_legacy_package as map_core_v3_legacy_package, normalize_package as normalize_core_v3_package
 from .platform_core_v3_scientific_investigation_v01110 import PlatformCoreV3ScientificInvestigationError, bridge_evidence_context as bridge_core_v3_investigation_evidence, bridge_reasoning_context as bridge_core_v3_investigation_reasoning, bridge_scientific_assets as bridge_core_v3_investigation_assets, build_core_investigation_binding as build_core_v3_investigation_binding, build_runtime_integration_plan as build_core_v3_investigation_plan, check_investigation_continuity as check_core_v3_investigation_continuity, health as core_v3_scientific_investigation_health, manifest as core_v3_scientific_investigation_manifest, map_legacy_argumentation_case as map_core_v3_legacy_argumentation_case, map_legacy_scientific_study as map_core_v3_legacy_scientific_study, normalize_investigation as normalize_core_v3_scientific_investigation
+from .platform_core_v3_integration_certification_v01120 import PlatformCoreV3IntegrationCertificationError, assess_roundtrip as assess_core_v3_integration_roundtrip, build_case_plans as build_core_v3_certification_cases, build_case_result_plan as build_core_v3_certification_case_result, build_evidence_plan as build_core_v3_certification_evidence, build_exchange_check_plan as build_core_v3_certification_exchange, build_finding_plan as build_core_v3_certification_finding, build_full_submission_plan as build_core_v3_certification_full_plan, build_product_plan as build_core_v3_certification_product, build_reproduction_check_plan as build_core_v3_certification_reproduction, build_run_plan as build_core_v3_certification_run, build_suite_plan as build_core_v3_certification_suite, build_trace_check_plan as build_core_v3_certification_trace, catalog as core_v3_integration_certification_catalog, compatibility_report as core_v3_integration_certification_compatibility, health as core_v3_integration_certification_health, manifest as core_v3_integration_certification_manifest
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7231,4 +7232,87 @@ def platform_core_v3_scientific_investigations_legacy_study(payload: dict):
 def platform_core_v3_scientific_investigations_legacy_argumentation(payload: dict):
     try: return map_core_v3_legacy_argumentation_case(payload)
     except PlatformCoreV3ScientificInvestigationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.112.0 — Platform Core Integration Certification
+@app.get("/v1/platform-core-v3-integration-certification/health")
+def platform_core_v3_integration_certification_health():
+    return core_v3_integration_certification_health()
+
+@app.get("/v1/platform-core-v3-integration-certification/manifest")
+def platform_core_v3_integration_certification_manifest():
+    return core_v3_integration_certification_manifest()
+
+@app.get("/v1/platform-core-v3-integration-certification/schema")
+def platform_core_v3_integration_certification_schema():
+    return {"ok": True, "version": "0.112.0", "minimum_core_release": "3.0.0", "core_contract": "sc.research.platform-integration-certification.v1", "certification_scope": "platform_runtime_contract_conformance_only", "automatic_core_submission": False, "automatic_product_invocation": False, "automatic_case_execution": False, "automatic_scientific_certification": False, "automatic_truth_determination": False}
+
+@app.get("/v1/platform-core-v3-integration-certification/catalog")
+def platform_core_v3_integration_certification_catalog():
+    return core_v3_integration_certification_catalog()
+
+@app.post("/v1/platform-core-v3-integration-certification/suites/plan")
+def platform_core_v3_integration_certification_suite(payload: dict):
+    try: return build_core_v3_certification_suite(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/products/plan")
+def platform_core_v3_integration_certification_product(payload: dict):
+    try: return build_core_v3_certification_product(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/cases/plan")
+def platform_core_v3_integration_certification_cases(payload: dict):
+    try: return build_core_v3_certification_cases(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/runs/plan")
+def platform_core_v3_integration_certification_run(payload: dict):
+    try: return build_core_v3_certification_run(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/case-results/plan")
+def platform_core_v3_integration_certification_case_result(payload: dict):
+    try: return build_core_v3_certification_case_result(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/exchange-checks/plan")
+def platform_core_v3_integration_certification_exchange(payload: dict):
+    try: return build_core_v3_certification_exchange(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/trace-checks/plan")
+def platform_core_v3_integration_certification_trace(payload: dict):
+    try: return build_core_v3_certification_trace(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/reproduction-checks/plan")
+def platform_core_v3_integration_certification_reproduction(payload: dict):
+    try: return build_core_v3_certification_reproduction(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/evidence/plan")
+def platform_core_v3_integration_certification_evidence(payload: dict):
+    try: return build_core_v3_certification_evidence(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/findings/plan")
+def platform_core_v3_integration_certification_finding(payload: dict):
+    try: return build_core_v3_certification_finding(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/roundtrip/assess")
+def platform_core_v3_integration_certification_roundtrip(payload: dict):
+    try: return assess_core_v3_integration_roundtrip(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/compatibility/check")
+def platform_core_v3_integration_certification_compatibility(payload: dict):
+    try: return core_v3_integration_certification_compatibility(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/platform-core-v3-integration-certification/full-plan")
+def platform_core_v3_integration_certification_full(payload: dict):
+    try: return build_core_v3_certification_full_plan(payload)
+    except PlatformCoreV3IntegrationCertificationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

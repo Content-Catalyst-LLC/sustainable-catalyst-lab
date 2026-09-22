@@ -1555,3 +1555,10 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added deterministic input, parameter, assumption, environment, output, and lineage hashes.
 - Added context-aware single/batch bindings, legacy run mapping, and declared-lineage checking.
 - Preserved Lab as execution authority; no automatic Core submission or scientific execution.
+
+## 0.112.0 — Platform Core Integration Certification
+- Adds the Platform Core integration-certification bridge for the complete v0.104–v0.111 integration line.
+- Defines eight certified integration layers and eighteen required conformance cases.
+- Generates non-submitting Core suite/product/case/run/check/evidence/finding plans.
+- Adds declared roundtrip assessment and Core certification-readiness compatibility checks.
+- Keeps certification scoped to runtime-contract conformance; scientific validity, product quality, authorization, ranking, inferred reproducibility, automated remediation, and truth determination remain outside the bridge.

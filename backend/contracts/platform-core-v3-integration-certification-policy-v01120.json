@@ -1,0 +1,27 @@
+{
+  "schema": "sc-lab-platform-core-v3-integration-certification-policy/0.112.0",
+  "labReleaseVersion": "0.112.0",
+  "minimumCoreRelease": "3.0.0",
+  "coreContract": "sc.research.platform-integration-certification.v1",
+  "certificationScope": "platform_runtime_contract_conformance_only",
+  "layers": [
+    "0.104.0 runtime adapter",
+    "0.105.0 canonical objects",
+    "0.106.0 research context",
+    "0.107.0 execution lineage",
+    "0.108.0 findings validation",
+    "0.109.0 visual scene",
+    "0.110.0 scholarly package",
+    "0.111.0 scientific investigation"
+  ],
+  "boundaries": {
+    "automaticCoreSubmission": false,
+    "invokeProductByCore": false,
+    "executeConformanceCaseByCore": false,
+    "certifyScientificValidityByCore": false,
+    "certifyProductQualityByCore": false,
+    "rankProductsByCore": false,
+    "inferReproducibilityByCore": false,
+    "determineTruthByCore": false
+  }
+}

@@ -1,0 +1,23 @@
+# Sustainable Catalyst Lab v0.112.0 — Terminal Commands
+
+## GitHub promotion (macOS)
+cd ~/Downloads
+rm -rf sc-lab-v0.112.0-release
+mkdir -p sc-lab-v0.112.0-release
+unzip -q sustainable-catalyst-lab-v0.112.0-release-bundle.zip -d sc-lab-v0.112.0-release
+cd sc-lab-v0.112.0-release
+chmod +x PUSH_LAB_V01120_FINAL.sh
+./PUSH_LAB_V01120_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.112.0-repository.zip"
+
+## Backend upload + SSH (macOS)
+cd ~/Downloads/sc-lab-v0.112.0-release
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.112.0.zip upgrade_lab_backend_v0_112_0_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+## Backend deployment (Contabo)
+chmod +x /tmp/upgrade_lab_backend_v0_112_0_contabo.sh
+/tmp/upgrade_lab_backend_v0_112_0_contabo.sh
+
+## Optional protected Core certification readiness
+# export SC_PLATFORM_CORE_CERT_READINESS_URL=http://127.0.0.1:8090/v1/research/integration-certification/readiness
+# /tmp/upgrade_lab_backend_v0_112_0_contabo.sh

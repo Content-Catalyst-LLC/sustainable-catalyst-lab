@@ -1012,3 +1012,6 @@ Lab can emit reference-first Platform Core v3 scientific execution lineage envel
 
 ### Platform Core integration — v0.110.0
 Lab now bridges reproducibility packages, scholarly publications, citations, dataset/notebook descriptors, provenance manifests, publication bindings, and declared interoperability validation evidence into Platform Core v3 while preserving Lab as the authority for the underlying scientific package and without automatic publication or reproducibility certification.
+
+### Lab v0.112.0 — Platform Core Integration Certification
+Lab v0.112.0 closes the v0.104–v0.111 Core-integration sequence with an 8-layer, 18-case runtime-contract conformance harness aligned to `sc.research.platform-integration-certification.v1`. It constructs explicit Core certification records and locally assesses declared results without automatic Core submission, product invocation, case execution, scientific certification, product-quality certification, or truth determination.
