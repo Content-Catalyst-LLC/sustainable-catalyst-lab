@@ -103,6 +103,7 @@ from .platform_core_v3_scientific_investigation_v01110 import PlatformCoreV3Scie
 from .platform_core_v3_integration_certification_v01120 import PlatformCoreV3IntegrationCertificationError, assess_roundtrip as assess_core_v3_integration_roundtrip, build_case_plans as build_core_v3_certification_cases, build_case_result_plan as build_core_v3_certification_case_result, build_evidence_plan as build_core_v3_certification_evidence, build_exchange_check_plan as build_core_v3_certification_exchange, build_finding_plan as build_core_v3_certification_finding, build_full_submission_plan as build_core_v3_certification_full_plan, build_product_plan as build_core_v3_certification_product, build_reproduction_check_plan as build_core_v3_certification_reproduction, build_run_plan as build_core_v3_certification_run, build_suite_plan as build_core_v3_certification_suite, build_trace_check_plan as build_core_v3_certification_trace, catalog as core_v3_integration_certification_catalog, compatibility_report as core_v3_integration_certification_compatibility, health as core_v3_integration_certification_health, manifest as core_v3_integration_certification_manifest
 from .platform_core_v3_production_runtime_v01130 import PlatformCoreV3ProductionRuntimeError, assess_diagnostics as assess_core_v3_production_diagnostics, assess_roundtrip as assess_core_v3_production_roundtrip, build_checkpoint as build_core_v3_production_checkpoint, build_receipt as build_core_v3_production_receipt, build_recovery_plan as build_core_v3_production_recovery, build_retry_plan as build_core_v3_production_retry, build_roundtrip_plan as build_core_v3_production_roundtrip_plan, build_submission_plan as build_core_v3_production_submission_plan, catalog as core_v3_production_runtime_catalog, check_continuity as check_core_v3_production_continuity, check_idempotency as check_core_v3_production_idempotency, check_readiness as check_core_v3_production_readiness, health as core_v3_production_runtime_health, manifest as core_v3_production_runtime_manifest, normalize_operation as normalize_core_v3_production_operation
 from .scientific_visualization_design_system_v01140 import VisualizationDesignSystemError, accessibility_metadata as visualization_design_accessibility, apply_profile as visualization_design_apply_profile, audit_figure as visualization_design_audit, build_annotation_plan as visualization_design_annotations, build_export_plan as visualization_design_export_plan, build_publication_figure as visualization_design_publication_figure, catalog as visualization_design_catalog, compose_small_multiples as visualization_design_small_multiples, core_visual_plan as visualization_design_core_visual_plan, design_tokens as visualization_design_tokens, health as visualization_design_health, manifest as visualization_design_manifest, normalize_figure as visualization_design_normalize, renderer_plan as visualization_design_renderer_plan, style_uncertainty as visualization_design_uncertainty
+from .advanced_statistical_uncertainty_graphics_v01150 import AdvancedStatisticalGraphicsError, build_calibration_figure as advanced_stats_calibration, build_coefficient_forest as advanced_stats_coefficients, build_coverage_figure as advanced_stats_coverage, build_distribution_figure as advanced_stats_distribution_figure, build_fan_chart as advanced_stats_fan_chart, build_interval_figure as advanced_stats_interval, build_posterior_figure as advanced_stats_posterior, build_publication_figure as advanced_stats_publication, build_qq_figure as advanced_stats_qq, build_residual_diagnostics as advanced_stats_residuals, build_sensitivity_figure as advanced_stats_sensitivity, build_uncertainty_decomposition as advanced_stats_decomposition, catalog as advanced_stats_catalog, compose_statistical_small_multiples as advanced_stats_small_multiples, explicit_kde as advanced_stats_kde, health as advanced_stats_health, manifest as advanced_stats_manifest, normalize_distribution as advanced_stats_normalize_distribution
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7464,3 +7465,89 @@ def scientific_visualization_design_system_publication(payload: dict):
 def scientific_visualization_design_system_core_visual(payload: dict):
     try: return visualization_design_core_visual_plan(payload)
     except VisualizationDesignSystemError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.115.0 — Advanced Statistical & Uncertainty Graphics
+@app.get("/v1/advanced-statistical-uncertainty-graphics/health")
+def advanced_statistical_uncertainty_graphics_health(): return advanced_stats_health()
+
+@app.get("/v1/advanced-statistical-uncertainty-graphics/manifest")
+def advanced_statistical_uncertainty_graphics_manifest(): return advanced_stats_manifest()
+
+@app.get("/v1/advanced-statistical-uncertainty-graphics/catalog")
+def advanced_statistical_uncertainty_graphics_catalog(): return advanced_stats_catalog()
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/distributions/normalize")
+def advanced_statistical_uncertainty_graphics_distribution_normalize(payload: dict):
+    try: return advanced_stats_normalize_distribution(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/distributions/kde")
+def advanced_statistical_uncertainty_graphics_kde(payload: dict):
+    try: return advanced_stats_kde(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/distributions/figure")
+def advanced_statistical_uncertainty_graphics_distribution_figure(payload: dict):
+    try: return advanced_stats_distribution_figure(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/intervals/figure")
+def advanced_statistical_uncertainty_graphics_interval(payload: dict):
+    try: return advanced_stats_interval(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/fan-chart/figure")
+def advanced_statistical_uncertainty_graphics_fan_chart(payload: dict):
+    try: return advanced_stats_fan_chart(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/posterior/figure")
+def advanced_statistical_uncertainty_graphics_posterior(payload: dict):
+    try: return advanced_stats_posterior(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/coefficients/forest")
+def advanced_statistical_uncertainty_graphics_coefficients(payload: dict):
+    try: return advanced_stats_coefficients(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/calibration/reliability")
+def advanced_statistical_uncertainty_graphics_calibration(payload: dict):
+    try: return advanced_stats_calibration(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/diagnostics/residuals")
+def advanced_statistical_uncertainty_graphics_residuals(payload: dict):
+    try: return advanced_stats_residuals(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/qq/figure")
+def advanced_statistical_uncertainty_graphics_qq(payload: dict):
+    try: return advanced_stats_qq(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/sensitivity/figure")
+def advanced_statistical_uncertainty_graphics_sensitivity(payload: dict):
+    try: return advanced_stats_sensitivity(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/uncertainty/decomposition")
+def advanced_statistical_uncertainty_graphics_decomposition(payload: dict):
+    try: return advanced_stats_decomposition(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/coverage/figure")
+def advanced_statistical_uncertainty_graphics_coverage(payload: dict):
+    try: return advanced_stats_coverage(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/small-multiples/compose")
+def advanced_statistical_uncertainty_graphics_small_multiples(payload: dict):
+    try: return advanced_stats_small_multiples(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.post("/v1/advanced-statistical-uncertainty-graphics/publication/build")
+def advanced_statistical_uncertainty_graphics_publication(payload: dict):
+    try: return advanced_stats_publication(payload)
+    except AdvancedStatisticalGraphicsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

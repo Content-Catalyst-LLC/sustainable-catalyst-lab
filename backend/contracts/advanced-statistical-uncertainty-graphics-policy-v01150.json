@@ -1,0 +1,15 @@
+{
+  "schema":"sc-lab-advanced-statistical-uncertainty-graphics-policy/0.115.0",
+  "version":"0.115.0",
+  "principles":["publication-grade","uncertainty-explicit","assumptions-declared","non-color-redundancy","provenance-preserving","statistical-judgment-separated-from-rendering"],
+  "boundaries":{
+    "automatic_kde_bandwidth":false,
+    "automatic_distribution_selection":false,
+    "automatic_interval_semantics":false,
+    "automatic_significance_inference":false,
+    "automatic_causal_inference":false,
+    "automatic_model_quality_certification":false,
+    "automatic_scientific_validity_certification":false,
+    "automatic_truth_determination":false
+  }
+}

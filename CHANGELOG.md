@@ -1,3 +1,10 @@
+# v0.115.0 — Advanced Statistical & Uncertainty Graphics
+
+- Added 16 publication-grade statistical and uncertainty figure families.
+- Added explicit-bandwidth KDE, interval/fan/posterior/calibration/residual/Q-Q/sensitivity/decomposition/coverage visual contracts.
+- Preserved v0.114 publication profiles, accessibility and vector-first export behavior.
+- Kept statistical inference, scientific validity and truth judgments outside the rendering layer.
+
 ## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
 
 Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.

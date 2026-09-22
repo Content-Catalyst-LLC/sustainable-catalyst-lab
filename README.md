@@ -1023,3 +1023,7 @@ Lab now bridges reproducibility packages, scholarly publications, citations, dat
 
 ### Lab v0.112.0 — Platform Core Integration Certification
 Lab v0.112.0 closes the v0.104–v0.111 Core-integration sequence with an 8-layer, 18-case runtime-contract conformance harness aligned to `sc.research.platform-integration-certification.v1`. It constructs explicit Core certification records and locally assesses declared results without automatic Core submission, product invocation, case execution, scientific certification, product-quality certification, or truth determination.
+
+## Lab v0.115.0 — Advanced Statistical & Uncertainty Graphics
+
+The Lab now includes a publication-grade statistical graphics layer over the v0.114 visualization design system, including distributions, uncertainty ribbons/fan charts, posterior/coefficient forests, calibration, residual/Q-Q diagnostics, sensitivity, variance decomposition and empirical coverage. Statistical assumptions that materially affect a figure remain explicit rather than silently inferred.

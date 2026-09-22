@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://sustainablecatalyst.com/contracts/advanced-statistical-uncertainty-graphics-v01150.schema.json",
+  "title":"Sustainable Catalyst Lab Advanced Statistical & Uncertainty Graphics v0.115.0",
+  "type":"object",
+  "properties":{
+    "graphic_type":{"enum":["histogram","ecdf","box","violin","raincloud","ridge","interval-ribbon","fan-chart","posterior-density","coefficient-forest","calibration-reliability","residual-diagnostics","qq","sensitivity","uncertainty-decomposition","coverage"]},
+    "version":{"const":"0.115.0"},
+    "statistical_metadata":{"type":"object"},
+    "spec":{"type":"object"},
+    "fingerprint":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  },
+  "required":["graphic_type","version","statistical_metadata","spec"],
+  "additionalProperties":true
+}
