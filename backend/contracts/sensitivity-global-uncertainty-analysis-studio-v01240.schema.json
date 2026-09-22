@@ -1,0 +1,15 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/sensitivity-global-uncertainty-analysis-studio-v01240.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "study": {
+      "type": "object"
+    },
+    "version": {
+      "const": "0.124.0"
+    }
+  },
+  "title": "Sustainable Catalyst Lab Sensitivity & Global Uncertainty Analysis Studio v0.124.0",
+  "type": "object"
+}

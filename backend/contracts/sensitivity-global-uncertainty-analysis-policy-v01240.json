@@ -1,0 +1,12 @@
+{
+  "automaticCausalInference": false,
+  "automaticCoreSubmission": false,
+  "automaticModelSelection": false,
+  "automaticParameterRanking": false,
+  "automaticScientificValidityCertification": false,
+  "automaticSignificanceInference": false,
+  "determineTruth": false,
+  "schema": "sc-lab-sensitivity-global-uncertainty-analysis-policy/0.124.0",
+  "simulationOutputSemantics": "modeled-not-observed",
+  "version": "0.124.0"
+}

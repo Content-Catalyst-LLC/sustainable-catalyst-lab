@@ -1053,3 +1053,7 @@ Adds reproducible statistical modeling and diagnostics over the v0.120 EDA layer
 
 ### Lab v0.123.0 — Simulation & Monte Carlo Research Studio
 Adds reproducible Monte Carlo and quasi-random simulation studies, convergence/seed diagnostics, parameter sweeps, scenario ensembles, uncertainty propagation, publication visualization plans, and reference-first Platform Core handoffs. Simulated outputs remain explicitly modeled rather than observed evidence.
+
+
+## v0.124.0 Sensitivity & Global Uncertainty Analysis Studio
+Global sensitivity and uncertainty attribution workflows with explicit scientific-interpretation boundaries.

@@ -1,0 +1,4 @@
+.sc-lab-sensitivity-v01240{--sc-sensitivity-gap:1rem;display:grid;gap:var(--sc-sensitivity-gap)}
+.sc-lab-sensitivity-v01240__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.sc-lab-sensitivity-v01240__metric{border:1px solid currentColor;border-radius:.5rem;padding:1rem}
+.sc-lab-sensitivity-v01240 [data-semantics="modeled-not-observed"]::after{content:"Modeled · not observed";font-size:.75rem;opacity:.7}

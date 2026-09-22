@@ -1,3 +1,6 @@
+## 0.124.0 — Sensitivity & Global Uncertainty Analysis Studio
+- Added Sobol/Morris, variance decomposition, interaction screening, response surfaces, convergence/replication, publication and Core plans.
+
 
 ## 0.123.0 — Simulation & Monte Carlo Research Studio
 - Added governed Monte Carlo, Latin-hypercube, Sobol, and Saltelli-Sobol simulation workflows.

@@ -1,0 +1,1 @@
+(function(w){'use strict';const cfg=w.SCLabSensitivityGlobalUncertaintyV01240Config||{};w.SCLabSensitivityGlobalUncertaintyV01240={version:'0.124.0',config:cfg,boundaries:{automaticParameterRanking:false,automaticSignificanceInference:false,automaticCausalInference:false,simulationOutputSemantics:'modeled-not-observed'}};})(window);

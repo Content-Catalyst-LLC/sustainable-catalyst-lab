@@ -112,6 +112,7 @@ from .exploratory_data_analysis_studio_v01200 import EDAStudioError, analyze_cor
 from .statistical_modeling_diagnostics_studio_v01210 import StatisticalModelingDiagnosticsError, build_core_object_plan as model_diag_core_object, build_export_plan as model_diag_export, build_snapshot as model_diag_snapshot, build_studio as model_diag_studio, build_visualization_plan as model_diag_visualization, catalog as model_diag_catalog, coefficient_report as model_diag_coefficients, effect_report as model_diag_effects, assumption_audit as model_diag_assumptions, compare_models as model_diag_compare, cross_validate_model as model_diag_cross_validate, diagnose_model as model_diag_diagnose, evaluate_predictions as model_diag_evaluate, fit_model as model_diag_fit, health as model_diag_health, manifest as model_diag_manifest, normalize_model_spec as model_diag_normalize, schema_info as model_diag_schema
 from .bayesian_analysis_workbench_v01220 import BayesianWorkbenchError, build_core_object_plan as bayes2_core_object, build_export_plan as bayes2_export, build_reproduction_plan as bayes2_reproduction, build_snapshot as bayes2_snapshot, build_visualization_plan as bayes2_visualization, build_workbench as bayes2_workbench, catalog as bayes2_catalog, compare_models as bayes2_compare, convergence_audit as bayes2_convergence, fit_hierarchical_normal as bayes2_hierarchical_fit, fit_posterior as bayes2_fit, health as bayes2_health, hierarchical_summary as bayes2_hierarchical_summary, manifest as bayes2_manifest, normalize_analysis as bayes2_normalize, posterior_predictive_report as bayes2_ppc, prior_posterior_report as bayes2_prior_posterior, probability_report as bayes2_probability, sampler_diagnostics as bayes2_diagnostics, schema_info as bayes2_schema
 from .simulation_monte_carlo_research_studio_v01230 import SimulationStudioError, build_compute_budget_plan as sim_mc_budget, build_core_object_plan as sim_mc_core_object, build_execution_lineage_plan as sim_mc_lineage, build_export_plan as sim_mc_export, build_reproduction_plan as sim_mc_reproduction, build_sampling_plan as sim_mc_sampling, build_snapshot as sim_mc_snapshot, build_studio as sim_mc_studio, build_visualization_plan as sim_mc_visualization, catalog as sim_mc_catalog, convergence_report as sim_mc_convergence, health as sim_mc_health, manifest as sim_mc_manifest, normalize_study as sim_mc_normalize, parameter_sweep_plan as sim_mc_sweep_plan, replication_report as sim_mc_replication, run_parameter_sweep as sim_mc_sweep_run, run_scenario_ensemble as sim_mc_scenarios, run_simulation as sim_mc_run, run_uncertainty_propagation as sim_mc_uncertainty, schema_info as sim_mc_schema, threshold_report as sim_mc_threshold
+from .sensitivity_global_uncertainty_analysis_studio_v01240 import SensitivityStudioError, build_core_object_plan as sens_core_object, build_execution_lineage_plan as sens_lineage, build_export_plan as sens_export, build_reproduction_plan as sens_reproduction, build_snapshot as sens_snapshot, build_studio as sens_studio, build_visualization_plan as sens_visualization, catalog as sens_catalog, correlation_screening_report as sens_correlation, health as sens_health, interaction_screening_report as sens_interactions, interpretation_boundaries_report as sens_boundaries, manifest as sens_manifest, morris_report as sens_morris, normalize_analysis as sens_normalize, response_surface_plan as sens_surface_plan, response_surface_run as sens_surface_run, schema_info as sens_schema, sensitivity_convergence_report as sens_convergence, sensitivity_replication_report as sens_replication, sobol_report as sens_sobol, variance_decomposition_report as sens_variance
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8170,4 +8171,86 @@ def simulation_monte_carlo_core_object(payload: dict):
 def simulation_monte_carlo_lineage(payload: dict):
     try: return sim_mc_lineage(payload)
     except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/sensitivity-global-uncertainty-analysis-studio/health")
+def sensitivity_global_uncertainty_health(): return sens_health()
+@app.get("/v1/sensitivity-global-uncertainty-analysis-studio/manifest")
+def sensitivity_global_uncertainty_manifest(): return sens_manifest()
+@app.get("/v1/sensitivity-global-uncertainty-analysis-studio/catalog")
+def sensitivity_global_uncertainty_catalog(): return sens_catalog()
+@app.get("/v1/sensitivity-global-uncertainty-analysis-studio/schema")
+def sensitivity_global_uncertainty_schema(): return sens_schema()
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/study/normalize")
+def sensitivity_global_uncertainty_normalize(payload: dict):
+    try: return sens_normalize(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/sobol/report")
+def sensitivity_global_uncertainty_sobol(payload: dict):
+    try: return sens_sobol(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/morris/report")
+def sensitivity_global_uncertainty_morris(payload: dict):
+    try: return sens_morris(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/correlation-screening/report")
+def sensitivity_global_uncertainty_correlation(payload: dict):
+    try: return sens_correlation(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/variance-decomposition/report")
+def sensitivity_global_uncertainty_variance(payload: dict):
+    try: return sens_variance(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/interaction-screening/report")
+def sensitivity_global_uncertainty_interactions(payload: dict):
+    try: return sens_interactions(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/response-surface/plan")
+def sensitivity_global_uncertainty_surface_plan(payload: dict):
+    try: return sens_surface_plan(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/response-surface/run")
+def sensitivity_global_uncertainty_surface_run(payload: dict):
+    try: return sens_surface_run(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/convergence/report")
+def sensitivity_global_uncertainty_convergence(payload: dict):
+    try: return sens_convergence(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/replication/report")
+def sensitivity_global_uncertainty_replication(payload: dict):
+    try: return sens_replication(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/visualization/plan")
+def sensitivity_global_uncertainty_visualization(payload: dict):
+    try: return sens_visualization(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/studio/build")
+def sensitivity_global_uncertainty_studio(payload: dict):
+    try: return sens_studio(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/snapshot/build")
+def sensitivity_global_uncertainty_snapshot(payload: dict):
+    try: return sens_snapshot(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/reproduction/plan")
+def sensitivity_global_uncertainty_reproduction(payload: dict):
+    try: return sens_reproduction(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/export/plan")
+def sensitivity_global_uncertainty_export(payload: dict):
+    try: return sens_export(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/core-object/plan")
+def sensitivity_global_uncertainty_core_object(payload: dict):
+    try: return sens_core_object(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/execution-lineage/plan")
+def sensitivity_global_uncertainty_lineage(payload: dict):
+    try: return sens_lineage(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/sensitivity-global-uncertainty-analysis-studio/interpretation-boundaries/report")
+def sensitivity_global_uncertainty_boundaries(payload: dict):
+    try: return sens_boundaries(payload)
+    except SensitivityStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
 
