@@ -1,3 +1,7 @@
+## 0.122.0 — Bayesian Analysis Workbench II
+- Adds governed Bayesian prior/posterior review, sampler diagnostics, convergence audits, posterior predictive checks, posterior probability statements, hierarchical normal random-effects modeling, model comparison, visualization planning, snapshots, reproduction plans, exports, and Core plans.
+- Preserves declared priors/model structure and forbids automatic prior selection, convergence certification, model selection, significance labels, causal claims, generalization, validity certification, and Core submission.
+
 ## 0.121.0 — Statistical Modeling & Model Diagnostics Studio
 - Adds governed regression/GLM fitting, diagnostics, prediction evaluation, cross-validation, model comparison, visualization planning, snapshots, and Core plans.
 - Preserves source data and forbids automatic feature/model selection, significance labels, causal claims, validity certification, and Core submission.

@@ -110,6 +110,7 @@ from .visual_research_narrative_figure_composer_v01180 import VisualResearchNarr
 from .scientific_figure_intelligence_automatic_layout_v01190 import FigureLayoutIntelligenceError, accessibility_audit as figure_layout_accessibility, analyze_figure as figure_layout_analyze, build_core_visual_plan as figure_layout_core_visual, build_export_plan as figure_layout_export, build_figure_intelligence as figure_layout_intelligence, build_snapshot as figure_layout_snapshot, catalog as figure_layout_catalog, collision_audit as figure_layout_collision_audit, explain_layout as figure_layout_explain, health as figure_layout_health, manifest as figure_layout_manifest, normalize_figure_context as figure_layout_normalize, plan_annotations as figure_layout_annotations, plan_axes as figure_layout_axes, plan_layout as figure_layout_plan, plan_legend as figure_layout_legend, plan_panels as figure_layout_panels, plan_print as figure_layout_print, plan_responsive as figure_layout_responsive, quality_audit as figure_layout_quality, schema_info as figure_layout_schema
 from .exploratory_data_analysis_studio_v01200 import EDAStudioError, analyze_correlations as eda_correlations, analyze_distributions as eda_distributions, analyze_missingness as eda_missingness, analyze_outliers as eda_outliers, analyze_pca as eda_pca, analyze_relationship as eda_relationship, build_core_object_plan as eda_core_object, build_export_plan as eda_export, build_snapshot as eda_snapshot, build_studio as eda_studio, build_visualization_plan as eda_visualization, catalog as eda_catalog, compare_groups as eda_groups, health as eda_health, manifest as eda_manifest, normalize_dataset as eda_normalize, plan_transformations as eda_transform_plan, preview_transformations as eda_transform_preview, profile_dataset as eda_profile, schema_info as eda_schema
 from .statistical_modeling_diagnostics_studio_v01210 import StatisticalModelingDiagnosticsError, build_core_object_plan as model_diag_core_object, build_export_plan as model_diag_export, build_snapshot as model_diag_snapshot, build_studio as model_diag_studio, build_visualization_plan as model_diag_visualization, catalog as model_diag_catalog, coefficient_report as model_diag_coefficients, effect_report as model_diag_effects, assumption_audit as model_diag_assumptions, compare_models as model_diag_compare, cross_validate_model as model_diag_cross_validate, diagnose_model as model_diag_diagnose, evaluate_predictions as model_diag_evaluate, fit_model as model_diag_fit, health as model_diag_health, manifest as model_diag_manifest, normalize_model_spec as model_diag_normalize, schema_info as model_diag_schema
+from .bayesian_analysis_workbench_v01220 import BayesianWorkbenchError, build_core_object_plan as bayes2_core_object, build_export_plan as bayes2_export, build_reproduction_plan as bayes2_reproduction, build_snapshot as bayes2_snapshot, build_visualization_plan as bayes2_visualization, build_workbench as bayes2_workbench, catalog as bayes2_catalog, compare_models as bayes2_compare, convergence_audit as bayes2_convergence, fit_hierarchical_normal as bayes2_hierarchical_fit, fit_posterior as bayes2_fit, health as bayes2_health, hierarchical_summary as bayes2_hierarchical_summary, manifest as bayes2_manifest, normalize_analysis as bayes2_normalize, posterior_predictive_report as bayes2_ppc, prior_posterior_report as bayes2_prior_posterior, probability_report as bayes2_probability, sampler_diagnostics as bayes2_diagnostics, schema_info as bayes2_schema
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8012,3 +8013,78 @@ def statistical_modeling_diagnostics_export(payload: dict):
 def statistical_modeling_diagnostics_core_object(payload: dict):
     try: return model_diag_core_object(payload)
     except StatisticalModelingDiagnosticsError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+# Lab v0.122.0 — Bayesian Analysis Workbench II
+@app.get("/v1/bayesian-analysis-workbench/health")
+def bayesian_analysis_workbench_health(): return bayes2_health()
+@app.get("/v1/bayesian-analysis-workbench/manifest")
+def bayesian_analysis_workbench_manifest(): return bayes2_manifest()
+@app.get("/v1/bayesian-analysis-workbench/catalog")
+def bayesian_analysis_workbench_catalog(): return bayes2_catalog()
+@app.get("/v1/bayesian-analysis-workbench/schema")
+def bayesian_analysis_workbench_schema(): return bayes2_schema()
+@app.post("/v1/bayesian-analysis-workbench/analysis/normalize")
+def bayesian_analysis_workbench_normalize(payload: dict):
+    try: return bayes2_normalize(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/posterior/fit")
+def bayesian_analysis_workbench_fit(payload: dict):
+    try: return bayes2_fit(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/prior-posterior/report")
+def bayesian_analysis_workbench_prior_posterior(payload: dict):
+    try: return bayes2_prior_posterior(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/diagnostics/sampler")
+def bayesian_analysis_workbench_diagnostics(payload: dict):
+    try: return bayes2_diagnostics(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/convergence/audit")
+def bayesian_analysis_workbench_convergence(payload: dict):
+    try: return bayes2_convergence(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/posterior-predictive/report")
+def bayesian_analysis_workbench_ppc(payload: dict):
+    try: return bayes2_ppc(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/probability/report")
+def bayesian_analysis_workbench_probability(payload: dict):
+    try: return bayes2_probability(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/hierarchical/fit")
+def bayesian_analysis_workbench_hierarchical_fit(payload: dict):
+    try: return bayes2_hierarchical_fit(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/hierarchical/summary")
+def bayesian_analysis_workbench_hierarchical_summary(payload: dict):
+    try: return bayes2_hierarchical_summary(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/models/compare")
+def bayesian_analysis_workbench_compare(payload: dict):
+    try: return bayes2_compare(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/visualization/plan")
+def bayesian_analysis_workbench_visualization(payload: dict):
+    try: return bayes2_visualization(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/workbench/build")
+def bayesian_analysis_workbench_build(payload: dict):
+    try: return bayes2_workbench(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/snapshot/build")
+def bayesian_analysis_workbench_snapshot(payload: dict):
+    try: return bayes2_snapshot(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/reproduction/plan")
+def bayesian_analysis_workbench_reproduction(payload: dict):
+    try: return bayes2_reproduction(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/export/plan")
+def bayesian_analysis_workbench_export(payload: dict):
+    try: return bayes2_export(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/bayesian-analysis-workbench/core-object/plan")
+def bayesian_analysis_workbench_core_object(payload: dict):
+    try: return bayes2_core_object(payload)
+    except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

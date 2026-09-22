@@ -1,0 +1,19 @@
+{
+  "schema": "sc-lab-bayesian-analysis-workbench-policy/0.122.0",
+  "version": "0.122.0",
+  "sourceRowsImmutable": true,
+  "automaticPriorSelection": false,
+  "automaticConvergenceCertification": false,
+  "automaticModelSelection": false,
+  "automaticSignificanceLabels": false,
+  "automaticCausalInference": false,
+  "automaticGeneralization": false,
+  "automaticScientificValidityCertification": false,
+  "automaticCoreSubmission": false,
+  "determineTruth": false,
+  "notes": [
+    "Bayesian probability statements are posterior summaries under declared models and priors, not automatic decisions.",
+    "Convergence diagnostics are screening evidence and never an automatic convergence certificate.",
+    "Hierarchical population/generalization interpretations remain human-bounded."
+  ]
+}

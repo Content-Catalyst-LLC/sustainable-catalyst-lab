@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/bayesian-analysis-workbench-v01220.schema.json",
+  "title": "Sustainable Catalyst Lab Bayesian Analysis Workbench II",
+  "type": "object",
+  "properties": {
+    "dataset": {"type": "object"},
+    "study": {"type": "object"},
+    "result": {"type": "object"},
+    "hierarchical": {"type": "object"},
+    "units": {"type": "array", "items": {"type": "object"}},
+    "queries": {"type": "array", "items": {"type": "object"}},
+    "session_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -25,6 +25,9 @@ Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference
 
 # Sustainable Catalyst Lab
 
+**Current release: v0.122.0 — Bayesian Analysis Workbench II.**
+
+
 **Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**
 
 ## v0.109.0 — Visual Reasoning & Scientific Scene Bridge
