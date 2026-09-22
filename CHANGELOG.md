@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.109.0 — Visual Reasoning & Scientific Scene Bridge
+
+- Added Core v3 visual-binding envelopes for Lab scientific figures, scenes, linked views, uncertainty views, renderer plans, dashboards, and visual explanations.
+- Added renderer-neutral conversion of Lab v0.77 and v0.88 scientific scenes into the Core `sc.visual-runtime.scene.v1` contract while preserving Lab scene authority.
+- Added linked-view composition and declared uncertainty visualization bridges without automatic link or uncertainty inference.
+- Added Lab renderer catalog and browser/runtime renderer negotiation surfaces spanning SVG/Canvas/WebGL2/WebGPU-capable paths.
+- Preserved Core's renderer-neutral boundary: Core does not render, perform GPU work, compute layout, or infer scientific meaning/truth from visual form.
+- Preserved reference-first behavior: no automatic Core submission or mutation.
+- Platform Core compatibility remains minimum-version based (>=3.0.0); verification targets the required v0.109 routes and behavior rather than global route totals.
+
 ## 0.108.0 — Findings, Claims, Evidence & Validation Bridge
 
 - Added Core v3 reference-first bindings for Lab scientific findings and claims.

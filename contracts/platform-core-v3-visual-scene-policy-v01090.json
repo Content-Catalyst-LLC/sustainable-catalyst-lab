@@ -1,0 +1,24 @@
+{
+  "schema": "sc-lab-platform-core-v3-visual-scene-policy/0.109.0",
+  "lab_release_version": "0.109.0",
+  "minimum_core_release": "3.0.0",
+  "core_contracts": [
+    "sc.research.unified-research-scientific-investigation-runtime.v1",
+    "sc.visual-runtime.scene.v1",
+    "sc.visual-runtime.unified-reasoning.v1",
+    "sc.visual-runtime.cross-product-integration.v1"
+  ],
+  "authority": {
+    "core": "semantic visual identity, reference-first scene state and cross-product visual bindings",
+    "lab": "scientific scene normalization, renderer negotiation and scientific rendering"
+  },
+  "boundaries": {
+    "automatic_core_submission": false,
+    "automatic_core_mutation": false,
+    "core_renders_visuals": false,
+    "core_performs_gpu_work": false,
+    "automatic_visual_truth_inference": false,
+    "automatic_link_inference": false,
+    "automatic_uncertainty_inference": false
+  }
+}

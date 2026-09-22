@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/platform-core-v3-visual-scene-v01090.schema.json",
+  "title": "Sustainable Catalyst Lab Platform Core v3 Visual Reasoning and Scientific Scene Bridge",
+  "type": "object",
+  "required": [
+    "schema",
+    "lab_release_version",
+    "minimum_core_release",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-platform-core-v3-visual-reasoning-scientific-scene/0.109.0"
+    },
+    "lab_release_version": {
+      "const": "0.109.0"
+    },
+    "minimum_core_release": {
+      "const": "3.0.0"
+    },
+    "core_visual_scene_contract": {
+      "const": "sc.visual-runtime.scene.v1"
+    },
+    "boundaries": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

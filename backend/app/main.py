@@ -97,6 +97,7 @@ from .platform_core_v3_object_mapping_v01050 import PlatformCoreV3ObjectMappingE
 from .platform_core_v3_research_context_v01060 import PlatformCoreV3ResearchContextError, build_contextual_handoff_binding as build_core_v3_contextual_handoff_binding, build_contextual_object_binding as build_core_v3_contextual_object_binding, build_core_product_context_binding as build_core_v3_product_context_binding, build_core_session_registration as build_core_v3_session_registration, check_context_continuity as check_core_v3_context_continuity, health as core_v3_research_context_health, manifest as core_v3_research_context_manifest, normalize_research_context as normalize_core_v3_research_context
 from .platform_core_v3_execution_lineage_v01070 import PlatformCoreV3ExecutionLineageError, build_core_execution_binding as build_core_v3_execution_binding, build_core_execution_binding_batch as build_core_v3_execution_binding_batch, check_execution_lineage as check_core_v3_execution_lineage, health as core_v3_execution_lineage_health, manifest as core_v3_execution_lineage_manifest, map_legacy_execution as map_core_v3_legacy_execution, normalize_execution as normalize_core_v3_execution
 from .platform_core_v3_findings_validation_v01080 import PlatformCoreV3FindingsValidationError, build_core_claim_binding as build_core_v3_claim_binding, build_core_contradiction_binding as build_core_v3_contradiction_binding, build_core_evidence_link_binding as build_core_v3_evidence_link_binding, build_core_finding_binding as build_core_v3_finding_binding, build_core_replication_binding as build_core_v3_replication_binding, build_core_validation_challenge_binding as build_core_v3_validation_challenge_binding, health as core_v3_findings_validation_health, manifest as core_v3_findings_validation_manifest, map_legacy_scientific_claim as map_core_v3_legacy_scientific_claim, normalize_claim as normalize_core_v3_claim, normalize_finding as normalize_core_v3_finding
+from .platform_core_v3_visual_scene_v01090 import PlatformCoreV3VisualSceneError, bridge_linked_views as bridge_core_v3_linked_views, bridge_uncertainty_visual as bridge_core_v3_uncertainty_visual, build_core_scene_contract as build_core_v3_scene_contract, build_core_visual_binding as build_core_v3_visual_binding, health as core_v3_visual_scene_health, manifest as core_v3_visual_scene_manifest, map_legacy_scene as map_core_v3_legacy_scene, negotiate_renderer as negotiate_core_v3_renderer, normalize_scene as normalize_core_v3_scene, normalize_visual as normalize_core_v3_visual, renderer_catalog as core_v3_renderer_catalog
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -5114,6 +5115,78 @@ def platform_core_v3_replication_bind_route(payload: dict[str, Any], auth: dict[
 def platform_core_v3_legacy_claim_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
     try: return map_core_v3_legacy_scientific_claim(payload)
     except PlatformCoreV3FindingsValidationError as exc: raise _platform_core_v3_findings_validation_http_error(exc) from exc
+
+
+# v0.109.0 Visual Reasoning & Scientific Scene Bridge
+def _platform_core_v3_visual_scene_http_error(exc: PlatformCoreV3VisualSceneError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/platform-core-v3-visual-scene/health")
+def platform_core_v3_visual_scene_health_route():
+    body = core_v3_visual_scene_health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-visual-scene/manifest")
+def platform_core_v3_visual_scene_manifest_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    body = core_v3_visual_scene_manifest(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/platform-core-v3-visual-scene/schema")
+def platform_core_v3_visual_scene_schema_route():
+    return {
+        "ok": True,
+        "version": "0.109.0",
+        "bridgeSchema": "sc-lab-platform-core-v3-visual-reasoning-scientific-scene/0.109.0",
+        "minimumCoreRelease": "3.0.0",
+        "coreVisualSceneContract": "sc.visual-runtime.scene.v1",
+        "coreUnifiedVisualReasoningContract": "sc.visual-runtime.unified-reasoning.v1",
+        "coreVisualBindingPath": "/v1/research/unified-runtime/visual-bindings",
+        "automaticCoreSubmission": False,
+        "automaticRenderingByCore": False,
+    }
+
+@app.post("/v1/platform-core-v3-visual-scene/visuals/normalize")
+def platform_core_v3_visual_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_visual(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/visuals/bind")
+def platform_core_v3_visual_bind_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_visual_binding(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/scenes/normalize")
+def platform_core_v3_scene_normalize_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return normalize_core_v3_scene(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/scenes/bridge")
+def platform_core_v3_scene_bridge_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return build_core_v3_scene_contract(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/linked-views/bridge")
+def platform_core_v3_linked_views_bridge_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return bridge_core_v3_linked_views(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/uncertainty/bridge")
+def platform_core_v3_uncertainty_visual_bridge_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return bridge_core_v3_uncertainty_visual(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.get("/v1/platform-core-v3-visual-scene/renderers/catalog")
+def platform_core_v3_renderer_catalog_route(auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return core_v3_renderer_catalog()
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/renderers/negotiate")
+def platform_core_v3_renderer_negotiate_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return negotiate_core_v3_renderer(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
+
+@app.post("/v1/platform-core-v3-visual-scene/legacy-scene/map")
+def platform_core_v3_legacy_scene_map_route(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    try: return map_core_v3_legacy_scene(payload)
+    except PlatformCoreV3VisualSceneError as exc: raise _platform_core_v3_visual_scene_http_error(exc) from exc
 
 # v0.38.1 Typed Cross-Product Research Handoffs
 @app.get("/v1/typed-cross-product-handoffs/health")

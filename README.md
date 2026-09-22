@@ -1,6 +1,10 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.108.0 — Findings, Claims, Evidence & Validation Bridge.**
+**Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**
+
+## v0.109.0 — Visual Reasoning & Scientific Scene Bridge
+
+Lab v0.109.0 connects Platform Core v3 visual identity and renderer-neutral scene semantics to the Lab scientific visualization stack. It adds Core-compatible visual-binding envelopes, conversion of Lab v0.77/v0.88 scientific scenes into `sc.visual-runtime.scene.v1` contracts, linked-view and uncertainty-view bridges, renderer capability discovery/negotiation, and legacy scientific-scene mapping. Core records visual references, scene/view references, source bindings, and cross-product semantics; Lab remains authoritative for scientific rendering, WebGL/WebGPU execution, 3D/4D scene behavior, and underlying scientific figures. The bridge never makes Core render, perform GPU work, infer visual truth, infer links, or infer uncertainty.
 
 ## v0.108.0 — Findings, Claims, Evidence & Validation Bridge
 
