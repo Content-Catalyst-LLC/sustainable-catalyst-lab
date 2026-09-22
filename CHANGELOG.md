@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.105.0 — Canonical Research Object Mapping
+
+- Added the Platform Core v3 canonical research-object mapping layer for 20 Lab object families.
+- Added reference-first Core object-binding payload generation without copying scientific payloads into Core.
+- Added stable Lab-authoritative object references, version references, optional SHA-256 content identity, visibility normalization, and mapping fingerprints.
+- Added batch object binding generation with duplicate-reference protection.
+- Added a bridge from the retained v0.38.1 typed cross-product handoff contract into Core v3 object bindings.
+- Added first-class scientific-figure object identity while deferring Core visual bindings to Lab v0.109.0.
+- Preserved specialist ownership boundaries: Lab remains authoritative; Core receives references and lineage metadata only.
+- Carried forward the macOS-safe release promotion and FastAPI route-verification repairs identified during v0.104.0 deployment.
+
 ## 0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration
 
 - Added a formal Platform Core v3 specialist-runtime adapter for Research Lab.

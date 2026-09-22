@@ -350,7 +350,9 @@ def validate_handoff(payload: dict[str, Any]) -> dict[str, Any]:
         "legacy_typed_handoff_bridge": {
             "available": True,
             "contract": "sc-typed-research-handoff-plan/0.38.1",
-            "object_mapping_deferred_to": "Lab v0.105.0",
+            "object_mapping_available": True,
+            "object_mapping_contract": "sc-lab-platform-core-v3-object-mapping/0.105.0",
+            "object_mapping_path": "/v1/platform-core-v3-objects/legacy-handoff/map",
         },
     }
 

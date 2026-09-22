@@ -454,7 +454,7 @@ final class SC_Lab_Plugin {
                 'projectPacketUrl' => esc_url_raw(rest_url('sc-lab/v1/carbon-nature/mrv/v1700/reporting/project-packet')),
             ),
             'platformCoreV3Adapter' => array(
-                'labReleaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.104.0',
+                'labReleaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.105.0',
                 'requiredCoreRelease' => '3.0.0',
                 'productRef' => 'product:sustainable-catalyst-lab',
                 'runtimeContract' => 'sc.research.unified-runtime-contract.v1',
@@ -464,6 +464,18 @@ final class SC_Lab_Plugin {
                 'schemaUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01040/schema')),
                 'automaticCoreCalls' => false,
                 'automaticExecution' => false,
+            ),
+            'platformCoreV3ObjectMapping' => array(
+                'labReleaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : '0.105.0',
+                'requiredCoreRelease' => '3.0.0',
+                'productRef' => 'product:sustainable-catalyst-lab',
+                'healthUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01050/objects/health')),
+                'catalogUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01050/objects/catalog')),
+                'schemaUrl' => esc_url_raw(rest_url('sc-lab/v1/platform-core-v3/v01050/objects/schema')),
+                'coreObjectBindingPath' => '/v1/research/unified-runtime/object-bindings',
+                'mappingCount' => 20,
+                'referenceFirst' => true,
+                'automaticCoreSubmission' => false,
             ),
             'longJobs' => array(
                 'version' => '0.27.2',

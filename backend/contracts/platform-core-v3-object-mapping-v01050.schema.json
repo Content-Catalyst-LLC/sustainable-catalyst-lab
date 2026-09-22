@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-platform-core-v3-object-mapping/0.105.0",
+  "title": "Sustainable Catalyst Lab Platform Core v3 Canonical Research Object Mapping",
+  "type": "object",
+  "required": ["object_type"],
+  "properties": {
+    "object_type": {
+      "type": "string",
+      "enum": [
+        "dataset", "observation-set", "workflow", "workflow-run", "experiment",
+        "campaign", "model", "surrogate-model", "artifact", "evidence-record",
+        "citation-set", "publication", "reproducibility-package", "manuscript",
+        "decision-packet", "scenario", "indicator-set", "research-brief",
+        "workspace-snapshot", "scientific-figure"
+      ]
+    },
+    "local_id": {"type": ["string", "number", "null"]},
+    "object_ref": {"type": ["string", "null"], "maxLength": 1000},
+    "version": {"type": ["string", "number", "null"]},
+    "version_ref": {"type": ["string", "null"], "maxLength": 1000},
+    "content_hash": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "role": {"type": "string", "maxLength": 120},
+    "visibility": {"enum": ["private", "internal", "public"]},
+    "source_contract": {"type": ["string", "null"], "maxLength": 1000},
+    "metadata": {"type": "object"},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": true
+}

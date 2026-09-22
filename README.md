@@ -1,10 +1,14 @@
 # Sustainable Catalyst Lab
 
-**Current release: v0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration.**
+**Current release: v0.105.0 — Canonical Research Object Mapping.**
+
+## v0.105.0 — Canonical Research Object Mapping
+
+Lab v0.105.0 connects Lab's existing scientific object families to Platform Core v3.0.0's open-ended unified-runtime object bindings. Datasets, observations, workflows, experiments, campaigns, models, artifacts, evidence, citations, publications, reproducibility packages, manuscripts, scenarios, research briefs, snapshots, and scientific figures receive stable Lab-authoritative references and deterministic mapping metadata. Core stores references and lineage context only; Lab remains authoritative for the underlying scientific content. The retained v0.38.1 typed handoff layer can now be translated directly into Core v3 object-binding requests. Execution, visual, and package-specific binding bridges remain intentionally deferred to v0.107.0, v0.109.0, and v0.110.0.
 
 ## v0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration
 
-Lab v0.104.0 declares Sustainable Catalyst Lab as the scientific-execution authority for Platform Core v3.0.0. It adds governed capability registration payloads, unified research-session context normalization, Core-to-Lab handoff validation, and Core v3 readiness/boundary compatibility checks. Core remains the reference-first orchestration layer; Lab does not automatically mutate Core or execute scientific work merely because a handoff is validated. Canonical research-object mapping follows in v0.105.0.
+Lab v0.104.0 declares Sustainable Catalyst Lab as the scientific-execution authority for Platform Core v3.0.0. It adds governed capability registration payloads, unified research-session context normalization, Core-to-Lab handoff validation, and Core v3 readiness/boundary compatibility checks. Core remains the reference-first orchestration layer; Lab does not automatically mutate Core or execute scientific work merely because a handoff is validated.
 
 
 ## v0.100.0 — MRV Reporting & Audit Packets

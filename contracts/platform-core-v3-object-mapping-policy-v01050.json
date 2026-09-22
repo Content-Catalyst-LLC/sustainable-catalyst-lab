@@ -1,0 +1,25 @@
+{
+  "schema": "sc-lab-platform-core-v3-object-mapping-policy/0.105.0",
+  "version": "0.105.0",
+  "requiredCoreRelease": "3.0.0",
+  "productRef": "product:sustainable-catalyst-lab",
+  "coreObjectBindingPath": "/v1/research/unified-runtime/object-bindings",
+  "referenceFirst": true,
+  "labObjectsRemainAuthoritative": true,
+  "copyObjectPayloadsToCore": false,
+  "automaticCoreSubmission": false,
+  "automaticExecution": false,
+  "legacyTypedHandoffBridge": "sc-typed-research-handoff-plan/0.38.1",
+  "supportedObjectTypes": [
+    "dataset", "observation-set", "workflow", "workflow-run", "experiment",
+    "campaign", "model", "surrogate-model", "artifact", "evidence-record",
+    "citation-set", "publication", "reproducibility-package", "manuscript",
+    "decision-packet", "scenario", "indicator-set", "research-brief",
+    "workspace-snapshot", "scientific-figure"
+  ],
+  "deferredSpecializedBindings": {
+    "execution": "Lab v0.107.0",
+    "visual": "Lab v0.109.0",
+    "package": "Lab v0.110.0"
+  }
+}
