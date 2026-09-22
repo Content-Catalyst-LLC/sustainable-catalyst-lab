@@ -1,0 +1,9 @@
+/* Sustainable Catalyst Lab v0.123.0 — Simulation & Monte Carlo Research Studio */
+.sc-lab-simulation-v01230{--sc-sim-gap:1rem;display:grid;gap:var(--sc-sim-gap)}
+.sc-lab-simulation-v01230__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--sc-sim-gap)}
+.sc-lab-simulation-v01230__panel{border:1px solid currentColor;border-radius:.5rem;padding:1rem;min-width:0}
+.sc-lab-simulation-v01230__metric{font-variant-numeric:tabular-nums lining-nums}
+.sc-lab-simulation-v01230 [data-semantic-role="simulation"]{stroke-dasharray:0}
+.sc-lab-simulation-v01230 [data-output-semantics="modeled-not-observed"]::before{content:"Modeled";font-size:.75em;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+@media (max-width:720px){.sc-lab-simulation-v01230__grid{grid-template-columns:1fr}}
+@media print{.sc-lab-simulation-v01230__panel{break-inside:avoid}.sc-lab-simulation-v01230{gap:.5rem}}

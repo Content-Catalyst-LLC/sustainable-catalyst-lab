@@ -1,0 +1,20 @@
+{
+  "schema": "sc-lab-simulation-monte-carlo-research-studio-policy/0.123.0",
+  "version": "0.123.0",
+  "simulationOutputsAreModeledNotObserved": true,
+  "sourceModelsImmutable": true,
+  "reproducibleSeededExecution": true,
+  "automaticConvergenceCertification": false,
+  "automaticScenarioSelection": false,
+  "automaticScenarioRanking": false,
+  "automaticEvidencePromotion": false,
+  "automaticCausalInference": false,
+  "automaticScientificValidityCertification": false,
+  "automaticCoreSubmission": false,
+  "determineTruth": false,
+  "notes": [
+    "Monte Carlo outputs describe the declared model, distributions, scenarios, and random seed; they are not observed evidence.",
+    "Convergence and seed-replication diagnostics are descriptive review aids, not automatic convergence certificates.",
+    "Scenario and parameter-sweep outputs are presented without automatic ranking, optimization, causal interpretation, or decision selection."
+  ]
+}

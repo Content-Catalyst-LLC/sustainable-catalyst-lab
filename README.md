@@ -1050,3 +1050,6 @@ Adds reproducible exploratory analysis for tabular scientific data with descript
 
 ### Lab v0.121.0 — Statistical Modeling & Model Diagnostics Studio
 Adds reproducible statistical modeling and diagnostics over the v0.120 EDA layer, including Gaussian/robust/regularized regression, binomial/Poisson GLMs, residual/influence/calibration diagnostics, explicit model comparison, and publication-aware visual plans.
+
+### Lab v0.123.0 — Simulation & Monte Carlo Research Studio
+Adds reproducible Monte Carlo and quasi-random simulation studies, convergence/seed diagnostics, parameter sweeps, scenario ensembles, uncertainty propagation, publication visualization plans, and reference-first Platform Core handoffs. Simulated outputs remain explicitly modeled rather than observed evidence.

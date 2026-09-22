@@ -111,6 +111,7 @@ from .scientific_figure_intelligence_automatic_layout_v01190 import FigureLayout
 from .exploratory_data_analysis_studio_v01200 import EDAStudioError, analyze_correlations as eda_correlations, analyze_distributions as eda_distributions, analyze_missingness as eda_missingness, analyze_outliers as eda_outliers, analyze_pca as eda_pca, analyze_relationship as eda_relationship, build_core_object_plan as eda_core_object, build_export_plan as eda_export, build_snapshot as eda_snapshot, build_studio as eda_studio, build_visualization_plan as eda_visualization, catalog as eda_catalog, compare_groups as eda_groups, health as eda_health, manifest as eda_manifest, normalize_dataset as eda_normalize, plan_transformations as eda_transform_plan, preview_transformations as eda_transform_preview, profile_dataset as eda_profile, schema_info as eda_schema
 from .statistical_modeling_diagnostics_studio_v01210 import StatisticalModelingDiagnosticsError, build_core_object_plan as model_diag_core_object, build_export_plan as model_diag_export, build_snapshot as model_diag_snapshot, build_studio as model_diag_studio, build_visualization_plan as model_diag_visualization, catalog as model_diag_catalog, coefficient_report as model_diag_coefficients, effect_report as model_diag_effects, assumption_audit as model_diag_assumptions, compare_models as model_diag_compare, cross_validate_model as model_diag_cross_validate, diagnose_model as model_diag_diagnose, evaluate_predictions as model_diag_evaluate, fit_model as model_diag_fit, health as model_diag_health, manifest as model_diag_manifest, normalize_model_spec as model_diag_normalize, schema_info as model_diag_schema
 from .bayesian_analysis_workbench_v01220 import BayesianWorkbenchError, build_core_object_plan as bayes2_core_object, build_export_plan as bayes2_export, build_reproduction_plan as bayes2_reproduction, build_snapshot as bayes2_snapshot, build_visualization_plan as bayes2_visualization, build_workbench as bayes2_workbench, catalog as bayes2_catalog, compare_models as bayes2_compare, convergence_audit as bayes2_convergence, fit_hierarchical_normal as bayes2_hierarchical_fit, fit_posterior as bayes2_fit, health as bayes2_health, hierarchical_summary as bayes2_hierarchical_summary, manifest as bayes2_manifest, normalize_analysis as bayes2_normalize, posterior_predictive_report as bayes2_ppc, prior_posterior_report as bayes2_prior_posterior, probability_report as bayes2_probability, sampler_diagnostics as bayes2_diagnostics, schema_info as bayes2_schema
+from .simulation_monte_carlo_research_studio_v01230 import SimulationStudioError, build_compute_budget_plan as sim_mc_budget, build_core_object_plan as sim_mc_core_object, build_execution_lineage_plan as sim_mc_lineage, build_export_plan as sim_mc_export, build_reproduction_plan as sim_mc_reproduction, build_sampling_plan as sim_mc_sampling, build_snapshot as sim_mc_snapshot, build_studio as sim_mc_studio, build_visualization_plan as sim_mc_visualization, catalog as sim_mc_catalog, convergence_report as sim_mc_convergence, health as sim_mc_health, manifest as sim_mc_manifest, normalize_study as sim_mc_normalize, parameter_sweep_plan as sim_mc_sweep_plan, replication_report as sim_mc_replication, run_parameter_sweep as sim_mc_sweep_run, run_scenario_ensemble as sim_mc_scenarios, run_simulation as sim_mc_run, run_uncertainty_propagation as sim_mc_uncertainty, schema_info as sim_mc_schema, threshold_report as sim_mc_threshold
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8088,3 +8089,85 @@ def bayesian_analysis_workbench_export(payload: dict):
 def bayesian_analysis_workbench_core_object(payload: dict):
     try: return bayes2_core_object(payload)
     except BayesianWorkbenchError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/simulation-monte-carlo-research-studio/health")
+def simulation_monte_carlo_health(): return sim_mc_health()
+@app.get("/v1/simulation-monte-carlo-research-studio/manifest")
+def simulation_monte_carlo_manifest(): return sim_mc_manifest()
+@app.get("/v1/simulation-monte-carlo-research-studio/catalog")
+def simulation_monte_carlo_catalog(): return sim_mc_catalog()
+@app.get("/v1/simulation-monte-carlo-research-studio/schema")
+def simulation_monte_carlo_schema(): return sim_mc_schema()
+@app.post("/v1/simulation-monte-carlo-research-studio/study/normalize")
+def simulation_monte_carlo_normalize(payload: dict):
+    try: return sim_mc_normalize(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/sampling/plan")
+def simulation_monte_carlo_sampling(payload: dict):
+    try: return sim_mc_sampling(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/compute-budget/plan")
+def simulation_monte_carlo_budget(payload: dict):
+    try: return sim_mc_budget(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/simulation/run")
+def simulation_monte_carlo_run(payload: dict):
+    try: return sim_mc_run(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/convergence/report")
+def simulation_monte_carlo_convergence(payload: dict):
+    try: return sim_mc_convergence(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/replication/report")
+def simulation_monte_carlo_replication(payload: dict):
+    try: return sim_mc_replication(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/parameter-sweep/plan")
+def simulation_monte_carlo_sweep_plan(payload: dict):
+    try: return sim_mc_sweep_plan(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/parameter-sweep/run")
+def simulation_monte_carlo_sweep_run(payload: dict):
+    try: return sim_mc_sweep_run(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/scenario-ensemble/run")
+def simulation_monte_carlo_scenarios(payload: dict):
+    try: return sim_mc_scenarios(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/uncertainty-propagation/run")
+def simulation_monte_carlo_uncertainty(payload: dict):
+    try: return sim_mc_uncertainty(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/threshold/report")
+def simulation_monte_carlo_threshold(payload: dict):
+    try: return sim_mc_threshold(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/visualization/plan")
+def simulation_monte_carlo_visualization(payload: dict):
+    try: return sim_mc_visualization(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/studio/build")
+def simulation_monte_carlo_studio(payload: dict):
+    try: return sim_mc_studio(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/snapshot/build")
+def simulation_monte_carlo_snapshot(payload: dict):
+    try: return sim_mc_snapshot(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/reproduction/plan")
+def simulation_monte_carlo_reproduction(payload: dict):
+    try: return sim_mc_reproduction(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/export/plan")
+def simulation_monte_carlo_export(payload: dict):
+    try: return sim_mc_export(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/core-object/plan")
+def simulation_monte_carlo_core_object(payload: dict):
+    try: return sim_mc_core_object(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/simulation-monte-carlo-research-studio/execution-lineage/plan")
+def simulation_monte_carlo_lineage(payload: dict):
+    try: return sim_mc_lineage(payload)
+    except SimulationStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+

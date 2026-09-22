@@ -1,3 +1,8 @@
+
+## 0.123.0 — Simulation & Monte Carlo Research Studio
+- Added governed Monte Carlo, Latin-hypercube, Sobol, and Saltelli-Sobol simulation workflows.
+- Added reproducible seed replication, convergence checkpoints, parameter sweeps, scenario ensembles, uncertainty propagation, visualization/export plans, and Core reference plans.
+- Simulation outputs are explicitly modeled-not-observed; no automatic convergence certification, scenario selection, causal inference, evidence promotion, or scientific-validity certification.
 ## 0.122.0 — Bayesian Analysis Workbench II
 - Adds governed Bayesian prior/posterior review, sampler diagnostics, convergence audits, posterior predictive checks, posterior probability statements, hierarchical normal random-effects modeling, model comparison, visualization planning, snapshots, reproduction plans, exports, and Core plans.
 - Preserves declared priors/model structure and forbids automatic prior selection, convergence certification, model selection, significance labels, causal claims, generalization, validity certification, and Core submission.

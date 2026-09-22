@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/simulation-monte-carlo-research-studio-v01230.schema.json",
+  "title": "Sustainable Catalyst Lab Simulation & Monte Carlo Research Studio",
+  "type": "object",
+  "properties": {
+    "study": {
+      "type": "object"
+    },
+    "model": {
+      "type": "object"
+    },
+    "values": {
+      "type": "object"
+    },
+    "axes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "seeds": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "simulation_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
