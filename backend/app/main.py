@@ -106,6 +106,7 @@ from .scientific_visualization_design_system_v01140 import VisualizationDesignSy
 from .advanced_statistical_uncertainty_graphics_v01150 import AdvancedStatisticalGraphicsError, build_calibration_figure as advanced_stats_calibration, build_coefficient_forest as advanced_stats_coefficients, build_coverage_figure as advanced_stats_coverage, build_distribution_figure as advanced_stats_distribution_figure, build_fan_chart as advanced_stats_fan_chart, build_interval_figure as advanced_stats_interval, build_posterior_figure as advanced_stats_posterior, build_publication_figure as advanced_stats_publication, build_qq_figure as advanced_stats_qq, build_residual_diagnostics as advanced_stats_residuals, build_sensitivity_figure as advanced_stats_sensitivity, build_uncertainty_decomposition as advanced_stats_decomposition, catalog as advanced_stats_catalog, compose_statistical_small_multiples as advanced_stats_small_multiples, explicit_kde as advanced_stats_kde, health as advanced_stats_health, manifest as advanced_stats_manifest, normalize_distribution as advanced_stats_normalize_distribution
 from .interactive_scientific_dashboards_v01160 import InteractiveDashboardError, accessibility_audit as interactive_dashboards_accessibility, build_filter_state as interactive_dashboards_filter_state, build_publication_dashboard as interactive_dashboards_publication, catalog as interactive_dashboards_catalog, compose_small_multiples as interactive_dashboards_small_multiples, core_visual_plan as interactive_dashboards_core_visual_plan, export_plan as interactive_dashboards_export_plan, health as interactive_dashboards_health, manifest as interactive_dashboards_manifest, normalize_control as interactive_dashboards_normalize_control, normalize_dashboard as interactive_dashboards_normalize, normalize_link as interactive_dashboards_normalize_link, propagate_interaction as interactive_dashboards_propagate, provenance_trace as interactive_dashboards_provenance, restore_plan as interactive_dashboards_restore_plan, schema_info as interactive_dashboards_schema, snapshot_state as interactive_dashboards_snapshot, synchronize_scales as interactive_dashboards_sync_scales
 from .advanced_3d_4d_scientific_visualization_v01170 import AdvancedScientificVisualizationError, accessibility_audit as advanced_3d_accessibility, build_core_visual_plan as advanced_3d_core_visual, build_dashboard_panel as advanced_3d_dashboard_panel, build_isosurface_plan as advanced_3d_isosurface, build_mesh as advanced_3d_mesh, build_publication_export as advanced_3d_publication, build_renderer_plan as advanced_3d_renderer, build_scalar_field as advanced_3d_scalar_field, build_slice_plan as advanced_3d_slice, build_surface as advanced_3d_surface, build_temporal_frames as advanced_3d_temporal_frames, build_trajectory as advanced_3d_trajectory, build_uncertainty_geometry as advanced_3d_uncertainty, build_vector_field as advanced_3d_vector_field, build_volume as advanced_3d_volume, catalog as advanced_3d_catalog, health as advanced_3d_health, manifest as advanced_3d_manifest, normalize_camera as advanced_3d_camera, normalize_scene as advanced_3d_normalize, schema_info as advanced_3d_schema
+from .visual_research_narrative_figure_composer_v01180 import VisualResearchNarrativeError, accessibility_audit as narrative_accessibility, build_annotation_layer as narrative_annotations, build_caption_package as narrative_caption, build_core_visual_plan as narrative_core_visual, build_export_plan as narrative_export, build_figure_plate as narrative_figure_plate, build_layout_plan as narrative_layout, build_publication_package as narrative_publication, build_reference_panel as narrative_references, build_research_links as narrative_links, build_revision_snapshot as narrative_snapshot, catalog as narrative_catalog, health as narrative_health, manifest as narrative_manifest, normalize_figure_reference as narrative_figure, normalize_narrative as narrative_normalize, normalize_section as narrative_section, schema_info as narrative_schema, trace_provenance as narrative_provenance
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -7716,3 +7717,74 @@ def advanced_3d_4d_visualization_accessibility(payload: dict):
     try: return advanced_3d_accessibility(payload)
     except AdvancedScientificVisualizationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 
+
+
+# Lab v0.118.0 — Visual Research Narrative & Figure Composer
+@app.get("/v1/visual-research-narrative-figure-composer/health")
+def visual_research_narrative_health(): return narrative_health()
+@app.get("/v1/visual-research-narrative-figure-composer/manifest")
+def visual_research_narrative_manifest(): return narrative_manifest()
+@app.get("/v1/visual-research-narrative-figure-composer/catalog")
+def visual_research_narrative_catalog(): return narrative_catalog()
+@app.get("/v1/visual-research-narrative-figure-composer/schema")
+def visual_research_narrative_schema(): return narrative_schema()
+@app.post("/v1/visual-research-narrative-figure-composer/narrative/normalize")
+def visual_research_narrative_normalize(payload: dict):
+    try: return narrative_normalize(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/section/normalize")
+def visual_research_narrative_section(payload: dict):
+    try: return {"ok":True,"section":narrative_section(payload)}
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/figure/normalize")
+def visual_research_narrative_figure(payload: dict):
+    try: return {"ok":True,"figure":narrative_figure(payload)}
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/figure-plate/build")
+def visual_research_narrative_figure_plate(payload: dict):
+    try: return narrative_figure_plate(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/caption/build")
+def visual_research_narrative_caption(payload: dict):
+    try: return narrative_caption(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/annotations/build")
+def visual_research_narrative_annotations(payload: dict):
+    try: return narrative_annotations(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/research-links/build")
+def visual_research_narrative_links(payload: dict):
+    try: return narrative_links(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/references/build")
+def visual_research_narrative_references(payload: dict):
+    try: return narrative_references(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/provenance/trace")
+def visual_research_narrative_provenance(payload: dict):
+    try: return narrative_provenance(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/layout/plan")
+def visual_research_narrative_layout(payload: dict):
+    try: return narrative_layout(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/export/plan")
+def visual_research_narrative_export(payload: dict):
+    try: return narrative_export(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/publication/package")
+def visual_research_narrative_publication(payload: dict):
+    try: return narrative_publication(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/revision/snapshot")
+def visual_research_narrative_snapshot(payload: dict):
+    try: return narrative_snapshot(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/core-visual/plan")
+def visual_research_narrative_core_visual(payload: dict):
+    try: return narrative_core_visual(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/visual-research-narrative-figure-composer/accessibility/audit")
+def visual_research_narrative_accessibility(payload: dict):
+    try: return narrative_accessibility(payload)
+    except VisualResearchNarrativeError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

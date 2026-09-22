@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/visual-research-narrative-figure-composer-v01180.schema.json",
+  "title": "Sustainable Catalyst Lab v0.118.0 Visual Research Narrative & Figure Composer",
+  "type": "object",
+  "properties": {
+    "schema": {"const": "sc-lab-visual-research-narrative/0.118.0"},
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "format": {"type": "string"},
+    "figures": {"type": "array", "maxItems": 256},
+    "sections": {"type": "array", "maxItems": 64},
+    "source_refs": {"type": "array"},
+    "method_refs": {"type": "array"},
+    "finding_refs": {"type": "array"},
+    "evidence_refs": {"type": "array"},
+    "citation_refs": {"type": "array"}
+  },
+  "required": ["title", "figures", "sections"]
+}

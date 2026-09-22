@@ -1,0 +1,24 @@
+{
+  "schema": "sc-lab-visual-research-narrative-figure-composer-policy/0.118.0",
+  "version": "0.118.0",
+  "principles": [
+    "underlying figures remain immutable authoritative Lab artifacts",
+    "narrative composition is reference-first",
+    "captions and scientific interpretation are declared rather than inferred",
+    "methods findings evidence citations and provenance remain explicitly linked",
+    "visual prominence does not imply evidentiary weight",
+    "publication layout is reproducible and revision-addressable",
+    "Core remains renderer-neutral and reference-first"
+  ],
+  "forbiddenAutomaticActions": [
+    "scientific conclusion generation",
+    "figure mutation",
+    "caption inference",
+    "relationship inference",
+    "evidence weighting",
+    "publication approval",
+    "automatic Core submission",
+    "scientific validity certification",
+    "truth determination"
+  ]
+}
