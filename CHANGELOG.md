@@ -1,3 +1,8 @@
+## 0.130.0 — Scientific Research Project Studio
+- Added reference-first project normalization, component registry, relationship/dependency graphs, workstreams, milestones, project state, and cross-product bindings.
+- Added indexes for datasets, models, executions, figures, claims/evidence, manuscripts, reproduction packages, and investigations plus session/handoff/workspace/timeline/provenance planning.
+- Added deterministic project snapshots, revisions, exports, publication package plans, and Platform Core project bindings without mutating authoritative source objects or certifying scientific validity.
+
 
 ## 0.129.0 — Research Reproduction & Replication Studio
 - Added artifact inventories, SHA-256 input-integrity review, environment lock plans, method reconstruction, declared numerical tolerances, output and figure reproduction comparison, provenance reconstruction, and deviation registers.

@@ -1,3 +1,7 @@
+# Lab v0.130.0 — Scientific Research Project Studio
+
+Lab v0.130.0 unifies datasets, studies, experiments, models, executions, simulations, figures, claims/evidence, manuscripts, reproduction packages, investigations, provenance, sessions, milestones, and publication plans inside a reference-first scientific project workspace. Source Lab/Core objects remain authoritative and the Studio never treats project organization as scientific validation.
+
 # Lab v0.129.0 — Research Reproduction & Replication Studio
 
 Reference-first reconstruction and independent replication workflows with artifact inventories, hash/integrity review, environment locks, method reconstruction, declared numerical tolerances, output/figure comparison, provenance reconstruction, deviation registers, replication protocols, claim linkage, reproducibility matrices, package manifests, snapshots, and Platform Core references. Successful reruns or replications never automatically confirm scientific claims.

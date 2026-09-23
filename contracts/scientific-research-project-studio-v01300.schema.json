@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-research-project-studio/0.130.0",
+  "title": "Sustainable Catalyst Lab Scientific Research Project Studio",
+  "type": "object",
+  "properties": {
+    "project_ref": {
+      "type": "string"
+    },
+    "components": {
+      "type": "array"
+    },
+    "relationships": {
+      "type": "array"
+    },
+    "workstreams": {
+      "type": "array"
+    },
+    "milestones": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

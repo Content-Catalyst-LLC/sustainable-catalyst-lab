@@ -1,0 +1,15 @@
+==> v0.130.0 project-studio + reproduction/replication + experimental design + time-series + spatial + causal + sensitivity + simulation + Bayesian + modeling + EDA + visualization + Core regression suite
+........................................................................ [ 17%]
+........................................................................ [ 34%]
+........................................................................ [ 51%]
+........................................................................ [ 68%]
+........................................................................ [ 85%]
+............................................................             [100%]
+INFO: 1442 FastAPI path routes registered
+PASS: thirty-two v0.130 Scientific Research Project Studio routes loaded
+PASS: project registry, graph, claim/evidence, readiness, and Core fixtures
+PASS: no automatic domain mutation, scientific inference, validity certification, or Core submission
+PASS - v0.130 contracts parse and mirror byte-for-byte
+PASS - Lab v0.130.0 WordPress project-studio contract
+PASS - v0.130.0 manifest integrity (1283 WordPress runtime + 763 backend files)
+PASS - Sustainable Catalyst Lab v0.130.0 Scientific Research Project Studio release gate

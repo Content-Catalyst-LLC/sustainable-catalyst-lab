@@ -1,0 +1,11 @@
+{
+  "schema": "sc-lab-scientific-research-project-studio-policy/0.130.0",
+  "version": "0.130.0",
+  "referenceFirst": true,
+  "domainObjectsRemainAuthoritative": true,
+  "automaticDomainObjectMutation": false,
+  "automaticScientificInference": false,
+  "automaticScientificValidityCertification": false,
+  "automaticCoreSubmission": false,
+  "determineTruth": false
+}
