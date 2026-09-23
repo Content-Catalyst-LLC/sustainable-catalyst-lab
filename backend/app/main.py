@@ -127,6 +127,8 @@ from .competing_model_hypothesis_analysis_v01350 import CompetingModelHypothesis
 from .scientific_visualization_experience_v01351 import ScientificVisualizationExperienceError, accessibility_audit as sve1351_accessibility, analytical_panels_plan as sve1351_panels, build_snapshot as sve1351_snapshot, capability_map as sve1351_capabilities, catalog as sve1351_catalog, compose_workspace as sve1351_workspace, core_visual_object_plan as sve1351_core, evidence_assumption_panel as sve1351_evidence, export_plan as sve1351_export, handoff_plan as sve1351_handoff, health as sve1351_health, interaction_contract as sve1351_interaction, interpretation_boundaries_report as sve1351_boundaries, linked_view_plan as sve1351_linked, manifest as sve1351_manifest, model_architecture_graph as sve1351_model_graph, normalize_experience as sve1351_normalize, presentation_profile as sve1351_profile, primary_figure_plan as sve1351_primary, project_binding as sve1351_project, provenance_aggregate as sve1351_provenance, provenance_pipeline as sve1351_pipeline, quality_audit as sve1351_quality, readiness_report as sve1351_readiness, renderer_stack_plan as sve1351_renderer, responsive_layout_plan as sve1351_responsive, revision_plan as sve1351_revision, schema_info as sve1351_schema, session_binding as sve1351_session, status_report as sve1351_status, visualization_plan as sve1351_visual
 from .model_architecture_computational_provenance_graphs_v01352 import ModelArchitectureProvenanceGraphError, assumption_overlay_plan as macpg1352_assumptions, build_core_lineage as macpg1352_core_lineage, build_evidence_lineage as macpg1352_evidence, build_execution_trace as macpg1352_execution, build_model_architecture as macpg1352_architecture, build_provenance_graph as macpg1352_provenance, build_snapshot as macpg1352_snapshot, build_uncertainty_graph as macpg1352_uncertainty, catalog as macpg1352_catalog, core_object_plan as macpg1352_core, cycle_audit as macpg1352_cycles, dependency_graph as macpg1352_dependency, diagnostic_overlay_plan as macpg1352_diagnostics, downstream_trace as macpg1352_downstream, edge_detail as macpg1352_edge, evidence_overlay_plan as macpg1352_evidence_overlay, export_plan as macpg1352_export, graph_statistics as macpg1352_stats, handoff_plan as macpg1352_handoff, health as macpg1352_health, impact_path as macpg1352_impact, interaction_contract as macpg1352_interaction, interpretation_boundaries_report as macpg1352_boundaries, layered_layout as macpg1352_layered, linked_selection_plan as macpg1352_linked, manifest as macpg1352_manifest, node_detail as macpg1352_node, normalize_graph as macpg1352_normalize, orphan_report as macpg1352_orphans, path_trace as macpg1352_path, project_binding as macpg1352_project, radial_layout as macpg1352_radial, readiness_report as macpg1352_readiness, revision_plan as macpg1352_revision, schema_info as macpg1352_schema, session_binding as macpg1352_session, subgraph as macpg1352_subgraph, swimlane_layout as macpg1352_swimlane, timeline_overlay_plan as macpg1352_timeline, upstream_trace as macpg1352_upstream, visual_encoding_plan as macpg1352_encoding
 from .multi_view_scientific_analysis_canvas_v01353 import MultiViewScientificAnalysisCanvasError, analysis_layout as mvac1353_analysis_layout, annotation_plan as mvac1353_annotation, brush_plan as mvac1353_brush, build_snapshot as mvac1353_snapshot, catalog as mvac1353_catalog, comparison_layout as mvac1353_comparison_layout, compose_canvas as mvac1353_compose, core_object_plan as mvac1353_core, cursor_sync as mvac1353_cursor, data_table_panel_plan as mvac1353_table, diagnostic_context_plan as mvac1353_diagnostic_context, diagnostics_layout as mvac1353_diagnostics_layout, diagnostics_panel_plan as mvac1353_diagnostics_panel, domain_sync as mvac1353_domain, evidence_context_plan as mvac1353_evidence_context, evidence_layout as mvac1353_evidence_layout, evidence_panel_plan as mvac1353_evidence_panel, export_plan as mvac1353_export, filter_apply as mvac1353_filter_apply, filter_normalize as mvac1353_filter_normalize, filter_share as mvac1353_filter_share, focus_plan as mvac1353_focus, handoff_plan as mvac1353_handoff, health as mvac1353_health, interpretation_boundaries_report as mvac1353_boundaries, manifest as mvac1353_manifest, model_graph_panel_plan as mvac1353_model_graph, narrative_panel_plan as mvac1353_narrative, normalize_canvas as mvac1353_normalize, panel_plan as mvac1353_panel, presentation_layout as mvac1353_presentation_layout, primary_figure_plan as mvac1353_primary, provenance_context_plan as mvac1353_provenance_context, provenance_panel_plan as mvac1353_provenance_panel, readiness_report as mvac1353_readiness, revision_plan as mvac1353_revision, schema_info as mvac1353_schema, selection_clear as mvac1353_selection_clear, selection_link as mvac1353_selection_link, selection_normalize as mvac1353_selection_normalize, uncertainty_context_plan as mvac1353_uncertainty_context, uncertainty_panel_plan as mvac1353_uncertainty_panel
+from .interactive_scientific_scene_drilldown_v01354 import InteractiveScientificSceneDrillDownError
+from . import interactive_scientific_scene_drilldown_v01354 as scene1354
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9590,3 +9592,39 @@ def mvac1353_route_34(payload:dict): return _mvac1353_call(mvac1353_handoff,payl
 def mvac1353_route_35(payload:dict): return _mvac1353_call(mvac1353_core,payload)
 @app.post("/v1/multi-view-scientific-analysis-canvas/readiness/report")
 def mvac1353_route_36(payload:dict): return _mvac1353_call(mvac1353_readiness,payload)
+
+# Lab v0.135.4 — Interactive Scientific Scene & Visual Drill-Down
+@app.get("/v1/interactive-scientific-scene-drilldown/health")
+def interactive_scientific_scene_drilldown_health(): return scene1354.health()
+@app.get("/v1/interactive-scientific-scene-drilldown/manifest")
+def interactive_scientific_scene_drilldown_manifest(): return scene1354.manifest()
+@app.get("/v1/interactive-scientific-scene-drilldown/catalog")
+def interactive_scientific_scene_drilldown_catalog(): return scene1354.catalog()
+@app.get("/v1/interactive-scientific-scene-drilldown/schema")
+def interactive_scientific_scene_drilldown_schema(): return scene1354.schema_info()
+def _scene1354_call(fn,payload):
+    try: return fn(payload)
+    except InteractiveScientificSceneDrillDownError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_SCENE1354_ROUTES = [
+("scene/normalize",scene1354.normalize_scene),("scene/compose",scene1354.compose_scene),("layer/plan",scene1354.layer_plan),
+("layer/figure",scene1354.figure_layer_plan),("layer/data",scene1354.data_layer_plan),("layer/uncertainty",scene1354.uncertainty_layer_plan),
+("layer/evidence",scene1354.evidence_layer_plan),("layer/provenance",scene1354.provenance_layer_plan),("layer/spatial",scene1354.spatial_layer_plan),
+("layer/temporal",scene1354.temporal_layer_plan),("drill/target",scene1354.drill_target),("drill/path",scene1354.drill_path),
+("drill/children",scene1354.drill_children),("drill/breadcrumb",scene1354.breadcrumb_plan),("drill/detail-panel",scene1354.detail_panel_plan),
+("selection/bridge",scene1354.selection_bridge),("context/linked",scene1354.linked_context_plan),("mapping/validate",scene1354.mapping_validation),
+("viewport/plan",scene1354.viewport_plan),("camera/plan",scene1354.camera_plan),("time/scrub",scene1354.time_scrub_plan),
+("slice/plan",scene1354.slice_plan),("isolate/plan",scene1354.isolate_plan),("compare/plan",scene1354.compare_plan),
+("trace/plan",scene1354.trace_plan),("lod/plan",scene1354.lod_plan),("density/plan",scene1354.density_plan),
+("context/evidence",scene1354.evidence_context_plan),("context/uncertainty",scene1354.uncertainty_context_plan),("context/diagnostics",scene1354.diagnostic_context_plan),
+("context/provenance",scene1354.provenance_context_plan),("context/spatial",scene1354.spatial_context_plan),("animation/plan",scene1354.animation_plan),
+("measurement/plan",scene1354.measurement_plan),("annotation/focus",scene1354.annotation_focus_plan),("snapshot/build",scene1354.build_snapshot),
+("revision/plan",scene1354.revision_plan),("export/plan",scene1354.export_plan),("handoff/plan",scene1354.handoff_plan),
+("core-object/plan",scene1354.core_object_plan),("readiness/report",scene1354.readiness_report),
+]
+for _i,(_path,_fn) in enumerate(_SCENE1354_ROUTES):
+    def _make_scene1354_route(fn):
+        async def _route(payload:dict): return _scene1354_call(fn,payload)
+        return _route
+    _route=_make_scene1354_route(_fn); _route.__name__=f"scene1354_route_{_i}"
+    app.post(f"/v1/interactive-scientific-scene-drilldown/{_path}")(_route)
+

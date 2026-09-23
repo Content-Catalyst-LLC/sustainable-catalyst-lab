@@ -2299,6 +2299,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
             <div data-viz1351-experience-root aria-label="Scientific visualization analysis experience"></div>
             <div data-viz1352-graph-root aria-label="Model architecture and computational provenance graph"></div>
             <div data-viz1353-canvas-root aria-label="Multi-view scientific analysis canvas"></div>
+            <div data-viz1354-scene-root aria-label="Interactive scientific scene and visual drill-down"></div>
             <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
             <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
           </div>

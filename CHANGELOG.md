@@ -1,3 +1,9 @@
+# Lab v0.135.4 — Interactive Scientific Scene & Visual Drill-Down
+
+- Adds explicit-layer interactive scientific scenes, governed visual drill-down paths, detail inspection, isolation/comparison/slicing/trace modes, adaptive LOD planning, spatial-temporal navigation, and evidence/provenance context.
+- Camera, viewport, drill path, isolation, and LOD are presentation state; hierarchy, mappings, CRS, time semantics, scientific values, evidence weights, and claim status are never inferred or mutated automatically.
+- Preserves v0.135.3 multi-view analysis canvas, v0.135.2 computational provenance graphs, and reference-first Platform Core boundaries.
+
 ## 0.135.3 — Multi-View Scientific Analysis Canvas
 
 - Adds coordinated multi-view scientific analysis across figures, diagnostics, uncertainty, evidence, provenance, model graphs, and bound data.

@@ -1,0 +1,20 @@
+{
+  "schema": "sc-lab-interactive-scientific-scene-drilldown-policy/0.135.4",
+  "version": "0.135.4",
+  "drillHierarchyMustBeExplicit": true,
+  "mappingMustBeExplicitWhenIdentifiersDiffer": true,
+  "cameraIsPresentationState": true,
+  "viewportIsPresentationState": true,
+  "drillDownMutatesScientificRecord": false,
+  "automaticHierarchyInference": false,
+  "automaticJoinInference": false,
+  "automaticReprojection": false,
+  "automaticInterpolation": false,
+  "automaticProbabilityInterpretation": false,
+  "automaticEvidenceWeighting": false,
+  "automaticClaimStatusChange": false,
+  "automaticValidityJudgment": false,
+  "automaticScientificInterpretation": false,
+  "automaticCoreSubmission": false,
+  "determineTruth": false
+}

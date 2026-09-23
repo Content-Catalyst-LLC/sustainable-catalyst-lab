@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-interactive-scientific-scene-drilldown/0.135.4",
+  "title": "Sustainable Catalyst Lab Interactive Scientific Scene & Visual Drill-Down",
+  "type": "object",
+  "properties": {
+    "scene_ref": {"type": "string"},
+    "project_ref": {"type": ["string", "null"]},
+    "session_ref": {"type": ["string", "null"]},
+    "canvas_ref": {"type": ["string", "null"]},
+    "view_mode": {"enum": ["inspect", "drill", "isolate", "compare", "slice", "trace"]},
+    "navigation_mode": {"enum": ["pan-zoom", "orbit", "fly", "time-scrub", "graph-focus"]},
+    "lod_mode": {"enum": ["full", "adaptive", "summary", "reference"]},
+    "layers": {"type": "array", "maxItems": 64, "items": {"type": "object"}},
+    "mappings": {"type": "array", "maxItems": 512, "items": {"type": "object"}},
+    "camera_state": {"type": "object"},
+    "viewport_state": {"type": "object"},
+    "time_state": {"type": "object"}
+  },
+  "additionalProperties": true
+}
