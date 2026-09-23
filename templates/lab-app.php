@@ -2116,7 +2116,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / v0.82.0</p><h3>Scientific Visualization Workspace</h3><p>Build governed 2D, 3D, 4D, spatial, geospatial, raster, and scientifically marked-up figures from explicit datasets and geometry. v0.82 makes uncertainty, empirical distributions, posterior draws, and explicit ensembles first-class visualization objects while preserving markup, spatial, linked-view, 4D, 3D, large-data, and data-binding compatibility.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / EXPERIENCE v0.135.1</p><h3>Scientific Visualization Workspace</h3><p>Build governed 2D, 3D, 4D, spatial, geospatial, raster, and scientifically marked-up figures from explicit datasets and geometry. v0.135.1 adds a multi-panel scientific analysis experience that exposes diagnostics, data lineage, model structure, renderer capabilities, linked views, evidence context, and active scientific layers without changing the underlying scientific record.</p></header>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
         <div class="sc-gs0470-shell">
           <aside class="sc-gs0470-controls" aria-label="Figure controls">
@@ -2296,6 +2296,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
           </aside>
           <div class="sc-gs0470-workspace">
             <section class="sc-gs0470-canvas-card"><div class="sc-gs0470-canvas-head"><div><span class="sc-lab-section-code">FIGURE / CANVAS</span><h4>Interactive scientific canvas</h4><p>Presentation changes remain separate from the underlying scientific record.</p></div><span class="sc-gs0470-badge" data-gs-v0730-renderer-badge>Engine 2.14 · SVG/Canvas + WebGL2/WebGPU + Advanced 3D scene graphs + governed GPU compute + scientific-markup / uncertainty-distribution / figure-provenance overlays</span></div><div class="sc-gs0470-canvas" data-gs-v0470-canvas></div></section>
+            <div data-viz1351-experience-root aria-label="Scientific visualization analysis experience"></div>
             <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
             <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
           </div>

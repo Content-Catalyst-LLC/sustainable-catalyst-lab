@@ -1,3 +1,7 @@
+## Lab v0.135.1 — Scientific Visualization Experience Overhaul
+
+Graph Studio now presents the scientific figure together with data-aware supporting analysis, computational/provenance structure, renderer/capability state, and evidence context. The experience layer changes presentation only; unavailable scientific objects remain explicitly unlinked rather than fabricated.
+
 ## Lab v0.133.0 — Statistical Assumption & Diagnostic Intelligence
 
 Cross-method assumption states, diagnostic synthesis, researcher adjudication, remediation planning, and governed Core handoff.

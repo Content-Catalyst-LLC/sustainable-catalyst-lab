@@ -1,0 +1,20 @@
+{
+  "version": "0.135.1",
+  "policy": "scientific-visualization-experience",
+  "presentation_only": true,
+  "fabricate_missing_scientific_values": false,
+  "automatic_scientific_interpretation": false,
+  "automatic_evidence_promotion": false,
+  "automatic_model_selection": false,
+  "automatic_causal_inference": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_core_submission": false,
+  "determine_truth": false,
+  "boundaries": [
+    "The visualization experience may reorganize presentation but must not mutate underlying scientific records.",
+    "Panels requiring scientific values must show a missing/not-linked state when governed source objects are unavailable.",
+    "Derived residual previews require explicit observed and fitted/predicted numeric series.",
+    "Empirical distribution previews are labeled as empirical and are not posterior distributions.",
+    "Renderer choice must not change scientific semantics."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scientific-visualization-experience-v01351.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Visualization Experience v0.135.1",
+  "type": "object",
+  "required": ["version", "view_mode"],
+  "properties": {
+    "version": {"const": "0.135.1"},
+    "experience_ref": {"type": "string"},
+    "project_ref": {"type": ["string", "null"]},
+    "session_ref": {"type": ["string", "null"]},
+    "figure_ref": {"type": ["string", "null"]},
+    "view_mode": {"enum": ["analysis", "figure", "under-the-hood", "evidence"]},
+    "presentation_profile": {"enum": ["research", "publication", "diagnostics", "model-internals", "presentation"]},
+    "panel_families": {"type": "array", "maxItems": 24, "items": {"type": "string"}},
+    "dataset_refs": {"type": "array", "items": {"type": "string"}},
+    "model_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "diagnostic_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

@@ -1,3 +1,7 @@
+## 0.135.1 — Scientific Visualization Experience Overhaul
+- Upgrades Graph Studio into a multi-panel scientific analysis canvas with data-aware empirical/residual views, under-the-hood model/provenance graphics, capability-state visualization, linked modes, full-screen analysis, and stronger Sustainable Catalyst visual hierarchy.
+- Preserves the existing governed visualization stack and explicitly refuses to fabricate missing posterior, sensitivity, diagnostic, spatial, or other scientific values.
+
 ## 0.135.0 — Competing Model & Hypothesis Analysis
 - Adds governed rival hypothesis/model comparison, contradiction preservation, discriminating-test planning, robustness/sensitivity analysis, researcher adjudication, and Core handoffs.
 
