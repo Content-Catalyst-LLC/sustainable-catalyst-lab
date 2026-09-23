@@ -1,0 +1,21 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/research-question-hypothesis-workspace-v01310.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "hypothesis_ref": {
+      "type": "string"
+    },
+    "question_ref": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-research-question-hypothesis-workspace/0.131.0"
+    },
+    "version": {
+      "const": "0.131.0"
+    }
+  },
+  "title": "Sustainable Catalyst Lab Research Question & Hypothesis Workspace",
+  "type": "object"
+}

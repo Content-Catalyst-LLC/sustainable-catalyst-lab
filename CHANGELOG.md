@@ -1,3 +1,8 @@
+## Lab v0.131.0 — Research Question & Hypothesis Workspace
+
+- Adds governed research-question/hypothesis formalization, competing hypotheses, operationalization, falsification/disconfirmation, preregistration/deviations, rival explanations, discriminating tests, snapshots, and Core bindings.
+- Researcher selection remains mandatory; no automatic truth determination, validity certification, evidence weighting, method selection, or Core submission.
+
 ## 0.130.0 — Scientific Research Project Studio
 - Added reference-first project normalization, component registry, relationship/dependency graphs, workstreams, milestones, project state, and cross-product bindings.
 - Added indexes for datasets, models, executions, figures, claims/evidence, manuscripts, reproduction packages, and investigations plus session/handoff/workspace/timeline/provenance planning.

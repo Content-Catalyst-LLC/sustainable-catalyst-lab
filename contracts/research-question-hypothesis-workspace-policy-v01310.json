@@ -1,0 +1,15 @@
+{
+  "automaticCausalInference": false,
+  "automaticCoreSubmission": false,
+  "automaticEvidenceWeighting": false,
+  "automaticGeneralization": false,
+  "automaticHypothesisGeneration": false,
+  "automaticHypothesisRejection": false,
+  "automaticHypothesisSelection": false,
+  "automaticMethodSelection": false,
+  "automaticScientificValidityCertification": false,
+  "determineTruth": false,
+  "engineVersion": "12.0.0",
+  "researcherSelectionRequired": true,
+  "version": "0.131.0"
+}
