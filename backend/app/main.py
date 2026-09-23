@@ -133,6 +133,8 @@ from .scientific_scene_linking_comparative_context_v01355 import ScientificScene
 from . import scientific_scene_linking_comparative_context_v01355 as scene1355
 from .reproducible_visual_analysis_sessions_v01356 import ReproducibleVisualAnalysisSessionError
 from . import reproducible_visual_analysis_sessions_v01356 as session1356
+from .visual_research_narrative_findings_v01357 import VisualResearchNarrativeFindingsError
+from . import visual_research_narrative_findings_v01357 as narrative1357
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9700,4 +9702,37 @@ for _i,(_path,_fn) in enumerate(_SESSION1356_ROUTES):
         return _route
     _route=_make_session1356_route(_fn); _route.__name__=f"session1356_route_{_i}"
     app.post(f"/v1/reproducible-visual-analysis-sessions/{_path}")(_route)
+
+# Lab v0.135.7 — Visual Research Narrative, Findings & Publication Handoff
+@app.get("/v1/visual-research-narrative-findings/health")
+def visual_research_narrative_findings_health(): return narrative1357.health()
+@app.get("/v1/visual-research-narrative-findings/manifest")
+def visual_research_narrative_findings_manifest(): return narrative1357.manifest()
+@app.get("/v1/visual-research-narrative-findings/catalog")
+def visual_research_narrative_findings_catalog(): return narrative1357.catalog()
+@app.get("/v1/visual-research-narrative-findings/schema")
+def visual_research_narrative_findings_schema(): return narrative1357.schema_info()
+def _narrative1357_call(fn,payload):
+    try: return fn(payload)
+    except VisualResearchNarrativeFindingsError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_NARRATIVE1357_ROUTES = [
+("narrative/normalize",narrative1357.normalize_narrative),("narrative/create",narrative1357.create_narrative),("narrative/clone",narrative1357.clone_narrative),("narrative/reorder",narrative1357.reorder_narrative),
+("block/normalize",narrative1357.normalize_block),("block/add",narrative1357.add_block),("block/update",narrative1357.update_block),("block/remove",narrative1357.remove_block),("block/list",narrative1357.list_blocks),
+("figure/bind",narrative1357.bind_figure),("figure/snapshot",narrative1357.snapshot_figure),("figure/caption",narrative1357.caption_figure),("figure/alt-text",narrative1357.alt_text_figure),
+("finding/normalize",narrative1357.normalize_finding),("finding/create",narrative1357.create_finding),("finding/status",narrative1357.set_finding_status),("finding/evidence",narrative1357.link_finding_evidence),("finding/uncertainty",narrative1357.link_finding_uncertainty),("finding/limitation",narrative1357.link_finding_limitation),
+("annotation/normalize",narrative1357.normalize_annotation),("annotation/add",narrative1357.add_annotation),("annotation/resolve",narrative1357.resolve_annotation),
+("citation/normalize",narrative1357.normalize_citation),("citation/plan",narrative1357.citation_plan),("citation/validate",narrative1357.validate_citation),
+("context/provenance",narrative1357.context_provenance),("context/evidence",narrative1357.context_evidence),("context/uncertainty",narrative1357.context_uncertainty),("context/diagnostics",narrative1357.context_diagnostics),("context/session",narrative1357.context_session),("context/scene",narrative1357.context_scene),("context/canvas",narrative1357.context_canvas),("context/comparison",narrative1357.context_comparison),
+("publication/outline",narrative1357.publication_outline),("publication/section",narrative1357.publication_section),("publication/figure-table",narrative1357.publication_figure_table),("publication/appendix",narrative1357.publication_appendix),("publication/abstract",narrative1357.publication_abstract),("publication/readiness",narrative1357.publication_readiness),
+("handoff/plan",narrative1357.handoff_plan),("handoff/core",narrative1357.handoff_core),("handoff/publication",narrative1357.handoff_publication),("handoff/library",narrative1357.handoff_library),("handoff/workspace",narrative1357.handoff_workspace),
+("export/plan",narrative1357.export_plan),("export/package",narrative1357.export_package),("export/manifest",narrative1357.export_manifest),
+("guard/claims",narrative1357.guard_claims),("guard/evidence",narrative1357.guard_evidence),("guard/presentation",narrative1357.guard_presentation),("guard/references",narrative1357.guard_references),
+("boundaries/report",narrative1357.interpretation_boundaries_report),
+]
+for _i,(_path,_fn) in enumerate(_NARRATIVE1357_ROUTES):
+    def _make_narrative1357_route(fn):
+        async def _route(payload:dict): return _narrative1357_call(fn,payload)
+        return _route
+    _route=_make_narrative1357_route(_fn); _route.__name__=f"narrative1357_route_{_i}"
+    app.post(f"/v1/visual-research-narrative-findings/{_path}")(_route)
 

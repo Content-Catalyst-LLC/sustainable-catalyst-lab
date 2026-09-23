@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/lab/visual-research-narrative-findings-v01357.schema.json",
+  "title": "Sustainable Catalyst Lab v0.135.7 Visual Research Narrative, Findings & Publication Handoff",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "narrative_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "blocks": {
+      "type": "array",
+      "maxItems": 512
+    },
+    "source_refs": {
+      "type": "array",
+      "maxItems": 10000
+    }
+  }
+}

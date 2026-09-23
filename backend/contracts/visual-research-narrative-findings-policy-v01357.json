@@ -1,0 +1,11 @@
+{
+  "version": "0.135.7",
+  "engineVersion": "16.7.0",
+  "narrativeIsNotScientificClaim": true,
+  "findingStatusIsDeclaredNotCertified": true,
+  "presentationCannotUpgradeClaimStatus": true,
+  "automaticEvidenceWeighting": false,
+  "automaticTruthDetermination": false,
+  "automaticCoreSubmission": false,
+  "automaticPublication": false
+}
