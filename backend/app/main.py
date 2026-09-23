@@ -117,6 +117,7 @@ from .causal_research_studio_v01250 import CausalResearchStudioError, balance_re
 from .spatial_spatiotemporal_research_studio_v01260 import SpatialResearchStudioError, build_core_object_plan as spatial2_core_object, build_execution_lineage_plan as spatial2_lineage, build_export_plan as spatial2_export, build_reproduction_plan as spatial2_reproduction, build_snapshot as spatial2_snapshot, build_spatial_weights as spatial2_weights, build_spatiotemporal_cube as spatial2_cube, build_studio as spatial2_studio, build_visualization_plan as spatial2_visualization, catalog as spatial2_catalog, crs_audit as spatial2_crs_audit, getis_ord_gi_star as spatial2_gistar, global_morans_i as spatial2_moran, health as spatial2_health, hotspot_persistence as spatial2_persistence, interpretation_boundaries_report as spatial2_boundaries, local_morans_i as spatial2_local_moran, manifest as spatial2_manifest, nearest_neighbor_report as spatial2_nearest, normalize_study as spatial2_normalize, raster_change_summary as spatial2_raster_change, raster_zonal_stats as spatial2_zonal, schema_info as spatial2_schema, space_time_autocorrelation as spatial2_space_time, spatial_join_plan as spatial2_join, spatial_lag_estimate as spatial2_lag, spatiotemporal_change_profile as spatial2_change_profile, trajectory_report as spatial2_trajectory
 from .scientific_time_series_laboratory_v01270 import TimeSeriesLaboratoryError, autocorrelation as ts_acf, build_core_object_plan as ts_core, build_execution_lineage_plan as ts_lineage, build_export_plan as ts_export, build_reproduction_plan as ts_reproduction, build_snapshot as ts_snapshot, build_studio as ts_studio, build_visualization_plan as ts_visualization, catalog as ts_catalog, change_point_analysis as ts_changepoint, cross_correlation as ts_crosscorr, decompose_series as ts_decompose, difference_series as ts_difference, exponential_smoothing as ts_ets, fit_arima as ts_arima, fit_autoregression as ts_ar, forecast as ts_forecast, frequency_audit as ts_frequency, health as ts_health, interpretation_boundaries_report as ts_boundaries, manifest as ts_manifest, normalize_series as ts_normalize, anomaly_screen as ts_anomaly, partial_autocorrelation as ts_pacf, regime_analysis as ts_regime, residual_diagnostics as ts_residuals, rolling_origin_evaluation as ts_rolling, schema_info as ts_schema, spectral_analysis as ts_spectral, state_space_local_linear_trend as ts_state_space, stationarity_diagnostics as ts_stationarity
 from .experimental_design_power_analysis_v01280 import ExperimentalDesignError, adaptive_reestimation_plan as exp_adaptive, blocked_randomization_plan as exp_blocked, build_core_object_plan as exp_core, build_execution_lineage_plan as exp_lineage, build_export_plan as exp_export, build_reproduction_plan as exp_reproduction, build_snapshot as exp_snapshot, build_studio as exp_studio, build_visualization_plan as exp_visualization, catalog as exp_catalog, cluster_design_effect as exp_cluster, design_diagnostics as exp_diagnostics, factorial_design_plan as exp_factorial, health as exp_health, interpretation_boundaries_report as exp_boundaries, manifest as exp_manifest, multiple_testing_plan as exp_multiplicity, normalize_design as exp_normalize, one_proportion_power as exp_one_prop, one_sample_mean_power as exp_one_mean, one_way_anova_power as exp_anova, paired_mean_power as exp_paired, precision_sample_size as exp_precision, randomization_schedule as exp_randomization, schema_info as exp_schema, sequential_design_plan as exp_sequential, simulation_power as exp_simulation, standardized_effect_report as exp_effect, two_proportion_power as exp_two_prop, two_sample_mean_power as exp_two_mean
+from .research_reproduction_replication_studio_v01290 import ReproductionReplicationError, artifact_inventory as rr_inventory, build_core_object_plan as rr_core, build_execution_lineage_plan as rr_lineage, build_export_plan as rr_export, build_snapshot as rr_snapshot, build_studio as rr_studio, build_visualization_plan as rr_visualization, catalog as rr_catalog, claim_linkage_report as rr_claims, deviation_register as rr_deviations, environment_lock_plan as rr_environment, execution_reproduction_plan as rr_execution, figure_reproduction_plan as rr_figures, health as rr_health, independent_replication_plan as rr_replication_plan, input_integrity_report as rr_integrity, interpretation_boundaries_report as rr_boundaries, manifest as rr_manifest, method_reconstruction_plan as rr_methods, normalize_study as rr_normalize, package_manifest as rr_package, provenance_reconstruction as rr_provenance, readiness_report as rr_readiness, reproduction_status_report as rr_status, replication_protocol as rr_protocol, replication_result_record as rr_replication_result, reproducibility_matrix as rr_matrix, result_comparison as rr_compare, schema_info as rr_schema, tolerance_profile as rr_tolerance
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8698,3 +8699,117 @@ def experimental_design_power_analysis_lineage(payload: dict):
 def experimental_design_power_analysis_boundaries(payload: dict):
     try: return exp_boundaries(payload)
     except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/research-reproduction-replication-studio/health")
+def research_reproduction_replication_studio_health(): return rr_health()
+@app.get("/v1/research-reproduction-replication-studio/manifest")
+def research_reproduction_replication_studio_manifest(): return rr_manifest()
+@app.get("/v1/research-reproduction-replication-studio/catalog")
+def research_reproduction_replication_studio_catalog(): return rr_catalog()
+@app.get("/v1/research-reproduction-replication-studio/schema")
+def research_reproduction_replication_studio_schema(): return rr_schema()
+@app.post("/v1/research-reproduction-replication-studio/study/normalize")
+def research_reproduction_replication_studio_normalize(payload: dict):
+    try: return rr_normalize(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/artifacts/inventory")
+def research_reproduction_replication_studio_inventory(payload: dict):
+    try: return rr_inventory(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/inputs/integrity")
+def research_reproduction_replication_studio_integrity(payload: dict):
+    try: return rr_integrity(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/environment/lock-plan")
+def research_reproduction_replication_studio_environment(payload: dict):
+    try: return rr_environment(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/method/reconstruction-plan")
+def research_reproduction_replication_studio_methods(payload: dict):
+    try: return rr_methods(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/execution/reproduction-plan")
+def research_reproduction_replication_studio_execution(payload: dict):
+    try: return rr_execution(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/tolerance/profile")
+def research_reproduction_replication_studio_tolerance(payload: dict):
+    try: return rr_tolerance(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/results/compare")
+def research_reproduction_replication_studio_compare(payload: dict):
+    try: return rr_compare(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/figures/reproduction-plan")
+def research_reproduction_replication_studio_figures(payload: dict):
+    try: return rr_figures(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/provenance/reconstruct")
+def research_reproduction_replication_studio_provenance(payload: dict):
+    try: return rr_provenance(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/deviations/register")
+def research_reproduction_replication_studio_deviations(payload: dict):
+    try: return rr_deviations(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/replication/protocol")
+def research_reproduction_replication_studio_protocol(payload: dict):
+    try: return rr_protocol(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/replication/independent-plan")
+def research_reproduction_replication_studio_replication_plan(payload: dict):
+    try: return rr_replication_plan(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/replication/result-record")
+def research_reproduction_replication_studio_replication_result(payload: dict):
+    try: return rr_replication_result(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/claims/linkage")
+def research_reproduction_replication_studio_claims(payload: dict):
+    try: return rr_claims(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/reproducibility/matrix")
+def research_reproduction_replication_studio_matrix(payload: dict):
+    try: return rr_matrix(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/package/manifest")
+def research_reproduction_replication_studio_package(payload: dict):
+    try: return rr_package(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/visualization/plan")
+def research_reproduction_replication_studio_visualization(payload: dict):
+    try: return rr_visualization(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/studio/build")
+def research_reproduction_replication_studio_build(payload: dict):
+    try: return rr_studio(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/snapshot/build")
+def research_reproduction_replication_studio_snapshot(payload: dict):
+    try: return rr_snapshot(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/export/plan")
+def research_reproduction_replication_studio_export(payload: dict):
+    try: return rr_export(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/core-object/plan")
+def research_reproduction_replication_studio_core(payload: dict):
+    try: return rr_core(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/execution-lineage/plan")
+def research_reproduction_replication_studio_lineage(payload: dict):
+    try: return rr_lineage(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/readiness/report")
+def research_reproduction_replication_studio_readiness(payload: dict):
+    try: return rr_readiness(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/status/report")
+def research_reproduction_replication_studio_status(payload: dict):
+    try: return rr_status(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/research-reproduction-replication-studio/interpretation-boundaries/report")
+def research_reproduction_replication_studio_boundaries(payload: dict):
+    try: return rr_boundaries(payload)
+    except ReproductionReplicationError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

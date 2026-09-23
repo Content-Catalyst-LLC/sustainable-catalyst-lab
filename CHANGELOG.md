@@ -1,3 +1,9 @@
+
+## 0.129.0 — Research Reproduction & Replication Studio
+- Added artifact inventories, SHA-256 input-integrity review, environment lock plans, method reconstruction, declared numerical tolerances, output and figure reproduction comparison, provenance reconstruction, and deviation registers.
+- Added independent replication protocols/results, claim linkage, reproducibility matrices, package manifests, visualization/snapshot/export/Core plans, and readiness review.
+- Reproduction/replication outcomes never automatically confirm or falsify claims, certify scientific validity, or change Core claim/evidence state.
+
 ## 0.128.0 — Experimental Design & Power Analysis
 - Added analytical power/sample-size planning for means, proportions, and one-way ANOVA.
 - Added factorial allocation, blocked randomization, cluster design effects, precision planning, seeded simulation power, sequential/adaptive plans, multiplicity plans, deterministic randomization schedules, diagnostics, visualization/snapshot/export/Core plans.

@@ -1,3 +1,7 @@
+# Lab v0.129.0 — Research Reproduction & Replication Studio
+
+Reference-first reconstruction and independent replication workflows with artifact inventories, hash/integrity review, environment locks, method reconstruction, declared numerical tolerances, output/figure comparison, provenance reconstruction, deviation registers, replication protocols, claim linkage, reproducibility matrices, package manifests, snapshots, and Platform Core references. Successful reruns or replications never automatically confirm scientific claims.
+
 # Lab v0.128.0 — Experimental Design & Power Analysis
 
 Governed power and sample-size planning, factorial/block/cluster design structure, precision planning, seeded simulation power, sequential/adaptive planning, multiplicity plans, reproducible randomization schedules, publication visualization plans, snapshots, and Platform Core references. Power remains conditional on explicit assumptions and is never represented as a guarantee.

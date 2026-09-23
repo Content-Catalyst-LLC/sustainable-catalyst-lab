@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/research-reproduction-replication-studio-v01290.schema.json",
+  "title": "Sustainable Catalyst Lab Research Reproduction & Replication Studio v0.129.0",
+  "type": "object",
+  "properties": {
+    "study_ref": {"type": ["string", "null"]},
+    "mode": {"enum": ["reproduction", "replication"]},
+    "artifact_refs": {"type": "array", "items": {"type": "string"}},
+    "claim_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

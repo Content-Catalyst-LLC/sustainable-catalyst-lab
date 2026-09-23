@@ -1,0 +1,18 @@
+{
+  "version": "0.129.0",
+  "schema": "sc-lab-research-reproduction-replication-studio/0.129.0",
+  "automatic_execution": false,
+  "automatic_claim_confirmation": false,
+  "automatic_replication_success": false,
+  "automatic_evidentiary_weighting": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_core_submission": false,
+  "determine_truth": false,
+  "boundaries": [
+    "A successful rerun does not establish that the original scientific conclusion is correct.",
+    "Numerical agreement is evaluated only against researcher-declared tolerances.",
+    "Replication is distinct from reproduction and must preserve declared independence/deviations.",
+    "Replication outcomes do not automatically confirm or falsify claims.",
+    "Core handoff is reference-first and never automatic."
+  ]
+}
