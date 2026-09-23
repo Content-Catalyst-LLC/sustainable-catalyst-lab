@@ -1,0 +1,5 @@
+.sc-lab-evidence-synthesis-intelligence-ii{--sc-esii-gap:1rem;display:grid;gap:var(--sc-esii-gap)}
+.sc-lab-evidence-synthesis-intelligence-ii .sc-esii-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--sc-esii-gap)}
+.sc-lab-evidence-synthesis-intelligence-ii .sc-esii-card{border:1px solid currentColor;border-radius:.5rem;padding:1rem;background:transparent}
+.sc-lab-evidence-synthesis-intelligence-ii .sc-esii-state{font-variant-numeric:tabular-nums;font-weight:600}
+.sc-lab-evidence-synthesis-intelligence-ii .sc-esii-note{opacity:.8;font-size:.925em}

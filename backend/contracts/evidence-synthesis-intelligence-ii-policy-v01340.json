@@ -1,0 +1,16 @@
+{
+  "version":"0.134.0",
+  "researcherAdjudicationRequired":true,
+  "contradictionsPreserved":true,
+  "heterogeneityPreserved":true,
+  "replicationDisagreementPreserved":true,
+  "automaticStudyQualityScoring":false,
+  "automaticEvidenceWeighting":false,
+  "automaticConsensusCertification":false,
+  "automaticHypothesisSelection":false,
+  "automaticClaimStatusChange":false,
+  "automaticCausalInference":false,
+  "automaticScientificValidityCertification":false,
+  "automaticCoreSubmission":false,
+  "determineTruth":false
+}

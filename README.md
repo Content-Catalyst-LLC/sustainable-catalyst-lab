@@ -1093,3 +1093,7 @@ Causal research workflows now include DAG-driven design, propensity/matching/wei
 
 ### v0.127.0 — Scientific Time-Series Laboratory
 Reproducible time-series analysis and forecasting with explicit temporal assumptions, rolling validation, diagnostics, and provenance-aware outputs.
+
+## Current scientific-intelligence release
+
+**v0.134.0 — Evidence Synthesis Intelligence II** adds governed cross-study synthesis while preserving contradictions, heterogeneity, replication disagreement, uncertainty, provenance, and human adjudication.

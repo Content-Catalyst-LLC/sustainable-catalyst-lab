@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"sc-lab-evidence-synthesis-intelligence-ii/0.134.0",
+  "title":"Sustainable Catalyst Lab Evidence Synthesis Intelligence II",
+  "type":"object",
+  "properties":{
+    "version":{"const":"0.134.0"},
+    "context_ref":{"type":["string","null"]},
+    "claim_refs":{"type":"array","items":{"type":"string"}},
+    "study_refs":{"type":"array","items":{"type":"string"}},
+    "evidence_refs":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}

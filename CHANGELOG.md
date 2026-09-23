@@ -1,3 +1,10 @@
+# Changelog
+
+## 0.134.0 — Evidence Synthesis Intelligence II
+- Added cross-study evidence synthesis intelligence with contradiction, heterogeneity, replication, uncertainty, mixed-method, provenance, lineage, researcher-adjudication, visualization, and Core-reference contracts.
+- Reused the existing governed v0.64 fixed/random-effects meta-analysis engine instead of duplicating quantitative pooling.
+- Preserved disagreements and prohibited automatic study-quality scoring, consensus certification, truth inference, or Core mutation.
+
 ## Lab v0.133.0 — Statistical Assumption & Diagnostic Intelligence
 
 Cross-method assumption states, diagnostic synthesis, researcher adjudication, remediation planning, and governed Core handoff.
