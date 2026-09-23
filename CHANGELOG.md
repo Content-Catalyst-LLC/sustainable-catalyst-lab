@@ -1,3 +1,7 @@
+## Lab v0.133.0 — Statistical Assumption & Diagnostic Intelligence
+
+Cross-method assumption states, diagnostic synthesis, researcher adjudication, remediation planning, and governed Core handoff.
+
 # 0.132.0 — Method Selection Intelligence
 
 - Added transparent candidate-method construction and explicit eligibility states.

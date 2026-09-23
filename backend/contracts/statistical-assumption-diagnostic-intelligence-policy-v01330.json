@@ -1,0 +1,15 @@
+{
+  "automatic_assumption_certification": false,
+  "automatic_causal_inference": false,
+  "automatic_core_submission": false,
+  "automatic_generalization": false,
+  "automatic_hypothesis_selection": false,
+  "automatic_method_invalidation": false,
+  "automatic_method_selection": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_significance_labels": false,
+  "determine_truth": false,
+  "engine_version": "14.0.0",
+  "researcher_adjudication_required": true,
+  "version": "0.133.0"
+}

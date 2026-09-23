@@ -1,0 +1,1 @@
+(function(w){'use strict';w.SCLabStatisticalAssumptionDiagnosticIntelligenceV01330={version:'0.133.0',states:['satisfied','violated','uncertain','untested','not-applicable'],researcherAdjudicationRequired:true,automaticMethodInvalidation:false,automaticAssumptionCertification:false};})(window);

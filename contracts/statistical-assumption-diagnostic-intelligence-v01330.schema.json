@@ -1,0 +1,39 @@
+{
+  "$id": "https://sustainablecatalyst.com/schemas/statistical-assumption-diagnostic-intelligence-v01330.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assumption_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "diagnostic_evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "method_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "state": {
+      "enum": [
+        "satisfied",
+        "violated",
+        "uncertain",
+        "untested",
+        "not-applicable"
+      ]
+    },
+    "version": {
+      "const": "0.133.0"
+    }
+  },
+  "title": "Sustainable Catalyst Lab v0.133 Statistical Assumption & Diagnostic Intelligence",
+  "type": "object"
+}
