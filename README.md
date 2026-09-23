@@ -61,6 +61,8 @@ Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference
 
 # Sustainable Catalyst Lab
 
+**Current release: v0.135.3 — Multi-View Scientific Analysis Canvas.**
+
 **Current release: v0.128.0 — Experimental Design & Power Analysis.**
 
 

@@ -1,3 +1,9 @@
+## 0.135.3 — Multi-View Scientific Analysis Canvas
+
+- Adds coordinated multi-view scientific analysis across figures, diagnostics, uncertainty, evidence, provenance, model graphs, and bound data.
+- Adds linked selections, explicit cross-panel mappings, shared non-mutating filters, synchronized domains/cursors, deterministic layouts, snapshots, exports, handoffs, and Platform Core reference plans.
+- Preserves strict boundaries: no source-data mutation, inferred joins, automatic scientific-validity/evidence/probability interpretation, truth determination, or automatic Core submission.
+
 ## 0.135.2 — Model Architecture & Computational Provenance Graphs
 
 - Adds an interactive under-the-hood architecture/provenance graph to Graph Studio.

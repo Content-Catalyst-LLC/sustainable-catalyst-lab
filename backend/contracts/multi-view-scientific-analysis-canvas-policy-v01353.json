@@ -1,0 +1,51 @@
+{
+  "boundaries": {
+    "automaticClaimStatusChange": false,
+    "automaticCoreSubmission": false,
+    "automaticEvidenceWeighting": false,
+    "automaticJoinInference": false,
+    "automaticProbabilityInterpretation": false,
+    "automaticScientificInterpretation": false,
+    "automaticValidityJudgment": false,
+    "determineTruth": false,
+    "filtersMutateSourceData": false,
+    "selectionMutatesScientificRecord": false
+  },
+  "bridges": {
+    "modelArchitectureProvenanceGraphsV01352": true,
+    "platformCoreReferenceFirst": true,
+    "scientificVisualizationExperienceV01351": true
+  },
+  "engineVersion": "16.3.0",
+  "interactionChannels": [
+    "select",
+    "brush",
+    "hover",
+    "cursor",
+    "filter",
+    "zoom",
+    "pan",
+    "focus"
+  ],
+  "layoutModes": [
+    "analysis",
+    "comparison",
+    "diagnostics",
+    "evidence",
+    "presentation"
+  ],
+  "panelTypes": [
+    "annotations",
+    "data-table",
+    "diagnostics",
+    "evidence",
+    "model-graph",
+    "narrative",
+    "primary-figure",
+    "provenance",
+    "secondary-figure",
+    "uncertainty"
+  ],
+  "schema": "sc-lab-multi-view-scientific-analysis-canvas-policy/0.135.3",
+  "version": "0.135.3"
+}

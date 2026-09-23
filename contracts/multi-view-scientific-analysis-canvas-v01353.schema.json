@@ -1,0 +1,106 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/multi-view-scientific-analysis-canvas-v01353.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "canvas_ref": {
+      "type": "string"
+    },
+    "filters": {
+      "maxItems": 128,
+      "type": "array"
+    },
+    "layout_mode": {
+      "enum": [
+        "analysis",
+        "comparison",
+        "diagnostics",
+        "evidence",
+        "presentation"
+      ]
+    },
+    "links": {
+      "items": {
+        "properties": {
+          "channel": {
+            "enum": [
+              "select",
+              "brush",
+              "hover",
+              "cursor",
+              "filter",
+              "zoom",
+              "pan",
+              "focus"
+            ]
+          },
+          "mapping_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_panel": {
+            "type": "string"
+          },
+          "target_panel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_panel",
+          "target_panel",
+          "channel"
+        ],
+        "type": "object"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "panels": {
+      "items": {
+        "properties": {
+          "panel_id": {
+            "type": "string"
+          },
+          "panel_type": {
+            "enum": [
+              "primary-figure",
+              "secondary-figure",
+              "diagnostics",
+              "uncertainty",
+              "evidence",
+              "provenance",
+              "model-graph",
+              "data-table",
+              "annotations",
+              "narrative"
+            ]
+          },
+          "state": {
+            "enum": [
+              "bound",
+              "declared",
+              "derived",
+              "unbound",
+              "external"
+            ]
+          }
+        },
+        "required": [
+          "panel_id",
+          "panel_type"
+        ],
+        "type": "object"
+      },
+      "maxItems": 24,
+      "type": "array"
+    },
+    "selections": {
+      "maxItems": 128,
+      "type": "array"
+    }
+  },
+  "title": "Sustainable Catalyst Lab Multi-View Scientific Analysis Canvas",
+  "type": "object"
+}
