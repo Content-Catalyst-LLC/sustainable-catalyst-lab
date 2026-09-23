@@ -1,3 +1,7 @@
+# Lab v0.128.0 — Experimental Design & Power Analysis
+
+Governed power and sample-size planning, factorial/block/cluster design structure, precision planning, seeded simulation power, sequential/adaptive planning, multiplicity plans, reproducible randomization schedules, publication visualization plans, snapshots, and Platform Core references. Power remains conditional on explicit assumptions and is never represented as a guarantee.
+
 # Lab v0.126.0 — Spatial & Spatiotemporal Research Studio
 
 Governed vector/raster/spatiotemporal research with explicit CRS and weights, Moran and local-Moran diagnostics, Getis-Ord hotspot scores, nearest-neighbor and descriptive spatial-lag analysis, zonal statistics, raster change, space-time cubes, temporal change profiles, trajectory summaries, hotspot persistence, visualization plans, reproducible snapshots, and Platform Core reference plans. Spatial association remains non-causal; no silent reprojection, join inference, bandwidth optimization, significance labels, or scientific-validity certification.
@@ -29,7 +33,7 @@ Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference
 
 # Sustainable Catalyst Lab
 
-**Current release: v0.126.0 — Spatial & Spatiotemporal Research Studio.**
+**Current release: v0.128.0 — Experimental Design & Power Analysis.**
 
 
 **Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**

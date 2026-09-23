@@ -116,6 +116,7 @@ from .sensitivity_global_uncertainty_analysis_studio_v01240 import SensitivitySt
 from .causal_research_studio_v01250 import CausalResearchStudioError, balance_report as causal2_balance, build_core_object_plan as causal2_core_object, build_execution_lineage_plan as causal2_lineage, build_export_plan as causal2_export, build_reproduction_plan as causal2_reproduction, build_snapshot as causal2_snapshot, build_studio as causal2_studio, build_visualization_plan as causal2_visualization, catalog as causal2_catalog, counterfactual_report as causal2_counterfactual, dag_adjustment_plan as causal2_adjustment, estimate_did as causal2_did, estimate_its as causal2_its, estimate_matching as causal2_matching, estimate_rd as causal2_rd, estimate_synthetic_control as causal2_synthetic, estimate_weighting as causal2_weighting, fit_propensity as causal2_propensity, governance_review_report as causal2_governance, health as causal2_health, interpretation_boundaries_report as causal2_boundaries, manifest as causal2_manifest, normalize_dag as causal2_dag, normalize_study as causal2_normalize, overlap_report as causal2_overlap, placebo_plan as causal2_placebo, robustness_plan as causal2_robustness, schema_info as causal2_schema
 from .spatial_spatiotemporal_research_studio_v01260 import SpatialResearchStudioError, build_core_object_plan as spatial2_core_object, build_execution_lineage_plan as spatial2_lineage, build_export_plan as spatial2_export, build_reproduction_plan as spatial2_reproduction, build_snapshot as spatial2_snapshot, build_spatial_weights as spatial2_weights, build_spatiotemporal_cube as spatial2_cube, build_studio as spatial2_studio, build_visualization_plan as spatial2_visualization, catalog as spatial2_catalog, crs_audit as spatial2_crs_audit, getis_ord_gi_star as spatial2_gistar, global_morans_i as spatial2_moran, health as spatial2_health, hotspot_persistence as spatial2_persistence, interpretation_boundaries_report as spatial2_boundaries, local_morans_i as spatial2_local_moran, manifest as spatial2_manifest, nearest_neighbor_report as spatial2_nearest, normalize_study as spatial2_normalize, raster_change_summary as spatial2_raster_change, raster_zonal_stats as spatial2_zonal, schema_info as spatial2_schema, space_time_autocorrelation as spatial2_space_time, spatial_join_plan as spatial2_join, spatial_lag_estimate as spatial2_lag, spatiotemporal_change_profile as spatial2_change_profile, trajectory_report as spatial2_trajectory
 from .scientific_time_series_laboratory_v01270 import TimeSeriesLaboratoryError, autocorrelation as ts_acf, build_core_object_plan as ts_core, build_execution_lineage_plan as ts_lineage, build_export_plan as ts_export, build_reproduction_plan as ts_reproduction, build_snapshot as ts_snapshot, build_studio as ts_studio, build_visualization_plan as ts_visualization, catalog as ts_catalog, change_point_analysis as ts_changepoint, cross_correlation as ts_crosscorr, decompose_series as ts_decompose, difference_series as ts_difference, exponential_smoothing as ts_ets, fit_arima as ts_arima, fit_autoregression as ts_ar, forecast as ts_forecast, frequency_audit as ts_frequency, health as ts_health, interpretation_boundaries_report as ts_boundaries, manifest as ts_manifest, normalize_series as ts_normalize, anomaly_screen as ts_anomaly, partial_autocorrelation as ts_pacf, regime_analysis as ts_regime, residual_diagnostics as ts_residuals, rolling_origin_evaluation as ts_rolling, schema_info as ts_schema, spectral_analysis as ts_spectral, state_space_local_linear_trend as ts_state_space, stationarity_diagnostics as ts_stationarity
+from .experimental_design_power_analysis_v01280 import ExperimentalDesignError, adaptive_reestimation_plan as exp_adaptive, blocked_randomization_plan as exp_blocked, build_core_object_plan as exp_core, build_execution_lineage_plan as exp_lineage, build_export_plan as exp_export, build_reproduction_plan as exp_reproduction, build_snapshot as exp_snapshot, build_studio as exp_studio, build_visualization_plan as exp_visualization, catalog as exp_catalog, cluster_design_effect as exp_cluster, design_diagnostics as exp_diagnostics, factorial_design_plan as exp_factorial, health as exp_health, interpretation_boundaries_report as exp_boundaries, manifest as exp_manifest, multiple_testing_plan as exp_multiplicity, normalize_design as exp_normalize, one_proportion_power as exp_one_prop, one_sample_mean_power as exp_one_mean, one_way_anova_power as exp_anova, paired_mean_power as exp_paired, precision_sample_size as exp_precision, randomization_schedule as exp_randomization, schema_info as exp_schema, sequential_design_plan as exp_sequential, simulation_power as exp_simulation, standardized_effect_report as exp_effect, two_proportion_power as exp_two_prop, two_sample_mean_power as exp_two_mean
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8583,3 +8584,117 @@ def scientific_time_series_laboratory_lineage(payload: dict):
 def scientific_time_series_laboratory_boundaries(payload: dict):
     try: return ts_boundaries(payload)
     except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+
+@app.get("/v1/experimental-design-power-analysis/health")
+def experimental_design_power_analysis_health(): return exp_health()
+@app.get("/v1/experimental-design-power-analysis/manifest")
+def experimental_design_power_analysis_manifest(): return exp_manifest()
+@app.get("/v1/experimental-design-power-analysis/catalog")
+def experimental_design_power_analysis_catalog(): return exp_catalog()
+@app.get("/v1/experimental-design-power-analysis/schema")
+def experimental_design_power_analysis_schema(): return exp_schema()
+@app.post("/v1/experimental-design-power-analysis/design/normalize")
+def experimental_design_power_analysis_normalize(payload: dict):
+    try: return exp_normalize(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/effect-size/standardize")
+def experimental_design_power_analysis_effect(payload: dict):
+    try: return exp_effect(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/one-sample-mean")
+def experimental_design_power_analysis_one_mean(payload: dict):
+    try: return exp_one_mean(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/two-sample-mean")
+def experimental_design_power_analysis_two_mean(payload: dict):
+    try: return exp_two_mean(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/paired-mean")
+def experimental_design_power_analysis_paired(payload: dict):
+    try: return exp_paired(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/one-proportion")
+def experimental_design_power_analysis_one_prop(payload: dict):
+    try: return exp_one_prop(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/two-proportion")
+def experimental_design_power_analysis_two_prop(payload: dict):
+    try: return exp_two_prop(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/one-way-anova")
+def experimental_design_power_analysis_anova(payload: dict):
+    try: return exp_anova(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/factorial/plan")
+def experimental_design_power_analysis_factorial(payload: dict):
+    try: return exp_factorial(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/randomization/blocked-plan")
+def experimental_design_power_analysis_blocked(payload: dict):
+    try: return exp_blocked(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/cluster/design-effect")
+def experimental_design_power_analysis_cluster(payload: dict):
+    try: return exp_cluster(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/precision/sample-size")
+def experimental_design_power_analysis_precision(payload: dict):
+    try: return exp_precision(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/power/simulation")
+def experimental_design_power_analysis_simulation(payload: dict):
+    try: return exp_simulation(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/sequential/plan")
+def experimental_design_power_analysis_sequential(payload: dict):
+    try: return exp_sequential(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/adaptive/reestimation-plan")
+def experimental_design_power_analysis_adaptive(payload: dict):
+    try: return exp_adaptive(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/multiplicity/plan")
+def experimental_design_power_analysis_multiplicity(payload: dict):
+    try: return exp_multiplicity(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/randomization/schedule")
+def experimental_design_power_analysis_randomization(payload: dict):
+    try: return exp_randomization(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/design/diagnostics")
+def experimental_design_power_analysis_diagnostics(payload: dict):
+    try: return exp_diagnostics(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/visualization/plan")
+def experimental_design_power_analysis_visualization(payload: dict):
+    try: return exp_visualization(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/studio/build")
+def experimental_design_power_analysis_studio(payload: dict):
+    try: return exp_studio(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/snapshot/build")
+def experimental_design_power_analysis_snapshot(payload: dict):
+    try: return exp_snapshot(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/reproduction/plan")
+def experimental_design_power_analysis_reproduction(payload: dict):
+    try: return exp_reproduction(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/export/plan")
+def experimental_design_power_analysis_export(payload: dict):
+    try: return exp_export(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/core-object/plan")
+def experimental_design_power_analysis_core(payload: dict):
+    try: return exp_core(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/execution-lineage/plan")
+def experimental_design_power_analysis_lineage(payload: dict):
+    try: return exp_lineage(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/experimental-design-power-analysis/interpretation-boundaries/report")
+def experimental_design_power_analysis_boundaries(payload: dict):
+    try: return exp_boundaries(payload)
+    except ExperimentalDesignError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

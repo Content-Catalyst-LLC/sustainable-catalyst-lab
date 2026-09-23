@@ -1,3 +1,8 @@
+## 0.128.0 — Experimental Design & Power Analysis
+- Added analytical power/sample-size planning for means, proportions, and one-way ANOVA.
+- Added factorial allocation, blocked randomization, cluster design effects, precision planning, seeded simulation power, sequential/adaptive plans, multiplicity plans, deterministic randomization schedules, diagnostics, visualization/snapshot/export/Core plans.
+- Power remains conditional on explicit assumptions; no automatic design selection, significance claim, validity certification, or Core submission.
+
 ## 0.126.0 — Spatial & Spatiotemporal Research Studio
 - Added governed spatial weights, Moran/local-Moran/Getis-Ord diagnostics, nearest-neighbor and descriptive spatial-lag analysis.
 - Added raster zonal statistics/change analysis, explicit spatial-join planning, space-time cubes, temporal change profiles, trajectory analysis, hotspot persistence, visualization/reproduction/export/Core plans.

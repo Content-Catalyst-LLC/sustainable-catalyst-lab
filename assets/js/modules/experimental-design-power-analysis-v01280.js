@@ -1,0 +1,1 @@
+(function(w){'use strict';var C=w.SCLabExperimentalDesignPowerAnalysisV01280Config||{};w.SCLabExperimentalDesignPowerAnalysisV01280={version:'0.128.0',schema:'sc-lab-experimental-design-power-analysis/0.128.0',config:C,boundaries:{automaticDesignSelection:false,automaticSignificanceClaims:false,powerGuaranteed:false,automaticCoreSubmission:false}};})(window);
