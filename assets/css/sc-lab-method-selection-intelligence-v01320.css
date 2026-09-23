@@ -1,0 +1,2 @@
+/* Lab v0.132.0 Method Selection Intelligence */
+.sc-lab-msi{display:grid;gap:18px}.sc-lab-msi__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.sc-lab-msi__panel{border:1px solid currentColor;border-radius:8px;padding:18px;background:var(--sc-lab-surface,#fff)}.sc-lab-msi__matrix{overflow:auto}.sc-lab-msi [data-method-status="eligible"]{font-weight:600}.sc-lab-msi [data-boundary="researcher-selection"]{border-inline-start:3px solid currentColor;padding-inline-start:10px}@media(max-width:640px){.sc-lab-msi__grid{grid-template-columns:1fr}}

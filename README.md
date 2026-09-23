@@ -1,3 +1,8 @@
+
+## Lab v0.132.0 — Method Selection Intelligence
+
+Adds transparent, researcher-controlled method eligibility reasoning across statistical, Bayesian, simulation, sensitivity, causal, spatial, spatiotemporal, time-series, experimental-design, reproducibility, and synthesis workflows. Candidate methods are labeled eligible, needs-information, or incompatible with explicit reasons; there is no automatic winner, hidden score, scientific-validity certification, or Core submission.
+
 ## Lab v0.131.0 — Research Question & Hypothesis Workspace
 
 - Adds governed research-question/hypothesis formalization, competing hypotheses, operationalization, falsification/disconfirmation, preregistration/deviations, rival explanations, discriminating tests, snapshots, and Core bindings.

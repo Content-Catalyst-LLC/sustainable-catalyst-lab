@@ -1,0 +1,21 @@
+{
+  "automatic_assumption_satisfaction": false,
+  "automatic_causal_inference": false,
+  "automatic_core_submission": false,
+  "automatic_generalization": false,
+  "automatic_hypothesis_selection": false,
+  "automatic_method_ranking": false,
+  "automatic_method_selection": false,
+  "automatic_scientific_validity_certification": false,
+  "determine_truth": false,
+  "principles": [
+    "eligibility-is-not-validity",
+    "incompatibility-is-contextual-not-impossibility",
+    "assumptions-remain-explicit",
+    "alternatives-remain-visible",
+    "method-decisions-are-researcher-declared"
+  ],
+  "researcher_selection_required": true,
+  "schema": "sc-lab-method-selection-intelligence-policy/0.132.0",
+  "version": "0.132.0"
+}

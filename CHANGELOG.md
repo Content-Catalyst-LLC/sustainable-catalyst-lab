@@ -1,3 +1,12 @@
+# 0.132.0 — Method Selection Intelligence
+
+- Added transparent candidate-method construction and explicit eligibility states.
+- Added data, estimand, design, sample-structure, temporal/spatial, and uncertainty profiles.
+- Added requirement-gap, incompatibility, assumption, alignment, diagnostics, sensitivity, validation, and pre-analysis plans.
+- Added researcher-controlled shortlists and method-decision records with alternatives preserved.
+- Added reference-first project/session/Core handoffs and deterministic snapshots.
+- Preserved scientific boundaries: no automatic method ranking/selection, assumption satisfaction, causal inference, validity certification, truth determination, or Core submission.
+
 ## Lab v0.131.0 — Research Question & Hypothesis Workspace
 
 - Adds governed research-question/hypothesis formalization, competing hypotheses, operationalization, falsification/disconfirmation, preregistration/deviations, rival explanations, discriminating tests, snapshots, and Core bindings.

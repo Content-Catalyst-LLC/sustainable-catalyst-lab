@@ -1,0 +1,36 @@
+{
+  "$id": "https://sustainablecatalyst.com/schemas/method-selection-intelligence-v01320.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "design_type": {
+      "type": "string"
+    },
+    "hypothesis_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "method_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "outcome_type": {
+      "type": "string"
+    },
+    "question_refs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "research_goal": {
+      "type": "string"
+    }
+  },
+  "title": "Sustainable Catalyst Lab Method Selection Intelligence v0.132.0",
+  "type": "object"
+}
