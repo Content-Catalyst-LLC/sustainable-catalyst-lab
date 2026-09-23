@@ -131,6 +131,8 @@ from .interactive_scientific_scene_drilldown_v01354 import InteractiveScientific
 from . import interactive_scientific_scene_drilldown_v01354 as scene1354
 from .scientific_scene_linking_comparative_context_v01355 import ScientificSceneLinkingComparativeContextError
 from . import scientific_scene_linking_comparative_context_v01355 as scene1355
+from .reproducible_visual_analysis_sessions_v01356 import ReproducibleVisualAnalysisSessionError
+from . import reproducible_visual_analysis_sessions_v01356 as session1356
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9666,4 +9668,36 @@ for _i,(_path,_fn) in enumerate(_SCENE1355_ROUTES):
         return _route
     _route=_make_scene1355_route(_fn); _route.__name__=f"scene1355_route_{_i}"
     app.post(f"/v1/scientific-scene-linking-comparative-context/{_path}")(_route)
+
+# Lab v0.135.6 — Reproducible Visual Analysis Sessions & Interaction Lineage
+@app.get("/v1/reproducible-visual-analysis-sessions/health")
+def reproducible_visual_analysis_sessions_health(): return session1356.health()
+@app.get("/v1/reproducible-visual-analysis-sessions/manifest")
+def reproducible_visual_analysis_sessions_manifest(): return session1356.manifest()
+@app.get("/v1/reproducible-visual-analysis-sessions/catalog")
+def reproducible_visual_analysis_sessions_catalog(): return session1356.catalog()
+@app.get("/v1/reproducible-visual-analysis-sessions/schema")
+def reproducible_visual_analysis_sessions_schema(): return session1356.schema_info()
+def _session1356_call(fn,payload):
+    try: return fn(payload)
+    except ReproducibleVisualAnalysisSessionError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_SESSION1356_ROUTES = [
+("session/normalize",session1356.normalize_session),("session/create",session1356.create_session),("session/close",session1356.close_session),("session/clone",session1356.clone_session),
+("event/normalize",session1356.normalize_event),("event/append",session1356.append_event),("event/batch",session1356.append_event_batch),("event/list",session1356.list_events),
+("lineage/build",session1356.build_lineage),("lineage/audit",session1356.audit_lineage),("lineage/path",session1356.lineage_path),("lineage/upstream",session1356.lineage_upstream),("lineage/downstream",session1356.lineage_downstream),
+("checkpoint/normalize",session1356.normalize_checkpoint),("checkpoint/create",session1356.create_checkpoint),("checkpoint/restore",session1356.restore_checkpoint),("checkpoint/list",session1356.list_checkpoints),
+("replay/plan",session1356.replay_plan),("replay/validate",session1356.validate_replay),("replay/window",session1356.replay_window),("replay/step",session1356.replay_step),
+("state/current",session1356.current_state),("state/diff",session1356.state_diff),("state/hash",session1356.state_hash),("state/restore-plan",session1356.state_restore_plan),
+("bridge/canvas",session1356.canvas_bridge),("bridge/scene",session1356.scene_bridge),("bridge/context",session1356.context_bridge),("bridge/comparison",session1356.comparison_bridge),("bridge/pins",session1356.pins_bridge),("bridge/provenance",session1356.provenance_bridge),("bridge/uncertainty",session1356.uncertainty_bridge),("bridge/evidence",session1356.evidence_bridge),
+("export/plan",session1356.export_plan),("import/plan",session1356.import_plan),("reproduction/plan",session1356.reproduction_plan),("core-object/plan",session1356.core_object_plan),("handoff/plan",session1356.handoff_plan),
+("guard/sequence",session1356.sequence_guard),("guard/references",session1356.reference_guard),("guard/presentation",session1356.presentation_guard),("guard/scientific-boundary",session1356.scientific_boundary_guard),
+("boundaries/report",session1356.interpretation_boundaries_report),("readiness/report",session1356.readiness_report),("integrity/report",session1356.integrity_report),("determinism/report",session1356.determinism_report),
+("snapshot/build",session1356.build_snapshot),("snapshot/restore",session1356.restore_snapshot),
+]
+for _i,(_path,_fn) in enumerate(_SESSION1356_ROUTES):
+    def _make_session1356_route(fn):
+        async def _route(payload:dict): return _session1356_call(fn,payload)
+        return _route
+    _route=_make_session1356_route(_fn); _route.__name__=f"session1356_route_{_i}"
+    app.post(f"/v1/reproducible-visual-analysis-sessions/{_path}")(_route)
 

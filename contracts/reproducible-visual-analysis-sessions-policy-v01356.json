@@ -1,0 +1,12 @@
+{
+  "automaticCoreSubmission": false,
+  "automaticEvidenceWeighting": false,
+  "automaticTruthDetermination": false,
+  "automaticValidityCertification": false,
+  "explicitReferencesRequired": true,
+  "interactionLineageIsScientificEvidence": false,
+  "interactionOrderImpliesCausality": false,
+  "replayIsScientificReplication": false,
+  "replayMutatesSourceScience": false,
+  "version": "0.135.6"
+}

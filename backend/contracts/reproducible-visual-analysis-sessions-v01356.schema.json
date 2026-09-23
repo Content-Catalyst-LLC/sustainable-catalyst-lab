@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "checkpoints": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "session_ref": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "active",
+        "archived",
+        "closed",
+        "paused"
+      ]
+    }
+  },
+  "title": "Sustainable Catalyst Lab Reproducible Visual Analysis Session",
+  "type": "object",
+  "x-boundary": "interaction lineage and replay are non-authoritative presentation/research workflow records, not scientific evidence or causal proof",
+  "x-sc-lab-version": "0.135.6"
+}
