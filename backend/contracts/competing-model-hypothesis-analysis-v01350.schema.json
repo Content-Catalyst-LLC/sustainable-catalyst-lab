@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/competing-model-hypothesis-analysis-v01350.schema.json",
+  "title": "Sustainable Catalyst Lab v0.135.0 Competing Model & Hypothesis Analysis",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "0.135.0"
+    },
+    "candidate_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "researcher_adjudication_required": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

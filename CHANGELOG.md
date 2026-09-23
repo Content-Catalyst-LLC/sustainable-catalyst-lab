@@ -1,3 +1,6 @@
+## 0.135.0 — Competing Model & Hypothesis Analysis
+- Adds governed rival hypothesis/model comparison, contradiction preservation, discriminating-test planning, robustness/sensitivity analysis, researcher adjudication, and Core handoffs.
+
 # Changelog
 
 ## 0.134.0 — Evidence Synthesis Intelligence II

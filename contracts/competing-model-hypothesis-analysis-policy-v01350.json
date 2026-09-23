@@ -1,0 +1,16 @@
+{
+  "schema": "sc-lab-competing-model-hypothesis-analysis-policy/0.135.0",
+  "version": "0.135.0",
+  "automatic_hypothesis_ranking": false,
+  "automatic_model_ranking": false,
+  "automatic_winner_selection": false,
+  "automatic_evidence_weighting": false,
+  "automatic_hypothesis_rejection": false,
+  "automatic_model_rejection": false,
+  "automatic_causal_inference": false,
+  "automatic_generalization": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_core_submission": false,
+  "determine_truth": false,
+  "researcher_adjudication_required": true
+}

@@ -1097,3 +1097,7 @@ Reproducible time-series analysis and forecasting with explicit temporal assumpt
 ## Current scientific-intelligence release
 
 **v0.134.0 — Evidence Synthesis Intelligence II** adds governed cross-study synthesis while preserving contradictions, heterogeneity, replication disagreement, uncertainty, provenance, and human adjudication.
+
+
+## Lab v0.135.0 — Competing Model & Hypothesis Analysis
+Transparent rival hypothesis/model analysis without automatic ranking or truth selection.
