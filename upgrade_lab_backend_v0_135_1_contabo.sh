@@ -55,7 +55,9 @@ assert p.get('ok') is True and p.get('version')=='0.135.0'
 assert r.get('ok') is True and r.get('version')=='0.135.1'
 assert r.get('panel_family_count')==12
 assert r.get('capability_family_count')==12
-assert r.get('fabricated_scientific_values') is False
+assert r.get('automatic_scientific_interpretation') is False
+assert r.get('automatic_evidence_promotion') is False
+assert r.get('automatic_core_submission') is False
 mm=re.fullmatch(r'(\d+)\.(\d+)\.(\d+)',str(core.get('version','')))
 assert core.get('ok') is True and mm and tuple(map(int,mm.groups())) >= (3,0,0)
 print('PASS: Lab Compute Core 1.0.0 healthy')

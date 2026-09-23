@@ -1,0 +1,21 @@
+{
+  "boundaries": {
+    "automaticCausalInference": false,
+    "automaticClaimStatusChange": false,
+    "automaticCoreSubmission": false,
+    "automaticEvidenceWeighting": false,
+    "automaticScientificInterpretation": false,
+    "automaticScientificValidityCertification": false,
+    "determineTruth": false,
+    "fabricateScientificValues": false,
+    "inferUndeclaredModelStructure": false,
+    "inferUndeclaredProvenance": false
+  },
+  "ownership": {
+    "lab": "scientific computation, graph rendering, execution lineage visualization",
+    "platformCore": "canonical research/evidence objects, provenance semantics, cross-product exchange"
+  },
+  "referenceFirst": true,
+  "schema": "sc-lab-model-architecture-computational-provenance-graphs-policy/0.135.2",
+  "version": "0.135.2"
+}

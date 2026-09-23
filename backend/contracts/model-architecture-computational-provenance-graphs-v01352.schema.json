@@ -1,0 +1,103 @@
+{
+  "$id": "https://sustainablecatalyst.com/contracts/model-architecture-computational-provenance-graphs-v01352.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "edges": {
+      "items": {
+        "properties": {
+          "edge_type": {
+            "enum": [
+              "binds",
+              "challenges",
+              "conditions",
+              "depends-on",
+              "derived-from",
+              "diagnoses",
+              "executes",
+              "exports-to",
+              "lineage-of",
+              "parameterizes",
+              "produces",
+              "quantifies",
+              "references",
+              "registered-as",
+              "sourced-from",
+              "supports",
+              "transformed-by",
+              "visualizes"
+            ]
+          }
+        },
+        "required": [
+          "source",
+          "target",
+          "edge_type"
+        ],
+        "type": "object"
+      },
+      "maxItems": 15000,
+      "type": "array"
+    },
+    "graph_ref": {
+      "type": "string"
+    },
+    "layout_mode": {
+      "enum": [
+        "layered",
+        "radial",
+        "swimlane"
+      ]
+    },
+    "nodes": {
+      "items": {
+        "properties": {
+          "node_id": {
+            "type": "string"
+          },
+          "node_type": {
+            "enum": [
+              "assumption",
+              "claim",
+              "core-object",
+              "dataset",
+              "diagnostic",
+              "evidence",
+              "execution",
+              "feature",
+              "figure",
+              "hyperparameter",
+              "inference",
+              "model",
+              "output",
+              "parameter",
+              "prior",
+              "publication",
+              "solver",
+              "source",
+              "transform",
+              "uncertainty"
+            ]
+          }
+        },
+        "required": [
+          "node_id",
+          "node_type"
+        ],
+        "type": "object"
+      },
+      "maxItems": 5000,
+      "type": "array"
+    },
+    "view_mode": {
+      "enum": [
+        "architecture",
+        "evidence",
+        "execution",
+        "provenance"
+      ]
+    }
+  },
+  "title": "Sustainable Catalyst Lab Model Architecture & Computational Provenance Graph",
+  "type": "object"
+}

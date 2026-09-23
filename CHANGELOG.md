@@ -1,3 +1,9 @@
+## 0.135.2 — Model Architecture & Computational Provenance Graphs
+
+- Adds an interactive under-the-hood architecture/provenance graph to Graph Studio.
+- Adds 20 node types, 18 edge types, path traversal, cycle/orphan audits, deterministic layouts, overlays, snapshots, and Core handoffs.
+- Preserves reference-first scientific boundaries; no fabricated scientific values or inferred internals.
+
 ## 0.135.1 — Scientific Visualization Experience Overhaul
 - Upgrades Graph Studio into a multi-panel scientific analysis canvas with data-aware empirical/residual views, under-the-hood model/provenance graphics, capability-state visualization, linked modes, full-screen analysis, and stronger Sustainable Catalyst visual hierarchy.
 - Preserves the existing governed visualization stack and explicitly refuses to fabricate missing posterior, sensitivity, diagnostic, spatial, or other scientific values.

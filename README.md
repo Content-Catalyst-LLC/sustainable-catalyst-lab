@@ -1,4 +1,6 @@
-## Lab v0.135.1 — Scientific Visualization Experience Overhaul
+**Current release: Lab v0.135.2 — Model Architecture & Computational Provenance Graphs**
+
+## Lab v0.135.2 — Scientific Visualization Experience Overhaul
 
 Graph Studio now presents the scientific figure together with data-aware supporting analysis, computational/provenance structure, renderer/capability state, and evidence context. The experience layer changes presentation only; unavailable scientific objects remain explicitly unlinked rather than fabricated.
 
