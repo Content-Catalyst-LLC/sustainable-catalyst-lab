@@ -129,6 +129,8 @@ from .model_architecture_computational_provenance_graphs_v01352 import ModelArch
 from .multi_view_scientific_analysis_canvas_v01353 import MultiViewScientificAnalysisCanvasError, analysis_layout as mvac1353_analysis_layout, annotation_plan as mvac1353_annotation, brush_plan as mvac1353_brush, build_snapshot as mvac1353_snapshot, catalog as mvac1353_catalog, comparison_layout as mvac1353_comparison_layout, compose_canvas as mvac1353_compose, core_object_plan as mvac1353_core, cursor_sync as mvac1353_cursor, data_table_panel_plan as mvac1353_table, diagnostic_context_plan as mvac1353_diagnostic_context, diagnostics_layout as mvac1353_diagnostics_layout, diagnostics_panel_plan as mvac1353_diagnostics_panel, domain_sync as mvac1353_domain, evidence_context_plan as mvac1353_evidence_context, evidence_layout as mvac1353_evidence_layout, evidence_panel_plan as mvac1353_evidence_panel, export_plan as mvac1353_export, filter_apply as mvac1353_filter_apply, filter_normalize as mvac1353_filter_normalize, filter_share as mvac1353_filter_share, focus_plan as mvac1353_focus, handoff_plan as mvac1353_handoff, health as mvac1353_health, interpretation_boundaries_report as mvac1353_boundaries, manifest as mvac1353_manifest, model_graph_panel_plan as mvac1353_model_graph, narrative_panel_plan as mvac1353_narrative, normalize_canvas as mvac1353_normalize, panel_plan as mvac1353_panel, presentation_layout as mvac1353_presentation_layout, primary_figure_plan as mvac1353_primary, provenance_context_plan as mvac1353_provenance_context, provenance_panel_plan as mvac1353_provenance_panel, readiness_report as mvac1353_readiness, revision_plan as mvac1353_revision, schema_info as mvac1353_schema, selection_clear as mvac1353_selection_clear, selection_link as mvac1353_selection_link, selection_normalize as mvac1353_selection_normalize, uncertainty_context_plan as mvac1353_uncertainty_context, uncertainty_panel_plan as mvac1353_uncertainty_panel
 from .interactive_scientific_scene_drilldown_v01354 import InteractiveScientificSceneDrillDownError
 from . import interactive_scientific_scene_drilldown_v01354 as scene1354
+from .scientific_scene_linking_comparative_context_v01355 import ScientificSceneLinkingComparativeContextError
+from . import scientific_scene_linking_comparative_context_v01355 as scene1355
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9627,4 +9629,41 @@ for _i,(_path,_fn) in enumerate(_SCENE1354_ROUTES):
         return _route
     _route=_make_scene1354_route(_fn); _route.__name__=f"scene1354_route_{_i}"
     app.post(f"/v1/interactive-scientific-scene-drilldown/{_path}")(_route)
+
+
+# Lab v0.135.5 — Scientific Scene Linking, Comparative Inspection & Context Preservation
+@app.get("/v1/scientific-scene-linking-comparative-context/health")
+def scientific_scene_linking_comparative_context_health(): return scene1355.health()
+@app.get("/v1/scientific-scene-linking-comparative-context/manifest")
+def scientific_scene_linking_comparative_context_manifest(): return scene1355.manifest()
+@app.get("/v1/scientific-scene-linking-comparative-context/catalog")
+def scientific_scene_linking_comparative_context_catalog(): return scene1355.catalog()
+@app.get("/v1/scientific-scene-linking-comparative-context/schema")
+def scientific_scene_linking_comparative_context_schema(): return scene1355.schema_info()
+def _scene1355_call(fn,payload):
+    try: return fn(payload)
+    except ScientificSceneLinkingComparativeContextError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_SCENE1355_ROUTES = [
+("link/normalize",scene1355.normalize_link),("link/validate",scene1355.validate_link),("context/normalize",scene1355.normalize_context_capsule),
+("context/preserve",scene1355.preserve_context),("context/restore",scene1355.restore_context),("pin/normalize",scene1355.normalize_pin),
+("pin/add",scene1355.pin_object),("pin/remove",scene1355.unpin_object),("pin/set",scene1355.pin_set),
+("comparison/normalize",scene1355.normalize_comparison_set),("comparison/plan",scene1355.comparison_plan),("comparison/side-by-side",scene1355.side_by_side_plan),
+("comparison/overlay",scene1355.overlay_plan),("comparison/synchronized",scene1355.synchronized_plan),("comparison/provenance",scene1355.provenance_compare_plan),
+("comparison/difference-metadata",scene1355.difference_metadata_plan),("comparison/small-multiple",scene1355.small_multiple_plan),("focus/synchronize",scene1355.synchronized_focus_plan),
+("bridge/context",scene1355.context_bridge),("bridge/canvas",scene1355.canvas_bridge),("bridge/scene",scene1355.scene_bridge),
+("bridge/provenance",scene1355.provenance_bridge),("bridge/uncertainty",scene1355.uncertainty_bridge),("bridge/evidence",scene1355.evidence_bridge),
+("bridge/diagnostics",scene1355.diagnostics_bridge),("bridge/spatial",scene1355.spatial_bridge),("bridge/temporal",scene1355.temporal_bridge),
+("mapping/validate",scene1355.mapping_validation),("guard/equivalence",scene1355.equivalence_guard),("guard/compare-targets",scene1355.compare_target_guard),
+("link/cross-scene",scene1355.cross_scene_link_plan),("navigation/context",scene1355.navigation_context_plan),("drill/context",scene1355.drill_context_plan),
+("breadcrumb/context",scene1355.breadcrumb_context_plan),("context/diff",scene1355.context_diff),("context/snapshot",scene1355.context_snapshot),
+("snapshot/build",scene1355.build_snapshot),("snapshot/restore",scene1355.restore_snapshot),("context/audit",scene1355.audit_context_integrity),
+("export/plan",scene1355.export_plan),("handoff/plan",scene1355.handoff_plan),("core-object/plan",scene1355.core_object_plan),
+("boundaries/report",scene1355.interpretation_boundaries_report),("readiness/report",scene1355.readiness_report),
+]
+for _i,(_path,_fn) in enumerate(_SCENE1355_ROUTES):
+    def _make_scene1355_route(fn):
+        async def _route(payload:dict): return _scene1355_call(fn,payload)
+        return _route
+    _route=_make_scene1355_route(_fn); _route.__name__=f"scene1355_route_{_i}"
+    app.post(f"/v1/scientific-scene-linking-comparative-context/{_path}")(_route)
 

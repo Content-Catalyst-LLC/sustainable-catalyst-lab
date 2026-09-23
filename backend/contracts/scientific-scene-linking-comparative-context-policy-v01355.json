@@ -1,0 +1,15 @@
+{
+  "schema": "sc-lab-scientific-scene-linking-comparative-context-policy/0.135.5",
+  "version": "0.135.5",
+  "linksMustBeExplicit": true,
+  "crossObjectEquivalenceMustBeExplicit": true,
+  "contextIsNonAuthoritative": true,
+  "comparisonIsNotCausalInference": true,
+  "automaticEquivalenceInference": false,
+  "automaticJoinInference": false,
+  "automaticEvidenceWeighting": false,
+  "automaticClaimStatusChange": false,
+  "automaticScientificValidityCertification": false,
+  "automaticTruthDetermination": false,
+  "automaticCoreSubmission": false
+}

@@ -1,3 +1,9 @@
+# Lab v0.135.5 — Scientific Scene Linking, Comparative Inspection & Context Preservation
+
+- Added explicit cross-scene reference linking, pinned inspection, comparison sets, context capsules, and deterministic context snapshots.
+- Added coordination bridges across v0.135.2 provenance graphs, v0.135.3 multi-view canvas, and v0.135.4 interactive scene/drill-down.
+- Enforced no inferred equivalence, joins, causality, evidence weighting, validity certification, truth determination, or automatic Platform Core submission.
+
 # Lab v0.135.4 — Interactive Scientific Scene & Visual Drill-Down
 
 - Adds explicit-layer interactive scientific scenes, governed visual drill-down paths, detail inspection, isolation/comparison/slicing/trace modes, adaptive LOD planning, spatial-temporal navigation, and evidence/provenance context.

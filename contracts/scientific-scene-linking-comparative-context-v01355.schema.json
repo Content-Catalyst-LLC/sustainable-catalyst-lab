@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-scene-linking-comparative-context/0.135.5",
+  "title": "Sustainable Catalyst Lab v0.135.5 Scientific Scene Linking, Comparative Inspection & Context Preservation",
+  "type": "object",
+  "properties": {
+    "link_type": {"enum": ["same-object","derived-from","parent-child","input-output","figure-reference","model-reference","evidence-reference","provenance-reference","spatial-reference","temporal-reference"]},
+    "compare_mode": {"enum": ["side-by-side","overlay","synchronized","small-multiple","difference-metadata","provenance"]},
+    "source_ref": {"type": "string"},
+    "target_ref": {"type": "string"},
+    "object_refs": {"type": "array", "items": {"type": "string"}},
+    "context": {"type": "object"}
+  },
+  "additionalProperties": true
+}

@@ -61,7 +61,7 @@ Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference
 
 # Sustainable Catalyst Lab
 
-**Current release: v0.135.4 — Interactive Scientific Scene & Visual Drill-Down.**
+**Current release: v0.135.5 — Scientific Scene Linking, Comparative Inspection & Context Preservation.**
 
 **Current release: v0.128.0 — Experimental Design & Power Analysis.**
 
