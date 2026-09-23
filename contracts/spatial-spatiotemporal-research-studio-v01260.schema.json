@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/spatial-spatiotemporal-research-studio-v01260.schema.json",
+  "title": "Sustainable Catalyst Lab Spatial & Spatiotemporal Research Studio v0.126.0",
+  "type": "object",
+  "properties": {
+    "schema": {"const": "sc-lab-spatial-spatiotemporal-research-studio/0.126.0"},
+    "version": {"const": "0.126.0"},
+    "crs": {"type": "object"},
+    "rows": {"type": "array", "maxItems": 50000},
+    "weights": {"type": "object"},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": true
+}

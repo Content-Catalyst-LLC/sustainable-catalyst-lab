@@ -1,3 +1,8 @@
+## 0.126.0 — Spatial & Spatiotemporal Research Studio
+- Added governed spatial weights, Moran/local-Moran/Getis-Ord diagnostics, nearest-neighbor and descriptive spatial-lag analysis.
+- Added raster zonal statistics/change analysis, explicit spatial-join planning, space-time cubes, temporal change profiles, trajectory analysis, hotspot persistence, visualization/reproduction/export/Core plans.
+- Preserves declared CRS, coordinate units, time semantics, neighborhood rules, and source provenance; no automatic reprojection, significance labeling, causal interpretation, validity certification, or Core submission.
+
 ## 0.124.0 — Sensitivity & Global Uncertainty Analysis Studio
 - Added Sobol/Morris, variance decomposition, interaction screening, response surfaces, convergence/replication, publication and Core plans.
 

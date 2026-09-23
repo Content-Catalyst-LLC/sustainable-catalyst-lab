@@ -114,6 +114,7 @@ from .bayesian_analysis_workbench_v01220 import BayesianWorkbenchError, build_co
 from .simulation_monte_carlo_research_studio_v01230 import SimulationStudioError, build_compute_budget_plan as sim_mc_budget, build_core_object_plan as sim_mc_core_object, build_execution_lineage_plan as sim_mc_lineage, build_export_plan as sim_mc_export, build_reproduction_plan as sim_mc_reproduction, build_sampling_plan as sim_mc_sampling, build_snapshot as sim_mc_snapshot, build_studio as sim_mc_studio, build_visualization_plan as sim_mc_visualization, catalog as sim_mc_catalog, convergence_report as sim_mc_convergence, health as sim_mc_health, manifest as sim_mc_manifest, normalize_study as sim_mc_normalize, parameter_sweep_plan as sim_mc_sweep_plan, replication_report as sim_mc_replication, run_parameter_sweep as sim_mc_sweep_run, run_scenario_ensemble as sim_mc_scenarios, run_simulation as sim_mc_run, run_uncertainty_propagation as sim_mc_uncertainty, schema_info as sim_mc_schema, threshold_report as sim_mc_threshold
 from .sensitivity_global_uncertainty_analysis_studio_v01240 import SensitivityStudioError, build_core_object_plan as sens_core_object, build_execution_lineage_plan as sens_lineage, build_export_plan as sens_export, build_reproduction_plan as sens_reproduction, build_snapshot as sens_snapshot, build_studio as sens_studio, build_visualization_plan as sens_visualization, catalog as sens_catalog, correlation_screening_report as sens_correlation, health as sens_health, interaction_screening_report as sens_interactions, interpretation_boundaries_report as sens_boundaries, manifest as sens_manifest, morris_report as sens_morris, normalize_analysis as sens_normalize, response_surface_plan as sens_surface_plan, response_surface_run as sens_surface_run, schema_info as sens_schema, sensitivity_convergence_report as sens_convergence, sensitivity_replication_report as sens_replication, sobol_report as sens_sobol, variance_decomposition_report as sens_variance
 from .causal_research_studio_v01250 import CausalResearchStudioError, balance_report as causal2_balance, build_core_object_plan as causal2_core_object, build_execution_lineage_plan as causal2_lineage, build_export_plan as causal2_export, build_reproduction_plan as causal2_reproduction, build_snapshot as causal2_snapshot, build_studio as causal2_studio, build_visualization_plan as causal2_visualization, catalog as causal2_catalog, counterfactual_report as causal2_counterfactual, dag_adjustment_plan as causal2_adjustment, estimate_did as causal2_did, estimate_its as causal2_its, estimate_matching as causal2_matching, estimate_rd as causal2_rd, estimate_synthetic_control as causal2_synthetic, estimate_weighting as causal2_weighting, fit_propensity as causal2_propensity, governance_review_report as causal2_governance, health as causal2_health, interpretation_boundaries_report as causal2_boundaries, manifest as causal2_manifest, normalize_dag as causal2_dag, normalize_study as causal2_normalize, overlap_report as causal2_overlap, placebo_plan as causal2_placebo, robustness_plan as causal2_robustness, schema_info as causal2_schema
+from .spatial_spatiotemporal_research_studio_v01260 import SpatialResearchStudioError, build_core_object_plan as spatial2_core_object, build_execution_lineage_plan as spatial2_lineage, build_export_plan as spatial2_export, build_reproduction_plan as spatial2_reproduction, build_snapshot as spatial2_snapshot, build_spatial_weights as spatial2_weights, build_spatiotemporal_cube as spatial2_cube, build_studio as spatial2_studio, build_visualization_plan as spatial2_visualization, catalog as spatial2_catalog, crs_audit as spatial2_crs_audit, getis_ord_gi_star as spatial2_gistar, global_morans_i as spatial2_moran, health as spatial2_health, hotspot_persistence as spatial2_persistence, interpretation_boundaries_report as spatial2_boundaries, local_morans_i as spatial2_local_moran, manifest as spatial2_manifest, nearest_neighbor_report as spatial2_nearest, normalize_study as spatial2_normalize, raster_change_summary as spatial2_raster_change, raster_zonal_stats as spatial2_zonal, schema_info as spatial2_schema, space_time_autocorrelation as spatial2_space_time, spatial_join_plan as spatial2_join, spatial_lag_estimate as spatial2_lag, spatiotemporal_change_profile as spatial2_change_profile, trajectory_report as spatial2_trajectory
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8357,4 +8358,109 @@ def causal_research_studio_governance(payload: dict):
 def causal_research_studio_boundaries(payload: dict):
     try: return causal2_boundaries(payload)
     except CausalResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/spatial-spatiotemporal-research-studio/health")
+def spatial_spatiotemporal_research_studio_health(): return spatial2_health()
+@app.get("/v1/spatial-spatiotemporal-research-studio/manifest")
+def spatial_spatiotemporal_research_studio_manifest(): return spatial2_manifest()
+@app.get("/v1/spatial-spatiotemporal-research-studio/catalog")
+def spatial_spatiotemporal_research_studio_catalog(): return spatial2_catalog()
+@app.get("/v1/spatial-spatiotemporal-research-studio/schema")
+def spatial_spatiotemporal_research_studio_schema(): return spatial2_schema()
+@app.post("/v1/spatial-spatiotemporal-research-studio/study/normalize")
+def spatial_spatiotemporal_research_studio_normalize(payload: dict):
+    try: return spatial2_normalize(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/crs/audit")
+def spatial_spatiotemporal_research_studio_crs(payload: dict):
+    try: return spatial2_crs_audit(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/weights/build")
+def spatial_spatiotemporal_research_studio_weights(payload: dict):
+    try: return spatial2_weights(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/autocorrelation/moran")
+def spatial_spatiotemporal_research_studio_moran(payload: dict):
+    try: return spatial2_moran(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/autocorrelation/local-moran")
+def spatial_spatiotemporal_research_studio_local_moran(payload: dict):
+    try: return spatial2_local_moran(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/hotspot/getis-ord")
+def spatial_spatiotemporal_research_studio_getis(payload: dict):
+    try: return spatial2_gistar(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/nearest-neighbor/report")
+def spatial_spatiotemporal_research_studio_nearest(payload: dict):
+    try: return spatial2_nearest(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/spatial-lag/estimate")
+def spatial_spatiotemporal_research_studio_lag(payload: dict):
+    try: return spatial2_lag(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/raster/zonal-stats")
+def spatial_spatiotemporal_research_studio_zonal(payload: dict):
+    try: return spatial2_zonal(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/raster/change")
+def spatial_spatiotemporal_research_studio_raster_change(payload: dict):
+    try: return spatial2_raster_change(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/spatial-join/plan")
+def spatial_spatiotemporal_research_studio_join(payload: dict):
+    try: return spatial2_join(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/spatiotemporal/cube")
+def spatial_spatiotemporal_research_studio_cube(payload: dict):
+    try: return spatial2_cube(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/spatiotemporal/change-profile")
+def spatial_spatiotemporal_research_studio_change_profile(payload: dict):
+    try: return spatial2_change_profile(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/spatiotemporal/autocorrelation")
+def spatial_spatiotemporal_research_studio_space_time(payload: dict):
+    try: return spatial2_space_time(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/trajectory/report")
+def spatial_spatiotemporal_research_studio_trajectory(payload: dict):
+    try: return spatial2_trajectory(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/hotspot/persistence")
+def spatial_spatiotemporal_research_studio_persistence(payload: dict):
+    try: return spatial2_persistence(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/visualization/plan")
+def spatial_spatiotemporal_research_studio_visualization(payload: dict):
+    try: return spatial2_visualization(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/studio/build")
+def spatial_spatiotemporal_research_studio_build(payload: dict):
+    try: return spatial2_studio(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/snapshot/build")
+def spatial_spatiotemporal_research_studio_snapshot(payload: dict):
+    try: return spatial2_snapshot(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/reproduction/plan")
+def spatial_spatiotemporal_research_studio_reproduction(payload: dict):
+    try: return spatial2_reproduction(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/export/plan")
+def spatial_spatiotemporal_research_studio_export(payload: dict):
+    try: return spatial2_export(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/core-object/plan")
+def spatial_spatiotemporal_research_studio_core(payload: dict):
+    try: return spatial2_core_object(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/execution-lineage/plan")
+def spatial_spatiotemporal_research_studio_lineage(payload: dict):
+    try: return spatial2_lineage(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/spatial-spatiotemporal-research-studio/interpretation-boundaries/report")
+def spatial_spatiotemporal_research_studio_boundaries(payload: dict):
+    try: return spatial2_boundaries(payload)
+    except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 

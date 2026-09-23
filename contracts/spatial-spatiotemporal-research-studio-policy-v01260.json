@@ -1,0 +1,14 @@
+{
+  "schema": "sc-lab-spatial-spatiotemporal-research-studio-policy/0.126.0",
+  "version": "0.126.0",
+  "explicit_crs_required": true,
+  "automatic_reprojection": false,
+  "automatic_bandwidth_selection": false,
+  "automatic_spatial_join": false,
+  "automatic_topology_repair": false,
+  "automatic_significance_labels": false,
+  "automatic_causal_interpretation": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_core_submission": false,
+  "determine_truth": false
+}

@@ -1,3 +1,7 @@
+# Lab v0.126.0 — Spatial & Spatiotemporal Research Studio
+
+Governed vector/raster/spatiotemporal research with explicit CRS and weights, Moran and local-Moran diagnostics, Getis-Ord hotspot scores, nearest-neighbor and descriptive spatial-lag analysis, zonal statistics, raster change, space-time cubes, temporal change profiles, trajectory summaries, hotspot persistence, visualization plans, reproducible snapshots, and Platform Core reference plans. Spatial association remains non-causal; no silent reprojection, join inference, bandwidth optimization, significance labels, or scientific-validity certification.
+
 # Lab v0.119.0 — Visual Research Narrative & Figure Composer
 
 Reference-first research narrative composition for publication-grade figures, dashboards, and 3D/4D scenes. Adds declared captions, figure plates, methods/findings/evidence/citation linking, provenance traces, accessibility audits, deterministic revision snapshots, publication/export plans, and a renderer-neutral Core visual binding. Underlying scientific artifacts remain authoritative and are never mutated by the composer.
@@ -25,7 +29,7 @@ Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference
 
 # Sustainable Catalyst Lab
 
-**Current release: v0.122.0 — Bayesian Analysis Workbench II.**
+**Current release: v0.126.0 — Spatial & Spatiotemporal Research Studio.**
 
 
 **Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**

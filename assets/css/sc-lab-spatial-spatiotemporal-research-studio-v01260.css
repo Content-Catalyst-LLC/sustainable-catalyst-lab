@@ -1,0 +1,6 @@
+.sc-lab-spatial-v01260{--sc-spatial-grid:rgba(255,255,255,.08);--sc-spatial-panel:#111;--sc-spatial-text:#f4f4f4;display:grid;gap:1rem;color:var(--sc-spatial-text)}
+.sc-lab-spatial-v01260__map,.sc-lab-spatial-v01260__panel{background:var(--sc-spatial-panel);border:1px solid var(--sc-spatial-grid);border-radius:12px;padding:1rem;min-width:0}
+.sc-lab-spatial-v01260__map{min-height:320px;background-image:linear-gradient(var(--sc-spatial-grid) 1px,transparent 1px),linear-gradient(90deg,var(--sc-spatial-grid) 1px,transparent 1px);background-size:32px 32px}
+.sc-lab-spatial-v01260__small-multiples{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
+.sc-lab-spatial-v01260 [data-uncertainty],.sc-lab-spatial-v01260 [data-modeled]{outline:1px dashed currentColor;outline-offset:2px}
+@media(max-width:720px){.sc-lab-spatial-v01260__map{min-height:240px}}
