@@ -1637,3 +1637,6 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added executable causal workflows over the v0.67 causal-governance layer.
 - Added DAG/adjustment plans, propensity scoring, matching, IPW, DiD, ITS, RD, synthetic control, diagnostics, robustness/placebo plans, counterfactual reports, reproducible snapshots, and Core plans.
 - Preserved explicit identification assumptions and human causal review; no automatic causal proof or scientific-validity certification.
+
+## 0.127.0 — Scientific Time-Series Laboratory
+- Added reproducible temporal profiling, decomposition, forecasting, diagnostics, state-space, change-point, anomaly, cross-correlation, spectral, visualization, snapshot, export, and Core-plan workflows.

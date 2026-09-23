@@ -1,0 +1,16 @@
+{
+  "schema": "sc-lab-scientific-time-series-laboratory-policy/0.127.0",
+  "version": "0.127.0",
+  "automatic_sorting": false,
+  "automatic_resampling": false,
+  "automatic_frequency_inference": false,
+  "automatic_imputation": false,
+  "automatic_stationarity_decision": false,
+  "automatic_model_selection": false,
+  "automatic_changepoint_significance": false,
+  "automatic_anomaly_exclusion": false,
+  "automatic_causal_interpretation": false,
+  "automatic_scientific_validity_certification": false,
+  "automatic_core_submission": false,
+  "determine_truth": false
+}

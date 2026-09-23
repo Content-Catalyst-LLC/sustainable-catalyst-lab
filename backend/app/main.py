@@ -115,6 +115,7 @@ from .simulation_monte_carlo_research_studio_v01230 import SimulationStudioError
 from .sensitivity_global_uncertainty_analysis_studio_v01240 import SensitivityStudioError, build_core_object_plan as sens_core_object, build_execution_lineage_plan as sens_lineage, build_export_plan as sens_export, build_reproduction_plan as sens_reproduction, build_snapshot as sens_snapshot, build_studio as sens_studio, build_visualization_plan as sens_visualization, catalog as sens_catalog, correlation_screening_report as sens_correlation, health as sens_health, interaction_screening_report as sens_interactions, interpretation_boundaries_report as sens_boundaries, manifest as sens_manifest, morris_report as sens_morris, normalize_analysis as sens_normalize, response_surface_plan as sens_surface_plan, response_surface_run as sens_surface_run, schema_info as sens_schema, sensitivity_convergence_report as sens_convergence, sensitivity_replication_report as sens_replication, sobol_report as sens_sobol, variance_decomposition_report as sens_variance
 from .causal_research_studio_v01250 import CausalResearchStudioError, balance_report as causal2_balance, build_core_object_plan as causal2_core_object, build_execution_lineage_plan as causal2_lineage, build_export_plan as causal2_export, build_reproduction_plan as causal2_reproduction, build_snapshot as causal2_snapshot, build_studio as causal2_studio, build_visualization_plan as causal2_visualization, catalog as causal2_catalog, counterfactual_report as causal2_counterfactual, dag_adjustment_plan as causal2_adjustment, estimate_did as causal2_did, estimate_its as causal2_its, estimate_matching as causal2_matching, estimate_rd as causal2_rd, estimate_synthetic_control as causal2_synthetic, estimate_weighting as causal2_weighting, fit_propensity as causal2_propensity, governance_review_report as causal2_governance, health as causal2_health, interpretation_boundaries_report as causal2_boundaries, manifest as causal2_manifest, normalize_dag as causal2_dag, normalize_study as causal2_normalize, overlap_report as causal2_overlap, placebo_plan as causal2_placebo, robustness_plan as causal2_robustness, schema_info as causal2_schema
 from .spatial_spatiotemporal_research_studio_v01260 import SpatialResearchStudioError, build_core_object_plan as spatial2_core_object, build_execution_lineage_plan as spatial2_lineage, build_export_plan as spatial2_export, build_reproduction_plan as spatial2_reproduction, build_snapshot as spatial2_snapshot, build_spatial_weights as spatial2_weights, build_spatiotemporal_cube as spatial2_cube, build_studio as spatial2_studio, build_visualization_plan as spatial2_visualization, catalog as spatial2_catalog, crs_audit as spatial2_crs_audit, getis_ord_gi_star as spatial2_gistar, global_morans_i as spatial2_moran, health as spatial2_health, hotspot_persistence as spatial2_persistence, interpretation_boundaries_report as spatial2_boundaries, local_morans_i as spatial2_local_moran, manifest as spatial2_manifest, nearest_neighbor_report as spatial2_nearest, normalize_study as spatial2_normalize, raster_change_summary as spatial2_raster_change, raster_zonal_stats as spatial2_zonal, schema_info as spatial2_schema, space_time_autocorrelation as spatial2_space_time, spatial_join_plan as spatial2_join, spatial_lag_estimate as spatial2_lag, spatiotemporal_change_profile as spatial2_change_profile, trajectory_report as spatial2_trajectory
+from .scientific_time_series_laboratory_v01270 import TimeSeriesLaboratoryError, autocorrelation as ts_acf, build_core_object_plan as ts_core, build_execution_lineage_plan as ts_lineage, build_export_plan as ts_export, build_reproduction_plan as ts_reproduction, build_snapshot as ts_snapshot, build_studio as ts_studio, build_visualization_plan as ts_visualization, catalog as ts_catalog, change_point_analysis as ts_changepoint, cross_correlation as ts_crosscorr, decompose_series as ts_decompose, difference_series as ts_difference, exponential_smoothing as ts_ets, fit_arima as ts_arima, fit_autoregression as ts_ar, forecast as ts_forecast, frequency_audit as ts_frequency, health as ts_health, interpretation_boundaries_report as ts_boundaries, manifest as ts_manifest, normalize_series as ts_normalize, anomaly_screen as ts_anomaly, partial_autocorrelation as ts_pacf, regime_analysis as ts_regime, residual_diagnostics as ts_residuals, rolling_origin_evaluation as ts_rolling, schema_info as ts_schema, spectral_analysis as ts_spectral, state_space_local_linear_trend as ts_state_space, stationarity_diagnostics as ts_stationarity
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -8464,3 +8465,121 @@ def spatial_spatiotemporal_research_studio_boundaries(payload: dict):
     try: return spatial2_boundaries(payload)
     except SpatialResearchStudioError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
 
+
+
+@app.get("/v1/scientific-time-series-laboratory/health")
+def scientific_time_series_laboratory_health(): return ts_health()
+@app.get("/v1/scientific-time-series-laboratory/manifest")
+def scientific_time_series_laboratory_manifest(): return ts_manifest()
+@app.get("/v1/scientific-time-series-laboratory/catalog")
+def scientific_time_series_laboratory_catalog(): return ts_catalog()
+@app.get("/v1/scientific-time-series-laboratory/schema")
+def scientific_time_series_laboratory_schema(): return ts_schema()
+@app.post("/v1/scientific-time-series-laboratory/series/normalize")
+def scientific_time_series_laboratory_normalize(payload: dict):
+    try: return ts_normalize(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/frequency/audit")
+def scientific_time_series_laboratory_frequency(payload: dict):
+    try: return ts_frequency(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/decomposition/run")
+def scientific_time_series_laboratory_decompose(payload: dict):
+    try: return ts_decompose(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/autocorrelation/acf")
+def scientific_time_series_laboratory_acf(payload: dict):
+    try: return ts_acf(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/autocorrelation/pacf")
+def scientific_time_series_laboratory_pacf(payload: dict):
+    try: return ts_pacf(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/stationarity/diagnostics")
+def scientific_time_series_laboratory_stationarity(payload: dict):
+    try: return ts_stationarity(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/transform/difference")
+def scientific_time_series_laboratory_difference(payload: dict):
+    try: return ts_difference(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/model/ar/fit")
+def scientific_time_series_laboratory_ar(payload: dict):
+    try: return ts_ar(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/model/arima/fit")
+def scientific_time_series_laboratory_arima(payload: dict):
+    try: return ts_arima(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/model/exponential-smoothing/fit")
+def scientific_time_series_laboratory_ets(payload: dict):
+    try: return ts_ets(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/model/state-space/local-linear-trend")
+def scientific_time_series_laboratory_state_space(payload: dict):
+    try: return ts_state_space(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/forecast/run")
+def scientific_time_series_laboratory_forecast(payload: dict):
+    try: return ts_forecast(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/evaluation/rolling-origin")
+def scientific_time_series_laboratory_rolling(payload: dict):
+    try: return ts_rolling(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/diagnostics/residuals")
+def scientific_time_series_laboratory_residuals(payload: dict):
+    try: return ts_residuals(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/change-point/detect")
+def scientific_time_series_laboratory_changepoint(payload: dict):
+    try: return ts_changepoint(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/regime/analyze")
+def scientific_time_series_laboratory_regime(payload: dict):
+    try: return ts_regime(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/anomaly/screen")
+def scientific_time_series_laboratory_anomaly(payload: dict):
+    try: return ts_anomaly(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/cross-correlation/report")
+def scientific_time_series_laboratory_crosscorr(payload: dict):
+    try: return ts_crosscorr(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/spectral/analyze")
+def scientific_time_series_laboratory_spectral(payload: dict):
+    try: return ts_spectral(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/visualization/plan")
+def scientific_time_series_laboratory_visualization(payload: dict):
+    try: return ts_visualization(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/studio/build")
+def scientific_time_series_laboratory_studio(payload: dict):
+    try: return ts_studio(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/snapshot/build")
+def scientific_time_series_laboratory_snapshot(payload: dict):
+    try: return ts_snapshot(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/reproduction/plan")
+def scientific_time_series_laboratory_reproduction(payload: dict):
+    try: return ts_reproduction(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/export/plan")
+def scientific_time_series_laboratory_export(payload: dict):
+    try: return ts_export(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/core-object/plan")
+def scientific_time_series_laboratory_core(payload: dict):
+    try: return ts_core(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/execution-lineage/plan")
+def scientific_time_series_laboratory_lineage(payload: dict):
+    try: return ts_lineage(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)
+@app.post("/v1/scientific-time-series-laboratory/interpretation-boundaries/report")
+def scientific_time_series_laboratory_boundaries(payload: dict):
+    try: return ts_boundaries(payload)
+    except TimeSeriesLaboratoryError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail)

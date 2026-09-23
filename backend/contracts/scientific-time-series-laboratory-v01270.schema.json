@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/scientific-time-series-laboratory-v01270.schema.json",
+  "title": "Sustainable Catalyst Lab Scientific Time-Series Laboratory v0.127.0",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "sc-lab-scientific-time-series-laboratory/0.127.0"
+    },
+    "version": {
+      "const": "0.127.0"
+    },
+    "times": {
+      "type": "array",
+      "maxItems": 100000
+    },
+    "values": {
+      "type": "array",
+      "maxItems": 100000
+    },
+    "model_spec": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

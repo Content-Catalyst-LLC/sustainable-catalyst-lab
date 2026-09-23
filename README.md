@@ -1064,3 +1064,6 @@ Global sensitivity and uncertainty attribution workflows with explicit scientifi
 
 ### v0.125.0 — Causal Research Studio II
 Causal research workflows now include DAG-driven design, propensity/matching/weighting, DiD, ITS, RD, synthetic control, diagnostics, robustness/placebo planning, counterfactual reporting, reproducible snapshots, and reference-first Platform Core plans. Causal interpretation remains conditional on explicit assumptions and human review.
+
+### v0.127.0 — Scientific Time-Series Laboratory
+Reproducible time-series analysis and forecasting with explicit temporal assumptions, rolling validation, diagnostics, and provenance-aware outputs.
