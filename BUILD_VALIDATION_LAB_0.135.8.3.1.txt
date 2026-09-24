@@ -1,0 +1,21 @@
+Sustainable Catalyst Lab v0.135.8.3.1 — Build Validation
+Release: Graph Studio Bootstrap, Hydration & Legacy Surface Finalization
+Status: PASS
+
+Release-specific/inherited Graph Studio pytest cases: 16 PASS
+PHP Graph Studio contract checks: 2 PASS
+JavaScript syntax checks: 3 PASS
+PHP syntax checks: 3 PASS
+FastAPI v0.135.8.3.1 routes: 8 PASS
+Retained v0.135.8.3 recovery routes: 16 PASS
+Total FastAPI paths in build environment: 2153
+Module-order gate: PASS (v0.47 bootstrap -> v0.135.8.1 -> v0.135.8.2 -> v0.135.8.3 -> v0.135.8.3.1 finalizer)
+
+PASS: graph-studio-v0470.js is explicitly enqueued.
+PASS: v0.47 exposes currentGraph() for Renderer 3.1 hydration.
+PASS: project figure is preferred, then bound controls, then explicitly illustrative bootstrap fallback.
+PASS: indefinite Graph Studio loading state is replaced by ready/unbound/error terminal states.
+PASS: v0.135.8.1 canonical shell, v0.135.8.2 visible renderer hosts, and legacy canvas are suppressed after Renderer 3.1 ownership.
+PASS: illustrative bootstrap is never scientific evidence and presentation state cannot submit to Platform Core.
+
+NOTE: Browser visual acceptance remains required after WordPress deployment; package tests do not substitute for live DOM inspection.

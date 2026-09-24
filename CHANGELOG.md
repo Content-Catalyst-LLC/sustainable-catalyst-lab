@@ -1,3 +1,9 @@
+## 0.135.8.3.1 — Graph Studio Bootstrap, Hydration & Legacy Surface Finalization
+- Restores the missing v0.47 Graph Studio bootstrap into the live script chain.
+- Bridges the active v0.47 figure into Renderer 3.1 hydration.
+- Replaces indefinite loading with terminal ready/unbound/error states.
+- Finalizes legacy presentation ownership: v0.135.8.1 shell and v0.135.8.2 hosts are not visible after Renderer 3.1 takes ownership.
+
 ## 0.135.8.3 — Renderer Mount Lifecycle, Scientific State Hydration & Visual Workspace Recovery
 - Enforces a unique Graph Studio renderer root and one primary viewport.
 - Hydrates Renderer 3.1 from active Graph Studio state, bound figure controls, or project figures.

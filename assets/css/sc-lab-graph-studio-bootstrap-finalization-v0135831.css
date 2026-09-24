@@ -1,0 +1,8 @@
+/* Lab v0.135.8.3.1 — Bootstrap / Hydration / Legacy Surface Finalization */
+[data-lab-module="graph-studio"][data-gs135831-active="1"] [data-gs13581-shell],
+[data-lab-module="graph-studio"][data-gs135831-active="1"] [data-gs13582-host],
+[data-lab-module="graph-studio"][data-gs135831-active="1"] .sc-gs0470-canvas-card{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important}
+[data-lab-module="graph-studio"][data-gs135831-active="1"] .sc-gs0470-workspace>#sc-lab-graph-studio-renderer-root{display:block!important;width:100%!important}
+[data-gs-v0470-status][data-gs135831-status="ready"]{border-left:3px solid #2b7a4b;padding-left:10px}
+[data-gs-v0470-status][data-gs135831-status="unbound"]{border-left:3px solid #a76b00;padding-left:10px}
+[data-gs-v0470-status][data-gs135831-status="error"]{border-left:3px solid #b3261e;padding-left:10px;font-weight:700}

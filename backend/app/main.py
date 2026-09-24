@@ -143,6 +143,7 @@ from .graph_studio_renderer_replacement_v013582 import GraphStudioRendererReplac
 from . import graph_studio_renderer_replacement_v013582 as renderer13582
 from .graph_studio_recovery_v013583 import GraphStudioRecoveryError
 from . import graph_studio_recovery_v013583 as recovery13583
+from . import graph_studio_bootstrap_finalization_v0135831 as bootstrap135831
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9886,3 +9887,22 @@ def graph_studio_recovery_v013583_state_status(): return recovery13583.state_sta
 async def graph_studio_recovery_v013583_plan(payload:dict): return recovery13583.recovery_plan(payload)
 @app.post("/v1/graph-studio-recovery/v013583/ui/acceptance")
 async def graph_studio_recovery_v013583_ui_acceptance(payload:dict): return recovery13583.ui_acceptance(payload)
+
+
+# Lab v0.135.8.3.1 — Graph Studio Bootstrap, Hydration & Legacy Surface Finalization
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/health")
+def graph_studio_bootstrap_finalization_v0135831_health(): return bootstrap135831.health()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/manifest")
+def graph_studio_bootstrap_finalization_v0135831_manifest(): return bootstrap135831.manifest()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/bootstrap")
+def graph_studio_bootstrap_finalization_v0135831_bootstrap(): return bootstrap135831.bootstrap_plan()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/hydration")
+def graph_studio_bootstrap_finalization_v0135831_hydration(): return bootstrap135831.hydration_contract()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/legacy")
+def graph_studio_bootstrap_finalization_v0135831_legacy(): return bootstrap135831.legacy_contract()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/acceptance")
+def graph_studio_bootstrap_finalization_v0135831_acceptance(): return bootstrap135831.acceptance_report()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/boundaries")
+def graph_studio_bootstrap_finalization_v0135831_boundaries(): return bootstrap135831.boundaries()
+@app.get("/v1/graph-studio-bootstrap-finalization/v0135831/compatibility")
+def graph_studio_bootstrap_finalization_v0135831_compatibility(): return bootstrap135831.compatibility()

@@ -2116,10 +2116,10 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / RECOVERY v0.135.8.3</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio now uses one idempotent renderer root with scientific-state hydration. The active figure, bound rows, uncertainty and declared provenance are restored into Plot, Distribution, Diagnostics, Uncertainty, Provenance and 3D/Spatial modes without duplicating the primary viewport.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / RECOVERY v0.135.8.3.1</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio uses one finalized visual workspace. The figure bootstrap initializes before Renderer 3.1, scientific state hydrates into the canonical viewport, and legacy v0.135.8.1/v0.135.8.2 presentation surfaces are suppressed after recovery ownership is established.</p></header>
         <!-- EXPERIENCE v0.135.8.1 compatibility lifecycle retained -->
         <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
-        <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
+        <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio initializing scientific context…</p>
         <div class="sc-gs0470-shell">
           <aside class="sc-gs0470-controls" aria-label="Figure controls">
             <section class="sc-gs0470-card"><h4>Figure definition</h4>
