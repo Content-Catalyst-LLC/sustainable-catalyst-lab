@@ -135,6 +135,8 @@ from .reproducible_visual_analysis_sessions_v01356 import ReproducibleVisualAnal
 from . import reproducible_visual_analysis_sessions_v01356 as session1356
 from .visual_research_narrative_findings_v01357 import VisualResearchNarrativeFindingsError
 from . import visual_research_narrative_findings_v01357 as narrative1357
+from .research_review_critique_revision_v01358 import ResearchReviewCritiqueRevisionError
+from . import research_review_critique_revision_v01358 as review1358
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9736,3 +9738,37 @@ for _i,(_path,_fn) in enumerate(_NARRATIVE1357_ROUTES):
     _route=_make_narrative1357_route(_fn); _route.__name__=f"narrative1357_route_{_i}"
     app.post(f"/v1/visual-research-narrative-findings/{_path}")(_route)
 
+
+
+# Lab v0.135.8 — Research Review, Critique & Revision Lineage
+@app.get("/v1/research-review-critique-revision/health")
+def research_review_critique_revision_health(): return review1358.health()
+@app.get("/v1/research-review-critique-revision/manifest")
+def research_review_critique_revision_manifest(): return review1358.manifest()
+@app.get("/v1/research-review-critique-revision/catalog")
+def research_review_critique_revision_catalog(): return review1358.catalog()
+@app.get("/v1/research-review-critique-revision/schema")
+def research_review_critique_revision_schema(): return review1358.schema_info()
+def _review1358_call(fn,payload):
+    try: return fn(payload)
+    except ResearchReviewCritiqueRevisionError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_REVIEW1358_ROUTES = [
+("review/normalize",review1358.normalize_review),("review/create",review1358.create_review),("review/clone",review1358.clone_review),("review/open",review1358.open_review),("review/close",review1358.close_review),
+("item/normalize",review1358.normalize_item),("item/add",review1358.add_item),("item/update",review1358.update_item),("item/resolve",review1358.resolve_item),("item/list",review1358.list_items),
+("critique/normalize",review1358.normalize_critique),("critique/add",review1358.add_critique),("critique/classify",review1358.classify_critique),("critique/link-target",review1358.link_critique_target),("critique/resolve",review1358.resolve_critique),
+("response/normalize",review1358.normalize_response),("response/add",review1358.add_response),("response/update",review1358.update_response),("response/status",review1358.set_response_status),
+("revision/normalize",review1358.normalize_revision),("revision/create",review1358.create_revision),("revision/diff",review1358.revision_diff),("revision/link-response",review1358.link_revision_response),("revision/supersede",review1358.supersede_revision),("revision/list",review1358.list_revisions),
+("decision/normalize",review1358.normalize_decision),("decision/record",review1358.record_decision),
+("replication/study",review1358.link_replication_study),("replication/run",review1358.link_replication_run),("replication/result",review1358.link_replication_result),("replication/plan",review1358.replication_plan),
+("context/narrative",review1358.context_narrative),("context/finding",review1358.context_finding),("context/evidence",review1358.context_evidence),("context/uncertainty",review1358.context_uncertainty),("context/method",review1358.context_method),("context/session",review1358.context_session),("context/scene",review1358.context_scene),("context/provenance",review1358.context_provenance),
+("lineage/build",review1358.build_lineage),("lineage/audit",review1358.audit_lineage),("lineage/path",review1358.lineage_path),("lineage/upstream",review1358.lineage_upstream),("lineage/downstream",review1358.lineage_downstream),
+("handoff/plan",review1358.handoff_plan),("handoff/core",review1358.handoff_core),("handoff/publication",review1358.handoff_publication),("handoff/library",review1358.handoff_library),("handoff/workspace",review1358.handoff_workspace),("handoff/replication",review1358.handoff_replication),
+("guard/claims",review1358.guard_claims),("guard/evidence",review1358.guard_evidence),("guard/review",review1358.guard_review),("guard/presentation",review1358.guard_presentation),("guard/references",review1358.guard_references),
+("boundaries/report",review1358.interpretation_boundaries_report),
+]
+for _i,(_path,_fn) in enumerate(_REVIEW1358_ROUTES):
+    def _make_review1358_route(fn):
+        async def _route(payload:dict): return _review1358_call(fn,payload)
+        return _route
+    _route=_make_review1358_route(_fn); _route.__name__=f"review1358_route_{_i}"
+    app.post(f"/v1/research-review-critique-revision/{_path}")(_route)

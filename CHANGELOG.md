@@ -1,3 +1,8 @@
+## 0.135.8 — Research Review, Critique & Revision Lineage
+- Added governed review packages, critiques, responses, revisions, decisions, replication references and deterministic review lineage.
+- Added reference-first Platform Core, Publication Studio, Knowledge Library, Workspace and Replication Studio handoff plans.
+- Enforced that review workflow does not certify scientific validity, create evidence, determine truth or upgrade claim status.
+
 # Lab v0.135.5 — Scientific Scene Linking, Comparative Inspection & Context Preservation
 
 - Added explicit cross-scene reference linking, pinned inspection, comparison sets, context capsules, and deterministic context snapshots.

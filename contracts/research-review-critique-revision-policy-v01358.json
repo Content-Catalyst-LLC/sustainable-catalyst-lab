@@ -1,0 +1,11 @@
+{
+  "automaticAcceptance": false,
+  "automaticCoreSubmission": false,
+  "automaticEvidenceWeighting": false,
+  "automaticTruthDetermination": false,
+  "engineVersion": "16.8.0",
+  "reviewIsScientificCertification": false,
+  "reviewerCommentsAreEvidence": false,
+  "revisionUpgradesClaimStatus": false,
+  "version": "0.135.8"
+}
