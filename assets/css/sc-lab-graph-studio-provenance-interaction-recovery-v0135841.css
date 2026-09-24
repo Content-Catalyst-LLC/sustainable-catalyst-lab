@@ -1,0 +1,5 @@
+/* Lab v0.135.8.4.1 — Provenance interaction lifecycle recovery */
+[data-lab-module="graph-studio"] .sc-gs13583-actions [data-layout].is-active{background:#111820;color:#fff;border-color:#111820}
+[data-lab-module="graph-studio"] .sc-gs13583-svg.provenance [data-node]{cursor:pointer}
+[data-lab-module="graph-studio"] .sc-gs13583-svg.provenance [data-node].gs13584-selected rect{stroke-width:4;filter:drop-shadow(0 0 2px rgba(0,0,0,.25))}
+[data-lab-module="graph-studio"] [data-gs13583-stage][data-gs135841-interaction="ready"] .sc-gs13584-explorer{display:flex}

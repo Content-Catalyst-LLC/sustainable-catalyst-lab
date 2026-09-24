@@ -145,6 +145,7 @@ from .graph_studio_recovery_v013583 import GraphStudioRecoveryError
 from . import graph_studio_recovery_v013583 as recovery13583
 from . import graph_studio_bootstrap_finalization_v0135831 as bootstrap135831
 from . import graph_studio_live_binding_v013584 as binding13584
+from . import graph_studio_provenance_interaction_recovery_v0135841 as provenance135841
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9934,3 +9935,22 @@ async def graph_studio_live_binding_v013584_restore_plan(payload:dict): return b
 async def graph_studio_live_binding_v013584_provenance_plan(payload:dict): return binding13584.provenance_plan(payload)
 @app.post("/v1/graph-studio-live-binding/v013584/selection/plan")
 async def graph_studio_live_binding_v013584_selection_plan(payload:dict): return binding13584.selection_plan(payload)
+
+
+# Lab v0.135.8.4.1 — Provenance Interaction Lifecycle & Graph Control Recovery
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/health")
+def graph_studio_provenance_interaction_v0135841_health(): return provenance135841.health()
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/lifecycle")
+def graph_studio_provenance_interaction_v0135841_lifecycle(): return provenance135841.lifecycle_contract()
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/layout")
+def graph_studio_provenance_interaction_v0135841_layout(): return provenance135841.layout_contract()
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/selection")
+def graph_studio_provenance_interaction_v0135841_selection(): return provenance135841.selection_contract()
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/exploration")
+def graph_studio_provenance_interaction_v0135841_exploration(): return provenance135841.exploration_contract()
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/persistence")
+def graph_studio_provenance_interaction_v0135841_persistence(): return provenance135841.persistence_contract()
+@app.post("/v1/graph-studio-provenance-interaction/v0135841/interaction/plan")
+async def graph_studio_provenance_interaction_v0135841_plan(payload:dict): return provenance135841.interaction_plan(payload)
+@app.get("/v1/graph-studio-provenance-interaction/v0135841/acceptance")
+def graph_studio_provenance_interaction_v0135841_acceptance(): return provenance135841.acceptance_report()

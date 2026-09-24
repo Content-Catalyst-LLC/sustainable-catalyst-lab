@@ -1,0 +1,38 @@
+Sustainable Catalyst Lab v0.135.8.4.1
+Provenance Interaction Lifecycle & Graph Control Recovery
+
+SOURCE VALIDATION: PASS
+
+Primary repair
+- Removed synthetic/programmatic provenance layout button restoration.
+- Added direct SVG geometry updates for Layered, Radial and Swimlane.
+- Added one delegated interaction lifecycle on the persistent Renderer 3.1 stage.
+- Node selection survives renderer node replacement and updates the inspector.
+- All / Upstream / Downstream / Focus and relation filtering remain presentation state.
+- Scientific rows, evidence weights, findings and claim status are not mutated.
+
+Validation results
+- 76 inherited/new Graph Studio and visual-research Python tests: PASS
+- v0.135.8.4.1 JavaScript interaction regression contract: PASS
+- v0.135.8.4.1 PHP release contract: PASS
+- retained v0.135.8.4 PHP contract: PASS
+- JavaScript syntax checks: PASS
+- PHP syntax checks: PASS
+- manifest integrity: 1,462 WordPress/runtime files + 823 backend files: PASS
+- FastAPI application: 2,173 total paths
+- v0.135.8.4.1 FastAPI routes: 8
+
+Acceptance contract
+- renderer 3.1 hosts = 1
+- primary viewports = 1
+- provenance explorers = 1
+- layout controls = 3
+- delegated stage handlers = 1
+- duplicate node handlers = 0
+- programmatic layout clicks = 0
+- node selection works after layout change = true
+- layout persistence after reload = true
+- legacy primary owners = 0
+
+Scientific boundary: PASS
+Structural provenance paths remain non-causal unless separately declared. Missing relationships are not inferred. Interaction state is presentation state only.

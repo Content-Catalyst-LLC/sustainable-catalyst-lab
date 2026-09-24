@@ -1,3 +1,9 @@
+## 0.135.8.4.1 — Provenance Interaction Lifecycle & Graph Control Recovery
+- Replaced synthetic layout-button clicks with direct SVG geometry updates for Layered, Radial and Swimlane provenance layouts.
+- Delegated provenance node/layout/explorer interactions from the persistent Graph Studio stage so redraws cannot orphan handlers.
+- Preserves node selection, upstream/downstream/focus traversal and relation filtering as project-scoped presentation state without mutating scientific records.
+- Adds explicit interaction lifecycle acceptance checks and retains the v0.135.8.4 live project binding and Renderer 3.1 recovery stack.
+
 ## 0.135.8.4 — Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration
 - Added persistent project-scoped Graph Studio binding and an advanced provenance explorer.
 - Renderer mode, layout and focus state persist without mutating scientific records.

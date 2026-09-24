@@ -2116,7 +2116,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / LIVE BINDING v0.135.8.4</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio maintains one Renderer 3.1 viewport bound to the active Lab project. Figure identity, view mode and provenance exploration state persist across reloads as presentation state while scientific records, evidence and claims remain governed separately.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / INTERACTION RECOVERY v0.135.8.4.1</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio maintains one Renderer 3.1 viewport bound to the active Lab project. Provenance node selection, layout switching, traversal and relationship filtering use one delegated interaction lifecycle and persist as presentation state without recursive redraws or scientific mutation.</p></header>
         <!-- EXPERIENCE v0.135.8.1 compatibility lifecycle retained -->
         <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio initializing scientific context…</p>

@@ -1,0 +1,9 @@
+/* Sustainable Catalyst Lab v0.135.8.4.1 — Provenance Interaction Lifecycle & Graph Control Recovery */
+(function(W,D){'use strict';
+const Lab=W.SCLab=W.SCLab||{},VERSION='0.135.8.4.1',ROOT='[data-lab-module="graph-studio"]';
+const root=()=>D.querySelector(ROOT);
+function reconcile(){const b=Lab.GraphStudioLiveBindingV013584,r=root();if(!b||!r)return false;const host=D.getElementById('sc-lab-graph-studio-renderer-root'),stage=host?.querySelector('[data-gs13583-stage]');if(!host||!stage)return false;if((Lab.GraphStudioRecoveryV013583?.status?.().mode||'')==='provenance')b.decorateProvenance?.();r.dataset.gs135841='ready';r.dispatchEvent(new CustomEvent('sc-lab:provenance-interaction-recovered',{bubbles:true,detail:{version:VERSION,delegatedInteraction:true,programmaticLayoutClick:false}}));return true}
+function mount(){const r=root();if(!r)return false;reconcile();r.addEventListener('sc-lab:graph-studio-recovery-state',()=>W.requestAnimationFrame(reconcile));r.addEventListener('sc-lab:graph-studio-finalized',()=>W.requestAnimationFrame(reconcile));setTimeout(reconcile,80);return true}
+if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',mount);else mount();
+Lab.GraphStudioProvenanceInteractionRecoveryV0135841={version:VERSION,mount,reconcile,status:()=>{const b=Lab.GraphStudioLiveBindingV013584?.status?.()||{},stage=D.querySelector('#sc-lab-graph-studio-renderer-root [data-gs13583-stage]');return{version:VERSION,ready:root()?.dataset.gs135841==='ready',delegatedInteraction:b.delegatedInteraction===true,programmaticLayoutClick:b.programmaticLayoutClick===true,nodeCount:stage?.querySelectorAll('[data-node]').length||0,layoutControlCount:stage?.querySelectorAll('[data-layout]').length||0,explorerCount:stage?.querySelectorAll('[data-gs13584-explorer]').length||0}}};
+})(window,document);
