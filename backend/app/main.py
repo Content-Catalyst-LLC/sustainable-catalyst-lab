@@ -139,6 +139,8 @@ from .research_review_critique_revision_v01358 import ResearchReviewCritiqueRevi
 from . import research_review_critique_revision_v01358 as review1358
 from .graph_studio_canonical_runtime_v013581 import GraphStudioCanonicalRuntimeError
 from . import graph_studio_canonical_runtime_v013581 as canonical13581
+from .graph_studio_renderer_replacement_v013582 import GraphStudioRendererReplacementError
+from . import graph_studio_renderer_replacement_v013582 as renderer13582
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9801,3 +9803,49 @@ for _i,(_path,_fn) in enumerate(_CANONICAL13581_ROUTES):
     _route=_make_canonical13581_route(_fn); _route.__name__=f"canonical13581_route_{_i}"
     app.post(f"/v1/graph-studio-canonical-runtime/{_path}")(_route)
 
+
+
+# v0.135.8.2 Graph Studio Renderer Replacement & Advanced Visual Analysis Workspace
+@app.get("/v1/graph-studio-renderer/v013582/health")
+def graph_studio_renderer_v013582_health(): return renderer13582.health()
+
+@app.get("/v1/graph-studio-renderer/v013582/manifest")
+def graph_studio_renderer_v013582_manifest(): return renderer13582.manifest()
+
+@app.get("/v1/graph-studio-renderer/v013582/renderer-registry")
+def graph_studio_renderer_v013582_registry(): return renderer13582.renderer_registry()
+
+@app.get("/v1/graph-studio-renderer/v013582/view-catalog")
+def graph_studio_renderer_v013582_view_catalog(): return renderer13582.view_catalog()
+
+@app.get("/v1/graph-studio-renderer/v013582/capability-catalog")
+def graph_studio_renderer_v013582_capability_catalog(): return renderer13582.capability_catalog()
+
+@app.get("/v1/graph-studio-renderer/v013582/legacy-audit")
+def graph_studio_renderer_v013582_legacy_audit(): return renderer13582.legacy_audit()
+
+@app.get("/v1/graph-studio-renderer/v013582/identity")
+def graph_studio_renderer_v013582_identity(): return renderer13582.identity_report()
+
+@app.get("/v1/graph-studio-renderer/v013582/boundaries")
+def graph_studio_renderer_v013582_boundaries(): return renderer13582.boundaries_report()
+
+def _renderer13582_call(fn,payload):
+    try: return fn(payload)
+    except GraphStudioRendererReplacementError as exc: raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+
+for _i,(_path,_fn) in enumerate((
+    ("workspace/normalize",renderer13582.normalize_workspace),("renderer/select",renderer13582.renderer_select),
+    ("render/plan",renderer13582.render_plan),("analysis/plan",renderer13582.analysis_plan),
+    ("provenance/plan",renderer13582.provenance_plan),("scene/plan",renderer13582.scene_plan),
+    ("linked-view/plan",renderer13582.linked_view_plan),("compare/plan",renderer13582.compare_plan),
+    ("export/plan",renderer13582.export_plan),("lifecycle/plan",renderer13582.lifecycle_plan),
+    ("asset/plan",renderer13582.asset_plan),("asset/audit",renderer13582.asset_audit),
+    ("dom/audit",renderer13582.dom_audit),("session/plan",renderer13582.session_plan),
+    ("narrative/plan",renderer13582.narrative_plan),("review/plan",renderer13582.review_plan),
+)):
+    def _make_renderer13582_route(fn):
+        async def _route(payload:dict): return _renderer13582_call(fn,payload)
+        return _route
+    _route=_make_renderer13582_route(_fn); _route.__name__=f"renderer13582_route_{_i}"
+    app.post(f"/v1/graph-studio-renderer/v013582/{_path}")(_route)

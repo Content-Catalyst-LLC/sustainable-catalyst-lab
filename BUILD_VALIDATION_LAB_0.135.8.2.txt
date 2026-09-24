@@ -1,0 +1,26 @@
+Sustainable Catalyst Lab v0.135.8.2 — Build Validation
+Release: Graph Studio Renderer Replacement & Advanced Visual Analysis Workspace
+Status: PASS
+
+Selected integration/regression tests: 539 PASS
+v0.135.8.2 backend API routes: 24 PASS
+FastAPI path routes registered in validation runtime: 2064 INFO ONLY
+Workspace views: 8
+Figure renderer modes: 6
+Renderer registry entries: 5
+Historical Graph Studio generations quarantined from canonical frontend execution: 9
+WordPress/runtime manifest files: 1450
+Backend immutable files: 816
+
+PASS: v0.135.8.2 renderer owns the primary Graph Studio viewport.
+PASS: old v0.47 canvas remains compatibility/specification source only and is hidden from canonical presentation.
+PASS: historical Graph Studio v0.79-v0.88 scripts are skipped by the canonical frontend loader.
+PASS: Plot, Distribution, Diagnostics, Uncertainty, Provenance, Scene modes share explicit bound scientific context.
+PASS: Figure, Analysis, Provenance, Scene, Compare, Session, Narrative, Review research views.
+PASS: uncertainty is not fabricated when explicit interval/ensemble/posterior objects are absent.
+PASS: descriptive diagnostics do not masquerade as fitted-model residuals.
+PASS: 3D scene requires explicit Z/spatial geometry; no geometry or reprojection is inferred.
+PASS: structural provenance reachability is not treated as causal effect.
+PASS: no automatic join inference, evidence weighting, claim-status change, truth determination, or Core submission.
+PASS: retained v0.135.2-v0.135.8.1 scientific visualization/research contracts.
+PASS: PHP syntax, JavaScript syntax, manifest integrity, and renderer ownership boundary fixtures.

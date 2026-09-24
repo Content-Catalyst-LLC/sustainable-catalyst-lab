@@ -1,3 +1,12 @@
+# Sustainable Catalyst Lab changelog
+
+## 0.135.8.2 — Graph Studio Renderer Replacement & Advanced Visual Analysis Workspace
+- Replaced legacy Graph Studio primary-canvas ownership with a dedicated v0.135.8.2 renderer host.
+- Historical v0.79–v0.88 Graph Studio scripts no longer execute in the canonical Lab runtime.
+- Added linked Plot, Distribution, Diagnostics, Uncertainty, Provenance, Scene, Compare, Session, Narrative, and Review workspaces.
+- Added renderer registry, DOM ownership audits, legacy-runtime quarantine checks, and view-state lifecycle plans.
+- Retains scientific values and reference-first provenance without inferring joins, causality, evidence weight, or claim status.
+
 # Lab v0.135.8.1 — Graph Studio Canonical Runtime & Interface Recovery
 
 - Consolidates Graph Studio into one canonical presentation runtime with eight mutually exclusive research views.
