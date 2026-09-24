@@ -2116,7 +2116,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / RENDERER v0.135.8.2</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio now uses a dedicated advanced visual-analysis renderer. Bound scientific figures drive linked plot, distribution, diagnostics, uncertainty, provenance, scene, comparison, session, narrative, and review views while historical Graph Studio generations remain compatibility-only and cannot own the primary viewport.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / RECOVERY v0.135.8.3</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio now uses one idempotent renderer root with scientific-state hydration. The active figure, bound rows, uncertainty and declared provenance are restored into Plot, Distribution, Diagnostics, Uncertainty, Provenance and 3D/Spatial modes without duplicating the primary viewport.</p></header>
         <!-- EXPERIENCE v0.135.8.1 compatibility lifecycle retained -->
         <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>

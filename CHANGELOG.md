@@ -1,3 +1,9 @@
+## 0.135.8.3 — Renderer Mount Lifecycle, Scientific State Hydration & Visual Workspace Recovery
+- Enforces a unique Graph Studio renderer root and one primary viewport.
+- Hydrates Renderer 3.1 from active Graph Studio state, bound figure controls, or project figures.
+- Restores advanced interactive provenance graph layouts.
+- Suppresses v0.135.8.2 host recreation once recovery runtime owns the page.
+
 # Sustainable Catalyst Lab changelog
 
 ## 0.135.8.2 — Graph Studio Renderer Replacement & Advanced Visual Analysis Workspace

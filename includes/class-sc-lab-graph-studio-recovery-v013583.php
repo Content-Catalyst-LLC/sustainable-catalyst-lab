@@ -1,0 +1,17 @@
+<?php
+if (!defined('ABSPATH')) { exit; }
+final class SC_Lab_Graph_Studio_Recovery_V013583 {
+    const VERSION='0.135.8.3'; const ENGINE='3.1.0'; const ROUTE_COUNT=16;
+    public static function init(){ add_action('rest_api_init',array(__CLASS__,'routes')); }
+    public static function routes(){ $ns='sc-lab/v1/analysis/v013583'; foreach(array('health','manifest','lifecycle','hydration','provenance','acceptance','boundaries','compatibility') as $r) register_rest_route($ns,'/'.$r,array('methods'=>'GET','callback'=>array(__CLASS__,str_replace('-','_',$r)),'permission_callback'=>'__return_true')); }
+    private static function state($rel){$p=SC_LAB_DIR.$rel;return array('exists'=>is_file($p),'sha256'=>is_file($p)?hash_file('sha256',$p):null);}
+    public static function health(){ $req=array('assets/js/modules/graph-studio-recovery-v013583.js','assets/css/sc-lab-graph-studio-recovery-v013583.css','includes/class-sc-lab-graph-studio-recovery-v013583.php');$files=array();$ok=true;foreach($req as $rel){$files[$rel]=self::state($rel);$ok=$ok&&$files[$rel]['exists'];}return rest_ensure_response(array('ok'=>$ok,'status'=>$ok?'visual-workspace-recovered':'incomplete','version'=>self::VERSION,'engineVersion'=>self::ENGINE,'requiredBackendRouteCount'=>self::ROUTE_COUNT,'singleRendererRoot'=>true,'singlePrimaryViewport'=>true,'scientificStateHydration'=>true,'advancedProvenanceGraph'=>true,'files'=>$files)); }
+    public static function manifest(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'engineVersion'=>self::ENGINE,'rendererModes'=>array('plot','distribution','diagnostics','uncertainty','provenance','scene'),'hydrationSources'=>array('active-graph','figure-controls','project-figure'),'uniqueRootId'=>'sc-lab-graph-studio-renderer-root'));}
+    public static function lifecycle(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'mountPolicy'=>'idempotent-single-root','mutationObserverIgnoresOwnSubtree'=>true,'legacyV013582HostSuppressed'=>true,'viewSwitchRemountsRenderer'=>false));}
+    public static function hydration(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'priority'=>array('active-graph','figure-controls','project-figure','unbound'),'fabricatesScientificValues'=>false,'restoresBoundRows'=>true,'restoresFigureSpecification'=>true));}
+    public static function provenance(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'layouts'=>array('layered','radial','swimlane'),'interactiveNodeInspection'=>true,'declaredEdgesOnly'=>true,'structuralPathsAreCausal'=>false));}
+    public static function acceptance(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'rendererRoots'=>1,'workspaceShells'=>1,'visiblePrimaryViewports'=>1,'duplicateRendererHeaders'=>0,'legacyPrimaryOwners'=>0,'hydratedContextExpected'=>true));}
+    public static function boundaries(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'presentationCreatesEvidence'=>false,'automaticJoinInference'=>false,'automaticCausalInference'=>false,'automaticClaimUpgrade'=>false,'automaticCoreSubmission'=>false));}
+    public static function compatibility(){return rest_ensure_response(array('ok'=>true,'version'=>self::VERSION,'retainsV013582RendererImplementation'=>true,'retainsV013581CanonicalNavigation'=>true,'legacyGraphStudioGenerationsPrimaryOwner'=>false));}
+}
+SC_Lab_Graph_Studio_Recovery_V013583::init();

@@ -141,6 +141,8 @@ from .graph_studio_canonical_runtime_v013581 import GraphStudioCanonicalRuntimeE
 from . import graph_studio_canonical_runtime_v013581 as canonical13581
 from .graph_studio_renderer_replacement_v013582 import GraphStudioRendererReplacementError
 from . import graph_studio_renderer_replacement_v013582 as renderer13582
+from .graph_studio_recovery_v013583 import GraphStudioRecoveryError
+from . import graph_studio_recovery_v013583 as recovery13583
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9849,3 +9851,38 @@ for _i,(_path,_fn) in enumerate((
         return _route
     _route=_make_renderer13582_route(_fn); _route.__name__=f"renderer13582_route_{_i}"
     app.post(f"/v1/graph-studio-renderer/v013582/{_path}")(_route)
+
+
+@app.get("/v1/graph-studio-recovery/v013583/health")
+def graph_studio_recovery_v013583_health(): return recovery13583.health()
+@app.get("/v1/graph-studio-recovery/v013583/manifest")
+def graph_studio_recovery_v013583_manifest(): return recovery13583.manifest()
+@app.get("/v1/graph-studio-recovery/v013583/lifecycle")
+def graph_studio_recovery_v013583_lifecycle(): return recovery13583.lifecycle_report()
+@app.get("/v1/graph-studio-recovery/v013583/acceptance")
+def graph_studio_recovery_v013583_acceptance(): return recovery13583.acceptance_report()
+@app.get("/v1/graph-studio-recovery/v013583/boundaries")
+def graph_studio_recovery_v013583_boundaries(): return recovery13583.boundaries_report()
+@app.get("/v1/graph-studio-recovery/v013583/compatibility")
+def graph_studio_recovery_v013583_compatibility(): return recovery13583.compatibility_report()
+@app.post("/v1/graph-studio-recovery/v013583/hydration/plan")
+async def graph_studio_recovery_v013583_hydration(payload:dict): return recovery13583.hydration_plan(payload)
+@app.post("/v1/graph-studio-recovery/v013583/provenance/plan")
+async def graph_studio_recovery_v013583_provenance(payload:dict): return recovery13583.provenance_plan(payload)
+@app.post("/v1/graph-studio-recovery/v013583/state/normalize")
+async def graph_studio_recovery_v013583_normalize(payload:dict): return recovery13583.normalize_state(payload)
+
+@app.post("/v1/graph-studio-recovery/v013583/dom/audit")
+async def graph_studio_recovery_v013583_dom(payload:dict): return recovery13583.dom_audit(payload)
+@app.get("/v1/graph-studio-recovery/v013583/hydration/sources")
+def graph_studio_recovery_v013583_sources(): return recovery13583.hydration_sources()
+@app.get("/v1/graph-studio-recovery/v013583/provenance/layouts")
+def graph_studio_recovery_v013583_layouts(): return recovery13583.provenance_layouts()
+@app.get("/v1/graph-studio-recovery/v013583/renderer/status")
+def graph_studio_recovery_v013583_renderer_status(): return recovery13583.renderer_status()
+@app.get("/v1/graph-studio-recovery/v013583/state/status")
+def graph_studio_recovery_v013583_state_status(): return recovery13583.state_status()
+@app.post("/v1/graph-studio-recovery/v013583/recovery/plan")
+async def graph_studio_recovery_v013583_plan(payload:dict): return recovery13583.recovery_plan(payload)
+@app.post("/v1/graph-studio-recovery/v013583/ui/acceptance")
+async def graph_studio_recovery_v013583_ui_acceptance(payload:dict): return recovery13583.ui_acceptance(payload)
