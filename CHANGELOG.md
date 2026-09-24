@@ -1,3 +1,8 @@
+## 0.135.8.4 — Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration
+- Added persistent project-scoped Graph Studio binding and an advanced provenance explorer.
+- Renderer mode, layout and focus state persist without mutating scientific records.
+- Retained the v0.135.8.3.1 bootstrap/finalization and v0.135.8.3 recovery layers.
+
 ## 0.135.8.3.1 — Graph Studio Bootstrap, Hydration & Legacy Surface Finalization
 - Restores the missing v0.47 Graph Studio bootstrap into the live script chain.
 - Bridges the active v0.47 figure into Renderer 3.1 hydration.

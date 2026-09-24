@@ -1,0 +1,23 @@
+Sustainable Catalyst Lab v0.135.8.4 — Build Validation
+Release: Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration
+Status: PASS
+
+Inherited visual/research pytest cases (v0.135.2 through v0.135.8.4): 62 PASS
+PHP v0.135.8.4 contract checks: PASS
+PHP syntax checks: 6 PASS
+JavaScript syntax checks: 5 PASS
+FastAPI v0.135.8.4 routes: 12 PASS
+Retained v0.135.8.3.1 bootstrap-finalization routes: 8 PASS
+Retained v0.135.8.3 recovery routes: 16 PASS
+Retained v0.135.8.2 renderer routes: 24 PASS
+Total FastAPI paths in source build environment: 2165
+
+PASS: one Renderer 3.1 host and one primary viewport remain authoritative.
+PASS: active Lab project/figure binding is project-scoped and restorable after reload.
+PASS: persisted presentation state includes figure identity, renderer mode, provenance layout/focus/traversal/filter state.
+PASS: binding layer does not persist scientific rows or claims and does not fabricate missing figure identity.
+PASS: provenance explorer supports declared all/upstream/downstream/focus traversal plus layered/radial/swimlane layouts.
+PASS: structural provenance paths are not interpreted as causal paths and missing edges are not inferred.
+PASS: legacy Graph Studio generations remain excluded from primary presentation ownership.
+
+NOTE: Live browser visual acceptance remains required after WordPress deployment. Package/runtime tests do not substitute for production DOM and interaction inspection.

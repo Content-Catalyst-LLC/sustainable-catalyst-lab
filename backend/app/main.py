@@ -144,6 +144,7 @@ from . import graph_studio_renderer_replacement_v013582 as renderer13582
 from .graph_studio_recovery_v013583 import GraphStudioRecoveryError
 from . import graph_studio_recovery_v013583 as recovery13583
 from . import graph_studio_bootstrap_finalization_v0135831 as bootstrap135831
+from . import graph_studio_live_binding_v013584 as binding13584
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9906,3 +9907,30 @@ def graph_studio_bootstrap_finalization_v0135831_acceptance(): return bootstrap1
 def graph_studio_bootstrap_finalization_v0135831_boundaries(): return bootstrap135831.boundaries()
 @app.get("/v1/graph-studio-bootstrap-finalization/v0135831/compatibility")
 def graph_studio_bootstrap_finalization_v0135831_compatibility(): return bootstrap135831.compatibility()
+
+
+# Lab v0.135.8.4 — Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration
+@app.get("/v1/graph-studio-live-binding/v013584/health")
+def graph_studio_live_binding_v013584_health(): return binding13584.health()
+@app.get("/v1/graph-studio-live-binding/v013584/binding")
+def graph_studio_live_binding_v013584_binding(): return binding13584.binding_contract()
+@app.get("/v1/graph-studio-live-binding/v013584/persistence")
+def graph_studio_live_binding_v013584_persistence(): return binding13584.persistence_contract()
+@app.get("/v1/graph-studio-live-binding/v013584/provenance")
+def graph_studio_live_binding_v013584_provenance(): return binding13584.provenance_contract()
+@app.get("/v1/graph-studio-live-binding/v013584/acceptance")
+def graph_studio_live_binding_v013584_acceptance(): return binding13584.acceptance_report()
+@app.get("/v1/graph-studio-live-binding/v013584/compatibility")
+def graph_studio_live_binding_v013584_compatibility(): return binding13584.compatibility()
+@app.get("/v1/graph-studio-live-binding/v013584/object-types")
+def graph_studio_live_binding_v013584_object_types(): return binding13584.object_types()
+@app.get("/v1/graph-studio-live-binding/v013584/relation-types")
+def graph_studio_live_binding_v013584_relation_types(): return binding13584.relation_types()
+@app.post("/v1/graph-studio-live-binding/v013584/binding/plan")
+async def graph_studio_live_binding_v013584_binding_plan(payload:dict): return binding13584.binding_plan(payload)
+@app.post("/v1/graph-studio-live-binding/v013584/restore/plan")
+async def graph_studio_live_binding_v013584_restore_plan(payload:dict): return binding13584.restore_plan(payload)
+@app.post("/v1/graph-studio-live-binding/v013584/provenance/plan")
+async def graph_studio_live_binding_v013584_provenance_plan(payload:dict): return binding13584.provenance_plan(payload)
+@app.post("/v1/graph-studio-live-binding/v013584/selection/plan")
+async def graph_studio_live_binding_v013584_selection_plan(payload:dict): return binding13584.selection_plan(payload)
