@@ -2116,7 +2116,8 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / EXPERIENCE v0.135.3</p><h3>Scientific Visualization Workspace</h3><p>Build governed 2D, 3D, 4D, spatial, geospatial, raster, and scientifically marked-up figures from explicit datasets and geometry. v0.135.3 adds a coordinated multi-view scientific analysis canvas that links the primary figure, diagnostics, uncertainty, evidence, provenance, model architecture, and bound data through explicit selection and filter state without changing the underlying scientific record.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / EXPERIENCE v0.135.8.1</p><h3>Scientific Visualization Workspace</h3><p>One canonical Graph Studio runtime coordinates figure, analysis, provenance, scene, comparison, session, narrative, and review views. Historical visualization capabilities remain available as isolated compatibility adapters rather than competing renderers, and presentation state never changes the scientific record.</p></header>
+        <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio loading…</p>
         <div class="sc-gs0470-shell">
           <aside class="sc-gs0470-controls" aria-label="Figure controls">
@@ -2301,6 +2302,9 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
             <div data-viz1353-canvas-root aria-label="Multi-view scientific analysis canvas"></div>
             <div data-viz1354-scene-root aria-label="Interactive scientific scene and visual drill-down"></div>
             <div data-viz1355-context-root aria-label="Scientific scene linking comparative inspection and context preservation"></div>
+            <div data-viz1356-session-root aria-label="Reproducible visual analysis session and interaction lineage"></div>
+            <div data-viz1357-narrative-root aria-label="Visual research narrative findings and publication handoff"></div>
+            <div data-viz1358-review-root aria-label="Research review critique and revision lineage"></div>
             <section class="sc-gs0470-library"><div class="sc-gs0470-library-head"><h4>Project figure library</h4><span><strong data-gs-v0470-figure-count>0</strong> FIGURES</span></div><div class="sc-gs0470-library-list" data-gs-v0470-library></div></section>
             <details><summary>Scientific graph specification</summary><pre class="sc-gs0470-spec" data-gs-v0470-spec>No figure rendered.</pre></details>
           </div>

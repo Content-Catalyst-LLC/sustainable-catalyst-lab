@@ -239,7 +239,8 @@ final class SC_Lab_Runtime_Repair_V02631 {
     }
 
     private static function bar($module, $requested, $resolution) {
-        $detail = self::VERSION . ' · ' . $module . ' · canonical panel routing';
+        $release = defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : self::VERSION;
+        $detail = 'Lab ' . $release . ' · ' . $module . ' · canonical runtime';
         if ($resolution === 'alias') { $detail .= ' · resolved ' . sanitize_key($requested) . ' → ' . $module; }
         return '<aside class="sc-lab-runtime-bar-v02631" data-sc-lab-runtime-bar role="status"><div><strong>Panel routing repair active</strong><span>' . esc_html($detail) . '</span></div><div><button type="button" data-sc-lab-runtime-action="overview">Overview</button><button type="button" data-sc-lab-runtime-action="reload">Reload laboratory</button><button type="button" data-sc-lab-runtime-action="diagnostics">Diagnostics</button></div><pre data-sc-lab-runtime-diagnostics hidden></pre></aside>';
     }

@@ -1,3 +1,11 @@
+# Lab v0.135.8.1 — Graph Studio Canonical Runtime & Interface Recovery
+
+- Consolidates Graph Studio into one canonical presentation runtime with eight mutually exclusive research views.
+- Quarantines historical v0.75–v0.88 renderer/capability panels as collapsed compatibility adapters.
+- Restores authoritative public release identity to v0.135.8.1 while retaining the 0.26.3.1 routing subsystem internally.
+- Adds 16 backend health/audit routes for runtime ownership, view lifecycle, asset ownership, DOM integrity, and scientific boundaries.
+- Retains v0.135.1–v0.135.8 scientific/reference behavior without presentation-state mutation of scientific records.
+
 ## 0.135.8 — Research Review, Critique & Revision Lineage
 - Added governed review packages, critiques, responses, revisions, decisions, replication references and deterministic review lineage.
 - Added reference-first Platform Core, Publication Studio, Knowledge Library, Workspace and Replication Studio handoff plans.

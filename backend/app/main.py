@@ -137,6 +137,8 @@ from .visual_research_narrative_findings_v01357 import VisualResearchNarrativeFi
 from . import visual_research_narrative_findings_v01357 as narrative1357
 from .research_review_critique_revision_v01358 import ResearchReviewCritiqueRevisionError
 from . import research_review_critique_revision_v01358 as review1358
+from .graph_studio_canonical_runtime_v013581 import GraphStudioCanonicalRuntimeError
+from . import graph_studio_canonical_runtime_v013581 as canonical13581
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9772,3 +9774,30 @@ for _i,(_path,_fn) in enumerate(_REVIEW1358_ROUTES):
         return _route
     _route=_make_review1358_route(_fn); _route.__name__=f"review1358_route_{_i}"
     app.post(f"/v1/research-review-critique-revision/{_path}")(_route)
+
+# Lab v0.135.8.1 — Graph Studio Canonical Runtime & Interface Recovery
+@app.get("/v1/graph-studio-canonical-runtime/health")
+def graph_studio_canonical_runtime_health(): return canonical13581.health()
+@app.get("/v1/graph-studio-canonical-runtime/manifest")
+def graph_studio_canonical_runtime_manifest(): return canonical13581.manifest()
+@app.get("/v1/graph-studio-canonical-runtime/catalog")
+def graph_studio_canonical_runtime_catalog(): return canonical13581.catalog()
+@app.get("/v1/graph-studio-canonical-runtime/schema")
+def graph_studio_canonical_runtime_schema(): return canonical13581.schema_info()
+def _canonical13581_call(fn,payload):
+    try: return fn(payload)
+    except GraphStudioCanonicalRuntimeError as exc: raise HTTPException(status_code=exc.status_code,detail=exc.detail)
+_CANONICAL13581_ROUTES = [
+("runtime/normalize",canonical13581.normalize_runtime),("runtime/verify",canonical13581.verify_runtime),
+("view/normalize",canonical13581.normalize_view),("view/activate",canonical13581.activate_view),
+("lifecycle/plan",canonical13581.lifecycle_plan),("capability/normalize",canonical13581.normalize_capability),("capability/isolate",canonical13581.isolate_capability),
+("asset/plan",canonical13581.asset_plan),("asset/audit",canonical13581.asset_audit),("identity/report",canonical13581.identity_report),
+("dom/audit",canonical13581.dom_audit),("boundaries/report",canonical13581.boundaries_report),
+]
+for _i,(_path,_fn) in enumerate(_CANONICAL13581_ROUTES):
+    def _make_canonical13581_route(fn):
+        async def _route(payload:dict): return _canonical13581_call(fn,payload)
+        return _route
+    _route=_make_canonical13581_route(_fn); _route.__name__=f"canonical13581_route_{_i}"
+    app.post(f"/v1/graph-studio-canonical-runtime/{_path}")(_route)
+
