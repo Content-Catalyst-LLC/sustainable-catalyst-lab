@@ -1,4 +1,4 @@
-/* Sustainable Catalyst Lab v0.135.8.5 — Native Provenance State Engine */
+/* Sustainable Catalyst Lab v0.135.8.5.2 — Native Provenance State Engine */
 #sc-lab-graph-studio-renderer-root [data-gs13585-runtime]{display:grid;grid-template-rows:auto minmax(460px,1fr);min-height:520px;border-top:1px solid rgba(255,255,255,.08)}
 #sc-lab-graph-studio-renderer-root .sc-gs13585-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;background:#f7f8f9;border-bottom:1px solid #d9dde1;color:#181d22}
 #sc-lab-graph-studio-renderer-root .sc-gs13585-controls strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
@@ -17,3 +17,8 @@
 #sc-lab-graph-studio-renderer-root .sc-gs13585-empty{display:grid;place-items:center;min-height:420px;color:#69737b;text-align:center;padding:40px}
 #sc-lab-graph-studio-renderer-root .sc-gs13585-status{margin-left:auto;font-size:10px;color:#5f6971}.sc-gs13585-status b{color:#151b20}
 #sc-lab-graph-studio-renderer-root [data-gs13583-inspector] .sc-gs13585-inspector dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 10px}.sc-gs13585-inspector dt{font-weight:700}.sc-gs13585-inspector dd{margin:0;overflow-wrap:anywhere}.sc-gs13585-inspector ul{padding-left:18px}
+
+#sc-lab-graph-studio-renderer-root [data-gs13585-edge].is-selected .sc-gs13585-edge{stroke:#b31319;stroke-width:3;opacity:1}
+#sc-lab-graph-studio-renderer-root [data-gs13585-edge].is-muted{opacity:.12}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls button:active{transform:translateY(1px)}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls select:focus-visible,#sc-lab-graph-studio-renderer-root .sc-gs13585-controls button:focus-visible{outline:2px solid currentColor;outline-offset:2px}

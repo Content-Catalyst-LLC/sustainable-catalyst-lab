@@ -1,7 +1,7 @@
 from backend.app import graph_studio_provenance_authority_v0135851 as m
 
 def test_health():
-    h=m.health(); assert h['ok'] and h['version']=='0.135.8.5.1' and h['api_route_count']==6
+    h=m.health(); assert h['ok'] and h['version']=='0.135.8.5.2' and h['api_route_count']==6
     assert h['legacy_interaction_enabled'] is False and h['legacy_observer_attached'] is False
 
 def test_authority_contract():

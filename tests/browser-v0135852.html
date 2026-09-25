@@ -1,4 +1,16 @@
-/* Sustainable Catalyst Lab v0.135.8.5.2 — Provenance Interaction Responsiveness, Relationship Filtering & Incremental Rendering */
+<!doctype html><html><body>
+<div class="sc-lab-app"><section data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage></div><aside data-gs13583-inspector></aside></div></section></div>
+<pre id="result">pending</pre>
+<script>
+window.SCLab={};
+const graph={title:'Observed and fitted exponential decay',data:[{x:0,observed:10},{x:1,observed:8},{x:2,observed:6},{x:3,observed:5},{x:4,observed:4},{x:5,observed:3},{x:6,observed:2}],axes:{x:{field:'x'},y:{field:'observed'}},series:[{field:'observed'}]};
+window.SCLab.GraphStudioRecoveryV013583={hydrate:()=>graph,status:()=>({mode:'provenance'})};
+window.SCLab.GraphStudioLiveBindingV013584={yieldProvenanceAuthority:()=>true};
+const project={id:'fixture-project',graphStudioPresentationState:{}};
+let projectWrites=0;
+document.querySelector('.sc-lab-app')._scLabProjects={get:()=>project,update:(fn)=>{fn(project);projectWrites++;},onChange:()=>{}};
+</script>
+<script>/* Sustainable Catalyst Lab v0.135.8.5.2 — Provenance Interaction Responsiveness, Relationship Filtering & Incremental Rendering */
 (function(W,D){'use strict';
 const Lab=W.SCLab=W.SCLab||{},VERSION='0.135.8.5.2',ROOT='[data-lab-module="graph-studio"]',CACHE='scLabNativeProvenanceV013585';
 const S={mounted:false,ownsProvenance:true,model:null,modelSignature:null,layout:'layered',selectedNode:null,selectedEdge:null,traversal:'all',relation:'all',renderCount:0,fullRenderCount:0,incrementalUpdateCount:0,interactionLoopCount:0,observerDrivenRenders:0,scale:1,tx:0,ty:0,persisting:false,lastProjectId:null,persistTimer:null,cacheWrites:0,projectPersistenceWrites:0,lastInteractionMs:0,lastInteractionKind:null,lastInteractionAt:null,target:null,positions:{}};
@@ -54,3 +66,41 @@ Lab.GraphStudioNativeProvenanceV013585={version:VERSION,ownsProvenance:true,moun
 W.SCLabGraphStudioNativeProvenanceV013585=Lab.GraphStudioNativeProvenanceV013585;
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',()=>setTimeout(mount,0));else setTimeout(mount,0);
 })(window,document);
+</script>
+<script>
+setTimeout(()=>{
+ const api=window.SCLab.GraphStudioNativeProvenanceV013585;
+ const stage=document.querySelector('[data-gs13583-stage]');
+ const selector=stage.querySelector('[data-gs13585-relation]');
+ const selectorIdentity=selector;
+ const initial=api.status();
+ const dataset=stage.querySelector('[data-gs13585-node="dataset"]');
+ dataset.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+ const afterNode=api.status();
+ const beforeRadial=dataset.getAttribute('transform');
+ stage.querySelector('[data-gs13585-layout="radial"]').dispatchEvent(new MouseEvent('click',{bubbles:true}));
+ const afterRadial=api.status();
+ const afterRadialTransform=stage.querySelector('[data-gs13585-node="dataset"]').getAttribute('transform');
+ selector.value='sourced-from'; selector.dispatchEvent(new Event('input',{bubbles:true})); selector.dispatchEvent(new Event('change',{bubbles:true}));
+ const afterFilter=api.status();
+ const selectorStable=selectorIdentity===stage.querySelector('[data-gs13585-relation]');
+ stage.querySelector('[data-gs13585-traversal="upstream"]').dispatchEvent(new MouseEvent('click',{bubbles:true}));
+ const afterUpstream=api.status();
+ selector.value='all'; selector.dispatchEvent(new Event('change',{bubbles:true}));
+ const afterAll=api.status();
+ setTimeout(()=>{
+  const final=api.status();
+  const out={
+   initial,afterNode,afterRadial,afterFilter,afterUpstream,afterAll,final,selectorStable,
+   geometryChanged:beforeRadial!==afterRadialTransform,
+   selectorValueAfterFilter: afterFilter.relationFilter,
+   fullRenderStable: final.fullRenderCount===initial.fullRenderCount,
+   incrementalIncreased: final.incrementalUpdateCount>initial.incrementalUpdateCount,
+   projectWrites,
+   projectState:project.graphStudioPresentationState?.provenance||null
+  };
+  document.getElementById('result').textContent=JSON.stringify(out);
+  document.body.dataset.done='1';
+ },350);
+},100);
+</script></body></html>

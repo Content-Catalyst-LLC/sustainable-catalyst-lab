@@ -1,12 +1,12 @@
 from __future__ import annotations
 from collections import deque
-VERSION="0.135.8.5"
+VERSION="0.135.8.5.2"
 ROUTE_COUNT=13
 LAYOUTS=("layered","radial","swimlane")
 TRAVERSALS=("all","upstream","downstream","focus")
 
 def health():
-    return {"ok":True,"version":VERSION,"api_route_count":ROUTE_COUNT,"native_graph_state_engine":True,"mutation_observer_owns_interaction":False,"project_state_persistence":True,"presentation_state_mutates_science":False}
+    return {"ok":True,"version":VERSION,"api_route_count":ROUTE_COUNT,"native_graph_state_engine":True,"mutation_observer_owns_interaction":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"presentation_state_mutates_science":False}
 
 def runtime_contract():
     return {"ok":True,"version":VERSION,"state_owner":"native-provenance-controller","renderer":"Renderer 3.1","single_graph_controller":True,"stable_object_ids":True,"dom_is_projection_not_state":True,"observer_driven_renders":0}
@@ -15,7 +15,7 @@ def graph_contract():
     return {"ok":True,"version":VERSION,"node_sources":["bound-scientific-object","lab-project-relationships","derived-declared-lineage"],"missing_edges_inferred":False,"structural_paths_are_causal":False,"edge_order_drives_semantics":False}
 
 def layout_contract():
-    return {"ok":True,"version":VERSION,"layouts":list(LAYOUTS),"layout_owned_by_controller":True,"synthetic_clicks":False,"direct_post_render_dom_geometry_patch":False}
+    return {"ok":True,"version":VERSION,"layouts":list(LAYOUTS),"layout_owned_by_controller":True,"synthetic_clicks":False,"direct_post_render_dom_geometry_patch":False,"geometry_only_incremental_update":True}
 
 def traversal_contract():
     return {"ok":True,"version":VERSION,"modes":list(TRAVERSALS),"reachable_subgraph_computed":True,"opacity_only_traversal":False,"cycles_guarded":True}
@@ -24,10 +24,10 @@ def inspector_contract():
     return {"ok":True,"version":VERSION,"driven_by_graph_state":True,"node_and_edge_selection":True,"incoming_outgoing_relations":True,"object_reference_visible":True,"scientific_mutation":False}
 
 def persistence_contract():
-    return {"ok":True,"version":VERSION,"authoritative_scope":"lab-project-presentation-state","local_storage_role":"fallback-cache","fields":["layout","selectedNode","selectedEdge","traversal","relation","scale","tx","ty"],"scientific_record_mutation":False}
+    return {"ok":True,"version":VERSION,"authoritative_scope":"lab-project-presentation-state","project_store_debounce_ms":220,"local_storage_role":"fallback-cache","fields":["layout","selectedNode","selectedEdge","traversal","relation","scale","tx","ty"],"scientific_record_mutation":False}
 
 def browser_hardening_contract():
-    return {"ok":True,"version":VERSION,"mutation_observer_interaction_owner":False,"delegated_controller_events":True,"duplicate_handlers":0,"interaction_loop_count_expected":0,"observer_driven_renders_expected":0,"browser_acceptance_required":True}
+    return {"ok":True,"version":VERSION,"mutation_observer_interaction_owner":False,"delegated_controller_events":True,"duplicate_handlers":0,"full_redraw_for_ordinary_interaction":False,"interaction_loop_count_expected":0,"observer_driven_renders_expected":0,"browser_acceptance_required":True}
 
 def normalize_graph(payload:dict):
     nodes=payload.get("nodes") if isinstance(payload.get("nodes"),list) else []
@@ -69,4 +69,4 @@ def diagnostics():
     return {"ok":True,"version":VERSION,"graph_model_loaded":True,"interaction_loop_count":0,"observer_driven_renders":0,"single_controller":True,"project_persistence":True,"browser_acceptance_gate":["node_selection","edge_selection","layered_radial_swimlane","upstream_downstream_focus","relationship_filter","reload_restore","zoom_fit"]}
 
 def acceptance_report():
-    return {"ok":True,"version":VERSION,"native_provenance_engine":True,"graph_controller_count":1,"renderer31_hosts":1,"primary_viewports":1,"mutation_observer_interaction_owner":False,"observer_driven_renders":0,"programmatic_layout_clicks":0,"hard_coded_dom_edge_order_semantics":False,"project_state_persistence":True,"legacy_primary_owners":0}
+    return {"ok":True,"version":VERSION,"native_provenance_engine":True,"graph_controller_count":1,"renderer31_hosts":1,"primary_viewports":1,"mutation_observer_interaction_owner":False,"observer_driven_renders":0,"programmatic_layout_clicks":0,"hard_coded_dom_edge_order_semantics":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"legacy_primary_owners":0}

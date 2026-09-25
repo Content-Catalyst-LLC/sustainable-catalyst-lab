@@ -1,0 +1,55 @@
+SUSTAINABLE CATALYST LAB v0.135.8.5.2 — TERMINAL COMMANDS
+
+1) GITHUB PROMOTION (macOS)
+
+cd ~/Downloads
+
+BUNDLE="$(ls -t sustainable-catalyst-lab-v0.135.8.5.2-release-bundle*.zip 2>/dev/null | head -1)"
+[ -n "$BUNDLE" ] || { echo "ERROR: v0.135.8.5.2 release bundle not found"; exit 1; }
+
+rm -rf sc-lab-v0.135.8.5.2-release
+mkdir -p sc-lab-v0.135.8.5.2-release
+unzip -q "$BUNDLE" -d sc-lab-v0.135.8.5.2-release
+cd sc-lab-v0.135.8.5.2-release
+chmod +x PUSH_LAB_V0135852_FINAL.sh
+./PUSH_LAB_V0135852_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.8.5.2-repository.zip"
+
+2) WORDPRESS
+
+Upload sustainable-catalyst-lab-v0.135.8.5.2-wordpress.zip and choose Replace current with uploaded.
+The ZIP installs to canonical folder: sustainable-catalyst-lab/
+
+3) BACKEND UPLOAD (macOS)
+
+cd ~/Downloads/sc-lab-v0.135.8.5.2-release
+
+scp -i ~/.ssh/id_ed25519 \
+  -o IdentitiesOnly=yes \
+  sustainable-catalyst-lab-backend-v0.135.8.5.2.zip \
+  upgrade_lab_backend_v0_135_8_5_2_contabo.sh \
+  catalystadmin@94.72.113.77:/tmp/
+
+ssh -i ~/.ssh/id_ed25519 \
+  -o IdentitiesOnly=yes \
+  catalystadmin@94.72.113.77
+
+4) BACKEND DEPLOYMENT (Contabo)
+
+chmod +x /tmp/upgrade_lab_backend_v0_135_8_5_2_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_8_5_2_contabo.sh \
+  /tmp/sustainable-catalyst-lab-backend-v0.135.8.5.2.zip
+
+5) WORDPRESS RUNTIME HEALTH (Bluehost)
+
+cd ~/public_html
+curl -sS https://sustainablecatalyst.com/wp-json/sc-lab/v1/runtime/health | python3 -m json.tool
+
+6) GRAPH STUDIO ACCEPTANCE
+
+Open Lab -> Graph Studio -> Provenance.
+- Select DATASET.
+- Change All relations -> sourced-from (or another relation).
+- Confirm selector remains selected and graph updates.
+- Change Layered -> Radial -> Swimlane.
+- Try Upstream -> Downstream -> Focus -> Clear focus.
+- Reload and confirm saved presentation state restores.

@@ -148,6 +148,7 @@ from . import graph_studio_live_binding_v013584 as binding13584
 from . import graph_studio_provenance_interaction_recovery_v0135841 as provenance135841
 from . import graph_studio_native_provenance_v013585 as provenance13585
 from . import graph_studio_provenance_authority_v0135851 as provenance135851
+from . import graph_studio_incremental_interaction_v0135852 as provenance135852
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9998,3 +9999,20 @@ def graph_studio_provenance_authority_v0135851_diagnostics(): return provenance1
 def graph_studio_provenance_authority_v0135851_acceptance(): return provenance135851.acceptance_report()
 @app.get("/v1/graph-studio-provenance-authority/v0135851/deployment-gate")
 def graph_studio_provenance_authority_v0135851_gate(): return provenance135851.deployment_gate()
+
+
+# Lab v0.135.8.5.2 — Provenance Interaction Responsiveness, Relationship Filtering & Incremental Rendering
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/health")
+def graph_studio_incremental_interaction_v0135852_health(): return provenance135852.health()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/performance")
+def graph_studio_incremental_interaction_v0135852_performance(): return provenance135852.performance_contract()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/relationship-filter")
+def graph_studio_incremental_interaction_v0135852_relationship_filter(): return provenance135852.relationship_filter_contract()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/persistence")
+def graph_studio_incremental_interaction_v0135852_persistence(): return provenance135852.persistence_contract()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/browser")
+def graph_studio_incremental_interaction_v0135852_browser(): return provenance135852.browser_contract()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/diagnostics")
+def graph_studio_incremental_interaction_v0135852_diagnostics(): return provenance135852.diagnostics_contract()
+@app.get("/v1/graph-studio-incremental-interaction/v0135852/acceptance")
+def graph_studio_incremental_interaction_v0135852_acceptance(): return provenance135852.acceptance_report()
