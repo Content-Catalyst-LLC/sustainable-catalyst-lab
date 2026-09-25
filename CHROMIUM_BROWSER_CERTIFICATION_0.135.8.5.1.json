@@ -1,0 +1,18 @@
+{
+  "release": "0.135.8.5.1",
+  "engine": "Chromium via Chrome DevTools Protocol",
+  "navigation_note": "Local/file navigation is blocked by administrator policy in this execution environment; exact exported JavaScript bytes were injected into an about:blank Chromium document.",
+  "interaction_pass": true,
+  "remount_persistence_pass": true,
+  "selected_node": "dataset",
+  "layout": "radial",
+  "traversal": "upstream",
+  "relation_filter": "sourced-from",
+  "visible_nodes": 2,
+  "visible_edges": 1,
+  "observer_driven_renders": 0,
+  "interaction_loop_count": 0,
+  "legacy_interaction_enabled": false,
+  "legacy_observer_attached": false,
+  "legacy_recovery_loaded": false
+}

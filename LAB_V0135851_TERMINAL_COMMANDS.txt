@@ -1,0 +1,20 @@
+# Lab v0.135.8.5.1 — terminal commands
+
+# GitHub promotion
+cd ~/Downloads
+BUNDLE="$(ls -t sustainable-catalyst-lab-v0.135.8.5.1-release-bundle*.zip 2>/dev/null | head -1)"
+[ -n "$BUNDLE" ] || { echo "ERROR: v0.135.8.5.1 bundle not found"; exit 1; }
+rm -rf sc-lab-v0.135.8.5.1-release
+mkdir -p sc-lab-v0.135.8.5.1-release
+unzip -q "$BUNDLE" -d sc-lab-v0.135.8.5.1-release
+cd sc-lab-v0.135.8.5.1-release
+chmod +x PUSH_LAB_V0135851_FINAL.sh
+./PUSH_LAB_V0135851_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.8.5.1-repository.zip"
+
+# Backend upload from Mac
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.135.8.5.1.zip upgrade_lab_backend_v0_135_8_5_1_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+# On Contabo
+chmod +x /tmp/upgrade_lab_backend_v0_135_8_5_1_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_8_5_1_contabo.sh /tmp/sustainable-catalyst-lab-backend-v0.135.8.5.1.zip

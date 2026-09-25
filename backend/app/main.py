@@ -147,6 +147,7 @@ from . import graph_studio_bootstrap_finalization_v0135831 as bootstrap135831
 from . import graph_studio_live_binding_v013584 as binding13584
 from . import graph_studio_provenance_interaction_recovery_v0135841 as provenance135841
 from . import graph_studio_native_provenance_v013585 as provenance13585
+from . import graph_studio_provenance_authority_v0135851 as provenance135851
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9983,3 +9984,17 @@ async def graph_studio_native_provenance_v013585_plan(payload:dict): return prov
 def graph_studio_native_provenance_v013585_diagnostics(): return provenance13585.diagnostics()
 @app.get("/v1/graph-studio-native-provenance/v013585/acceptance")
 def graph_studio_native_provenance_v013585_acceptance(): return provenance13585.acceptance_report()
+
+# Lab v0.135.8.5.1 — Provenance Runtime Authority, Legacy Interaction Shutdown & Real Browser Certification
+@app.get("/v1/graph-studio-provenance-authority/v0135851/health")
+def graph_studio_provenance_authority_v0135851_health(): return provenance135851.health()
+@app.get("/v1/graph-studio-provenance-authority/v0135851/authority")
+def graph_studio_provenance_authority_v0135851_authority(): return provenance135851.authority_contract()
+@app.get("/v1/graph-studio-provenance-authority/v0135851/browser")
+def graph_studio_provenance_authority_v0135851_browser(): return provenance135851.browser_contract()
+@app.get("/v1/graph-studio-provenance-authority/v0135851/diagnostics")
+def graph_studio_provenance_authority_v0135851_diagnostics(): return provenance135851.runtime_diagnostics()
+@app.get("/v1/graph-studio-provenance-authority/v0135851/acceptance")
+def graph_studio_provenance_authority_v0135851_acceptance(): return provenance135851.acceptance_report()
+@app.get("/v1/graph-studio-provenance-authority/v0135851/deployment-gate")
+def graph_studio_provenance_authority_v0135851_gate(): return provenance135851.deployment_gate()

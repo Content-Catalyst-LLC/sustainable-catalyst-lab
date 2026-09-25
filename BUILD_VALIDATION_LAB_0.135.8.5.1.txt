@@ -1,0 +1,19 @@
+Sustainable Catalyst Lab v0.135.8.5.1 — Build Validation
+
+PASS — Provenance runtime authority module loads before live project binding.
+PASS — v0.135.8.4.1 provenance-interaction runtime is retained in source but skipped by the canonical module loader.
+PASS — v0.135.8.4 live binding yields provenance authority and does not attach its MutationObserver when native authority is declared.
+PASS — v0.135.8.5 remains the sole interactive provenance controller.
+PASS — Node selection updated the scientific-object inspector in real Chromium execution.
+PASS — Layered → Radial changed controller layout state in Chromium.
+PASS — Upstream traversal + sourced-from filter produced 2 visible nodes / 1 visible edge from DATASET.
+PASS — observerDrivenRenders=0 and interactionLoopCount=0 in Chromium.
+PASS — project presentation state persisted layout=radial, selectedNode=dataset, traversal=upstream, relation=sourced-from.
+PASS — fresh renderer DOM + fresh native controller remount restored that persisted state in Chromium.
+PASS — legacy v0.135.8.4.1 interaction module was not loaded in the browser fixture.
+PASS — 31+ targeted inherited/new Python tests completed successfully.
+PASS — PHP/JS/Python syntax and release contracts passed.
+PASS — 6 v0.135.8.5.1 FastAPI routes registered.
+PASS — total FastAPI paths: 2192.
+
+Browser execution used the installed Chromium engine through the Chrome DevTools Protocol on an about:blank document. Navigation is administratively blocked in this environment, so certification injects the exact exported JavaScript bytes into Chromium, drives real DOM MouseEvent/change interactions, and performs a fresh renderer-DOM/native-controller remount against the persisted Lab project state.
