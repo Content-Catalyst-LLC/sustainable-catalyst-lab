@@ -1,0 +1,19 @@
+/* Sustainable Catalyst Lab v0.135.8.5 — Native Provenance State Engine */
+#sc-lab-graph-studio-renderer-root [data-gs13585-runtime]{display:grid;grid-template-rows:auto minmax(460px,1fr);min-height:520px;border-top:1px solid rgba(255,255,255,.08)}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;background:#f7f8f9;border-bottom:1px solid #d9dde1;color:#181d22}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls button,#sc-lab-graph-studio-renderer-root .sc-gs13585-controls select{font:inherit;font-size:11px;min-height:30px;border:1px solid #bfc6cc;background:#fff;color:#20262b;border-radius:3px;padding:5px 8px;cursor:pointer}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-controls button.is-active{background:#182027;color:#fff;border-color:#182027}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-viewport{position:relative;overflow:hidden;background:#fff;min-height:460px}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-viewport svg{width:100%;height:100%;min-height:460px;display:block;touch-action:none}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-edge{stroke:#77818a;stroke-width:1.5;opacity:.78;vector-effect:non-scaling-stroke}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-edge.is-selected{stroke:#b31319;stroke-width:3;opacity:1}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-edge-label{font-size:10px;fill:#5b646c;pointer-events:none}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-node{cursor:pointer;transition:opacity .12s ease}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-node rect{fill:#151b20;stroke:#c4282f;stroke-width:2;vector-effect:non-scaling-stroke}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-node text{fill:#fff;font-size:11px;pointer-events:none}.sc-gs13585-node .sub{fill:#cfd5da;font-size:9px}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-node.is-selected rect{stroke:#ef1d28;stroke-width:4;filter:drop-shadow(0 0 4px rgba(239,29,40,.4))}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-node.is-muted,#sc-lab-graph-studio-renderer-root .sc-gs13585-edge.is-muted,#sc-lab-graph-studio-renderer-root .sc-gs13585-edge-label.is-muted{opacity:.12}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-empty{display:grid;place-items:center;min-height:420px;color:#69737b;text-align:center;padding:40px}
+#sc-lab-graph-studio-renderer-root .sc-gs13585-status{margin-left:auto;font-size:10px;color:#5f6971}.sc-gs13585-status b{color:#151b20}
+#sc-lab-graph-studio-renderer-root [data-gs13583-inspector] .sc-gs13585-inspector dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 10px}.sc-gs13585-inspector dt{font-weight:700}.sc-gs13585-inspector dd{margin:0;overflow-wrap:anywhere}.sc-gs13585-inspector ul{padding-left:18px}

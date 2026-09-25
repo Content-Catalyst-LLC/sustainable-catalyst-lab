@@ -146,6 +146,7 @@ from . import graph_studio_recovery_v013583 as recovery13583
 from . import graph_studio_bootstrap_finalization_v0135831 as bootstrap135831
 from . import graph_studio_live_binding_v013584 as binding13584
 from . import graph_studio_provenance_interaction_recovery_v0135841 as provenance135841
+from . import graph_studio_native_provenance_v013585 as provenance13585
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -9954,3 +9955,31 @@ def graph_studio_provenance_interaction_v0135841_persistence(): return provenanc
 async def graph_studio_provenance_interaction_v0135841_plan(payload:dict): return provenance135841.interaction_plan(payload)
 @app.get("/v1/graph-studio-provenance-interaction/v0135841/acceptance")
 def graph_studio_provenance_interaction_v0135841_acceptance(): return provenance135841.acceptance_report()
+
+# Lab v0.135.8.5 — Native Provenance State Engine, Interactive Graph Runtime & Browser Hardening
+@app.get("/v1/graph-studio-native-provenance/v013585/health")
+def graph_studio_native_provenance_v013585_health(): return provenance13585.health()
+@app.get("/v1/graph-studio-native-provenance/v013585/runtime")
+def graph_studio_native_provenance_v013585_runtime(): return provenance13585.runtime_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/graph")
+def graph_studio_native_provenance_v013585_graph(): return provenance13585.graph_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/layout")
+def graph_studio_native_provenance_v013585_layout(): return provenance13585.layout_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/traversal")
+def graph_studio_native_provenance_v013585_traversal(): return provenance13585.traversal_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/inspector")
+def graph_studio_native_provenance_v013585_inspector(): return provenance13585.inspector_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/persistence")
+def graph_studio_native_provenance_v013585_persistence(): return provenance13585.persistence_contract()
+@app.get("/v1/graph-studio-native-provenance/v013585/browser-hardening")
+def graph_studio_native_provenance_v013585_browser_hardening(): return provenance13585.browser_hardening_contract()
+@app.post("/v1/graph-studio-native-provenance/v013585/graph/normalize")
+async def graph_studio_native_provenance_v013585_normalize(payload:dict): return provenance13585.normalize_graph(payload)
+@app.post("/v1/graph-studio-native-provenance/v013585/traverse")
+async def graph_studio_native_provenance_v013585_traverse(payload:dict): return provenance13585.traverse(payload)
+@app.post("/v1/graph-studio-native-provenance/v013585/interaction/plan")
+async def graph_studio_native_provenance_v013585_plan(payload:dict): return provenance13585.interaction_plan(payload)
+@app.get("/v1/graph-studio-native-provenance/v013585/diagnostics")
+def graph_studio_native_provenance_v013585_diagnostics(): return provenance13585.diagnostics()
+@app.get("/v1/graph-studio-native-provenance/v013585/acceptance")
+def graph_studio_native_provenance_v013585_acceptance(): return provenance13585.acceptance_report()

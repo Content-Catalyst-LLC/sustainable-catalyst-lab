@@ -882,7 +882,7 @@
   "platformVersion": "1.0.0",
   "releaseLine": "Scientific Visualization \u2014 Canonical Renderer Replacement & Advanced Visual Analysis",
   "releaseName": "Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration",
-  "releaseVersion": "0.135.8.4.1",
+  "releaseVersion": "0.135.8.5",
   "repairLine": "",
   "repairRevision": "",
   "reproducibleVisualAnalysisSessionsEngineVersion": "16.6.0",
@@ -2610,5 +2610,17 @@
     "upgrade_lab_backend_v0_135_5_contabo.sh": "b211002d2587e581522a3fa755793ac01eff141c1f29e039731bc4150d4f2fe6",
     "upgrade_lab_backend_v0_135_8_1_contabo.sh": "b3aa49c1bfa7925bcd5b81b1c0fabb160b69c422773f080ea738f88bf1b02c05",
     "upgrade_lab_backend_v0_135_8_2_contabo.sh": "7d74b0edc677a4351a7e9a1359f977fb772b1abc4997158a7ada5fb7756315e9"
-  }
+  },
+  "v013585RequiredRouteCount": 13,
+  "v013585NativeGraphStateEngine": true,
+  "v013585SingleGraphController": true,
+  "v013585MutationObserverOwnsInteraction": false,
+  "v013585ObserverDrivenRenders": 0,
+  "v013585ProjectStatePersistence": true,
+  "v013585StableObjectIds": true,
+  "v013585NativeTraversal": true,
+  "v013585NativeLayout": true,
+  "v013585BrowserAcceptanceRequired": true,
+  "v013585PresentationStateMutatesScience": false,
+  "graphStudioNativeProvenanceVersion": "0.135.8.5"
 }

@@ -1,0 +1,28 @@
+Sustainable Catalyst Lab v0.135.8.5 — Build Validation
+========================================================
+Release: Native Provenance State Engine, Interactive Graph Runtime & Browser Hardening
+
+Source hardening gate:
+- PASS JavaScript syntax: graph-studio-native-provenance-v013585.js
+- PASS retained v0.135.8.4.1 JavaScript provenance regression contract
+- PASS retained WordPress contracts: v0.135.8.3, v0.135.8.3.1, v0.135.8.4, v0.135.8.4.1
+- PASS WordPress v0.135.8.5 native provenance contract
+- PASS 9/9 native provenance Python tests
+- PASS FastAPI application import
+- PASS 13 v0.135.8.5 native provenance routes registered
+- INFO total FastAPI paths in validation runtime: 2186
+
+Hardening assertions:
+- Native graph model/controller owns provenance interaction state.
+- Renderer 3.1 delegates provenance rendering to v0.135.8.5 when present.
+- MutationObserver is not an interaction owner in the native provenance module.
+- No synthetic .click() layout restoration.
+- Edge semantics come from graph records, not SVG/DOM ordering.
+- Upstream/downstream/focus compute reachable subgraphs.
+- Node and edge selection are stable-ID state.
+- Inspector is generated from graph/controller state.
+- Lab project presentation state stores layout, selection, traversal, relation and viewport state; localStorage is fallback cache only.
+- Presentation state does not mutate scientific rows, evidence, findings, claims, or Core objects.
+
+Browser note:
+Package/runtime validation cannot substitute for deployment-time browser acceptance. The live acceptance gate remains node selection, edge selection, Layered/Radial/Swimlane, Upstream/Downstream/Focus, relationship filtering, zoom/fit, and reload restoration.

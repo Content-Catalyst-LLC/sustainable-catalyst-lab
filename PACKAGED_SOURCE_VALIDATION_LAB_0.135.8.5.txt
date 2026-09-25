@@ -1,0 +1,15 @@
+Sustainable Catalyst Lab v0.135.8.5 — Packaged Source Certification
+====================================================================
+The canonical repository ZIP was extracted into a clean directory and the v0.135.8.5 hardening gate was rerun from exported bytes.
+
+Clean-export results:
+- PASS JavaScript syntax
+- PASS retained v0.135.8.4.1 JavaScript provenance regression contract
+- PASS retained WordPress contracts v0.135.8.3 through v0.135.8.4.1 used by the current recovery line
+- PASS WordPress v0.135.8.5 native provenance contract
+- PASS 9/9 native provenance Python tests
+- PASS FastAPI import
+- PASS 13 v0.135.8.5 routes
+- INFO 2186 FastAPI paths in the clean validation runtime
+
+A fresh, unmodified extraction of the repository ZIP rebuilt the canonical WordPress ZIP byte-for-byte. Test execution can mutate bundled SQLite fixtures, so the byte comparison is intentionally performed from a second pristine repository extraction.
