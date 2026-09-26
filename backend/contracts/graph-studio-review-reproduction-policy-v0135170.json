@@ -1,0 +1,13 @@
+{
+  "version": "0.135.17.0",
+  "reusesReproductionEngine": "0.129.0",
+  "automaticExecution": false,
+  "automaticRetry": false,
+  "automaticVerificationOutcome": false,
+  "automaticResolution": false,
+  "automaticClaimConfirmation": false,
+  "automaticScientificValidity": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "boundary": "A rerun or numerical match documents reproducibility evidence; it does not prove scientific truth or claim validity."
+}

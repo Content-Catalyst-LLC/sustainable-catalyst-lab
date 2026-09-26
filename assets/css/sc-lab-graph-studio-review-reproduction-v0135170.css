@@ -1,0 +1,5 @@
+.sc-gs135170-bar{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;padding:.55rem .7rem;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);background:rgba(11,15,19,.94)}
+.sc-gs135170-bar strong{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase}.sc-gs135170-bar button{font-size:.75rem}.sc-gs135170-bar span{font-size:.72rem;opacity:.8}
+.sc-gs135170-panel,.sc-gs135170-project-context{margin:.75rem 0;padding:.8rem;border:1px solid rgba(255,255,255,.14);background:rgba(8,12,16,.86)}
+.sc-gs135170-eyebrow{font-size:.68rem;letter-spacing:.09em;opacity:.7}.sc-gs135170-metrics{display:flex;flex-wrap:wrap;gap:.55rem;font-size:.72rem}.sc-gs135170-boundary{font-size:.72rem;opacity:.78}
+.sc-gs135170-project-context{display:grid;gap:.35rem}.sc-gs135170-project-context small{opacity:.75}

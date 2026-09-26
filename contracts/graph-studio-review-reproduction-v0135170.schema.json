@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab v0.135.17.0 review-to-reproduction bridge",
+  "type": "object",
+  "required": [
+    "threadId",
+    "resolutionRecordId",
+    "auditRecordId",
+    "annotationId",
+    "revisionAction",
+    "studyRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "threadId": {
+      "type": "string"
+    },
+    "resolutionRecordId": {
+      "type": "string"
+    },
+    "auditRecordId": {
+      "type": "string"
+    },
+    "annotationId": {
+      "type": "string"
+    },
+    "revisionAction": {
+      "enum": [
+        "rerun-analysis",
+        "revise-method",
+        "revise-data",
+        "revise-figure",
+        "manual-revision",
+        "follow-up"
+      ]
+    },
+    "revisionRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "revisionImpactRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "studyRef": {
+      "type": "string"
+    },
+    "originalExecutionRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inputArtifacts": {
+      "type": "array"
+    },
+    "expectedOutputRefs": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

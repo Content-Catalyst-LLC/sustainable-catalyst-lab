@@ -158,6 +158,7 @@ from . import graph_studio_review_resolution_v0135130 as resolution135130
 from . import graph_studio_review_audit_v0135140 as reviewaudit135140
 from . import graph_studio_verification_artifacts_v0135150 as verification135150
 from . import graph_studio_revision_impact_v0135160 as revisionimpact135160
+from . import graph_studio_review_reproduction_v0135170 as reviewrepro135170
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10193,6 +10194,44 @@ def graph_studio_revision_impact_v0135160_contract(): return revisionimpact13516
 def graph_studio_revision_impact_v0135160_browser(): return revisionimpact135160.browser_contract()
 @app.get("/v1/graph-studio-revision-impact/v0135160/acceptance")
 def graph_studio_revision_impact_v0135160_acceptance(): return revisionimpact135160.acceptance_report()
+
+# Lab v0.135.17.0 — Review-to-Reproduction Bridge & Execution Verification
+@app.get("/v1/graph-studio-review-reproduction/v0135170/health")
+def graph_studio_review_reproduction_v0135170_health(): return reviewrepro135170.health()
+@app.post("/v1/graph-studio-review-reproduction/v0135170/normalize-request")
+def graph_studio_review_reproduction_v0135170_normalize(payload: dict): return reviewrepro135170.normalize_request(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/validate-request")
+def graph_studio_review_reproduction_v0135170_validate(payload: dict): return reviewrepro135170.validate_request(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/reproduction-study")
+def graph_studio_review_reproduction_v0135170_study(payload: dict): return reviewrepro135170.reproduction_study(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/artifact-inventory")
+def graph_studio_review_reproduction_v0135170_inventory(payload: dict): return reviewrepro135170.artifact_inventory(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/execution-plan")
+def graph_studio_review_reproduction_v0135170_plan(payload: dict): return reviewrepro135170.execution_plan(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/impact-scope")
+def graph_studio_review_reproduction_v0135170_impact(payload: dict): return reviewrepro135170.impact_scope(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/normalize-execution")
+def graph_studio_review_reproduction_v0135170_execution(payload: dict): return reviewrepro135170.normalize_execution(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/compare-execution")
+def graph_studio_review_reproduction_v0135170_compare(payload: dict): return reviewrepro135170.compare_execution(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/deviation-register")
+def graph_studio_review_reproduction_v0135170_deviations(payload: dict): return reviewrepro135170.deviation_register(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/verification-bundle")
+def graph_studio_review_reproduction_v0135170_bundle(payload: dict): return reviewrepro135170.verification_bundle(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/audit-verification-draft")
+def graph_studio_review_reproduction_v0135170_audit(payload: dict): return reviewrepro135170.audit_verification_draft(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/bridge-packet")
+def graph_studio_review_reproduction_v0135170_packet(payload: dict): return reviewrepro135170.bridge_packet(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/fingerprint")
+def graph_studio_review_reproduction_v0135170_fingerprint(payload: dict): return reviewrepro135170.fingerprint(payload)
+@app.post("/v1/graph-studio-review-reproduction/v0135170/status")
+def graph_studio_review_reproduction_v0135170_status(payload: dict): return reviewrepro135170.status(payload)
+@app.get("/v1/graph-studio-review-reproduction/v0135170/contract")
+def graph_studio_review_reproduction_v0135170_contract(): return reviewrepro135170.contract()
+@app.get("/v1/graph-studio-review-reproduction/v0135170/browser")
+def graph_studio_review_reproduction_v0135170_browser(): return reviewrepro135170.browser_contract()
+@app.get("/v1/graph-studio-review-reproduction/v0135170/acceptance")
+def graph_studio_review_reproduction_v0135170_acceptance(): return reviewrepro135170.acceptance_report()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")
