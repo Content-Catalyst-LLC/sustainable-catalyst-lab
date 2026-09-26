@@ -1,3 +1,10 @@
+
+## 0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
+- Adds governed 1-hop and 2-hop provenance neighborhoods over declared project relationships.
+- Enriches the Graph Studio inspector with active-project object metadata and related-object navigation.
+- Adds session-scoped Graph Studio → Project Workspace focus handoff.
+- Retains the v0.135.8.5.x native provenance controller as the sole interaction owner; scope changes remain incremental.
+
 ## 0.135.8.5.3 — Context-Aware Relationship Filtering & Provenance Interaction Hardening
 - Preserves selected relationship filters across traversal changes, including explicit zero-match states.
 - Adds context-aware relationship counts/compatibility from the selected node and traversal direction.

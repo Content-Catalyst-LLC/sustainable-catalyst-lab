@@ -150,6 +150,7 @@ from . import graph_studio_native_provenance_v013585 as provenance13585
 from . import graph_studio_provenance_authority_v0135851 as provenance135851
 from . import graph_studio_incremental_interaction_v0135852 as provenance135852
 from . import graph_studio_context_relationships_v0135853 as provenance135853
+from . import graph_studio_object_explorer_v013590 as explorer13590
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10035,3 +10036,25 @@ def graph_studio_context_relationships_v0135853_diagnostics(): return provenance
 @app.get("/v1/graph-studio-context-relationships/v0135853/acceptance")
 def graph_studio_context_relationships_v0135853_acceptance(): return provenance135853.acceptance_report()
 
+
+# Lab v0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
+@app.get("/v1/graph-studio-object-explorer/v013590/health")
+def graph_studio_object_explorer_v013590_health(): return explorer13590.health()
+@app.post("/v1/graph-studio-object-explorer/v013590/neighborhood")
+def graph_studio_object_explorer_v013590_neighborhood(payload: dict): return explorer13590.neighborhood(payload)
+@app.post("/v1/graph-studio-object-explorer/v013590/object-summary")
+def graph_studio_object_explorer_v013590_object_summary(payload: dict): return explorer13590.object_summary(payload)
+@app.post("/v1/graph-studio-object-explorer/v013590/relation-summary")
+def graph_studio_object_explorer_v013590_relation_summary(payload: dict): return explorer13590.relation_summary(payload)
+@app.get("/v1/graph-studio-object-explorer/v013590/inspector")
+def graph_studio_object_explorer_v013590_inspector(): return explorer13590.inspector_contract()
+@app.get("/v1/graph-studio-object-explorer/v013590/navigation")
+def graph_studio_object_explorer_v013590_navigation(): return explorer13590.navigation_contract()
+@app.get("/v1/graph-studio-object-explorer/v013590/scope")
+def graph_studio_object_explorer_v013590_scope(): return explorer13590.scope_contract()
+@app.get("/v1/graph-studio-object-explorer/v013590/persistence")
+def graph_studio_object_explorer_v013590_persistence(): return explorer13590.persistence_contract()
+@app.get("/v1/graph-studio-object-explorer/v013590/browser")
+def graph_studio_object_explorer_v013590_browser(): return explorer13590.browser_contract()
+@app.get("/v1/graph-studio-object-explorer/v013590/acceptance")
+def graph_studio_object_explorer_v013590_acceptance(): return explorer13590.acceptance_report()

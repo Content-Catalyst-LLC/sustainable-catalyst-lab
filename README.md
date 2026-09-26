@@ -1109,3 +1109,8 @@ Reproducible time-series analysis and forecasting with explicit temporal assumpt
 
 ## Lab v0.135.0 — Competing Model & Hypothesis Analysis
 Transparent rival hypothesis/model analysis without automatic ranking or truth selection.
+
+
+## Lab v0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
+
+Graph Studio now layers a governed scientific-object explorer over the hardened native provenance runtime. Selected nodes resolve to active-project records when possible, expose declared incoming/outgoing relationships, support 1-hop and 2-hop neighborhood exploration, and can hand a focused record to Project Workspace. Neighborhoods are based only on declared project relationships and remain presentation state; no causal, semantic, evidentiary, or truth relationship is inferred.
