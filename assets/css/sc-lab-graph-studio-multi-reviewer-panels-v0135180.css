@@ -1,0 +1,7 @@
+/* Lab v0.135.18.0 — Multi-Reviewer Panels */
+.sc-gs135180-bar{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;padding:.6rem .75rem;margin:.55rem 0;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(12,16,20,.84)}
+.sc-gs135180-bar strong{margin-right:.25rem}.sc-gs135180-bar button{font:inherit;padding:.36rem .55rem}.sc-gs135180-bar [data-gs135180-status]{font-size:.82rem;opacity:.75;margin-left:auto}
+.sc-gs135180-panel,.sc-gs135180-project-context{margin-top:.75rem;padding:.8rem;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(9,13,16,.72)}
+.sc-gs135180-eyebrow{font-size:.68rem;letter-spacing:.12em;opacity:.66}.sc-gs135180-panel h5{margin:.3rem 0 .6rem}.sc-gs135180-metrics{display:flex;gap:.45rem;flex-wrap:wrap}.sc-gs135180-metrics span{padding:.3rem .45rem;border-radius:7px;background:rgba(255,255,255,.06);font-size:.78rem}
+.sc-gs135180-table{margin-top:.65rem;display:grid;gap:.35rem}.sc-gs135180-table>div{display:grid;grid-template-columns:minmax(8rem,1.3fr) minmax(7rem,1fr) minmax(7rem,1fr) minmax(7rem,1fr) auto;gap:.45rem;align-items:center;padding:.4rem .5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.75rem}.sc-gs135180-table small,.sc-gs135180-table em{opacity:.68}.sc-gs135180-completion,.sc-gs135180-boundary{font-size:.76rem;line-height:1.45}.sc-gs135180-boundary{opacity:.7}
+@media(max-width:760px){.sc-gs135180-table>div{grid-template-columns:1fr 1fr}.sc-gs135180-bar [data-gs135180-status]{width:100%;margin-left:0}}

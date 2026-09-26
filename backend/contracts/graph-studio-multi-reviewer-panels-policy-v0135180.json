@@ -1,0 +1,15 @@
+{
+  "version": "0.135.18.0",
+  "independentAssessmentLineage": true,
+  "independentSignOff": true,
+  "dissentPreserved": true,
+  "abstentionPreserved": true,
+  "majorityVoting": false,
+  "consensusScoring": false,
+  "reviewerRanking": false,
+  "automaticResolution": false,
+  "automaticScientificValidity": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "boundary": "Reviewer counts and sign-offs document review process; they do not establish scientific truth or automatically resolve disagreement."
+}

@@ -1,0 +1,2 @@
+<?php
+$f=file_get_contents(__DIR__.'/../includes/class-sc-lab-graph-studio-multi-reviewer-panels-v0135180.php');foreach(array("0.135.18.0","multiReviewerPanels","independentSignOff","dissentPreserved","majorityVoting'=>false","automaticResolution'=>false","truthRanking'=>false") as $x){if(strpos($f,$x)===false){fwrite(STDERR,"missing $x\n");exit(1);}}echo "PASS - v0.135.18.0 PHP integration contract\n";

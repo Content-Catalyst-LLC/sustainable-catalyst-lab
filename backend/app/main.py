@@ -159,6 +159,7 @@ from . import graph_studio_review_audit_v0135140 as reviewaudit135140
 from . import graph_studio_verification_artifacts_v0135150 as verification135150
 from . import graph_studio_revision_impact_v0135160 as revisionimpact135160
 from . import graph_studio_review_reproduction_v0135170 as reviewrepro135170
+from . import graph_studio_multi_reviewer_panels_v0135180 as multireview135180
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10232,6 +10233,44 @@ def graph_studio_review_reproduction_v0135170_contract(): return reviewrepro1351
 def graph_studio_review_reproduction_v0135170_browser(): return reviewrepro135170.browser_contract()
 @app.get("/v1/graph-studio-review-reproduction/v0135170/acceptance")
 def graph_studio_review_reproduction_v0135170_acceptance(): return reviewrepro135170.acceptance_report()
+
+# Lab v0.135.18.0 — Multi-Reviewer Panels, Independent Sign-Off & Dissent
+@app.get("/v1/graph-studio-multi-reviewer-panels/v0135180/health")
+def graph_studio_multi_reviewer_panels_v0135180_health(): return multireview135180.health()
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/normalize-panel")
+def graph_studio_multi_reviewer_panels_v0135180_normalize(payload: dict): return multireview135180.normalize_panel(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/validate-panel")
+def graph_studio_multi_reviewer_panels_v0135180_validate(payload: dict): return multireview135180.validate_panel(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/normalize-reviewer")
+def graph_studio_multi_reviewer_panels_v0135180_reviewer(payload: dict): return multireview135180.normalize_reviewer(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/assign-reviewer")
+def graph_studio_multi_reviewer_panels_v0135180_assign(payload: dict): return multireview135180.assign_reviewer(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/record-assessment")
+def graph_studio_multi_reviewer_panels_v0135180_assessment(payload: dict): return multireview135180.record_assessment(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/record-signoff")
+def graph_studio_multi_reviewer_panels_v0135180_signoff(payload: dict): return multireview135180.record_signoff(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/record-dissent")
+def graph_studio_multi_reviewer_panels_v0135180_dissent(payload: dict): return multireview135180.record_dissent(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/independence-check")
+def graph_studio_multi_reviewer_panels_v0135180_independence(payload: dict): return multireview135180.independence_check(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/panel-matrix")
+def graph_studio_multi_reviewer_panels_v0135180_matrix(payload: dict): return multireview135180.panel_matrix(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/completion-status")
+def graph_studio_multi_reviewer_panels_v0135180_completion(payload: dict): return multireview135180.completion_status(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/audit-event-draft")
+def graph_studio_multi_reviewer_panels_v0135180_audit(payload: dict): return multireview135180.audit_event_draft(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/panel-packet")
+def graph_studio_multi_reviewer_panels_v0135180_packet(payload: dict): return multireview135180.panel_packet(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/fingerprint")
+def graph_studio_multi_reviewer_panels_v0135180_fingerprint(payload: dict): return multireview135180.fingerprint(payload)
+@app.post("/v1/graph-studio-multi-reviewer-panels/v0135180/status")
+def graph_studio_multi_reviewer_panels_v0135180_status(payload: dict): return multireview135180.status(payload)
+@app.get("/v1/graph-studio-multi-reviewer-panels/v0135180/contract")
+def graph_studio_multi_reviewer_panels_v0135180_contract(): return multireview135180.contract()
+@app.get("/v1/graph-studio-multi-reviewer-panels/v0135180/browser")
+def graph_studio_multi_reviewer_panels_v0135180_browser(): return multireview135180.browser_contract()
+@app.get("/v1/graph-studio-multi-reviewer-panels/v0135180/acceptance")
+def graph_studio_multi_reviewer_panels_v0135180_acceptance(): return multireview135180.acceptance_report()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab v0.135.18.0 multi-reviewer panel",
+  "type": "object",
+  "required": ["threadId", "reviewers"],
+  "properties": {
+    "id": {"type": "string"},
+    "threadId": {"type": "string"},
+    "resolutionRecordId": {"type": ["string", "null"]},
+    "auditRecordId": {"type": ["string", "null"]},
+    "reviewVersionRef": {"type": ["string", "null"]},
+    "subjectRefs": {"type": "array", "items": {"type": "string"}},
+    "reviewers": {
+      "type": "array", "minItems": 2, "maxItems": 64,
+      "items": {
+        "type": "object", "required": ["reviewerId"],
+        "properties": {
+          "reviewerId": {"type": "string"}, "displayName": {"type": "string"},
+          "role": {"enum": ["primary-reviewer","independent-reviewer","method-reviewer","data-reviewer","reproduction-reviewer","editor","observer"]},
+          "independenceAttested": {"type": "boolean"}, "conflictDisclosure": {"type": ["string","null"]}
+        }, "additionalProperties": true
+      }
+    },
+    "assessments": {"type": "array"}, "signoffs": {"type": "array"}, "dissents": {"type": "array"}
+  },
+  "additionalProperties": true
+}
