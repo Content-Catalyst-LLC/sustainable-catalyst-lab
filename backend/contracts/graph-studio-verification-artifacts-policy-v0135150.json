@@ -1,0 +1,19 @@
+{
+  "version": "0.135.15.0",
+  "typedVerificationArtifacts": true,
+  "multiArtifactEvidenceBundles": true,
+  "auditEventBinding": true,
+  "verificationEventRefMustEqualBundleId": true,
+  "sha256ArtifactFingerprints": true,
+  "projectCollection": "graphStudioVerificationArtifactBundles",
+  "maxArtifactsPerBundle": 100,
+  "backwardCompatibleV0135140": true,
+  "fullGraphRedrawForVerificationArtifacts": false,
+  "auditHistoryMutation": false,
+  "resolutionMutation": false,
+  "annotationMutation": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false,
+  "scientificPreference": false
+}

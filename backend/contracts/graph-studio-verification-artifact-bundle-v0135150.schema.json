@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-verification-artifact-bundle-v0135150.schema.json",
+  "title": "Sustainable Catalyst Lab Graph Studio Verification Artifact Bundle v0.135.15.0",
+  "type": "object",
+  "required": ["schema", "version", "recordType", "collection", "id", "threadId", "resolutionRecordId", "auditRecordId", "annotationId", "verificationEventId", "verificationOutcome", "verificationMethod", "verificationScope", "artifacts"],
+  "properties": {
+    "schema": {"const": "sc-lab-graph-studio-verification-artifact-bundle/0.135.15.0"},
+    "version": {"const": "0.135.15.0"},
+    "recordType": {"const": "graph-studio-verification-artifact-bundle"},
+    "collection": {"const": "graphStudioVerificationArtifactBundles"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 256},
+    "threadId": {"type": "string", "minLength": 1, "maxLength": 512},
+    "resolutionRecordId": {"type": "string", "minLength": 1, "maxLength": 512},
+    "auditRecordId": {"type": "string", "minLength": 1, "maxLength": 512},
+    "annotationId": {"type": "string", "minLength": 1, "maxLength": 512},
+    "verificationEventId": {"type": "string", "minLength": 1, "maxLength": 512},
+    "verificationOutcome": {"enum": ["passed", "failed", "inconclusive"]},
+    "verificationMethod": {"enum": ["artifact-inspection", "rerun", "source-check", "figure-check", "method-check", "manual-review"]},
+    "verificationScope": {"type": "string", "minLength": 1, "maxLength": 2048},
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["id", "artifactType", "artifactRef"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1, "maxLength": 256},
+          "artifactType": {"enum": ["dataset", "method", "execution", "figure", "model", "notebook", "document", "evidence-source", "reproduction-result", "code", "environment", "other"]},
+          "artifactRef": {"type": "string", "minLength": 1, "maxLength": 2048},
+          "title": {"type": ["string", "null"], "maxLength": 1024},
+          "versionRef": {"type": ["string", "null"], "maxLength": 1024},
+          "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-fA-F]{64}$"},
+          "sourceObjectRef": {"type": ["string", "null"], "maxLength": 2048},
+          "executionRef": {"type": ["string", "null"], "maxLength": 2048},
+          "uri": {"type": ["string", "null"], "maxLength": 4096},
+          "mediaType": {"type": ["string", "null"], "maxLength": 256},
+          "capturedAt": {"type": ["string", "null"], "maxLength": 128},
+          "note": {"type": ["string", "null"], "maxLength": 12000}
+        },
+        "additionalProperties": false
+      }
+    },
+    "createdAt": {"type": ["string", "null"], "maxLength": 128},
+    "updatedAt": {"type": ["string", "null"], "maxLength": 128},
+    "author": {"type": ["string", "null"], "maxLength": 256},
+    "boundary": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

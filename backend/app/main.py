@@ -156,6 +156,7 @@ from . import graph_studio_competing_paths_v0135110 as paths135110
 from . import graph_studio_review_threads_v0135120 as review135120
 from . import graph_studio_review_resolution_v0135130 as resolution135130
 from . import graph_studio_review_audit_v0135140 as reviewaudit135140
+from . import graph_studio_verification_artifacts_v0135150 as verification135150
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10156,6 +10157,36 @@ def graph_studio_review_audit_v0135140_contract(): return reviewaudit135140.cont
 def graph_studio_review_audit_v0135140_browser(): return reviewaudit135140.browser_contract()
 @app.get("/v1/graph-studio-review-audit/v0135140/acceptance")
 def graph_studio_review_audit_v0135140_acceptance(): return reviewaudit135140.acceptance_report()
+
+# Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
+@app.get("/v1/graph-studio-verification-artifacts/v0135150/health")
+def graph_studio_verification_artifacts_v0135150_health(): return verification135150.health()
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/normalize-artifact")
+def graph_studio_verification_artifacts_v0135150_normalize_artifact(payload: dict):
+    try: return {"ok":True,"version":verification135150.VERSION,"artifact":verification135150.normalize_artifact(payload.get("artifact",payload))}
+    except ValueError as e: return {"ok":False,"version":verification135150.VERSION,"error":str(e)}
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/normalize-bundle")
+def graph_studio_verification_artifacts_v0135150_normalize_bundle(payload: dict): return verification135150.normalize_bundle(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/validate")
+def graph_studio_verification_artifacts_v0135150_validate(payload: dict): return verification135150.validate_bundle(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/summary")
+def graph_studio_verification_artifacts_v0135150_summary(payload: dict): return verification135150.summarize(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/fingerprint")
+def graph_studio_verification_artifacts_v0135150_fingerprint(payload: dict): return verification135150.fingerprint(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/integrity")
+def graph_studio_verification_artifacts_v0135150_integrity(payload: dict): return verification135150.integrity(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/event-bindings")
+def graph_studio_verification_artifacts_v0135150_event_bindings(payload: dict): return verification135150.event_bindings(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/compare")
+def graph_studio_verification_artifacts_v0135150_compare(payload: dict): return verification135150.compare(payload)
+@app.post("/v1/graph-studio-verification-artifacts/v0135150/verification-packet")
+def graph_studio_verification_artifacts_v0135150_verification_packet(payload: dict): return verification135150.verification_packet(payload)
+@app.get("/v1/graph-studio-verification-artifacts/v0135150/contract")
+def graph_studio_verification_artifacts_v0135150_contract(): return verification135150.contract()
+@app.get("/v1/graph-studio-verification-artifacts/v0135150/browser")
+def graph_studio_verification_artifacts_v0135150_browser(): return verification135150.browser_contract()
+@app.get("/v1/graph-studio-verification-artifacts/v0135150/acceptance")
+def graph_studio_verification_artifacts_v0135150_acceptance(): return verification135150.acceptance_report()
 
 @app.get("/v1/graph-studio-review-resolution/v0135130/health")
 def graph_studio_review_resolution_v0135130_health(): return resolution135130.health()

@@ -1,0 +1,29 @@
+Sustainable Catalyst Lab v0.135.15.0 — BUILD VALIDATION
+
+Validated implementation surface:
+- JavaScript syntax: graph-studio-verification-artifacts-v0135150.js — PASS
+- JavaScript syntax: project-workspace-verification-artifacts-v0135150.js — PASS
+- JavaScript static contract: tests/test-v0135150.js — PASS
+- JavaScript runtime verification-bundle contract: tests/test-v0135150-runtime.js — PASS
+- PHP syntax: sustainable-catalyst-lab.php — PASS
+- PHP syntax: class-sc-lab-plugin.php — PASS
+- PHP syntax: class-sc-lab-graph-studio-verification-artifacts-v0135150.php — PASS
+- PHP integration test: tests/test-v0135150.php — PASS
+- Backend pytest: v0.135.15.0 plus v0.135.14.0/v0.135.13.0/v0.135.12.0 and competing-path/provenance/incremental regressions — PASS (48 tests)
+- FastAPI import: PASS
+- v0.135.15.0 FastAPI route count: 13
+- Total FastAPI path count at source validation: 2218
+- Typed verification artifacts: PASS
+- Multi-artifact evidence bundles: PASS
+- v0.135.14.0 audit-event binding through verificationRef=bundle ID: PASS
+- Bundle-to-audit verificationEventId binding: PASS
+- Optional SHA-256 format validation and manifest fingerprinting: PASS
+- Bundle integrity diagnostics and comparison: PASS
+- Project persistence target: graphStudioVerificationArtifactBundles
+- Project Workspace handoff: PASS
+- Backward compatibility with v0.135.14.0 review audit: PASS
+- Scientific guardrails: no audit-history mutation, resolution mutation, annotation mutation, truth ranking, causal inference, evidence-weight inference, or scientific preference
+
+Browser fixture tests/browser-v0135150.html is included. No headless-browser certification is claimed in this build environment. The executable JavaScript runtime test is the dynamic frontend acceptance substitute.
+
+Final package-level manifest and ZIP integrity are rechecked by scripts/test_v0135150_release.sh and scripts/validate_wordpress_package_v0135150.py.

@@ -1,3 +1,10 @@
+## 0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
+
+- Added typed, multi-artifact verification evidence bundles bound directly to v0.135.14.0 verification events.
+- Added optional version/revision, SHA-256, source-object, execution, URI, media-type and capture metadata for reviewed artifacts.
+- Added Graph Studio bundle composition, project persistence, Project Workspace handoff, backend normalization, binding validation, fingerprints, integrity diagnostics and bundle comparison.
+- Preserved v0.135.14.0 as the authoritative review state machine and audit history; v0.135.15.0 does not mutate prior review, resolution or annotation records.
+- Preserved scientific boundaries: verification manifests document what was inspected but do not establish truth, causation, evidentiary weight or preferred interpretation.
 
 ## 0.135.12.0 — Provenance Review Threads, Path Annotations & Claim Linkage
 
