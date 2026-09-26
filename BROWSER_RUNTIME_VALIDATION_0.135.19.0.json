@@ -1,0 +1,8 @@
+{
+  "version": "0.135.19.0",
+  "executableJavascriptRuntimeTest": "passed",
+  "staticJavascriptSyntax": "passed",
+  "projectWorkspaceContextContract": "passed",
+  "headlessChromiumCertification": false,
+  "note": "Executable DOM/runtime fixture passed. Automated Chromium/headless-browser certification is not claimed for this release."
+}

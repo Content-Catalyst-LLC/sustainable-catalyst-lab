@@ -160,6 +160,7 @@ from . import graph_studio_verification_artifacts_v0135150 as verification135150
 from . import graph_studio_revision_impact_v0135160 as revisionimpact135160
 from . import graph_studio_review_reproduction_v0135170 as reviewrepro135170
 from . import graph_studio_multi_reviewer_panels_v0135180 as multireview135180
+from . import graph_studio_cross_review_synthesis_v0135190 as crossreview135190
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10271,6 +10272,50 @@ def graph_studio_multi_reviewer_panels_v0135180_contract(): return multireview13
 def graph_studio_multi_reviewer_panels_v0135180_browser(): return multireview135180.browser_contract()
 @app.get("/v1/graph-studio-multi-reviewer-panels/v0135180/acceptance")
 def graph_studio_multi_reviewer_panels_v0135180_acceptance(): return multireview135180.acceptance_report()
+
+# Lab v0.135.19.0 — Cross-Review Synthesis & Resolution Matrix
+@app.get("/v1/graph-studio-cross-review-synthesis/v0135190/health")
+def graph_studio_cross_review_synthesis_v0135190_health(): return crossreview135190.health()
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/normalize")
+def graph_studio_cross_review_synthesis_v0135190_normalize(payload: dict): return crossreview135190.normalize_synthesis(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/validate")
+def graph_studio_cross_review_synthesis_v0135190_validate(payload: dict): return crossreview135190.validate_synthesis(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/synthesize")
+def graph_studio_cross_review_synthesis_v0135190_synthesize(payload: dict): return crossreview135190.synthesize(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/resolution-matrix")
+def graph_studio_cross_review_synthesis_v0135190_matrix(payload: dict): return crossreview135190.resolution_matrix(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/open-items")
+def graph_studio_cross_review_synthesis_v0135190_open(payload: dict): return crossreview135190.open_items(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/disagreement-register")
+def graph_studio_cross_review_synthesis_v0135190_disagreement(payload: dict): return crossreview135190.disagreement_register(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/verification-matrix")
+def graph_studio_cross_review_synthesis_v0135190_verification(payload: dict): return crossreview135190.verification_matrix(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/reproduction-matrix")
+def graph_studio_cross_review_synthesis_v0135190_reproduction(payload: dict): return crossreview135190.reproduction_matrix(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/revision-impact-matrix")
+def graph_studio_cross_review_synthesis_v0135190_impact(payload: dict): return crossreview135190.revision_impact_matrix(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/resolution-history")
+def graph_studio_cross_review_synthesis_v0135190_history(payload: dict): return crossreview135190.resolution_history(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/subject-index")
+def graph_studio_cross_review_synthesis_v0135190_subject(payload: dict): return crossreview135190.subject_index(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/filter-matrix")
+def graph_studio_cross_review_synthesis_v0135190_filter(payload: dict): return crossreview135190.filter_matrix(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/snapshot")
+def graph_studio_cross_review_synthesis_v0135190_snapshot(payload: dict): return crossreview135190.snapshot(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/compare-snapshots")
+def graph_studio_cross_review_synthesis_v0135190_compare(payload: dict): return crossreview135190.compare_snapshots(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/project-workspace-packet")
+def graph_studio_cross_review_synthesis_v0135190_packet(payload: dict): return crossreview135190.project_workspace_packet(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/audit-event-draft")
+def graph_studio_cross_review_synthesis_v0135190_audit(payload: dict): return crossreview135190.audit_event_draft(payload)
+@app.post("/v1/graph-studio-cross-review-synthesis/v0135190/status")
+def graph_studio_cross_review_synthesis_v0135190_status(payload: dict): return crossreview135190.status(payload)
+@app.get("/v1/graph-studio-cross-review-synthesis/v0135190/contract")
+def graph_studio_cross_review_synthesis_v0135190_contract(): return crossreview135190.contract()
+@app.get("/v1/graph-studio-cross-review-synthesis/v0135190/browser")
+def graph_studio_cross_review_synthesis_v0135190_browser(): return crossreview135190.browser_contract()
+@app.get("/v1/graph-studio-cross-review-synthesis/v0135190/acceptance")
+def graph_studio_cross_review_synthesis_v0135190_acceptance(): return crossreview135190.acceptance_report()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")

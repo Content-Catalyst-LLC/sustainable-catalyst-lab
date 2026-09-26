@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-cross-review-synthesis-v0135190.schema.json",
+  "title": "Lab v0.135.19.0 Cross-Review Synthesis",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "collection",
+    "id",
+    "projectId"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-cross-review-synthesis/0.135.19.0"
+    },
+    "version": {
+      "const": "0.135.19.0"
+    },
+    "collection": {
+      "const": "graphStudioCrossReviewSyntheses"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewThreads": {
+      "type": "array"
+    },
+    "resolutionRecords": {
+      "type": "array"
+    },
+    "reviewerPanels": {
+      "type": "array"
+    },
+    "verificationBundles": {
+      "type": "array"
+    },
+    "reproductionBridges": {
+      "type": "array"
+    },
+    "impactAnalyses": {
+      "type": "array"
+    },
+    "auditRecords": {
+      "type": "array"
+    },
+    "boundary": {
+      "type": "string"
+    }
+  }
+}

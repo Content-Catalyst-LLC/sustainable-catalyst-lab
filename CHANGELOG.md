@@ -1,3 +1,10 @@
+# v0.135.19.0 — Cross-Review Synthesis & Resolution Matrix
+
+- Added project-level cross-review synthesis and administrative resolution matrix.
+- Added open-item, dissent, verification, reproduction, revision-impact, subject, and resolution-history views.
+- Added snapshot comparison and Project Workspace handoff.
+- Preserved v0.135.18 reviewer independence/dissent boundaries; no consensus scoring or automatic scientific resolution.
+
 # v0.135.16.0 — Revision Impact Graph & Scientific Dependency Analysis
 
 - Added bounded upstream/downstream traversal over declared Graph Studio dependencies.
