@@ -1,0 +1,27 @@
+Sustainable Catalyst Lab v0.135.14.0 — BUILD VALIDATION
+
+Validated implementation surface:
+- JavaScript syntax: graph-studio-review-audit-v0135140.js — PASS
+- JavaScript syntax: project-workspace-review-audit-v0135140.js — PASS
+- JavaScript static contract: tests/test-v0135140.js — PASS
+- JavaScript runtime state-machine contract: tests/test-v0135140-state-machine-runtime.js — PASS
+- PHP syntax: sustainable-catalyst-lab.php — PASS
+- PHP syntax: class-sc-lab-graph-studio-review-audit-v0135140.php — PASS
+- PHP integration test: tests/test-v0135140.php — PASS
+- Backend pytest: v0.135.14.0 plus v0.135.13.0/v0.135.12.0/v0.135.11.0 and provenance/incremental regressions — PASS (42 tests)
+- FastAPI import: PASS
+- v0.135.14.0 FastAPI route count: 13
+- Total FastAPI path count at source validation: 2205
+- Review state machine: PASS
+- Action verification requirements: PASS
+- Premature resolution confirmation rejection: PASS
+- Verification pass -> verified -> resolution-confirmed -> resolved: PASS
+- Explicit reopen transition: PASS
+- Backend SHA-256 audit-chain reconstruction: PASS
+- Previous-event link integrity validation: PASS
+- Project persistence target: graphStudioReviewAudits
+- Scientific guardrails: no resolution mutation, annotation mutation, truth ranking, causal inference, evidence-weight inference, or scientific preference
+
+Browser fixture tests/browser-v0135140.html is included. Chromium 144.0.7559.96 was present in the packaging environment, but its headless process did not reach page load because the container browser process stalled in its DBus/zygote environment. No Chromium PASS is claimed for this build environment; the executable JavaScript runtime state-machine test is the local dynamic frontend acceptance substitute.
+
+Final package-level manifest and ZIP integrity are rechecked by scripts/test_v0135140_release.sh and scripts/validate_wordpress_package_v0135140.py.

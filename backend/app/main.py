@@ -155,6 +155,7 @@ from . import graph_studio_provenance_path_analysis_v0135100 as path135100
 from . import graph_studio_competing_paths_v0135110 as paths135110
 from . import graph_studio_review_threads_v0135120 as review135120
 from . import graph_studio_review_resolution_v0135130 as resolution135130
+from . import graph_studio_review_audit_v0135140 as reviewaudit135140
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10129,6 +10130,33 @@ def graph_studio_review_threads_v0135120_browser(): return review135120.browser_
 def graph_studio_review_threads_v0135120_acceptance(): return review135120.acceptance_report()
 
 # Lab v0.135.13.0 — Provenance Review Resolution, Revision Actions & Decision Lineage
+@app.get("/v1/graph-studio-review-audit/v0135140/health")
+def graph_studio_review_audit_v0135140_health(): return reviewaudit135140.health()
+@app.post("/v1/graph-studio-review-audit/v0135140/normalize")
+def graph_studio_review_audit_v0135140_normalize(payload: dict): return reviewaudit135140.normalize_record(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/states")
+def graph_studio_review_audit_v0135140_states(payload: dict): return reviewaudit135140.states(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/transition")
+def graph_studio_review_audit_v0135140_transition(payload: dict): return reviewaudit135140.transition(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/verify-action")
+def graph_studio_review_audit_v0135140_verify_action(payload: dict): return reviewaudit135140.verify_action(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/audit-trail")
+def graph_studio_review_audit_v0135140_audit_trail(payload: dict): return reviewaudit135140.audit_trail(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/resolution-readiness")
+def graph_studio_review_audit_v0135140_resolution_readiness(payload: dict): return reviewaudit135140.resolution_readiness(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/integrity")
+def graph_studio_review_audit_v0135140_integrity(payload: dict): return reviewaudit135140.integrity(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/audit-packet")
+def graph_studio_review_audit_v0135140_audit_packet(payload: dict): return reviewaudit135140.audit_packet(payload)
+@app.post("/v1/graph-studio-review-audit/v0135140/fingerprint")
+def graph_studio_review_audit_v0135140_fingerprint(payload: dict): return reviewaudit135140.fingerprint(payload)
+@app.get("/v1/graph-studio-review-audit/v0135140/contract")
+def graph_studio_review_audit_v0135140_contract(): return reviewaudit135140.contract()
+@app.get("/v1/graph-studio-review-audit/v0135140/browser")
+def graph_studio_review_audit_v0135140_browser(): return reviewaudit135140.browser_contract()
+@app.get("/v1/graph-studio-review-audit/v0135140/acceptance")
+def graph_studio_review_audit_v0135140_acceptance(): return reviewaudit135140.acceptance_report()
+
 @app.get("/v1/graph-studio-review-resolution/v0135130/health")
 def graph_studio_review_resolution_v0135130_health(): return resolution135130.health()
 @app.post("/v1/graph-studio-review-resolution/v0135130/normalize")

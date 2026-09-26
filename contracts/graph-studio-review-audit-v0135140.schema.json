@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-review-audit-v0135140.schema.json",
+  "title": "Graph Studio Review Audit v0.135.14.0",
+  "type": "object",
+  "required": [
+    "version",
+    "recordType",
+    "collection",
+    "id",
+    "threadId",
+    "resolutionRecordId",
+    "events"
+  ],
+  "properties": {
+    "version": {
+      "const": "0.135.14.0"
+    },
+    "recordType": {
+      "const": "graph-studio-review-audit"
+    },
+    "collection": {
+      "const": "graphStudioReviewAudits"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "threadId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolutionRecordId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "threadTitle": {
+      "type": "string"
+    },
+    "comparisonSignature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "annotationId",
+          "eventType",
+          "note"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "annotationId": {
+            "type": "string"
+          },
+          "eventType": {
+            "enum": [
+              "action-started",
+              "verification-recorded",
+              "resolution-confirmed",
+              "reopened"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "outcome": {
+            "enum": [
+              "passed",
+              "failed",
+              "inconclusive",
+              null
+            ]
+          },
+          "verificationMethod": {
+            "enum": [
+              "artifact-inspection",
+              "rerun",
+              "source-check",
+              "figure-check",
+              "method-check",
+              "manual-review",
+              null
+            ]
+          },
+          "verificationRef": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resolutionEventId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "previousEventId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "author": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

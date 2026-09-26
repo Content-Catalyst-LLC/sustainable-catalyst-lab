@@ -1,0 +1,32 @@
+{
+  "version": "0.135.14.0",
+  "reviewStateMachine": true,
+  "actionVerification": true,
+  "appendOnlyResolutionAudit": true,
+  "explicitResolutionConfirmation": true,
+  "allowedEvents": [
+    "action-started",
+    "verification-recorded",
+    "resolution-confirmed",
+    "reopened"
+  ],
+  "verificationOutcomes": [
+    "passed",
+    "failed",
+    "inconclusive"
+  ],
+  "verificationMethods": [
+    "artifact-inspection",
+    "rerun",
+    "source-check",
+    "figure-check",
+    "method-check",
+    "manual-review"
+  ],
+  "resolutionMutation": false,
+  "annotationMutation": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false,
+  "scientificPreference": false
+}

@@ -1,0 +1,21 @@
+const fs=require('fs'),vm=require('vm');
+function assert(x,m){if(!x)throw new Error(m)}
+const annotation={id:'a1',kind:'observation',scope:'path',targetId:'path:0'};
+const resolutionRecord={id:'rr1',resolutions:[{id:'r1',annotationId:'a1',disposition:'addressed',action:'revise-method',response:'revised',revisionRef:'method-rev-2'}]};
+const packet={thread:{id:'t1',title:'Review',annotations:[annotation]},resolutionRecord};
+const window={SCLab:{GraphStudioReviewResolutionV0135130:{contextPacket:()=>JSON.parse(JSON.stringify(packet))}},setTimeout:()=>0,requestAnimationFrame:f=>f(),sessionStorage:{setItem(){},getItem(){return null},removeItem(){}}};
+const document={readyState:'complete',querySelector:()=>null,getElementById:()=>null,addEventListener(){}};
+window.window=window;window.document=document;global.window=window;global.document=document;global.CustomEvent=function(){};global.CSS={escape:x=>x};
+vm.runInNewContext(fs.readFileSync('assets/js/modules/graph-studio-review-audit-v0135140.js','utf8'),{window,document,CustomEvent:global.CustomEvent,CSS:global.CSS,console,Date,Math,JSON,Set});
+const api=window.SCLab.GraphStudioReviewAuditV0135140;
+assert(api,'api');assert(api.stateFor('a1')==='action-required','initial action-required');
+assert(api.appendEvent({annotationId:'a1',eventType:'resolution-confirmed',note:'too early'})===false,'premature confirm rejected');
+assert(api.appendEvent({annotationId:'a1',eventType:'verification-recorded',outcome:'passed',verificationMethod:'method-check',verificationRef:'method-rev-2',note:'checked'})===true,'verification accepted');
+assert(api.stateFor('a1')==='verified','verified state');
+assert(api.appendEvent({annotationId:'a1',eventType:'resolution-confirmed',note:'confirmed'})===true,'resolution confirmation accepted');
+assert(api.stateFor('a1')==='resolved','resolved state');
+assert(api.appendEvent({annotationId:'a1',eventType:'reopened',note:'new evidence requires review'})===true,'reopen accepted');
+assert(api.stateFor('a1')==='reopened','reopened state');
+assert(api.status().fullGraphRedrawForAudit===false,'no redraw contract');
+assert(api.status().resolutionMutation===false,'no resolution mutation');
+console.log('PASS - v0.135.14.0 runtime state machine / verification / resolution audit');
