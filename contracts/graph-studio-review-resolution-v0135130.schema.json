@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-review-resolution-v0135130.schema.json",
+  "title": "Graph Studio Review Resolution Record v0.135.13.0",
+  "type": "object",
+  "required": ["schema", "version", "recordType", "collection", "id", "threadId", "resolutions", "boundary"],
+  "properties": {
+    "schema": {"const": "sc-lab-graph-studio-review-resolution/0.135.13.0"},
+    "version": {"const": "0.135.13.0"},
+    "recordType": {"const": "graph-studio-review-resolution"},
+    "collection": {"const": "graphStudioReviewResolutions"},
+    "id": {"type": "string", "minLength": 1},
+    "threadId": {"type": "string", "minLength": 1},
+    "threadTitle": {"type": "string"},
+    "comparisonSignature": {"type": ["string", "null"]},
+    "resolutions": {
+      "type": "array", "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["id", "annotationId", "disposition", "action", "response", "createdAt", "author"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "annotationId": {"type": "string", "minLength": 1},
+          "disposition": {"enum": ["addressed", "deferred", "withdrawn", "superseded"]},
+          "action": {"enum": ["none", "revise-method", "revise-data", "revise-figure", "add-evidence", "clarify-claim", "rerun-analysis", "follow-up"]},
+          "response": {"type": "string", "minLength": 1},
+          "revisionRef": {"type": ["string", "null"]},
+          "createdAt": {"type": "string"},
+          "author": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    },
+    "createdAt": {"type": ["string", "null"]},
+    "updatedAt": {"type": ["string", "null"]},
+    "boundary": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

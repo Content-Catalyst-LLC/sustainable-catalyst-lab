@@ -1,0 +1,33 @@
+<!doctype html><meta charset="utf-8"><title>Lab v0.135.13.0 browser certification</title>
+<div class="sc-lab-app"><section data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage><div data-gs135110-bar></div><svg><g data-gs13585-edge="e1"><line></line></g><g data-gs13585-edge="e2"><line></line></g><g data-gs13585-node="A"><rect></rect></g><g data-gs13585-node="X"><rect></rect></g><g data-gs13585-node="B"><rect></rect></g></svg></div><aside data-gs13583-inspector></aside></div></section><section data-lab-module="project-workspace"><div class="sc-lab-module-header">Project Workspace</div></section></div>
+<script>
+window.SCLab={}; window.__fullRenderCount=1; window.__nav=null; window.__saved=[];
+const store={add:(c,r)=>{window.__saved.push({collection:c,record:r});return r},getRecord:id=>{const x=window.__saved.find(v=>v.record.id===id);return x?{collection:x.collection,record:x.record}:null},updateRecord:(id,p)=>{const x=window.__saved.find(v=>v.record.id===id);if(x)x.record=Object.assign({},x.record,p);return x?.record||null}};
+document.querySelector('.sc-lab-app')._scLabProjects=store;
+window.__comparison={version:'0.135.11.0',objectA:{id:'A',label:'Dataset A'},objectB:{id:'B',label:'Figure B'},mode:'directed',maxHops:4,candidatePathCount:1,selectedPathIndex:0,selectedPath:{nodes:['A','X','B'],edges:['e1','e2'],steps:[{edgeId:'e1',from:'A',to:'X',relation:'transformed-by'},{edgeId:'e2',from:'X',to:'B',relation:'renders'}]},candidatePaths:[]};
+window.SCLab.GraphStudioCompetingPathsV0135110={contextPacket:()=>JSON.parse(JSON.stringify(window.__comparison)),status:()=>({candidatePathCount:1,activePath:0})};
+window.SCLab.GraphStudioNativeProvenanceV013585={status:()=>({fullRenderCount:window.__fullRenderCount})};
+window.SCLabRuntimeV02631={navigate:x=>window.__nav=x};
+</script>
+<script src="../assets/js/modules/graph-studio-review-threads-v0135120.js"></script>
+<script src="../assets/js/modules/graph-studio-review-resolution-v0135130.js"></script>
+<script src="../assets/js/modules/project-workspace-review-resolution-v0135130.js"></script>
+<script>
+setTimeout(()=>{
+ const review=window.SCLab.GraphStudioReviewThreadsV0135120, api=window.SCLab.GraphStudioReviewResolutionV0135130;
+ const before=window.SCLab.GraphStudioNativeProvenanceV013585.status().fullRenderCount;
+ review.addAnnotation({kind:'observation',scope:'path',targetId:'path:0',note:'Transform branch requires method revision.'});
+ review.addAnnotation({kind:'limitation',scope:'edge',targetId:'e2',note:'Figure metadata is incomplete.'});
+ review.addAnnotation({kind:'question',scope:'object-b',targetId:'B',note:'Should the figure expose an uncertainty note?'});
+ setTimeout(()=>{
+  const anns=review.contextPacket().thread.annotations;
+  const r1=api.addResolution({annotationId:anns[0].id,disposition:'addressed',action:'revise-method',revisionRef:'method-rev-2',response:'Updated the method definition and linked revision.'});
+  const r2=api.addResolution({annotationId:anns[1].id,disposition:'deferred',action:'follow-up',response:'Deferred until figure metadata is regenerated.'});
+  const invalid=api.addResolution({annotationId:anns[2].id,disposition:'addressed',action:'rerun-analysis',response:'Missing required revision reference.'});
+  api.saveRecord(); const packet=api.contextPacket(); api.openContext(); window.SCLabProjectWorkspaceReviewResolutionV0135130?.mount?.();
+  const after=window.SCLab.GraphStudioNativeProvenanceV013585.status().fullRenderCount;
+  const out={version:api.status().version,added:[r1,r2],invalidRevisionRefRejected:invalid===false,resolutionEventCount:api.status().resolutionEventCount,latestDispositionCount:api.status().latestDispositionCount,pendingCount:api.status().pendingCount,firstAddressed:document.querySelector(`[data-gs135120-annotation="${anns[0].id}"]`)?.classList.contains('sc-gs135130-addressed')||false,secondDeferred:document.querySelector(`[data-gs135120-annotation="${anns[1].id}"]`)?.classList.contains('sc-gs135130-deferred')||false,decisionLineageCount:packet.decisionLineage.length,projectRecords:window.__saved.length,navigation:window.__nav,workspaceContext:!!document.querySelector('[data-gs135130-project-context]'),fullRenderCountBefore:before,fullRenderCountAfter:after,fullGraphRedrawForResolution:api.status().fullGraphRedrawForResolution,annotationMutation:api.status().annotationMutation,truthRanking:api.status().truthRanking,causalInference:api.status().causalInference,evidenceWeightInference:api.status().evidenceWeightInference,scientificPreference:api.status().scientificPreference};
+  document.body.innerHTML='<pre id="result">'+JSON.stringify(out,null,2).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre>';
+ },180);
+},260);
+</script>

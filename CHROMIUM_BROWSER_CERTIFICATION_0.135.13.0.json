@@ -1,0 +1,49 @@
+{
+  "release": "0.135.13.0",
+  "engine": "Chromium 144.0.7559.96 via Playwright set_content/add_script_tag",
+  "sourceMode": "Exact repository JavaScript bytes; the shipping WordPress package is built from these same manifest-hashed files.",
+  "liveSiteNavigation": false,
+  "pageErrors": [],
+  "result": {
+    "version": "0.135.13.0",
+    "added": [
+      true,
+      true
+    ],
+    "invalidRevisionRefRejected": true,
+    "resolutionEventCount": 2,
+    "latestDispositionCount": 2,
+    "pendingCount": 1,
+    "firstAddressed": true,
+    "secondDeferred": true,
+    "decisionLineageCount": 2,
+    "projectRecords": 1,
+    "navigation": "project-workspace",
+    "workspaceContext": true,
+    "fullRenderCountBefore": 1,
+    "fullRenderCountAfter": 1,
+    "fullGraphRedrawForResolution": false,
+    "annotationMutation": false,
+    "truthRanking": false,
+    "causalInference": false,
+    "evidenceWeightInference": false,
+    "scientificPreference": false
+  },
+  "acceptance": {
+    "resolutionEventsRecorded": true,
+    "revisionReferenceGuard": true,
+    "pendingCount": true,
+    "annotationStatusBadges": true,
+    "decisionLineage": true,
+    "projectPersistence": true,
+    "projectWorkspaceHandoff": true,
+    "noFullGraphRedraw": true,
+    "scientificBoundaries": true,
+    "noPageErrors": true
+  },
+  "javascriptSha256": {
+    "assets/js/modules/graph-studio-review-threads-v0135120.js": "118fdcc26278def995602cb2fae82923510999f32565b139c9d4be35be1c08ae",
+    "assets/js/modules/graph-studio-review-resolution-v0135130.js": "f17095682771803ab761f4491fe6a3fc14a687050b29e458d61eda3078c6a2fa",
+    "assets/js/modules/project-workspace-review-resolution-v0135130.js": "437b66b52dc858f630b177502b7ca68026e9d605fc4a8141b5b1badd05321709"
+  }
+}

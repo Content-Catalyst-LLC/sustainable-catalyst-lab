@@ -1,0 +1,14 @@
+{
+  "version": "0.135.13.0",
+  "name": "Graph Studio Provenance Review Resolution Policy",
+  "dispositions": ["addressed", "deferred", "withdrawn", "superseded"],
+  "actions": ["none", "revise-method", "revise-data", "revise-figure", "add-evidence", "clarify-claim", "rerun-analysis", "follow-up"],
+  "appendOnlyDecisionLineage": true,
+  "annotationMutation": false,
+  "explicitSave": true,
+  "projectCollection": "graphStudioReviewResolutions",
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false,
+  "scientificPreference": false
+}

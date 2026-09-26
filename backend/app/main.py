@@ -154,6 +154,7 @@ from . import graph_studio_object_explorer_v013590 as explorer13590
 from . import graph_studio_provenance_path_analysis_v0135100 as path135100
 from . import graph_studio_competing_paths_v0135110 as paths135110
 from . import graph_studio_review_threads_v0135120 as review135120
+from . import graph_studio_review_resolution_v0135130 as resolution135130
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10126,4 +10127,28 @@ def graph_studio_review_threads_v0135120_annotation_contract(): return review135
 def graph_studio_review_threads_v0135120_browser(): return review135120.browser_contract()
 @app.get("/v1/graph-studio-review-threads/v0135120/acceptance")
 def graph_studio_review_threads_v0135120_acceptance(): return review135120.acceptance_report()
+
+# Lab v0.135.13.0 — Provenance Review Resolution, Revision Actions & Decision Lineage
+@app.get("/v1/graph-studio-review-resolution/v0135130/health")
+def graph_studio_review_resolution_v0135130_health(): return resolution135130.health()
+@app.post("/v1/graph-studio-review-resolution/v0135130/normalize")
+def graph_studio_review_resolution_v0135130_normalize(payload: dict): return resolution135130.normalize_record(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/summary")
+def graph_studio_review_resolution_v0135130_summary(payload: dict): return resolution135130.summarize(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/pending")
+def graph_studio_review_resolution_v0135130_pending(payload: dict): return resolution135130.pending(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/revision-actions")
+def graph_studio_review_resolution_v0135130_revision_actions(payload: dict): return resolution135130.revision_actions(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/decision-lineage")
+def graph_studio_review_resolution_v0135130_decision_lineage(payload: dict): return resolution135130.decision_lineage(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/resolution-packet")
+def graph_studio_review_resolution_v0135130_resolution_packet(payload: dict): return resolution135130.resolution_packet(payload)
+@app.post("/v1/graph-studio-review-resolution/v0135130/fingerprint")
+def graph_studio_review_resolution_v0135130_fingerprint(payload: dict): return resolution135130.fingerprint(payload)
+@app.get("/v1/graph-studio-review-resolution/v0135130/contract")
+def graph_studio_review_resolution_v0135130_contract(): return resolution135130.contract()
+@app.get("/v1/graph-studio-review-resolution/v0135130/browser")
+def graph_studio_review_resolution_v0135130_browser(): return resolution135130.browser_contract()
+@app.get("/v1/graph-studio-review-resolution/v0135130/acceptance")
+def graph_studio_review_resolution_v0135130_acceptance(): return resolution135130.acceptance_report()
 

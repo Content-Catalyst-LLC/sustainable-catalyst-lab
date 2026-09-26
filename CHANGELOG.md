@@ -1791,3 +1791,9 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 
 ## 0.127.0 — Scientific Time-Series Laboratory
 - Added reproducible temporal profiling, decomposition, forecasting, diagnostics, state-space, change-point, anomaly, cross-correlation, spectral, visualization, snapshot, export, and Core-plan workflows.
+
+## 0.135.13.0 — Provenance Review Resolution, Revision Actions & Decision Lineage
+- Added append-only resolution events for Graph Studio provenance review annotations.
+- Added explicit dispositions and revision/follow-up actions with revision-reference requirements for revision-producing actions.
+- Added pending-item summaries, decision-lineage reconstruction, project persistence, and Project Workspace handoff.
+- Preserved reviewer annotations as separate immutable review context; no disposition is treated as scientific truth, causation, evidence weighting, or preferred explanation.

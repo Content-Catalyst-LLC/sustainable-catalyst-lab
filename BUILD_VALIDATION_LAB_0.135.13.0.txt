@@ -1,0 +1,20 @@
+Sustainable Catalyst Lab v0.135.13.0 — BUILD VALIDATION
+
+Validated implementation surface:
+- JavaScript syntax: graph-studio-review-resolution-v0135130.js — PASS
+- JavaScript syntax: project-workspace-review-resolution-v0135130.js — PASS
+- JavaScript contract test: tests/test-v0135130.js — PASS
+- PHP syntax: sustainable-catalyst-lab.php — PASS
+- PHP syntax: class-sc-lab-graph-studio-review-resolution-v0135130.php — PASS
+- PHP integration test: tests/test-v0135130.php — PASS
+- Backend pytest: v0.135.13.0 plus v0.135.12.0/v0.135.11.0/v0.135.10.0/v0.135.9.0 and relationship/incremental regressions — PASS (34 tests)
+- FastAPI import: PASS
+- v0.135.13.0 FastAPI route count: 11
+- Total FastAPI path count at source validation: 2192
+- Chromium 144.0.7559.96 instrumented fixture using exact release-source JavaScript bytes — PASS
+- Two resolution events, one pending annotation, revision-reference guard, annotation status badges, project save and Project Workspace handoff — PASS
+- Chromium page errors: 0
+- Chromium fullRenderCount: 1 before / 1 after resolution, save, and handoff
+- Scientific guardrails: no annotation mutation, truth ranking, causal inference, evidence-weight inference, or scientific preference
+
+Final package-level manifest and ZIP integrity are rechecked by scripts/test_v0135130_release.sh and scripts/validate_wordpress_package_v0135130.py.
