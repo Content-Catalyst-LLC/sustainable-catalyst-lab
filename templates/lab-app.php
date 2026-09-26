@@ -2116,7 +2116,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / OBJECT EXPLORER v0.135.9.0</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio now layers a governed scientific-object explorer over the hardened native provenance runtime. Selected objects expose active-project metadata and declared relationships, 1-hop and 2-hop neighborhoods support bounded graph exploration, and project records can hand off to Project Workspace without changing the underlying scientific graph.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / PATH ANALYSIS v0.135.10.0</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio now extends the governed object explorer with bounded provenance-path analysis and multi-object comparison. Researchers can set two project objects, trace deterministic directed or structural paths through declared relationships, inspect the ordered chain, and hand the resulting research context to Project Workspace without changing the underlying scientific graph.</p></header>
         <!-- EXPERIENCE v0.135.8.1 compatibility lifecycle retained -->
         <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio initializing scientific context…</p>

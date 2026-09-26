@@ -1,3 +1,11 @@
+## 0.135.10.0 — Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
+- Added two-object A/B comparison in Graph Studio.
+- Added deterministic bounded shortest-path analysis over declared provenance/project relationships.
+- Added directed-lineage and structural-path modes with explicit hop bounds.
+- Added incremental path highlighting without increasing the native full-render count.
+- Added Project Workspace research-context handoff containing A/B objects and the declared relationship chain.
+- Preserved scientific boundaries: no causal, evidentiary, semantic-similarity, ranking, or scientific-validity inference.
+
 
 ## 0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
 - Adds governed 1-hop and 2-hop provenance neighborhoods over declared project relationships.

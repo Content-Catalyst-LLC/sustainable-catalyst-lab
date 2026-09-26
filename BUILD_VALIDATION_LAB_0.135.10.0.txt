@@ -1,0 +1,35 @@
+SUSTAINABLE CATALYST LAB v0.135.10.0 — BUILD VALIDATION
+Release: Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
+
+VALIDATED LOCALLY
+- JavaScript syntax: graph-studio-path-analysis-v0135100.js PASS
+- JavaScript syntax: project-workspace-research-context-v0135100.js PASS
+- JavaScript contract test: PASS
+- PHP integration test: PASS
+- PHP syntax: main plugin + v0.135.10.0 REST class PASS
+- Python backend v0.135.10.0 tests: 6 PASS
+- FastAPI import: PASS
+- FastAPI total unique paths: 2161
+- FastAPI v0.135.10.0 paths: 9
+- Chromium interaction fixture using exact v0.135.10.0 JavaScript bytes: PASS
+  * directed source -> method path: 3 hops
+  * path overlay: 3 edges
+  * reverse directed path correctly absent
+  * structural reverse path: 3 hops
+  * 2-hop bound correctly blocks 3-hop path
+  * research-context packet written
+  * Project Workspace navigation requested
+  * Project Workspace research context rendered
+  * native full-render count remained 1
+  * no MutationObserver interaction ownership in v0.135.10.0 module
+
+SCIENTIFIC BOUNDARIES
+- Declared relationships only.
+- No causal inference.
+- No evidentiary-support inference.
+- No semantic-similarity inference.
+- No ranking or scientific-validity determination.
+- Path/context operations do not mutate scientific project records.
+
+LIVE SITE STATUS
+- Not tested from this build environment. WordPress/Bluehost and Contabo deployment remain user acceptance steps.

@@ -1114,3 +1114,8 @@ Transparent rival hypothesis/model analysis without automatic ranking or truth s
 ## Lab v0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
 
 Graph Studio now layers a governed scientific-object explorer over the hardened native provenance runtime. Selected nodes resolve to active-project records when possible, expose declared incoming/outgoing relationships, support 1-hop and 2-hop neighborhood exploration, and can hand a focused record to Project Workspace. Neighborhoods are based only on declared project relationships and remain presentation state; no causal, semantic, evidentiary, or truth relationship is inferred.
+
+
+## Lab v0.135.10.0 — Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
+
+Adds deterministic bounded path tracing between two Graph Studio research objects, directed-lineage and structural-path modes, side-by-side object comparison, incremental path overlays, and a non-mutating Project Workspace research-context handoff. Path analysis is limited to declared graph relationships and does not infer causation, evidentiary support, semantic similarity, ranking, or scientific validity.
