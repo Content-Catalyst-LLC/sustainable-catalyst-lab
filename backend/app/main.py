@@ -152,6 +152,7 @@ from . import graph_studio_incremental_interaction_v0135852 as provenance135852
 from . import graph_studio_context_relationships_v0135853 as provenance135853
 from . import graph_studio_object_explorer_v013590 as explorer13590
 from . import graph_studio_provenance_path_analysis_v0135100 as path135100
+from . import graph_studio_competing_paths_v0135110 as paths135110
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10080,3 +10081,26 @@ def graph_studio_path_analysis_v0135100_browser(): return path135100.browser_con
 def graph_studio_path_analysis_v0135100_diagnostics(): return path135100.diagnostics_contract()
 @app.get("/v1/graph-studio-path-analysis/v0135100/acceptance")
 def graph_studio_path_analysis_v0135100_acceptance(): return path135100.acceptance_report()
+
+# Lab v0.135.11.0 — Provenance Hypothesis Comparison, Competing Paths & Evidence Context
+@app.get("/v1/graph-studio-competing-paths/v0135110/health")
+def graph_studio_competing_paths_v0135110_health(): return paths135110.health()
+@app.post("/v1/graph-studio-competing-paths/v0135110/paths")
+def graph_studio_competing_paths_v0135110_paths(payload: dict): return paths135110.enumerate_paths(payload)
+@app.post("/v1/graph-studio-competing-paths/v0135110/compare")
+def graph_studio_competing_paths_v0135110_compare(payload: dict): return paths135110.compare_paths(payload)
+@app.post("/v1/graph-studio-competing-paths/v0135110/evidence-context")
+def graph_studio_competing_paths_v0135110_evidence(payload: dict): return paths135110.evidence_context(payload)
+@app.post("/v1/graph-studio-competing-paths/v0135110/context-packet")
+def graph_studio_competing_paths_v0135110_context(payload: dict): return paths135110.context_packet(payload)
+@app.get("/v1/graph-studio-competing-paths/v0135110/path-contract")
+def graph_studio_competing_paths_v0135110_path_contract(): return paths135110.path_contract()
+@app.get("/v1/graph-studio-competing-paths/v0135110/evidence-contract")
+def graph_studio_competing_paths_v0135110_evidence_contract(): return paths135110.evidence_contract()
+@app.get("/v1/graph-studio-competing-paths/v0135110/browser")
+def graph_studio_competing_paths_v0135110_browser(): return paths135110.browser_contract()
+@app.get("/v1/graph-studio-competing-paths/v0135110/diagnostics")
+def graph_studio_competing_paths_v0135110_diagnostics(): return paths135110.diagnostics_contract()
+@app.get("/v1/graph-studio-competing-paths/v0135110/acceptance")
+def graph_studio_competing_paths_v0135110_acceptance(): return paths135110.acceptance_report()
+

@@ -1,0 +1,50 @@
+{
+  "version": "0.135.11.0",
+  "browser": "Chromium 144.0.7559.96 (Debian GNU/Linux 13)",
+  "method": "Playwright set_content with exact packaged module source bytes; file:// navigation was not used",
+  "module": "assets/js/modules/graph-studio-competing-paths-v0135110.js",
+  "moduleSha256": "71f85943259f8ddf236ef95676cb5948b6ca866224bbf24ba4a29d77dc395b8f",
+  "fixtureGraph": {
+    "nodes": 4,
+    "edges": 4,
+    "declaredCandidatePaths": 2
+  },
+  "result": {
+    "version": "0.135.11.0",
+    "initialCandidatePathCount": 2,
+    "selectedSecondPath": true,
+    "activePath": 1,
+    "selectorStable": true,
+    "fullRenderCountBefore": 1,
+    "fullRenderCountAfter": 1,
+    "fullGraphRedrawForPathSelection": false,
+    "truthRanking": false,
+    "causalInference": false,
+    "scientificPreference": false,
+    "firstPathEvidence": {
+      "supporting": 0,
+      "contradicting": 1,
+      "neutral": 0,
+      "unclassified": 1
+    },
+    "selectedPathEvidence": {
+      "supporting": 2,
+      "contradicting": 0,
+      "neutral": 0,
+      "unclassified": 0
+    },
+    "selectedEdgeCount": 2,
+    "openContext": true,
+    "openContextCount": 1,
+    "navigation": "project-workspace"
+  },
+  "acceptance": {
+    "multiplePathsEnumerated": true,
+    "alternatePathSelectable": true,
+    "selectorStable": true,
+    "incrementalNoFullRedraw": true,
+    "declaredEvidenceContextPreserved": true,
+    "nonAdjudicative": true,
+    "projectWorkspaceHandoff": true
+  }
+}

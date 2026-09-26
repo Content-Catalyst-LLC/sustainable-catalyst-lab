@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>Lab v0.135.11.0 browser certification</title>
+<div class="sc-lab-app"><section data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage><div data-gs135100-bar></div><svg><g data-gs13585-edge="e1"><line></line></g><g data-gs13585-edge="e2"><line></line></g><g data-gs13585-edge="e3"><line></line></g><g data-gs13585-edge="e4"><line></line></g><g data-gs13585-node="A"><rect></rect></g><g data-gs13585-node="X"><rect></rect></g><g data-gs13585-node="Y"><rect></rect></g><g data-gs13585-node="B"><rect></rect></g></svg></div><aside data-gs13583-inspector></aside></div></section><section data-lab-module="project-workspace"></section></div>
+<script>
+window.SCLab={};
+const nodes=[{id:'A',label:'Dataset A',type:'dataset',objectRef:'A'},{id:'X',label:'Transform',type:'transform',objectRef:'X'},{id:'Y',label:'Binding',type:'binding',objectRef:'Y'},{id:'B',label:'Figure B',type:'figure',objectRef:'B'}];
+const edges=[{id:'e1',from:'A',to:'X',relation:'transformed-by',metadata:{evidenceContext:'supporting'}},{id:'e2',from:'X',to:'B',relation:'renders',metadata:{evidenceContext:'supporting'}},{id:'e3',from:'A',to:'Y',relation:'binds',metadata:{evidenceContext:'contradicting'}},{id:'e4',from:'Y',to:'B',relation:'renders'}];
+const nodeMap=new Map(nodes.map(n=>[n.id,n]));
+window.SCLab.GraphStudioNativeProvenanceV013585={buildModel:()=>({nodes,edges,nodeMap}),status:()=>({fullRenderCount:1})};
+window.SCLab.GraphStudioPathAnalysisV0135100={status:()=>({anchorA:'A',anchorB:'B',mode:'directed',maxHops:4})};
+window.SCLabRuntimeV02631={navigate:x=>window.__nav=x};
+</script>
+<script src="../assets/js/modules/graph-studio-competing-paths-v0135110.js"></script>
+<script>
+setTimeout(()=>{
+ const api=window.SCLab.GraphStudioCompetingPathsV0135110, before=document.querySelector('[data-gs135110-path]');
+ const s1=api.status(), p=api.contextPacket(); api.selectPath(1); const after=document.querySelector('[data-gs135110-path]'), s2=api.status(); const p2=api.contextPacket(); api.openContext();
+ const out={version:s2.version,candidatePathCount:s2.candidatePathCount,activePath:s2.activePath,selectorStable:before===after,fullGraphRedrawForPathSelection:s2.fullGraphRedrawForPathSelection,truthRanking:s2.truthRanking,causalInference:s2.causalInference,firstEvidence:p?.candidatePaths?.[0]?.evidence,secondEvidence:p2?.selectedPath?.evidence,openContextCount:api.status().openContextCount,navigation:window.__nav||null,selectedEdgeCount:document.querySelectorAll('.sc-gs135110-path-edge').length};
+ document.body.innerHTML='<pre id="result">'+JSON.stringify(out,null,2).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre>';
+},250);
+</script>

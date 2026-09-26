@@ -1,3 +1,9 @@
+## 0.135.11.0 — Provenance Hypothesis Comparison, Competing Paths & Evidence Context
+- Adds bounded enumeration of multiple simple provenance paths between Graph Studio A/B anchors.
+- Adds incremental active-path switching and side-by-side relationship-chain comparison.
+- Surfaces supporting, contradicting, neutral, or unclassified evidence context only when explicitly declared on provenance edges.
+- Adds Project Workspace comparison handoff without ranking candidate paths or inferring causal/scientific preference.
+
 ## 0.135.10.0 — Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
 - Added two-object A/B comparison in Graph Studio.
 - Added deterministic bounded shortest-path analysis over declared provenance/project relationships.

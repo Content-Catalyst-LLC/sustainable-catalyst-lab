@@ -1,0 +1,12 @@
+{
+  "version": "0.135.11.0",
+  "maxPaths": 10,
+  "maxHops": 12,
+  "simplePathsOnly": true,
+  "deterministicOrdering": true,
+  "declaredEvidenceContextOnly": true,
+  "truthRanking": false,
+  "causalInference": false,
+  "scientificPreference": false,
+  "fullGraphRedrawForPathSelection": false
+}

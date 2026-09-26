@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc.lab.graph-studio-competing-paths.v0135110",
+  "title": "Graph Studio Competing Paths Context",
+  "type": "object",
+  "required": ["objectA", "objectB", "candidatePaths", "selectedPathIndex"],
+  "properties": {
+    "objectA": {"type": "object"},
+    "objectB": {"type": "object"},
+    "candidatePaths": {"type": "array", "maxItems": 10},
+    "selectedPathIndex": {"type": "integer", "minimum": 0},
+    "boundary": {"type": "string"}
+  },
+  "additionalProperties": true
+}
