@@ -1,0 +1,13 @@
+{
+  "version": "0.135.12.0",
+  "reviewThread": true,
+  "pathAnnotations": true,
+  "claimLinkage": "explicit-only",
+  "annotationKinds": ["observation", "question", "limitation", "claim-link", "evidence-note"],
+  "annotationScopes": ["path", "edge", "node", "object-a", "object-b"],
+  "threadStatuses": ["draft", "in-review", "revised", "archived"],
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false,
+  "scientificPreference": false
+}

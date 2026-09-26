@@ -1,0 +1,18 @@
+Sustainable Catalyst Lab v0.135.12.0 — BUILD VALIDATION
+
+Validated implementation surface:
+- JavaScript syntax: graph-studio-review-threads-v0135120.js — PASS
+- JavaScript syntax: project-workspace-review-thread-v0135120.js — PASS
+- JavaScript contract test: tests/test-v0135120.js — PASS
+- PHP syntax: sustainable-catalyst-lab.php — PASS
+- PHP syntax: class-sc-lab-graph-studio-review-threads-v0135120.php — PASS
+- PHP integration test: tests/test-v0135120.php — PASS
+- Backend pytest: new review-thread tests plus v0.135.11.0/v0.135.10.0/v0.135.9.0 regressions — PASS
+- FastAPI import: PASS
+- v0.135.12.0 FastAPI route count: 10
+- Total FastAPI path count at source validation: 2181
+- Chromium instrumented fixture using exact release JavaScript bytes — PASS
+- Chromium fullRenderCount: 1 before / 1 after annotation, path switch, save, and handoff
+- Project Workspace review-context handoff: PASS
+
+Final package-level manifest and ZIP integrity are rechecked by scripts/test_v0135120_release.sh and scripts/validate_wordpress_package_v0135120.py.

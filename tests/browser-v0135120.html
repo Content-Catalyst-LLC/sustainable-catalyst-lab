@@ -1,0 +1,33 @@
+<!doctype html><meta charset="utf-8"><title>Lab v0.135.12.0 browser certification</title>
+<div class="sc-lab-app"><section data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage><div data-gs135110-bar></div><svg><g data-gs13585-edge="e1"><line></line></g><g data-gs13585-edge="e2"><line></line></g><g data-gs13585-edge="e3"><line></line></g><g data-gs13585-edge="e4"><line></line></g><g data-gs13585-node="A"><rect></rect></g><g data-gs13585-node="X"><rect></rect></g><g data-gs13585-node="Y"><rect></rect></g><g data-gs13585-node="B"><rect></rect></g></svg></div><aside data-gs13583-inspector></aside></div></section><section data-lab-module="project-workspace"><div class="sc-lab-module-header">Project Workspace</div></section></div>
+<script>
+window.SCLab={}; window.__fullRenderCount=1; window.__nav=null; window.__saved=[];
+const store={add:(c,r)=>{window.__saved.push({collection:c,record:r});return r},getRecord:id=>{const x=window.__saved.find(v=>v.record.id===id);return x?{collection:x.collection,record:x.record}:null},updateRecord:(id,p)=>{const x=window.__saved.find(v=>v.record.id===id);if(x)x.record=Object.assign({},x.record,p);return x?.record||null}};
+document.querySelector('.sc-lab-app')._scLabProjects=store;
+window.__comparison={version:'0.135.11.0',objectA:{id:'A',label:'Dataset A'},objectB:{id:'B',label:'Figure B'},mode:'directed',maxHops:4,candidatePathCount:2,selectedPathIndex:0,selectedPath:{nodes:['A','X','B'],edges:['e1','e2'],steps:[{edgeId:'e1',from:'A',to:'X',relation:'transformed-by'},{edgeId:'e2',from:'X',to:'B',relation:'renders'}]},candidatePaths:[]};
+window.SCLab.GraphStudioCompetingPathsV0135110={contextPacket:()=>JSON.parse(JSON.stringify(window.__comparison)),status:()=>({candidatePathCount:2,activePath:window.__comparison.selectedPathIndex})};
+window.SCLab.GraphStudioNativeProvenanceV013585={status:()=>({fullRenderCount:window.__fullRenderCount})};
+window.SCLabRuntimeV02631={navigate:x=>window.__nav=x};
+</script>
+<script src="../assets/js/modules/graph-studio-review-threads-v0135120.js"></script>
+<script src="../assets/js/modules/project-workspace-review-thread-v0135120.js"></script>
+<script>
+setTimeout(()=>{
+ const api=window.SCLab.GraphStudioReviewThreadsV0135120;
+ const before=window.SCLab.GraphStudioNativeProvenanceV013585.status().fullRenderCount;
+ const a1=api.addAnnotation({kind:'observation',scope:'path',targetId:'path:0',note:'Review the transform branch.'});
+ const a2=api.addAnnotation({kind:'limitation',scope:'edge',targetId:'e2',note:'Renderer parameters are outside this edge.'});
+ const a3=api.addAnnotation({kind:'claim-link',scope:'object-b',targetId:'B',claimRef:'claim-17',note:'Explicit claim linkage.'});
+ api.setStatus('in-review'); api.saveThread();
+ const first={count:api.status().annotationCount,e2Limitation:document.querySelector('[data-gs13585-edge="e2"]').classList.contains('sc-gs135120-limitation'),bClaim:document.querySelector('[data-gs13585-node="B"]').classList.contains('sc-gs135120-claim-link')};
+ window.__comparison.selectedPathIndex=1;window.__comparison.selectedPath={nodes:['A','Y','B'],edges:['e3','e4'],steps:[{edgeId:'e3',from:'A',to:'Y',relation:'binds'},{edgeId:'e4',from:'Y',to:'B',relation:'renders'}]};
+ document.querySelector('[data-lab-module="graph-studio"]').dispatchEvent(new CustomEvent('sc-lab:graph-studio-competing-paths-state',{bubbles:true}));
+ setTimeout(()=>{
+   const a4=api.addAnnotation({kind:'question',scope:'edge',targetId:'e4',note:'Does this binding preserve the declared context?'});
+   const packet=api.contextPacket(); api.openContext(); window.SCLabProjectWorkspaceReviewThreadV0135120?.mount?.();
+   const after=window.SCLab.GraphStudioNativeProvenanceV013585.status().fullRenderCount;
+   const out={version:api.status().version,added:[a1,a2,a3,a4],annotationCount:api.status().annotationCount,threadStatus:api.status().threadStatus,saves:api.status().saves,contextOpens:api.status().contextOpens,first,secondPathEdgeMarked:document.querySelector('[data-gs13585-edge="e4"]').classList.contains('sc-gs135120-annotated'),oldPathEdgeStillMarked:document.querySelector('[data-gs13585-edge="e1"]').classList.contains('sc-gs135120-annotated'),explicitClaimRefs:packet.explicitClaimRefs,selectedPathIndex:packet.thread.selectedPathIndex,projectRecords:window.__saved.length,navigation:window.__nav,workspaceContext:!!document.querySelector('[data-gs135120-project-context]'),fullRenderCountBefore:before,fullRenderCountAfter:after,fullGraphRedrawForAnnotation:api.status().fullGraphRedrawForAnnotation,truthRanking:api.status().truthRanking,causalInference:api.status().causalInference,evidenceWeightInference:api.status().evidenceWeightInference};
+   document.body.innerHTML='<pre id="result">'+JSON.stringify(out,null,2).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre>';
+ },120);
+},220);
+</script>

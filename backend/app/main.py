@@ -153,6 +153,7 @@ from . import graph_studio_context_relationships_v0135853 as provenance135853
 from . import graph_studio_object_explorer_v013590 as explorer13590
 from . import graph_studio_provenance_path_analysis_v0135100 as path135100
 from . import graph_studio_competing_paths_v0135110 as paths135110
+from . import graph_studio_review_threads_v0135120 as review135120
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10103,4 +10104,26 @@ def graph_studio_competing_paths_v0135110_browser(): return paths135110.browser_
 def graph_studio_competing_paths_v0135110_diagnostics(): return paths135110.diagnostics_contract()
 @app.get("/v1/graph-studio-competing-paths/v0135110/acceptance")
 def graph_studio_competing_paths_v0135110_acceptance(): return paths135110.acceptance_report()
+
+# Lab v0.135.12.0 — Provenance Review Threads, Path Annotations & Claim Linkage
+@app.get("/v1/graph-studio-review-threads/v0135120/health")
+def graph_studio_review_threads_v0135120_health(): return review135120.health()
+@app.post("/v1/graph-studio-review-threads/v0135120/normalize")
+def graph_studio_review_threads_v0135120_normalize(payload: dict): return review135120.normalize_thread(payload)
+@app.post("/v1/graph-studio-review-threads/v0135120/summary")
+def graph_studio_review_threads_v0135120_summary(payload: dict): return review135120.summarize_thread(payload)
+@app.post("/v1/graph-studio-review-threads/v0135120/claim-links")
+def graph_studio_review_threads_v0135120_claim_links(payload: dict): return review135120.claim_links(payload)
+@app.post("/v1/graph-studio-review-threads/v0135120/review-packet")
+def graph_studio_review_threads_v0135120_review_packet(payload: dict): return review135120.review_packet(payload)
+@app.post("/v1/graph-studio-review-threads/v0135120/fingerprint")
+def graph_studio_review_threads_v0135120_fingerprint(payload: dict): return review135120.fingerprint(payload)
+@app.get("/v1/graph-studio-review-threads/v0135120/thread-contract")
+def graph_studio_review_threads_v0135120_thread_contract(): return review135120.thread_contract()
+@app.get("/v1/graph-studio-review-threads/v0135120/annotation-contract")
+def graph_studio_review_threads_v0135120_annotation_contract(): return review135120.annotation_contract()
+@app.get("/v1/graph-studio-review-threads/v0135120/browser")
+def graph_studio_review_threads_v0135120_browser(): return review135120.browser_contract()
+@app.get("/v1/graph-studio-review-threads/v0135120/acceptance")
+def graph_studio_review_threads_v0135120_acceptance(): return review135120.acceptance_report()
 

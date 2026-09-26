@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-review-thread-v0135120.schema.json",
+  "title": "Graph Studio Provenance Review Thread v0.135.12.0",
+  "type": "object",
+  "required": ["id", "title", "status", "annotations"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "in-review", "revised", "archived"]},
+    "objectA": {"type": ["object", "null"]},
+    "objectB": {"type": ["object", "null"]},
+    "selectedPathIndex": {"type": "integer", "minimum": 0},
+    "annotations": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "scope", "targetId", "note"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["observation", "question", "limitation", "claim-link", "evidence-note"]},
+          "scope": {"enum": ["path", "edge", "node", "object-a", "object-b"]},
+          "targetId": {"type": "string", "minLength": 1},
+          "claimRef": {"type": ["string", "null"]},
+          "note": {"type": "string", "minLength": 1},
+          "pathIndex": {"type": "integer", "minimum": 0}
+        }
+      }
+    }
+  }
+}

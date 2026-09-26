@@ -1,3 +1,10 @@
+
+## 0.135.12.0 — Provenance Review Threads, Path Annotations & Claim Linkage
+
+- Added reviewer-authored provenance review threads over the v0.135.11.0 competing-path context.
+- Added path, edge, node, Object A, and Object B annotations with explicit observation, question, limitation, claim-link, and evidence-note kinds.
+- Added explicit claim/record references, path-specific annotation retention, project persistence, Project Workspace handoff, deterministic backend fingerprints, and incremental SVG annotation markers.
+- Preserved non-adjudicative boundaries: no inferred claim linkage, truth ranking, causal inference, evidence-weight inference, or scientific preference.
 ## 0.135.11.0 — Provenance Hypothesis Comparison, Competing Paths & Evidence Context
 - Adds bounded enumeration of multiple simple provenance paths between Graph Studio A/B anchors.
 - Adds incremental active-path switching and side-by-side relationship-chain comparison.
