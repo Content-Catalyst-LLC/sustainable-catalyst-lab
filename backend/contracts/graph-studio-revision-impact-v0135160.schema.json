@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-revision-impact-v0135160.schema.json",
+  "title": "Graph Studio Revision Impact Analysis v0.135.16.0",
+  "type": "object",
+  "required": [
+    "id",
+    "revisionAction",
+    "seedId",
+    "direction",
+    "maxDepth",
+    "impact"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revisionAction": {
+      "enum": [
+        "revise-method",
+        "revise-data",
+        "revise-figure",
+        "rerun-analysis",
+        "add-evidence",
+        "clarify-claim",
+        "follow-up",
+        "manual-revision"
+      ]
+    },
+    "revisionRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "annotationId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "seedId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction": {
+      "enum": [
+        "downstream",
+        "upstream",
+        "both"
+      ]
+    },
+    "maxDepth": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "impact": {
+      "type": "object"
+    },
+    "boundary": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

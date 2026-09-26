@@ -1,0 +1,32 @@
+Sustainable Catalyst Lab v0.135.16.0 — Build Validation
+
+Feature: Revision Impact Graph & Scientific Dependency Analysis
+
+PASS — JavaScript syntax: graph-studio-revision-impact-v0135160.js
+PASS — JavaScript syntax: project-workspace-revision-impact-v0135160.js
+PASS — JavaScript contract test
+PASS — JavaScript executable traversal/runtime test
+PASS — PHP integration and syntax
+PASS — Backend unit/regression suite: 57 tests
+PASS — FastAPI revision-impact routes: 16
+PASS — FastAPI total registered paths: 2234
+PASS — Release-manifest critical-file integrity
+PASS — v0.135.15.0 verification-artifact regression retained
+PASS — v0.135.14.0 review-audit regression retained
+PASS — v0.135.13.0 review-resolution regression retained
+PASS — competing-path/path-analysis/object-explorer/context/incremental regression retained
+
+Acceptance boundaries:
+- declared dependencies only
+- potential impact only
+- bounded traversal through cyclic graphs
+- dangling references surfaced explicitly
+- no automatic scientific invalidation
+- no causal inference
+- no truth ranking
+- no evidence-weight inference
+- no scientific preference
+- no full Graph Studio redraw for impact overlay
+
+Browser note:
+A browser fixture is packaged, but automated headless-browser certification is not claimed by this build environment. The executable Node runtime contract test passed.

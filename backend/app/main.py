@@ -157,6 +157,7 @@ from . import graph_studio_review_threads_v0135120 as review135120
 from . import graph_studio_review_resolution_v0135130 as resolution135130
 from . import graph_studio_review_audit_v0135140 as reviewaudit135140
 from . import graph_studio_verification_artifacts_v0135150 as verification135150
+from . import graph_studio_revision_impact_v0135160 as revisionimpact135160
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10157,6 +10158,41 @@ def graph_studio_review_audit_v0135140_contract(): return reviewaudit135140.cont
 def graph_studio_review_audit_v0135140_browser(): return reviewaudit135140.browser_contract()
 @app.get("/v1/graph-studio-review-audit/v0135140/acceptance")
 def graph_studio_review_audit_v0135140_acceptance(): return reviewaudit135140.acceptance_report()
+
+
+# Lab v0.135.16.0 — Revision Impact Graph & Scientific Dependency Analysis
+@app.get("/v1/graph-studio-revision-impact/v0135160/health")
+def graph_studio_revision_impact_v0135160_health(): return revisionimpact135160.health()
+@app.post("/v1/graph-studio-revision-impact/v0135160/normalize-graph")
+def graph_studio_revision_impact_v0135160_normalize(payload: dict): return revisionimpact135160.normalize_graph(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/validate-graph")
+def graph_studio_revision_impact_v0135160_validate(payload: dict): return revisionimpact135160.validate_graph(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/impact")
+def graph_studio_revision_impact_v0135160_impact(payload: dict): return revisionimpact135160.impact(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/upstream")
+def graph_studio_revision_impact_v0135160_upstream(payload: dict): return revisionimpact135160.upstream(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/downstream")
+def graph_studio_revision_impact_v0135160_downstream(payload: dict): return revisionimpact135160.downstream(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/direct")
+def graph_studio_revision_impact_v0135160_direct(payload: dict): return revisionimpact135160.direct(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/paths")
+def graph_studio_revision_impact_v0135160_paths(payload: dict): return revisionimpact135160.impact_paths(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/summary")
+def graph_studio_revision_impact_v0135160_summary(payload: dict): return revisionimpact135160.summary(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/snapshot")
+def graph_studio_revision_impact_v0135160_snapshot(payload: dict): return revisionimpact135160.snapshot(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/compare-snapshots")
+def graph_studio_revision_impact_v0135160_compare(payload: dict): return revisionimpact135160.compare_snapshots(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/revision-analysis")
+def graph_studio_revision_impact_v0135160_revision_analysis(payload: dict): return revisionimpact135160.revision_analysis(payload)
+@app.post("/v1/graph-studio-revision-impact/v0135160/impact-packet")
+def graph_studio_revision_impact_v0135160_packet(payload: dict): return revisionimpact135160.impact_packet(payload)
+@app.get("/v1/graph-studio-revision-impact/v0135160/contract")
+def graph_studio_revision_impact_v0135160_contract(): return revisionimpact135160.contract()
+@app.get("/v1/graph-studio-revision-impact/v0135160/browser")
+def graph_studio_revision_impact_v0135160_browser(): return revisionimpact135160.browser_contract()
+@app.get("/v1/graph-studio-revision-impact/v0135160/acceptance")
+def graph_studio_revision_impact_v0135160_acceptance(): return revisionimpact135160.acceptance_report()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")

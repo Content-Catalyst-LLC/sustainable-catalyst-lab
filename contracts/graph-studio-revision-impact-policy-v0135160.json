@@ -1,0 +1,17 @@
+{
+  "version": "0.135.16.0",
+  "declaredDependenciesOnly": true,
+  "potentialImpactOnly": true,
+  "maxNodes": 5000,
+  "maxEdges": 20000,
+  "maxDepth": 12,
+  "cycleDetection": true,
+  "danglingReferenceDetection": true,
+  "automaticScientificInvalidation": false,
+  "causalInference": false,
+  "truthRanking": false,
+  "evidenceWeightInference": false,
+  "scientificPreference": false,
+  "projectCollection": "graphStudioRevisionImpactAnalyses",
+  "backwardCompatibleWith": "0.135.15.0"
+}

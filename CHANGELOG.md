@@ -1,3 +1,11 @@
+# v0.135.16.0 — Revision Impact Graph & Scientific Dependency Analysis
+
+- Added bounded upstream/downstream traversal over declared Graph Studio dependencies.
+- Added direct versus transitive potential-impact classification, impact paths, cycle/dangling-reference diagnostics, snapshots, and snapshot comparison.
+- Added persistent `graphStudioRevisionImpactAnalyses` records and Project Workspace handoff.
+- Added incremental Graph Studio impact overlays without full renderer redraw or scientific-state mutation.
+- Preserved explicit interpretation boundaries: potential impact is structural reachability, not automatic invalidation, causation, truth ranking, or evidence weighting.
+
 ## 0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 
 - Added typed, multi-artifact verification evidence bundles bound directly to v0.135.14.0 verification events.
