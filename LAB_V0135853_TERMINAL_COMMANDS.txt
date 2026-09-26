@@ -1,0 +1,21 @@
+Lab v0.135.8.5.3 — terminal commands
+
+GITHUB PUSH / TAG
+cd ~/Downloads
+rm -rf sc-lab-v0.135.8.5.3-release
+mkdir -p sc-lab-v0.135.8.5.3-release
+unzip -q sustainable-catalyst-lab-v0.135.8.5.3-release-bundle.zip -d sc-lab-v0.135.8.5.3-release
+cd sc-lab-v0.135.8.5.3-release
+chmod +x PUSH_LAB_V0135853_FINAL.sh
+./PUSH_LAB_V0135853_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.8.5.3-repository.zip"
+
+BACKEND FROM MAC
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.135.8.5.3.zip upgrade_lab_backend_v0_135_8_5_3_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+ON CONTABO
+chmod +x /tmp/upgrade_lab_backend_v0_135_8_5_3_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_8_5_3_contabo.sh /tmp/sustainable-catalyst-lab-backend-v0.135.8.5.3.zip
+
+WORDPRESS
+Upload sustainable-catalyst-lab-v0.135.8.5.3-wordpress.zip and choose Replace current with uploaded. The ZIP root is canonical: sustainable-catalyst-lab/.

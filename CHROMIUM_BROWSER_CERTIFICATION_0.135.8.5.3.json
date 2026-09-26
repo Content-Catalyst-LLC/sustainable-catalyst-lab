@@ -1,0 +1,1076 @@
+{
+  "release": "0.135.8.5.3",
+  "certifier": "Chromium 144 headless via Chrome DevTools Protocol Page.setDocumentContent",
+  "fixture": "tests/browser-v0135853.html",
+  "native_js_sha256": "e7b6f945af736c5cb5ea6bcb359cebdf3b08d05a09a777f8e3f2a5fc0b338183",
+  "checks": {
+    "version_is_0.135.8.5.3": true,
+    "selector_identity_stable": true,
+    "sourced_from_all_matches_one": true,
+    "sourced_from_upstream_matches_one": true,
+    "sourced_from_downstream_sticks": true,
+    "sourced_from_downstream_zero_explicit": true,
+    "current_zero_match_option_retained": true,
+    "incompatible_unselected_source_disabled": true,
+    "transformed_by_downstream_available": true,
+    "full_render_count_stable": true,
+    "observer_driven_renders_zero": true,
+    "interaction_loops_zero": true,
+    "project_persistence_debounced": true
+  },
+  "measurements": {
+    "initialFullRenderCount": 1,
+    "finalFullRenderCount": 1,
+    "finalIncrementalUpdateCount": 8,
+    "downstreamSourcedFromMatchCount": 0,
+    "downstreamTransformedByMatchCount": 1,
+    "projectPersistenceWrites": 1,
+    "zeroMatchMessage": "0 matching edges for sourced-from \u00b7 downstream"
+  },
+  "raw": {
+    "initial": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": null,
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "all",
+      "relationFilter": "all",
+      "relationMatchCount": 11,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 0,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 11,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "maps",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "executes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "quantifies",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "visualizes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "renders",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "supports",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "registered-as",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        }
+      ],
+      "visibleNodes": 11,
+      "visibleEdges": 11,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 0,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0,
+      "lastInteractionKind": null,
+      "lastInteractionAt": null,
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterDataset": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "all",
+      "relationFilter": "all",
+      "relationMatchCount": 11,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 0,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 11,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "maps",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "executes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "quantifies",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "visualizes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "renders",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "supports",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "registered-as",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        }
+      ],
+      "visibleNodes": 11,
+      "visibleEdges": 11,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 1,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 1.8,
+      "lastInteractionKind": "node-selection",
+      "lastInteractionAt": "2026-09-25T10:26:53.998Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterSourceAll": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "all",
+      "relationFilter": "sourced-from",
+      "relationMatchCount": 1,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 0,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 11,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "maps",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "executes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "quantifies",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "visualizes",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "renders",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "supports",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "registered-as",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        }
+      ],
+      "visibleNodes": 11,
+      "visibleEdges": 1,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 2,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.3,
+      "lastInteractionKind": "relationship-filter",
+      "lastInteractionAt": "2026-09-25T10:26:53.998Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterUpstream": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "upstream",
+      "relationFilter": "sourced-from",
+      "relationMatchCount": 1,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 10,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "binds",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 2,
+      "visibleEdges": 1,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 3,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.5,
+      "lastInteractionKind": "traversal",
+      "lastInteractionAt": "2026-09-25T10:26:53.999Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterDownstreamZero": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "downstream",
+      "relationFilter": "sourced-from",
+      "relationMatchCount": 0,
+      "relationCompatible": false,
+      "zeroMatchRelationshipState": true,
+      "disabledRelationshipCount": 8,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 10,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 0,
+          "compatible": false,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 1,
+      "visibleEdges": 0,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 4,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.1,
+      "lastInteractionKind": "traversal",
+      "lastInteractionAt": "2026-09-25T10:26:53.999Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterAllDownstream": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "downstream",
+      "relationFilter": "all",
+      "relationMatchCount": 10,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 9,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 10,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 10,
+      "visibleEdges": 10,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 5,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.2,
+      "lastInteractionKind": "relationship-filter",
+      "lastInteractionAt": "2026-09-25T10:26:54.000Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterTransformed": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "downstream",
+      "relationFilter": "transformed-by",
+      "relationMatchCount": 1,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 9,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 10,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "transformed-by",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 2,
+      "visibleEdges": 1,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 6,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.1,
+      "lastInteractionKind": "relationship-filter",
+      "lastInteractionAt": "2026-09-25T10:26:54.000Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "afterTransformedUpstreamZero": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "upstream",
+      "relationFilter": "transformed-by",
+      "relationMatchCount": 0,
+      "relationCompatible": false,
+      "zeroMatchRelationshipState": true,
+      "disabledRelationshipCount": 9,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 0,
+          "compatible": false,
+          "disabled": false
+        },
+        {
+          "relation": "binds",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 1,
+      "visibleEdges": 0,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 7,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.1,
+      "lastInteractionKind": "traversal",
+      "lastInteractionAt": "2026-09-25T10:26:54.001Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 0,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "final": {
+      "version": "0.135.8.5.3",
+      "graphModelLoaded": true,
+      "nodes": 11,
+      "edges": 11,
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "layout": "layered",
+      "traversalMode": "upstream",
+      "relationFilter": "all",
+      "relationMatchCount": 1,
+      "relationCompatible": true,
+      "zeroMatchRelationshipState": false,
+      "disabledRelationshipCount": 10,
+      "relationshipOptions": [
+        {
+          "relation": "all",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "sourced-from",
+          "count": 1,
+          "compatible": true,
+          "disabled": false
+        },
+        {
+          "relation": "transformed-by",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "binds",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "conditions",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "maps",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "executes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "quantifies",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "visualizes",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "renders",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "supports",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        },
+        {
+          "relation": "registered-as",
+          "count": 0,
+          "compatible": false,
+          "disabled": true
+        }
+      ],
+      "visibleNodes": 2,
+      "visibleEdges": 1,
+      "interactionLoopCount": 0,
+      "rendererRenders": 1,
+      "fullRenderCount": 1,
+      "incrementalUpdateCount": 8,
+      "observerDrivenRenders": 0,
+      "lastInteractionMs": 0.3,
+      "lastInteractionKind": "relationship-filter",
+      "lastInteractionAt": "2026-09-25T10:26:54.001Z",
+      "cacheWrites": 0,
+      "projectPersistenceWrites": 1,
+      "projectPersistenceDebounceMs": 220,
+      "projectStatePersistence": true,
+      "mutationObserverOwnsInteraction": false,
+      "provenanceAuthority": "0.135.8.5.3",
+      "authorityRelease": "0.135.8.5.3",
+      "legacyInteractionEnabled": false,
+      "legacyObserverAttached": false,
+      "relationshipSelectorStable": true,
+      "contextAwareRelationshipOptions": true,
+      "impossibleRelationshipAutoReset": false,
+      "zeroMatchExplicit": true,
+      "incrementalRendering": true,
+      "presentationStateOnly": true
+    },
+    "selectorStable": true,
+    "currentSourceRetained": true,
+    "sourcedDisabledWhenNotCurrent": true,
+    "transformedAvailable": true,
+    "zeroNote": "0 matching edges for sourced-from \u00b7 downstream",
+    "fullRenderStable": true,
+    "projectWrites": 1,
+    "projectState": {
+      "layout": "layered",
+      "selectedNode": "dataset",
+      "selectedEdge": null,
+      "traversal": "upstream",
+      "relation": "all",
+      "scale": 1,
+      "tx": 0,
+      "ty": 0,
+      "updatedAt": "2026-09-25T10:26:54.221Z"
+    }
+  }
+}

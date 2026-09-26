@@ -149,6 +149,7 @@ from . import graph_studio_provenance_interaction_recovery_v0135841 as provenanc
 from . import graph_studio_native_provenance_v013585 as provenance13585
 from . import graph_studio_provenance_authority_v0135851 as provenance135851
 from . import graph_studio_incremental_interaction_v0135852 as provenance135852
+from . import graph_studio_context_relationships_v0135853 as provenance135853
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10016,3 +10017,21 @@ def graph_studio_incremental_interaction_v0135852_browser(): return provenance13
 def graph_studio_incremental_interaction_v0135852_diagnostics(): return provenance135852.diagnostics_contract()
 @app.get("/v1/graph-studio-incremental-interaction/v0135852/acceptance")
 def graph_studio_incremental_interaction_v0135852_acceptance(): return provenance135852.acceptance_report()
+# Lab v0.135.8.5.3 — Context-Aware Relationship Filtering & Provenance Interaction Hardening
+@app.get("/v1/graph-studio-context-relationships/v0135853/health")
+def graph_studio_context_relationships_v0135853_health(): return provenance135853.health()
+@app.get("/v1/graph-studio-context-relationships/v0135853/compatibility")
+def graph_studio_context_relationships_v0135853_compatibility(): return provenance135853.compatibility_contract()
+@app.post("/v1/graph-studio-context-relationships/v0135853/options")
+def graph_studio_context_relationships_v0135853_options(payload: dict): return provenance135853.relationship_options(payload)
+@app.get("/v1/graph-studio-context-relationships/v0135853/zero-match")
+def graph_studio_context_relationships_v0135853_zero_match(): return provenance135853.zero_match_contract()
+@app.get("/v1/graph-studio-context-relationships/v0135853/persistence")
+def graph_studio_context_relationships_v0135853_persistence(): return provenance135853.persistence_contract()
+@app.get("/v1/graph-studio-context-relationships/v0135853/browser")
+def graph_studio_context_relationships_v0135853_browser(): return provenance135853.browser_contract()
+@app.get("/v1/graph-studio-context-relationships/v0135853/diagnostics")
+def graph_studio_context_relationships_v0135853_diagnostics(): return provenance135853.diagnostics_contract()
+@app.get("/v1/graph-studio-context-relationships/v0135853/acceptance")
+def graph_studio_context_relationships_v0135853_acceptance(): return provenance135853.acceptance_report()
+

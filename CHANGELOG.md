@@ -1,3 +1,9 @@
+## 0.135.8.5.3 — Context-Aware Relationship Filtering & Provenance Interaction Hardening
+- Preserves selected relationship filters across traversal changes, including explicit zero-match states.
+- Adds context-aware relationship counts/compatibility from the selected node and traversal direction.
+- Disables impossible unselected relationship options without silently resetting user state.
+- Retains incremental rendering; relationship-context changes do not require a full graph redraw.
+
 ## 0.135.8.4.1 — Provenance Interaction Lifecycle & Graph Control Recovery
 - Replaced synthetic layout-button clicks with direct SVG geometry updates for Layered, Radial and Swimlane provenance layouts.
 - Delegated provenance node/layout/explorer interactions from the persistent Graph Studio stage so redraws cannot orphan handlers.

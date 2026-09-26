@@ -2116,7 +2116,7 @@ Upper assumption: 3"></textarea></label><label>Sensitivity rates<textarea data-s
 </section>
 
       <section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
-        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / INCREMENTAL PROVENANCE v0.135.8.5.2</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio keeps one Renderer 3.1 provenance runtime bound to the active Lab project. Selection, traversal, relationship filtering, layout geometry, zoom, and inspector updates now apply incrementally without replacing the relationship selector or rebuilding the full graph for ordinary interaction.</p></header>
+        <header class="sc-lab-module-header"><p class="sc-lab-kicker">VISUALIZE / GRAPH STUDIO / CONTEXT-AWARE PROVENANCE v0.135.8.5.3</p><h3>Scientific Visualization Workspace</h3><p>Graph Studio keeps one Renderer 3.1 provenance runtime bound to the active Lab project. Relationship filters are now context-aware for the selected provenance node and traversal direction. Impossible combinations remain explicit as zero-match state instead of silently resetting the selected relationship, while ordinary graph interactions remain incremental.</p></header>
         <!-- EXPERIENCE v0.135.8.1 compatibility lifecycle retained -->
         <div data-viz13581-canonical-runtime hidden aria-hidden="true"></div>
         <p class="sc-gs0470-status" data-gs-v0470-status role="status" aria-live="polite">Graph Studio initializing scientific context…</p>

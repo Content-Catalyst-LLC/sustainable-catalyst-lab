@@ -1,12 +1,12 @@
 from __future__ import annotations
 from collections import deque
-VERSION="0.135.8.5.2"
+VERSION="0.135.8.5.3"
 ROUTE_COUNT=13
 LAYOUTS=("layered","radial","swimlane")
 TRAVERSALS=("all","upstream","downstream","focus")
 
 def health():
-    return {"ok":True,"version":VERSION,"api_route_count":ROUTE_COUNT,"native_graph_state_engine":True,"mutation_observer_owns_interaction":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"presentation_state_mutates_science":False}
+    return {"ok":True,"version":VERSION,"api_route_count":ROUTE_COUNT,"native_graph_state_engine":True,"mutation_observer_owns_interaction":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"context_aware_relationship_options":True,"zero_match_explicit":True,"impossible_relationship_auto_reset":False,"presentation_state_mutates_science":False}
 
 def runtime_contract():
     return {"ok":True,"version":VERSION,"state_owner":"native-provenance-controller","renderer":"Renderer 3.1","single_graph_controller":True,"stable_object_ids":True,"dom_is_projection_not_state":True,"observer_driven_renders":0}
@@ -44,7 +44,9 @@ def normalize_graph(payload:dict):
 def traverse(payload:dict):
     g=normalize_graph(payload); mode=str(payload.get("mode") or "all").lower(); selected=str(payload.get("selected_node") or ""); relation=str(payload.get("relation") or "all")
     if mode not in TRAVERSALS: mode="all"
-    if mode=="all" or not selected: return {**g,"mode":mode,"selected_node":selected,"visible_nodes":[str(n.get("id")) for n in g["nodes"] if isinstance(n,dict) and n.get("id")],"visible_edges":[e["id"] for e in g["edges"]]}
+    if mode=="all" or not selected:
+        visible_edges=[e["id"] for e in g["edges"] if relation=="all" or e["relation"]==relation]
+        return {**g,"mode":mode,"selected_node":selected,"relation":relation,"visible_nodes":[str(n.get("id")) for n in g["nodes"] if isinstance(n,dict) and n.get("id")],"visible_edges":visible_edges}
     if mode=="focus": return {**g,"mode":mode,"selected_node":selected,"visible_nodes":[selected],"visible_edges":[]}
     adj={str(n.get("id")):[] for n in g["nodes"] if isinstance(n,dict) and n.get("id")}
     for e in g["edges"]:
@@ -69,4 +71,4 @@ def diagnostics():
     return {"ok":True,"version":VERSION,"graph_model_loaded":True,"interaction_loop_count":0,"observer_driven_renders":0,"single_controller":True,"project_persistence":True,"browser_acceptance_gate":["node_selection","edge_selection","layered_radial_swimlane","upstream_downstream_focus","relationship_filter","reload_restore","zoom_fit"]}
 
 def acceptance_report():
-    return {"ok":True,"version":VERSION,"native_provenance_engine":True,"graph_controller_count":1,"renderer31_hosts":1,"primary_viewports":1,"mutation_observer_interaction_owner":False,"observer_driven_renders":0,"programmatic_layout_clicks":0,"hard_coded_dom_edge_order_semantics":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"legacy_primary_owners":0}
+    return {"ok":True,"version":VERSION,"native_provenance_engine":True,"graph_controller_count":1,"renderer31_hosts":1,"primary_viewports":1,"mutation_observer_interaction_owner":False,"observer_driven_renders":0,"programmatic_layout_clicks":0,"hard_coded_dom_edge_order_semantics":False,"project_state_persistence":True,"project_state_persistence_debounced":True,"incremental_rendering":True,"relationship_selector_stable":True,"context_aware_relationship_options":True,"selected_relationship_persists_across_traversal":True,"legacy_primary_owners":0}
