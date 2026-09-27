@@ -1,0 +1,16 @@
+{
+  "version": "0.135.21.0",
+  "singleReviewWorkspaceController": true,
+  "deterministicHydration": true,
+  "deterministicRestoreOrder": true,
+  "incrementalRendererOnly": true,
+  "legacyGraphStudioExecutorsDisallowed": true,
+  "duplicateCanonicalOwnersDisallowed": true,
+  "duplicateConsolidationListenersDisallowed": true,
+  "preserveHistoricalReviewRecords": true,
+  "automaticScientificValidity": false,
+  "automaticPublicationAcceptance": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false
+}

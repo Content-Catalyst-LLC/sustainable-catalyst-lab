@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Lab 0.135.21 Chromium Certification</title></head><body>
+<div class="sc-lab-app" id="app"><div data-lab-module="graph-studio" id="graph"></div><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage><div data-gs135200-bar>legacy closure bar</div></div></div></div>
+<script>
+const app=document.getElementById('app');let active='p1';const data={p1:{graphStudioReviewThreads:[{id:'t2'},{id:'t1'}],graphStudioReviewAuditRecords:[{id:'a1'}]},p2:{graphStudioReviewThreads:[{id:'t9'}]}};
+app._scLabProjects={get activeProjectId(){return active},list(n){return (data[active]&&data[active][n])||[]},add(){},update(){}};
+window.SCLab={GraphStudioRendererReplacementV013582:{version:'0.135.8.2'},GraphStudioNativeProvenanceV013585:{version:'0.135.8.5.3'}};
+window.SCLabGraphStudioReviewClosureV0135200={version:'0.135.20.0'};
+window.__switchProject=function(id){active=id;document.dispatchEvent(new CustomEvent('sc-lab:project:changed',{detail:{projectId:id}}))};
+</script>
+<script src="../assets/js/modules/graph-studio-review-workspace-consolidation-v0135210.js"></script>
+<script>
+(function(){const api=window.SCLabGraphStudioReviewWorkspaceConsolidationV0135210;const d1=api.hydrate().stateDigest,d2=api.hydrate().stateDigest;const cert=api.certify();const stage=document.querySelector('[data-gs13583-stage]');const one=stage.querySelectorAll('[data-gs135210-bar]').length===1;const noRedraw=cert.fullGraphRedraw===false;const retained=window.SCLabGraphStudioReviewClosureV0135200.version==='0.135.20.0';window.__switchProject('p2');const switched=api.state.state.projectId==='p2'&&api.state.state.counts.reviewThreads===1;const pass=d1===d2&&cert.certified&&one&&noRedraw&&retained&&switched;document.body.dataset.cert=pass?'pass':'fail';document.body.dataset.digest=d1;document.body.dataset.project=api.state.state.projectId;const out=document.createElement('pre');out.id='certification-result';out.textContent=JSON.stringify({pass,d1,d2,certified:cert.certified,one,noRedraw,retained,switched,listenerBindings:api.state.listenerBindings});document.body.appendChild(out)})();
+</script></body></html>

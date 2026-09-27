@@ -1,0 +1,12 @@
+/* Lab v0.135.21.0 — consolidated Graph Studio review workspace */
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135120-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135130-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135140-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135150-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135160-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135170-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135180-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135190-bar],
+.sc-lab-app[data-gs135210-consolidated="1"] [data-gs135200-bar]{display:none!important}
+.sc-gs135210-bar{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.65rem .8rem;border:1px solid rgba(255,255,255,.14);background:#0b0e12;color:#f2f5f7}
+.sc-gs135210-bar strong{margin-right:.25rem}.sc-gs135210-bar button{font:inherit;padding:.38rem .62rem;border:1px solid rgba(255,255,255,.22);background:#151a21;color:inherit;border-radius:4px;cursor:pointer}.sc-gs135210-bar button:disabled{opacity:.45;cursor:not-allowed}.sc-gs135210-bar [data-gs135210-status]{margin-left:auto;font-size:.82rem;opacity:.8}.sc-pw135210-review-runtime{padding:1rem;border:1px solid rgba(127,127,127,.28);margin:0 0 1rem}.sc-pw135210-eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}.sc-pw135210-boundary{font-size:.82rem;opacity:.72}

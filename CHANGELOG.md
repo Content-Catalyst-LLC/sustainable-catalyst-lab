@@ -1,3 +1,12 @@
+# v0.135.21.0 — Graph Studio Review Workspace Consolidation & Runtime Certification
+
+- Consolidates v0.135.12.0–v0.135.20.0 review controls into one canonical Review Workspace toolbar while preserving all historical records and APIs.
+- Adds deterministic review-state hydration, stable collection ordering, state digests, restore plans, duplicate-ID diagnostics, runtime ownership audits, listener audits, compatibility checks, performance profiles, and Project Workspace certification handoff.
+- Preserves the v0.135.8.x renderer/provenance ownership model and explicitly forbids full-graph redraw as part of review hydration/certification.
+- Adds backend v0.135.21.0 with 18 routes and runtime certification contracts.
+- Adds a Chromium certification harness. The build environment's Chromium executable was detected but could not complete even a blank headless dump-DOM invocation, so browser certification is recorded as environment-unavailable rather than falsely claimed.
+- Runtime certification is operational/reproducibility certification only; it does not establish scientific truth, validity, causation, evidentiary weight, reviewer consensus, or publication acceptance.
+
 # v0.135.20.0 — Review Closure Packages & Publication Readiness
 - Adds fingerprinted review-closure packages, administrative publication-readiness blockers/disclosures, freeze verification, and Publication Studio handoff while preserving dissent and scientific boundaries.
 

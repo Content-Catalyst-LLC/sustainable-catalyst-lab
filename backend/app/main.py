@@ -162,6 +162,7 @@ from . import graph_studio_review_reproduction_v0135170 as reviewrepro135170
 from . import graph_studio_multi_reviewer_panels_v0135180 as multireview135180
 from . import graph_studio_cross_review_synthesis_v0135190 as crossreview135190
 from . import graph_studio_review_closure_v0135200 as closure135200
+from . import graph_studio_review_workspace_consolidation_v0135210 as workspace135210
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10361,6 +10362,44 @@ def graph_studio_review_closure_v0135200_contract(): return closure135200.contra
 def graph_studio_review_closure_v0135200_browser(): return closure135200.browser_contract()
 @app.get("/v1/graph-studio-review-closure/v0135200/acceptance")
 def graph_studio_review_closure_v0135200_acceptance(): return closure135200.acceptance_report()
+
+# Lab v0.135.21.0 — Graph Studio Review Workspace Consolidation & Runtime Certification
+@app.get("/v1/graph-studio-review-workspace/v0135210/health")
+def graph_studio_review_workspace_v0135210_health(): return workspace135210.health()
+@app.get("/v1/graph-studio-review-workspace/v0135210/acceptance")
+def graph_studio_review_workspace_v0135210_acceptance(): return workspace135210.acceptance_report()
+@app.get("/v1/graph-studio-review-workspace/v0135210/contract")
+def graph_studio_review_workspace_v0135210_contract(): return workspace135210.contract()
+@app.get("/v1/graph-studio-review-workspace/v0135210/policy")
+def graph_studio_review_workspace_v0135210_policy(): return {"ok":True,"version":workspace135210.VERSION,"policy":workspace135210.default_policy(),"boundary":workspace135210.BOUNDARY}
+@app.get("/v1/graph-studio-review-workspace/v0135210/inventory")
+def graph_studio_review_workspace_v0135210_inventory(): return workspace135210.runtime_inventory()
+@app.post("/v1/graph-studio-review-workspace/v0135210/normalize")
+def graph_studio_review_workspace_v0135210_normalize(payload: dict): return workspace135210.normalize_workspace(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/validate")
+def graph_studio_review_workspace_v0135210_validate(payload: dict): return workspace135210.validate_workspace(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/state-digest")
+def graph_studio_review_workspace_v0135210_digest(payload: dict): return workspace135210.state_digest(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/restore-plan")
+def graph_studio_review_workspace_v0135210_restore(payload: dict): return workspace135210.restore_plan(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/ownership-audit")
+def graph_studio_review_workspace_v0135210_ownership(payload: dict): return workspace135210.ownership_audit(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/listener-audit")
+def graph_studio_review_workspace_v0135210_listeners(payload: dict): return workspace135210.listener_audit(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/certify")
+def graph_studio_review_workspace_v0135210_certify(payload: dict): return workspace135210.certify(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/performance-profile")
+def graph_studio_review_workspace_v0135210_performance(payload: dict): return workspace135210.performance_profile(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/project-workspace-packet")
+def graph_studio_review_workspace_v0135210_project_packet(payload: dict): return workspace135210.project_workspace_packet(payload)
+@app.get("/v1/graph-studio-review-workspace/v0135210/browser")
+def graph_studio_review_workspace_v0135210_browser(): return workspace135210.browser_contract()
+@app.post("/v1/graph-studio-review-workspace/v0135210/status")
+def graph_studio_review_workspace_v0135210_status(payload: dict): return workspace135210.status(payload)
+@app.post("/v1/graph-studio-review-workspace/v0135210/compatibility")
+def graph_studio_review_workspace_v0135210_compatibility(payload: dict): return workspace135210.compatibility_report(payload)
+@app.get("/v1/graph-studio-review-workspace/v0135210/release-gates")
+def graph_studio_review_workspace_v0135210_release_gates(): return workspace135210.release_gates()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")
