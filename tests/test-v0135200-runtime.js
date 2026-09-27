@@ -1,0 +1,7 @@
+const fs=require('fs'),vm=require('vm');
+class E{constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.dataset={};this.disabled=false;this.innerHTML='';this.parentNode=null;this.listeners={}}appendChild(x){x.parentNode=this;this.children.push(x);return x}prepend(x){x.parentNode=this;this.children.unshift(x);return x}remove(){}addEventListener(k,f){this.listeners[k]=f}querySelector(){return null}querySelectorAll(){return[] }closest(){return null}}
+const stage=new E(),host=new E(),root=new E();host.querySelector=s=>s==='[data-gs13583-stage]'?stage:s==='[data-gs13583-inspector]'?new E():null;stage.querySelector=()=>null;root.closest=()=>null;
+const document={readyState:'complete',querySelector:s=>s==='[data-lab-module="graph-studio"]'?root:null,getElementById:id=>id==='sc-lab-graph-studio-renderer-root'?host:null,createElement:t=>new E(t),addEventListener(){},dispatchEvent(){}};
+const window={SCLab:{},sessionStorage:{setItem(){},getItem(){return null}}};global.CustomEvent=function(){};vm.runInNewContext(fs.readFileSync('assets/js/modules/graph-studio-review-closure-v0135200.js','utf8'),{window,document,CustomEvent:global.CustomEvent,console,setTimeout,Date,Math,JSON});
+const a=window.SCLabGraphStudioReviewClosureV0135200;if(!a||a.version!=='0.135.20.0')throw Error('API missing');const x=a.acceptance();if(x.automaticScientificValidity!==false||x.automaticPublicationAcceptance!==false||x.fullGraphRedraw!==false)throw Error('boundary failure');
+console.log('PASS: v0.135.20.0 JS runtime contract');

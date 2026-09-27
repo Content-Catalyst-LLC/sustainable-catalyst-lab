@@ -1,0 +1,16 @@
+{
+  "version": "0.135.20.0",
+  "administrativeReadinessOnly": true,
+  "preserveDissent": true,
+  "fingerprintedFreeze": true,
+  "publicationStudioHandoff": true,
+  "automaticResolution": false,
+  "majorityVoting": false,
+  "consensusScoring": false,
+  "reviewerRanking": false,
+  "automaticScientificValidity": false,
+  "automaticPublicationAcceptance": false,
+  "truthRanking": false,
+  "causalInference": false,
+  "evidenceWeightInference": false
+}

@@ -1,0 +1,6 @@
+/* Lab v0.135.20.0 — Review Closure Packages & Publication Readiness */
+.sc-gs135200-bar{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;padding:.6rem .75rem;margin:.55rem 0;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(10,14,18,.88)}
+.sc-gs135200-bar strong{margin-right:.25rem}.sc-gs135200-bar button{font:inherit;padding:.36rem .55rem}.sc-gs135200-bar [data-gs135200-status]{font-size:.82rem;opacity:.78;margin-left:auto}
+.sc-gs135200-panel,.sc-gs135200-project-context{margin-top:.75rem;padding:.8rem;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(8,12,15,.78)}
+.sc-gs135200-eyebrow{font-size:.68rem;letter-spacing:.12em;opacity:.66}.sc-gs135200-panel h5{margin:.3rem 0 .55rem}.sc-gs135200-state{display:inline-block;padding:.32rem .52rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;font-size:.76rem;font-weight:650}.sc-gs135200-metrics{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.55rem}.sc-gs135200-metrics span{padding:.3rem .45rem;border-radius:7px;background:rgba(255,255,255,.06);font-size:.78rem}.sc-gs135200-boundary{font-size:.76rem;line-height:1.45;opacity:.72}
+@media(max-width:900px){.sc-gs135200-bar [data-gs135200-status]{width:100%;margin-left:0}}

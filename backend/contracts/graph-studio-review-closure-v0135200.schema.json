@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/graph-studio-review-closure-v0135200.schema.json",
+  "title": "Lab v0.135.20.0 Review Closure Package",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "collection",
+    "id",
+    "projectId"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-review-closure-package/0.135.20.0"
+    },
+    "version": {
+      "const": "0.135.20.0"
+    },
+    "collection": {
+      "const": "graphStudioReviewClosurePackages"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthesis": {
+      "type": "object"
+    },
+    "readinessPolicy": {
+      "type": "object"
+    },
+    "closureNotes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "publicationTarget": {
+      "type": "object"
+    },
+    "boundary": {
+      "type": "string"
+    }
+  }
+}

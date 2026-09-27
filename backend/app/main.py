@@ -161,6 +161,7 @@ from . import graph_studio_revision_impact_v0135160 as revisionimpact135160
 from . import graph_studio_review_reproduction_v0135170 as reviewrepro135170
 from . import graph_studio_multi_reviewer_panels_v0135180 as multireview135180
 from . import graph_studio_cross_review_synthesis_v0135190 as crossreview135190
+from . import graph_studio_review_closure_v0135200 as closure135200
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10316,6 +10317,50 @@ def graph_studio_cross_review_synthesis_v0135190_contract(): return crossreview1
 def graph_studio_cross_review_synthesis_v0135190_browser(): return crossreview135190.browser_contract()
 @app.get("/v1/graph-studio-cross-review-synthesis/v0135190/acceptance")
 def graph_studio_cross_review_synthesis_v0135190_acceptance(): return crossreview135190.acceptance_report()
+
+# Lab v0.135.20.0 — Review Closure Packages & Publication Readiness
+@app.get("/v1/graph-studio-review-closure/v0135200/health")
+def graph_studio_review_closure_v0135200_health(): return closure135200.health()
+@app.post("/v1/graph-studio-review-closure/v0135200/normalize")
+def graph_studio_review_closure_v0135200_normalize(payload: dict): return closure135200.normalize_closure(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/validate")
+def graph_studio_review_closure_v0135200_validate(payload: dict): return closure135200.validate_closure(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/build")
+def graph_studio_review_closure_v0135200_build(payload: dict): return closure135200.build_closure(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/readiness")
+def graph_studio_review_closure_v0135200_readiness(payload: dict): return closure135200.readiness_report(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/blockers")
+def graph_studio_review_closure_v0135200_blockers(payload: dict): return closure135200.blocker_register(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/disclosures")
+def graph_studio_review_closure_v0135200_disclosures(payload: dict): return closure135200.disclosure_register(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/manifest")
+def graph_studio_review_closure_v0135200_manifest(payload: dict): return closure135200.closure_manifest(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/freeze")
+def graph_studio_review_closure_v0135200_freeze(payload: dict): return closure135200.freeze_package(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/verify-freeze")
+def graph_studio_review_closure_v0135200_verify_freeze(payload: dict): return closure135200.verify_freeze(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/compare")
+def graph_studio_review_closure_v0135200_compare(payload: dict): return closure135200.compare_packages(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/summary")
+def graph_studio_review_closure_v0135200_summary(payload: dict): return closure135200.closure_summary(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/publication-handoff")
+def graph_studio_review_closure_v0135200_publication(payload: dict): return closure135200.publication_handoff(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/project-workspace-packet")
+def graph_studio_review_closure_v0135200_workspace(payload: dict): return closure135200.project_workspace_packet(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/audit-event-draft")
+def graph_studio_review_closure_v0135200_audit(payload: dict): return closure135200.audit_event_draft(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/reopen-plan")
+def graph_studio_review_closure_v0135200_reopen(payload: dict): return closure135200.reopen_plan(payload)
+@app.post("/v1/graph-studio-review-closure/v0135200/status")
+def graph_studio_review_closure_v0135200_status(payload: dict): return closure135200.status(payload)
+@app.get("/v1/graph-studio-review-closure/v0135200/policy")
+def graph_studio_review_closure_v0135200_policy(): return {"ok":True,"version":closure135200.VERSION,"policy":closure135200.default_policy(),"boundary":closure135200.BOUNDARY}
+@app.get("/v1/graph-studio-review-closure/v0135200/contract")
+def graph_studio_review_closure_v0135200_contract(): return closure135200.contract()
+@app.get("/v1/graph-studio-review-closure/v0135200/browser")
+def graph_studio_review_closure_v0135200_browser(): return closure135200.browser_contract()
+@app.get("/v1/graph-studio-review-closure/v0135200/acceptance")
+def graph_studio_review_closure_v0135200_acceptance(): return closure135200.acceptance_report()
 
 # Lab v0.135.15.0 — Verification Artifact Manifests & Review Evidence Bundles
 @app.get("/v1/graph-studio-verification-artifacts/v0135150/health")

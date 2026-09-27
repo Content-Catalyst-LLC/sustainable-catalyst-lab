@@ -1,3 +1,6 @@
+# v0.135.20.0 — Review Closure Packages & Publication Readiness
+- Adds fingerprinted review-closure packages, administrative publication-readiness blockers/disclosures, freeze verification, and Publication Studio handoff while preserving dissent and scientific boundaries.
+
 # v0.135.19.0 — Cross-Review Synthesis & Resolution Matrix
 
 - Added project-level cross-review synthesis and administrative resolution matrix.
