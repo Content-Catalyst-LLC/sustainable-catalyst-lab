@@ -19,7 +19,7 @@ if (!function_exists('sc_lab_read_release_manifest')) {
 if (!function_exists('sc_lab_manifest_semver')) {
     function sc_lab_manifest_semver($manifest, $key, $fallback) {
         $value = is_array($manifest) && isset($manifest[$key]) ? trim((string) $manifest[$key]) : '';
-        if (preg_match('/^\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?(?:[-+][0-9A-Za-z.-]+)?$/', $value)) { return $value; }
+        if (preg_match('/^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$/', $value)) { return $value; }
         return (string) $fallback;
     }
 }

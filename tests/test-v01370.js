@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm');const code=fs.readFileSync('assets/js/modules/research-change-impact-living-analysis-v01370.js','utf8');new vm.Script(code);console.log('PASS v0.137.0 JS syntax');

@@ -164,6 +164,7 @@ from . import graph_studio_cross_review_synthesis_v0135190 as crossreview135190
 from . import graph_studio_review_closure_v0135200 as closure135200
 from . import graph_studio_review_workspace_consolidation_v0135210 as workspace135210
 from . import graph_studio_integrated_scientific_review_reproducibility_v01360 as integrated1360
+from . import research_change_impact_living_analysis_v01370 as living1370
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10494,3 +10495,46 @@ def graph_studio_integrated_review_workspace_v01360_digest(payload: dict): retur
 def graph_studio_integrated_review_workspace_v01360_release_gates(): return integrated1360.release_gates()
 @app.get("/v1/graph-studio-integrated-review-workspace/v01360/boundary")
 def graph_studio_integrated_review_workspace_v01360_boundary(): return {"ok":True,"version":integrated1360.VERSION,"boundary":integrated1360.BOUNDARY}
+
+
+# Lab v0.137.0 — Research Change Impact & Living Analysis
+@app.get("/v1/research-change-impact/v01370/health")
+def research_change_v01370_health(): return living1370.health()
+@app.get("/v1/research-change-impact/v01370/acceptance")
+def research_change_v01370_acceptance(): return living1370.acceptance_report()
+@app.get("/v1/research-change-impact/v01370/contract")
+def research_change_v01370_contract(): return living1370.contract()
+@app.get("/v1/research-change-impact/v01370/policy")
+def research_change_v01370_policy(): return living1370.policy()
+@app.post("/v1/research-change-impact/v01370/normalize-change")
+def research_change_v01370_normalize(payload: dict): return living1370.normalize_change_event(payload)
+@app.post("/v1/research-change-impact/v01370/validate-change")
+def research_change_v01370_validate(payload: dict): return living1370.validate_change_event(payload)
+@app.post("/v1/research-change-impact/v01370/analyze-change")
+def research_change_v01370_analyze(payload: dict): return living1370.analyze_change(payload)
+@app.post("/v1/research-change-impact/v01370/living-status")
+def research_change_v01370_status(payload: dict): return living1370.living_status(payload)
+@app.post("/v1/research-change-impact/v01370/obligations")
+def research_change_v01370_obligations(payload: dict): return living1370.obligation_register(payload)
+@app.post("/v1/research-change-impact/v01370/acknowledge")
+def research_change_v01370_ack(payload: dict): return living1370.acknowledge(payload)
+@app.post("/v1/research-change-impact/v01370/snapshot")
+def research_change_v01370_snapshot(payload: dict): return living1370.snapshot(payload)
+@app.post("/v1/research-change-impact/v01370/compare-snapshots")
+def research_change_v01370_compare(payload: dict): return living1370.compare_snapshots(payload)
+@app.post("/v1/research-change-impact/v01370/project-workspace-packet")
+def research_change_v01370_packet(payload: dict): return living1370.project_workspace_packet(payload)
+@app.post("/v1/research-change-impact/v01370/integrated-status")
+def research_change_v01370_integrated(payload: dict): return living1370.integrated_status(payload)
+@app.post("/v1/research-change-impact/v01370/change-event-fingerprint")
+def research_change_v01370_fp(payload: dict): return living1370.normalize_change_event(payload)
+@app.post("/v1/research-change-impact/v01370/impact-paths")
+def research_change_v01370_paths(payload: dict): return living1370.analyze_change(payload)
+@app.post("/v1/research-change-impact/v01370/review-candidates")
+def research_change_v01370_review_candidates(payload: dict): return living1370.review_candidates(payload)
+@app.post("/v1/research-change-impact/v01370/rerun-candidates")
+def research_change_v01370_rerun_candidates(payload: dict): return living1370.rerun_candidates(payload)
+@app.get("/v1/research-change-impact/v01370/release-gates")
+def research_change_v01370_gates(): return living1370.release_gates()
+@app.get("/v1/research-change-impact/v01370/boundary")
+def research_change_v01370_boundary(): return {"ok":True,"version":living1370.VERSION,"boundary":living1370.BOUNDARY}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Change Event v0.137.0",
+  "type": "object",
+  "required": [
+    "objectId",
+    "objectType"
+  ],
+  "properties": {
+    "objectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objectType": {
+      "type": "string"
+    },
+    "beforeRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "afterRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "changeSummary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "0.137.0",
+  "declaredDependenciesOnly": true,
+  "potentialImpactOnly": true,
+  "humanResolutionRequired": true,
+  "automaticScientificInvalidation": false,
+  "automaticTruthJudgment": false,
+  "automaticCausalInference": false
+}

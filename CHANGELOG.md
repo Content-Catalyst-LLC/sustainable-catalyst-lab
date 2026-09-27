@@ -1837,9 +1837,5 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Integrated Scientific Review & Reproducibility Workspace
 
 
-## v0.136.0.1 — Release Manifest Integrity Synchronization Repair
-- Repaired WordPress release-manifest SHA-256 synchronization after v0.136.0 packaging.
-- Updated product release identity to 0.136.0.1.
-- Extended the canonical release-version parser to support four-part numeric repair versions.
-- Regenerated WordPress critical-file hashes from final packaged files.
-- No scientific-review, reproducibility, renderer, provenance, or backend feature behavior changed.
+## v0.137.0
+- Research Change Impact & Living Analysis.
