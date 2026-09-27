@@ -1839,3 +1839,8 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 
 ## v0.137.0
 - Research Change Impact & Living Analysis.
+
+
+## v0.138.0
+- Cross-Study Research Program Intelligence.
+- Carries forward v0.136.0.1 manifest integrity/bootstrap repair.

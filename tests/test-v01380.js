@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm');global.window={};vm.runInThisContext(fs.readFileSync('assets/js/modules/research-program-intelligence-v01380.js','utf8'));if(window.SCLabResearchProgramIntelligenceV01380.version!=='0.138.0')process.exit(1);console.log('PASS v0.138.0 JS');

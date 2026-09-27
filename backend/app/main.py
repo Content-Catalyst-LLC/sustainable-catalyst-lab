@@ -165,6 +165,7 @@ from . import graph_studio_review_closure_v0135200 as closure135200
 from . import graph_studio_review_workspace_consolidation_v0135210 as workspace135210
 from . import graph_studio_integrated_scientific_review_reproducibility_v01360 as integrated1360
 from . import research_change_impact_living_analysis_v01370 as living1370
+from . import research_program_intelligence_v01380 as program1380
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10538,3 +10539,50 @@ def research_change_v01370_rerun_candidates(payload: dict): return living1370.re
 def research_change_v01370_gates(): return living1370.release_gates()
 @app.get("/v1/research-change-impact/v01370/boundary")
 def research_change_v01370_boundary(): return {"ok":True,"version":living1370.VERSION,"boundary":living1370.BOUNDARY}
+
+
+# Lab v0.138.0 — Cross-Study Research Program Intelligence
+@app.get("/v1/research-program-intelligence/v01380/health")
+def research_program_v01380_health(): return program1380.health()
+@app.get("/v1/research-program-intelligence/v01380/acceptance")
+def research_program_v01380_acceptance(): return program1380.acceptance_report()
+@app.get("/v1/research-program-intelligence/v01380/contract")
+def research_program_v01380_contract(): return program1380.contract()
+@app.get("/v1/research-program-intelligence/v01380/policy")
+def research_program_v01380_policy(): return program1380.policy()
+@app.post("/v1/research-program-intelligence/v01380/normalize-program")
+def research_program_v01380_normalize(payload: dict): return program1380.normalize_program(payload)
+@app.post("/v1/research-program-intelligence/v01380/validate-program")
+def research_program_v01380_validate(payload: dict): return program1380.validate_program(payload)
+@app.post("/v1/research-program-intelligence/v01380/study-registry")
+def research_program_v01380_registry(payload: dict): return program1380.study_registry(payload)
+@app.post("/v1/research-program-intelligence/v01380/relationship-matrix")
+def research_program_v01380_relationships(payload: dict): return program1380.relationship_matrix(payload)
+@app.post("/v1/research-program-intelligence/v01380/shared-object-index")
+def research_program_v01380_shared(payload: dict): return program1380.shared_object_index(payload)
+@app.post("/v1/research-program-intelligence/v01380/change-impact")
+def research_program_v01380_impact(payload: dict): return program1380.program_change_impact(payload)
+@app.post("/v1/research-program-intelligence/v01380/cross-study-obligations")
+def research_program_v01380_obligations(payload: dict): return program1380.cross_study_obligations(payload)
+@app.post("/v1/research-program-intelligence/v01380/living-status")
+def research_program_v01380_status(payload: dict): return program1380.program_living_status(payload)
+@app.post("/v1/research-program-intelligence/v01380/attention-register")
+def research_program_v01380_attention(payload: dict): return program1380.program_attention_register(payload)
+@app.post("/v1/research-program-intelligence/v01380/study-context")
+def research_program_v01380_context(payload: dict): return program1380.study_context(payload)
+@app.post("/v1/research-program-intelligence/v01380/snapshot")
+def research_program_v01380_snapshot(payload: dict): return program1380.program_snapshot(payload)
+@app.post("/v1/research-program-intelligence/v01380/compare-snapshots")
+def research_program_v01380_compare(payload: dict): return program1380.compare_snapshots(payload)
+@app.post("/v1/research-program-intelligence/v01380/project-workspace-packet")
+def research_program_v01380_packet(payload: dict): return program1380.program_workspace_packet(payload)
+@app.post("/v1/research-program-intelligence/v01380/integrated-status")
+def research_program_v01380_integrated(payload: dict): return program1380.integrated_status(payload)
+@app.post("/v1/research-program-intelligence/v01380/fingerprint")
+def research_program_v01380_fp(payload: dict): return program1380.fingerprint(payload)
+@app.get("/v1/research-program-intelligence/v01380/release-gates")
+def research_program_v01380_gates(): return program1380.release_gates()
+@app.get("/v1/research-program-intelligence/v01380/boundary")
+def research_program_v01380_boundary(): return {"ok":True,"version":program1380.VERSION,"boundary":program1380.BOUNDARY}
+@app.get("/v1/research-program-intelligence/v01380/relationship-types")
+def research_program_v01380_relation_types(): return {"ok":True,"version":program1380.VERSION,"relationshipTypes":list(program1380.RELATION_TYPES),"boundary":program1380.BOUNDARY}

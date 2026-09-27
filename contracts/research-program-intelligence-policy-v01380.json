@@ -1,0 +1,12 @@
+{
+  "version": "0.138.0",
+  "declaredStudyRelationshipsOnly": true,
+  "declaredDependenciesOnly": true,
+  "potentialImpactOnly": true,
+  "humanScientificJudgmentRequired": true,
+  "automaticScientificValidity": false,
+  "automaticConsensus": false,
+  "truthRanking": false,
+  "evidenceWeightInference": false,
+  "causalInference": false
+}

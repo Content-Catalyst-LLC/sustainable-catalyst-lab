@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lab v0.138.0 Research Program",
+  "type": "object",
+  "required": [
+    "programId",
+    "studies"
+  ],
+  "properties": {
+    "programId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "studies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "studyId"
+        ],
+        "properties": {
+          "studyId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "nodes": {
+            "type": "array"
+          },
+          "edges": {
+            "type": "array"
+          },
+          "changeEvents": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}
