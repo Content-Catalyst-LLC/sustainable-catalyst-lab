@@ -1831,3 +1831,7 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added explicit dispositions and revision/follow-up actions with revision-reference requirements for revision-producing actions.
 - Added pending-item summaries, decision-lineage reconstruction, project persistence, and Project Workspace handoff.
 - Preserved reviewer annotations as separate immutable review context; no disposition is treated as scientific truth, causation, evidence weighting, or preferred explanation.
+
+
+## v0.136.0
+- Integrated Scientific Review & Reproducibility Workspace

@@ -163,6 +163,7 @@ from . import graph_studio_multi_reviewer_panels_v0135180 as multireview135180
 from . import graph_studio_cross_review_synthesis_v0135190 as crossreview135190
 from . import graph_studio_review_closure_v0135200 as closure135200
 from . import graph_studio_review_workspace_consolidation_v0135210 as workspace135210
+from . import graph_studio_integrated_scientific_review_reproducibility_v01360 as integrated1360
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10454,3 +10455,42 @@ def graph_studio_review_resolution_v0135130_browser(): return resolution135130.b
 @app.get("/v1/graph-studio-review-resolution/v0135130/acceptance")
 def graph_studio_review_resolution_v0135130_acceptance(): return resolution135130.acceptance_report()
 
+
+
+# Lab v0.136.0 — Integrated Scientific Review & Reproducibility Workspace
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/health")
+def graph_studio_integrated_review_workspace_v01360_health(): return integrated1360.health()
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/acceptance")
+def graph_studio_integrated_review_workspace_v01360_acceptance(): return integrated1360.acceptance_report()
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/contract")
+def graph_studio_integrated_review_workspace_v01360_contract(): return integrated1360.contract()
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/policy")
+def graph_studio_integrated_review_workspace_v01360_policy(): return {"ok":True,"version":integrated1360.VERSION,"policy":integrated1360.default_policy(),"boundary":integrated1360.BOUNDARY}
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/normalize")
+def graph_studio_integrated_review_workspace_v01360_normalize(payload: dict): return integrated1360.normalize_workspace(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/validate")
+def graph_studio_integrated_review_workspace_v01360_validate(payload: dict): return integrated1360.validate_workspace(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/review-summary")
+def graph_studio_integrated_review_workspace_v01360_review_summary(payload: dict): return integrated1360.review_summary(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/reproducibility-summary")
+def graph_studio_integrated_review_workspace_v01360_repro_summary(payload: dict): return integrated1360.reproducibility_summary(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/readiness")
+def graph_studio_integrated_review_workspace_v01360_readiness(payload: dict): return closure135200.readiness_report(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/closure")
+def graph_studio_integrated_review_workspace_v01360_closure(payload: dict): return closure135200.build_closure(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/integrate")
+def graph_studio_integrated_review_workspace_v01360_integrate(payload: dict): return integrated1360.integrate(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/certify")
+def graph_studio_integrated_review_workspace_v01360_certify(payload: dict): return integrated1360.certify(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/project-workspace-packet")
+def graph_studio_integrated_review_workspace_v01360_project_packet(payload: dict): return integrated1360.project_workspace_packet(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/status")
+def graph_studio_integrated_review_workspace_v01360_status(payload: dict): return integrated1360.status(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/compatibility")
+def graph_studio_integrated_review_workspace_v01360_compatibility(payload: dict): return integrated1360.compatibility_report(payload)
+@app.post("/v1/graph-studio-integrated-review-workspace/v01360/workspace-digest")
+def graph_studio_integrated_review_workspace_v01360_digest(payload: dict): return integrated1360.workspace_digest(payload)
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/release-gates")
+def graph_studio_integrated_review_workspace_v01360_release_gates(): return integrated1360.release_gates()
+@app.get("/v1/graph-studio-integrated-review-workspace/v01360/boundary")
+def graph_studio_integrated_review_workspace_v01360_boundary(): return {"ok":True,"version":integrated1360.VERSION,"boundary":integrated1360.BOUNDARY}
