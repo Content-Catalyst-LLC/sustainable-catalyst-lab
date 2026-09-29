@@ -18,3 +18,27 @@ backend/data/
 *.sqlite3
 *.sqlite3-shm
 *.sqlite3-wal
+
+# Local release staging and packaged archives
+/release-staging/
+/dist-v*/
+/*.zip
+/*.tgz
+/*.tar.gz
+
+# Generated release artifacts belong in release bundles/history, not repository root.
+/BUILD_VALIDATION_*.txt
+/BROWSER_RUNTIME_VALIDATION_*.json
+/CHROMIUM_BROWSER_CERTIFICATION_*.json
+/PACKAGED_SOURCE_VALIDATION_*.txt
+/RELEASE_MANIFEST_*.json
+/SHA256SUMS*.txt
+/RELEASE_NOTES_*.md
+/DEPLOY_LAB_BACKEND_*.md
+/LAB_V*_TERMINAL_COMMANDS.txt
+/*_v[0-9]*.md
+/*_[0-9]*.[0-9]*.md
+
+# Operational/release scripts belong under scripts/, not repository root.
+/*.sh
+/*.py

@@ -1,9 +1,0 @@
-{
-  "version": "0.135.20.0",
-  "browserCertification": false,
-  "chromiumHeadlessRun": false,
-  "javascriptSyntax": "pass",
-  "javascriptDomRuntimeFixture": "pass",
-  "projectWorkspaceContextContract": "pass",
-  "note": "Automated Chromium/headless-browser certification is not claimed. Executable JavaScript DOM/runtime contract tests passed."
-}
