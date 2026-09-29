@@ -1,0 +1,31 @@
+Sustainable Catalyst Lab v0.135.9.0 — Build Validation
+
+Release: Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
+
+SOURCE / CONTRACT GATES
+- JavaScript syntax: PASS
+- v0.135.9.0 object explorer contract: PASS
+- v0.135.8.5.3 context-aware relationship regression contract: PASS
+- PHP integration / plugin identity contract: PASS
+- Backend focused test suite: PASS (30 tests)
+- Manifest integrity: PASS (1497 WordPress/runtime + 830 backend files at pre-certification gate)
+- FastAPI registration: PASS (2152 total paths / 10 v0.135.9.0 paths)
+
+CHROMIUM INTERACTION CERTIFICATION
+- Exact packaged native provenance JavaScript + v0.135.9.0 object explorer executed in Chromium via Playwright set_content fixture.
+- Initial native fullRenderCount: 1
+- fullRenderCount after 1-hop scope: 1
+- Project-record metadata visible in object inspector: PASS
+- 1-hop scope: 4 visible nodes / 3 visible edges from DATASET fixture
+- Unrelated nodes presentation-dimmed: PASS (method, execution, figure)
+- Related-object selection DATASET -> SOURCE: PASS
+- Inspector updates to related object: PASS
+- Project Workspace navigation handoff invoked: PASS
+- Focus record persisted in instrumented session storage: dataset
+- Native observerDrivenRenders: 0
+
+BOUNDARIES
+- Neighborhoods are computed from declared project graph relationships only.
+- No causal, evidentiary, semantic, similarity, or truth relationship is inferred.
+- Scope and focus are presentation state only.
+- Browser certification is an instrumented Chromium fixture, not a live sustainablecatalyst.com page test.

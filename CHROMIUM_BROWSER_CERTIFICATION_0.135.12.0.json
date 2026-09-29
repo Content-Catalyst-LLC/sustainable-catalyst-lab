@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "releaseVersion": "0.135.12.0",
+  "engine": "Chromium",
+  "browserVersion": "144.0.7559.96",
+  "navigationMode": "instrumented about:blank fixture via page.set_content; exact packaged JavaScript bytes injected into Chromium",
+  "module": "assets/js/modules/graph-studio-review-threads-v0135120.js",
+  "moduleSha256": "118fdcc26278def995602cb2fae82923510999f32565b139c9d4be35be1c08ae",
+  "projectWorkspaceModule": "assets/js/modules/project-workspace-review-thread-v0135120.js",
+  "projectWorkspaceModuleSha256": "ef21a8044729ae643ad96cc3130f9f9140b194fd577089bee69d8efcba4be1ed",
+  "pageErrors": [],
+  "result": {
+    "version": "0.135.12.0",
+    "annotationAdds": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "saved": true,
+    "opened": true,
+    "annotationCount": 4,
+    "threadStatus": "in-review",
+    "firstPath": {
+      "annotationCount": 3,
+      "e2Limitation": true,
+      "bClaimLink": true
+    },
+    "secondPathEdgeMarked": true,
+    "oldPathEdgeMarkedAfterSwitch": false,
+    "explicitClaimRefs": [
+      "claim-17"
+    ],
+    "selectedPathIndex": 1,
+    "projectRecordCount": 1,
+    "navigation": "project-workspace",
+    "workspaceContextMounted": true,
+    "fullRenderCountBefore": 1,
+    "fullRenderCountAfter": 1,
+    "fullGraphRedrawForAnnotation": false,
+    "truthRanking": false,
+    "causalInference": false,
+    "evidenceWeightInference": false
+  },
+  "assertions": {
+    "fourStructuredAnnotationsAdded": true,
+    "pathSpecificMarkersMoveWithActiveCandidatePath": true,
+    "explicitClaimReferencePreserved": true,
+    "projectPersistenceExplicitSave": true,
+    "projectWorkspaceReviewContextHandoff": true,
+    "fullRenderCountDidNotIncrease": true,
+    "truthRankingFalse": true,
+    "causalInferenceFalse": true,
+    "evidenceWeightInferenceFalse": true
+  },
+  "limitation": "This certifies the packaged client modules in an instrumented Chromium fixture. It is not a live sustainablecatalyst.com navigation test."
+}

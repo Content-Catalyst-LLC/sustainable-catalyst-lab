@@ -1,0 +1,60 @@
+SUSTAINABLE CATALYST LAB v0.93.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.10.0 — SOC Management Scenario Studio
+
+RELEASE-SPECIFIC GATE: PASS
+
+Browser / WordPress contracts
+- PASS Lab v0.93.0 / Carbon & Nature v0.10.0 PHP contracts
+- PASS Lab v0.93.0 / Carbon & Nature v0.10.0 browser contracts
+- PASS retained v0.92.0/v0.91.0/v0.90.0/v0.89.0 browser contracts
+
+Python scientific/backend selection
+- 123 tests collected and passed
+- 20 new v0.93.0 SOC management-scenario tests
+- 18 retained v0.92.0 SOC uncertainty tests
+- 18 retained v0.91.0 SOC change tests
+- 29 retained v0.90.0 SOC sampling tests
+- 17 retained v0.89.0 SOC stock tests
+- retained uncertainty-ensemble and scientific-data-binding compatibility tests
+
+Scientific fixtures
+- baseline 78 Mg C/ha + user-supplied 2 Mg C/ha/yr x 10 years -> 98 Mg C/ha
+- cumulative projected change -> +20 Mg C/ha
+- comparison rates 1 and 3 Mg C/ha/yr over 10 years -> 88 and 108 Mg C/ha
+- sensitivity values 0, 1, 2, 3 Mg C/ha/yr -> 78, 88, 98, 108 Mg C/ha
+
+Implemented
+- constant annual stock-change scenarios
+- compound relative-change scenarios
+- explicit annual change schedules
+- multi-scenario comparison without ranking
+- user-supplied sensitivity sweeps without optimization
+- optional user-supplied assumption envelopes
+- baseline profile reuse through v0.6.0 fixed-depth SOC engine
+- optional parcel-scale totals
+- deterministic fingerprints, Graph Studio handoff, Lab project persistence, and Carbon Project model-run packet
+- retained static assets including the 118-element periodic-table data file
+
+Guardrails verified
+- no default SOC change/sequestration rate
+- measure references do not inject rates
+- scenario projection is not a forecast
+- projected increase is not verified sequestration
+- soil carbon saturation/capacity is not inferred
+- scenario spread is not treated as statistical uncertainty
+- no CO2e or whole-farm GHG balance
+- no causal attribution/additionality/leakage/permanence/verification/credit eligibility inference
+
+Packaging note
+The v0.93.0 release gate is independent of inherited historical monolithic-suite dependencies. No claim is made that every historical release test outside the governed selection is green.
+
+RESULT: PASS — ready for clean-baseline installer rehearsal and release packaging.
+
+CLEAN-BASELINE INSTALLER REHEARSAL: PASS
+- simulated clean Lab v0.92.0 / Carbon & Nature v0.9.0 Git baseline
+- baseline identity, repository-root, branch, remote, clean-tree, and tag-conflict guards exercised
+- full v0.93.0 release gate passed during installer execution
+- WordPress and backend deployment ZIPs generated
+- commit created and main pushed to simulated bare origin
+- annotated tag lab-v0.93.0 created and pushed
+- rehearsal target was an isolated local bare origin only; the user's GitHub repository was not changed

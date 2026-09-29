@@ -1,0 +1,42 @@
+Sustainable Catalyst Lab v0.100.0
+Carbon & Nature Intelligence v0.17.0 — MRV Reporting & Audit Packets
+Validation date: 2026-09-11
+
+BASELINE
+- Lab v0.99.0 repository package used as the build baseline.
+- Carbon & Nature Intelligence v0.16.0 Verification Evidence Ledger retained.
+- Lab host version advances to v0.100.0 to avoid reusing the repository's historical v1.0.0 release identity.
+
+RELEASE-GATE RESULTS
+- PASS PHP contracts: v0.100.0 / v0.17.0.
+- PASS browser contracts: v0.100.0 plus retained v0.99.0 through v0.89.0 Carbon & Nature browser contracts.
+- PASS 236 selected Python scientific/backend tests.
+- PASS 991 FastAPI route topology assertion.
+- PASS MRV reporting fixture: declared 7.8 Mg C/ha metric is preserved without silent recalculation.
+- PASS v0.16 verification-ledger chain integration.
+- PASS internal audit-preparation readiness requires a supplied valid ledger chain.
+- PASS project handoff uses verification-record while external audit/verification remain unset.
+- PASS v0.17.0 JSON contracts parse and mirror byte-for-byte between WordPress and backend contract trees.
+- PASS retained periodic-table asset contains 118 elements.
+- PASS release manifest integrity: 1162 WordPress runtime critical files and 649 backend critical files.
+
+STATIC VALIDATION
+- PASS Python compile: carbon_mrv_reporting_v01000.py and backend/app/main.py.
+- PASS PHP syntax: reporting module, plugin bootstrap, REST proxy, main plugin file.
+- PASS JavaScript syntax: carbon-mrv-reporting-v01000.js.
+- PASS shell syntax: release gate and Contabo upgrader.
+- PASS v0.17.0 JSON contract parsing.
+
+GOVERNANCE BOUNDARIES
+- Internal report readiness is not external verification.
+- Internal audit-preparation readiness is not auditor approval.
+- Hash-chain integrity is not source-authenticity proof.
+- The eight-section report structure is an internal Sustainable Catalyst scaffold, not an asserted external methodology/program template.
+- Reported metrics are preserved from explicit source records and are not silently recalculated.
+- No methodology compliance, certification, credit eligibility, or credit issuance is determined.
+
+DEPLOYMENT BOUNDARIES
+- No database migration.
+- No new credentials.
+- Contabo upgrader preserves .env.production and existing Compose/volume declarations.
+- Production/GitHub deployment is not claimed by this validation record.

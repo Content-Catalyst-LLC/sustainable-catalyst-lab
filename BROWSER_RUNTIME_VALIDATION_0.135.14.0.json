@@ -1,0 +1,20 @@
+{
+  "version": "0.135.14.0",
+  "fixture": "tests/browser-v0135140.html",
+  "chromium_version_detected": "144.0.7559.96",
+  "chromium_fixture_executed": false,
+  "chromium_result": "not-certified-in-packaging-container",
+  "environment_note": "Chromium headless stalled before page load in the packaging container's DBus/zygote environment; no browser PASS is claimed.",
+  "javascript_runtime_test": "tests/test-v0135140-state-machine-runtime.js",
+  "javascript_runtime_result": "PASS",
+  "verified_runtime_behaviors": [
+    "revision-producing addressed item starts action-required",
+    "premature resolution confirmation is rejected",
+    "explicit verification with outcome, method, and reference is accepted",
+    "passed verification yields verified state",
+    "explicit resolution confirmation yields resolved state",
+    "terminal resolution can be reopened append-only",
+    "audit updates do not request a full Graph Studio redraw"
+  ],
+  "browser_fixture_retained_for_deployment_environment": true
+}

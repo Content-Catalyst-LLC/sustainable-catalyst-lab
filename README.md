@@ -1,52 +1,1138 @@
+## v0.141.5 — Ablation Study Framework
+
+Governed controlled neural-model ablation planning, comparison, visualization, provenance, and reproducibility. Workspace remains execution authority; ablation deltas are not automatically causal effects.
+
+**Current release: Lab v0.135.2 — Model Architecture & Computational Provenance Graphs**
+
+## Lab v0.135.2 — Scientific Visualization Experience Overhaul
+
+Graph Studio now presents the scientific figure together with data-aware supporting analysis, computational/provenance structure, renderer/capability state, and evidence context. The experience layer changes presentation only; unavailable scientific objects remain explicitly unlinked rather than fabricated.
+
+## Lab v0.133.0 — Statistical Assumption & Diagnostic Intelligence
+
+Cross-method assumption states, diagnostic synthesis, researcher adjudication, remediation planning, and governed Core handoff.
+
+
+## Lab v0.132.0 — Method Selection Intelligence
+
+Adds transparent, researcher-controlled method eligibility reasoning across statistical, Bayesian, simulation, sensitivity, causal, spatial, spatiotemporal, time-series, experimental-design, reproducibility, and synthesis workflows. Candidate methods are labeled eligible, needs-information, or incompatible with explicit reasons; there is no automatic winner, hidden score, scientific-validity certification, or Core submission.
+
+## Lab v0.131.0 — Research Question & Hypothesis Workspace
+
+- Adds governed research-question/hypothesis formalization, competing hypotheses, operationalization, falsification/disconfirmation, preregistration/deviations, rival explanations, discriminating tests, snapshots, and Core bindings.
+- Researcher selection remains mandatory; no automatic truth determination, validity certification, evidence weighting, method selection, or Core submission.
+
+# Lab v0.130.0 — Scientific Research Project Studio
+
+Lab v0.130.0 unifies datasets, studies, experiments, models, executions, simulations, figures, claims/evidence, manuscripts, reproduction packages, investigations, provenance, sessions, milestones, and publication plans inside a reference-first scientific project workspace. Source Lab/Core objects remain authoritative and the Studio never treats project organization as scientific validation.
+
+# Lab v0.129.0 — Research Reproduction & Replication Studio
+
+Reference-first reconstruction and independent replication workflows with artifact inventories, hash/integrity review, environment locks, method reconstruction, declared numerical tolerances, output/figure comparison, provenance reconstruction, deviation registers, replication protocols, claim linkage, reproducibility matrices, package manifests, snapshots, and Platform Core references. Successful reruns or replications never automatically confirm scientific claims.
+
+# Lab v0.128.0 — Experimental Design & Power Analysis
+
+Governed power and sample-size planning, factorial/block/cluster design structure, precision planning, seeded simulation power, sequential/adaptive planning, multiplicity plans, reproducible randomization schedules, publication visualization plans, snapshots, and Platform Core references. Power remains conditional on explicit assumptions and is never represented as a guarantee.
+
+# Lab v0.126.0 — Spatial & Spatiotemporal Research Studio
+
+Governed vector/raster/spatiotemporal research with explicit CRS and weights, Moran and local-Moran diagnostics, Getis-Ord hotspot scores, nearest-neighbor and descriptive spatial-lag analysis, zonal statistics, raster change, space-time cubes, temporal change profiles, trajectory summaries, hotspot persistence, visualization plans, reproducible snapshots, and Platform Core reference plans. Spatial association remains non-causal; no silent reprojection, join inference, bandwidth optimization, significance labels, or scientific-validity certification.
+
+# Lab v0.119.0 — Visual Research Narrative & Figure Composer
+
+Reference-first research narrative composition for publication-grade figures, dashboards, and 3D/4D scenes. Adds declared captions, figure plates, methods/findings/evidence/citation linking, provenance traces, accessibility audits, deterministic revision snapshots, publication/export plans, and a renderer-neutral Core visual binding. Underlying scientific artifacts remain authoritative and are never mutated by the composer.
+
+## Lab v0.117.0 — Advanced 3D/4D Scientific Visualization
+
+Adds explicit scientific surfaces, meshes, vector/scalar fields, volumes, trajectories, temporal 4D scenes, slice/isosurface planning, uncertainty geometry, camera-state provenance, publication export planning, dashboard panels, and Core visual bindings. Scientific geometry and time semantics remain explicit and non-inferred.
+
+
+## v0.116.0 — Interactive Scientific Dashboards & Small Multiples
+
+Adds coordinated multi-panel scientific dashboards with declared linked brushing/selection/filtering, responsive small multiples, explicit scale synchronization, deterministic dashboard state snapshots, restore planning, provenance tracing, accessibility auditing, publication export planning, and renderer-neutral Core visual plans. The dashboard layer does not infer cross-dataset joins, statistical conclusions, scientific validity, or truth.
+
+## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
+
+Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.
+
+## v0.113.0 — Unified Research Session Production Runtime
+
+Lab v0.113.0 production-hardens the completed Platform Core v3 integration stack with deterministic operation/idempotency identity, explicit submission plans, declared receipts, advisory retries, recovery plans, checkpoints, continuity checks, diagnostics, readiness, and end-to-end research-session round-trip assessment. Core remains the session/reference authority and Lab remains the scientific execution authority; the runtime does not automatically submit, retry, recover, execute science, certify science/product quality, or determine truth.
+
+## v0.111.0 — Scientific Investigation Runtime Integration
+
+Lab v0.111.0 binds governed Lab investigations into Platform Core v3's reference-first investigation runtime while preserving Lab as the underlying scientific investigation authority. Core records investigation identity and explicit evidence/claim/hypothesis references; related executions, visuals, validation records, packages, models, datasets, protocols, and sources remain specialist-layer references. The bridge does not run investigations, infer findings, rank evidence, resolve contradictions, select hypotheses, infer causality, certify scientific validity, or determine truth.
+
 # Sustainable Catalyst Lab
 
-Sustainable Catalyst Lab is the scientific experimentation, modeling, visualization, review, reproducibility, and neural-research workspace of the Sustainable Catalyst platform.
+**Current release: v0.135.5 — Scientific Scene Linking, Comparative Inspection & Context Preservation.**
 
-**Current release:** v0.141.8 — Reproducible Neural Research Package
+**Current release: v0.128.0 — Experimental Design & Power Analysis.**
 
-## Architecture
 
-Lab combines governed scientific workspaces with a Python compute backend and browser/WordPress research interfaces.
+**Current release: v0.109.0 — Visual Reasoning & Scientific Scene Bridge.**
 
-- **Lab / WordPress interface** — scientific workflows, Graph Studio, research review, experiment interfaces, and interactive analysis.
-- **Python backend** — scientific computation, model analysis, reproducibility services, and runtime APIs.
-- **Workspace** — execution authority for managed jobs and neural-training workloads used by Lab.
-- **Platform Core** — governed research objects, provenance, evidence, visual contracts, and cross-product exchange.
-- **Contracts / SDK** — stable integration surfaces for scientific objects and downstream platform components.
+## v0.109.0 — Visual Reasoning & Scientific Scene Bridge
 
-Lab remains the scientific experimentation and analysis layer; it does not replace Platform Core's governance contracts or Workspace's managed execution responsibilities.
+Lab v0.109.0 connects Platform Core v3 visual identity and renderer-neutral scene semantics to the Lab scientific visualization stack. It adds Core-compatible visual-binding envelopes, conversion of Lab v0.77/v0.88 scientific scenes into `sc.visual-runtime.scene.v1` contracts, linked-view and uncertainty-view bridges, renderer capability discovery/negotiation, and legacy scientific-scene mapping. Core records visual references, scene/view references, source bindings, and cross-product semantics; Lab remains authoritative for scientific rendering, WebGL/WebGPU execution, 3D/4D scene behavior, and underlying scientific figures. The bridge never makes Core render, perform GPU work, infer visual truth, infer links, or infer uncertainty.
 
-## Repository layout
+## v0.108.0 — Findings, Claims, Evidence & Validation Bridge
 
-- `assets/` — browser and WordPress assets.
-- `backend/` — Python backend, runtime services, and compute integration.
-- `build/` — build support retained by the source tree.
-- `contracts/` — Lab and cross-product contracts.
-- `docs/` — current architecture and product documentation.
-- `examples/` — example payloads and workflows.
-- `includes/` — WordPress/PHP application code.
-- `scripts/` — operational, validation, release, and deployment tooling.
-- `sdk/` — integration SDK material.
-- `templates/` — interface templates.
-- `tests/` — active regression and release validation.
-- `sustainable-catalyst-lab.php` — canonical WordPress plugin entry point.
-- `compose.yml` — current container orchestration definition.
+Lab v0.108.0 connects researcher-declared scientific findings, claims, evidence relationships, contradictions, evidence-boundary assessments, validation challenges, and replication attempts to Platform Core v3 research-intelligence contracts. Core records reference-first intelligence and validation state; Lab remains authoritative for the underlying science. The bridge never generates claims/findings, ranks evidence, resolves contradictions, certifies replication or scientific validity, or determines truth.
 
-See `CHANGELOG.md` for release history.
+## v0.107.0 — Scientific Execution Lineage Bridge
 
-## Release history
+Lab v0.107.0 records method/runtime/environment/input/output lineage in Core-compatible execution-binding envelopes while preserving Lab as the scientific execution authority.
 
-Historical release notes, deployment guides, generated validation reports, terminal-command files, and per-version release scripts are intentionally not retained at the root of `main`.
+## v0.106.0 — Unified Project & Research Session Context
 
-The exact pre-cleanup repository state is preserved on:
+Lab v0.106.0 adds canonical project/session identity, session-registration envelopes, per-session Lab product bindings, context-aware object/handoff bindings, contributor context, and continuity validation. Core remains the session-registry authority; Lab remains the scientific-workspace and compute authority.
 
-`archive/pre-root-cleanup-2026-09-29-lab`
+## v0.105.0 — Canonical Research Object Mapping
 
-Git history and release tags continue to preserve prior release artifacts. For example:
+Lab v0.105.0 connects Lab's existing scientific object families to Platform Core v3.0.0's open-ended unified-runtime object bindings. Datasets, observations, workflows, experiments, campaigns, models, artifacts, evidence, citations, publications, reproducibility packages, manuscripts, scenarios, research briefs, snapshots, and scientific figures receive stable Lab-authoritative references and deterministic mapping metadata. Core stores references and lineage context only; Lab remains authoritative for the underlying scientific content. The retained v0.38.1 typed handoff layer can now be translated directly into Core v3 object-binding requests. Execution, visual, and package-specific binding bridges remain intentionally deferred to v0.107.0, v0.109.0, and v0.110.0.
 
-```bash
-git show v0.141.8:RELEASE_NOTES_0.141.8_REPRODUCIBLE_NEURAL_RESEARCH_PACKAGE.md
-git show v0.141.8:REPRODUCIBLE_NEURAL_RESEARCH_PACKAGE_0.141.8.md
+## v0.104.0 — Platform Core v3 Runtime Adapter & Capability Registration
+
+Lab v0.104.0 declares Sustainable Catalyst Lab as the scientific-execution authority for Platform Core v3.0.0. It adds governed capability registration payloads, unified research-session context normalization, Core-to-Lab handoff validation, and Core v3 readiness/boundary compatibility checks. Core remains the reference-first orchestration layer; Lab does not automatically mutate Core or execute scientific work merely because a handoff is validated.
+
+
+## v0.100.0 — MRV Reporting & Audit Packets
+
+Carbon & Nature Intelligence v0.17.0 assembles governed MRV components into structured internal reports and deterministic audit-preparation packets. It preserves reporting periods, protocol/monitoring/uncertainty/evidence references, declared metrics, deviations, section fingerprints, supporting-artifact digests, verification-ledger chain status, and Carbon Project provenance. `ready-for-internal-review` and `ready-for-internal-audit-preparation` are internal workflow states only; they do not establish external verification, auditor approval, methodology compliance, certification, or credit eligibility. The active host line deliberately advances to v0.100.0 instead of reusing the repository's historical v1.0.0 identity.
+
+## v0.97.0 — Monitoring Plan & Sampling Designer
+
+Carbon & Nature Intelligence v0.14.0 turns an explicitly selected MRV method and protocol into a governed monitoring and sampling plan. It adds campaign scheduling, explicit sampling-frame and sample-unit documentation, five sampling-strategy descriptors, precision-based planning sample-size calculations with optional finite-population correction, equal/proportional/Neyman stratum allocation, SOC depth-interval governance, QA/QC records, method-documentation gap analysis, deterministic fingerprints, and Carbon Project monitoring-record handoff. Planning estimates do not establish representativeness, statistical power, external methodology compliance, verification, certification, or carbon-credit eligibility.
+
+## v0.96.0 — MRV Protocol Builder
+
+Carbon & Nature Intelligence v0.13.0 turns the governed MRV Method Registry into a protocol-construction workflow. Users explicitly select a foundation method, then document monitoring scope, boundary, period/frequency, responsibilities, method inputs/evidence, nine protocol sections, provenance, and change control. Lab reports structural and documentation gaps and can mark a protocol `ready-for-internal-review`, but does not infer external methodology compliance, verification, certification, or carbon-credit eligibility.
+
+## Current Lab release: v0.93.0
+
+**Carbon & Nature Intelligence v0.10.0:** SOC Management Scenario Studio projects transparent SOC trajectories from explicit user-supplied assumptions, compares multiple scenarios without ranking them, runs user-supplied sensitivity sweeps, supports optional assumption envelopes, and packages scenario results as provenance-ready Carbon Project model runs. Sustainable Catalyst supplies no default SOC change rate, and a projected increase is not a forecast, verified sequestration, additionality finding, or carbon-credit claim.
+
+## Current visualization release: v0.88.0
+
+**R1 hardware-certification repair:** real Apple Metal/WebGPU validation exposed four missing WGSL return-statement semicolons in the native Advanced 3D shader modules. The repaired runtime now validates shader/pipeline creation, waits for GPU queue completion, and refuses to return `ok: true` when WebGPU validation fails. The canonical product release remains v0.88.0 / Visualization Engine 2.14.0.
+
+Graph Studio now includes **Advanced 3D Scientific Scene Engine II** on top of the production-certified v0.87 WebGPU renderer. Visualization Engine 2.14.0 adds governed scene graphs, cameras, scientific lighting, explicit materials, GPU instancing, native WebGPU mesh/line/point rendering, orbit/pan/zoom interaction state, and a Three.js compatibility adapter when a local Three.js runtime is present. Lab never loads Three.js from a CDN automatically, and Three.js/WebGPU availability never changes scientific correctness.
+
+## v0.88.0 — Advanced 3D Scientific Scene Engine II
+
+The v0.88 scene layer unifies the earlier v0.77 3D scientific semantics with the v0.87 WebGPU execution path. Geometry, topology, normals, units, and scientific meaning remain explicit; lighting, materials, camera state, and interaction remain presentation metadata rather than observations. The independent System Dynamics Engine remains at 1.0.0.
+
+## Current visualization release: v0.87.0
+
+Graph Studio now includes a governed production WebGPU renderer and browser GPU-compute path on top of the v0.85 WebGL2 fallback. v0.87 uses real `navigator.gpu` adapter/device acquisition, renderer-owned WGSL pipelines, explicit WebGL2 fallback, and approved compute kernels for filtering, histograms, reductions, and spatial binning. GPU availability never changes scientific semantics, and arbitrary WGSL remains disabled. The v0.86 System Dynamics Engine remains independently versioned at 1.0.0.
+
+## v0.87.0 — WebGPU Scientific Renderer & GPU Compute
+
+Visualization Engine 2.13.0 promotes WebGPU from capability detection to a production renderer/compute path while preserving all v0.85 WebGL2 and v0.86 systems-modeling contracts. Derived GPU compute results remain distinct from observations and fallbacks are always explicit.
+
+## Current visualization release: v0.80.0
+
+Graph Studio now supports governed spatial, geospatial, and raster visualization through the `canvas-spatial` renderer on top of the v0.79 linked-view composition line. v0.80 accepts explicit vector geometry, explicit raster cells, declared coordinate-reference metadata, explicit viewports, and bounding-box selection. Automatic CRS inference, reprojection, geocoding, spatial joins, topology repair, raster interpolation/resampling, nodata imputation, and network basemaps remain disabled.
+
+## v0.80.0 — Spatial, Geospatial & Raster Visualization
+
+Visualization Engine 2.7.0 adds `canvas-spatial` to the existing `svg2d`, `canvas3d`, and `canvas4d` registry. Spatial figures preserve per-layer CRS metadata, geometry/raster fingerprints, viewport bounds, nodata state, provenance, and explicit no-reprojection/no-interpolation boundaries. Mixed vector/raster figures can participate in v0.79 linked compositions without turning visual proximity into a data join or scientific relationship.
+
+
+## v0.77.0 — 3D Scientific Scene Engine
+
+Graph Studio now has a governed `canvas3d` renderer for real three-dimensional scientific coordinates. v0.77 supports point clouds, ordered trajectories, vector fields, line segments, explicit triangle meshes, perspective/orthographic cameras, orbit/zoom interaction, clipping intent, scene bounds, PNG/JSON export, and scene provenance. Mesh topology is never inferred from scattered observations; the browser renderer uses painter depth sorting and does not claim WebGL depth-buffer or hidden-surface guarantees. v0.75 data transformations and v0.76 adaptive representations remain upstream compatibility layers.
+## v0.76.0 — Large-Data Visualization & Adaptive Rendering
+
+Graph Studio can adapt large real datasets into deterministic, provenance-aware render representations using plot-aware LTTB, grid, quantile, stride, or full strategies. The authoritative dataset is never silently mutated; adaptive reduction is stored as figure provenance.
+
+## v0.75.0 — Scientific Data Binding & Transformation Pipeline
+
+v0.75.0 turns Graph Studio from a sophisticated figure constructor into a governed data-to-figure system. Real datasets now carry explicit column/unit/source metadata and SHA-256 identity; transformations are replayable and lineage-hashed; visual roles are bound explicitly to columns; and saved figures retain dataset → transformation → binding provenance. The release binds real project data across the v0.74 2D grammar and adds 4D observed-point projection without pretending the points form an interpolated scientific surface.
+
+## v0.74.0 — Advanced 2D Scientific Plot Grammar
+
+v0.74.0 turns Graph Studio's unified SVG path into a broad governed Cartesian scientific plotting system. The release adds distribution, interval, diagnostic, binned-field, bar, cumulative, and advanced series grammars plus explicit scale/unit/tick metadata while preserving the v0.44 SVG compatibility renderer and v0.73 4D canvas. Polar/radar and dual-axis figures remain deliberately deferred; general dataset binding and transformation provenance follow in v0.75.0.
+
+## v0.73.0 — Scientific Visualization Engine 2 & Unified Graph Contract
+
+v0.73.0 establishes the renderer-aware architecture for Lab's advanced scientific visualization roadmap. Graph Studio now routes legacy 2D figures through the proven v0.44 SVG engine and first-class `surface-4d` figures through the existing v0.71 canvas renderer under one `sc-lab-scientific-visualization/0.73.0` contract. New saved figures preserve renderer identity, dimensional semantics, 4D hyperslice/rotation/layer state, publication metadata, and provenance while remaining compatible with older v0.47 figures. The current 4D profiles remain deterministic synthetic demonstrations; project-data surface binding is intentionally deferred to v0.75.0.
+
+## v0.72.1 — Homepage Biodiversity Time-Sweep Loop
+
+v0.72.1 makes the public 4D biodiversity homepage preview start its existing time/disturbance sweep automatically and continue on a seamless loop. The pause control remains available, reduced-motion preferences disable autoplay, and `[sc_lab_home_preview autoplay="false"]` provides an explicit opt-out. Scientific data and backend boundaries are unchanged.
+
+## v0.72.0 — Homepage 4D Biodiversity Modeling Preview
+
+v0.72.0 adds a dedicated public homepage Lab widget that reuses the v0.71 4D scientific visualization renderer with an explicitly synthetic biodiversity profile. The preview models habitat quality, climate stress, relative biodiversity response, and time/disturbance progression together, with surface, contour, vector, uncertainty, tesseract-projection, time-slice, XW/YW rotation, and animation controls. Use `[sc_lab_home_preview]` on the homepage.
+
+## v0.71.0 — Advanced Scientific Visualization Front Door & 4D Projection
+
+v0.71.0 replaces the older landing-page line/scatter preview with an interactive browser-rendered 4D scientific visualization: response surface, vector field, uncertainty guides, contours, W hyperslicing, XW/YW rotation, 4D sweep animation, and a projected tesseract. It also changes transient Python Compute Core startup failures from immediate “Lab recovery” warnings into non-blocking “Compute reconnecting” states while preserving queued-job recovery and escalation for persistent failures.
+
+## v0.70.0 — Research Questions, Hypothesis Registry & Preregistration
+
+v0.70.0 adds governed research-question and hypothesis registries, a pre-result preregistration plan, tamper-evident freeze snapshots, timestamped post-freeze deviation disclosure, and human review. A `preregistration-bounded` result describes registration integrity within the stated scope; it does not validate a hypothesis, prove absence of bias, or convert post-hoc findings into confirmatory evidence.
+
+
+## v0.69.0 — Scientific Theory & Conceptual Model Workspace
+
+v0.69.0 connects constructs, mechanisms, hypotheses, equations/model references, claims, evidence, predictions, falsification conditions, and explicit scope boundaries into human-reviewed scientific theories. Theory evaluation is metadata-only and preserves the six-destination Lab architecture; a `theory-bounded` result is not scientific proof or automatic causal certification.
+
+
+## v0.68.0 — Hierarchical, Multilevel & Cross-Study Modeling
+
+Adds governed aggregate partial pooling, random-intercept cluster models, random-slope/meta-regression, cross-study pooling, heterogeneity and shrinkage diagnostics, explicit population/generalization boundaries, and human model review. Automatic generalization, ecological inference, participant-level data ingestion, and automatic causal proof remain disabled.
+
+
+## v0.67.0 — Causal Inference & Quasi-Experimental Methods
+
+Adds governed matching/weighting, difference-in-differences, interrupted time-series, and regression-discontinuity design records with explicit identification assumptions, aggregate estimates, method diagnostics, sensitivity checks, human review, and metadata-only causal provenance. Automatic causal proof remains disabled.
+
+## v0.66.0 — Competing Hypotheses & Scientific Argumentation
+
+Adds project-scoped rival hypotheses, explicit predictions, governed hypothesis-evidence links, discriminating tests, falsifying-evidence challenges, unresolved-alternative preservation, human hypothesis review, and human-reviewed argument maps on top of the v0.62–v0.65 evidence chain. No automatic hypothesis proof, hidden winner selection, automatic falsification, numeric truth score, or causal certification is introduced.
+
+## v0.65.0 — Scientific Evidence Grading, Contradiction Analysis & Consensus Boundaries
+
+Adds transparent evidence-state grading, contradiction analysis, replication/heterogeneity boundaries, source-caution preservation, and explicit human-reviewed consensus-boundary statements on top of the v0.62–v0.64 claims/literature/synthesis chain. No numeric truth score, citation-count authority ranking, journal-prestige ranking, automatic consensus certification, or automatic causal certification is introduced.
+
+## v0.64.0 — Replication, Systematic Evidence Synthesis & Meta-Analysis
+
+Adds governed aggregate-effect synthesis, replication assessment, fixed/random-effects meta-analysis, heterogeneity and leave-one-out diagnostics, human synthesis review, and tamper-evident metadata-only evidence packets on top of v0.63 literature provenance.
+
+## v0.63.0 — Scientific Literature, Citation Graph & Source-to-Claim Provenance
+
+- Adds governed literature source records, human source review, source-to-claim provenance, and a source-to-source citation graph.
+- Preserves contradictory/non-replication literature, unresolved references, orphan sources, and duplicate identifiers instead of silently reconciling them.
+- Requires human source inclusion/applicability review and qualified claim review when contradictory literature is present.
+- Adds deterministic citation-graph/evaluation/packet hashes and metadata-only `analysisPackets` evidence.
+- Disables automatic truth scoring, authority ranking, retraction verification, network fetching during evaluation, and raw/full-text packet capture.
+- Preserves the six-destination rail, Graph Studio front door, and three related application cards.
+
+## v0.62.0 — Scientific Claims, Evidence Matrix & Conclusion Traceability
+
+- Adds researcher-authored scientific claims with explicit supporting, contradicting, uncertainty, limitation, validation, and figure/context evidence links.
+- Adds human claim and conclusion review, a deterministic claim × evidence matrix, and tamper-evident conclusion traceability packets.
+- Preserves contradictions and orphan claims instead of hiding them.
+- Blocks causal claims outside experimental/mixed v0.61 study designs; never auto-certifies scientific validity or generates conclusions.
+- Keeps the v0.48.3 six-destination rail and contextual Scientific Workflows architecture unchanged.
+
+# v0.61.0 — End-to-End Scientific Study & Research Project Lifecycle
+
+- Adds an active-project scientific study record across question, protocol, data, analysis, validation, uncertainty, experiment, figures, conclusions, reproducibility, and audit.
+- Separates evidence completeness from explicit human stage acceptance; required stages cannot self-certify.
+- Adds observational, experimental, computational, and mixed study templates.
+- Adds deterministic study/lifecycle hashes, tamper-evident review hashes, and a metadata-only final study packet.
+- Stores study definitions in `scientificStudiesV0610` and lifecycle evidence in `analysisPackets`.
+- Preserves the six-destination rail, Graph Studio front door, three related application cards, and no-MutationObserver runtime boundary.
+- Automatic scientific certification, causal claims, publication, experiment execution, and arbitrary code remain disabled.
+
+## v0.60.1 — Beta Field Diagnostics, Integration Soak & Runtime Repair
+
+This stabilization release adds metadata-only runtime snapshots, cross-studio integration probes, a bounded user-initiated WordPress ↔ compute soak, failure-domain localization, and tamper-evident diagnostic packets. It does not add a new scientific workspace or permanent navigation item. Automatic repair, background monitoring, external telemetry, raw-scientific-data capture, and automatic scientific-state mutation remain disabled.
+
+## v0.60.0 — Integrated Scientific Research Beta
+
+This beta milestone integrates the v0.49–v0.59 scientific feature line into a metadata-only project readiness contract. Lab can assess the active research journey across data, modeling, validation, workflow, reproducibility, and scientific audit, build a deterministic tamper-evident beta evidence packet, verify that packet, and save the evidence to the project. Raw datasets, credentials, and arbitrary executable inputs are excluded from the beta packet, and human review remains mandatory.
+
+## v0.59.0 R1 — Scientific Audit Validation Dependency & Installer Repair
+
+This repair keeps the Lab product release at **v0.59.0** while correcting the validation environment used to certify the Security, Privacy, Reproducibility & Scientific Audit release. The inherited v0.39.1 security/privacy contract tests require `jsonschema`; R1 declares that validation dependency, verifies it during installer preflight, and uses a dedicated v0.59.0-R1 validation environment so an incomplete pre-R1 environment is not reused. Scientific audit behavior, navigation, and platform compatibility remain unchanged.
+
+## v0.58.0 Large-Model, Large-Dataset & Compute Hardening
+
+Lab v0.58.0 adds a bounded scientific-compute layer for larger datasets and longer workflows. Registered scientific operations can be assessed before execution, queued asynchronously, cancelled cooperatively, and reused through deterministic result caching. The interface remains contextual inside Scientific Workflows and does not expand the permanent navigation. Dataset previews are bounded, queue/cache limits are explicit, and running scientific code is never force-terminated. Arbitrary code execution, automatic remote compute, and silent automatic scaling remain disabled.
+
+## v0.57.0 Scientific Workflow Composer
+
+Lab v0.57.0 connects the existing scientific stack into saved, rerunnable in-project research workflows. A bounded DAG can bind project/run inputs and prior-stage results across dataset profiling, data transformations, model fitting, validation, Bayesian analysis, uncertainty, dynamics, response surfaces, experimental design, Graph Studio normalization, reproducible model packages, registry projections, and report bundles. Each run records deterministic workflow, request, semantic-output, and run hashes for reproducibility comparison.
+
+This feature is intentionally separate from the older v0.32.1 operational workflow orchestrator: v0.57 composes scientific research stages, while v0.32.1 continues to own queues, checkpoints, schedules, recovery, and distributed operational execution. Arbitrary code/callback execution, automatic experiment execution, automatic registry promotion, automatic publication, and automatic workflow scheduling remain disabled. The v0.48.3 navigation architecture and three related-application cards remain unchanged. Internal platform compatibility remains v1.0.0.
+
+## v0.56.0 Advanced Experimental Design & Sequential Experimentation
+
+The current experimental-design layer adds bounded D-optimal and maximin initial designs, information-matrix diagnostics, balanced blocking, explicit center replication, and proposal-only sequential experiment planning. Sequential proposals can prioritize information gain or use a response-guided local model heuristic when sufficient completed responses exist. Automatic experiment execution and automatic stopping remain disabled; all proposals require scientific review.
+
+# Sustainable Catalyst Lab
+
+## v0.55.0 Scientific Data Transformation & Derived Variables
+
+This source tree adds a governed scientific data-preparation layer to the existing Dataset Inspector. Transformation plans are ordered, bounded, content-hashed, and reproducible. Derived variables reuse Lab's safe declarative equation grammar; unit conversions are restricted to a dimensional compatibility catalog; explicit filtering, casting, scaling, imputation, selection, renaming, and bounded left/inner joins preserve transformation lineage for later review and reproducible model packaging.
+
+The v0.48.3 navigation architecture remains unchanged: six primary Lab destinations, the Graph Studio front door, and the Prototyping Workbench / Decision Studio / Site Intelligence application row are preserved. Arbitrary code and SQL, automatic feature engineering, automatic unit inference, and automatic imputation remain disabled. Internal platform compatibility remains v1.0.0.
+
+# Sustainable Catalyst Lab
+
+## v0.52.0 Bayesian Inference, Posterior Diagnostics & Posterior Predictive Modeling
+
+This source tree adds governed Bayesian regression to Model Studio for Gaussian, binomial-logit, and Poisson-log response families. The release supports explicit normal coefficient priors, term-specific normal priors, inverse-gamma Gaussian residual-variance priors, multi-chain posterior sampling, split-Rhat screening, autocorrelation effective sample size, Monte Carlo standard error, acceptance-rate and trace review, central credible intervals, posterior-predictive distributions, and posterior-predictive checks.
+
+Gaussian models use a Gibbs sampler; binomial-logit and Poisson-log models use adaptive random-walk Metropolis initialized from a Laplace approximation. Diagnostics are evidence for review and never an automatic convergence certificate. Arbitrary code, automatic prior selection, automatic causal claims, Bayes-factor claims, and hierarchical models remain outside v0.52.0 scope. Bayesian analysis packets are project-scoped and automatically travel with the v0.50 reproducible-model-package collector. The v0.48.3 navigation architecture and platform compatibility v1.0.0 remain unchanged.
+
+## v0.51.0 Advanced Statistical Modeling & Generalized Regression
+
+This source tree adds a governed advanced-statistics layer to Model Studio: Gaussian OLS/WLS, Huber robust regression, ridge/lasso/elastic-net regularization, binomial-logit and Poisson-log generalized linear models, Gaussian cubic splines, deterministic repeated k-fold validation, model comparison, coefficient evidence, and shared-engine scientific figures. Statistical evidence is project-scoped and travels with the v0.50 reproducible-model-package workflow.
+
+The v0.48.3 contextual-navigation architecture remains unchanged: six primary Lab destinations, the Graph Studio front door, and the Prototyping Workbench / Decision Studio / Site Intelligence application row are preserved. Arbitrary executable formulas/code, automatic feature selection, causal claims, and automatic publication remain disabled. Internal platform compatibility remains v1.0.0.
+
+## v0.50.0 Reproducible Model Packages, Registry & Research Bundles
+
+The v0.50 layer freezes Model Studio definitions, dataset references/snapshots, methods, results, figures, environment evidence, assumptions, limitations, provenance, and integrity hashes into reproducible research packages with portable ZIP export and Model Registry projection.
+
+## v0.49.0 Lab ↔ Workbench model-handoff feature layer
+
+This source tree includes **Lab ↔ Workbench Model Handoff & Shared Computational Contract v0.49.0** over the validated v0.48.3 contextual-navigation and v0.48.0 probabilistic-analysis stack. Lab can package the current Model Studio model into a governed computational contract for Workbench and can import a compatible Workbench model back into Model Studio after revalidation.
+
+The exchange preserves scientific definition, variables and units, parameter values and bounds, constants, initial conditions, dataset bindings, assumptions, limitations, provenance, and integrity hashes. It retains the historical `sc_workbench_handoff` browser transport for compatibility while adding the versioned `sc_catalyst_model_handoff_v0490` contract. Arbitrary code and automatic remote delivery remain disabled. Stable platform compatibility remains v1.0.0.
+
+## v0.48.1 presentation-repair feature layer
+
+This source tree includes **Graph Studio Front Door & Scientific Workspace Presentation Repair v0.48.1** over the validated v0.48.0 probabilistic-analysis stack. The outer WordPress Lab frame keeps the three related-application cards for Prototyping Workbench, Decision Studio, and Site Intelligence, while the Lab application itself now opens with a persistent primary-workspace switcher and a large Graph Studio scientific-canvas preview.
+
+The repair reuses Scientific Visualization Engine v0.44.0 and does not change the governed modeling or probabilistic computation layers. Stable platform compatibility remains v1.0.0 and arbitrary-code execution remains disabled.
+
+## Graph Studio v0.47.0 feature layer
+
+This source tree includes **Graph Studio, Scientific Figure Workspace & Interface Reorganization v0.47.0** on top of the Lab's stable v1.0.0 platform-compatibility metadata. Graph Studio is a first-class scientific visualization workspace with a large interactive canvas, project figure library, publication metadata, governed figure persistence, and handoffs from Model Studio.
+
+Graph Studio and the existing modeling/visualization surfaces continue to use the shared Scientific Visualization Engine v0.44.0 rather than maintaining separate renderers. The v0.46 response-surface, v0.45 dynamic-system, v0.43 diagnostics/model-comparison, and v0.42 safe-equation layers remain intact. Arbitrary code execution remains disabled.
+
+## v0.40.0 — Connected Scientific Research Platform Beta
+
+Sustainable Catalyst Lab v0.40.0 unifies its scientific workflow, institutional governance, interoperability, public integration, security, recovery, and validation layers into a controlled beta operating platform. It adds institutional cohorts, guided research projects, privacy-minimized opt-in telemetry, feedback and support operations, known limitations, and a component-aware beta readiness gate. The release does not claim general availability.
+
+Adds bounded load profiles, latency percentiles, throughput measurement, explicit performance budgets, isolated chaos scenarios, capacity evidence, FastAPI and WordPress operations surfaces, and Python/TypeScript SDK support. Production mutation, destructive chaos, and outbound network traffic remain disabled.
+
+
+The Lab now provides stable instance identity, consistent SQLite snapshots, signed and hash-verified backup archives, staged non-destructive restore, idempotent migration journals, signed cross-instance recovery transfer, and measurable RPO/RTO disaster-recovery drills. See `docs/multi-instance-operations-v0392.md`.
+
+# Sustainable Catalyst Lab
+
+**Current release: v0.39.1 — Institutional Administration, Identity, and Governance**
+
+Sustainable Catalyst Lab v0.39.0 adds an institutional control plane over the connected scientific research platform. Institutions can define organizational units, register human and credential-free service principals, assign scoped roles, classify workspaces, evaluate governed actions, administer retention references, and require auditable approval quorums. Credential issuance, SSO, key rotation, encryption hardening, and advanced secret custody remain intentionally deferred to v0.39.1.
+
+## v0.39.0 highlights
+
+- Institution and organizational-unit registry
+- Human and credential-free service principals
+- Institution, unit, and workspace role bindings
+- Public, internal, confidential, and restricted classifications
+- Deterministic policy evaluation for research actions
+- Retention-policy references without destructive automation
+- Quorum-based governance approvals and immutable decisions
+- Hash-chained governance timelines and dashboards
+- WordPress Institutional Governance Console
+- Python and TypeScript SDK governance clients
+
+## Prior release: v0.38.2
+
+### v0.38.2 highlights
+
+- Stable, versioned `/v1` public research API catalog and OpenAPI discovery.
+- Scoped integration authentication for protected research, webhook, and embed operations.
+- HTTPS-only webhook subscriptions with SSRF safeguards, one-time secrets, HMAC-SHA256 signatures, delivery queues, and guarded dispatch.
+- Signed, expiring research embed manifests limited to public references and policy-approved metadata.
+- Dependency-light Python and TypeScript SDKs plus a browser research-embed loader.
+- WordPress Public Research Integration Studio for API, webhook, delivery, SDK, and embed operations.
+- Outbound webhook delivery remains disabled by default.
+
+## v0.38.1 highlights
+
+- Executable typed adapters for 13 Sustainable Catalyst products.
+- Deterministic product-pair route planning with contract inference and target bindings.
+- Dry-run validation, SHA-256 route and plan identities, and governed handoff creation.
+- Optional profile-aware create-and-seal operations.
+- New WordPress Product Handoff Studio and authenticated FastAPI routes.
+- No arbitrary callbacks, executable code, credentials, or embedded restricted dataset bytes.
+
+## v0.38.0 highlights
+
+- Workspace-governed interoperability profiles for Sustainable Catalyst products and institutional systems.
+- Canonical typed research handoff envelopes with resource hashes, provenance, safety declarations, and stable identities.
+- Contract-version and capability negotiation between source and target profiles.
+- Hash-verified, idempotent imports with immutable delivery and acceptance receipts.
+- Optional HMAC-SHA256 receipt signing and retained interoperability timelines.
+- No arbitrary code, embedded restricted data, browser-held credentials, or unrestricted remote callbacks.
+- New Sustainable Catalyst Research Interoperability Layer workspace, bringing Lab to 77 registered panels.
+
+## v0.37.1 highlights
+
+- Reusable, revisioned section library with immutable snapshots inside assemblies.
+- Manuscript, technical report, methods supplement, research dossier, and output-only notebook document types.
+- Structured methods narratives generated from sealed v0.37.0 reproducibility packages.
+- Cross-format Markdown, escaped HTML, JATS-lite XML, Jupyter notebook, BibTeX, methods, and JSON exports.
+- Validation, immutable sealing, render hashes, and parent-revision lineage.
+- New `Manuscript, Report, Notebook & Methods Assembly` Lab workspace.
+
+## v0.37.0 highlights
+
+- Workspace-governed reproducibility packages with immutable sealed manifests and SHA-256 identities.
+- Logical research bundles containing methods, environment locks, citations, provenance, resources, and verification receipts.
+- Publication-ready Markdown, escaped HTML, JSON, and `CITATION.cff` outputs.
+- Reviewer readiness gates and publication restricted to an existing signed scientific workspace approval.
+- No arbitrary code, shell commands, secrets, raw restricted data bytes, or unrestricted callbacks.
+- New Reproducibility Packages and Research Publication Studio panel, bringing Lab to 74 registered panels.
+
+## v0.36.2 highlights
+
+- Sealed offline work packages for disconnected field research.
+- One-time edge-device credentials and workspace-governed enrollment.
+- Signed, resumable synchronization sessions with cursor-based deltas.
+- Duplicate suppression, conflict records, explicit reconciliation, and hashed field provenance.
+- Institutional data remains local; field packages contain references, forms, protocols, and hashes rather than restricted data bytes.
+
+## v0.36.1 highlights
+
+- Workspace-governed institutional node registration with one-time node credentials and explicit status controls.
+- Local data asset records that centralize only schema, classification, hashes, and export policy—not restricted data bytes.
+- Signed execution envelopes restricted to registered Lab methods and node allowlists.
+- Node-authenticated request claiming with concurrency limits.
+- HMAC-attested completion receipts containing result, data-access, and environment hashes.
+- Automatic rejection of raw artifact export for confidential or restricted datasets.
+- Durable execution, cancellation, receipt, and node timelines.
+- New Institutional Node Federation and Local-Data Execution panel, bringing Lab to 72 registered panels.
+
+
+## v0.36.0 highlights
+
+- Workspace-governed scientific artifact collections with private, workspace, and public visibility metadata.
+- Immutable artifact version records identified by SHA-256, semantic version, canonical URI, provenance, and stable record hashes.
+- Optional binding to the existing content-addressed artifact transport for byte-level size and digest verification.
+- Registered institutional federation nodes with explicit trust and conflict policies.
+- Canonical export and authenticated import of `sc-lab-federation-manifest/0.36.0` documents.
+- Idempotent delta synchronization, tombstones, retained sync runs, and hashed repository timelines.
+- Durable conflict records with keep-local, accept-remote, retain-both, and dismiss resolutions.
+- No automatic callbacks to submitted endpoints and no arbitrary code execution.
+- New Scientific Artifact Repository and Data Federation panel, bringing Lab to 71 registered panels.
+
+
+## v0.35.2 highlights
+
+- Immutable workspace snapshots with canonical JSON trees and SHA-256 identities.
+- Named research branches with optimistic branch-head and revision checks.
+- Three-way merge with durable path-level base, source, and target conflict records.
+- Reviewer conflict resolution and editor-controlled merge finalization.
+- Protected branch merges gated by signed v0.35.1 scientific approvals.
+- Non-destructive restore that creates a new snapshot instead of rewriting history.
+- In-place workspace database migration to schema version 3.
+- New Version History, Branching, Merge, and Conflict Resolution panel, bringing Lab to 70 registered panels.
+
+## v0.35.1 highlights
+
+- Resource-scoped, append-only review threads and nested comments with withdrawal records.
+- Reviewer assignments with due dates, explicit states, and optimistic-concurrency revisions.
+- Approval gates for required decisions, open threads, completed assignments, and signatory roles.
+- Immutable approve, reject, request-changes, and abstain decisions with rationale and evidence.
+- Immutable scientific sign-off records binding workspace, resource, approval, decisions, signatory, and statement.
+- In-place workspace database migration to schema version 2.
+- New Review, Approvals & Sign-Off panel, bringing Lab to 69 registered panels.
+
+## v0.35.0 highlights
+
+- Private shared research workspaces with stable workspace identities and primary-project links.
+- Owner, administrator, editor, contributor, reviewer, and viewer roles with backend-enforced permissions.
+- Single-use invitation tokens retained only as SHA-256 digests, with bounded expiry and optional target actors.
+- Governed links to projects, datasets, workflows, runs, campaigns, models, artifacts, notebooks, sources, evidence, and reports.
+- Per-resource minimum roles and durable hashed access decisions.
+- Ownership transfer that preserves the previous owner as an administrator.
+- Archive-without-deletion semantics and a complete hashed collaboration event timeline.
+- New Shared Research Projects and Team Workspaces panel, bringing Lab to 68 registered panels.
+- The v0.35.1 review and sign-off layer now builds on these workspace records without changing their original contracts.
+
+
+## v0.34.2 highlights
+
+- Immutable surrogate and reduced-order training studies with canonical definition and model hashes.
+- Polynomial-ridge, radial-basis, and Gaussian-process surrogate algorithms.
+- Seeded holdout validation with RMSE, normalized RMSE, MAE, maximum error, and R².
+- Proper orthogonal decomposition using centered SVD, retained-energy targets, and basis hashes.
+- Hybrid ROM training that maps declared parameters to reduced coefficients and reconstructed states.
+- Predictive uncertainty for Gaussian-process models and durable prediction hashes.
+- Publication of validated surrogate versions into the Scientific Model Registry.
+- New Surrogate Models and Reduced-Order Analysis workspace, bringing Lab to 67 registered panels.
+
+
+## v0.34.1 highlights
+
+- Immutable weighted ensembles of registered scientific model versions.
+- Monte Carlo, Latin hypercube, Sobol, and Saltelli-Sobol sampling.
+- Uniform, normal, lognormal, triangular, and discrete uncertainty inputs.
+- Dispatcher-backed sample/member evaluations with existing worker security and retry controls.
+- Output distributions, confidence intervals, threshold probabilities, and member comparisons.
+- Pearson, Spearman, standardized-regression, and Sobol global sensitivity measures.
+- Durable ensemble studies, evaluations, analysis hashes, and event timelines.
+- New Ensemble Simulation, Global Sensitivity, and Uncertainty Lab workspace.
+
+## v0.34.0 highlights
+
+- Durable scientific model, model-version, environment, alias, and event registries.
+- Immutable semantic versions with canonical SHA-256 model hashes.
+- Runtime, operating-system, architecture, container, dependency, source-revision, and build capture.
+- Stable environment lock hashes and dependency-drift comparison.
+- Draft, candidate, production, deprecated, and archived governance channels.
+- Portable reproduction manifests with model, environment, artifact, source, and manifest verification.
+- Administrator-only Scientific Model Registry workspace, bringing Lab to 65 registered panels.
+
+
+## v0.33.2 highlights
+
+- Closed-loop simulation, instrument, and hybrid campaigns above the adaptive campaign engine.
+- Reviewable command envelopes with operator approval instead of direct device execution.
+- Signed measurement ingestion, canonical hashes, deduplication, and objective reconciliation.
+- Signal and parameter limits, maximum step deltas, emergency-stop signals, and bounded failure handling.
+- Durable cycles, commands, measurements, safety decisions, and complete campaign/workflow provenance.
+- A dedicated Closed-Loop Campaigns workspace, bringing Lab to 64 registered panels.
+
+## v0.33.1 highlights
+
+- Gaussian-process surrogates with RBF, Matérn 3/2, and Matérn 5/2 kernels.
+- Expected improvement, probability of improvement, confidence-bound, and maximum-variance acquisition.
+- Mixed continuous, integer, and categorical parameter encoding.
+- Predictive mean, uncertainty, model condition diagnostics, and reproducible model hashes.
+- Resource-aware candidate scoring, per-trial limits, total-cost budgets, and observed-cost provenance.
+- Non-mutating proposal previews and inspectable surrogate records.
+- In-place migration of existing v0.33.0 campaign stores to schema version 2.
+
+## v0.33.0 highlights
+
+- Durable adaptive experiment campaigns backed by the existing scientific workflow engine
+- Typed continuous, integer, and categorical parameter spaces with explicit workflow input bindings
+- Deterministic random, grid, and adaptive explore/exploit proposal policies
+- Duplicate-design prevention through canonical parameter fingerprints
+- Objective extraction from declared workflow result paths with minimize/maximize goals
+- Trial, failure, concurrency, patience, target, and minimum-improvement stopping controls
+- Campaign pause, resume, cancellation, manual observations, and operator-driven advancement
+- Immutable workflow-run provenance for campaign, trial, proposal, parameter, and objective lineage
+- Separate SQLite WAL campaign, trial, and event store with background reconciliation
+- New Adaptive Experiment Campaigns operations panel
+- Direct cumulative installer bridge from v0.31.0 through v0.32.2
+
+## v0.32.2 highlights
+
+- Durable interval, UTC cron, one-time, and event-triggered workflow schedules
+- Persistent next-fire timestamps and startup missed-run recovery
+- `skip`, `catch-up-one`, and bounded `catch-up-all` misfire policies
+- `allow`, `forbid`, and `replace` workflow concurrency controls
+- Authenticated event ingestion with optional HMAC event signatures
+- Idempotent external-event receipts and duplicate-event protection
+- Declarative event filters without executable expressions or callbacks
+- Schedule firings linked directly to workflow run IDs and automation context
+- Background scheduler lifecycle plus administrator-operated manual ticks
+- Separate SQLite WAL schedule, firing, and event-receipt store
+- New Scheduled & Event-Driven Runs operations panel
+- Direct cumulative installer bridge from v0.31.0 through v0.32.1
+
+## v0.32.1 highlights
+
+- Declarative workflow conditions over run inputs, run context, and prior node state/results
+- Safe `all`, `any`, and `not` composition with a bounded allowlist of comparison operators
+- Explicit skipped-node outcomes and condition-evaluation timeline records
+- Persistent node checkpoint history with deduplication and latest-checkpoint pointers
+- Automatic capture of worker/dispatcher checkpoints and checkpoint artifact identifiers
+- Resume context propagated into recovered dispatcher workloads
+- Recovery planning for failed, cancelled, skipped, completed, or operator-selected branches
+- Lineage-preserving recovery runs that reuse successful nodes and restart only selected branches plus downstream dependents
+- Recovery generations, source-run/source-node links, operator reasons, and auditable recovery events
+- Administrator workflow recovery, node restart, checkpoint inspection, and manual-checkpoint controls
+- In-place workflow database migration from schema version 1 to schema version 2
+- Direct cumulative installer bridge from v0.31.0 through v0.32.0
+
+## v0.32.0 highlights
+
+- Typed scientific workflow definitions with stable SHA-256 definition fingerprints
+- Directed acyclic graph validation with duplicate, unknown-dependency, self-dependency, binding, and cycle checks
+- Dependency-aware node scheduling through the persistent distributed dispatcher
+- Parallel scheduling of independent root and newly ready nodes
+- Immutable workflow-definition snapshots attached to every run
+- Node-level queue IDs, states, results, errors, timestamps, and execution timeline events
+- Safe result bindings from completed upstream nodes into downstream registered-method requests
+- Automatic propagation of upstream artifact IDs into downstream artifact inputs
+- Dispatcher-managed node retry and dead-letter behavior
+- Workflow cancellation that also cancels active dispatcher queue items
+- Persistent SQLite WAL workflow registry and run store
+- Administrator-only WordPress Scientific Workflows panel and compute proxies
+- Direct cumulative installer bridge from v0.31.0 through v0.31.4
+
+## v0.31.4 highlights
+
+- Normalized failure classification for transient, validation, security, capacity, artifact, lease, and worker failures
+- Bounded exponential retry backoff with configurable base and maximum delays
+- Durable `retrying`, `dead-lettered`, and operator-cancelled queue lifecycles
+- Attempt-exhaustion handling without dropping the original workload or event history
+- Single and bulk dead-letter replay with optional attempt reset
+- Per-item queue, contract, lease, and operator-action timelines
+- Queue depth, oldest-ready age, lease-expiry, throughput, failure-distribution, and operator-action metrics
+- SQLite integrity, foreign-key, WAL, size, schema, and storage-path diagnostics
+- Administrator-only WordPress Dispatcher Operations panel and recovery proxies
+- Direct cumulative installer bridge from v0.31.0 through v0.31.3
+
+## v0.31.3 highlights
+
+- Content-addressed storage for inputs, results, checkpoints, logs, reports, datasets, and provenance artifacts
+- Sequential resumable chunk uploads with per-chunk and final SHA-256 verification
+- Deduplication, quarantine for failed integrity checks, ranged downloads, manifests, and audit events
+- Worker-scoped uploads and lease-bound input-artifact downloads
+- JSON, text, and base64 binary input materialization into registered compute requests
+- Automatic externalization of large worker results from completion receipts
+- Queue, contract, project, worker, method, and receipt provenance on retained artifacts
+- Upload expiration and artifact-retention cleanup controls
+- WordPress Artifact Transport operations panel and same-origin backend proxies
+- Direct installer bridge from v0.31.0, v0.31.1, or v0.31.2
+
+## v0.31.2 highlights
+
+- Installable Python worker agent for local, Raspberry Pi, Render, and institutional nodes
+- One-time coordinator enrollment with worker-scoped credentials
+- Coordinator-side credential digests, rotation, revocation, and quarantine
+- Pull-based compatible-lease claiming without inbound worker callbacks
+- Local HMAC contract verification with exact worker, method, and expiration binding
+- Registered-method-only execution; arbitrary code, commands, callbacks, and executable payloads are rejected
+- Automatic lease renewal during long computations
+- Idempotent completion receipts with result hashes and compute provenance
+- WordPress Secure Worker Agents operations panel and health routes
+- Corrected dispatcher database deployment path and explicit instance-local versus persistent-disk health reporting
+
+# Sustainable Catalyst Lab v0.27.1 — Numerical Validation and Benchmark Library
+
+Fourteen governed known-answer benchmarks verify the numerical methods registry with tolerance, residual, deterministic-seed, unit, and convergence checks. The Numerical Validation Library supports selected and full-suite runs, browser references, provenance inspection, and JSON export.
+
+# Sustainable Catalyst Lab v0.27.0 — Scientific Computing and Numerical Methods
+
+Twelve governed numerical methods and the Numerical Methods Studio added root finding, quadrature, interpolation, ODEs, eigen analysis, optimization, FFT, Monte Carlo, bootstrap, sensitivity analysis, and parameter sweeps.
+
+# Sustainable Catalyst Lab v0.26.3.2 — Installation, Version, and Asset Integrity Patch
+
+This release verifies the active WordPress plugin identity, unifies public release reporting, applies SHA-256 content versions to Lab assets without rewriting legacy loader methods, detects duplicate plugin copies and partial installations, validates canonical panel routes, and publishes a machine-readable build manifest and runtime health endpoint.
+
+# Sustainable Catalyst Lab v0.26.3.1 — Panel Alias and Compatibility Routing Repair
+
+Canonical panel routing for legacy identifiers, false-positive compatibility-warning suppression, content-hash cache busting, and duplicate-plugin diagnostics.
+
+# Sustainable Catalyst Lab v0.26.3 — Cross-Laboratory Calculator Activation and Runtime Repair
+
+This release repairs a shared browser-runtime failure that prevented later laboratory controllers from mounting when the single-panel lifecycle removed inactive markup. It adds guarded initialization, active-panel controller mounting, file-hash cache busting, runtime diagnostics, and resilient project storage while preserving the v0.26.1 Python Compute Core and persistent queue.
+
+# Sustainable Catalyst Lab v0.26.1 — Job Queue and Worker Reliability
+
+This release adds a SQLite-backed persistent queue, isolated Python worker processes, hard cancellation and timeouts, retry policies, duplicate-job prevention, restart recovery, worker health, queue monitoring, and same-origin WordPress job controls while preserving the v0.26.0 Python Compute Core and v0.25.5 lifecycle isolation.
+
+# Sustainable Catalyst Lab v0.26.0 — Python Compute Core Foundation
+
+Version 0.26.0 promoted FastAPI/Python into the governed compute plane with registered methods, HMAC signing, capability discovery, and reproducible provenance.
+
+# Sustainable Catalyst Lab v0.25.3 — Calibration, Validation, and Chain of Custody
+
+This release adds eight validation profiles, eight acceptance states, eight provenance event types, eight deviation types, 16 deterministic readiness methods and benchmarks, component-hashed validation manifests, parent-linked SHA-256 custody events, tamper verification, weighted release dispositions, and validation dossiers while preserving the complete v0.25.0-v0.25.2 stack.
+
+# Sustainable Catalyst Lab v0.25.2 — Live Sensor and Instrument Visualization
+
+This release adds eight live visualization modes, 16 deterministic streaming and dashboard-analysis methods with 16 benchmarks, eight channel templates, eight connection states, eight event types, bounded multi-channel buffers, warning/action and gap events, pause/replay controls, CSV and JSON replay, synchronized SVG dashboards, exports, and research handoffs while preserving v0.25.0 and v0.25.1.
+
+# Sustainable Catalyst Lab v0.25.1 — Instrumentation Production Reliability
+
+This release adds unconditional instrumentation asset activation, canonical panel/root recovery, duplicate suppression, stale-state cleanup, retry and mutation recovery, browser diagnostics, WordPress/FastAPI production health, and mobile/long-table hardening while preserving the complete v0.25.0 48/48/8/9/8/8 contract.
+
+# Sustainable Catalyst Lab v0.25.0 — Laboratory Data and Instrumentation Platform
+
+This release adds 48 deterministic instrumentation calculations, structured instrument/sensor/sample/run/calibration/maintenance/measurement/custody records, normalized ingestion, SHA-256 manifests, custody verification, eight connection profiles, WordPress/FastAPI routes, and local-first Arduino/Raspberry Pi preparation.
+
+# Sustainable Catalyst Lab v0.24.3 — Genomic Validation and Sequence Provenance
+
+This release completes the v0.24 genomics chain: 48 deterministic sequence methods and benchmarks, production reliability, comparative visualization, eight validation profiles, component-hashed dataset manifests, reference and pipeline context, sequence and variant provenance, tamper-aware ledgers, and reproducibility dossiers with explicit non-clinical boundaries.
+
+# Sustainable Catalyst Lab v0.23.2 — Biosignal Visualization, Annotation, and Comparative Analysis
+
+This release adds eight synchronized visualization modes, 16 deterministic comparative-analysis methods, 16 benchmarks, six annotation types, multi-channel CSV import, raw/filtered overlays, lag and alignment analysis, run comparison, SVG/CSV/JSON exports, project/notebook/provenance handoffs, and mobile chart fallback while preserving v0.23.0 and v0.23.1.
+
+# Sustainable Catalyst Lab v0.23.1 — Biosignal Production Activation and Interface Reliability
+
+This release activates the v0.23.0 biosignal assets unconditionally on the public interface and adds canonical panel and mount repair, duplicate-root suppression, stale-marker cleanup, controlled startup retries, navigation and browser-restoration recovery, dynamic DOM observation, browser diagnostics, WordPress/FastAPI production-health routes, and mobile overflow reliability while preserving all 48 methods, 48 benchmarks, eight categories, and non-clinical boundaries.
+
+# Sustainable Catalyst Lab v0.23.0 — Biomedical Engineering and Biosignals
+
+This release adds 48 deterministic biomedical and biosignal methods, 48 reference benchmarks, ECG, PPG, respiration, EMG, EEG, acquisition, filtering, waveform analysis, signal-quality review, CSV batch execution, project/notebook handoffs, and v0.22.3 provenance integration with explicit non-clinical boundaries.
+
+# Sustainable Catalyst Lab v0.22.3 — Bioprocess Validation and Batch Provenance
+
+This release adds eight validation profiles, batch acceptance checks, cross-batch comparability, CPP/CQA conformance, excursion disposition, hold-time stability, release-readiness decisions, SHA-256 provenance records, linked-ledger verification, tamper detection, and dossier exports.
+
+# Sustainable Catalyst Lab v0.22.2 — Bioprocess Monitoring, Control, and Visualization
+
+This release adds time-series monitoring, excursion detection, rolling statistics, PID-style control simulations, multi-run comparison, native SVG charts, CSV workflows, exports, and provenance handoffs while preserving the v0.22.0 48-method engine and v0.22.1 production layer.
+
+# Sustainable Catalyst Lab v0.22.1 — Bioprocess Production Activation and Interface Reliability
+
+This release adds canonical mount repair, duplicate suppression, stale-render cleanup, controlled retries, browser and REST health diagnostics, and mobile reliability while preserving the v0.22.0 48-method bioprocess engine.
+
+# Sustainable Catalyst Lab v0.22.0 — Biotechnology and Bioprocess Engineering
+
+This release adds 48 bioprocess methods, 48 reference benchmarks, batch/fed-batch/continuous simulations, CSV batch monitoring, oxygen-transfer and scale-up tools, WordPress/FastAPI routes, and v0.21.3 provenance handoffs.
+
+# Sustainable Catalyst Lab v0.21.3 — Molecular Analysis Validation and Provenance
+
+This release adds eight analytical validation protocols, explicit acceptance criteria, validation dossiers, SHA-256 payload fingerprints, parent-hash provenance chains, independent ledger verification, evidence metadata, and tamper-detection tests while preserving the v0.21.0 method catalog and v0.21.2 visualization/batch layer.
+
+# Sustainable Catalyst Lab v0.21.2 — Biochemistry Visualization and Batch Analysis
+
+This release adds native SVG biochemical plots, standard-curve regression, kinetics and binding visualizations, CSV batch execution across all 48 methods, replicate statistics, CV review flags, row-level error isolation, exports, and WordPress/FastAPI batch routes.
+
+# Sustainable Catalyst Lab v0.21.1 — Biochemistry Production Activation and Interface Reliability
+
+This maintenance release hardens Biochemistry asset activation, late-mount initialization, panel routing, empty-render recovery, diagnostics, health checks, mobile presentation, and version-aware release validation while preserving the validated 48-method v0.21.0 analysis catalog.
+
+# Sustainable Catalyst Lab v0.21.0 — Biochemistry and Molecular Analysis
+
+The current release adds 48 formula-visible biochemical and molecular-analysis methods, deterministic JavaScript/PHP/Python benchmarks, browser calculators, WordPress REST routes, FastAPI routes, project/notebook handoffs, and responsible-use boundaries.
+
+# Sustainable Catalyst Lab v0.20.0
+
+Sustainable Catalyst Lab is a modular scientific, engineering, computational, visualization, and reporting environment delivered through WordPress with a governed Python Compute Core backend. Version 0.9.4 adds structured PDF reports and a formal Decision Studio handoff while retaining the scientific laboratories, universal visualization, 3D/4D scenes, workspace backup/reset, portable method contracts, and curated multi-language execution introduced in earlier releases.
+
+## Stable WordPress plugin identity
+
+Use the WordPress installer archive named:
+
+```text
+sustainable-catalyst-lab.zip
 ```
 
-Generated release artifacts should be packaged with releases or placed in ignored staging directories instead of accumulating in the source-tree root.
+It always contains:
+
+```text
+sustainable-catalyst-lab/
+└── sustainable-catalyst-lab.php
+```
+
+WordPress identifies a plugin by this folder and bootstrap path. Uploading the repository ZIP or release bundle can create a second plugin instance. The administrator duplicate detector remains available under **Settings → Sustainable Catalyst Lab → Plugin installation identity**.
+
+## PDF Report Studio
+
+The Report Studio can assemble one to twelve analyses into a structured report. Supported report types are:
+
+```text
+Technical report
+Decision brief
+Evidence packet
+Executive summary
+```
+
+A report can retain:
+
+- project context and report metadata
+- equations and method identifiers
+- labeled inputs and outputs with units
+- vector line, bar, and scatter figures
+- assumptions and warnings
+- validation records
+- sources and evidence references
+- code, compiler, runtime, and execution metadata
+- input, output, report, and PDF fingerprints
+- dimensional-scene references and figure records
+
+Two coordinated PDF paths use the same report contract:
+
+1. **Local browser PDF** for immediate offline, selectable-text reports.
+2. **Render ReportLab PDF** for vector figures and larger multi-page reports.
+
+## Decision Studio handoff
+
+Version 0.9.4 advances the handoff contract to:
+
+```text
+sc-decision-studio-analysis-packet/2.0
+```
+
+A handoff can include the complete report contract, analyses, charts, tables, 3D/4D scene specifications, evidence, assumptions, uncertainties, warnings, validation, runtime metadata, and audit fingerprints. Decision Studio receives structured content rather than only a screenshot, so figures and report sections remain traceable to the originating Lab calculation.
+
+Protected routes include:
+
+```text
+POST /wp-json/sc-lab/v1/compute/reports/validate
+POST /wp-json/sc-lab/v1/compute/reports/pdf
+POST /wp-json/sc-lab/v1/compute/handoffs/decision-studio/validate
+```
+
+WordPress sanitizes report payloads and proxies them to the Python Compute Core backend without exposing the compute API key to browser JavaScript.
+
+## Render compute and report API
+
+The FastAPI backend provides:
+
+```text
+GET    /health
+GET    /version
+GET    /v1/methods
+GET    /v1/languages
+POST   /v1/validate
+POST   /v1/execute
+POST   /v1/compare
+POST   /v1/jobs
+GET    /v1/jobs/{job_id}
+DELETE /v1/jobs/{job_id}
+POST   /v1/reports/validate
+POST   /v1/reports/pdf
+POST   /v1/handoffs/decision-studio/validate
+```
+
+Native curated-worker targets remain Python, JavaScript, TypeScript, C, C++, Fortran, Rust, and Go. R, Julia, SQL, and Haskell remain source-generation targets until dedicated workers are added.
+
+## Universal Code Studio
+
+Code Studio provides equivalent source views for:
+
+```text
+Python
+R
+Julia
+JavaScript
+TypeScript
+SQL
+C
+C++
+Fortran
+Rust
+Go
+Haskell
+```
+
+Curated method contracts can be inspected, downloaded, locally evaluated where supported, executed through Render workers, and compared for numerical parity.
+
+## Universal visualization and dimensional scenes
+
+Existing shared visualization capabilities include:
+
+- SVG, high-resolution PNG, PDF, CSV, and JSON exports
+- complete analysis-package ZIPs
+- project visualization records
+- interactive 3D scenes
+- projected 4D cube, tesseract, 4-simplex, and 16-cell scenes
+- six independent 4D rotation planes
+- scene JSON and Decision Studio scene handoff
+
+## Workspace data management
+
+The Lab retains:
+
+- full workspace JSON and ZIP backup
+- per-project export
+- notebook Markdown and observation CSV
+- restore as copies, merge, or replace
+- selective note and observation clearing
+- analysis-history clearing
+- active-project reset or deletion
+- factory reset with typed confirmation and minimal deletion receipt
+
+## Project schema additions
+
+Version 0.9.4 adds or formalizes:
+
+```text
+reports
+reportFigures
+reportExports
+decisionStudioHandoffs
+```
+
+The original browser-storage keys remain unchanged:
+
+```text
+scLabProjectsV010
+scLabActiveProjectV010
+```
+
+Projects from v0.1.x through v0.9.3 are normalized non-destructively to schema version `0.9.4`.
+
+## Shortcodes
+
+```text
+[sc_lab_app]
+[sc_lab_reports]
+[sc_lab_report_studio]
+[sc_lab_visualization]
+[sc_lab_workspace_data]
+[sc_lab_code_switcher]
+```
+
+All focused scientific-laboratory shortcodes remain available.
+
+## Contracts
+
+```text
+contracts/project.schema.json
+contracts/analysis.schema.json
+contracts/scene.schema.json
+contracts/report.schema.json
+contracts/report-result.schema.json
+contracts/decision-studio-packet.schema.json
+contracts/method.schema.json
+contracts/method-catalog.json
+contracts/execution.schema.json
+contracts/language-comparison.schema.json
+contracts/execution-job.schema.json
+```
+
+## Validation
+
+Run:
+
+```bash
+chmod +x scripts/test_release.sh tests/test-generated-code.sh
+./scripts/test_release.sh
+```
+
+The release suite covers PHP and JavaScript syntax, WordPress template rendering, all inherited scientific engines and benchmarks, portable method contracts, generated code, curated compute execution, report contracts, browser PDFs, ReportLab PDFs, report endpoints, Decision Studio packet validation, project migration, visualization, 3D/4D scenes, backup, reset, and restore.
+
+## Boundaries
+
+- Reports preserve supplied calculations and metadata; they do not independently certify a scientific or engineering conclusion.
+- Medical, safety-critical, structural, electrical, environmental, and other regulated analyses still require appropriate professional review.
+- The compute API executes only curated, versioned methods. It does not accept arbitrary source code or shell commands.
+- Interactive browser and backend PDF generation share a report contract but can differ slightly in pagination and typography.
+
+## v0.9.5 — Report Composer, visualization accessibility, and restore validation
+
+Lab v0.9.5 adds ordered report compositions with drafts and revision history, structural accessibility enhancements and audit records for scientific visualizations, and validation-first JSON/ZIP workspace restores with dry runs, conflict detection, safety backups, fingerprints, migration checks, and restore receipts. Existing v0.9.4 PDF and Decision Studio contracts remain compatible.
+
+## v0.10.0 — Electrical, Electronics, and Embedded Systems
+
+Lab v0.10.0 adds a dedicated electrical and embedded laboratory with 45 curated browser methods, protected backend methods, circuit and interface records, device profiles, firmware artifacts, hardware-validation records, and a focused `[sc_lab_electrical]` shortcode. The release retains all v0.9.5 report, accessibility, restore, visualization, compute, and Decision Studio capabilities.
+
+## v0.11.0 — Mechanical and Thermal Engineering
+
+Lab v0.11.0 adds 48 shared browser/Python methods for statics, strength, failure, machine design, dynamics, vibration, fluids, thermodynamics, and heat transfer. Results remain compatible with project storage, notebooks, visualization, reports, restore validation, and Decision Studio handoffs.
+
+## v0.12.0 — Civil Engineering and Infrastructure Systems
+
+Adds 48 methods spanning structures, geotechnical engineering, hydrology, transportation, water and wastewater systems, infrastructure risk, reliability, resilience, lifecycle cost, and embodied carbon.
+
+## v0.13.0 — Architecture and Building Performance
+
+Adds 48 auditable methods across building geometry and program, envelope and thermal performance, solar and daylight systems, ventilation and indoor environmental quality, building energy and HVAC, water, operational and embodied carbon, acoustics, and passive survivability.
+
+## v0.14.0 — Urban Planning and Spatial Systems
+
+Adds 48 auditable methods across land use and development, accessibility and mobility, spatial networks, GIS analysis, public services and infrastructure planning, equity, resilience, and urban scenario comparison.
+
+## v0.15.0 — Sustainable Cities and Urban Resilience
+
+Adds 48 auditable methods across urban metabolism, decarbonization, climate adaptation, infrastructure continuity, equity, social resilience, and integrated city scenarios. Also repairs the Civil and Infrastructure interface so all formulas and executable expressions render reliably.
+
+## v0.16.0 — Circular Economy and Industrial Ecology
+
+Adds 48 auditable methods across material-flow accounting, circular products and business models, waste prevention and recovery, industrial symbiosis, lifecycle footprints, resource productivity, supply risk, and circular transition scenarios.
+
+## v0.17.0 — Comparative Economics and Development Systems
+
+Adds 48 auditable methods across material-flow accounting, circular products and business models, waste prevention and recovery, industrial symbiosis, lifecycle footprints, resource productivity, supply risk, and circular transition scenarios.
+
+## v0.18.0 — Aerospace Engineering and Flight Systems
+
+Adds 48 auditable methods across atmosphere and aerodynamics, flight mechanics, aircraft performance, stability and control, propulsion integration, structures and loads, aeroelastic screening, navigation, mission analysis, and flight-system reliability.
+
+## v0.19.0 — Rocket Propulsion and Spaceflight
+
+Adds 48 auditable methods across rocket-propulsion fundamentals, nozzle and engine performance, launch-vehicle mass and staging, ascent dynamics, orbital mechanics, spacecraft mission systems, and reliability.
+
+## v0.20.0 — Microbiology Laboratory
+
+Adds 48 auditable methods across microbial growth, continuous culture, enumeration and microscopy, environmental microbiology, antimicrobial screening, microbial ecology, and laboratory quality control.
+
+
+## Python Compute Core Foundation
+
+v0.26.0 includes a deployable `backend/` FastAPI service, a registered scientific method catalog, HMAC request signing, provenance manifests, and WordPress gateway routes under `/wp-json/sc-lab/v1/compute/core/*`.
+
+
+## v0.26.3.4 Scientific Feed Rendering and Observe Data Reliability
+
+Marine Biology and Space Observations now auto-load, expose connector health, fall back from the WordPress proxy to browser-direct official APIs, and always render an explicit loading, empty, or error state.
+
+## Numerical validation
+
+Use **Analyze → Numerical Validation Library** or `[sc_lab_numerical_validation]` to run the v0.27.1 known-answer benchmark suite against the configured Python Compute Core.
+
+
+## v0.27.3 solver governance
+
+Use **Analyze → Precision & Solver Governance** or `[sc_lab_solver_governance]` to select precision profiles, inspect solver recommendations, validate units, review condition and convergence diagnostics, and run reference-method comparisons through the Python Compute Core.
+
+## v0.27.4.1 integrity scope repair
+
+The WordPress runtime verifies only files shipped in the WordPress plugin package. Backend files are tracked separately and no longer create false partial-install warnings.
+
+
+## v0.28.0 project architecture
+
+Use `[sc_lab_project_workspace]` or open **Project → Project architecture** to inspect the shared project schema, indexed records, relationships, checkpoints, import/export bundles, and migration state. Project content remains browser-local in this release.
+
+
+## v0.28.1 dataset registry
+
+Use `[sc_lab_dataset_registry]` or open **Project → Dataset registry** to register CSV, JSON, GeoJSON, NetCDF metadata, and existing Lab datasets with structured variables, units, validation, source/license metadata, profiles, and lineage.
+
+
+## v0.28.2 reproducible computational runs
+
+Use **Project → Reproducible runs** or `[sc_lab_reproducible_runs]` to freeze completed requests and results, verify checksums, rerun and compare within tolerances, and export portable reproducibility bundles.
+
+
+## v0.29.1 Research Quality and Method Review
+
+The Lab now stores benchmark coverage, validation evidence, calibration state, reviewer decisions, approval status, and deprecation history as project-scoped method-review records.
+
+## v0.29.2 — External Scholarly and Data Discovery
+
+The Project workspace now includes governed discovery across Crossref, OpenAlex, and DataCite, plus WorldCat, Google Scholar, DOI, and OpenURL handoffs. Results can be deduplicated and imported into project research sources for evidence, provenance, reproducibility, and method review.
+
+
+### v0.30.0 — Reproducible Experiment Framework
+
+Adds a project-scoped reproducible experiment framework with protocol validation, run histories, replication comparison, reports, and portable bundles.
+
+## v0.30.1 — Parameter Studies and Design of Experiments
+
+- Factorial, fractional-factorial, Latin-hypercube, central-composite, Box-Behnken, and one-factor-at-a-time designs.
+- Response-surface fitting, sensitivity ranking, optimal-design recommendations, and registered-method batch plans.
+
+### v0.30.2 — Scientific Model Calibration and Validation
+
+Project-scoped calibration and validation for registered scientific model forms, including holdout metrics, uncertainty, residuals, comparison, and provenance.
+
+
+## v0.31.0 — Distributed Compute Dispatcher
+
+Adds worker capability discovery, governed workload routing, signed leases, heartbeat/load tracking, project-aware dispatch records, and browser/Render/local/Raspberry Pi/institutional worker profiles.
+
+
+## v0.37.2 Public Reproduction and Verification Portal
+
+Publishes safe immutable reproduction records, nonce-bound verification challenges, and signed receipts without exposing private workspace data, executable code, credentials, callbacks, or restricted dataset bytes.
+
+
+## v0.38.2 research integrations
+
+Discover the API at `/v1/public-research-api`. Configure `SC_LAB_PUBLIC_API_KEY` and `SC_LAB_WEBHOOK_SIGNING_SECRET` before enabling institutional integrations. SDK source is included under `sdk/python` and `sdk/typescript`.
+
+## v0.40.1 — Accessibility, Mobile, Offline, and Interface Finalization
+
+The beta interface finalization layer combines responsive and accessibility audits, user preference profiles, browser-local project snapshots, idempotent offline operations, explicit conflict reconciliation, connection-state communication, and an opt-in offline shell. Backend records contain metadata, references, and hashes only; restricted research data cannot be registered for browser caching.
+
+
+## v0.40.2 — Migration, Compatibility, and Public Release Hardening
+
+Adds supported-baseline migration assessments, compatibility matrices, deprecation guidance, clean-install evidence, rollback proofs, and an evidence-gated release-candidate report. Migration remains dry-run by default, force-push is prohibited, and production activation is operator controlled.
+
+## v1.0.0 — Connected Scientific Research and Compute Platform
+
+Sustainable Catalyst Lab v1.0.0 promotes the connected research platform to a stable support line. The release adds a permanent contract catalog, support lifecycle declarations, upgrade certifications, production and incident readiness attestations, and an evidence-gated general-availability certification. Stable certification requires complete interoperability, governance, security, backup/restore, migration, performance, accessibility, documentation, observability, incident-response, and support evidence with no unresolved critical or high-severity defects.
+
+The platform continues to reject unrestricted executable payloads, credentials, restricted dataset bytes, destructive API restores, and force-push deployment behavior.
+
+
+### Visualization Engine 2.5 — v0.78.0
+
+Graph Studio now supports governed observed 4D state spaces, discrete time-state playback, parameter sweeps, W hyperslicing, and XW/YW/ZW projection controls through the Canvas4D v0.78 renderer. v0.78 preserves original coordinates and source/pipeline provenance; it does not synthesize intermediate frames, interpolate unobserved time or parameter states, infer trajectories/surfaces, forecast, or execute arbitrary code.
+
+## v0.81.0 — Annotation, Measurement & Scientific Markup
+
+Graph Studio now supports governed scientific markup overlays: explicit annotations, declared-coordinate measurements, markup provenance, and base-figure preservation. Annotations remain non-observational; geographic distance/area is not approximated. Visualization Engine 2 is now 2.8.0.
+
+## v0.82.0 — Uncertainty, Ensemble & Distribution Visualization
+
+Graph Studio now treats explicit uncertainty, empirical distributions, posterior samples, and ensembles as governed visualization objects. Visualization Engine 2 is now 2.9.0.
+
+## v0.82.1 — Canonical Release Identity & Release Console Repair
+
+The Lab product release now derives from `build/sc-lab-release-manifest.json`; the public Release Console consumes runtime `releaseVersion`, while platform, Visualization Engine, Compute Core, queue, and integrity versions remain explicitly labeled independent component versions.
+
+
+## v0.83.0 — Provenance-Aware Scientific Figures
+
+Graph Studio now fingerprints explicit dataset, transformation, model, renderer, state, annotation, uncertainty and export lineage. Broken lineage is reported, never silently repaired. Visualization Engine 2.10.0.
+
+## v0.84.0 — GPU Renderer Architecture
+
+Graph Studio now includes a governed renderer-capability layer for the advanced GPU visualization roadmap. It can detect WebGL2/WebGPU support, negotiate among declared renderer capabilities, record fallbacks, plan bounded typed buffers, register approved shader fingerprints, and expose picking/diagnostic contracts. v0.84 is deliberately an architecture release: WebGL2 and WebGPU are visible candidate backends but are not yet production renderers. Scientific correctness remains independent of GPU availability.
+
+## Carbon & Nature Intelligence v0.6.0 / Lab v0.89.0
+
+Lab now includes a Soil Organic Carbon foundation for fixed-depth, fine-earth-corrected SOC stock calculations, profile aggregation, deterministic provenance, Graph Studio handoff, and Carbon Project model-run packets. See `RELEASE_NOTES_0.89.0_SOIL_ORGANIC_CARBON_LAB_FOUNDATION.md`.
+
+### Lab v0.98.0 / Carbon & Nature Intelligence v0.15.0
+The MRV Uncertainty & Detection Engine adds explicit uncertainty budgets, observed-change detectability checks, detection-oriented sample-size planning, and provenance-ready project handoffs. Statistical detection remains distinct from external verification or carbon-credit eligibility.
+
+### Lab v0.99.0 / Carbon & Nature Intelligence v0.16.0
+
+**Verification Evidence Ledger** adds structured MRV evidence records, explicit protocol-requirement linkage, internal review states, optional external-artifact SHA-256 digests, deterministic chained entry hashes, a ledger root hash, tamper checks, and Carbon Project `verification-record` handoff. Ledger integrity and internal-review readiness remain explicitly distinct from external verification, certification, methodology compliance, and credit eligibility.
+
+
+## 0.102.0 — Energy Modeling & Uncertainty
+Adds explicit seeded Energy Systems uncertainty planning and analysis around Workbench 6.2.0 results. See `ENERGY_MODELING_UNCERTAINTY_0.102.0.md`.
+
+### Platform Core integration — v0.107.0
+Lab can emit reference-first Platform Core v3 scientific execution lineage envelopes while preserving Lab as the authoritative computation layer. The bridge records runtime/method/environment, input/output references, parameters, assumptions, deterministic hashes, and project/session provenance without automatically executing work or mutating Core.
+
+
+### Platform Core integration — v0.110.0
+Lab now bridges reproducibility packages, scholarly publications, citations, dataset/notebook descriptors, provenance manifests, publication bindings, and declared interoperability validation evidence into Platform Core v3 while preserving Lab as the authority for the underlying scientific package and without automatic publication or reproducibility certification.
+
+### Lab v0.112.0 — Platform Core Integration Certification
+Lab v0.112.0 closes the v0.104–v0.111 Core-integration sequence with an 8-layer, 18-case runtime-contract conformance harness aligned to `sc.research.platform-integration-certification.v1`. It constructs explicit Core certification records and locally assesses declared results without automatic Core submission, product invocation, case execution, scientific certification, product-quality certification, or truth determination.
+
+## Lab v0.115.0 — Advanced Statistical & Uncertainty Graphics
+
+The Lab now includes a publication-grade statistical graphics layer over the v0.114 visualization design system, including distributions, uncertainty ribbons/fan charts, posterior/coefficient forests, calibration, residual/Q-Q diagnostics, sensitivity, variance decomposition and empirical coverage. Statistical assumptions that materially affect a figure remain explicit rather than silently inferred.
+
+### Lab v0.120.0 — Exploratory Data Analysis Studio
+Adds reproducible exploratory analysis for tabular scientific data with descriptive profiling, missingness, distributions, correlations, group comparisons, robust outlier flags, transformation previews, PCA exploration, publication-aware visual planning, and immutable-source safeguards.
+
+
+### Lab v0.121.0 — Statistical Modeling & Model Diagnostics Studio
+Adds reproducible statistical modeling and diagnostics over the v0.120 EDA layer, including Gaussian/robust/regularized regression, binomial/Poisson GLMs, residual/influence/calibration diagnostics, explicit model comparison, and publication-aware visual plans.
+
+### Lab v0.123.0 — Simulation & Monte Carlo Research Studio
+Adds reproducible Monte Carlo and quasi-random simulation studies, convergence/seed diagnostics, parameter sweeps, scenario ensembles, uncertainty propagation, publication visualization plans, and reference-first Platform Core handoffs. Simulated outputs remain explicitly modeled rather than observed evidence.
+
+
+## v0.124.0 Sensitivity & Global Uncertainty Analysis Studio
+Global sensitivity and uncertainty attribution workflows with explicit scientific-interpretation boundaries.
+
+### v0.125.0 — Causal Research Studio II
+Causal research workflows now include DAG-driven design, propensity/matching/weighting, DiD, ITS, RD, synthetic control, diagnostics, robustness/placebo planning, counterfactual reporting, reproducible snapshots, and reference-first Platform Core plans. Causal interpretation remains conditional on explicit assumptions and human review.
+
+### v0.127.0 — Scientific Time-Series Laboratory
+Reproducible time-series analysis and forecasting with explicit temporal assumptions, rolling validation, diagnostics, and provenance-aware outputs.
+
+## Current scientific-intelligence release
+
+**v0.134.0 — Evidence Synthesis Intelligence II** adds governed cross-study synthesis while preserving contradictions, heterogeneity, replication disagreement, uncertainty, provenance, and human adjudication.
+
+
+## Lab v0.135.0 — Competing Model & Hypothesis Analysis
+Transparent rival hypothesis/model analysis without automatic ranking or truth selection.
+
+
+## Lab v0.135.9.0 — Scientific Object Inspector, Provenance Neighborhoods & Cross-Workspace Navigation
+
+Graph Studio now layers a governed scientific-object explorer over the hardened native provenance runtime. Selected nodes resolve to active-project records when possible, expose declared incoming/outgoing relationships, support 1-hop and 2-hop neighborhood exploration, and can hand a focused record to Project Workspace. Neighborhoods are based only on declared project relationships and remain presentation state; no causal, semantic, evidentiary, or truth relationship is inferred.
+
+
+## Lab v0.135.10.0 — Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
+
+Adds deterministic bounded path tracing between two Graph Studio research objects, directed-lineage and structural-path modes, side-by-side object comparison, incremental path overlays, and a non-mutating Project Workspace research-context handoff. Path analysis is limited to declared graph relationships and does not infer causation, evidentiary support, semantic similarity, ranking, or scientific validity.
+## Lab v0.141.4 — Hyperparameter Study & Search Results
+
+Lab v0.141.4 adds governed hyperparameter study definitions and search-result analysis. Workspace remains the execution authority; Lab records, audits, compares, visualizes, snapshots, and packages search results without automatically selecting or promoting a winning model. Objective directions must be explicit before extrema or Pareto candidate sets are derived.
+
+
+## Lab v0.141.7 — Embedding Explorer
+
+Adds governed vector-space inspection for neural research: embedding registries, provenance and dimensionality audits, explicit distance metrics, nearest-neighbor exploration, projection registries, cluster/label overlays, drift and space comparison, reproducible visual handoffs, snapshots, exports, and research packages. Workspace remains authoritative for extraction/projection execution; vector proximity, clusters, and projected layouts are not treated as semantic facts or evidence by themselves.
+
+
+## Lab v0.141.8 — Reproducible Neural Research Package
+
+The neural research line now packages experiment context, data/code/model/configuration lineage, environments, telemetry, checkpoints, comparison/search/ablation results, explainability, embeddings, limitations, and reproduction instructions into one deterministic governed manifest. Workspace remains the rerun execution authority; Platform Core remains canonical-object authority. Package completeness is explicitly separate from scientific validity, reproduction success, independent replication, and publication acceptance.

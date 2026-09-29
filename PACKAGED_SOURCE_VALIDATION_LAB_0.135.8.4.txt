@@ -1,0 +1,29 @@
+Sustainable Catalyst Lab v0.135.8.4 — Packaged Source Certification
+Release: Live Scientific Object Binding, Project-State Persistence & Advanced Provenance Exploration
+Status: PASS
+
+Clean exported repository validation:
+- Inherited visual/research pytest cases (v0.135.2 through v0.135.8.4): 62 PASS
+- PHP v0.135.8.4 contract: PASS
+- PHP syntax checks: 6 PASS
+- JavaScript syntax checks: 5 PASS
+- FastAPI v0.135.8.4 routes: 12 PASS
+- Total FastAPI paths: 2165
+- Functional binding/persistence/provenance acceptance: PASS
+
+Package reproducibility:
+- Repository archive source files: 3457
+- Standalone backend archive files: 853
+- WordPress archive members: 1460
+- WordPress rebuilt from clean repository: byte-for-byte identical to canonical archive
+- Repository, backend and WordPress ZIP path/permission metadata: PASS
+- Standalone backend import: PASS (12 v0.135.8.4 routes, 2165 total paths)
+
+Scientific boundaries:
+- Project binding does not fabricate figure identity.
+- Cross-project persisted binding is not reused as scientific state.
+- Presentation persistence does not write scientific rows or claims.
+- Provenance structural paths are not causal paths.
+- Missing provenance relationships are not inferred.
+
+NOTE: Production browser/DOM acceptance remains a post-deployment gate.

@@ -1,0 +1,16 @@
+Sustainable Catalyst Lab v0.135.8.5.3 — Build Validation
+
+PASS - JS syntax: graph-studio-native-provenance-v013585.js
+PASS - JS context-aware relationship contract
+PASS - retained v0.135.8.5.2 incremental interaction regression contract
+PASS - PHP integration + retained authority contracts
+PASS - 24 targeted Python tests
+PASS - manifest integrity: 1481 WordPress/runtime critical files + 828 backend critical files
+PASS - FastAPI: 2142 total path routes; 8 v0.135.8.5.3 context-relationship routes
+PASS - real Chromium/CDP interaction certification
+PASS - sourced-from remains selected when switching DATASET to Downstream and reports 0 matching edges
+PASS - impossible unselected relationship options disabled contextually
+PASS - transformed-by remains available downstream
+PASS - fullRenderCount remained 1 across certified interaction sequence
+PASS - observerDrivenRenders=0; interactionLoopCount=0
+PASS - project persistence remained debounced (1 write for certified sequence)

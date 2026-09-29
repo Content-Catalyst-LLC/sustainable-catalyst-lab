@@ -1,0 +1,11 @@
+Sustainable Catalyst Lab v0.135.8.5.3 — Packaged Source Certification
+
+PASS - Clean extraction of repository ZIP completed.
+PASS - Clean extracted repository reran v0.135.8.5.3 release gate successfully.
+PASS - 1481 WordPress/runtime critical files matched release-manifest SHA-256 values.
+PASS - 828 backend critical files matched release-manifest SHA-256 values.
+PASS - FastAPI registered 2142 total path routes and exactly 8 v0.135.8.5.3 context-relationship routes.
+PASS - Standalone backend ZIP imported app.main successfully and exposed the expected v0.135.8.5.3 health/acceptance contracts.
+PASS - WordPress ZIP rebuilt from the clean repository was byte-for-byte identical to the canonical WordPress ZIP.
+PASS - Canonical WordPress plugin root is sustainable-catalyst-lab/.
+PASS - Real Chromium/CDP certification retained selected sourced-from state across an incompatible Downstream traversal and reported 0 matching edges without a full redraw.

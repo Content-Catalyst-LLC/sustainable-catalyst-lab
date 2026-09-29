@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm');
+const src=fs.readFileSync('assets/js/modules/integrated-neural-research-workspace-v01420.js','utf8');
+const ctx={window:{}};vm.createContext(ctx);vm.runInContext(src,ctx);
+const x=ctx.window.SCLabIntegratedNeuralResearchWorkspaceV01420;
+if(!x||x.version!=='0.142.0'||x.panelCount!==9) throw new Error('identity');
+for(const k of ['workspaceExecutionAuthority','platformCoreCanonicalAuthority']) if(x[k]!==true) throw new Error(k);
+for(const k of ['labExecutesTraining','labExecutesSearch','labExecutesExplainabilityCompute','labExecutesEmbeddingExtraction','labExecutesReproduction','automaticWorkflowAdvance','automaticModelPromotion','automaticScientificValidity','predictionIsEvidence']) if(x[k]!==false) throw new Error(k);
+const s=x.normalizeSession({activePanel:'embeddings',objects:[{panel:'embeddings'},{panel:'experiment'}]});
+if(s.activePanel!=='embeddings'||x.panelObjects(s,'embeddings').length!==1||x.panelCounts(s).experiment!==1) throw new Error('workspace helpers');
+console.log('PASS: Lab v0.142.0 JS contracts');

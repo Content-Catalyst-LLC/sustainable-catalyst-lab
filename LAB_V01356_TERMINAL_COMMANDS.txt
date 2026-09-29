@@ -1,0 +1,18 @@
+GITHUB
+cd ~/Downloads
+BUNDLE="$(ls -t sustainable-catalyst-lab-v0.135.6-release-bundle*.zip 2>/dev/null | head -1)"
+[ -n "$BUNDLE" ] || { echo "ERROR: v0.135.6 bundle not found"; exit 1; }
+rm -rf sc-lab-v0.135.6-release && mkdir -p sc-lab-v0.135.6-release
+unzip -q "$BUNDLE" -d sc-lab-v0.135.6-release
+cd sc-lab-v0.135.6-release
+chmod +x PUSH_LAB_V01356_FINAL.sh
+./PUSH_LAB_V01356_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.6-repository.zip"
+
+BACKEND FROM MAC
+cd ~/Downloads/sc-lab-v0.135.6-release
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.135.6.zip upgrade_lab_backend_v0_135_6_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+ON CONTABO
+chmod +x /tmp/upgrade_lab_backend_v0_135_6_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_6_contabo.sh

@@ -1,0 +1,36 @@
+SUSTAINABLE CATALYST LAB v0.90.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.7.0 — SOC Sampling & Field Measurement Studio
+Date: 2026-09-10
+
+RELEASE-SPECIFIC GATE: PASS
+- PHP v0.90.0 contracts: PASS
+- Browser v0.90.0 contracts: PASS
+- Retained browser contracts v0.89.0, v0.88.0/R1/R2, v0.87.0, v0.86.0: PASS
+- Selected backend/scientific compatibility suite: 117 tests collected and passed
+  * SOC Sampling & Field Measurement v0.90.0: 29
+  * Fixed-depth SOC foundation v0.89.0: 17
+  * Advanced Scientific Scene v0.88.0: 5
+  * WebGPU scientific renderer v0.87.0: 8
+  * System Dynamics v0.86.0: 9
+  * WebGL2 scientific renderer v0.85.0: 10
+  * Provenance-aware figures v0.83.0: 8
+  * Uncertainty ensemble/distribution v0.82.0: 10
+  * Spatial/geospatial raster v0.80.0: 10
+  * Scientific data binding v0.75.0: 11
+- Bulk-density reference fixture: 130 g / 100 cm3 = 1.300 g/cm3: PASS
+- v0.7.0 -> v0.6.0 profile handoff reference fixture: 78.0 Mg C/ha: PASS
+- Duplicated root/backend JSON contracts: PASS / byte-for-byte identical
+- Release identity: Lab 0.90.0 / Carbon & Nature 0.7.0 / Compute Core 1.0.0: PASS
+- Release manifest integrity: 1760 WordPress/source + 588 backend files: PASS
+- Python compile, PHP syntax, JavaScript syntax: PASS
+
+COMPATIBILITY REPAIR INCLUDED
+The v0.89.0 source package omitted assets/data/elements.json while its retained v0.88.0 R2 compatibility test and manifest lineage still depended on the 118-element periodic-table asset. The packaging exclusion `*/data/*` was over-broad and matched static `assets/data/` as well as mutable runtime data. v0.90.0 restores the exact 118-element asset from the certified v0.88.0 R2 repository baseline and narrows packaging exclusions to runtime data roots. The retained R2 browser/static-asset contract now executes and passes, and final repository/WordPress archives are explicitly checked for the asset.
+
+LEGACY MONOLITHIC GATE NOTE
+scripts/test_release_current.sh still reaches the historical scripts/test_release.sh gate, which expects backend/app/executor.py. That file is absent from the untouched v0.89.0 baseline as well as v0.90.0, so the historical monolithic gate stops before testing this release. This is a pre-existing baseline test-harness mismatch, not a v0.90.0 regression. v0.90.0 is governed by scripts/test_v0900_release.sh and the retained targeted compatibility suite above.
+
+SCIENTIFIC BOUNDARIES
+No automatic sample-size adequacy judgment, statistical power analysis, coordinate generation/spatial randomization, replicate averaging, SOC stock-change inference, sequestration-rate inference, uncertainty inference, CO2e conversion, methodology-eligibility determination, additionality/permanence determination, carbon-credit determination, measurement verification, or digital chain-of-custody signature is introduced.
+
+RESULT: PASS — release-specific production package eligible for installer rehearsal and packaging.

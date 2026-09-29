@@ -1,0 +1,42 @@
+SUSTAINABLE CATALYST LAB v0.95.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.12.0 — Carbon MRV Method Registry
+
+Baseline
+- Lab v0.94.0 / Carbon & Nature v0.11.0 retained.
+- Compute Core compatibility remains 1.0.0.
+
+Release-specific validation
+- PASS: PHP contract tests for v0.95.0.
+- PASS: browser contract tests for v0.95.0 plus retained v0.89.0–v0.94.0 Carbon & Nature interfaces.
+- PASS: 159 selected Python backend/scientific tests.
+- PASS: 7 governed MRV method profiles.
+- PASS: CH4 registry filter returns 2 applicable profiles in the governed fixture.
+- PASS: method comparison is non-ranking and does not generate a recommendation.
+- PASS: documentation-readiness fixture remains distinct from methodology eligibility, verification, and credit eligibility.
+- PASS: project handoff creates a draft monitoring-record object with no verification determination.
+- PASS: Carbon MRV contracts parse and mirror byte-for-byte between repository and backend copies.
+- PASS: retained periodic-table static asset contains 118 elements.
+- PASS: canonical release identity = Lab 0.95.0 / Carbon & Nature 0.12.0.
+- PASS: 1,123 WordPress runtime critical-file hashes and 616 backend static-file hashes verified by the release manifest.
+- PASS: FastAPI application exposes 950 routes at build validation time.
+
+WordPress package hardening
+- v0.94.0 package: 2,437 files; 14,048,799 uncompressed bytes; 4,477,331 ZIP bytes.
+- v0.95.0 runtime package: 1,125 files; 7,693,519 uncompressed bytes; 2,236,443 ZIP bytes.
+- Reduction: 1,312 files (53.8%) and 2,240,888 compressed bytes (50.1%).
+- Repository-only tests, backend source, SDKs, examples, and release-history docs are excluded from the WordPress ZIP.
+- Static application data including assets/data/elements.json is retained.
+- PASS: exact final tiny-patch installer rehearsal applied to an isolated clean v0.94.0 Git baseline, pushed simulated main, and created/pushed simulated lab-v0.95.0.
+- PASS: rehearsal-generated WordPress runtime package reproduced the certified 1,125-file / 7,693,519-byte payload.
+
+Scientific boundaries
+- Registry profiles are Sustainable Catalyst foundation profiles, not external protocols.
+- No automatic MRV method selection.
+- No methodology-eligibility determination.
+- No verification or certification determination.
+- No carbon-credit eligibility determination.
+- No current-program rule assertion.
+- No hidden parameter defaults or automatic recommendation.
+
+Result
+PASS — Sustainable Catalyst Lab v0.95.0 / Carbon & Nature Intelligence v0.12.0 Carbon MRV Method Registry release gate.

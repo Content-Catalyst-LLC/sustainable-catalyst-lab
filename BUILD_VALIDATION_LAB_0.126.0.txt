@@ -1,0 +1,19 @@
+Sustainable Catalyst Lab v0.126.0 — Spatial & Spatiotemporal Research Studio
+BUILD VALIDATION: PASS
+
+Regression/integration tests: 375 passed
+v0.126 required API routes: 28 loaded
+FastAPI application path routes: 1319 (informational; not a release gate)
+Manifest integrity: 1259 WordPress runtime files + 747 immutable backend files
+
+Validated behavior:
+- explicit CRS audit and no silent reprojection
+- deterministic k-nearest/distance-band spatial weights
+- Global Moran's I, Local Moran's I and Getis-Ord Gi* descriptive diagnostics
+- nearest-neighbor and descriptive spatial-lag analysis
+- raster zonal statistics and aligned raster-change analysis
+- explicit spatial-join planning without automatic execution
+- researcher-declared space-time cubes and temporal change profiles
+- slice-wise space-time autocorrelation, trajectory summaries and hotspot persistence
+- visualization, snapshot, reproduction, export and Platform Core reference plans
+- no automatic significance labels, causal interpretation, scientific-validity certification or Core submission

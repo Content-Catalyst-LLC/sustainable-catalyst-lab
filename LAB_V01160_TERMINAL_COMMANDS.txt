@@ -1,0 +1,22 @@
+Sustainable Catalyst Lab v0.116.0 — Terminal Commands
+
+GITHUB PROMOTION (Mac)
+cd ~/Downloads
+rm -rf sc-lab-v0.116.0-release
+mkdir -p sc-lab-v0.116.0-release
+unzip -q sustainable-catalyst-lab-v0.116.0-release-bundle.zip -d sc-lab-v0.116.0-release
+cd sc-lab-v0.116.0-release
+chmod +x PUSH_LAB_V01160_FINAL.sh
+./PUSH_LAB_V01160_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.116.0-repository.zip"
+
+BACKEND COPY + SSH (Mac)
+cd ~/Downloads/sc-lab-v0.116.0-release
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.116.0.zip upgrade_lab_backend_v0_116_0_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+BACKEND DEPLOY (Contabo)
+chmod +x /tmp/upgrade_lab_backend_v0_116_0_contabo.sh
+/tmp/upgrade_lab_backend_v0_116_0_contabo.sh
+
+WORDPRESS
+Upload sustainable-catalyst-lab-v0.116.0-wordpress.zip and choose Replace current with uploaded.

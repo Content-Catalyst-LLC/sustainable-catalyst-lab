@@ -1,0 +1,35 @@
+Sustainable Catalyst Lab v0.99.0
+Carbon & Nature Intelligence v0.16.0 — Verification Evidence Ledger
+
+Validation status: PASS
+
+Validated scope
+- PHP contract test: v0.99.0 PASS
+- Browser/JavaScript contract test: v0.99.0 PASS
+- Retained browser contracts: Lab v0.89.0 through v0.98.0 PASS
+- Selected Python scientific/backend suite: 220 tests PASS
+- FastAPI route count: 983
+- New v0.16.0 backend routes: 8
+- JSON contract mirror: 5 v0.16.0 contract/policy files byte-identical between WordPress and backend contract trees
+- Retained static scientific asset: assets/data/elements.json contains 118 elements
+- Release manifest integrity: 1,155 WordPress critical files + 643 backend critical files PASS
+
+Governed verification-ledger fixture
+- 3 explicit requirements: sampling, laboratory, uncertainty
+- 3 linked evidence entries
+- Result: ready-for-internal-review
+- Hash chain: valid
+- Tamper mutation: detected
+- Carbon Project handoff object type: verification-record
+- External verification status: unset / not inferred
+
+Guardrails validated
+- Ledger integrity does not equal external verification.
+- Internal review state does not equal certification.
+- No hidden evidence requirements.
+- No automatic evidence acceptance.
+- External file SHA-256 is never inferred when the file is unavailable.
+- No methodology or credit-eligibility determination.
+
+Test command
+PYTHON_BIN=python3 ./scripts/test_v0990_release.sh

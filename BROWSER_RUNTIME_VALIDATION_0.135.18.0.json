@@ -1,0 +1,9 @@
+{
+  "version": "0.135.18.0",
+  "runtimeFixture": "tests/test-v0135180-runtime.js",
+  "runtimeContractPassed": true,
+  "staticJavaScriptContractPassed": true,
+  "phpIntegrationContractPassed": true,
+  "headlessBrowserCertification": false,
+  "note": "Executable JavaScript DOM-contract fixture passed. No Chromium/headless-browser certification is claimed for this release."
+}

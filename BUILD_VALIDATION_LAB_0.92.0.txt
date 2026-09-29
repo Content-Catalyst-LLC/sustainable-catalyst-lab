@@ -1,0 +1,55 @@
+SUSTAINABLE CATALYST LAB v0.92.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.9.0 — SOC Spatial Variability & Uncertainty
+
+RELEASE-SPECIFIC GATE: PASS
+
+Browser / WordPress contracts
+- PASS Lab v0.92.0 / Carbon & Nature v0.9.0 PHP contracts
+- PASS Lab v0.92.0 / Carbon & Nature v0.9.0 browser contracts
+- PASS retained v0.91.0/v0.90.0/v0.89.0 browser contracts
+
+Python scientific/backend selection
+- 113 tests collected and passed
+- 18 new v0.92.0 SOC uncertainty tests
+- retained v0.91.0 SOC change tests
+- retained v0.90.0 SOC sampling tests
+- retained v0.89.0 SOC stock tests
+- retained uncertainty-ensemble, spatial/geospatial, and scientific-data-binding compatibility tests
+
+Scientific fixtures
+- replicate stocks 76, 78, 80, 82 Mg C/ha -> mean 79.0 Mg C/ha
+- sample SD -> 2.581988897 Mg C/ha
+- paired changes (78->86, 77->84, 80->89, 79->87) -> mean +8.0 Mg C/ha
+- explicit 2-year annualization -> +4.0 Mg C/ha/yr
+
+Implemented
+- replicate mean, sample SD, standard error, coefficient of variation
+- two-sided Student-t confidence intervals at 90%, 95%, 99%
+- WGS84 descriptive coordinate-coverage diagnostics
+- area-weighted stratified SOC estimate with effective degrees of freedom
+- paired and independent stock-change uncertainty
+- first-order independent-input uncertainty propagation
+- deterministic fingerprints and Carbon Project model-run handoff
+- retained static `assets/data/elements.json` present with 118 element records
+
+Guardrails verified
+- sample uncertainty is not total uncertainty
+- coordinate extent does not establish representativeness
+- outliers are not removed automatically
+- no variogram/kriging or correlation inference
+- no equivalent-soil-mass correction
+- no causal attribution/additionality/permanence/verification/credit eligibility inference
+
+Packaging note
+The v0.92.0 release gate is independent of inherited historical monolithic-suite dependencies. No claim is made that every historical release test outside the governed selection is green.
+
+RESULT: PASS — ready for clean-baseline installer rehearsal and release packaging.
+
+CLEAN-BASELINE INSTALLER REHEARSAL: PASS
+- simulated clean Lab v0.91.0 / Carbon & Nature v0.8.0 Git baseline
+- baseline identity and clean-tree guards passed
+- full v0.92.0 release gate passed during installer execution
+- WordPress and backend deployment ZIPs generated
+- commit created and main pushed to simulated bare origin
+- annotated tag lab-v0.92.0 created and pushed
+- installer rehearsal was performed only against a simulated local bare origin; the user's GitHub repository was not changed

@@ -1,0 +1,17 @@
+# GitHub promotion (Mac)
+cd ~/Downloads
+rm -rf sc-lab-v0.135.8.5-release
+mkdir -p sc-lab-v0.135.8.5-release
+BUNDLE="$(ls -t sustainable-catalyst-lab-v0.135.8.5-release-bundle*.zip 2>/dev/null | head -1)"
+unzip -q "$BUNDLE" -d sc-lab-v0.135.8.5-release
+cd sc-lab-v0.135.8.5-release
+chmod +x PUSH_LAB_V013585_FINAL.sh
+./PUSH_LAB_V013585_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.8.5-repository.zip"
+
+# Backend upload (Mac)
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes sustainable-catalyst-lab-backend-v0.135.8.5.zip upgrade_lab_backend_v0_135_8_5_contabo.sh catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+# Backend deploy (Contabo)
+chmod +x /tmp/upgrade_lab_backend_v0_135_8_5_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_8_5_contabo.sh /tmp/sustainable-catalyst-lab-backend-v0.135.8.5.zip

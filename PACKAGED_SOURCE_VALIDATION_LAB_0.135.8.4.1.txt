@@ -1,0 +1,42 @@
+Sustainable Catalyst Lab v0.135.8.4.1
+Clean-export packaged-source certification
+
+CERTIFICATION: PASS
+
+Repository ZIP
+- Extracted into a clean directory.
+- Re-ran the v0.135.8.4.1 release gate from exported bytes.
+- 76 inherited/new Graph Studio and visual-research Python tests: PASS.
+- JavaScript interaction regression contract: PASS.
+- PHP release contracts: PASS.
+- Manifest integrity: 1,462 WordPress/runtime files + 823 backend files: PASS.
+- FastAPI application from clean repository: 2,173 total paths; 8 v0.135.8.4.1 routes.
+
+WordPress reproducibility
+- Rebuilt WordPress from the clean repository export.
+- Canonical ZIP SHA-256: 88a606a65bc085bdcd34e9acff772c9d5cd4f21a22fe1009c770ed653d796e84
+- Rebuilt ZIP SHA-256:   88a606a65bc085bdcd34e9acff772c9d5cd4f21a22fe1009c770ed653d796e84
+- Byte-for-byte identical: YES.
+- ZIP member count: 1,463.
+- Member-for-member identical: YES.
+
+Standalone backend archive
+- Imported `app.main` successfully.
+- Total FastAPI paths: 2,173.
+- v0.135.8.4.1 route count: 8.
+- delegated_interaction=true.
+- programmatic_layout_click=false.
+- recursive_redraw_guard=true.
+- node_selection_persistent=true.
+
+Acceptance
+- one Renderer 3.1 host
+- one primary viewport
+- one provenance explorer
+- three layout controls
+- one delegated stage-handler lifecycle
+- zero duplicate node handlers
+- zero programmatic layout clicks
+- node selection survives layout changes
+- layout persists after reload
+- no scientific mutation from presentation state

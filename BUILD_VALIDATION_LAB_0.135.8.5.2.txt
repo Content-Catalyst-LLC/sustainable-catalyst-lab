@@ -1,0 +1,30 @@
+SUSTAINABLE CATALYST LAB v0.135.8.5.2 — BUILD VALIDATION
+
+Release: Provenance Interaction Responsiveness, Relationship Filtering & Incremental Rendering
+
+PASS — Plugin release version: 0.135.8.5.2
+PASS — WordPress critical manifest: 1468 tracked files verified
+PASS — Backend critical manifest: 826 tracked files verified
+PASS — JavaScript syntax: graph-studio-native-provenance-v013585.js
+PASS — JS regression contract: incremental interaction engine
+PASS — PHP contract: v0.135.8.5.2
+PASS — PHP syntax: plugin bootstrap, native provenance class, incremental interaction class
+PASS — Python Graph Studio tests: 19 tests
+PASS — FastAPI total registered paths: 2134
+PASS — v0.135.8.5.2 incremental-interaction routes: 7
+
+CHROMIUM ACCEPTANCE
+PASS — exact v0.135.8.5.2 native provenance JavaScript executed in Chromium via CDP
+PASS — DATASET node selection updates state
+PASS — Radial layout changes graph geometry
+PASS — Relationship filter changes All relations -> sourced-from
+PASS — sourced-from yields 1 visible edge on fixture graph
+PASS — Relationship select DOM node remains identical after filtering
+PASS — Upstream traversal yields 2 visible nodes / 1 visible edge on fixture graph
+PASS — fullRenderCount remains 1 across ordinary interactions
+PASS — incrementalUpdateCount increases from 0 to 5
+PASS — debounced project persistence writes once after interaction burst
+PASS — observerDrivenRenders remains 0
+PASS — interactionLoopCount remains 0
+
+Browser certification file: CHROMIUM_BROWSER_CERTIFICATION_0.135.8.5.2.json

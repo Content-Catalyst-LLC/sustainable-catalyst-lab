@@ -1,0 +1,8 @@
+{
+  "version": "0.135.16.0",
+  "fixture": "tests/browser-v0135160.html",
+  "automatedHeadlessBrowserCertification": false,
+  "nodeRuntimeContractTest": true,
+  "fullGraphRedrawForImpact": false,
+  "note": "Executable JavaScript runtime coverage is provided by tests/test-v0135160-runtime.js. A browser fixture is packaged for interactive certification; no automated Chromium result is claimed by this build environment."
+}

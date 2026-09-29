@@ -1,0 +1,8 @@
+{
+  "version": "0.135.15.0",
+  "fixture": "tests/browser-v0135150.html",
+  "headlessBrowserExecuted": false,
+  "dynamicFrontendSubstitute": "tests/test-v0135150-runtime.js",
+  "dynamicFrontendSubstitutePassed": true,
+  "note": "The release includes a browser fixture. Local release validation claims the executable JavaScript runtime contract, not a headless Chromium certification."
+}

@@ -1,0 +1,11 @@
+Sustainable Catalyst Lab v0.135.8.5.1 — Packaged Source Certification
+
+Certification requirements:
+- extract canonical repository ZIP to a clean directory
+- rerun PHP/JS/Python release contracts from exported bytes
+- import the exported backend and verify 6 v0.135.8.5.1 routes
+- rebuild the WordPress ZIP from exported bytes and compare member hashes
+- preserve v0.135.8.5 native controller while disabling live execution of v0.135.8.4.1 interaction recovery
+- preserve browser-certified authority behavior: one native owner, zero legacy observer ownership
+
+Result: PASS (see BUILD_VALIDATION_LAB_0.135.8.5.1.txt and CHROMIUM_BROWSER_CERTIFICATION_0.135.8.5.1.json in the release bundle).

@@ -1,0 +1,29 @@
+LAB v0.118.0 — Visual Research Narrative & Figure Composer
+
+GITHUB PROMOTION (MAC)
+
+cd ~/Downloads
+rm -rf sc-lab-v0.118.0-release
+mkdir -p sc-lab-v0.118.0-release
+unzip -q sustainable-catalyst-lab-v0.118.0-release-bundle.zip -d sc-lab-v0.118.0-release
+cd sc-lab-v0.118.0-release
+chmod +x PUSH_LAB_V01180_FINAL.sh
+./PUSH_LAB_V01180_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.118.0-repository.zip"
+
+BACKEND UPLOAD + SSH (MAC)
+
+cd ~/Downloads/sc-lab-v0.118.0-release
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes \
+  sustainable-catalyst-lab-backend-v0.118.0.zip \
+  upgrade_lab_backend_v0_118_0_contabo.sh \
+  catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+BACKEND DEPLOYMENT (CONTABO)
+
+chmod +x /tmp/upgrade_lab_backend_v0_118_0_contabo.sh
+/tmp/upgrade_lab_backend_v0_118_0_contabo.sh
+
+WORDPRESS
+
+Upload sustainable-catalyst-lab-v0.118.0-wordpress.zip and choose Replace current with uploaded.

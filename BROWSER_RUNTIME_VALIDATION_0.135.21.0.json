@@ -1,0 +1,10 @@
+{
+  "version": "0.135.21.0",
+  "executableDomRuntimeFixture": "passed",
+  "chromiumHarnessIncluded": true,
+  "chromiumBinaryDetected": true,
+  "chromiumHeadlessExecution": "environment-unavailable",
+  "chromiumObservation": "Installed Chromium 144.0.7559.96 timed out on blank local --dump-dom in this container; no browser-pass claim is made.",
+  "fullGraphRedraw": false,
+  "scientificValidityCertified": false
+}

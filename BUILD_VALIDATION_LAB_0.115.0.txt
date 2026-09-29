@@ -1,0 +1,18 @@
+Sustainable Catalyst Lab v0.115.0 — Build Validation
+=====================================================
+Release: Advanced Statistical & Uncertainty Graphics
+Base: Lab v0.114.0 Scientific Visualization Design System & Publication-Grade Rendering
+
+PASS: 209 visual/Core integration and regression tests.
+PASS: 18 required v0.115 FastAPI routes loaded.
+INFO: 1,082 FastAPI path routes registered in the build environment; global route total is informational only.
+PASS: 16 advanced statistical/uncertainty graphic families registered.
+PASS: explicit-bandwidth KDE policy; no automatic bandwidth selection.
+PASS: explicit interval semantics for confidence/credible/prediction graphics.
+PASS: explicit Q-Q reference distribution; no automatic distribution selection.
+PASS: calibration/reliability, residual diagnostics, sensitivity, uncertainty decomposition and coverage behavior fixtures.
+PASS: v0.114 publication-grade rendering, accessibility and vector-first export bridge retained.
+PASS: mirrored backend/root JSON contracts match byte-for-byte.
+PASS: WordPress PHP syntax and v0.115 feature assertions.
+PASS: immutable manifest integrity: 1,202 WordPress runtime files + 703 backend files.
+PASS: scientific/statistical validity, significance, causality, model-quality and truth judgments remain outside rendering.

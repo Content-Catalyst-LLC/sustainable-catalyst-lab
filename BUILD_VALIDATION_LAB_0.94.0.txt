@@ -1,0 +1,31 @@
+SUSTAINABLE CATALYST LAB v0.94.0 — BUILD VALIDATION
+Carbon & Nature Intelligence v0.11.0 — Whole-Farm GHG Balance
+
+Release gate:
+- PHP v0.94.0 contract: PASS
+- Browser v0.94.0 contract: PASS
+- Retained v0.89.0–v0.93.0 browser contracts: PASS
+- Selected Python scientific/backend compatibility: 146 tests PASS
+- Whole-Farm GHG API route topology: PASS
+- Reference fixture: 1,200 kg CO2e emissions; 366.6667 kg CO2e SOC removal; 833.3333 kg CO2e net emissions: PASS
+- Contract JSON parse and root/backend byte parity: PASS
+- Periodic table static asset: 118 elements retained: PASS
+- Manifest critical-file SHA-256 integrity: PASS after final manifest generation
+- Python/PHP/JavaScript syntax: PASS
+
+Scientific boundaries:
+- No default non-CO2 GWP factors
+- No default activity emission factors
+- Factor source required for activity-factor accounting
+- SOC inclusion in net balance is explicit
+- Whole-farm balance is not verification
+- Inventory completeness is not inferred
+- Causal attribution/additionality/leakage/permanence/credit eligibility are not determined
+
+Deployment:
+- No database migration
+- No new credentials
+- .env.production preserved
+- sc-lab-data persistent volume preserved
+
+Installer rehearsal status is recorded separately after packaging.

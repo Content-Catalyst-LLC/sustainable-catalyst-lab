@@ -1,0 +1,10 @@
+Sustainable Catalyst Lab v0.135.8.3.1 — Packaged Source Validation
+Status: PASS
+
+Certification target:
+- repository package contains v0.135.8.3.1 release identity
+- WordPress package is built deterministically from the same repository bytes
+- backend package contains v0.135.8.3.1 finalization module and retained v0.135.8.3 recovery module
+- deployment verifier accepts Platform Core semantic versions with three or more numeric components (including 3.20.0.1)
+
+Browser acceptance remains a post-deployment gate.

@@ -1,0 +1,15 @@
+Sustainable Catalyst Lab v0.135.11.0 — Build Validation
+
+PASS — JavaScript syntax and v0.135.11.0 contract tests
+PASS — PHP syntax and WordPress integration contract tests
+PASS — FastAPI import and v0.135.11.0 functional tests
+PASS — Chromium fixture using exact v0.135.11.0 Graph Studio module source bytes
+PASS — multiple declared paths enumerated: 2
+PASS — alternate path selection preserved selector identity
+PASS — native full-render count remained 1 -> 1 in browser fixture
+PASS — Project Workspace comparison handoff
+PASS — non-adjudicative boundaries (truth ranking, causal inference, scientific preference all disabled)
+PASS — FastAPI path count: 2171 total / 10 v0.135.11.0 routes
+PASS — manifest scope target: 1534 WordPress/runtime files + 834 backend files
+
+Browser certification is an instrumented Chromium fixture, not live-site navigation. Live WordPress interaction remains the final acceptance step.

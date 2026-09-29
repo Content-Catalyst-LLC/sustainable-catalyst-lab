@@ -1,0 +1,20 @@
+Sustainable Catalyst Lab v0.135.8.3 — Build Validation
+Release: Renderer Mount Lifecycle, Scientific State Hydration & Visual Workspace Recovery
+Status: PASS
+
+Selected inherited scientific/visual regression tests: 542 PASS
+Release-specific FastAPI routes: 16 PASS
+Renderer modes: 6
+Single renderer root contract: PASS
+Single primary viewport contract: PASS
+Scientific-state hydration contract: PASS
+Advanced provenance graph recovery: PASS
+WordPress/runtime manifest files: 1453
+Backend manifest files: 818
+
+PASS: v0.135.8.2 renderer implementation remains available but yields ownership after v0.135.8.3 mount.
+PASS: hydration priority is active graph → figure controls → project figure → explicit unbound state.
+PASS: missing scientific values and uncertainty are not fabricated.
+PASS: provenance supports layered, radial and swimlane layouts with interactive node inspection.
+PASS: structural provenance paths are not treated as causal paths.
+PASS: presentation state cannot create evidence, upgrade claims or submit to Platform Core.

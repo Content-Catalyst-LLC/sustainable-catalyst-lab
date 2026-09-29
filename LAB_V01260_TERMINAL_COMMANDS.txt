@@ -1,0 +1,15 @@
+# GitHub promotion
+cd ~/Downloads/sc-lab-v0.126.0-release
+chmod +x PUSH_LAB_V01260_FINAL.sh
+./PUSH_LAB_V01260_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.126.0-repository.zip"
+
+# Upload backend and deployer from Mac
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes \
+  sustainable-catalyst-lab-backend-v0.126.0.zip \
+  upgrade_lab_backend_v0_126_0_contabo.sh \
+  catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+# On Contabo
+chmod +x /tmp/upgrade_lab_backend_v0_126_0_contabo.sh
+/tmp/upgrade_lab_backend_v0_126_0_contabo.sh

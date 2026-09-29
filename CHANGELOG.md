@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.142.0 — Integrated Neural Research Workspace
+- Consolidates the v0.141.x neural research series into one linked nine-panel workspace.
+- Adds shared session/object context, lineage/provenance, readiness/review, snapshots/diffs, exports, and governed cross-system handoffs.
+- Preserves Workspace execution authority, Platform Core canonical authority, and v0.140.0.1 installed-runtime integrity policy.
+
 ## v0.141.8 — Reproducible Neural Research Package
 - Consolidated the v0.141.0–v0.141.7 neural research lineage into a governed, fingerprinted research package.
 - Added component/dependency/checksum/lineage/environment/determinism audits, completeness reporting, Workspace rerun handoff, Platform Core/Research OS handoffs, deterministic snapshots, package diffs, and reproducibility packages.

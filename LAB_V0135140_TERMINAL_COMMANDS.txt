@@ -1,0 +1,32 @@
+LAB v0.135.14.0 — TERMINAL COMMANDS
+
+GITHUB PUSH + TAG
+-----------------
+cd ~/Downloads
+rm -rf sc-lab-v0.135.14.0-release
+mkdir -p sc-lab-v0.135.14.0-release
+unzip -q sustainable-catalyst-lab-v0.135.14.0-release-bundle.zip -d sc-lab-v0.135.14.0-release
+cd sc-lab-v0.135.14.0-release
+chmod +x PUSH_LAB_V0135140_FINAL.sh
+./PUSH_LAB_V0135140_FINAL.sh "$PWD/sustainable-catalyst-lab-v0.135.14.0-repository.zip"
+
+BACKEND — MAC
+-------------
+cd ~/Downloads/sc-lab-v0.135.14.0-release
+scp -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes \
+  sustainable-catalyst-lab-backend-v0.135.14.0.zip \
+  upgrade_lab_backend_v0_135_14_0_contabo.sh \
+  catalystadmin@94.72.113.77:/tmp/
+ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes catalystadmin@94.72.113.77
+
+BACKEND — CONTABO
+-----------------
+chmod +x /tmp/upgrade_lab_backend_v0_135_14_0_contabo.sh
+/tmp/upgrade_lab_backend_v0_135_14_0_contabo.sh \
+  /tmp/sustainable-catalyst-lab-backend-v0.135.14.0.zip
+
+WORDPRESS
+---------
+Upload sustainable-catalyst-lab-v0.135.14.0-wordpress.zip
+Choose Replace current with uploaded.
+Canonical plugin directory: sustainable-catalyst-lab/
