@@ -169,6 +169,7 @@ from . import research_program_intelligence_v01380 as program1380
 from . import scholarly_study_original_research_package_v01390 as package1390
 from . import scientific_research_operating_system_v01400 as researchos1400
 from . import machine_learning_experiment_workspace_v01410 as ml1410
+from . import neural_architecture_training_configuration_v01411 as natc1411
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -10759,3 +10760,72 @@ def ml_workspace_v01410_compare_snapshots(payload: dict): return ml1410.compare_
 @app.post("/v1/machine-learning-experiment-workspace/v01410/research-os-handoff")
 def ml_workspace_v01410_research_os_handoff(payload: dict): return ml1410.research_os_handoff(payload)
 
+
+
+# v0.141.1 — Neural Architecture & Training Configuration
+@app.get("/v1/neural-architecture-training-configuration/v01411/health")
+def natc_v01411_health(): return natc1411.health()
+@app.get("/v1/neural-architecture-training-configuration/v01411/acceptance")
+def natc_v01411_acceptance(): return natc1411.acceptance_report()
+@app.get("/v1/neural-architecture-training-configuration/v01411/contract")
+def natc_v01411_contract(): return natc1411.contract()
+@app.get("/v1/neural-architecture-training-configuration/v01411/policy")
+def natc_v01411_policy(): return natc1411.policy()
+@app.get("/v1/neural-architecture-training-configuration/v01411/release-gates")
+def natc_v01411_release_gates(): return natc1411.release_gates()
+@app.get("/v1/neural-architecture-training-configuration/v01411/interpretation-boundary")
+def natc_v01411_boundary(): return natc1411.interpretation_boundary({})
+@app.get("/v1/neural-architecture-training-configuration/v01411/architecture-families")
+def natc_v01411_families(): return {"ok":True,"version":natc1411.VERSION,"architectureFamilies":list(natc1411.ARCHITECTURE_FAMILIES),"boundary":natc1411.BOUNDARY}
+@app.get("/v1/neural-architecture-training-configuration/v01411/optimizer-catalog")
+def natc_v01411_optimizers(): return {"ok":True,"version":natc1411.VERSION,"optimizers":list(natc1411.OPTIMIZERS),"boundary":natc1411.BOUNDARY}
+@app.get("/v1/neural-architecture-training-configuration/v01411/loss-catalog")
+def natc_v01411_losses(): return {"ok":True,"version":natc1411.VERSION,"losses":list(natc1411.LOSSES),"boundary":natc1411.BOUNDARY}
+@app.get("/v1/neural-architecture-training-configuration/v01411/precision-modes")
+def natc_v01411_precision_modes(): return {"ok":True,"version":natc1411.VERSION,"precisionModes":list(natc1411.PRECISION_MODES),"boundary":natc1411.BOUNDARY}
+@app.post("/v1/neural-architecture-training-configuration/v01411/normalize-architecture")
+def natc_v01411_normalize_architecture(payload: dict): return natc1411.normalize_architecture(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/validate-architecture")
+def natc_v01411_validate_architecture(payload: dict): return natc1411.validate_architecture(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/architecture-graph")
+def natc_v01411_architecture_graph(payload: dict): return natc1411.architecture_graph(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/architecture-summary")
+def natc_v01411_architecture_summary(payload: dict): return natc1411.architecture_summary(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/normalize-training-configuration")
+def natc_v01411_normalize_training(payload: dict): return natc1411.normalize_training_configuration(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/validate-training-configuration")
+def natc_v01411_validate_training(payload: dict): return natc1411.validate_training_configuration(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/optimizer-plan")
+def natc_v01411_optimizer(payload: dict): return natc1411.optimizer_plan(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/loss-plan")
+def natc_v01411_loss(payload: dict): return natc1411.loss_plan(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/scheduler-plan")
+def natc_v01411_scheduler(payload: dict): return natc1411.scheduler_plan(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/seed-contract")
+def natc_v01411_seed(payload: dict): return natc1411.seed_contract(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/checkpoint-policy")
+def natc_v01411_checkpoint(payload: dict): return natc1411.checkpoint_policy(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/precision-plan")
+def natc_v01411_precision(payload: dict): return natc1411.precision_plan(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/resource-plan")
+def natc_v01411_resource(payload: dict): return natc1411.resource_plan(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/dataset-binding")
+def natc_v01411_dataset(payload: dict): return natc1411.dataset_binding(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/experiment-binding")
+def natc_v01411_experiment_binding(payload: dict): return natc1411.experiment_binding(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/workspace-handoff")
+def natc_v01411_workspace_handoff(payload: dict): return natc1411.workspace_handoff(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/core-handoff")
+def natc_v01411_core_handoff(payload: dict): return natc1411.core_handoff(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/configuration-fingerprint")
+def natc_v01411_fingerprint(payload: dict): return natc1411.configuration_fingerprint(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/compare-architectures")
+def natc_v01411_compare_architectures(payload: dict): return natc1411.compare_architectures(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/compare-training-configurations")
+def natc_v01411_compare_training(payload: dict): return natc1411.compare_training_configurations(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/snapshot")
+def natc_v01411_snapshot(payload: dict): return natc1411.snapshot(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/compare-snapshots")
+def natc_v01411_compare_snapshots(payload: dict): return natc1411.compare_snapshots(payload)
+@app.post("/v1/neural-architecture-training-configuration/v01411/reproducibility-packet")
+def natc_v01411_reproducibility(payload: dict): return natc1411.reproducibility_packet(payload)

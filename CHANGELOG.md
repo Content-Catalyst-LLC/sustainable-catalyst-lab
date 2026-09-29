@@ -1,3 +1,11 @@
+## 0.141.1 — Neural Architecture & Training Configuration
+
+- Added framework-neutral neural architecture specifications and architecture graphs.
+- Added explicit optimizer, loss, scheduler, seed, precision, checkpoint and resource plans.
+- Added v0.141.0 experiment binding plus Workspace execution and Platform Core handoffs.
+- Added deterministic declared-configuration fingerprints, snapshots, comparisons and reproducibility packets.
+- Retained v0.140.0.1 installed-runtime manifest integrity policy.
+
 # Changelog
 
 ## 0.141.0 — Machine Learning Experiment Workspace
