@@ -1,0 +1,1 @@
+const fs=require('fs'); const p='assets/js/modules/ablation-study-framework-v01415.js'; const s=fs.readFileSync(p,'utf8'); if(!s.includes('SCLabAblationStudyFrameworkV01415')||!s.includes('contrastBadge')||!s.includes('causalEffectInferred:false')||!s.includes('automaticWinnerSelection:false')) process.exit(1); console.log('PASS v0.141.5 JS');

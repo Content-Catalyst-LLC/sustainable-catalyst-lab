@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/ablation-study-framework-v01415.schema.json",
+  "title": "Sustainable Catalyst Lab Ablation Study Framework v0.141.5",
+  "type": "object",
+  "properties": {
+    "studyId": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "object"
+    },
+    "factors": {
+      "type": "array"
+    },
+    "metrics": {
+      "type": "array"
+    },
+    "variants": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}

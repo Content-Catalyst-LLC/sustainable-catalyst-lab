@@ -1,0 +1,12 @@
+{
+  "schema": "sc-lab-ablation-study-policy/0.141.5",
+  "version": "0.141.5",
+  "workspaceExecutionAuthority": true,
+  "labExecutesTraining": false,
+  "controlledContrastRequired": true,
+  "causalEffectInferred": false,
+  "automaticRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticModelPromotion": false,
+  "predictionIsEvidence": false
+}

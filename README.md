@@ -1,3 +1,7 @@
+## v0.141.5 — Ablation Study Framework
+
+Governed controlled neural-model ablation planning, comparison, visualization, provenance, and reproducibility. Workspace remains execution authority; ablation deltas are not automatically causal effects.
+
 **Current release: Lab v0.135.2 — Model Architecture & Computational Provenance Graphs**
 
 ## Lab v0.135.2 — Scientific Visualization Experience Overhaul

@@ -1,3 +1,7 @@
+## 0.141.5 — Ablation Study Framework
+- Added governed ablation plans, variants, baseline/comparability/confounding audits, paired metric deltas, effect summaries, snapshots, exports, and reproducibility packages.
+- Preserved Workspace as execution authority and prohibited automatic causal inference, winner selection, and model promotion.
+
 # v0.141.4 — Hyperparameter Study & Search Results
 
 - Added governed hyperparameter search-space and study specifications with explicit objective directions.
