@@ -166,6 +166,7 @@ from . import graph_studio_review_workspace_consolidation_v0135210 as workspace1
 from . import graph_studio_integrated_scientific_review_reproducibility_v01360 as integrated1360
 from . import research_change_impact_living_analysis_v01370 as living1370
 from . import research_program_intelligence_v01380 as program1380
+from . import scholarly_study_original_research_package_v01390 as package1390
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10586,3 +10587,56 @@ def research_program_v01380_gates(): return program1380.release_gates()
 def research_program_v01380_boundary(): return {"ok":True,"version":program1380.VERSION,"boundary":program1380.BOUNDARY}
 @app.get("/v1/research-program-intelligence/v01380/relationship-types")
 def research_program_v01380_relation_types(): return {"ok":True,"version":program1380.VERSION,"relationshipTypes":list(program1380.RELATION_TYPES),"boundary":program1380.BOUNDARY}
+
+# Lab v0.139.0 — Scholarly Study & Original Research Package
+@app.get("/v1/scholarly-study-original-research-package/v01390/health")
+def scholarly_package_v01390_health(): return package1390.health()
+@app.get("/v1/scholarly-study-original-research-package/v01390/acceptance")
+def scholarly_package_v01390_acceptance(): return package1390.acceptance_report()
+@app.get("/v1/scholarly-study-original-research-package/v01390/contract")
+def scholarly_package_v01390_contract(): return package1390.contract()
+@app.get("/v1/scholarly-study-original-research-package/v01390/policy")
+def scholarly_package_v01390_policy(): return package1390.policy()
+@app.post("/v1/scholarly-study-original-research-package/v01390/normalize-package")
+def scholarly_package_v01390_normalize(payload: dict): return package1390.normalize_package(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/validate-package")
+def scholarly_package_v01390_validate(payload: dict): return package1390.validate_package(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/manifest")
+def scholarly_package_v01390_manifest(payload: dict): return package1390.manifest(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/artifact-index")
+def scholarly_package_v01390_artifacts(payload: dict): return package1390.artifact_index(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/methods-index")
+def scholarly_package_v01390_methods(payload: dict): return package1390.methods_index(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/claim-evidence-index")
+def scholarly_package_v01390_claim_evidence(payload: dict): return package1390.claim_evidence_index(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/review-record")
+def scholarly_package_v01390_review(payload: dict): return package1390.review_record(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/reproducibility-index")
+def scholarly_package_v01390_repro(payload: dict): return package1390.reproducibility_index(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/provenance-lineage")
+def scholarly_package_v01390_provenance(payload: dict): return package1390.provenance_lineage(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/living-status")
+def scholarly_package_v01390_living(payload: dict): return package1390.package_living_status(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/program-context")
+def scholarly_package_v01390_program(payload: dict): return package1390.program_context(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/readiness")
+def scholarly_package_v01390_readiness(payload: dict): return package1390.readiness(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/snapshot")
+def scholarly_package_v01390_snapshot(payload: dict): return package1390.snapshot(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/compare-snapshots")
+def scholarly_package_v01390_compare(payload: dict): return package1390.compare_snapshots(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/export-plan")
+def scholarly_package_v01390_export(payload: dict): return package1390.export_plan(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/citation-metadata")
+def scholarly_package_v01390_citation(payload: dict): return package1390.citation_metadata(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/project-workspace-packet")
+def scholarly_package_v01390_workspace(payload: dict): return package1390.project_workspace_packet(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/core-scholarly-handoff")
+def scholarly_package_v01390_core_handoff(payload: dict): return package1390.core_scholarly_handoff(payload)
+@app.post("/v1/scholarly-study-original-research-package/v01390/fingerprint")
+def scholarly_package_v01390_fingerprint(payload: dict): return package1390.fingerprint(payload)
+@app.get("/v1/scholarly-study-original-research-package/v01390/release-gates")
+def scholarly_package_v01390_gates(): return package1390.release_gates()
+@app.get("/v1/scholarly-study-original-research-package/v01390/boundary")
+def scholarly_package_v01390_boundary(): return {"ok":True,"version":package1390.VERSION,"boundary":package1390.BOUNDARY}
+

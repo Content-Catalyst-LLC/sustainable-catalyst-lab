@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/scholarly-study-original-research-package-v01390.schema.json",
+  "title": "Lab v0.139.0 Scholarly Study & Original Research Package",
+  "type": "object",
+  "required": ["packageId", "title"],
+  "properties": {
+    "packageId": {"type": "string", "minLength": 1},
+    "studyId": {"type": "string"},
+    "projectId": {"type": "string"},
+    "title": {"type": "string", "minLength": 1},
+    "abstract": {"type": ["string", "null"]},
+    "researchQuestion": {},
+    "hypotheses": {"type": "array"},
+    "methods": {"type": "array"},
+    "datasets": {"type": "array"},
+    "executions": {"type": "array"},
+    "models": {"type": "array"},
+    "analyses": {"type": "array"},
+    "figures": {"type": "array"},
+    "tables": {"type": "array"},
+    "claims": {"type": "array"},
+    "evidence": {"type": "array"},
+    "findings": {"type": "array"},
+    "limitations": {"type": "array"},
+    "reviews": {"type": "array"},
+    "reproductionPackages": {"type": "array"},
+    "manuscripts": {"type": "array"},
+    "provenance": {"type": "object"},
+    "state": {"enum": ["draft", "assembled", "review-ready", "release-candidate", "released", "archived"]}
+  },
+  "additionalProperties": true
+}

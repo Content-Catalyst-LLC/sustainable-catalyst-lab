@@ -235,6 +235,13 @@ Adds explicit scientific surfaces, meshes, vector/scalar fields, volumes, trajec
 - Preserved v0.114 publication profiles, accessibility and vector-first export behavior.
 - Kept statistical inference, scientific validity and truth judgments outside the rendering layer.
 
+
+## v0.139.0
+
+- Added Scholarly Study & Original Research Package.
+- Added deterministic package manifests, artifact/method/evidence indexes, provenance lineage, descriptive readiness, immutable snapshots, export/citation plans, Project Workspace packet, and explicit Platform Core scholarly handoff.
+- Bridges retained v0.137.0 living analysis and v0.138.0 research-program context without conferring scientific validity or publication acceptance.
+
 ## v0.114.0 — Scientific Visualization Design System & Publication-Grade Rendering
 
 Publication-grade scientific figure design system with semantic encodings, uncertainty styling, annotations, small multiples, accessibility, vector-first export planning, renderer negotiation, and Core visual binding compatibility.

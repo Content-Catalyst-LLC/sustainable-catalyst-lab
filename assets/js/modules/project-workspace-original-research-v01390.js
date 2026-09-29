@@ -1,0 +1,1 @@
+(function(w){'use strict';w.SCLabProjectWorkspaceOriginalResearchV01390={version:'0.139.0',packet:function(pkg){return {schema:'sc-lab-project-workspace-original-research-package/0.139.0',version:'0.139.0',package:pkg||{},createdAt:new Date().toISOString(),automaticPublication:false};}};})(window);

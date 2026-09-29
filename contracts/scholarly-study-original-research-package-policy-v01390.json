@@ -1,0 +1,11 @@
+{
+  "version": "0.139.0",
+  "sourceAuthorityPreserved": true,
+  "humanScientificJudgmentRequired": true,
+  "automaticScientificValidity": false,
+  "automaticCausalTruth": false,
+  "automaticEvidenceWeighting": false,
+  "automaticPeerReviewAcceptance": false,
+  "automaticPublicationAcceptance": false,
+  "automaticIdentifierRegistration": false
+}
