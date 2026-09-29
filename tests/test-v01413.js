@@ -1,0 +1,1 @@
+const fs=require('fs'); const p='assets/js/modules/model-comparison-experiment-matrix-v01413.js'; const s=fs.readFileSync(p,'utf8'); if(!s.includes('SCLabModelComparisonMatrixV01413')||!s.includes('comparabilityBadges')) process.exit(1); console.log('PASS v0.141.3 JS');

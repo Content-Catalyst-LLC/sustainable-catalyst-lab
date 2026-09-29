@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/model-comparison-experiment-matrix-v01413.schema.json",
+  "title": "Model Comparison Experiment Matrix",
+  "type": "object",
+  "properties": {
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "metric": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string"
+    },
+    "view": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

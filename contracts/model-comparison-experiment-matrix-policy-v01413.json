@@ -1,0 +1,9 @@
+{
+  "version": "0.141.3",
+  "explicitComparability": true,
+  "automaticRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticModelPromotion": false,
+  "predictionIsEvidence": false,
+  "matrixOrderIsRanking": false
+}
