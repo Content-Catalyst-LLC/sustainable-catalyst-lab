@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.141.8 — Reproducible Neural Research Package
+- Consolidated the v0.141.0–v0.141.7 neural research lineage into a governed, fingerprinted research package.
+- Added component/dependency/checksum/lineage/environment/determinism audits, completeness reporting, Workspace rerun handoff, Platform Core/Research OS handoffs, deterministic snapshots, package diffs, and reproducibility packages.
+- Preserved strict boundaries: package completeness does not certify scientific validity, successful reproduction, independent replication, model superiority, evidence, or publication acceptance.
+
 ## v0.141.6 — Neural Explainability Workspace
 - Added governed neural explainability studies, explanation normalization, attribution matrices, method agreement/stability audits, visual handoffs, snapshots and reproducibility packages.
 - Preserved Workspace execution authority and explicit non-causal/non-certification boundaries.

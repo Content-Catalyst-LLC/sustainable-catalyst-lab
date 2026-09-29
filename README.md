@@ -1131,3 +1131,8 @@ Lab v0.141.4 adds governed hyperparameter study definitions and search-result an
 ## Lab v0.141.7 — Embedding Explorer
 
 Adds governed vector-space inspection for neural research: embedding registries, provenance and dimensionality audits, explicit distance metrics, nearest-neighbor exploration, projection registries, cluster/label overlays, drift and space comparison, reproducible visual handoffs, snapshots, exports, and research packages. Workspace remains authoritative for extraction/projection execution; vector proximity, clusters, and projected layouts are not treated as semantic facts or evidence by themselves.
+
+
+## Lab v0.141.8 — Reproducible Neural Research Package
+
+The neural research line now packages experiment context, data/code/model/configuration lineage, environments, telemetry, checkpoints, comparison/search/ablation results, explainability, embeddings, limitations, and reproduction instructions into one deterministic governed manifest. Workspace remains the rerun execution authority; Platform Core remains canonical-object authority. Package completeness is explicitly separate from scientific validity, reproduction success, independent replication, and publication acceptance.

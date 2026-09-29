@@ -176,6 +176,7 @@ from . import hyperparameter_study_search_results_v01414 as hps1414
 from . import ablation_study_framework_v01415 as asf1415
 from . import neural_explainability_workspace_v01416 as xai1416
 from . import embedding_explorer_v01417 as emb1417
+from . import reproducible_neural_research_package_v01418 as nrp1418
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -11221,3 +11222,78 @@ def emb_v01417_repro(payload: dict): return emb1417.reproducibility_packet(paylo
 @app.post("/v1/embedding-explorer/v01417/projection-view")
 def emb_v01417_projection_view(payload: dict): return emb1417.visual_spec({**payload,"view":"projection"})
 
+
+
+# Lab v0.141.8 — Reproducible Neural Research Package
+@app.get("/v1/reproducible-neural-research-package/v01418/health")
+def nrp_v01418_health(): return nrp1418.health()
+@app.get("/v1/reproducible-neural-research-package/v01418/acceptance")
+def nrp_v01418_acceptance(): return nrp1418.acceptance_report()
+@app.get("/v1/reproducible-neural-research-package/v01418/contract")
+def nrp_v01418_contract(): return nrp1418.contract()
+@app.get("/v1/reproducible-neural-research-package/v01418/policy")
+def nrp_v01418_policy(): return nrp1418.policy()
+@app.get("/v1/reproducible-neural-research-package/v01418/release-gates")
+def nrp_v01418_gates(): return nrp1418.release_gates()
+@app.get("/v1/reproducible-neural-research-package/v01418/interpretation-boundary")
+def nrp_v01418_boundary(): return nrp1418.interpretation_boundary({})
+@app.get("/v1/reproducible-neural-research-package/v01418/package-sections")
+def nrp_v01418_sections(): return {"ok":True,"version":nrp1418.VERSION,"packageSections":list(nrp1418.PACKAGE_SECTIONS),"boundary":nrp1418.BOUNDARY}
+@app.get("/v1/reproducible-neural-research-package/v01418/artifact-kinds")
+def nrp_v01418_kinds(): return {"ok":True,"version":nrp1418.VERSION,"artifactKinds":list(nrp1418.ARTIFACT_KINDS),"boundary":nrp1418.BOUNDARY}
+@app.get("/v1/reproducible-neural-research-package/v01418/verification-states")
+def nrp_v01418_states(): return {"ok":True,"version":nrp1418.VERSION,"verificationStates":list(nrp1418.VERIFICATION_STATES),"boundary":nrp1418.BOUNDARY}
+@app.get("/v1/reproducible-neural-research-package/v01418/completeness-dimensions")
+def nrp_v01418_dimensions(): return {"ok":True,"version":nrp1418.VERSION,"completenessDimensions":list(nrp1418.COMPLETENESS_DIMENSIONS),"boundary":nrp1418.BOUNDARY}
+@app.post("/v1/reproducible-neural-research-package/v01418/normalize-component")
+def nrp_v01418_component(payload: dict): return {"ok":True,"version":nrp1418.VERSION,"component":nrp1418.normalize_component(payload),"boundary":nrp1418.BOUNDARY}
+@app.post("/v1/reproducible-neural-research-package/v01418/package-manifest")
+def nrp_v01418_manifest(payload: dict): return nrp1418.package_manifest(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/component-registry")
+def nrp_v01418_registry(payload: dict): return nrp1418.component_registry(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/section-inventory")
+def nrp_v01418_inventory(payload: dict): return nrp1418.section_inventory(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/dependency-audit")
+def nrp_v01418_dependencies(payload: dict): return nrp1418.dependency_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/checksum-audit")
+def nrp_v01418_checksums(payload: dict): return nrp1418.checksum_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/lineage-audit")
+def nrp_v01418_lineage(payload: dict): return nrp1418.lineage_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/environment-audit")
+def nrp_v01418_environment(payload: dict): return nrp1418.environment_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/seed-determinism-audit")
+def nrp_v01418_seed(payload: dict): return nrp1418.seed_determinism_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/neural-chain-audit")
+def nrp_v01418_chain(payload: dict): return nrp1418.neural_chain_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/completeness-report")
+def nrp_v01418_completeness(payload: dict): return nrp1418.completeness_report(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/missingness-report")
+def nrp_v01418_missing(payload: dict): return nrp1418.missingness_report(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/reproducibility-instructions")
+def nrp_v01418_instructions(payload: dict): return nrp1418.reproducibility_instructions(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/workspace-reproduction-handoff")
+def nrp_v01418_workspace(payload: dict): return nrp1418.workspace_reproduction_handoff(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/rerun-plan")
+def nrp_v01418_rerun(payload: dict): return nrp1418.rerun_plan(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/verification-checklist")
+def nrp_v01418_checklist(payload: dict): return nrp1418.verification_checklist(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/evidence-boundary-audit")
+def nrp_v01418_evidence(payload: dict): return nrp1418.evidence_boundary_audit(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/package-summary")
+def nrp_v01418_summary(payload: dict): return nrp1418.package_summary(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/export-manifest")
+def nrp_v01418_export(payload: dict): return nrp1418.export_manifest(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/core-handoff")
+def nrp_v01418_core(payload: dict): return nrp1418.core_handoff(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/research-os-handoff")
+def nrp_v01418_ros(payload: dict): return nrp1418.research_os_handoff(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/publication-handoff")
+def nrp_v01418_publication(payload: dict): return nrp1418.publication_handoff(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/snapshot")
+def nrp_v01418_snapshot(payload: dict): return nrp1418.snapshot(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/compare-snapshots")
+def nrp_v01418_compare_snapshots(payload: dict): return nrp1418.compare_snapshots(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/package-diff")
+def nrp_v01418_diff(payload: dict): return nrp1418.package_diff(payload)
+@app.post("/v1/reproducible-neural-research-package/v01418/reproducibility-package")
+def nrp_v01418_package(payload: dict): return nrp1418.reproducibility_package(payload)
