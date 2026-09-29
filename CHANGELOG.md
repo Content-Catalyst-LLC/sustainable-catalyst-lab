@@ -1,3 +1,11 @@
+## 0.144.0 — Statistical & Econometric Research Workspace
+
+- Adds governed dataset, variable, estimand, model-specification, estimate-result, and diagnostic research objects.
+- Adds panel/time-series, IV/identification, missingness, collinearity, heteroskedasticity, autocorrelation, stationarity, endogeneity, and instrument audits.
+- Adds coefficient, fit, marginal-effects, robust-inference, specification, robustness, model-comparison, estimand-comparison, sensitivity, uncertainty, visualization, and reproducibility surfaces.
+- Preserves execution authority in Workspace and canonical governed-object authority in Platform Core.
+- Enforces: coefficient ≠ estimand; significance ≠ substantive importance; association ≠ causation; diagnostics ≠ proof; reproducibility ≠ validity.
+
 # v0.143.0 — Computational Linguistics Research Workspace
 
 - Added original-language-first linguistic research object model.

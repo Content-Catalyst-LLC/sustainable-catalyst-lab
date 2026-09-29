@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm');
+const src=fs.readFileSync('assets/js/modules/statistical-econometric-research-workspace-v01440.js','utf8');
+const ctx={window:{}};vm.createContext(ctx);vm.runInContext(src,ctx);
+const x=ctx.window.SCLabStatisticalEconometricResearchWorkspaceV01440;
+if(!x||x.version!=='0.144.0'||x.explicitEstimandModelSeparation!==true) throw new Error('identity');
+for(const k of ['workspaceExecutionAuthority','platformCoreCanonicalAuthority']) if(x[k]!==true) throw new Error(k);
+for(const k of ['labExecutesStatisticalEstimation','automaticCausalInference','automaticModelRanking','automaticWinnerSelection','automaticScientificValidity','statisticalSignificanceIsSubstantiveImportance','associationIsCausation']) if(x[k]!==false) throw new Error(k);
+const e=x.normalizeEstimand({estimandId:'e1',outcome:'y',treatmentOrExposure:'x',causal:true}); if(e.estimateIsEstimand||e.identifiedByModelFitAlone) throw new Error('estimand boundary');
+const s=x.normalizeSpecification({specificationId:'s1',estimandRef:'e1',datasetRef:'d1',modelFamily:'iv-2sls',instruments:['z']}); if(s.automaticCausalIdentification) throw new Error('spec boundary');
+console.log('PASS: Lab v0.144.0 JS contracts');

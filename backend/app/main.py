@@ -179,6 +179,7 @@ from . import embedding_explorer_v01417 as emb1417
 from . import reproducible_neural_research_package_v01418 as nrp1418
 from . import integrated_neural_research_workspace_v01420 as inrw1420
 from . import computational_linguistics_research_workspace_v01430 as clrw1430
+from . import statistical_econometric_research_workspace_v01440 as serw1440
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -11478,3 +11479,110 @@ def clrw_v01430_repro(payload: dict): return clrw1430.reproducibility_package(pa
 @app.post("/v1/computational-linguistics-research-workspace/v01430/publication-handoff")
 def clrw_v01430_publication(payload: dict): return clrw1430.publication_handoff(payload)
 
+
+
+# Lab v0.144.0 — Statistical & Econometric Research Workspace
+@app.get("/v1/statistical-econometric-research-workspace/v01440/health")
+def serw_v01440_health(): return serw1440.health()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/acceptance")
+def serw_v01440_acceptance(): return serw1440.acceptance_report()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/contract")
+def serw_v01440_contract(): return serw1440.contract()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/policy")
+def serw_v01440_policy(): return serw1440.policy()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/release-gates")
+def serw_v01440_gates(): return serw1440.release_gates()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/interpretation-boundary")
+def serw_v01440_boundary(): return serw1440.interpretation_boundary({})
+@app.get("/v1/statistical-econometric-research-workspace/v01440/model-families")
+def serw_v01440_models(): return {"ok":True,"version":serw1440.VERSION,"modelFamilies":list(serw1440.MODEL_FAMILIES),"boundary":serw1440.BOUNDARY}
+@app.get("/v1/statistical-econometric-research-workspace/v01440/analysis-families")
+def serw_v01440_analyses(): return {"ok":True,"version":serw1440.VERSION,"analysisFamilies":list(serw1440.ANALYSIS_FAMILIES),"boundary":serw1440.BOUNDARY}
+@app.get("/v1/statistical-econometric-research-workspace/v01440/estimator-catalog")
+def serw_v01440_estimators(): return serw1440.model_catalog()
+@app.get("/v1/statistical-econometric-research-workspace/v01440/session-states")
+def serw_v01440_states(): return {"ok":True,"version":serw1440.VERSION,"sessionStates":list(serw1440.SESSION_STATES),"boundary":serw1440.BOUNDARY}
+@app.get("/v1/statistical-econometric-research-workspace/v01440/object-kinds")
+def serw_v01440_kinds(): return {"ok":True,"version":serw1440.VERSION,"objectKinds":list(serw1440.OBJECT_KINDS),"boundary":serw1440.BOUNDARY}
+@app.get("/v1/statistical-econometric-research-workspace/v01440/covariance-estimators")
+def serw_v01440_covariances(): return {"ok":True,"version":serw1440.VERSION,"covarianceEstimators":list(serw1440.COVARIANCE_ESTIMATORS),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-variable")
+def serw_v01440_variable(payload: dict): return {"ok":True,"version":serw1440.VERSION,"variable":serw1440.normalize_variable(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-dataset")
+def serw_v01440_dataset(payload: dict): return {"ok":True,"version":serw1440.VERSION,"dataset":serw1440.normalize_dataset(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-estimand")
+def serw_v01440_estimand(payload: dict): return {"ok":True,"version":serw1440.VERSION,"estimand":serw1440.normalize_estimand(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-specification")
+def serw_v01440_spec(payload: dict): return {"ok":True,"version":serw1440.VERSION,"specification":serw1440.normalize_specification(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-estimate")
+def serw_v01440_estimate(payload: dict): return {"ok":True,"version":serw1440.VERSION,"estimate":serw1440.normalize_estimate(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-diagnostics")
+def serw_v01440_diag(payload: dict): return {"ok":True,"version":serw1440.VERSION,"diagnostic":serw1440.normalize_diagnostics(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/normalize-session")
+def serw_v01440_session(payload: dict): return {"ok":True,"version":serw1440.VERSION,"session":serw1440.normalize_session(payload),"boundary":serw1440.BOUNDARY}
+@app.post("/v1/statistical-econometric-research-workspace/v01440/workspace-state")
+def serw_v01440_workspace(payload: dict): return serw1440.workspace_state(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/specification-audit")
+def serw_v01440_spec_audit(payload: dict): return serw1440.specification_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/identification-audit")
+def serw_v01440_identification(payload: dict): return serw1440.identification_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/assumption-audit")
+def serw_v01440_assumptions(payload: dict): return serw1440.assumption_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/missingness-audit")
+def serw_v01440_missing(payload: dict): return serw1440.missingness_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/multicollinearity-audit")
+def serw_v01440_collinearity(payload: dict): return serw1440.multicollinearity_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/heteroskedasticity-audit")
+def serw_v01440_hetero(payload: dict): return serw1440.heteroskedasticity_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/autocorrelation-audit")
+def serw_v01440_auto(payload: dict): return serw1440.autocorrelation_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/stationarity-audit")
+def serw_v01440_stationarity(payload: dict): return serw1440.stationarity_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/endogeneity-audit")
+def serw_v01440_endogeneity(payload: dict): return serw1440.endogeneity_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/instrument-audit")
+def serw_v01440_instruments(payload: dict): return serw1440.instrument_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/panel-structure-audit")
+def serw_v01440_panel(payload: dict): return serw1440.panel_structure_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/time-series-structure-audit")
+def serw_v01440_ts(payload: dict): return serw1440.time_series_structure_audit(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/coefficient-table")
+def serw_v01440_coefficients(payload: dict): return serw1440.coefficient_table(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/fit-summary")
+def serw_v01440_fit(payload: dict): return serw1440.fit_summary(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/marginal-effects-summary")
+def serw_v01440_marginal(payload: dict): return serw1440.marginal_effects_summary(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/residual-diagnostics")
+def serw_v01440_residuals(payload: dict): return serw1440.residual_diagnostics(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/robust-inference-summary")
+def serw_v01440_robust_inference(payload: dict): return serw1440.robust_inference_summary(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/specification-matrix")
+def serw_v01440_spec_matrix(payload: dict): return serw1440.specification_matrix(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/robustness-matrix")
+def serw_v01440_robustness(payload: dict): return serw1440.robustness_matrix(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/model-comparison")
+def serw_v01440_model_compare(payload: dict): return serw1440.model_comparison(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/estimand-comparison")
+def serw_v01440_estimand_compare(payload: dict): return serw1440.estimand_comparison(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/sensitivity-summary")
+def serw_v01440_sensitivity(payload: dict): return serw1440.sensitivity_summary(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/uncertainty-limitations")
+def serw_v01440_uncertainty(payload: dict): return serw1440.uncertainty_limitations(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/workspace-execution-handoff")
+def serw_v01440_exec(payload: dict): return serw1440.workspace_execution_handoff(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/core-handoff")
+def serw_v01440_core(payload: dict): return serw1440.core_handoff(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/research-os-handoff")
+def serw_v01440_ros(payload: dict): return serw1440.research_os_handoff(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/visual-workspace-spec")
+def serw_v01440_visual(payload: dict): return serw1440.visual_workspace_spec(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/workspace-snapshot")
+def serw_v01440_snapshot(payload: dict): return serw1440.workspace_snapshot(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/compare-snapshots")
+def serw_v01440_compare_snapshots(payload: dict): return serw1440.compare_snapshots(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/export-bundle")
+def serw_v01440_export(payload: dict): return serw1440.export_bundle(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/reproducibility-package")
+def serw_v01440_repro(payload: dict): return serw1440.reproducibility_package(payload)
+@app.post("/v1/statistical-econometric-research-workspace/v01440/publication-handoff")
+def serw_v01440_publication(payload: dict): return serw1440.publication_handoff(payload)
