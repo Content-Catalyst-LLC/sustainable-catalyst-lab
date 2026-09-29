@@ -1,10 +1,9 @@
-# Changelog
+# v0.140.0 — Scientific Research Operating System Milestone
 
-## 0.139.0.1 — WordPress Release Manifest Scope & Integrity Repair
-- Repairs WordPress manifest scope so integrity verification covers only files actually shipped in the plugin ZIP.
-- Adds package-level SHA-256 verification against the extracted WordPress artifact.
-- Adds backend repair diagnostics without changing v0.139.0 scientific semantics.
-- Establishes a verified-runtime gate before v0.140.0.
+- Consolidates the scientific-research lifecycle behind one governed Research OS orchestration contract.
+- Adds lifecycle, capability-matrix, research-session, workspace-state, dependency-map, continuity, snapshot, handoff, publication-packet, and reproducibility-packet services.
+- Retains v0.137.0 living analysis, v0.138.0 research-program intelligence, and v0.139.0 scholarly/original-research packaging as authoritative subsystems.
+- Preserves explicit boundaries: orchestration does not imply scientific validity, automatic phase advancement, evidence ranking, review resolution, reproducibility certification, or publication acceptance.
 
 # v0.135.21.0 — Graph Studio Review Workspace Consolidation & Runtime Certification
 

@@ -167,7 +167,7 @@ from . import graph_studio_integrated_scientific_review_reproducibility_v01360 a
 from . import research_change_impact_living_analysis_v01370 as living1370
 from . import research_program_intelligence_v01380 as program1380
 from . import scholarly_study_original_research_package_v01390 as package1390
-from . import release_integrity_scope_repair_v013901 as integrity13901
+from . import scientific_research_operating_system_v01400 as researchos1400
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10641,9 +10641,55 @@ def scholarly_package_v01390_gates(): return package1390.release_gates()
 @app.get("/v1/scholarly-study-original-research-package/v01390/boundary")
 def scholarly_package_v01390_boundary(): return {"ok":True,"version":package1390.VERSION,"boundary":package1390.BOUNDARY}
 
+# v0.140.0 — Scientific Research Operating System Milestone
+@app.get("/v1/scientific-research-operating-system/v01400/health")
+def research_os_v01400_health(): return researchos1400.health()
+@app.get("/v1/scientific-research-operating-system/v01400/acceptance")
+def research_os_v01400_acceptance(): return researchos1400.acceptance_report()
+@app.get("/v1/scientific-research-operating-system/v01400/contract")
+def research_os_v01400_contract(): return researchos1400.contract()
+@app.get("/v1/scientific-research-operating-system/v01400/policy")
+def research_os_v01400_policy(): return researchos1400.policy()
+@app.get("/v1/scientific-research-operating-system/v01400/capabilities")
+def research_os_v01400_capabilities(): return researchos1400.capability_matrix({})
+@app.post("/v1/scientific-research-operating-system/v01400/normalize")
+def research_os_v01400_normalize(payload: dict): return researchos1400.normalize(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/validate")
+def research_os_v01400_validate(payload: dict): return researchos1400.validate(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/lifecycle")
+def research_os_v01400_lifecycle(payload: dict): return researchos1400.lifecycle(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/capability-matrix")
+def research_os_v01400_matrix(payload: dict): return researchos1400.capability_matrix(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/study-context")
+def research_os_v01400_study(payload: dict): return researchos1400.study_context(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/living-context")
+def research_os_v01400_living(payload: dict): return researchos1400.living_context(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/program-context")
+def research_os_v01400_program(payload: dict): return researchos1400.program_context(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/scholarly-context")
+def research_os_v01400_scholarly(payload: dict): return researchos1400.scholarly_context(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/research-session")
+def research_os_v01400_session(payload: dict): return researchos1400.research_session(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/workspace-state")
+def research_os_v01400_workspace(payload: dict): return researchos1400.workspace_state(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/dependency-map")
+def research_os_v01400_dependency(payload: dict): return researchos1400.dependency_map(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/readiness")
+def research_os_v01400_readiness(payload: dict): return researchos1400.readiness(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/continuity")
+def research_os_v01400_continuity(payload: dict): return researchos1400.continuity(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/snapshot")
+def research_os_v01400_snapshot(payload: dict): return researchos1400.snapshot(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/compare-snapshots")
+def research_os_v01400_compare(payload: dict): return researchos1400.compare_snapshots(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/handoff")
+def research_os_v01400_handoff(payload: dict): return researchos1400.handoff(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/publication-packet")
+def research_os_v01400_publication(payload: dict): return researchos1400.publication_packet(payload)
+@app.post("/v1/scientific-research-operating-system/v01400/reproducibility-packet")
+def research_os_v01400_reproducibility(payload: dict): return researchos1400.reproducibility_packet(payload)
+@app.get("/v1/scientific-research-operating-system/v01400/release-gates")
+def research_os_v01400_gates(): return researchos1400.release_gates()
+@app.get("/v1/scientific-research-operating-system/v01400/boundary")
+def research_os_v01400_boundary(): return {"ok":True,"version":researchos1400.VERSION,"boundary":researchos1400.BOUNDARY}
 
-# Lab v0.139.0.1 — WordPress Release Manifest Scope & Integrity Repair
-@app.get("/v1/release-integrity-scope-repair/v013901/health")
-def release_integrity_scope_v013901_health(): return integrity13901.health()
-@app.get("/v1/release-integrity-scope-repair/v013901/policy")
-def release_integrity_scope_v013901_policy(): return integrity13901.policy()
