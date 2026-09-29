@@ -178,6 +178,7 @@ from . import neural_explainability_workspace_v01416 as xai1416
 from . import embedding_explorer_v01417 as emb1417
 from . import reproducible_neural_research_package_v01418 as nrp1418
 from . import integrated_neural_research_workspace_v01420 as inrw1420
+from . import computational_linguistics_research_workspace_v01430 as clrw1430
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -11378,4 +11379,102 @@ def inrw_v01420_repro(payload: dict): return inrw1420.reproducibility_summary(pa
 def inrw_v01420_exp_panel(payload: dict): return inrw1420.panel_state({**payload,"panel":"experiment"})
 @app.post("/v1/integrated-neural-research-workspace/v01420/reproducibility-panel")
 def inrw_v01420_rep_panel(payload: dict): return inrw1420.panel_state({**payload,"panel":"reproducibility"})
+
+# Lab v0.143.0 — Computational Linguistics Research Workspace
+@app.get("/v1/computational-linguistics-research-workspace/v01430/health")
+def clrw_v01430_health(): return clrw1430.health()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/acceptance")
+def clrw_v01430_acceptance(): return clrw1430.acceptance_report()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/contract")
+def clrw_v01430_contract(): return clrw1430.contract()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/policy")
+def clrw_v01430_policy(): return clrw1430.policy()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/release-gates")
+def clrw_v01430_gates(): return clrw1430.release_gates()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/interpretation-boundary")
+def clrw_v01430_boundary(): return clrw1430.interpretation_boundary({})
+@app.get("/v1/computational-linguistics-research-workspace/v01430/language-registry")
+def clrw_v01430_languages(): return clrw1430.language_registry()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/script-registry")
+def clrw_v01430_scripts(): return clrw1430.script_registry()
+@app.get("/v1/computational-linguistics-research-workspace/v01430/representation-types")
+def clrw_v01430_rep_types(): return {"ok":True,"version":clrw1430.VERSION,"representationTypes":list(clrw1430.REPRESENTATION_TYPES),"boundary":clrw1430.BOUNDARY}
+@app.get("/v1/computational-linguistics-research-workspace/v01430/annotation-kinds")
+def clrw_v01430_ann_kinds(): return {"ok":True,"version":clrw1430.VERSION,"annotationKinds":list(clrw1430.ANNOTATION_KINDS),"boundary":clrw1430.BOUNDARY}
+@app.get("/v1/computational-linguistics-research-workspace/v01430/analysis-catalog")
+def clrw_v01430_analysis_catalog(): return {"ok":True,"version":clrw1430.VERSION,"analysisTypes":list(clrw1430.ANALYSIS_TYPES),"boundary":clrw1430.BOUNDARY}
+@app.get("/v1/computational-linguistics-research-workspace/v01430/session-states")
+def clrw_v01430_states(): return {"ok":True,"version":clrw1430.VERSION,"sessionStates":list(clrw1430.SESSION_STATES),"boundary":clrw1430.BOUNDARY}
+@app.get("/v1/computational-linguistics-research-workspace/v01430/object-kinds")
+def clrw_v01430_kinds(): return {"ok":True,"version":clrw1430.VERSION,"objectKinds":list(clrw1430.OBJECT_KINDS),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/normalize-text")
+def clrw_v01430_text(payload: dict): return {"ok":True,"version":clrw1430.VERSION,"text":clrw1430.normalize_text(payload),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/normalize-representation")
+def clrw_v01430_rep(payload: dict): return {"ok":True,"version":clrw1430.VERSION,"representation":clrw1430.normalize_representation(payload),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/normalize-annotation")
+def clrw_v01430_ann(payload: dict): return {"ok":True,"version":clrw1430.VERSION,"annotation":clrw1430.normalize_annotation(payload),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/normalize-corpus")
+def clrw_v01430_corpus(payload: dict): return {"ok":True,"version":clrw1430.VERSION,"corpus":clrw1430.normalize_corpus(payload),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/normalize-session")
+def clrw_v01430_session(payload: dict): return {"ok":True,"version":clrw1430.VERSION,"session":clrw1430.normalize_session(payload),"boundary":clrw1430.BOUNDARY}
+@app.post("/v1/computational-linguistics-research-workspace/v01430/workspace-state")
+def clrw_v01430_workspace(payload: dict): return clrw1430.workspace_state(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/corpus-index")
+def clrw_v01430_index(payload: dict): return clrw1430.corpus_index(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/original-language-audit")
+def clrw_v01430_original_audit(payload: dict): return clrw1430.original_language_audit(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/language-script-audit")
+def clrw_v01430_script_audit(payload: dict): return clrw1430.language_script_audit(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/transformation-lineage")
+def clrw_v01430_lineage(payload: dict): return clrw1430.transformation_lineage(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/representation-chain")
+def clrw_v01430_chain(payload: dict): return clrw1430.representation_chain(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/alignment-audit")
+def clrw_v01430_alignment(payload: dict): return clrw1430.alignment_audit(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/tokenization-audit")
+def clrw_v01430_tokenization(payload: dict): return clrw1430.tokenization_audit(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/corpus-statistics")
+def clrw_v01430_stats(payload: dict): return clrw1430.corpus_statistics(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/lexical-profile")
+def clrw_v01430_lexical(payload: dict): return clrw1430.lexical_profile(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/ngram-profile")
+def clrw_v01430_ngram(payload: dict): return clrw1430.ngram_profile(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/concordance")
+def clrw_v01430_concordance(payload: dict): return clrw1430.concordance(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/morphology-summary")
+def clrw_v01430_morph(payload: dict): return clrw1430.morphology_summary(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/syntax-summary")
+def clrw_v01430_syntax(payload: dict): return clrw1430.syntax_summary(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/phonology-phonetics-summary")
+def clrw_v01430_phon(payload: dict): return clrw1430.phonology_phonetics_summary(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/semantic-profile")
+def clrw_v01430_semantic(payload: dict): return clrw1430.semantic_profile(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/cross-lingual-comparison")
+def clrw_v01430_cross(payload: dict): return clrw1430.cross_lingual_comparison(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/corpus-comparison")
+def clrw_v01430_corpus_compare(payload: dict): return clrw1430.corpus_comparison(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/annotation-matrix")
+def clrw_v01430_ann_matrix(payload: dict): return clrw1430.annotation_matrix(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/uncertainty-limitations")
+def clrw_v01430_limitations(payload: dict): return clrw1430.uncertainty_limitations(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/workspace-execution-handoff")
+def clrw_v01430_exec(payload: dict): return clrw1430.workspace_execution_handoff(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/core-handoff")
+def clrw_v01430_core(payload: dict): return clrw1430.core_handoff(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/library-handoff")
+def clrw_v01430_library(payload: dict): return clrw1430.library_handoff(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/research-os-handoff")
+def clrw_v01430_ros(payload: dict): return clrw1430.research_os_handoff(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/visual-workspace-spec")
+def clrw_v01430_visual(payload: dict): return clrw1430.visual_workspace_spec(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/workspace-snapshot")
+def clrw_v01430_snapshot(payload: dict): return clrw1430.workspace_snapshot(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/compare-snapshots")
+def clrw_v01430_compare(payload: dict): return clrw1430.compare_snapshots(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/export-bundle")
+def clrw_v01430_export(payload: dict): return clrw1430.export_bundle(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/reproducibility-package")
+def clrw_v01430_repro(payload: dict): return clrw1430.reproducibility_package(payload)
+@app.post("/v1/computational-linguistics-research-workspace/v01430/publication-handoff")
+def clrw_v01430_publication(payload: dict): return clrw1430.publication_handoff(payload)
 

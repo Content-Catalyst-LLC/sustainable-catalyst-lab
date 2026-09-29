@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm');
+const src=fs.readFileSync('assets/js/modules/computational-linguistics-research-workspace-v01430.js','utf8');
+const ctx={window:{}};vm.createContext(ctx);vm.runInContext(src,ctx);
+const x=ctx.window.SCLabComputationalLinguisticsResearchWorkspaceV01430;
+if(!x||x.version!=='0.143.0'||x.originalLanguageFirst!==true||x.translationAsDerivedRepresentation!==true) throw new Error('identity');
+for(const k of ['workspaceExecutionAuthority','librarySourceAuthority','platformCoreCanonicalAuthority']) if(x[k]!==true) throw new Error(k);
+for(const k of ['labExecutesHeavyLinguisticCompute','automaticTranslationReplacement','automaticSemanticEquivalence','automaticScientificValidity','crossLingualSimilarityIsEvidence']) if(x[k]!==false) throw new Error(k);
+const t=x.normalizeText({textId:'t1',originalText:'λόγος',language:{bcp47:'grc'}}); if(!t.isOriginalLanguagePrimary||t.translationIsSource) throw new Error('original');
+const r=x.normalizeRepresentation({representationId:'r1',sourceTextId:'t1',type:'translation',content:'word'}); if(!r.isDerivedRepresentation||r.replacesOriginal||r.semanticEquivalenceCertified) throw new Error('derived');
+console.log('PASS: Lab v0.143.0 JS contracts');

@@ -1,3 +1,7 @@
+## Current release: v0.143.0 — Computational Linguistics Research Workspace
+
+Original-language-first computational linguistics and corpus research with transformation provenance, multilingual/historical language identity, alignment auditing, explicit-analysis boundaries, and reproducible research packaging.
+
 ## v0.141.5 — Ablation Study Framework
 
 Governed controlled neural-model ablation planning, comparison, visualization, provenance, and reproducibility. Workspace remains execution authority; ablation deltas are not automatically causal effects.

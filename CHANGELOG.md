@@ -1,3 +1,11 @@
+# v0.143.0 — Computational Linguistics Research Workspace
+
+- Added original-language-first linguistic research object model.
+- Added derived translation/transliteration/OCR/HTR/transcription lineage.
+- Added language/script/historical-variant identity and alignment provenance.
+- Added reproducible corpus-analysis, cross-lingual comparison, audits, snapshots and handoffs.
+- Preserved v0.142.0 Integrated Neural Research Workspace and v0.140.0.1 installed-runtime integrity policy.
+
 # Changelog
 
 ## 0.142.0 — Integrated Neural Research Workspace
