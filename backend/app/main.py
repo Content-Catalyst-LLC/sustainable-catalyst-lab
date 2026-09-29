@@ -174,6 +174,7 @@ from . import training_curves_metrics_checkpoint_visualization_v01412 as tcv1412
 from . import model_comparison_experiment_matrix_v01413 as mcem1413
 from . import hyperparameter_study_search_results_v01414 as hps1414
 from . import ablation_study_framework_v01415 as asf1415
+from . import neural_explainability_workspace_v01416 as xai1416
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -11085,3 +11086,68 @@ def asf_v01415_compare(payload: dict): return asf1415.compare_snapshots(payload)
 def asf_v01415_repro(payload: dict): return asf1415.reproducibility_packet(payload)
 @app.post("/v1/ablation-study-framework/v01415/default-effect-view")
 def asf_v01415_default_view(payload: dict): return asf1415.visual_spec({**payload,"view":"component-effect-summary"})
+
+
+# v0.141.6 — Neural Explainability Workspace
+@app.get("/v1/neural-explainability-workspace/v01416/health")
+def xai_v01416_health(): return xai1416.health()
+@app.get("/v1/neural-explainability-workspace/v01416/acceptance")
+def xai_v01416_acceptance(): return xai1416.acceptance_report()
+@app.get("/v1/neural-explainability-workspace/v01416/contract")
+def xai_v01416_contract(): return xai1416.contract()
+@app.get("/v1/neural-explainability-workspace/v01416/policy")
+def xai_v01416_policy(): return xai1416.policy()
+@app.get("/v1/neural-explainability-workspace/v01416/release-gates")
+def xai_v01416_release_gates(): return xai1416.release_gates()
+@app.get("/v1/neural-explainability-workspace/v01416/interpretation-boundary")
+def xai_v01416_boundary(): return xai1416.interpretation_boundary({})
+@app.get("/v1/neural-explainability-workspace/v01416/method-families")
+def xai_v01416_methods(): return {"ok":True,"version":xai1416.VERSION,"methodFamilies":list(xai1416.METHOD_FAMILIES),"boundary":xai1416.BOUNDARY}
+@app.get("/v1/neural-explainability-workspace/v01416/views")
+def xai_v01416_views(): return {"ok":True,"version":xai1416.VERSION,"views":list(xai1416.VIEWS),"boundary":xai1416.BOUNDARY}
+@app.post("/v1/neural-explainability-workspace/v01416/normalize-method")
+def xai_v01416_method(payload: dict): return {"ok":True,"version":xai1416.VERSION,"method":xai1416.normalize_method(payload),"boundary":xai1416.BOUNDARY}
+@app.post("/v1/neural-explainability-workspace/v01416/study-spec")
+def xai_v01416_study(payload: dict): return xai1416.study_spec(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/workspace-handoff")
+def xai_v01416_workspace(payload: dict): return xai1416.workspace_handoff(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/normalize-explanation")
+def xai_v01416_explanation(payload: dict): return {"ok":True,"version":xai1416.VERSION,"explanation":xai1416.normalize_explanation(payload),"boundary":xai1416.BOUNDARY}
+@app.post("/v1/neural-explainability-workspace/v01416/normalize-results")
+def xai_v01416_results(payload: dict): return xai1416.normalize_results(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/explanation-registry")
+def xai_v01416_registry(payload: dict): return xai1416.explanation_registry(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/baseline-reference-audit")
+def xai_v01416_reference(payload: dict): return xai1416.baseline_reference_audit(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/provenance-audit")
+def xai_v01416_provenance(payload: dict): return xai1416.provenance_audit(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/feature-attribution-matrix")
+def xai_v01416_matrix(payload: dict): return xai1416.feature_attribution_matrix(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/attribution-summary")
+def xai_v01416_summary(payload: dict): return xai1416.attribution_summary(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/method-agreement")
+def xai_v01416_agreement(payload: dict): return xai1416.method_agreement(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/stability-audit")
+def xai_v01416_stability(payload: dict): return xai1416.stability_audit(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/diagnostic-registry")
+def xai_v01416_diagnostics(payload: dict): return xai1416.diagnostic_registry(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/local-explanation-comparison")
+def xai_v01416_local(payload: dict): return xai1416.local_explanation_comparison(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/visual-spec")
+def xai_v01416_visual(payload: dict): return xai1416.visual_spec(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/core-visual-handoff")
+def xai_v01416_core(payload: dict): return xai1416.core_visual_handoff(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/export-bundle")
+def xai_v01416_export(payload: dict): return xai1416.export_bundle(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/snapshot")
+def xai_v01416_snapshot(payload: dict): return xai1416.snapshot(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/compare-snapshots")
+def xai_v01416_compare(payload: dict): return xai1416.compare_snapshots(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/reproducibility-packet")
+def xai_v01416_repro(payload: dict): return xai1416.reproducibility_packet(payload)
+@app.post("/v1/neural-explainability-workspace/v01416/feature-attribution-view")
+def xai_v01416_feature_view(payload: dict): return xai1416.visual_spec({**payload,"view":"feature-attribution"})
+@app.post("/v1/neural-explainability-workspace/v01416/method-comparison-view")
+def xai_v01416_method_view(payload: dict): return xai1416.visual_spec({**payload,"view":"method-comparison"})
+@app.post("/v1/neural-explainability-workspace/v01416/stability-view")
+def xai_v01416_stability_view(payload: dict): return xai1416.visual_spec({**payload,"view":"stability-summary"})

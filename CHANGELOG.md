@@ -1,3 +1,9 @@
+# Changelog
+
+## v0.141.6 — Neural Explainability Workspace
+- Added governed neural explainability studies, explanation normalization, attribution matrices, method agreement/stability audits, visual handoffs, snapshots and reproducibility packages.
+- Preserved Workspace execution authority and explicit non-causal/non-certification boundaries.
+
 ## 0.141.5 — Ablation Study Framework
 - Added governed ablation plans, variants, baseline/comparability/confounding audits, paired metric deltas, effect summaries, snapshots, exports, and reproducibility packages.
 - Preserved Workspace as execution authority and prohibited automatic causal inference, winner selection, and model promotion.
