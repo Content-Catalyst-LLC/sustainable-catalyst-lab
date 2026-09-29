@@ -1892,3 +1892,10 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 ## v0.138.0
 - Cross-Study Research Program Intelligence.
 - Carries forward v0.136.0.1 manifest integrity/bootstrap repair.
+
+## v0.141.7 — Embedding Explorer
+- Added governed embedding-study and embedding-vector objects with model/checkpoint/layer/dataset/split/environment provenance.
+- Added explicit distance matrices, nearest-neighbor exploration, dimensionality audits, projection registries, cluster/label overlays, drift comparison, and cross-space comparison.
+- Added deterministic visualization/snapshot/export/reproducibility contracts and Platform Core visual handoff.
+- Preserved Workspace execution authority for embedding extraction and dimensionality reduction.
+- Preserved strict boundaries: proximity is not relationship evidence, cluster membership is not semantic truth, and 2D/3D projection layout is a derived view rather than certified high-dimensional geometry.

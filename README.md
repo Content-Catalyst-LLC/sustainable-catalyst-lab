@@ -1127,3 +1127,7 @@ Adds deterministic bounded path tracing between two Graph Studio research object
 
 Lab v0.141.4 adds governed hyperparameter study definitions and search-result analysis. Workspace remains the execution authority; Lab records, audits, compares, visualizes, snapshots, and packages search results without automatically selecting or promoting a winning model. Objective directions must be explicit before extrema or Pareto candidate sets are derived.
 
+
+## Lab v0.141.7 — Embedding Explorer
+
+Adds governed vector-space inspection for neural research: embedding registries, provenance and dimensionality audits, explicit distance metrics, nearest-neighbor exploration, projection registries, cluster/label overlays, drift and space comparison, reproducible visual handoffs, snapshots, exports, and research packages. Workspace remains authoritative for extraction/projection execution; vector proximity, clusters, and projected layouts are not treated as semantic facts or evidence by themselves.

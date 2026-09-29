@@ -175,6 +175,7 @@ from . import model_comparison_experiment_matrix_v01413 as mcem1413
 from . import hyperparameter_study_search_results_v01414 as hps1414
 from . import ablation_study_framework_v01415 as asf1415
 from . import neural_explainability_workspace_v01416 as xai1416
+from . import embedding_explorer_v01417 as emb1417
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -11151,3 +11152,72 @@ def xai_v01416_feature_view(payload: dict): return xai1416.visual_spec({**payloa
 def xai_v01416_method_view(payload: dict): return xai1416.visual_spec({**payload,"view":"method-comparison"})
 @app.post("/v1/neural-explainability-workspace/v01416/stability-view")
 def xai_v01416_stability_view(payload: dict): return xai1416.visual_spec({**payload,"view":"stability-summary"})
+
+# v0.141.7 — Embedding Explorer
+@app.get("/v1/embedding-explorer/v01417/health")
+def emb_v01417_health(): return emb1417.health()
+@app.get("/v1/embedding-explorer/v01417/acceptance")
+def emb_v01417_acceptance(): return emb1417.acceptance_report()
+@app.get("/v1/embedding-explorer/v01417/contract")
+def emb_v01417_contract(): return emb1417.contract()
+@app.get("/v1/embedding-explorer/v01417/policy")
+def emb_v01417_policy(): return emb1417.policy()
+@app.get("/v1/embedding-explorer/v01417/release-gates")
+def emb_v01417_release_gates(): return emb1417.release_gates()
+@app.get("/v1/embedding-explorer/v01417/interpretation-boundary")
+def emb_v01417_boundary(): return emb1417.interpretation_boundary({})
+@app.get("/v1/embedding-explorer/v01417/embedding-kinds")
+def emb_v01417_kinds(): return {"ok":True,"version":emb1417.VERSION,"embeddingKinds":list(emb1417.EMBEDDING_KINDS),"boundary":emb1417.BOUNDARY}
+@app.get("/v1/embedding-explorer/v01417/distance-metrics")
+def emb_v01417_metrics(): return {"ok":True,"version":emb1417.VERSION,"distanceMetrics":list(emb1417.DISTANCE_METRICS),"boundary":emb1417.BOUNDARY}
+@app.get("/v1/embedding-explorer/v01417/projection-methods")
+def emb_v01417_projection_methods(): return {"ok":True,"version":emb1417.VERSION,"projectionMethods":list(emb1417.PROJECTION_METHODS),"boundary":emb1417.BOUNDARY}
+@app.get("/v1/embedding-explorer/v01417/views")
+def emb_v01417_views(): return {"ok":True,"version":emb1417.VERSION,"views":list(emb1417.VIEWS),"boundary":emb1417.BOUNDARY}
+@app.post("/v1/embedding-explorer/v01417/normalize-embedding")
+def emb_v01417_embedding(payload: dict): return {"ok":True,"version":emb1417.VERSION,"embedding":emb1417.normalize_embedding(payload),"boundary":emb1417.BOUNDARY}
+@app.post("/v1/embedding-explorer/v01417/study-spec")
+def emb_v01417_study(payload: dict): return emb1417.study_spec(payload)
+@app.post("/v1/embedding-explorer/v01417/workspace-handoff")
+def emb_v01417_workspace(payload: dict): return emb1417.workspace_handoff(payload)
+@app.post("/v1/embedding-explorer/v01417/normalize-results")
+def emb_v01417_results(payload: dict): return emb1417.normalize_results(payload)
+@app.post("/v1/embedding-explorer/v01417/vector-registry")
+def emb_v01417_registry(payload: dict): return emb1417.vector_registry(payload)
+@app.post("/v1/embedding-explorer/v01417/provenance-audit")
+def emb_v01417_provenance(payload: dict): return emb1417.provenance_audit(payload)
+@app.post("/v1/embedding-explorer/v01417/dimensionality-audit")
+def emb_v01417_dimensions(payload: dict): return emb1417.dimensionality_audit(payload)
+@app.post("/v1/embedding-explorer/v01417/distance-matrix")
+def emb_v01417_distance(payload: dict): return emb1417.distance_matrix(payload)
+@app.post("/v1/embedding-explorer/v01417/neighborhood-query")
+def emb_v01417_neighborhood(payload: dict): return emb1417.neighborhood_query(payload)
+@app.post("/v1/embedding-explorer/v01417/normalize-projection")
+def emb_v01417_projection(payload: dict): return {"ok":True,"version":emb1417.VERSION,"projection":emb1417.normalize_projection(payload),"boundary":emb1417.BOUNDARY}
+@app.post("/v1/embedding-explorer/v01417/projection-registry")
+def emb_v01417_projection_registry(payload: dict): return emb1417.projection_registry(payload)
+@app.post("/v1/embedding-explorer/v01417/projection-audit")
+def emb_v01417_projection_audit(payload: dict): return emb1417.projection_audit(payload)
+@app.post("/v1/embedding-explorer/v01417/cluster-overlay")
+def emb_v01417_cluster(payload: dict): return emb1417.cluster_overlay(payload)
+@app.post("/v1/embedding-explorer/v01417/label-overlay")
+def emb_v01417_label(payload: dict): return emb1417.label_overlay(payload)
+@app.post("/v1/embedding-explorer/v01417/drift-comparison")
+def emb_v01417_drift(payload: dict): return emb1417.drift_comparison(payload)
+@app.post("/v1/embedding-explorer/v01417/embedding-space-comparison")
+def emb_v01417_compare_space(payload: dict): return emb1417.embedding_space_comparison(payload)
+@app.post("/v1/embedding-explorer/v01417/visual-spec")
+def emb_v01417_visual(payload: dict): return emb1417.visual_spec(payload)
+@app.post("/v1/embedding-explorer/v01417/core-visual-handoff")
+def emb_v01417_core(payload: dict): return emb1417.core_visual_handoff(payload)
+@app.post("/v1/embedding-explorer/v01417/export-bundle")
+def emb_v01417_export(payload: dict): return emb1417.export_bundle(payload)
+@app.post("/v1/embedding-explorer/v01417/snapshot")
+def emb_v01417_snapshot(payload: dict): return emb1417.snapshot(payload)
+@app.post("/v1/embedding-explorer/v01417/compare-snapshots")
+def emb_v01417_compare(payload: dict): return emb1417.compare_snapshots(payload)
+@app.post("/v1/embedding-explorer/v01417/reproducibility-packet")
+def emb_v01417_repro(payload: dict): return emb1417.reproducibility_packet(payload)
+@app.post("/v1/embedding-explorer/v01417/projection-view")
+def emb_v01417_projection_view(payload: dict): return emb1417.visual_spec({**payload,"view":"projection"})
+
