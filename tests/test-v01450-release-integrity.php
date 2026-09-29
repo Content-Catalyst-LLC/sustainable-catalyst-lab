@@ -1,0 +1,5 @@
+<?php
+$root=dirname(__DIR__);$manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if(!$manifest){fwrite(STDERR,"manifest invalid\n");exit(1);} 
+$must=['releaseVersion'=>'0.145.0','featureVersion'=>'0.145.0','releaseName'=>'Simulation & Computational Experiment Workspace','simulationComputationalExperimentWorkspaceVersion'=>'0.145.0'];foreach($must as $k=>$v){if(($manifest[$k]??null)!==$v){fwrite(STDERR,"manifest mismatch $k\n");exit(1);}}
+if(($manifest['v01450RequiredRouteCount']??0)!==56||($manifest['v01450VerificationValidationSeparated']??false)!==true||($manifest['v01450LabExecutesSimulation']??true)!==false||($manifest['v01450ModeledOutputIsEvidence']??true)!==false){fwrite(STDERR,"v01450 policy mismatch\n");exit(1);} 
+$boot=file_get_contents($root.'/sustainable-catalyst-lab.php');if(strpos($boot,'Version: 0.145.0')===false||strpos($boot,'class-sc-lab-simulation-computational-experiment-workspace-v01450.php')===false){fwrite(STDERR,"bootstrap mismatch\n");exit(1);} echo "PASS: Lab v0.145.0 release integrity\n";

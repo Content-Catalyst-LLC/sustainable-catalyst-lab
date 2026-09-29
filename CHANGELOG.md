@@ -1,3 +1,9 @@
+## 0.145.0 — Simulation & Computational Experiment Workspace
+- Adds governed simulation experiment/model/parameter/scenario/run/ensemble objects.
+- Adds numerical, convergence, conservation, calibration, verification, validation, sensitivity and uncertainty audits.
+- Adds scenario/sweep/ensemble research matrices and Workspace/Workbench/Core/Research OS handoffs.
+- Preserves modeled-output/evidence and verification/validation boundaries.
+
 ## 0.144.0 — Statistical & Econometric Research Workspace
 
 - Adds governed dataset, variable, estimand, model-specification, estimate-result, and diagnostic research objects.
