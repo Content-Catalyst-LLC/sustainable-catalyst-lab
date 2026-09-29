@@ -1,0 +1,10 @@
+{
+  "version": "0.141.2",
+  "workspaceExecutionAuthority": true,
+  "rawTelemetryImmutable": true,
+  "smoothingDerivedAndDeclared": true,
+  "automaticModelRanking": false,
+  "automaticCheckpointPromotion": false,
+  "convergenceCertified": false,
+  "predictionIsEvidence": false
+}

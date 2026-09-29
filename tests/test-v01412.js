@@ -1,0 +1,1 @@
+const fs=require('fs'); const p='assets/js/modules/training-curves-metrics-checkpoint-visualization-v01412.js'; const s=fs.readFileSync(p,'utf8'); if(!s.includes('SCLabTrainingVisualizationV01412')||!s.includes('checkpointMarkers')) process.exit(1); console.log('PASS v0.141.2 JS');

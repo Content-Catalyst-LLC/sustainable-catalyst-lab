@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/training-curves-metrics-checkpoint-visualization-v01412.schema.json",
+  "title": "Training Curves Metrics Checkpoint Visualization",
+  "type": "object",
+  "properties": {
+    "experimentId": {
+      "type": "string"
+    },
+    "workspaceResult": {
+      "type": "object"
+    },
+    "runs": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": true
+}
