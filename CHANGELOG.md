@@ -1,3 +1,11 @@
+# Changelog
+
+## 0.139.0.1 — WordPress Release Manifest Scope & Integrity Repair
+- Repairs WordPress manifest scope so integrity verification covers only files actually shipped in the plugin ZIP.
+- Adds package-level SHA-256 verification against the extracted WordPress artifact.
+- Adds backend repair diagnostics without changing v0.139.0 scientific semantics.
+- Establishes a verified-runtime gate before v0.140.0.
+
 # v0.135.21.0 — Graph Studio Review Workspace Consolidation & Runtime Certification
 
 - Consolidates v0.135.12.0–v0.135.20.0 review controls into one canonical Review Workspace toolbar while preserving all historical records and APIs.

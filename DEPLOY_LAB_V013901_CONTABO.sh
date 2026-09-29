@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -euo pipefail
+trap 'rc=$?; echo "ERROR: Lab v0.139.0.1 deployment stopped at line $LINENO (exit $rc): $BASH_COMMAND" >&2; exit $rc' ERR
+
+BASE="/opt/sustainable-catalyst/lab"
+LIVE_BACKEND="$BASE/backend"
+ZIP="${1:-/tmp/sustainable-catalyst-lab-backend-v0.139.0.1.zip}"
+CONTAINER="sc-lab"
+PORT="8092"
+CORE_HEALTH_URL="${SC_PLATFORM_CORE_HEALTH_URL:-https://core.sustainablecatalyst.com/health}"
+
+[[ -f "$ZIP" ]] || { echo "ERROR: backend ZIP not found: $ZIP" >&2; exit 1; }
+for cmd in docker unzip rsync curl python3 find sed dirname; do command -v "$cmd" >/dev/null || { echo "ERROR: required command missing: $cmd" >&2; exit 1; }; done
+
+echo "=== LAB v0.139.0.1 — WORDPRESS RELEASE MANIFEST SCOPE & INTEGRITY REPAIR ==="
+ts="$(date +%Y%m%d-%H%M%S)"
+tmp="$(mktemp -d /tmp/sc-lab-v013901.XXXXXX)"
+cleanup(){ chmod -R u+rwX "$tmp" 2>/dev/null || true; rm -rf "$tmp" 2>/dev/null || true; }
+trap cleanup EXIT
+backup="$BASE/backend.before-v0.139.0.1-$ts"
+env_backup="/tmp/sc-lab-v0.139.0.1.env.production.$ts"
+cp -a "$LIVE_BACKEND" "$backup"
+cp "$BASE/.env.production" "$env_backup"
+chmod 600 "$env_backup"
+
+unzip -q "$ZIP" -d "$tmp"
+find "$tmp" -type d -exec chmod u+rwx {} +
+find "$tmp" -type f -exec chmod u+rw {} +
+source_file="$(find "$tmp" -type f -path '*/backend/Dockerfile' | sed -n '1p')"
+[[ -n "$source_file" ]] || { echo "ERROR: backend/Dockerfile not found" >&2; exit 1; }
+source_backend="$(dirname "$source_file")"
+for f in release_integrity_scope_repair_v013901.py scholarly_study_original_research_package_v01390.py research_program_intelligence_v01380.py research_change_impact_living_analysis_v01370.py; do
+  [[ -f "$source_backend/app/$f" ]] || { echo "ERROR: required module missing: $f" >&2; exit 1; }
+done
+
+rsync -a --delete --exclude='data/' --exclude='__pycache__/' --exclude='.pytest_cache/' --exclude='*.pyc' "$source_backend/" "$LIVE_BACKEND/"
+cp "$env_backup" "$BASE/.env.production"
+chmod 600 "$BASE/.env.production"
+cd "$BASE"
+docker compose config --quiet
+docker compose build lab
+docker compose up -d --force-recreate lab
+
+healthy=0
+for _ in $(seq 1 60); do
+  state="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$CONTAINER" 2>/dev/null || true)"
+  [[ "$state" == healthy ]] && { healthy=1; break; }
+  [[ "$state" =~ unhealthy|exited|dead ]] && exit 1
+  sleep 2
+done
+[[ "$healthy" == 1 ]] || { echo "ERROR: Lab container did not become healthy" >&2; exit 1; }
+
+repair="$(curl -fsS "http://127.0.0.1:${PORT}/v1/release-integrity-scope-repair/v013901/health")"
+current="$(curl -fsS "http://127.0.0.1:${PORT}/v1/scholarly-study-original-research-package/v01390/health")"
+prior="$(curl -fsS "http://127.0.0.1:${PORT}/v1/research-program-intelligence/v01380/health")"
+living="$(curl -fsS "http://127.0.0.1:${PORT}/v1/research-change-impact/v01370/health")"
+core="$(curl -fsS "$CORE_HEALTH_URL")"
+python3 - "$repair" "$current" "$prior" "$living" "$core" <<'PY2'
+import json,re,sys
+repair,current,prior,living,core=[json.loads(x) for x in sys.argv[1:]]
+assert repair.get('ok') is True and repair.get('version')=='0.139.0.1'
+assert repair.get('wordpressManifestScopeRepair') is True and repair.get('backendScientificRuntimeChanged') is False
+assert current.get('ok') is True and current.get('version')=='0.139.0'
+assert prior.get('ok') is True and prior.get('version')=='0.138.0'
+assert living.get('ok') is True and living.get('version')=='0.137.0'
+parts=[int(x) for x in re.findall(r'\d+',str(core.get('version','')))]
+assert core.get('ok') is True and len(parts)>=3 and tuple(parts[:3]) >= (3,0,0)
+print('PASS: Lab v0.139.0.1 backend repair health')
+print('PASS: retained v0.139.0 scholarly package runtime')
+print('PASS: retained v0.138.0 research-program intelligence')
+print('PASS: retained v0.137.0 living analysis')
+print(f"PASS: compatible Platform Core v{core.get('version')} detected")
+PY2
+
+docker exec -i "$CONTAINER" python - <<'PY2'
+from app.main import app
+paths={x.path for x in app.routes if isinstance(getattr(x,'path',None),str)}
+assert '/v1/release-integrity-scope-repair/v013901/health' in paths
+assert '/v1/release-integrity-scope-repair/v013901/policy' in paths
+assert '/v1/scholarly-study-original-research-package/v01390/health' in paths
+print(f'INFO: {len(paths)} FastAPI path routes registered')
+print('PASS: v0.139.0.1 repair routes registered')
+PY2
+
+echo "PASS - Sustainable Catalyst Lab v0.139.0.1 backend deployment complete."
+echo "Backend backup: $backup"
+echo "Environment backup: $env_backup"

@@ -167,6 +167,7 @@ from . import graph_studio_integrated_scientific_review_reproducibility_v01360 a
 from . import research_change_impact_living_analysis_v01370 as living1370
 from . import research_program_intelligence_v01380 as program1380
 from . import scholarly_study_original_research_package_v01390 as package1390
+from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10640,3 +10641,9 @@ def scholarly_package_v01390_gates(): return package1390.release_gates()
 @app.get("/v1/scholarly-study-original-research-package/v01390/boundary")
 def scholarly_package_v01390_boundary(): return {"ok":True,"version":package1390.VERSION,"boundary":package1390.BOUNDARY}
 
+
+# Lab v0.139.0.1 — WordPress Release Manifest Scope & Integrity Repair
+@app.get("/v1/release-integrity-scope-repair/v013901/health")
+def release_integrity_scope_v013901_health(): return integrity13901.health()
+@app.get("/v1/release-integrity-scope-repair/v013901/policy")
+def release_integrity_scope_v013901_policy(): return integrity13901.policy()
