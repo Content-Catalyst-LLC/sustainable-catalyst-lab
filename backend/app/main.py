@@ -172,6 +172,7 @@ from . import machine_learning_experiment_workspace_v01410 as ml1410
 from . import neural_architecture_training_configuration_v01411 as natc1411
 from . import training_curves_metrics_checkpoint_visualization_v01412 as tcv1412
 from . import model_comparison_experiment_matrix_v01413 as mcem1413
+from . import hyperparameter_study_search_results_v01414 as hps1414
 from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
@@ -10955,3 +10956,68 @@ def mcem_v01413_default_metric(payload: dict): return mcem1413.matrix_visual_spe
 def mcem_v01413_default_provenance(payload: dict): return mcem1413.matrix_visual_spec({**payload,"view":"provenance-matrix"})
 @app.post("/v1/model-comparison-experiment-matrix/v01413/default-missingness-view")
 def mcem_v01413_default_missingness(payload: dict): return mcem1413.matrix_visual_spec({**payload,"view":"missingness-matrix"})
+
+
+# v0.141.4 — Hyperparameter Study & Search Results
+@app.get("/v1/hyperparameter-study-search-results/v01414/health")
+def hps_v01414_health(): return hps1414.health()
+@app.get("/v1/hyperparameter-study-search-results/v01414/acceptance")
+def hps_v01414_acceptance(): return hps1414.acceptance_report()
+@app.get("/v1/hyperparameter-study-search-results/v01414/contract")
+def hps_v01414_contract(): return hps1414.contract()
+@app.get("/v1/hyperparameter-study-search-results/v01414/policy")
+def hps_v01414_policy(): return hps1414.policy()
+@app.get("/v1/hyperparameter-study-search-results/v01414/release-gates")
+def hps_v01414_release_gates(): return hps1414.release_gates()
+@app.get("/v1/hyperparameter-study-search-results/v01414/search-strategies")
+def hps_v01414_search_strategies(): return {"ok":True,"version":hps1414.VERSION,"strategies":list(hps1414.SEARCH_STRATEGIES),"boundary":hps1414.BOUNDARY}
+@app.get("/v1/hyperparameter-study-search-results/v01414/parameter-types")
+def hps_v01414_parameter_types(): return {"ok":True,"version":hps1414.VERSION,"parameterTypes":list(hps1414.PARAMETER_TYPES),"boundary":hps1414.BOUNDARY}
+@app.get("/v1/hyperparameter-study-search-results/v01414/result-views")
+def hps_v01414_result_views(): return {"ok":True,"version":hps1414.VERSION,"views":list(hps1414.RESULT_VIEWS),"boundary":hps1414.BOUNDARY}
+@app.get("/v1/hyperparameter-study-search-results/v01414/interpretation-boundary")
+def hps_v01414_boundary(): return hps1414.interpretation_boundary({})
+@app.post("/v1/hyperparameter-study-search-results/v01414/normalize-space")
+def hps_v01414_normalize_space(payload: dict): return hps1414.normalize_space(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/study-spec")
+def hps_v01414_study_spec(payload: dict): return hps1414.study_spec(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/workspace-handoff")
+def hps_v01414_workspace_handoff(payload: dict): return hps1414.workspace_handoff(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/normalize-trials")
+def hps_v01414_normalize_trials(payload: dict): return hps1414.normalize_trials(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/trial-registry")
+def hps_v01414_trial_registry(payload: dict): return hps1414.trial_registry(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/objective-catalog")
+def hps_v01414_objective_catalog(payload: dict): return hps1414.objective_catalog(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/trial-status-audit")
+def hps_v01414_status_audit(payload: dict): return hps1414.trial_status_audit(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/budget-utilization")
+def hps_v01414_budget(payload: dict): return hps1414.budget_utilization(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/search-progress")
+def hps_v01414_progress(payload: dict): return hps1414.search_progress(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/parameter-value-matrix")
+def hps_v01414_parameter_matrix(payload: dict): return hps1414.parameter_value_matrix(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/objective-result-matrix")
+def hps_v01414_objective_matrix(payload: dict): return hps1414.objective_result_matrix(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/parameter-effect-summary")
+def hps_v01414_effect_summary(payload: dict): return hps1414.parameter_effect_summary(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/trial-comparability")
+def hps_v01414_comparability(payload: dict): return hps1414.trial_comparability(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/single-objective-candidate-set")
+def hps_v01414_single_candidate(payload: dict): return hps1414.single_objective_candidate_set(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/pareto-frontier")
+def hps_v01414_pareto(payload: dict): return hps1414.pareto_frontier(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/failed-pruned-audit")
+def hps_v01414_failed_pruned(payload: dict): return hps1414.failed_pruned_audit(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/search-visual-spec")
+def hps_v01414_visual(payload: dict): return hps1414.search_visual_spec(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/core-visual-handoff")
+def hps_v01414_core(payload: dict): return hps1414.core_visual_handoff(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/export-bundle")
+def hps_v01414_export(payload: dict): return hps1414.export_bundle(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/snapshot")
+def hps_v01414_snapshot(payload: dict): return hps1414.snapshot(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/compare-snapshots")
+def hps_v01414_compare_snapshots(payload: dict): return hps1414.compare_snapshots(payload)
+@app.post("/v1/hyperparameter-study-search-results/v01414/reproducibility-packet")
+def hps_v01414_repro(payload: dict): return hps1414.reproducibility_packet(payload)

@@ -1,0 +1,1 @@
+const fs=require('fs'); const p='assets/js/modules/hyperparameter-study-search-results-v01414.js'; const s=fs.readFileSync(p,'utf8'); if(!s.includes('SCLabHyperparameterStudySearchResultsV01414')||!s.includes('candidateBadge')||!s.includes('automatic')) process.exit(1); console.log('PASS v0.141.4 JS');

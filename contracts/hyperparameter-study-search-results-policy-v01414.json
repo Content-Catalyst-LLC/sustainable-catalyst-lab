@@ -1,0 +1,12 @@
+{
+  "version": "0.141.4",
+  "workspaceExecutionAuthority": true,
+  "labExecutesSearch": false,
+  "objectiveDirectionInferred": false,
+  "automaticRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticModelPromotion": false,
+  "predictionIsEvidence": false,
+  "paretoMembershipIsScientificSuperiority": false,
+  "parameterAssociationIsCausalEffect": false
+}

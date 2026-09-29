@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/hyperparameter-study-search-results-v01414.schema.json",
+  "title": "Hyperparameter Study and Search Results",
+  "type": "object",
+  "properties": {
+    "studyId": {"type": "string"},
+    "strategy": {"type": "string"},
+    "parameters": {"type": "array", "items": {"type": "object"}},
+    "objectives": {"type": "array", "items": {"type": "object"}},
+    "trials": {"type": "array", "items": {"type": "object"}},
+    "view": {"type": "string"}
+  },
+  "additionalProperties": true
+}

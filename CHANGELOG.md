@@ -1,3 +1,12 @@
+# v0.141.4 — Hyperparameter Study & Search Results
+
+- Added governed hyperparameter search-space and study specifications with explicit objective directions.
+- Added Workspace execution handoff; Lab does not execute hyperparameter search or training.
+- Added normalized trial registries, objective catalogs, status/failure/pruning audits, budget utilization, search progress, parameter/objective matrices, descriptive parameter associations, and explicit trial comparability.
+- Added review-only single-objective extrema candidate sets and non-dominated multi-objective candidate sets without automatic ranking, winner selection, or model promotion.
+- Added search-result visual specifications, Platform Core visual-object handoff, deterministic snapshots, export bundles, and reproducibility packages.
+- Retained the v0.140.0.1 WordPress installed-runtime integrity policy and v0.141.0-v0.141.3 neural research lineage.
+
 ## 0.141.1 — Neural Architecture & Training Configuration
 
 - Added framework-neutral neural architecture specifications and architecture graphs.

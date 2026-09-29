@@ -1119,3 +1119,7 @@ Graph Studio now layers a governed scientific-object explorer over the hardened 
 ## Lab v0.135.10.0 — Provenance Path Analysis, Multi-Object Comparison & Research Context Linking
 
 Adds deterministic bounded path tracing between two Graph Studio research objects, directed-lineage and structural-path modes, side-by-side object comparison, incremental path overlays, and a non-mutating Project Workspace research-context handoff. Path analysis is limited to declared graph relationships and does not infer causation, evidentiary support, semantic similarity, ranking, or scientific validity.
+## Lab v0.141.4 — Hyperparameter Study & Search Results
+
+Lab v0.141.4 adds governed hyperparameter study definitions and search-result analysis. Workspace remains the execution authority; Lab records, audits, compares, visualizes, snapshots, and packages search results without automatically selecting or promoting a winning model. Objective directions must be explicit before extrema or Pareto candidate sets are derived.
+
