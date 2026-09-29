@@ -1,3 +1,11 @@
+# Changelog
+
+## 0.146.0 — Graph & Network Science Research Workspace
+- Adds governed graph/network study, node, edge, layer, and temporal-slice objects.
+- Adds structural, centrality, community, path, motif, flow, temporal/multilayer, null-model, comparison, sensitivity, and uncertainty research contracts.
+- Keeps large graph execution in Workspace/Workbench and preserves explicit edge semantics/provenance.
+- Enforces graph metric ≠ evidence and structural pattern ≠ causal explanation.
+
 ## 0.145.0 — Simulation & Computational Experiment Workspace
 - Adds governed simulation experiment/model/parameter/scenario/run/ensemble objects.
 - Adds numerical, convergence, conservation, calibration, verification, validation, sensitivity and uncertainty audits.

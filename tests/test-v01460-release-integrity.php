@@ -1,0 +1,5 @@
+<?php
+$root=dirname(__DIR__);$manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if(!$manifest){fwrite(STDERR,"manifest invalid\n");exit(1);} 
+$must=['releaseVersion'=>'0.146.0','featureVersion'=>'0.146.0','releaseName'=>'Graph & Network Science Research Workspace','graphNetworkScienceResearchWorkspaceVersion'=>'0.146.0'];foreach($must as $k=>$v){if(($manifest[$k]??null)!==$v){fwrite(STDERR,"manifest mismatch $k\n");exit(1);}}
+if(($manifest['v01460RequiredRouteCount']??0)!==61||($manifest['v01460ExplicitEdgeSemantics']??false)!==true||($manifest['v01460LabExecutesLargeGraphAlgorithms']??true)!==false||($manifest['v01460GraphMetricIsEvidence']??true)!==false){fwrite(STDERR,"v01460 policy mismatch\n");exit(1);} 
+$boot=file_get_contents($root.'/sustainable-catalyst-lab.php');if(strpos($boot,'Version: 0.146.0')===false||strpos($boot,'class-sc-lab-graph-network-science-research-workspace-v01460.php')===false){fwrite(STDERR,"bootstrap mismatch\n");exit(1);} echo "PASS: Lab v0.146.0 release integrity\n";
