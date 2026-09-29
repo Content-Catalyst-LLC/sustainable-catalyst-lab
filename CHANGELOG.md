@@ -1,10 +1,9 @@
-# Lab v0.140.0.1 — Scientific Research OS Release Manifest & Runtime Integrity Repair
+# Changelog
 
-- Repairs the v0.140.0 WordPress integrity contract without changing Scientific Research OS semantics.
-- Separates installed WordPress runtime integrity from repository/backend/package-only files.
-- Excludes mutable `data/` state and repository-only `tests/`, `backend/`, `scripts/`, `sdk/`, `examples/`, and `docs/` surfaces from production WordPress integrity verification.
-- Preserves `scientificResearchOperatingSystemVersion: 0.140.0` and all 25 v0.140.0 backend routes.
-- Keeps canonical route assertions and plugin-folder/basename identity checks intact.
+## 0.141.0 — Machine Learning Experiment Workspace
+- Added governed machine-learning experiment lifecycle, dataset/feature/transformation lineage, model-specification bindings, Workspace execution handoffs, returned-run ingestion, checkpoint/metric/prediction registries, comparison matrices, provenance graphs, deterministic snapshots, and reproducibility packets.
+- Preserved the v0.140.0 Scientific Research Operating System bridge and v0.139.0.1 WordPress release-manifest scope repair.
+- Enforced `Platform Core defines → Workspace computes → Lab experiments → products consume`, with `prediction != evidence`, no automatic best-model selection, and no automatic scientific-validity certification.
 
 # v0.140.0 — Scientific Research Operating System Milestone
 

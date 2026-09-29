@@ -1,0 +1,6 @@
+.sc-lab-ml-experiment-workspace{--sc-lab-ml-border:#d7dce2;--sc-lab-ml-muted:#59636e;display:grid;gap:1rem}
+.sc-lab-ml-experiment-workspace__header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--sc-lab-ml-border);padding-bottom:.75rem}
+.sc-lab-ml-experiment-workspace__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem}
+.sc-lab-ml-experiment-workspace__panel{border:1px solid var(--sc-lab-ml-border);border-radius:8px;padding:1rem;background:#fff}
+.sc-lab-ml-experiment-workspace__meta{font-size:.875rem;color:var(--sc-lab-ml-muted)}
+.sc-lab-ml-experiment-workspace__boundary{border-left:3px solid currentColor;padding:.75rem 1rem;font-size:.9rem}

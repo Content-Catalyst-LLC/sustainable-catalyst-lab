@@ -168,6 +168,8 @@ from . import research_change_impact_living_analysis_v01370 as living1370
 from . import research_program_intelligence_v01380 as program1380
 from . import scholarly_study_original_research_package_v01390 as package1390
 from . import scientific_research_operating_system_v01400 as researchos1400
+from . import machine_learning_experiment_workspace_v01410 as ml1410
+from . import release_integrity_scope_repair_v013901 as integrity13901
 from .public_research_integrations import IntegrationError, PublicResearchIntegrationGateway, policies as public_research_integration_policies, sdk_manifest as public_research_sdk_manifest, public_api_catalog
 from .institutional_governance import InstitutionalGovernanceError, InstitutionalGovernanceManager, policies as institutional_governance_policies
 from .security_privacy_hardening import SecurityHardeningError, SecurityPrivacyManager, policies as security_privacy_policies, privacy_scan, privacy_redact
@@ -10692,4 +10694,68 @@ def research_os_v01400_reproducibility(payload: dict): return researchos1400.rep
 def research_os_v01400_gates(): return researchos1400.release_gates()
 @app.get("/v1/scientific-research-operating-system/v01400/boundary")
 def research_os_v01400_boundary(): return {"ok":True,"version":researchos1400.VERSION,"boundary":researchos1400.BOUNDARY}
+
+
+# Lab v0.139.0.1 — WordPress Release Manifest Scope & Integrity Repair
+@app.get("/v1/release-integrity-scope-repair/v013901/health")
+def release_integrity_scope_v013901_health(): return integrity13901.health()
+@app.get("/v1/release-integrity-scope-repair/v013901/policy")
+def release_integrity_scope_v013901_policy(): return integrity13901.policy()
+
+
+# v0.141.0 — Machine Learning Experiment Workspace
+@app.get("/v1/machine-learning-experiment-workspace/v01410/health")
+def ml_workspace_v01410_health(): return ml1410.health()
+@app.get("/v1/machine-learning-experiment-workspace/v01410/acceptance")
+def ml_workspace_v01410_acceptance(): return ml1410.acceptance_report()
+@app.get("/v1/machine-learning-experiment-workspace/v01410/contract")
+def ml_workspace_v01410_contract(): return ml1410.contract()
+@app.get("/v1/machine-learning-experiment-workspace/v01410/policy")
+def ml_workspace_v01410_policy(): return ml1410.policy()
+@app.get("/v1/machine-learning-experiment-workspace/v01410/release-gates")
+def ml_workspace_v01410_gates(): return ml1410.release_gates()
+@app.get("/v1/machine-learning-experiment-workspace/v01410/interpretation-boundary")
+def ml_workspace_v01410_interpretation_boundary(): return ml1410.interpretation_boundary({})
+@app.get("/v1/machine-learning-experiment-workspace/v01410/experiment-states")
+def ml_workspace_v01410_states(): return {"ok":True,"version":ml1410.VERSION,"states":list(ml1410.EXPERIMENT_STATES),"boundary":ml1410.BOUNDARY}
+@app.get("/v1/machine-learning-experiment-workspace/v01410/compute-targets")
+def ml_workspace_v01410_targets(): return {"ok":True,"version":ml1410.VERSION,"computeTargets":list(ml1410.COMPUTE_TARGETS),"boundary":ml1410.BOUNDARY}
+@app.post("/v1/machine-learning-experiment-workspace/v01410/normalize")
+def ml_workspace_v01410_normalize(payload: dict): return ml1410.normalize(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/validate")
+def ml_workspace_v01410_validate(payload: dict): return ml1410.validate(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/lifecycle")
+def ml_workspace_v01410_lifecycle(payload: dict): return ml1410.lifecycle(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/dataset-lineage")
+def ml_workspace_v01410_dataset_lineage(payload: dict): return ml1410.dataset_lineage(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/model-specification")
+def ml_workspace_v01410_model_specification(payload: dict): return ml1410.model_specification(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/training-plan")
+def ml_workspace_v01410_training_plan(payload: dict): return ml1410.training_plan(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/workspace-handoff")
+def ml_workspace_v01410_workspace_handoff(payload: dict): return ml1410.workspace_handoff(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/ingest-workspace-result")
+def ml_workspace_v01410_ingest_workspace_result(payload: dict): return ml1410.ingest_workspace_result(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/run-registry")
+def ml_workspace_v01410_run_registry(payload: dict): return ml1410.run_registry(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/checkpoint-index")
+def ml_workspace_v01410_checkpoint_index(payload: dict): return ml1410.checkpoint_index(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/metric-series")
+def ml_workspace_v01410_metric_series(payload: dict): return ml1410.metric_series(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/comparison-matrix")
+def ml_workspace_v01410_comparison_matrix(payload: dict): return ml1410.comparison_matrix(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/compare")
+def ml_workspace_v01410_compare(payload: dict): return ml1410.experiment_compare(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/provenance-graph")
+def ml_workspace_v01410_provenance_graph(payload: dict): return ml1410.provenance_graph(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/prediction-registry")
+def ml_workspace_v01410_prediction_registry(payload: dict): return ml1410.prediction_registry(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/reproducibility-packet")
+def ml_workspace_v01410_reproducibility_packet(payload: dict): return ml1410.reproducibility_packet(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/snapshot")
+def ml_workspace_v01410_snapshot(payload: dict): return ml1410.snapshot(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/compare-snapshots")
+def ml_workspace_v01410_compare_snapshots(payload: dict): return ml1410.compare_snapshots(payload)
+@app.post("/v1/machine-learning-experiment-workspace/v01410/research-os-handoff")
+def ml_workspace_v01410_research_os_handoff(payload: dict): return ml1410.research_os_handoff(payload)
 

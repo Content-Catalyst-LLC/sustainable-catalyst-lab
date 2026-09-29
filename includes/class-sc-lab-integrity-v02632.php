@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Integrity_V02632 {
     const VERSION = '0.26.3.2';
-    const REPAIR_LINE = '0.140.0.1-scientific-research-os-release-integrity';
+    const REPAIR_LINE = '0.82.1-canonical-release-identity';
     const MANIFEST_RELATIVE = 'build/sc-lab-release-manifest.json';
     const EXPECTED_BASENAME = 'sustainable-catalyst-lab/sustainable-catalyst-lab.php';
     private static $initialized = false;

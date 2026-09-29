@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm');
+const ctx={window:{}};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync('assets/js/modules/machine-learning-experiment-workspace-v01410.js','utf8'),ctx);
+const api=ctx.window.SCLabMachineLearningExperimentWorkspaceV01410;
+if(!api||api.version!=='0.141.0') throw new Error('ML Experiment Workspace client missing');
+const p=api.normalize({experimentId:'e1',taskType:'classification',computeTarget:'mps'});
+if(p.computeTarget!=='mps'||p.labExecutesTraining!==false||p.predictionIsEvidence!==false||p.automaticBestModelSelection!==false) throw new Error('ML experiment boundary failure');
+vm.runInContext(fs.readFileSync('assets/js/modules/project-workspace-machine-learning-v01410.js','utf8'),ctx);
+const h=ctx.window.SCLabProjectWorkspaceMachineLearningV01410.handoff({experimentId:'e1',computeTarget:'cuda'});
+if(h.automaticExecution!==false||h.executionAuthority!=='workspace') throw new Error('Workspace handoff boundary failure');
+console.log('PASS: Lab v0.141.0 JS contracts');
