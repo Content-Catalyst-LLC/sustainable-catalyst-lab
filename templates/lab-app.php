@@ -230,7 +230,7 @@
                   <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
                 </div>
                 <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
-                <span class="sc-lab-v015207-runtime-chip">v0.152.0.9 response-surface runtime</span>
+                <span class="sc-lab-v015207-runtime-chip">v0.152.0.10 uncertainty + sensitivity + ensemble runtime</span>
               </div>
 
               <div class="sc-lab-v0710-body">
@@ -305,6 +305,34 @@
                     <div class="sc-lab-v015209-run-meta" data-v015209-run-meta>No compute-backed surface has been run yet.</div>
                     <div class="sc-lab-v015209-progress" data-v015209-progress hidden><span data-v015209-progress-bar></span></div>
                   </section>
+
+                  <section class="sc-lab-v015210-analysis" data-v015210-analysis aria-label="Uncertainty, sensitivity, and ensemble explorer">
+                    <div class="sc-lab-v015210-analysis-head">
+                      <div><span class="sc-lab-section-code">COMPUTE / UNCERTAINTY</span><h5>Uncertainty, sensitivity &amp; ensemble diagnostics</h5></div>
+                      <span class="sc-lab-v015210-status" data-v015210-status>Ready. Compute runs only on explicit action.</span>
+                    </div>
+                    <div class="sc-lab-v015210-controls">
+                      <label><span>Registered algebraic model</span><select data-v015210-analysis-model><option value="product" selected>Product</option><option value="linear">Linear</option><option value="ratio">Ratio</option><option value="power">Power</option></select></label>
+                      <label><span>Monte Carlo samples</span><select data-v015210-samples><option>1000</option><option selected>5000</option><option>10000</option><option>25000</option><option>50000</option></select></label>
+                      <label><span>Confidence</span><select data-v015210-confidence><option value="0.90">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select></label>
+                      <label><span>Ensemble members</span><select data-v015210-members><option>3</option><option selected>5</option><option>7</option></select></label>
+                      <label><span>Random seed</span><input data-v015210-seed type="number" min="0" step="1" value="2026"></label>
+                      <label data-v015210-exponent-wrap hidden><span>Power exponent</span><input data-v015210-exponent type="number" step="0.1" value="2"></label>
+                    </div>
+                    <div class="sc-lab-v015210-variables">
+                      <div class="sc-lab-v015210-variable" data-v015210-variable="a"><strong>Variable A</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="10"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
+                      <div class="sc-lab-v015210-variable" data-v015210-variable="b"><strong>Variable B</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="1000"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
+                      <div class="sc-lab-v015210-variable" data-v015210-variable="c"><strong>Variable C</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="0.2"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="3"></label></div></div>
+                    </div>
+                    <div class="sc-lab-v015210-actions">
+                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015210-run-uncertainty>Run Monte Carlo uncertainty</button>
+                      <button type="button" class="sc-lab-button" data-v015210-run-sensitivity>Run local sensitivity</button>
+                      <button type="button" class="sc-lab-button" data-v015210-run-ensemble>Run seed ensemble</button>
+                    </div>
+                    <div class="sc-lab-v015210-metrics" data-v015210-metrics><div class="sc-lab-v015210-metric"><small>Status</small><strong>Ready</strong><em>No analysis executed yet</em></div></div>
+                    <canvas class="sc-lab-v015210-analysis-canvas" data-v015210-analysis-canvas aria-label="Computed uncertainty, sensitivity, or ensemble diagnostic plot"></canvas>
+                    <p class="sc-lab-v015210-boundary">Monte Carlo intervals, local finite-difference sensitivities, and seed-replication ensembles are modeled diagnostics. They do not establish causality, statistical significance, observed evidence, calibrated forecast skill, or scientific validity. Formal Sobol/Morris analysis remains available in the specialist Sensitivity &amp; Global Uncertainty Analysis Studio.</p>
+                  </section>
                 </aside>
               </div>
 
@@ -315,7 +343,7 @@
                 <div class="sc-lab-v0710-metric"><small>Layers</small><strong>5</strong><em>surface · vector · uncertainty · contour · polytope</em></div>
               </div>
             </div>
-            <p class="sc-lab-v0710-note">The front door supports bounded browser-rendered demonstrations plus explicit Python Compute Core response-surface runs across user-selected X, Y and W parameters. <span data-v015209-boundary>Illustrative browser-rendered response field.</span> Saved project figures and governed research outputs remain distinct from this landing visualization.</p>
+            <p class="sc-lab-v0710-note">The front door supports bounded browser-rendered demonstrations, explicit Python Compute Core response-surface runs across user-selected X, Y and W parameters, and opt-in uncertainty, sensitivity, and seed-replication ensemble diagnostics. <span data-v015209-boundary>Illustrative browser-rendered response field.</span> Saved project figures and governed research outputs remain distinct from this landing visualization.</p>
           </div>
 
           <aside class="sc-lab-overview-launcher-v0481" aria-label="Primary research workspaces">
