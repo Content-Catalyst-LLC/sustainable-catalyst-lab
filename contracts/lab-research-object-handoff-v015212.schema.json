@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-research-object-handoff-v015212.schema.json",
+  "title": "Sustainable Catalyst Lab research object handoff",
+  "type": "object",
+  "required": [
+    "schema",
+    "releaseVersion",
+    "createdAt",
+    "sourceRuntime",
+    "object",
+    "bindingIntent"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-research-object-handoff/1.0"
+    },
+    "releaseVersion": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "sourceRuntime": {
+      "type": "string"
+    },
+    "object": {
+      "type": "object",
+      "required": [
+        "schema",
+        "id",
+        "objectType",
+        "coreObjectType",
+        "authority",
+        "payload"
+      ],
+      "properties": {
+        "schema": {
+          "const": "sc-lab-canonical-research-object/0.105.0"
+        },
+        "objectType": {
+          "const": "workspace-snapshot"
+        },
+        "coreObjectType": {
+          "const": "workspace-snapshot"
+        }
+      }
+    },
+    "bindingIntent": {
+      "type": "object",
+      "required": [
+        "referenceFirst",
+        "automaticCoreSubmission"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

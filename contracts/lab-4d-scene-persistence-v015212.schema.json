@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-4d-scene-persistence-v015212.schema.json",
+  "title": "Sustainable Catalyst Lab persisted 4D scene",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "releaseVersion",
+    "createdAt",
+    "updatedAt",
+    "sceneState",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "const": "sc-lab-persisted-4d-scene/1.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "releaseVersion": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "sceneState": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

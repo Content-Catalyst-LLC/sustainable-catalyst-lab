@@ -370,6 +370,34 @@
                     </div>
                     <p class="sc-lab-v015211-boundary">Linked selection synchronizes inspection state across the 4D response surface, parameter snapshot, and computed diagnostic views. Diagnostic selections are preserved with their own model identity and are not automatically mapped onto a different response-surface model. Graph Studio handoff transfers the selected state and provenance; it does not assert equivalence, causality, evidence, significance, calibration, or scientific validity.</p>
                   </section>
+
+                  <section class="sc-lab-v015212-persistence" data-v015212-persistence aria-label="4D scene persistence, provenance, and research object handoff">
+                    <div class="sc-lab-v015212-head">
+                      <div><span class="sc-lab-section-code">SCENE / PROVENANCE</span><h5>4D Scene Persistence, Provenance &amp; Research Object Handoff</h5></div>
+                      <span class="sc-lab-v015212-status" data-v015212-status>Persistence initializing…</span>
+                    </div>
+                    <div class="sc-lab-v015212-savebar">
+                      <input type="text" maxlength="120" data-v015212-name placeholder="Scene name" aria-label="Scene name">
+                      <select data-v015212-scenes aria-label="Saved 4D scenes"><option value="">Saved scenes</option></select>
+                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-save>Save current scene</button>
+                      <button type="button" class="sc-lab-button" data-v015212-load>Load</button>
+                      <button type="button" class="sc-lab-button" data-v015212-delete>Delete</button>
+                      <button type="button" class="sc-lab-button" data-v015212-export-scene disabled>Export scene JSON</button>
+                    </div>
+                    <div class="sc-lab-v015212-grid">
+                      <article class="sc-lab-v015212-card"><h6>Scene record</h6><dl class="sc-lab-v015212-kv"><dt>Scene ID</dt><dd data-v015212-field="sceneId">—</dd><dt>Name</dt><dd data-v015212-field="sceneName">—</dd><dt>Created</dt><dd data-v015212-field="createdAt">—</dd><dt>Updated</dt><dd data-v015212-field="updatedAt">—</dd><dt>Saved scenes</dt><dd data-v015212-field="sceneCount">0 / 12</dd></dl></article>
+                      <article class="sc-lab-v015212-card"><h6>Provenance</h6><dl class="sc-lab-v015212-kv"><dt>Model / demo</dt><dd data-v015212-field="model">—</dd><dt>State digest</dt><dd data-v015212-field="digest">—</dd><dt>Selections</dt><dd data-v015212-field="selectionCount">—</dd><dt>Release</dt><dd>v0.152.0.12</dd><dt>Object mapping</dt><dd>workspace-snapshot · reference-first</dd></dl></article>
+                      <article class="sc-lab-v015212-card"><h6>Research-object handoff</h6><dl class="sc-lab-v015212-kv"><dt>Object ID</dt><dd data-v015212-field="handoffId">—</dd><dt>Type</dt><dd data-v015212-field="handoffType">—</dd><dt>Prepared</dt><dd data-v015212-field="handoffCreated">—</dd></dl><div class="sc-lab-v015212-handoff-status">Prepare a canonical workspace-snapshot object, then explicitly hand it to a downstream Lab workspace.</div></article>
+                    </div>
+                    <div class="sc-lab-v015212-actions">
+                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-prepare disabled>Prepare research object</button>
+                      <button type="button" class="sc-lab-button" data-v015212-export-object disabled>Export research object JSON</button>
+                      <button type="button" class="sc-lab-button" data-v015212-handoff="graph-studio" disabled>Open in Graph Studio</button>
+                      <button type="button" class="sc-lab-button" data-v015212-handoff="notebook" disabled>Open in Notebook</button>
+                      <button type="button" class="sc-lab-button" data-v015212-handoff="experiments" disabled>Open in Experiments</button>
+                    </div>
+                    <p class="sc-lab-v015212-boundary">Saved scenes preserve the bounded 4D scene state, computed response surfaces and diagnostics already present in the browser, linked selections, and descriptive provenance. Loading a saved scene does not rerun computation. Research-object handoff is explicit and reference-first; it does not automatically submit to Platform Core or establish evidence, causality, significance, calibration, or scientific validity.</p>
+                  </section>
                 </aside>
               </div>
 
