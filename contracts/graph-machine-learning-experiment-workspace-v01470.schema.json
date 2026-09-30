@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-graph-machine-learning-experiment-workspace/0.147.0",
+  "title": "Graph Machine Learning Experiment Workspace",
+  "type": "object",
+  "required": [
+    "studyId",
+    "task",
+    "dataset",
+    "split",
+    "model"
+  ],
+  "properties": {
+    "studyId": {
+      "type": "string"
+    },
+    "graphStudyRef": {
+      "type": "string"
+    },
+    "task": {
+      "type": "object"
+    },
+    "dataset": {
+      "type": "object"
+    },
+    "split": {
+      "type": "object"
+    },
+    "model": {
+      "type": "object"
+    },
+    "runs": {
+      "type": "array"
+    },
+    "predictions": {
+      "type": "array"
+    },
+    "review": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array"
+    }
+  }
+}

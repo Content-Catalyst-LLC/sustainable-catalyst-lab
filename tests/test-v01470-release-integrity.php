@@ -1,0 +1,5 @@
+<?php
+$root=dirname(__DIR__);$manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if(!$manifest){fwrite(STDERR,"manifest invalid\n");exit(1);}
+$must=['releaseVersion'=>'0.147.0','featureVersion'=>'0.147.0','releaseName'=>'Graph Machine Learning Experiment Workspace','graphMachineLearningExperimentWorkspaceVersion'=>'0.147.0'];foreach($must as $k=>$v){if(($manifest[$k]??null)!==$v){fwrite(STDERR,"manifest mismatch $k\n");exit(1);}}
+if(($manifest['v01470RequiredRouteCount']??0)!==65||($manifest['v01470CandidatePredictionsRemainCandidates']??false)!==true||($manifest['v01470LabExecutesGraphMLTraining']??true)!==false||($manifest['v01470PredictionIsEvidence']??true)!==false){fwrite(STDERR,"v01470 policy mismatch\n");exit(1);}
+$boot=file_get_contents($root.'/sustainable-catalyst-lab.php');if(strpos($boot,'Version: 0.147.0')===false||strpos($boot,'class-sc-lab-graph-machine-learning-experiment-workspace-v01470.php')===false){fwrite(STDERR,"bootstrap mismatch\n");exit(1);} echo "PASS: Lab v0.147.0 release integrity\n";

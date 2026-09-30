@@ -1,0 +1,14 @@
+{
+  "version": "0.147.0",
+  "workspaceExecutionAuthority": true,
+  "workbenchPrototypeExecutionAuthority": true,
+  "platformCoreCanonicalAuthority": true,
+  "labExecutesGraphMLTraining": false,
+  "labExecutesGraphMLInference": false,
+  "candidatePredictionsRemainCandidates": true,
+  "automaticRelationshipEstablishment": false,
+  "automaticModelRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticScientificValidity": false,
+  "predictionIsEvidence": false
+}

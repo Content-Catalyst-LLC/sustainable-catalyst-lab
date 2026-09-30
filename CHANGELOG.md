@@ -1939,3 +1939,6 @@ Adds worker capability discovery, governed workload routing, signed leases, hear
 - Added deterministic visualization/snapshot/export/reproducibility contracts and Platform Core visual handoff.
 - Preserved Workspace execution authority for embedding extraction and dimensionality reduction.
 - Preserved strict boundaries: proximity is not relationship evidence, cluster membership is not semantic truth, and 2D/3D projection layout is a derived view rather than certified high-dimensional geometry.
+
+## 0.147.0 — Graph Machine Learning Experiment Workspace
+- Added governed graph-ML experiments, graph-specific leakage audits, candidate-only link prediction, GNN evaluation/explainability, and reproducibility handoffs.

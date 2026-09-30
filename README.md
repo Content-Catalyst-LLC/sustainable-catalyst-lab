@@ -1140,3 +1140,6 @@ Adds governed vector-space inspection for neural research: embedding registries,
 ## Lab v0.141.8 — Reproducible Neural Research Package
 
 The neural research line now packages experiment context, data/code/model/configuration lineage, environments, telemetry, checkpoints, comparison/search/ablation results, explainability, embeddings, limitations, and reproduction instructions into one deterministic governed manifest. Workspace remains the rerun execution authority; Platform Core remains canonical-object authority. Package completeness is explicitly separate from scientific validity, reproduction success, independent replication, and publication acceptance.
+
+### v0.147.0 Graph Machine Learning Experiment Workspace
+Adds governed graph-ML study design and analysis on top of the v0.146.0 graph/network-science foundation.
