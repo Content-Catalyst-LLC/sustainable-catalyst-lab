@@ -1,3 +1,9 @@
+# Lab v0.150.0 — Integrated Computational Research Laboratory
+
+- Consolidates the v0.142.0–v0.149.0 computational research workspaces under one governed laboratory session.
+- Adds shared project/session context, cross-workspace lineage/navigation, compute/runtime registry, boundary audits, review, reproducibility, and publication handoffs.
+- Preserves specialized workspace authority and scientific interpretation boundaries.
+
 ## 0.149.0 — Scientific Model Validation & Benchmark Laboratory
 - Adds governed model validation, benchmarking, reference-standard, failure-analysis, external-validation, and reproducibility contracts.
 - Separates benchmark performance and external validation from scientific validity and deployment readiness.

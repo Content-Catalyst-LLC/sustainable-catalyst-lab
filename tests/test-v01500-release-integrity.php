@@ -1,0 +1,3 @@
+<?php
+$root=dirname(__DIR__);$m=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if($m['releaseVersion']!=='0.150.0')exit(1);$b=file_get_contents($root.'/sustainable-catalyst-lab.php');$p=file_get_contents($root.'/includes/class-sc-lab-plugin.php');foreach(array('class-sc-lab-integrated-computational-research-laboratory-v01500.php') as $x){if(strpos($b,$x)===false)exit(2);}foreach(array('integrated-computational-research-laboratory-v01500','project-workspace-integrated-computational-v01500') as $x){if(strpos($p,$x)===false)exit(3);}echo "PASS - v0.150.0 PHP integrity
+";
