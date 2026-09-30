@@ -230,7 +230,7 @@
                   <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
                 </div>
                 <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
-                <span class="sc-lab-v015207-runtime-chip">v0.152.0.10 uncertainty + sensitivity + ensemble runtime</span>
+                <span class="sc-lab-v015207-runtime-chip">v0.152.0.13 4D layout + render recovery runtime</span>
               </div>
 
               <div class="sc-lab-v0710-body">
@@ -271,134 +271,137 @@
                   </div>
                   <div class="sc-lab-v015207-compute-details" data-v015209-compute-details>Compute connection not checked yet.</div>
 
-                  <section class="sc-lab-v015209-explorer" data-v015209-explorer aria-label="Interactive response surface and parameter explorer">
-                    <div class="sc-lab-v015209-explorer-head">
-                      <div><span class="sc-lab-section-code">COMPUTE / PARAMETER EXPLORER</span><h5>Response surface configuration</h5></div>
-                      <span class="sc-lab-v015209-budget" data-v015209-budget>315 evaluations · 15 bounded requests</span>
-                    </div>
-                    <div class="sc-lab-v015209-grid">
-                      <label><span>Model family</span><select data-v015209-model></select></label>
-                      <label><span>X parameter</span><select data-v015209-axis="x"></select></label>
-                      <label><span>Y parameter</span><select data-v015209-axis="y"></select></label>
-                      <label><span>W parameter</span><select data-v015209-axis="w"></select></label>
-                      <label><span>Z mapping</span><select data-v015209-z-mode><option value="output">Model output</option><option value="normalized">Normalized output</option><option value="delta">Difference from baseline</option></select></label>
-                    </div>
-                    <div class="sc-lab-v015209-ranges">
-                      <fieldset><legend>X range</legend><label>Min<input type="number" step="any" data-v015209-range="x-min"></label><label>Max<input type="number" step="any" data-v015209-range="x-max"></label><label>Samples<select data-v015209-resolution="x"><option>11</option><option selected>21</option><option>31</option><option>41</option></select></label></fieldset>
-                      <fieldset><legend>Y range</legend><label>Min<input type="number" step="any" data-v015209-range="y-min"></label><label>Max<input type="number" step="any" data-v015209-range="y-max"></label><label>Levels<select data-v015209-resolution="y"><option>3</option><option selected>5</option><option>7</option></select></label></fieldset>
-                      <fieldset><legend>W range</legend><label>Min<input type="number" step="any" data-v015209-range="w-min"></label><label>Max<input type="number" step="any" data-v015209-range="w-max"></label><label>Slices<select data-v015209-resolution="w"><option selected>3</option><option>5</option></select></label></fieldset>
-                    </div>
-                    <div class="sc-lab-v015209-fixed"><strong>Fixed model parameters</strong><div data-v015209-fixed-controls></div></div>
-                    <div class="sc-lab-v015209-actions">
-                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015207-run-compute data-v015209-run-surface>Run response surface</button>
-                      <button type="button" class="sc-lab-button" data-v015209-set-baseline>Set baseline</button>
-                      <button type="button" class="sc-lab-button" data-v015209-compare>Compare with baseline</button>
-                      <button type="button" class="sc-lab-button" data-v015209-reset>Reset</button>
-                    </div>
-                    <div class="sc-lab-v015209-saved">
-                      <input type="text" data-v015209-config-name maxlength="80" placeholder="Configuration name">
-                      <button type="button" data-v015209-save-config>Save configuration</button>
-                      <select data-v015209-saved-configs aria-label="Saved parameter configurations"><option value="">Saved configurations</option></select>
-                      <button type="button" data-v015209-load-config>Load</button>
-                      <button type="button" data-v015209-delete-config>Delete</button>
-                    </div>
-                    <div class="sc-lab-v015209-run-meta" data-v015209-run-meta>No compute-backed surface has been run yet.</div>
-                    <div class="sc-lab-v015209-progress" data-v015209-progress hidden><span data-v015209-progress-bar></span></div>
-                  </section>
-
-                  <section class="sc-lab-v015210-analysis" data-v015210-analysis aria-label="Uncertainty, sensitivity, and ensemble explorer">
-                    <div class="sc-lab-v015210-analysis-head">
-                      <div><span class="sc-lab-section-code">COMPUTE / UNCERTAINTY</span><h5>Uncertainty, sensitivity &amp; ensemble diagnostics</h5></div>
-                      <span class="sc-lab-v015210-status" data-v015210-status>Ready. Compute runs only on explicit action.</span>
-                    </div>
-                    <div class="sc-lab-v015210-controls">
-                      <label><span>Registered algebraic model</span><select data-v015210-analysis-model><option value="product" selected>Product</option><option value="linear">Linear</option><option value="ratio">Ratio</option><option value="power">Power</option></select></label>
-                      <label><span>Monte Carlo samples</span><select data-v015210-samples><option>1000</option><option selected>5000</option><option>10000</option><option>25000</option><option>50000</option></select></label>
-                      <label><span>Confidence</span><select data-v015210-confidence><option value="0.90">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select></label>
-                      <label><span>Ensemble members</span><select data-v015210-members><option>3</option><option selected>5</option><option>7</option></select></label>
-                      <label><span>Random seed</span><input data-v015210-seed type="number" min="0" step="1" value="2026"></label>
-                      <label data-v015210-exponent-wrap hidden><span>Power exponent</span><input data-v015210-exponent type="number" step="0.1" value="2"></label>
-                    </div>
-                    <div class="sc-lab-v015210-variables">
-                      <div class="sc-lab-v015210-variable" data-v015210-variable="a"><strong>Variable A</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="10"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
-                      <div class="sc-lab-v015210-variable" data-v015210-variable="b"><strong>Variable B</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="1000"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
-                      <div class="sc-lab-v015210-variable" data-v015210-variable="c"><strong>Variable C</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="0.2"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="3"></label></div></div>
-                    </div>
-                    <div class="sc-lab-v015210-actions">
-                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015210-run-uncertainty>Run Monte Carlo uncertainty</button>
-                      <button type="button" class="sc-lab-button" data-v015210-run-sensitivity>Run local sensitivity</button>
-                      <button type="button" class="sc-lab-button" data-v015210-run-ensemble>Run seed ensemble</button>
-                    </div>
-                    <div class="sc-lab-v015210-metrics" data-v015210-metrics><div class="sc-lab-v015210-metric"><small>Status</small><strong>Ready</strong><em>No analysis executed yet</em></div></div>
-                    <canvas class="sc-lab-v015210-analysis-canvas" data-v015210-analysis-canvas aria-label="Computed uncertainty, sensitivity, or ensemble diagnostic plot"></canvas>
-                    <p class="sc-lab-v015210-boundary">Monte Carlo intervals, local finite-difference sensitivities, and seed-replication ensembles are modeled diagnostics. They do not establish causality, statistical significance, observed evidence, calibrated forecast skill, or scientific validity. Formal Sobol/Morris analysis remains available in the specialist Sensitivity &amp; Global Uncertainty Analysis Studio.</p>
-                  </section>
-
-                  <section class="sc-lab-v015211-linked" data-v015211-linked aria-label="Linked scientific views and cross-view selection">
-                    <div class="sc-lab-v015211-head">
-                      <div><span class="sc-lab-section-code">VIEWS / LINKED SELECTION</span><h5>Linked Scientific Views &amp; Cross-View Selection</h5></div>
-                      <span class="sc-lab-v015211-status" data-v015211-status>Linked · select a point or diagnostic element</span>
-                    </div>
-                    <div class="sc-lab-v015211-actions">
-                      <button type="button" class="sc-lab-button" data-v015211-toggle aria-pressed="true">Linked selection on</button>
-                      <button type="button" class="sc-lab-button" data-v015211-pin disabled>Pin selection</button>
-                      <button type="button" class="sc-lab-button" data-v015211-clear disabled>Clear selection</button>
-                      <button type="button" class="sc-lab-button" data-v015211-export disabled>Export selection JSON</button>
-                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015211-graph disabled>Open selection in Graph Studio</button>
-                    </div>
-                    <div class="sc-lab-v015211-grid">
-                      <article class="sc-lab-v015211-view" data-v015211-view="selection">
-                        <h6>Selection inspector</h6>
-                        <dl class="sc-lab-v015211-kv">
-                          <dt>Source view</dt><dd data-v015211-field="source" class="sc-lab-v015211-empty">No selection</dd>
-                          <dt>Model / mode</dt><dd data-v015211-field="model">—</dd>
-                          <dt>X</dt><dd data-v015211-field="x">—</dd>
-                          <dt>Y</dt><dd data-v015211-field="y">—</dd>
-                          <dt>W</dt><dd data-v015211-field="w">—</dd>
-                          <dt>Z / value</dt><dd data-v015211-field="z">—</dd>
-                        </dl>
-                      </article>
-                      <article class="sc-lab-v015211-view" data-v015211-view="parameters">
-                        <h6>Parameter snapshot</h6>
-                        <div class="sc-lab-v015211-table-wrap"><table class="sc-lab-v015211-table"><thead><tr><th>Parameter</th><th>Value</th><th>Role</th></tr></thead><tbody data-v015211-table><tr><td colspan="3" class="sc-lab-v015211-empty">Select a compute-backed surface point to inspect parameters.</td></tr></tbody></table></div>
-                      </article>
-                      <article class="sc-lab-v015211-view" data-v015211-view="history">
-                        <h6>Selection history</h6>
-                        <ol class="sc-lab-v015211-history" data-v015211-history><li class="sc-lab-v015211-empty">No selections yet.</li></ol>
-                        <div class="sc-lab-v015211-pins" data-v015211-pins>0 pinned selections</div>
-                      </article>
-                    </div>
-                    <p class="sc-lab-v015211-boundary">Linked selection synchronizes inspection state across the 4D response surface, parameter snapshot, and computed diagnostic views. Diagnostic selections are preserved with their own model identity and are not automatically mapped onto a different response-surface model. Graph Studio handoff transfers the selected state and provenance; it does not assert equivalence, causality, evidence, significance, calibration, or scientific validity.</p>
-                  </section>
-
-                  <section class="sc-lab-v015212-persistence" data-v015212-persistence aria-label="4D scene persistence, provenance, and research object handoff">
-                    <div class="sc-lab-v015212-head">
-                      <div><span class="sc-lab-section-code">SCENE / PROVENANCE</span><h5>4D Scene Persistence, Provenance &amp; Research Object Handoff</h5></div>
-                      <span class="sc-lab-v015212-status" data-v015212-status>Persistence initializing…</span>
-                    </div>
-                    <div class="sc-lab-v015212-savebar">
-                      <input type="text" maxlength="120" data-v015212-name placeholder="Scene name" aria-label="Scene name">
-                      <select data-v015212-scenes aria-label="Saved 4D scenes"><option value="">Saved scenes</option></select>
-                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-save>Save current scene</button>
-                      <button type="button" class="sc-lab-button" data-v015212-load>Load</button>
-                      <button type="button" class="sc-lab-button" data-v015212-delete>Delete</button>
-                      <button type="button" class="sc-lab-button" data-v015212-export-scene disabled>Export scene JSON</button>
-                    </div>
-                    <div class="sc-lab-v015212-grid">
-                      <article class="sc-lab-v015212-card"><h6>Scene record</h6><dl class="sc-lab-v015212-kv"><dt>Scene ID</dt><dd data-v015212-field="sceneId">—</dd><dt>Name</dt><dd data-v015212-field="sceneName">—</dd><dt>Created</dt><dd data-v015212-field="createdAt">—</dd><dt>Updated</dt><dd data-v015212-field="updatedAt">—</dd><dt>Saved scenes</dt><dd data-v015212-field="sceneCount">0 / 12</dd></dl></article>
-                      <article class="sc-lab-v015212-card"><h6>Provenance</h6><dl class="sc-lab-v015212-kv"><dt>Model / demo</dt><dd data-v015212-field="model">—</dd><dt>State digest</dt><dd data-v015212-field="digest">—</dd><dt>Selections</dt><dd data-v015212-field="selectionCount">—</dd><dt>Release</dt><dd>v0.152.0.12</dd><dt>Object mapping</dt><dd>workspace-snapshot · reference-first</dd></dl></article>
-                      <article class="sc-lab-v015212-card"><h6>Research-object handoff</h6><dl class="sc-lab-v015212-kv"><dt>Object ID</dt><dd data-v015212-field="handoffId">—</dd><dt>Type</dt><dd data-v015212-field="handoffType">—</dd><dt>Prepared</dt><dd data-v015212-field="handoffCreated">—</dd></dl><div class="sc-lab-v015212-handoff-status">Prepare a canonical workspace-snapshot object, then explicitly hand it to a downstream Lab workspace.</div></article>
-                    </div>
-                    <div class="sc-lab-v015212-actions">
-                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-prepare disabled>Prepare research object</button>
-                      <button type="button" class="sc-lab-button" data-v015212-export-object disabled>Export research object JSON</button>
-                      <button type="button" class="sc-lab-button" data-v015212-handoff="graph-studio" disabled>Open in Graph Studio</button>
-                      <button type="button" class="sc-lab-button" data-v015212-handoff="notebook" disabled>Open in Notebook</button>
-                      <button type="button" class="sc-lab-button" data-v015212-handoff="experiments" disabled>Open in Experiments</button>
-                    </div>
-                    <p class="sc-lab-v015212-boundary">Saved scenes preserve the bounded 4D scene state, computed response surfaces and diagnostics already present in the browser, linked selections, and descriptive provenance. Loading a saved scene does not rerun computation. Research-object handoff is explicit and reference-first; it does not automatically submit to Platform Core or establish evidence, causality, significance, calibration, or scientific validity.</p>
-                  </section>
                 </aside>
+              </div>
+
+              <div class="sc-lab-v015213-workspaces" data-v015213-workspaces aria-label="Advanced 4D computational research workspaces">
+                <section class="sc-lab-v015209-explorer" data-v015209-explorer aria-label="Interactive response surface and parameter explorer">
+                  <div class="sc-lab-v015209-explorer-head">
+                    <div><span class="sc-lab-section-code">COMPUTE / PARAMETER EXPLORER</span><h5>Response surface configuration</h5></div>
+                    <span class="sc-lab-v015209-budget" data-v015209-budget>315 evaluations · 15 bounded requests</span>
+                  </div>
+                  <div class="sc-lab-v015209-grid">
+                    <label><span>Model family</span><select data-v015209-model></select></label>
+                    <label><span>X parameter</span><select data-v015209-axis="x"></select></label>
+                    <label><span>Y parameter</span><select data-v015209-axis="y"></select></label>
+                    <label><span>W parameter</span><select data-v015209-axis="w"></select></label>
+                    <label><span>Z mapping</span><select data-v015209-z-mode><option value="output">Model output</option><option value="normalized">Normalized output</option><option value="delta">Difference from baseline</option></select></label>
+                  </div>
+                  <div class="sc-lab-v015209-ranges">
+                    <fieldset><legend>X range</legend><label>Min<input type="number" step="any" data-v015209-range="x-min"></label><label>Max<input type="number" step="any" data-v015209-range="x-max"></label><label>Samples<select data-v015209-resolution="x"><option>11</option><option selected>21</option><option>31</option><option>41</option></select></label></fieldset>
+                    <fieldset><legend>Y range</legend><label>Min<input type="number" step="any" data-v015209-range="y-min"></label><label>Max<input type="number" step="any" data-v015209-range="y-max"></label><label>Levels<select data-v015209-resolution="y"><option>3</option><option selected>5</option><option>7</option></select></label></fieldset>
+                    <fieldset><legend>W range</legend><label>Min<input type="number" step="any" data-v015209-range="w-min"></label><label>Max<input type="number" step="any" data-v015209-range="w-max"></label><label>Slices<select data-v015209-resolution="w"><option selected>3</option><option>5</option></select></label></fieldset>
+                  </div>
+                  <div class="sc-lab-v015209-fixed"><strong>Fixed model parameters</strong><div data-v015209-fixed-controls></div></div>
+                  <div class="sc-lab-v015209-actions">
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015207-run-compute data-v015209-run-surface>Run response surface</button>
+                    <button type="button" class="sc-lab-button" data-v015209-set-baseline>Set baseline</button>
+                    <button type="button" class="sc-lab-button" data-v015209-compare>Compare with baseline</button>
+                    <button type="button" class="sc-lab-button" data-v015209-reset>Reset</button>
+                  </div>
+                  <div class="sc-lab-v015209-saved">
+                    <input type="text" data-v015209-config-name maxlength="80" placeholder="Configuration name">
+                    <button type="button" data-v015209-save-config>Save configuration</button>
+                    <select data-v015209-saved-configs aria-label="Saved parameter configurations"><option value="">Saved configurations</option></select>
+                    <button type="button" data-v015209-load-config>Load</button>
+                    <button type="button" data-v015209-delete-config>Delete</button>
+                  </div>
+                  <div class="sc-lab-v015209-run-meta" data-v015209-run-meta>No compute-backed surface has been run yet.</div>
+                  <div class="sc-lab-v015209-progress" data-v015209-progress hidden><span data-v015209-progress-bar></span></div>
+                </section>
+
+                <section class="sc-lab-v015210-analysis" data-v015210-analysis aria-label="Uncertainty, sensitivity, and ensemble explorer">
+                  <div class="sc-lab-v015210-analysis-head">
+                    <div><span class="sc-lab-section-code">COMPUTE / UNCERTAINTY</span><h5>Uncertainty, sensitivity &amp; ensemble diagnostics</h5></div>
+                    <span class="sc-lab-v015210-status" data-v015210-status>Ready. Compute runs only on explicit action.</span>
+                  </div>
+                  <div class="sc-lab-v015210-controls">
+                    <label><span>Registered algebraic model</span><select data-v015210-analysis-model><option value="product" selected>Product</option><option value="linear">Linear</option><option value="ratio">Ratio</option><option value="power">Power</option></select></label>
+                    <label><span>Monte Carlo samples</span><select data-v015210-samples><option>1000</option><option selected>5000</option><option>10000</option><option>25000</option><option>50000</option></select></label>
+                    <label><span>Confidence</span><select data-v015210-confidence><option value="0.90">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select></label>
+                    <label><span>Ensemble members</span><select data-v015210-members><option>3</option><option selected>5</option><option>7</option></select></label>
+                    <label><span>Random seed</span><input data-v015210-seed type="number" min="0" step="1" value="2026"></label>
+                    <label data-v015210-exponent-wrap hidden><span>Power exponent</span><input data-v015210-exponent type="number" step="0.1" value="2"></label>
+                  </div>
+                  <div class="sc-lab-v015210-variables">
+                    <div class="sc-lab-v015210-variable" data-v015210-variable="a"><strong>Variable A</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="10"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
+                    <div class="sc-lab-v015210-variable" data-v015210-variable="b"><strong>Variable B</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="1000"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="5"></label></div></div>
+                    <div class="sc-lab-v015210-variable" data-v015210-variable="c"><strong>Variable C</strong><div class="sc-lab-v015210-variable-grid"><label>Mean<input data-v015210-mean type="number" step="any" value="0.2"></label><label>Relative uncertainty %<input data-v015210-rel type="number" min="0" step="0.1" value="3"></label></div></div>
+                  </div>
+                  <div class="sc-lab-v015210-actions">
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015210-run-uncertainty>Run Monte Carlo uncertainty</button>
+                    <button type="button" class="sc-lab-button" data-v015210-run-sensitivity>Run local sensitivity</button>
+                    <button type="button" class="sc-lab-button" data-v015210-run-ensemble>Run seed ensemble</button>
+                  </div>
+                  <div class="sc-lab-v015210-metrics" data-v015210-metrics><div class="sc-lab-v015210-metric"><small>Status</small><strong>Ready</strong><em>No analysis executed yet</em></div></div>
+                  <canvas class="sc-lab-v015210-analysis-canvas" data-v015210-analysis-canvas aria-label="Computed uncertainty, sensitivity, or ensemble diagnostic plot"></canvas>
+                  <p class="sc-lab-v015210-boundary">Monte Carlo intervals, local finite-difference sensitivities, and seed-replication ensembles are modeled diagnostics. They do not establish causality, statistical significance, observed evidence, calibrated forecast skill, or scientific validity. Formal Sobol/Morris analysis remains available in the specialist Sensitivity &amp; Global Uncertainty Analysis Studio.</p>
+                </section>
+
+                <section class="sc-lab-v015211-linked" data-v015211-linked aria-label="Linked scientific views and cross-view selection">
+                  <div class="sc-lab-v015211-head">
+                    <div><span class="sc-lab-section-code">VIEWS / LINKED SELECTION</span><h5>Linked Scientific Views &amp; Cross-View Selection</h5></div>
+                    <span class="sc-lab-v015211-status" data-v015211-status>Linked · select a point or diagnostic element</span>
+                  </div>
+                  <div class="sc-lab-v015211-actions">
+                    <button type="button" class="sc-lab-button" data-v015211-toggle aria-pressed="true">Linked selection on</button>
+                    <button type="button" class="sc-lab-button" data-v015211-pin disabled>Pin selection</button>
+                    <button type="button" class="sc-lab-button" data-v015211-clear disabled>Clear selection</button>
+                    <button type="button" class="sc-lab-button" data-v015211-export disabled>Export selection JSON</button>
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015211-graph disabled>Open selection in Graph Studio</button>
+                  </div>
+                  <div class="sc-lab-v015211-grid">
+                    <article class="sc-lab-v015211-view" data-v015211-view="selection">
+                      <h6>Selection inspector</h6>
+                      <dl class="sc-lab-v015211-kv">
+                        <dt>Source view</dt><dd data-v015211-field="source" class="sc-lab-v015211-empty">No selection</dd>
+                        <dt>Model / mode</dt><dd data-v015211-field="model">—</dd>
+                        <dt>X</dt><dd data-v015211-field="x">—</dd>
+                        <dt>Y</dt><dd data-v015211-field="y">—</dd>
+                        <dt>W</dt><dd data-v015211-field="w">—</dd>
+                        <dt>Z / value</dt><dd data-v015211-field="z">—</dd>
+                      </dl>
+                    </article>
+                    <article class="sc-lab-v015211-view" data-v015211-view="parameters">
+                      <h6>Parameter snapshot</h6>
+                      <div class="sc-lab-v015211-table-wrap"><table class="sc-lab-v015211-table"><thead><tr><th>Parameter</th><th>Value</th><th>Role</th></tr></thead><tbody data-v015211-table><tr><td colspan="3" class="sc-lab-v015211-empty">Select a compute-backed surface point to inspect parameters.</td></tr></tbody></table></div>
+                    </article>
+                    <article class="sc-lab-v015211-view" data-v015211-view="history">
+                      <h6>Selection history</h6>
+                      <ol class="sc-lab-v015211-history" data-v015211-history><li class="sc-lab-v015211-empty">No selections yet.</li></ol>
+                      <div class="sc-lab-v015211-pins" data-v015211-pins>0 pinned selections</div>
+                    </article>
+                  </div>
+                  <p class="sc-lab-v015211-boundary">Linked selection synchronizes inspection state across the 4D response surface, parameter snapshot, and computed diagnostic views. Diagnostic selections are preserved with their own model identity and are not automatically mapped onto a different response-surface model. Graph Studio handoff transfers the selected state and provenance; it does not assert equivalence, causality, evidence, significance, calibration, or scientific validity.</p>
+                </section>
+
+                <section class="sc-lab-v015212-persistence" data-v015212-persistence aria-label="4D scene persistence, provenance, and research object handoff">
+                  <div class="sc-lab-v015212-head">
+                    <div><span class="sc-lab-section-code">SCENE / PROVENANCE</span><h5>4D Scene Persistence, Provenance &amp; Research Object Handoff</h5></div>
+                    <span class="sc-lab-v015212-status" data-v015212-status>Persistence initializing…</span>
+                  </div>
+                  <div class="sc-lab-v015212-savebar">
+                    <input type="text" maxlength="120" data-v015212-name placeholder="Scene name" aria-label="Scene name">
+                    <select data-v015212-scenes aria-label="Saved 4D scenes"><option value="">Saved scenes</option></select>
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-save>Save current scene</button>
+                    <button type="button" class="sc-lab-button" data-v015212-load>Load</button>
+                    <button type="button" class="sc-lab-button" data-v015212-delete>Delete</button>
+                    <button type="button" class="sc-lab-button" data-v015212-export-scene disabled>Export scene JSON</button>
+                  </div>
+                  <div class="sc-lab-v015212-grid">
+                    <article class="sc-lab-v015212-card"><h6>Scene record</h6><dl class="sc-lab-v015212-kv"><dt>Scene ID</dt><dd data-v015212-field="sceneId">—</dd><dt>Name</dt><dd data-v015212-field="sceneName">—</dd><dt>Created</dt><dd data-v015212-field="createdAt">—</dd><dt>Updated</dt><dd data-v015212-field="updatedAt">—</dd><dt>Saved scenes</dt><dd data-v015212-field="sceneCount">0 / 12</dd></dl></article>
+                    <article class="sc-lab-v015212-card"><h6>Provenance</h6><dl class="sc-lab-v015212-kv"><dt>Model / demo</dt><dd data-v015212-field="model">—</dd><dt>State digest</dt><dd data-v015212-field="digest">—</dd><dt>Selections</dt><dd data-v015212-field="selectionCount">—</dd><dt>Release</dt><dd>v0.152.0.13</dd><dt>Object mapping</dt><dd>workspace-snapshot · reference-first</dd></dl></article>
+                    <article class="sc-lab-v015212-card"><h6>Research-object handoff</h6><dl class="sc-lab-v015212-kv"><dt>Object ID</dt><dd data-v015212-field="handoffId">—</dd><dt>Type</dt><dd data-v015212-field="handoffType">—</dd><dt>Prepared</dt><dd data-v015212-field="handoffCreated">—</dd></dl><div class="sc-lab-v015212-handoff-status">Prepare a canonical workspace-snapshot object, then explicitly hand it to a downstream Lab workspace.</div></article>
+                  </div>
+                  <div class="sc-lab-v015212-actions">
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015212-prepare disabled>Prepare research object</button>
+                    <button type="button" class="sc-lab-button" data-v015212-export-object disabled>Export research object JSON</button>
+                    <button type="button" class="sc-lab-button" data-v015212-handoff="graph-studio" disabled>Open in Graph Studio</button>
+                    <button type="button" class="sc-lab-button" data-v015212-handoff="notebook" disabled>Open in Notebook</button>
+                    <button type="button" class="sc-lab-button" data-v015212-handoff="experiments" disabled>Open in Experiments</button>
+                  </div>
+                  <p class="sc-lab-v015212-boundary">Saved scenes preserve the bounded 4D scene state, computed response surfaces and diagnostics already present in the browser, linked selections, and descriptive provenance. Loading a saved scene does not rerun computation. Research-object handoff is explicit and reference-first; it does not automatically submit to Platform Core or establish evidence, causality, significance, calibration, or scientific validity.</p>
+                </section>
               </div>
 
               <div class="sc-lab-v0710-metrics" aria-label="Illustrative visualization diagnostics">

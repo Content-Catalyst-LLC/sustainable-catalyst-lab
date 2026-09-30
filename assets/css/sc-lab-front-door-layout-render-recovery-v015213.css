@@ -1,0 +1,12 @@
+/* Sustainable Catalyst Lab v0.152.0.13 — 4D Front-Door Layout & Visualization Render Recovery */
+.sc-lab-v0710-body{grid-template-columns:minmax(0,1fr) minmax(240px,280px)!important;align-items:start!important;min-height:0!important}
+.sc-lab-v0710-canvas-wrap{align-self:start!important;height:clamp(430px,38vw,520px)!important;min-height:430px!important;max-height:520px!important;overflow:hidden!important;background:#060708!important}
+.sc-lab-v0710-canvas{display:block!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;background:#060708!important}
+.sc-lab-v0710-controls{align-self:start!important;min-width:0!important;max-height:520px!important;overflow:auto!important;scrollbar-width:thin}
+.sc-lab-v015213-workspaces{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;width:100%;min-width:0;margin:1rem 0 0}
+.sc-lab-v015213-workspaces>.sc-lab-v015209-explorer,.sc-lab-v015213-workspaces>.sc-lab-v015210-analysis,.sc-lab-v015213-workspaces>.sc-lab-v015211-linked,.sc-lab-v015213-workspaces>.sc-lab-v015212-persistence{box-sizing:border-box;width:100%;min-width:0;margin-top:0!important;overflow:hidden}
+.sc-lab-v015213-workspaces select,.sc-lab-v015213-workspaces input,.sc-lab-v015213-workspaces button{max-width:100%;box-sizing:border-box}
+.sc-lab-v015213-workspaces .sc-lab-v015209-grid,.sc-lab-v015213-workspaces .sc-lab-v015210-controls{min-width:0}
+@media(min-width:1600px){.sc-lab-v015213-workspaces{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+@media(max-width:1080px){.sc-lab-v0710-body{grid-template-columns:1fr!important}.sc-lab-v0710-canvas-wrap{height:390px!important;min-height:390px!important;max-height:390px!important}.sc-lab-v0710-controls{max-height:none!important;overflow:visible!important}}
+@media(max-width:720px){.sc-lab-v0710-canvas-wrap{height:330px!important;min-height:330px!important;max-height:330px!important}.sc-lab-v015213-workspaces{gap:.75rem}}
