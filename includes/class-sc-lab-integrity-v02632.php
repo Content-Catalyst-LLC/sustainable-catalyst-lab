@@ -260,6 +260,16 @@ final class SC_Lab_Integrity_V02632 {
         );
     }
 
+    private static function feature_release_matches($release, $feature) {
+        $release = trim((string) $release);
+        $feature = trim((string) $feature);
+        if ($release === '' || $feature === '') { return false; }
+        if ($release === $feature) { return true; }
+        // Patch releases extend a canonical feature line: 0.152.0.5 belongs to 0.152.0.
+        // Do not treat platformVersion or unrelated semantic versions as feature matches.
+        return (bool) preg_match('/^' . preg_quote($feature, '/') . '\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$/', $release);
+    }
+
     private static function release_state() {
         $manifest = self::manifest();
         $identity = self::identity();
@@ -294,7 +304,8 @@ final class SC_Lab_Integrity_V02632 {
         );
         // Product release identity is manifest-authoritative. Platform compatibility remains
         // an independently versioned subsystem marker and is never substituted for the release.
-        $release_consistent = $versions['release'] === $versions['featureRelease'] && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'] && $versions['release'] === $versions['consoleRelease'];
+        $feature_release_compatible = self::feature_release_matches($versions['release'], $versions['featureRelease']);
+        $release_consistent = $feature_release_compatible && $versions['release'] === $versions['pluginHeader'] && $versions['release'] === $versions['manifestRelease'] && $versions['release'] === $versions['consoleRelease'];
         $console_consistent = $versions['consoleRelease'] === $versions['manifestRelease'];
         $platform_consistent = $versions['platformCompatibility'] === $versions['legacyPlatformAlias'] && $versions['platformCompatibility'] === $versions['manifestPlatform'];
         $version_consistent = $release_consistent && $platform_consistent;
@@ -314,6 +325,7 @@ final class SC_Lab_Integrity_V02632 {
             'componentVersions' => $component_versions,
             'partialInstallRisk' => $partial,
             'releaseVersionConsistent' => $release_consistent,
+            'featureReleaseCompatible' => $feature_release_compatible,
             'releaseConsoleVersionConsistent' => $console_consistent,
             'platformVersionConsistent' => $platform_consistent,
             'duplicatePluginRisk' => $duplicate_risk,

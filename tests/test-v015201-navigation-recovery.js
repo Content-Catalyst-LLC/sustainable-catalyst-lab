@@ -3,7 +3,7 @@ const plugin=fs.readFileSync('includes/class-sc-lab-plugin.php','utf8');
 const recovery=fs.readFileSync('assets/js/sc-lab-navigation-recovery-v015201.js','utf8');
 if(!plugin.includes("$critical_modules = array('core','projects','workspace','feeds','project-workspace-v0280')")) throw new Error('critical shell modules missing');
 if(!plugin.includes("wp_enqueue_script('sc-lab-app'")) throw new Error('app enqueue missing');
-if(!plugin.includes('optional Lab modules must not form a 247-script cumulative dependency chain')) throw new Error('optional module decoupling missing');
+if(!plugin.includes('front-end request consolidation')) throw new Error('optional module decoupling/consolidation missing');
 if(!recovery.includes("[data-lab-module-button],[data-open-module]")) throw new Error('recovery navigation selector missing');
 if(!recovery.includes("scLabAppReady")) throw new Error('recovery app-ready guard missing');
 if(!recovery.includes("sc-lab:module-opened")) throw new Error('recovery module event missing');

@@ -1,0 +1,10 @@
+const fs=require('fs');
+const plugin=fs.readFileSync('includes/class-sc-lab-plugin.php','utf8');
+const boot=fs.readFileSync('assets/js/sc-lab-bootstrap-v015204.js','utf8');
+const optional=fs.readFileSync('assets/js/sc-lab-optional-modules-v015204.js','utf8');
+for(const marker of ['assets/js/modules/core.js','assets/js/modules/projects.js','assets/js/modules/workspace.js','assets/js/modules/feeds.js','assets/js/sc-lab-app.js']) if(!boot.includes(marker)) process.exit(1);
+if(!optional.includes('graph-studio-v0470.js')) process.exit(2);
+if(!optional.includes('presentation-runtime-v0482.js')) process.exit(3);
+if(!optional.includes('optional-module:')) process.exit(4);
+if(plugin.includes("wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/'")) process.exit(5);
+console.log('PASS - v0.152.0.4 bundled front-end JS contract');

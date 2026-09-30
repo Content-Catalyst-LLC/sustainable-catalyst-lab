@@ -1,3 +1,588 @@
+/* Sustainable Catalyst Lab v0.152.0.4 critical bootstrap bundle. */
+
+/* === assets/js/modules/core.js === */
+(function(w){'use strict';
+const Lab=w.SCLab=w.SCLab||{};
+Lab.util={
+ uid(prefix='id'){return prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)},
+ now(){return new Date().toISOString()},
+ esc(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))},
+ download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},0)},
+ fmt(date){if(!date)return 'Unknown';const d=new Date(date);return Number.isNaN(d.getTime())?String(date):d.toLocaleString()},
+ fingerprint(value){let h=2166136261;const s=JSON.stringify(value);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)},
+ toast(root,message){const el=root.querySelector('[data-lab-toast]');if(!el)return;el.textContent=message;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,2800)},
+ fetchJson(url,options={}){return fetch(url,options).then(async r=>{const body=await r.json().catch(()=>({}));if(!r.ok)throw new Error(body.message||`HTTP ${r.status}`);return body})}
+};
+})(window);
+;
+
+/* === assets/js/modules/projects.js === */
+(function (w) {
+  'use strict';
+  const Lab = w.SCLab = w.SCLab || {};
+  const U = Lab.util;
+  const KEY = 'scLabProjectsV010';
+  const ACTIVE = 'scLabActiveProjectV010';
+  const WORKSPACE_SCHEMA = '0.28.0';
+  const LEGACY_SCHEMA = '0.20.0';
+  const CHECKPOINT_LIMIT = 20;
+  const META_COLLECTIONS = new Set(['recordIndex','relationships','projectCheckpoints','migrationHistory','workspaceEvents']);
+  const COLLECTIONS = [
+    'evidence','experiments','hypotheses','decisions','notes','calculations','documents','models','sources','computeJobs',
+    'maps','mapViews','datasets','savedQueries','observations','sourceSnapshots','citations','activity',
+    'chemicalRecords','reactions','spectra','calibrations','methods',
+    'physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords',
+    'biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords',
+    'astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords',
+    'materialsRecords','materialSamples','mechanicalRecords','thermalRecords','electricalRecords','magneticRecords','opticalRecords','crystallographyRecords','phaseRecords','corrosionRecords','polymerRecords','compositeRecords','microscopyRecords','materialsValidationRecords',
+    'earthRecords','geoscienceRecords','atmosphericRecords','climateRecords','hydrologyRecords','oceanRecords','marineSystemRecords','remoteSensingRecords','hazardRecords','carbonCycleRecords','earthValidationRecords',
+    'energyRecords','engineeringRecords','energySystemRecords','solarRecords','windRecords','hydroRecords','storageRecords','gridRecords','thermalSystemRecords','fuelHydrogenRecords','emissionsRecords','technoEconomicRecords','reliabilityRecords','energyValidationRecords',
+    'visualizations','dimensionalScenes','chartExports','analysisPackets','reports','reportFigures','reportExports','decisionStudioHandoffs','methodContracts','codeArtifacts','implementationComparisons','codeExecutions','languageComparisons','runtimeRecords','compilerRecords','executionJobs','benchmarkRuns','crossLanguageValidationRecords',
+    'numericalMethodRuns','numericalSweepRecords','uncertaintyRecords','parameterStudies','designMatrices','designBatches','designAnalyses','sensitivityStudies','designStudyBundles','experimentProtocols','experimentRuns','replicationRecords','experimentComparisons','experimentReports','experimentBundles','reproducibleRuns','runComparisons','reproducibilityBundles','methodReviewRecords','reviewDecisionRecords','methodDeprecationRecords','methodReviewComparisons','methodReviewBundles','discoverySearches','discoveryCandidates','sourceImportBatches','openAccessLookups','libraryProfiles','researchSources','evidenceRecords','assumptionRecords','limitationRecords','researchProvenance','reportDrafts','reportRevisions','reportPackages','restorePreflights','restoreReceipts','accessibilityAudits','migrationValidationRecords',
+    'electronicsRecords','embeddedRecords','hardwareValidationRecords','deviceProfiles','firmwareArtifacts','bomRecords','schematicRecords','interfaceRecords',
+    'mechanicalThermalAnalyses','fluidRecords','vibrationRecords',
+    'recordIndex','relationships','projectCheckpoints','migrationHistory','workspaceEvents'
+  ];
+  const TYPE_COLLECTIONS = {
+    experiment:'experiments', dataset:'datasets', model:'models', calculation:'calculations', note:'notes', source:'sources', report:'reports', 'compute-job':'computeJobs', 'method-review':'methodReviewRecords', 'review-decision':'reviewDecisionRecords', 'method-deprecation':'methodDeprecationRecords', 'method-review-comparison':'methodReviewComparisons', 'discovery-search':'discoverySearches', 'discovery-candidate':'discoveryCandidates', 'source-import-batch':'sourceImportBatches', 'open-access-lookup':'openAccessLookups', 'library-profile':'libraryProfiles', 'experiment-protocol':'experimentProtocols', 'experiment-run':'experimentRuns', 'replication-record':'replicationRecords', 'experiment-comparison':'experimentComparisons', 'experiment-report':'experimentReports', 'parameter-study':'parameterStudies', 'design-matrix':'designMatrices', 'design-batch':'designBatches', 'design-analysis':'designAnalyses', 'sensitivity-study':'sensitivityStudies', 'design-study-bundle':'designStudyBundles'
+  };
+  const COLLECTION_TYPES = Object.fromEntries(Object.entries(TYPE_COLLECTIONS).map(([type, collection]) => [collection, type]));
+
+  const memoryStorage = new Map();
+  const recoveryStorage = w.SCLabProductionStorageV0266 || null;
+  const safeMode = !!w.__SCLabSafeModeV0266;
+  const now = () => U?.now?.() || new Date().toISOString();
+  const uid = prefix => U?.uid?.(prefix) || `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const clone = value => JSON.parse(JSON.stringify(value));
+
+  function storageGet(key) {
+    if (safeMode) return memoryStorage.has(key) ? memoryStorage.get(key) : null;
+    if (recoveryStorage && typeof recoveryStorage.get === 'function') return recoveryStorage.get(key) ?? (memoryStorage.has(key) ? memoryStorage.get(key) : null);
+    try { return w.localStorage?.getItem(key) ?? (memoryStorage.has(key) ? memoryStorage.get(key) : null); }
+    catch (_) { return memoryStorage.has(key) ? memoryStorage.get(key) : null; }
+  }
+  function storageSet(key, value) {
+    const text = String(value); memoryStorage.set(String(key), text);
+    if (safeMode) return true;
+    if (recoveryStorage && typeof recoveryStorage.set === 'function') return recoveryStorage.set(key, text);
+    try { w.localStorage?.setItem(key, text); return true; } catch (_) { return false; }
+  }
+
+  function inferType(collection, record={}) {
+    return record.recordType || COLLECTION_TYPES[collection] || record.type || collection.replace(/Records$|Analyses$|Runs$|s$/,'').replace(/([a-z])([A-Z])/g,'$1-$2').toLowerCase() || 'record';
+  }
+  function titleFor(record, collection) {
+    return String(record.title || record.name || record.label || record.method || record.type || `${inferType(collection, record)} record`);
+  }
+  function normalizeRecord(record, collection) {
+    const created = record?.createdAt || record?.at || now();
+    return Object.assign({}, record || {}, {
+      id: record?.id || uid(collection),
+      recordType: inferType(collection, record || {}),
+      collection,
+      title: titleFor(record || {}, collection),
+      status: record?.status || 'active',
+      createdAt: created,
+      updatedAt: record?.updatedAt || created,
+      schemaVersion: record?.schemaVersion || WORKSPACE_SCHEMA,
+    });
+  }
+  function ensureCollection(name) {
+    const safe = String(name || '').trim();
+    if (!/^[A-Za-z][A-Za-z0-9_-]{1,79}$/.test(safe)) throw new Error(`Invalid project collection: ${safe}`);
+    if (!COLLECTIONS.includes(safe)) COLLECTIONS.push(safe);
+    return safe;
+  }
+  function recordCollections(project) {
+    return Object.keys(project || {}).filter(key => Array.isArray(project[key]) && !META_COLLECTIONS.has(key) && key !== 'activity');
+  }
+  function rebuildIndex(project) {
+    const index=[];
+    recordCollections(project).forEach(collection => {
+      project[collection] = project[collection].map(record => normalizeRecord(record, collection));
+      project[collection].forEach(record => index.push({
+        id:record.id, collection, recordType:record.recordType, title:record.title, status:record.status,
+        createdAt:record.createdAt, updatedAt:record.updatedAt, sourceId:record.sourceId || null, method:record.method || record.methodId || null
+      }));
+    });
+    project.recordIndex = index.sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt)));
+    return project.recordIndex;
+  }
+  function workspaceMetadata(project) {
+    const current = project.workspace && typeof project.workspace === 'object' ? project.workspace : {};
+    return Object.assign({
+      schemaVersion:WORKSPACE_SCHEMA,
+      storageMode:safeMode?'memory-safe-start':'browser-local',
+      autosave:true,
+      autosaveIntervalMs:750,
+      lastSavedAt:project.updatedAt || now(),
+      lastCheckpointAt:null,
+      migrationState:'current',
+      serverBacked:false,
+      capabilities:['records','relationships','checkpoints','search','import-export','schema-migration']
+    }, current, {schemaVersion:WORKSPACE_SCHEMA, storageMode:safeMode?'memory-safe-start':(current.storageMode || 'browser-local')});
+  }
+  function blank(name = 'Untitled Lab Project') {
+    const stamp=now();
+    const project={
+      schemaVersion:WORKSPACE_SCHEMA, legacySchemaVersion:LEGACY_SCHEMA, id:uid('project'), name, description:'', createdAt:stamp, updatedAt:stamp,
+      workspace:{schemaVersion:WORKSPACE_SCHEMA,storageMode:safeMode?'memory-safe-start':'browser-local',autosave:true,autosaveIntervalMs:750,lastSavedAt:stamp,lastCheckpointAt:null,migrationState:'current',serverBacked:false,capabilities:['records','relationships','checkpoints','search','import-export','schema-migration']}
+    };
+    COLLECTIONS.forEach(key => { project[key]=[]; });
+    project.migrationHistory.push({id:uid('migration'),from:null,to:WORKSPACE_SCHEMA,at:stamp,status:'created',preservedUnknownFields:true});
+    return project;
+  }
+  function normalize(project) {
+    const source = project && typeof project === 'object' ? clone(project) : {};
+    const base = blank(source.name || 'Untitled Lab Project');
+    const fromVersion = source.schemaVersion || source.workspace?.schemaVersion || 'legacy';
+    const merged = Object.assign(base, source);
+    merged.legacySchemaVersion = source.legacySchemaVersion || (fromVersion !== WORKSPACE_SCHEMA ? fromVersion : LEGACY_SCHEMA);
+    merged.schemaVersion = WORKSPACE_SCHEMA;
+    COLLECTIONS.forEach(key => { if (!Array.isArray(merged[key])) merged[key]=[]; });
+    Object.keys(source).forEach(key => { if (Array.isArray(source[key])) { ensureCollection(key); if (!Array.isArray(merged[key])) merged[key]=[]; } });
+    if (!merged.mapViews.length && Array.isArray(merged.maps) && merged.maps.length) merged.mapViews=clone(merged.maps);
+    if (!merged.createdAt) merged.createdAt=now();
+    if (!merged.updatedAt) merged.updatedAt=merged.createdAt;
+    merged.workspace=workspaceMetadata(merged);
+    if (!Array.isArray(merged.relationships)) merged.relationships=[];
+    merged.relationships=merged.relationships.map(row=>Object.assign({id:uid('relationship'),type:'related-to',createdAt:now()},row));
+    if (!Array.isArray(merged.projectCheckpoints)) merged.projectCheckpoints=[];
+    if (!Array.isArray(merged.migrationHistory)) merged.migrationHistory=[];
+    if (fromVersion !== WORKSPACE_SCHEMA && !merged.migrationHistory.some(row=>row?.to===WORKSPACE_SCHEMA)) {
+      merged.migrationHistory.unshift({id:uid('migration'),from:fromVersion,to:WORKSPACE_SCHEMA,at:now(),status:'migrated',preservedUnknownFields:true});
+    }
+    rebuildIndex(merged);
+    return merged;
+  }
+  function checkpointSnapshot(project) {
+    const snapshot=clone(project); snapshot.projectCheckpoints=[]; snapshot.recordIndex=[]; snapshot.workspaceEvents=[]; return snapshot;
+  }
+  function read() {
+    try { const data=JSON.parse(storageGet(KEY)||'[]'); return Array.isArray(data)?data.map(normalize):[]; }
+    catch (_) { return []; }
+  }
+  function write(items){ return storageSet(KEY,JSON.stringify(items)); }
+
+  class Projects {
+    constructor(){
+      this.items=read();
+      if(!this.items.length){this.items=[blank('Lab Project')];write(this.items);}
+      this.activeId=storageGet(ACTIVE)||this.items[0].id;
+      if(!this.get())this.activeId=this.items[0].id;
+      storageSet(ACTIVE,this.activeId);this.listeners=[];this.save('workspace initialization');
+    }
+    onChange(fn){if(typeof fn!=='function')return()=>{};this.listeners.push(fn);return()=>{this.listeners=this.listeners.filter(x=>x!==fn);};}
+    emit(){this.listeners.slice().forEach(fn=>{try{fn(this.get(),this.items);}catch(_){}});}
+    get(id=this.activeId){return this.items.find(p=>p.id===id);}
+    select(id){if(this.get(id)){this.activeId=id;storageSet(ACTIVE,id);this.emit();return this.get();}return null;}
+    create(name){const p=blank(name||'Untitled Lab Project');this.items.unshift(p);this.activeId=p.id;this.save('project created');return p;}
+    update(mutator,activity){const p=this.get();if(!p)return null;mutator(p);p.schemaVersion=WORKSPACE_SCHEMA;p.workspace=workspaceMetadata(p);p.updatedAt=now();p.workspace.lastSavedAt=p.updatedAt;if(activity){p.activity.unshift({id:uid('activity'),at:p.updatedAt,text:activity});p.activity=p.activity.slice(0,750);p.workspaceEvents.unshift({id:uid('workspace-event'),at:p.updatedAt,type:'change',text:activity});p.workspaceEvents=p.workspaceEvents.slice(0,1000);}rebuildIndex(p);this.save(activity||'project updated');return p;}
+    save(reason='autosave'){this.items=this.items.map(normalize);const p=this.get();if(p){p.workspace.lastSavedAt=now();p.workspace.lastSaveReason=reason;}write(this.items);storageSet(ACTIVE,this.activeId);this.emit();return true;}
+    add(collection,record,activity){collection=ensureCollection(collection);return this.update(p=>{if(!Array.isArray(p[collection]))p[collection]=[];p[collection].unshift(normalizeRecord(record,collection));},activity)?.[collection]?.[0]||null;}
+    updateRecord(id,patch,activity='Record updated'){const found=this.getRecord(id);if(!found)return null;this.update(p=>{const row=p[found.collection].find(x=>x.id===id);Object.assign(row,typeof patch==='function'?patch(clone(row)):patch,{updatedAt:now()});},activity);return this.getRecord(id)?.record||null;}
+    removeRecord(id,activity='Record removed'){const found=this.getRecord(id);if(!found)return false;this.update(p=>{p[found.collection]=p[found.collection].filter(x=>x.id!==id);p.relationships=p.relationships.filter(r=>r.from!==id&&r.to!==id);},activity);return true;}
+    getRecord(id){const p=this.get();if(!p)return null;for(const collection of recordCollections(p)){const record=p[collection].find(row=>row.id===id);if(record)return{collection,record};}return null;}
+    search(query='',filters={}){const p=this.get();if(!p)return[];const q=String(query||'').toLowerCase();return p.recordIndex.filter(row=>(!q||`${row.title} ${row.recordType} ${row.collection} ${row.method||''}`.toLowerCase().includes(q))&&(!filters.type||row.recordType===filters.type)&&(!filters.collection||row.collection===filters.collection)&&(!filters.status||row.status===filters.status));}
+    link(from,to,type='related-to',metadata={}){if(!from||!to||from===to)throw new Error('Two different records are required.');if(!this.getRecord(from)||!this.getRecord(to))throw new Error('Relationship records were not found.');const existing=this.get().relationships.find(r=>r.from===from&&r.to===to&&r.type===type);if(existing)return existing;let created;this.update(p=>{created={id:uid('relationship'),from,to,type:String(type||'related-to'),metadata:metadata||{},createdAt:now()};p.relationships.unshift(created);},`Relationship created: ${type}`);return created;}
+    unlink(id){let changed=false;this.update(p=>{const n=p.relationships.length;p.relationships=p.relationships.filter(r=>r.id!==id);changed=n!==p.relationships.length;},'Relationship removed');return changed;}
+    createCheckpoint(label='Manual checkpoint',reason='manual'){let checkpoint;this.update(p=>{checkpoint={id:uid('checkpoint'),label:String(label||'Checkpoint'),reason,createdAt:now(),schemaVersion:WORKSPACE_SCHEMA,recordCount:p.recordIndex.length,snapshot:checkpointSnapshot(p)};p.projectCheckpoints.unshift(checkpoint);p.projectCheckpoints=p.projectCheckpoints.slice(0,CHECKPOINT_LIMIT);p.workspace.lastCheckpointAt=checkpoint.createdAt;},`Checkpoint created: ${label}`);return checkpoint;}
+    restoreCheckpoint(id){const current=this.get();const cp=current?.projectCheckpoints?.find(row=>row.id===id);if(!cp?.snapshot)throw new Error('Checkpoint not found.');const restored=normalize(Object.assign({},clone(cp.snapshot),{id:current.id,name:current.name,projectCheckpoints:current.projectCheckpoints,updatedAt:now()}));const i=this.items.findIndex(row=>row.id===current.id);this.items[i]=restored;restored.activity.unshift({id:uid('activity'),at:restored.updatedAt,text:`Checkpoint restored: ${cp.label}`});this.save('checkpoint restored');return restored;}
+    export(){return this.exportBundle();}
+    exportBundle(){const p=this.get();const bundle={schema:'sc-lab-project-bundle/0.28.0',version:WORKSPACE_SCHEMA,exportedAt:now(),activeProjectId:p.id,project:clone(p),integrity:{recordCount:p.recordIndex.length,relationshipCount:p.relationships.length,checkpointCount:p.projectCheckpoints.length}};U.download(`${p.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}-lab-project-v0280.json`,JSON.stringify(bundle,null,2),'application/json');return bundle;}
+    import(raw,mode='copy'){const parsed=typeof raw==='string'?JSON.parse(raw):raw;const source=parsed?.schema==='sc-lab-project-bundle/0.28.0'?parsed.project:parsed;if(!source||typeof source!=='object'||!source.name)throw new Error('Invalid project or project bundle.');const incoming=normalize(source);if(mode==='merge'&&this.get(incoming.id)){const i=this.items.findIndex(x=>x.id===incoming.id);this.items[i]=normalize(Object.assign({},this.items[i],incoming,{updatedAt:now()}));this.activeId=incoming.id;}else{incoming.id=uid('project');incoming.name=mode==='copy'?`${incoming.name} (Imported)`:incoming.name;incoming.updatedAt=now();this.items.unshift(incoming);this.activeId=incoming.id;}this.save('project imported');return this.get();}
+    migrateAll(){this.items=this.items.map(normalize);this.save('workspace schema migration');return this.diagnostics();}
+    diagnostics(){const p=this.get();let bytes=0;try{bytes=new Blob([JSON.stringify(this.items)]).size;}catch(_){bytes=JSON.stringify(this.items).length;}return{version:WORKSPACE_SCHEMA,safeMode,storageMode:p?.workspace?.storageMode||'unknown',projectCount:this.items.length,activeProjectId:this.activeId,recordCount:p?.recordIndex?.length||0,relationshipCount:p?.relationships?.length||0,checkpointCount:p?.projectCheckpoints?.length||0,migrationCount:p?.migrationHistory?.length||0,bytes,lastSavedAt:p?.workspace?.lastSavedAt||null,lastCheckpointAt:p?.workspace?.lastCheckpointAt||null,unknownCollections:recordCollections(p).filter(key=>!COLLECTIONS.includes(key))};}
+  }
+
+  Lab.Projects=Projects;
+  Lab.ProjectModel={blank,normalize,normalizeRecord,rebuildIndex,collections:COLLECTIONS,recordCollections,typeCollections:TYPE_COLLECTIONS,workspaceSchemaVersion:WORKSPACE_SCHEMA,legacySchemaVersion:LEGACY_SCHEMA};
+})(window);
+
+// Project collection supported by v0.20.0: civilInfrastructureAnalyses
+
+// Project collection supported by v0.20.0: infrastructureRecords
+
+// Project collection supported by v0.20.0: infrastructureValidationRecords
+
+
+// v0.20.0 project collections are created dynamically by the Architecture and Building Performance workspace:
+// - architectureBuildingAnalyses
+// - buildingPerformanceRecords
+// - buildingPerformanceValidationRecords
+// - buildingEnvelopeRecords
+// - daylightRecords
+// - indoorEnvironmentalQualityRecords
+// - buildingEnergyRecords
+
+
+// v0.20.0 project collections are created dynamically by the Urban Planning and Spatial Systems workspace:
+// - urbanPlanningSpatialAnalyses
+// - urbanSpatialRecords
+// - urbanPlanningValidationRecords
+// - landUseRecords
+// - accessibilityRecords
+// - mobilityRecords
+// - spatialNetworkRecords
+// - gisAnalysisRecords
+// - publicServiceRecords
+// - urbanResilienceRecords
+// - spatialScenarioRecords
+
+
+// v0.20.0 project collections are created dynamically by Sustainable Cities and Urban Resilience:
+// - sustainableCitiesResilienceAnalyses
+// - sustainableCityResilienceRecords
+// - sustainableCitiesValidationRecords
+// - urbanMetabolismRecords
+// - decarbonizationRecords
+// - climateAdaptationRecords
+// - infrastructureContinuityRecords
+// - socialResilienceRecords
+// - cityScenarioRecords
+
+
+// v0.20.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
+// - circularEconomyIndustrialEcologyAnalyses
+// - circularEconomyRecords
+// - industrialEcologyRecords
+// - circularityValidationRecords
+// - materialFlowRecords
+// - circularProductRecords
+// - wasteRecoveryRecords
+// - industrialSymbiosisRecords
+// - lifecycleFootprintRecords
+// - circularTransitionRecords
+
+
+// v0.20.0 project collections are created dynamically by Circular Economy and Industrial Ecology:
+// - comparativeEconomicsDevelopmentAnalyses
+// - developmentEconomicsRecords
+// - developmentSystemsValidationRecords
+// - nationalAccountsRecords
+// - growthProductivityRecords
+// - tradeTransformationRecords
+// - laborInequalityRecords
+// - humanDevelopmentRecords
+// - publicFinanceRecords
+// - developmentFinanceRecords
+// - developmentScenarioRecords
+
+
+// v0.20.0 project collections are created dynamically by Aerospace Engineering and Flight Systems:
+// - aerospaceEngineeringFlightAnalyses
+// - aerospaceFlightSystemsRecords
+// - aerospaceFlightValidationRecords
+// - aerodynamicsRecords
+// - flightPerformanceRecords
+// - flightControlsRecords
+// - propulsionEnergyRecords
+// - aerospaceStructuresRecords
+// - navigationMissionRecords
+// - flightSystemsReliabilityRecords
+// - flightMissionRecords
+
+
+// v0.20.0 project collections are created dynamically by Rocket Engineering and Flight Systems:
+// - rocketPropulsionSpaceflightAnalyses
+// - spaceflightSystemsRecords
+// - rocketSpaceflightValidationRecords
+// - propulsionFundamentalsRecords
+// - nozzleEngineRecords
+// - launchVehicleStagingRecords
+// - ascentDynamicsRecords
+// - orbitalMechanicsRecords
+// - spacecraftMissionRecords
+// - spaceflightReliabilityRecords
+// - missionDeltaVRecords
+
+
+// v0.20.0 project collections are created dynamically by the Microbiology Laboratory:
+// - microbiologyAnalyses
+// - microbiologyRecords
+// - microbiologyValidationRecords
+// - microbialGrowthRecords
+// - cultureKineticsRecords
+// - enumerationMicroscopyRecords
+// - environmentalMicrobiologyRecords
+// - antimicrobialScreeningRecords
+// - microbialEcologyRecords
+// - microbiologyAssayRecords
+// - microbiologyQcRecords
+;
+
+/* === assets/js/modules/workspace.js === */
+(function(w){'use strict';const Lab=w.SCLab=w.SCLab||{};
+const modules=[
+{id:'overview',label:'Overview',group:'Project',keywords:['dashboard','project','summary']},{id:'activity',label:'Activity',group:'Project',keywords:['history','audit','recent']},
+{id:'model-studio',label:'Model Studio',group:'Model',keywords:['model','equation','calibration','diagnostics','cross validation','ODE','response surface','optimization']},{id:'probabilistic-analysis',label:'Uncertainty & sensitivity',group:'Model',keywords:['uncertainty','probability','sensitivity','Monte Carlo','Sobol','Latin hypercube','confidence interval']},{id:'graph-studio',label:'Graph Studio',group:'Visualize',keywords:['graph','figure','chart','publication','SVG','PNG','heatmap','scatter','line','histogram','probabilistic']},
+{id:'scientific-feeds',label:'Observation board',group:'Observe',keywords:['feeds','USGS','NASA','PubMed','arXiv','events','observations']},{id:'climate-maps',label:'Climate maps',group:'Observe',keywords:['Earth observation','GIBS','temperature','precipitation','aerosol']},{id:'space-telescopes',label:'Space observations',group:'Observe',keywords:['JWST','Hubble','Chandra','NASA','astronomy']},{id:'marine-biology',label:'Marine biology',group:'Observe',keywords:['OBIS','ocean','species','biodiversity','taxon']},
+{id:'soil-organic-carbon',label:'Soil Organic Carbon',group:'Carbon & Nature',keywords:['SOC','soil carbon','bulk density','carbon stock','AFOLU','carbon farming','coarse fragments','Mg C/ha']},{id:'dataset-inspector',label:'Dataset inspector',group:'Analyze',keywords:['table','CSV','JSON','plot','filter','data quality']},{id:'chemistry',label:'Chemistry laboratory',group:'Analyze',keywords:['periodic table','stoichiometry','molar mass','reaction','solutions','acid base','thermochemistry','electrochemistry','kinetics','calibration']},{id:'physics',label:'Physics laboratory',group:'Analyze',keywords:['mechanics','waves','thermodynamics','fluids','optics','electromagnetism','circuits','signals','quantum','nuclear','particle physics','detector']},{id:'biology',label:'Biology laboratory',group:'Analyze',keywords:['cellular biology','molecular biology','genetics','genomics','sequence alignment','protein','enzyme kinetics','population genetics','ecology','physiology','computational biology']},{id:'astronomy',label:'Astronomy and astrophysics laboratory',group:'Analyze',keywords:['celestial coordinates','orbital mechanics','planetary science','stellar astrophysics','photometry','spectroscopy','galaxies','cosmology','telescopes','imaging']},{id:'materials',label:'Materials science and characterization laboratory',group:'Analyze',keywords:['mechanical properties','thermal transport','electrical properties','magnetism','optical characterization','XRD','crystallography','phase diagrams','diffusion','corrosion','polymers','composites','microscopy']},{id:'earth-systems',label:'Earth, climate, ocean, and marine systems laboratory',group:'Analyze',keywords:['geology','atmosphere','climate','hydrology','oceanography','marine ecology','remote sensing','hazards','carbon cycle','Earth systems']},{id:'energy-engineering',label:'Energy and engineering laboratory',group:'Analyze',keywords:['energy balance','solar','wind','hydro','storage','grid','thermal','hydrogen','emissions','LCOE','reliability','engineering']},{id:'visualization-studio',label:'Visualization and export studio',group:'Visualize',keywords:['chart','graph','SVG','PNG','PDF','CSV','Decision Studio','report','3D','4D','polytope','tesseract','scene']},{id:'code-studio',label:'Universal code switcher',group:'Analyze',keywords:['Python','R','Julia','JavaScript','TypeScript','SQL','C','C++','Fortran','Rust','Go','Haskell','method contract','source code']},{id:'science-engineering',label:'Science & engineering',group:'Analyze',keywords:['physics','biology','astronomy','materials','energy','spectrometry','calculator']},
+{id:'experiments',label:'Experiments',group:'Record',keywords:['method','procedure','result','test']},{id:'evidence-decisions',label:'Evidence & decisions',group:'Record',keywords:['evidence','hypothesis','decision','claim']},{id:'notebook',label:'Notebook',group:'Record',keywords:['note','observation','lab record']},{id:'documentation',label:'Documentation',group:'Record',keywords:['report','technical document','brief','export']},{id:'report-studio',label:'PDF Reports',group:'Record',keywords:['pdf','report','decision studio','handoff','brief','figure','audit']},
+{id:'workspace-data',label:'Workspace data',group:'System',keywords:['backup','restore','reset','clear notes','delete observations','settings']},{id:'source-registry',label:'Source registry',group:'System',keywords:['connector','license','coverage','freshness','provenance']},{id:'system-status',label:'Connector status',group:'System',keywords:['health','source','API','status']}];
+const quickTools=[{id:'periodic-table',label:'Periodic Table',kind:'chem-tab',module:'chemistry',tab:'periodic',keywords:['elements','atomic number','chemistry']},{id:'stoichiometry',label:'Stoichiometry',kind:'chem-tab',module:'chemistry',tab:'reactions',keywords:['balance equation','limiting reagent','yield']},{id:'acid-base',label:'Acid–Base Chemistry',kind:'chem-tab',module:'chemistry',tab:'acid-base',keywords:['pH','buffer','titration','Ka','Kb']},{id:'thermochemistry',label:'Thermochemistry',kind:'chem-tab',module:'chemistry',tab:'thermochemistry',keywords:['enthalpy','Gibbs','calorimetry','Hess']},{id:'electrochemistry',label:'Electrochemistry',kind:'chem-tab',module:'chemistry',tab:'electrochemistry',keywords:['Nernst','electrolysis','cell potential']},{id:'electromagnetism-studio',label:'Electromagnetism Studio',kind:'physics-tab',module:'physics',tab:'electromagnetism',keywords:['electric field','magnetic field','induction','Maxwell','waveguide']},{id:'particle-physics',label:'Particle Physics Studio',kind:'physics-tab',module:'physics',tab:'particle',keywords:['quarks','leptons','bosons','invariant mass','detector']},{id:'circuit-bench',label:'Circuit and Signal Bench',kind:'physics-tab',module:'physics',tab:'circuits',keywords:['RLC','FFT','filter','waveform','oscilloscope']},{id:'sequence-analysis',label:'Sequence Analysis',kind:'biology-tab',module:'biology',tab:'sequences',keywords:['DNA','RNA','alignment','ORF','motif','k-mer']},{id:'enzyme-kinetics',label:'Enzyme Kinetics',kind:'biology-tab',module:'biology',tab:'enzymes',keywords:['Michaelis-Menten','Hill','inhibition']},{id:'population-genetics',label:'Population Genetics',kind:'biology-tab',module:'biology',tab:'population',keywords:['Hardy-Weinberg','selection','drift','Jukes-Cantor']},{id:'ecology-analysis',label:'Ecology Analysis',kind:'biology-tab',module:'biology',tab:'ecology',keywords:['diversity','logistic growth','predator prey','mark recapture']},{id:'orbital-mechanics-lab',label:'Orbital Mechanics',kind:'astronomy-tab',module:'astronomy',tab:'orbits',keywords:['Kepler','vis-viva','Hohmann','Hill radius','Roche limit']},{id:'stellar-astrophysics',label:'Stellar Astrophysics',kind:'astronomy-tab',module:'astronomy',tab:'stellar',keywords:['luminosity','temperature','surface gravity','blackbody','main sequence']},{id:'astronomical-photometry',label:'Astronomical Photometry',kind:'astronomy-tab',module:'astronomy',tab:'photometry',keywords:['magnitude','flux','SNR','aperture']},{id:'cosmology-tools',label:'Cosmology Tools',kind:'astronomy-tab',module:'astronomy',tab:'cosmology',keywords:['Hubble','critical density','lookback time']},{id:'materials-characterization',label:'Materials Characterization',kind:'materials-tab',module:'materials',tab:'crystallography',keywords:['XRD','Bragg','Scherrer','lattice parameter','crystallite size']},{id:'mechanical-properties',label:'Mechanical Properties',kind:'materials-tab',module:'materials',tab:'mechanical',keywords:['stress','strain','fracture','fatigue','creep']},{id:'materials-microscopy',label:'Materials Microscopy',kind:'materials-tab',module:'materials',tab:'microscopy',keywords:['particle size','grain size','area fraction','image calibration']},{id:'earth-climate-analysis',label:'Earth and Climate Analysis',kind:'earth-tab',module:'earth-systems',tab:'climate',keywords:['climate trend','radiative forcing','degree days','aridity','sea level']},{id:'ocean-marine-analysis',label:'Ocean and Marine Systems',kind:'earth-tab',module:'earth-systems',tab:'ocean',keywords:['waves','tsunami','geostrophic','Ekman','salinity','marine ecology']},{id:'remote-hazards',label:'Remote Sensing and Hazards',kind:'earth-tab',module:'earth-systems',tab:'remote',keywords:['NDVI','NDWI','classification','brightness temperature','hazard recurrence']},{id:'energy-systems',label:'Energy Systems',kind:'energy-tab',module:'energy-engineering',tab:'balances',keywords:['energy balance','efficiency','capacity factor','load factor']},{id:'renewable-energy',label:'Renewable Energy',kind:'energy-tab',module:'energy-engineering',tab:'solar',keywords:['solar','wind','hydro','PV','turbine']},{id:'storage-grid',label:'Storage and Grid',kind:'energy-tab',module:'energy-engineering',tab:'storage',keywords:['battery','hydrogen','pumped storage','grid','power factor']},{id:'energy-economics',label:'Energy Economics and Reliability',kind:'energy-tab',module:'energy-engineering',tab:'economics',keywords:['LCOE','LCOS','NPV','IRR','reliability','availability']},{id:'spectrometry',label:'Spectrometry',kind:'analysis-tab',module:'science-engineering',tab:'spectrometry',keywords:['spectrum','peak','baseline']},{id:'dataset-inspector',label:'Dataset Inspector',kind:'module',module:'dataset-inspector',keywords:['CSV','table','chart','filter']},{id:'photon',label:'Photon Energy',kind:'calculator',module:'science-engineering',calculatorId:'photon',keywords:['wavelength','frequency','Planck']},{id:'rlc',label:'RLC Impedance',kind:'calculator',module:'science-engineering',calculatorId:'rlc',keywords:['electromagnetism','resonance','circuit']},{id:'orbit',label:'Orbital Mechanics',kind:'calculator',module:'science-engineering',calculatorId:'orbit',keywords:['astronomy','period','velocity']},{id:'uncertainty',label:'Uncertainty Propagation',kind:'calculator',module:'science-engineering',calculatorId:'uncertainty',keywords:['measurement','error']},{id:'pv',label:'Photovoltaic Output',kind:'calculator',module:'science-engineering',calculatorId:'pv',keywords:['energy','solar','power']}];
+const trace=[{key:'sourceSnapshots',label:'Sources',module:'source-registry',count:p=>new Set([...(p.sourceSnapshots||[]).map(x=>x.source),...(p.evidence||[]).map(x=>x.source||x.record?.source)].filter(Boolean)).size},{key:'observations',label:'Observations',module:'scientific-feeds',count:p=>(p.observations||[]).length},{key:'evidence',label:'Evidence',module:'evidence-decisions',count:p=>(p.evidence||[]).length},{key:'hypotheses',label:'Hypotheses',module:'evidence-decisions',count:p=>(p.hypotheses||[]).length},{key:'datasets',label:'Datasets',module:'dataset-inspector',count:p=>(p.datasets||[]).length},{key:'calculations',label:'Calculations',module:'science-engineering',count:p=>(p.calculations||[]).length},{key:'experiments',label:'Experiments',module:'experiments',count:p=>(p.experiments||[]).length},{key:'decisions',label:'Decisions',module:'evidence-decisions',count:p=>(p.decisions||[]).length},{key:'documents',label:'Documents',module:'documentation',count:p=>(p.documents||[]).length}];
+const norm=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+function search(query,defs){const q=norm(query);if(!q)return[];const calc=(defs||[]).map(def=>({id:def.id,label:def.name,group:def.domain,kind:'calculator',module:'science-engineering',calculatorId:def.id,keywords:[def.domain,...(def.fields||[]).map(f=>f[1])]}));return [...modules.map(x=>({...x,kind:'module'})),...quickTools,...calc].map(item=>{const h=norm([item.label,item.group,...(item.keywords||[])].join(' '));let score=norm(item.label)===q?100:norm(item.label).startsWith(q)?50:h.includes(q)?20:0;q.split(' ').forEach(t=>{if(t&&h.includes(t))score+=4});return{item,score}}).filter(r=>r.score>0).sort((a,b)=>b.score-a.score||a.item.label.localeCompare(b.item.label)).slice(0,12).map(r=>r.item)}
+const traceCounts=p=>trace.map(s=>({...s,value:s.count(p||{})}));
+const projectTotal=p=>['evidence','experiments','hypotheses','decisions','notes','calculations','documents','maps','mapViews','datasets','savedQueries','observations','sourceSnapshots','citations','chemicalRecords','reactions','spectra','calibrations','methods','physicsRecords','waveforms','circuitAnalyses','fieldModels','particleEvents','detectorAnalyses','nuclearRecords','opticalAnalyses','physicsValidationRecords','biologyRecords','biologicalSamples','sequences','alignments','proteinAnalyses','geneticAnalyses','populationAnalyses','ecologyAnalyses','physiologyRecords','biologyValidationRecords','astronomyRecords','celestialTargets','orbitalAnalyses','stellarAnalyses','photometryRecords','spectralAnalyses','galaxyAnalyses','cosmologyRecords','telescopeAnalyses','astronomyValidationRecords','materialsRecords','materialSamples','mechanicalRecords','thermalRecords','electricalRecords','magneticRecords','opticalRecords','crystallographyRecords','phaseRecords','corrosionRecords','polymerRecords','compositeRecords','microscopyRecords','materialsValidationRecords','earthRecords','geoscienceRecords','atmosphericRecords','climateRecords','hydrologyRecords','oceanRecords','marineSystemRecords','remoteSensingRecords','hazardRecords','carbonCycleRecords','earthValidationRecords','energyRecords','engineeringRecords','energySystemRecords','solarRecords','windRecords','hydroRecords','storageRecords','gridRecords','thermalSystemRecords','fuelHydrogenRecords','emissionsRecords','technoEconomicRecords','reliabilityRecords','energyValidationRecords','visualizations','dimensionalScenes','chartExports','analysisPackets','reports','reportFigures','reportExports','decisionStudioHandoffs','methodContracts','codeArtifacts','implementationComparisons','codeExecutions','languageComparisons','runtimeRecords','compilerRecords','executionJobs','benchmarkRuns','crossLanguageValidationRecords'].reduce((t,k)=>t+((p&&p[k])||[]).length,0);
+Lab.Workspace={modules,quickTools,trace,search,traceCounts,projectTotal};})(window);
+;
+
+/* === assets/js/modules/feeds.js === */
+(function (w, d) {
+  'use strict';
+
+  const Lab = w.SCLab = w.SCLab || {};
+  const U = Lab.util;
+
+  function url(source, params = {}) {
+    const base = (w.SCLabConfig?.restBase || '/wp-json/sc-lab/v1/') + `feeds/${encodeURIComponent(source)}`;
+    return `${base}?${new URLSearchParams(params).toString()}`;
+  }
+
+  function queryParams(source, q, limit) {
+    const params = { limit };
+    if (q) {
+      if (source === 'obis-marine') params.scientificName = q;
+      else params.q = q;
+    }
+    return params;
+  }
+
+  async function load(source, q = '', limit = 12) {
+    return U.fetchJson(url(source, queryParams(source, q, limit)), {
+      headers: { 'X-WP-Nonce': w.SCLabConfig?.nonce || '' }
+    });
+  }
+
+  function recordMeta(record) {
+    const location = record.location || {};
+    return [
+      ['Source', record.source || 'Unknown'],
+      ['Domain', record.domain || 'Science'],
+      ['Observed', U.fmt(record.observedAt)],
+      ['Retrieved', U.fmt(record.retrievedAt)],
+      ['Latitude', location.latitude ?? '—'],
+      ['Longitude', location.longitude ?? '—'],
+      ['Record ID', record.id || '—'],
+      ['Record type', record.type || record.kind || '—'],
+      ['Freshness', record.freshness || 'source supplied'],
+      ['License', record.license || 'See source terms']
+    ];
+  }
+
+  function inspectRecord(record, root) {
+    const dialog = root.querySelector('[data-record-dialog]');
+    if (!dialog || typeof dialog.showModal !== 'function') {
+      w.alert(`${record.title}\n\n${record.summary || record.abstract || ''}`);
+      return;
+    }
+
+    dialog.querySelector('[data-dialog-source]').textContent = `${record.source || 'Scientific source'} / ${record.domain || 'Record'}`;
+    dialog.querySelector('[data-dialog-title]').textContent = record.title || 'Scientific record';
+    dialog.querySelector('[data-dialog-summary]').textContent = record.summary || record.abstract || 'No summary supplied by the source.';
+    dialog.querySelector('[data-dialog-meta]').innerHTML = recordMeta(record)
+      .map(([key, value]) => `<div><dt>${U.esc(key)}</dt><dd>${U.esc(value)}</dd></div>`)
+      .join('');
+
+    const sourceLink = dialog.querySelector('[data-dialog-open-source]');
+    sourceLink.href = record.url || '#';
+    sourceLink.hidden = !record.url;
+
+    const siteLink = dialog.querySelector('[data-dialog-site-intelligence]');
+    const latitude = record.location?.latitude;
+    const longitude = record.location?.longitude;
+    const route = w.SCLabConfig?.routes?.siteIntelligence;
+    if (route && Number.isFinite(Number(latitude)) && Number.isFinite(Number(longitude))) {
+      const destination = new URL(route, w.location.href);
+      destination.searchParams.set('lat', latitude);
+      destination.searchParams.set('lon', longitude);
+      destination.searchParams.set('source', record.source || 'Lab');
+      destination.searchParams.set('record', record.id || '');
+      siteLink.href = destination.toString();
+      siteLink.hidden = false;
+    } else {
+      siteLink.hidden = true;
+    }
+
+    dialog.showModal();
+  }
+
+  function saveObservation(record, projects, root) {
+    projects.add('observations', { title:record.title, source:record.source, domain:record.domain, observedAt:record.observedAt, retrievedAt:record.retrievedAt, location:record.location||null, record }, `Observation saved: ${record.title}`);
+    projects.add('sourceSnapshots', { source:record.source, retrievedAt:record.retrievedAt, connectorId:record.connectorId||'', recordId:record.id, provenance:record.provenance||{} }, null);
+    U.toast(root, 'Observation saved to the project.');
+  }
+
+  function saveEvidence(record, projects, root) {
+    projects.add('evidence', {
+      title: record.title,
+      summary: record.summary || record.abstract || '',
+      source: record.source,
+      url: record.url,
+      observedAt: record.observedAt,
+      retrievedAt: record.retrievedAt,
+      record,
+      status: 'unreviewed'
+    }, `Evidence saved: ${record.title}`);
+    U.toast(root, 'Saved to evidence inbox.');
+  }
+
+  function citeNotebook(record, projects, root) {
+    projects.add('citations', { title:record.title, source:record.source, url:record.url, observedAt:record.observedAt, retrievedAt:record.retrievedAt }, null);
+    projects.add('notes', {
+      type: 'source-citation',
+      title: record.title,
+      body: `Source: ${record.source}\nURL: ${record.url || ''}\nObserved: ${record.observedAt || ''}\nRetrieved: ${record.retrievedAt || ''}\n\n${record.summary || record.abstract || ''}`,
+      tags: ['source', String(record.domain || 'science').toLowerCase()]
+    }, `Notebook citation added: ${record.title}`);
+    U.toast(root, 'Citation added to notebook.');
+  }
+
+  function createExperiment(record, projects, root) {
+    projects.add('experiments', {
+      title: `Investigate: ${record.title}`,
+      question: `What can be learned or tested from this ${record.domain || 'scientific'} record?`,
+      hypothesis: '',
+      method: `Review the source record, identify measurable variables, define controls or comparison data, and document the analysis method.\n\nSource: ${record.url || record.source}`,
+      status: 'planned',
+      sourceRecord: record
+    }, `Experiment created from scientific signal: ${record.title}`);
+    U.toast(root, 'Experiment created from signal.');
+  }
+
+  function card(record, projects, root, options = {}) {
+    const el = d.createElement('article');
+    el.className = options.compact ? 'sc-lab-signal-row' : 'sc-lab-feed-card';
+
+    if (options.compact) {
+      el.innerHTML = `
+        <div class="sc-lab-signal-source">${U.esc(record.source || 'Source')}</div>
+        <div class="sc-lab-signal-copy"><strong>${U.esc(record.title)}</strong><span>${U.esc(record.domain || 'Science')} · ${U.esc(U.fmt(record.observedAt))}</span></div>
+        <div class="sc-lab-signal-actions"><button class="sc-lab-text-button" data-inspect>Inspect</button><button class="sc-lab-text-button" data-save-evidence>Save</button></div>`;
+    } else {
+      const image = record.thumbnail ? `<img loading="lazy" src="${U.esc(record.thumbnail)}" alt="">` : '';
+      const sourceLink = record.url ? `<a class="sc-lab-text-button" href="${U.esc(record.url)}" target="_blank" rel="noopener">Open source</a>` : '';
+      const routed = (key,label) => {
+        const route = w.SCLabConfig?.routes?.[key];
+        if (!route) return '';
+        const destination = new URL(route, w.location.href);
+        destination.searchParams.set('source', record.source || 'Lab');
+        destination.searchParams.set('record', record.id || '');
+        destination.searchParams.set('title', record.title || '');
+        if (Number.isFinite(Number(record.location?.latitude))) destination.searchParams.set('lat', record.location.latitude);
+        if (Number.isFinite(Number(record.location?.longitude))) destination.searchParams.set('lon', record.location.longitude);
+        return `<a class="sc-lab-button" href="${U.esc(destination.toString())}">${U.esc(label)}</a>`;
+      };
+      el.innerHTML = `
+        ${image}
+        <div class="sc-lab-feed-card-body">
+          <span class="sc-lab-feed-domain">${U.esc(record.domain || 'Science')}</span>
+          <h4>${U.esc(record.title)}</h4>
+          <p>${U.esc((record.summary || record.abstract || '').slice(0, 330))}</p>
+          <div class="sc-lab-feed-meta">${U.esc(record.source)} · ${U.esc(U.fmt(record.observedAt))}</div>
+        </div>
+        <div class="sc-lab-card-actions">
+          <button class="sc-lab-button" data-inspect>Inspect</button>
+          ${sourceLink}
+          <button class="sc-lab-button" data-save-observation>Save observation</button>
+          <button class="sc-lab-button" data-save-evidence>Save evidence</button>
+          <button class="sc-lab-button" data-cite-note>Notebook</button>
+          <button class="sc-lab-button" data-open-dataset>Inspect dataset</button>
+          ${routed('siteIntelligence','Site Intelligence')}
+          ${routed('decisionStudio','Decision Studio')}
+          ${routed('workbench','Workbench')}
+          <button class="sc-lab-button sc-lab-button-primary" data-create-experiment>Create experiment</button>
+        </div>`;
+    }
+
+    el.querySelector('[data-inspect]')?.addEventListener('click', () => inspectRecord(record, root));
+    el.querySelector('[data-save-observation]')?.addEventListener('click', () => saveObservation(record, projects, root));
+    el.querySelector('[data-save-evidence]')?.addEventListener('click', () => saveEvidence(record, projects, root));
+    el.querySelector('[data-cite-note]')?.addEventListener('click', () => citeNotebook(record, projects, root));
+    el.querySelector('[data-open-dataset]')?.addEventListener('click', () => root.dispatchEvent(new CustomEvent('sc-lab:dataset',{detail:{records:[record],title:record.title,source:record.source}})));
+    el.querySelector('[data-create-experiment]')?.addEventListener('click', () => createExperiment(record, projects, root));
+    return el;
+  }
+
+  function render(target, records, projects, root, options = {}) {
+    target.innerHTML = '';
+    if (!records?.length) {
+      target.innerHTML = '<div class="sc-lab-data-note">No records returned.</div>';
+      return;
+    }
+    records.forEach(record => target.appendChild(card(record, projects, root, options)));
+  }
+
+  Lab.Feeds = { load, render, card, inspectRecord, saveObservation, saveEvidence, citeNotebook, createExperiment };
+})(window, document);
+;
+
+/* === assets/js/modules/project-workspace-v0280.js === */
+(function(W,D){'use strict';
+ const Lab=W.SCLab=W.SCLab||{},VERSION='0.28.0';
+ const state={version:VERSION,mounted:false,ready:false,lastError:null,lastAction:null};
+ const root=()=>D.querySelector('[data-lab-module="project-workspace"]');
+ const field=n=>root()?.querySelector(`[data-workspace-v0280-${n}]`);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const app=()=>root()?.closest('.sc-lab-app');
+ const store=()=>app()?._scLabProjects||(typeof Lab.Projects==='function'?new Lab.Projects():null);
+ function announce(message,tone='ready'){const n=field('status');if(n){n.textContent=message;n.dataset.tone=tone;}Lab.InterfaceV0265?.announce?.(message,tone);}
+ function types(project){return [...new Set((project?.recordIndex||[]).map(r=>r.recordType))].sort();}
+ function renderMetrics(project,projects){const d=projects.diagnostics();field('metrics').innerHTML=[['Workspace schema',d.version],['Projects',d.projectCount],['Indexed records',d.recordCount],['Relationships',d.relationshipCount],['Checkpoints',d.checkpointCount],['Storage',d.storageMode]].map(([a,b])=>`<article><span>${esc(a)}</span><strong>${esc(b)}</strong></article>`).join('');field('migration').innerHTML=`<strong>${project.workspace?.migrationState==='current'?'Current':'Migration required'}</strong><span>Project schema ${esc(project.schemaVersion)} · legacy baseline ${esc(project.legacySchemaVersion||'none')}</span><small>${(project.migrationHistory||[]).length} migration record(s); unknown fields are preserved.</small>`;field('storage').textContent=`${d.bytes.toLocaleString()} bytes in ${d.storageMode}; last saved ${d.lastSavedAt||'not recorded'}.`;}
+ function renderRecords(project,projects){const q=field('search').value||'',type=field('type').value||'';const rows=projects.search(q,{type});field('record-count').textContent=`${rows.length} record${rows.length===1?'':'s'}`;field('records').innerHTML=rows.slice(0,250).map(row=>`<tr><td><strong>${esc(row.title)}</strong><small>${esc(row.id)}</small></td><td>${esc(row.recordType)}</td><td>${esc(row.collection)}</td><td>${esc(row.status)}</td><td>${esc(row.updatedAt||'')}</td></tr>`).join('')||'<tr><td colspan="5">No matching records.</td></tr>';const current=field('type').value;field('type').innerHTML='<option value="">All record types</option>'+types(project).map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');field('type').value=current;}
+ function renderCheckpoints(project){const rows=project.projectCheckpoints||[];field('checkpoints').innerHTML=rows.map(cp=>`<article><div><strong>${esc(cp.label)}</strong><span>${esc(cp.createdAt)} · ${esc(cp.recordCount)} records</span></div><button type="button" class="sc-lab-button" data-restore-checkpoint="${esc(cp.id)}">Restore</button></article>`).join('')||'<div class="sc-lab-data-note">No checkpoints yet.</div>';}
+ function renderRelationships(project){const idx=project.recordIndex||[],opts=idx.slice(0,500).map(r=>`<option value="${esc(r.id)}">${esc(r.title)} · ${esc(r.recordType)}</option>`).join('');['from','to'].forEach(n=>{const s=field(n),v=s.value;s.innerHTML='<option value="">Choose a record</option>'+opts;s.value=v;});field('relationships').innerHTML=(project.relationships||[]).slice(0,100).map(r=>{const a=idx.find(x=>x.id===r.from),b=idx.find(x=>x.id===r.to);return `<article><span><strong>${esc(a?.title||r.from)}</strong> ${esc(r.type)} <strong>${esc(b?.title||r.to)}</strong></span><button type="button" class="sc-lab-button" data-remove-relationship="${esc(r.id)}">Remove</button></article>`;}).join('')||'<div class="sc-lab-data-note">No record relationships yet.</div>';}
+ function render(){const projects=store(),project=projects?.get();if(!projects||!project)return;renderMetrics(project,projects);renderRecords(project,projects);renderCheckpoints(project);renderRelationships(project);field('project-name').textContent=project.name;state.ready=true;announce(`Project workspace ready with ${project.recordIndex.length} indexed records.`);}
+ function bind(){const projects=store();if(!projects)throw new Error('Project store is unavailable.');field('search').addEventListener('input',()=>renderRecords(projects.get(),projects));field('type').addEventListener('change',()=>renderRecords(projects.get(),projects));field('checkpoint').addEventListener('click',()=>{const label=W.prompt('Checkpoint label','Manual checkpoint');if(!label)return;projects.createCheckpoint(label,'manual');state.lastAction='checkpoint';render();});field('export').addEventListener('click',()=>{projects.exportBundle();state.lastAction='export';announce('Project bundle exported.');});field('migrate').addEventListener('click',()=>{projects.migrateAll();state.lastAction='migration';render();announce('All local projects were normalized to schema 0.28.0.');});field('relationship-add').addEventListener('click',()=>{try{projects.link(field('from').value,field('to').value,field('relationship-type').value||'related-to');state.lastAction='relationship';render();}catch(e){announce(e.message,'error');}});field('import').addEventListener('click',()=>field('file').click());field('file').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{projects.import(await f.text(),'copy');state.lastAction='import';render();announce('Project bundle imported as a copy.');}catch(err){announce(err.message,'error');}e.target.value='';});root().addEventListener('click',e=>{const restore=e.target.closest('[data-restore-checkpoint]');if(restore&&W.confirm('Restore this checkpoint? Current project records will be replaced, while checkpoint history is preserved.')){try{projects.restoreCheckpoint(restore.dataset.restoreCheckpoint);state.lastAction='restore';render();}catch(err){announce(err.message,'error');}}const remove=e.target.closest('[data-remove-relationship]');if(remove){projects.unlink(remove.dataset.removeRelationship);render();}});projects.onChange(()=>render());}
+ function mount(){const r=root();if(!r||r.dataset.workspaceV0280Mounted==='1')return false;r.dataset.workspaceV0280Mounted='1';try{bind();render();state.mounted=true;return true;}catch(e){state.lastError=e.message;announce(e.message,'error');return false;}}
+ const observer=new MutationObserver(()=>mount());observer.observe(D.documentElement,{childList:true,subtree:true});if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',mount);else mount();
+ Lab.ProjectWorkspaceV0280={mount,status:()=>({...state,diagnostics:store()?.diagnostics?.()||null})};W.SCLabProjectWorkspaceV0280=Lab.ProjectWorkspaceV0280;
+})(window,document);
+;
+
+/* === assets/js/sc-lab-navigation-recovery-v015201.js === */
+(function(w,d){'use strict';
+  const VERSION='0.152.0.3';
+  function roots(){return Array.from(d.querySelectorAll('.sc-lab-app'));}
+  function canonical(id){return w.SCLabRuntimeV02631?.resolveModule?.(id)||String(id||'overview');}
+  function open(root,id){
+    id=canonical(id);
+    const panels=Array.from(root.querySelectorAll('[data-lab-module]'));
+    const panel=panels.find(p=>p.dataset.labModule===id);
+    if(!panel){w.SCLabRuntimeV02631?.navigate?.(id);return false;}
+    panels.forEach(p=>{p.hidden=p!==panel;});
+    root.querySelectorAll('[data-lab-module-button]').forEach(b=>b.classList.toggle('is-active',canonical(b.dataset.labModuleButton)===id));
+    root.dataset.activeModule=id;
+    root.dispatchEvent(new CustomEvent('sc-lab:module-opened',{detail:{module:id,recovery:true,version:VERSION}}));
+    root.querySelector('[data-lab-nav]')?.classList.remove('is-open');
+    root.querySelector('[data-lab-nav-toggle]')?.setAttribute('aria-expanded','false');
+    try{panel.scrollIntoView({block:'start'});}catch(_){}
+    return true;
+  }
+  function bind(root){
+    if(root.dataset.scLabNavigationRecoveryBound==='1')return;
+    root.dataset.scLabNavigationRecoveryBound='1';
+    root.addEventListener('click',e=>{
+      const b=e.target.closest('[data-lab-module-button],[data-open-module]');
+      if(!b||!root.contains(b))return;
+      // The full app owns navigation once it is healthy. Recovery only intervenes if it has not booted.
+      if(root.dataset.scLabAppReady==='1'&&root.dataset.scLabAppFailed!=='1')return;
+      const id=b.dataset.labModuleButton||b.dataset.openModule;
+      if(id){e.preventDefault();open(root,id);}
+    },true);
+    root.dataset.scLabNavigationRecoveryVersion=VERSION;
+    root.dataset.scLabPanelRetentionRecovery='1';
+  }
+  function boot(){roots().forEach(bind);}
+  if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
+  d.addEventListener('sc-lab:app-error',e=>{const r=e.detail?.root;if(r){bind(r);r.dataset.scLabNavigationRecoveryActive='1';}});
+  w.SCLabNavigationRecoveryV015201={version:VERSION,open,bind,status:()=>({version:VERSION,roots:roots().length,ready:roots().filter(r=>r.dataset.scLabAppReady==='1').length,failed:roots().filter(r=>r.dataset.scLabAppFailed==='1').length})};
+})(window,document);
+;
+
+/* === assets/js/sc-lab-app.js === */
 (function (w, d) {
   'use strict';
 
@@ -1049,3 +1634,4 @@
     });
   });
 })(window, document);
+;

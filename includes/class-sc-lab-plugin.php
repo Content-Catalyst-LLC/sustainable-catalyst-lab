@@ -26,6 +26,8 @@ final class SC_Lab_Plugin {
         new SC_Lab_REST();
         if (is_admin()) { new SC_Lab_Admin(); }
 
+        add_action('wp_enqueue_scripts', array($this, 'maybe_enqueue_frontend_assets'), 20);
+
         add_shortcode('sc_lab_app', array($this, 'shortcode_app'));
         add_shortcode('sc_lab_periodic_table', array($this, 'shortcode_focus'));
         add_shortcode('sc_lab_stoichiometry', array($this, 'shortcode_focus'));
@@ -66,251 +68,236 @@ final class SC_Lab_Plugin {
   add_shortcode('sc_lab_report_composer', array($this, 'shortcode_focus'));
     }
 
+
+    public function maybe_enqueue_frontend_assets() {
+        if (is_admin()) { return; }
+        global $post;
+        if ($post instanceof WP_Post && has_shortcode((string) $post->post_content, 'sc_lab_app')) {
+            $this->enqueue_assets();
+        }
+    }
+
     public function enqueue_assets() {
         if ($this->assets_enqueued) { return; }
         $this->assets_enqueued = true;
 
-        wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-app.css', array(), $this->asset_version('assets/css/sc-lab-app.css'));
-        wp_enqueue_style('sc-lab-release-console-v0821', SC_LAB_URL . 'assets/css/sc-lab-release-console-v0821.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-release-console-v0821.css'));
-  wp_enqueue_style('sc-lab-v0100', SC_LAB_URL . 'assets/css/sc-lab-v0100.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0100.css'));
-  wp_enqueue_style('sc-lab-v0110', SC_LAB_URL . 'assets/css/sc-lab-v0110.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0110.css')); wp_enqueue_style('sc-lab-v0120', SC_LAB_URL . 'assets/css/sc-lab-v0120.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v0120.css'));
-  wp_enqueue_style('sc-lab-v095', SC_LAB_URL . 'assets/css/sc-lab-v095.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-v095.css'));
-        wp_enqueue_style('sc-lab-numerical-methods-v0270', SC_LAB_URL . 'assets/css/sc-lab-numerical-methods-v0270.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-methods-v0270.css'));
-        wp_enqueue_style('sc-lab-numerical-validation-v0271', SC_LAB_URL . 'assets/css/sc-lab-numerical-validation-v0271.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-validation-v0271.css'));
-        wp_enqueue_style('sc-lab-long-jobs-v0272', SC_LAB_URL . 'assets/css/sc-lab-long-jobs-v0272.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-long-jobs-v0272.css'));
-        wp_enqueue_style('sc-lab-numerical-governance-v0273', SC_LAB_URL . 'assets/css/sc-lab-numerical-governance-v0273.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-governance-v0273.css'));
-        wp_enqueue_style('sc-lab-numerical-visualization-v0274', SC_LAB_URL . 'assets/css/sc-lab-numerical-visualization-v0274.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-numerical-visualization-v0274.css'));
-        wp_enqueue_style('sc-lab-project-workspace-v0280', SC_LAB_URL . 'assets/css/sc-lab-project-workspace-v0280.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-project-workspace-v0280.css'));
-        wp_enqueue_style('sc-lab-dataset-registry-v0281', SC_LAB_URL . 'assets/css/sc-lab-dataset-registry-v0281.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-dataset-registry-v0281.css'));
-        wp_enqueue_style('sc-lab-research-provenance-v0290', SC_LAB_URL . 'assets/css/sc-lab-research-provenance-v0290.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-provenance-v0290.css'));
-        wp_enqueue_style('sc-lab-research-quality-v0291', SC_LAB_URL . 'assets/css/sc-lab-research-quality-v0291.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-quality-v0291.css'));
-        wp_enqueue_style('sc-lab-external-discovery-v0292', SC_LAB_URL . 'assets/css/sc-lab-external-discovery-v0292.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-external-discovery-v0292.css'));
-        wp_enqueue_style('sc-lab-experiment-framework-v0300', SC_LAB_URL . 'assets/css/sc-lab-experiment-framework-v0300.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-experiment-framework-v0300.css'));
-        wp_enqueue_style('sc-lab-design-studies-v0301', SC_LAB_URL . 'assets/css/sc-lab-design-studies-v0301.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-design-studies-v0301.css'));
-        wp_enqueue_style('sc-lab-model-calibration-v0302', SC_LAB_URL . 'assets/css/sc-lab-model-calibration-v0302.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-model-calibration-v0302.css'));
-        wp_enqueue_style('sc-lab-scientific-visualization-engine-v0440', SC_LAB_URL . 'assets/css/sc-lab-scientific-visualization-engine-v0440.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-scientific-visualization-engine-v0440.css'));
-        wp_enqueue_style('sc-lab-scientific-visualization-engine-v0730', SC_LAB_URL . 'assets/css/sc-lab-scientific-visualization-engine-v0730.css', array('sc-lab-scientific-visualization-engine-v0440'), $this->asset_version('assets/css/sc-lab-scientific-visualization-engine-v0730.css'));
-        wp_enqueue_style('sc-lab-scientific-visualization-engine-v0740', SC_LAB_URL . 'assets/css/sc-lab-scientific-visualization-engine-v0740.css', array('sc-lab-scientific-visualization-engine-v0730'), $this->asset_version('assets/css/sc-lab-scientific-visualization-engine-v0740.css'));
-        wp_enqueue_style('sc-lab-scientific-visualization-design-system-v01140', SC_LAB_URL . 'assets/css/sc-lab-scientific-visualization-design-system-v01140.css', array('sc-lab-scientific-visualization-engine-v0740'), $this->asset_version('assets/css/sc-lab-scientific-visualization-design-system-v01140.css'));
-        wp_enqueue_style('sc-lab-advanced-statistical-uncertainty-graphics-v01150', SC_LAB_URL . 'assets/css/sc-lab-advanced-statistical-uncertainty-graphics-v01150.css', array('sc-lab-scientific-visualization-design-system-v01140'), $this->asset_version('assets/css/sc-lab-advanced-statistical-uncertainty-graphics-v01150.css'));
-        wp_enqueue_style('sc-lab-interactive-scientific-dashboards-v01160', SC_LAB_URL . 'assets/css/sc-lab-interactive-scientific-dashboards-v01160.css', array('sc-lab-advanced-statistical-uncertainty-graphics-v01150'), $this->asset_version('assets/css/sc-lab-interactive-scientific-dashboards-v01160.css'));
-        wp_enqueue_style('sc-lab-advanced-3d-4d-scientific-visualization-v01170', SC_LAB_URL . 'assets/css/sc-lab-advanced-3d-4d-scientific-visualization-v01170.css', array('sc-lab-interactive-scientific-dashboards-v01160'), $this->asset_version('assets/css/sc-lab-advanced-3d-4d-scientific-visualization-v01170.css'));
-        wp_enqueue_style('sc-lab-visual-research-narrative-figure-composer-v01180', SC_LAB_URL . 'assets/css/sc-lab-visual-research-narrative-figure-composer-v01180.css', array('sc-lab-advanced-3d-4d-scientific-visualization-v01170'), $this->asset_version('assets/css/sc-lab-visual-research-narrative-figure-composer-v01180.css'));
-        wp_enqueue_style('sc-lab-scientific-figure-intelligence-automatic-layout-v01190', SC_LAB_URL . 'assets/css/sc-lab-scientific-figure-intelligence-automatic-layout-v01190.css', array('sc-lab-visual-research-narrative-figure-composer-v01180'), $this->asset_version('assets/css/sc-lab-scientific-figure-intelligence-automatic-layout-v01190.css'));
-        wp_enqueue_style('sc-lab-exploratory-data-analysis-studio-v01200', SC_LAB_URL . 'assets/css/sc-lab-exploratory-data-analysis-studio-v01200.css', array('sc-lab-scientific-figure-intelligence-automatic-layout-v01190'), $this->asset_version('assets/css/sc-lab-exploratory-data-analysis-studio-v01200.css'));
-        wp_enqueue_style('sc-lab-statistical-modeling-diagnostics-studio-v01210', SC_LAB_URL . 'assets/css/sc-lab-statistical-modeling-diagnostics-studio-v01210.css', array('sc-lab-exploratory-data-analysis-studio-v01200'), $this->asset_version('assets/css/sc-lab-statistical-modeling-diagnostics-studio-v01210.css'));
-        wp_enqueue_style('sc-lab-bayesian-analysis-workbench-v01220', SC_LAB_URL . 'assets/css/sc-lab-bayesian-analysis-workbench-v01220.css', array('sc-lab-statistical-modeling-diagnostics-studio-v01210'), $this->asset_version('assets/css/sc-lab-bayesian-analysis-workbench-v01220.css'));
-        wp_enqueue_style('sc-lab-simulation-monte-carlo-research-studio-v01230', SC_LAB_URL . 'assets/css/sc-lab-simulation-monte-carlo-research-studio-v01230.css', array('sc-lab-bayesian-analysis-workbench-v01220'), $this->asset_version('assets/css/sc-lab-simulation-monte-carlo-research-studio-v01230.css'));
-        wp_enqueue_style('sc-lab-sensitivity-global-uncertainty-analysis-studio-v01240', SC_LAB_URL . 'assets/css/sc-lab-sensitivity-global-uncertainty-analysis-studio-v01240.css', array('sc-lab-simulation-monte-carlo-research-studio-v01230'), $this->asset_version('assets/css/sc-lab-sensitivity-global-uncertainty-analysis-studio-v01240.css'));
-        wp_enqueue_style('sc-lab-causal-research-studio-v01250', SC_LAB_URL . 'assets/css/sc-lab-causal-research-studio-v01250.css', array('sc-lab-sensitivity-global-uncertainty-analysis-studio-v01240'), $this->asset_version('assets/css/sc-lab-causal-research-studio-v01250.css'));
-        wp_enqueue_style('sc-lab-spatial-spatiotemporal-research-studio-v01260', SC_LAB_URL . 'assets/css/sc-lab-spatial-spatiotemporal-research-studio-v01260.css', array('sc-lab-causal-research-studio-v01250'), $this->asset_version('assets/css/sc-lab-spatial-spatiotemporal-research-studio-v01260.css'));
-        wp_enqueue_style('sc-lab-scientific-time-series-laboratory-v01270', SC_LAB_URL . 'assets/css/sc-lab-scientific-time-series-laboratory-v01270.css', array('sc-lab-spatial-spatiotemporal-research-studio-v01260'), $this->asset_version('assets/css/sc-lab-scientific-time-series-laboratory-v01270.css'));
-        wp_enqueue_style('sc-lab-experimental-design-power-analysis-v01280', SC_LAB_URL . 'assets/css/sc-lab-experimental-design-power-analysis-v01280.css', array('sc-lab-scientific-time-series-laboratory-v01270'), $this->asset_version('assets/css/sc-lab-experimental-design-power-analysis-v01280.css'));
-        wp_enqueue_style('sc-lab-research-reproduction-replication-studio-v01290', SC_LAB_URL . 'assets/css/sc-lab-research-reproduction-replication-studio-v01290.css', array('sc-lab-experimental-design-power-analysis-v01280'), $this->asset_version('assets/css/sc-lab-research-reproduction-replication-studio-v01290.css'));
-        wp_enqueue_style('sc-lab-scientific-research-project-studio-v01300', SC_LAB_URL . 'assets/css/sc-lab-scientific-research-project-studio-v01300.css', array('sc-lab-research-reproduction-replication-studio-v01290'), $this->asset_version('assets/css/sc-lab-scientific-research-project-studio-v01300.css'));
-        wp_enqueue_style('sc-lab-research-question-hypothesis-workspace-v01310', SC_LAB_URL . 'assets/css/sc-lab-research-question-hypothesis-workspace-v01310.css', array('sc-lab-scientific-research-project-studio-v01300'), $this->asset_version('assets/css/sc-lab-research-question-hypothesis-workspace-v01310.css'));
-        wp_enqueue_style('sc-lab-method-selection-intelligence-v01320', SC_LAB_URL . 'assets/css/sc-lab-method-selection-intelligence-v01320.css', array('sc-lab-research-question-hypothesis-workspace-v01310'), $this->asset_version('assets/css/sc-lab-method-selection-intelligence-v01320.css'));
-        wp_enqueue_style('sc-lab-statistical-assumption-diagnostic-intelligence-v01330', SC_LAB_URL . 'assets/css/sc-lab-statistical-assumption-diagnostic-intelligence-v01330.css', array('sc-lab-method-selection-intelligence-v01320'), $this->asset_version('assets/css/sc-lab-statistical-assumption-diagnostic-intelligence-v01330.css'));
-        wp_enqueue_style('sc-lab-evidence-synthesis-intelligence-ii-v01340', SC_LAB_URL . 'assets/css/sc-lab-evidence-synthesis-intelligence-ii-v01340.css', array('sc-lab-statistical-assumption-diagnostic-intelligence-v01330'), $this->asset_version('assets/css/sc-lab-evidence-synthesis-intelligence-ii-v01340.css'));
-        wp_enqueue_style('sc-lab-competing-model-hypothesis-analysis-v01350', SC_LAB_URL . 'assets/css/sc-lab-competing-model-hypothesis-analysis-v01350.css', array('sc-lab-evidence-synthesis-intelligence-ii-v01340'), $this->asset_version('assets/css/sc-lab-competing-model-hypothesis-analysis-v01350.css'));
-        wp_enqueue_style('sc-lab-scientific-data-binding-v0750', SC_LAB_URL . 'assets/css/sc-lab-scientific-data-binding-v0750.css', array('sc-lab-scientific-visualization-engine-v0740'), $this->asset_version('assets/css/sc-lab-scientific-data-binding-v0750.css'));
-        wp_enqueue_style('sc-lab-large-data-visualization-v0760', SC_LAB_URL . 'assets/css/sc-lab-large-data-visualization-v0760.css', array('sc-lab-scientific-data-binding-v0750'), $this->asset_version('assets/css/sc-lab-large-data-visualization-v0760.css'));
-        wp_enqueue_style('sc-lab-scientific-scene-v0770', SC_LAB_URL . 'assets/css/sc-lab-scientific-scene-v0770.css', array('sc-lab-large-data-visualization-v0760'), $this->asset_version('assets/css/sc-lab-scientific-scene-v0770.css'));
-        wp_enqueue_style('sc-lab-time-parameter-space-v0780', SC_LAB_URL . 'assets/css/sc-lab-time-parameter-space-v0780.css', array('sc-lab-scientific-scene-v0770'), $this->asset_version('assets/css/sc-lab-time-parameter-space-v0780.css'));
-        wp_enqueue_style('sc-lab-linked-views-v0790', SC_LAB_URL . 'assets/css/sc-lab-linked-views-v0790.css', array('sc-lab-time-parameter-space-v0780'), $this->asset_version('assets/css/sc-lab-linked-views-v0790.css'));
-        wp_enqueue_style('sc-lab-spatial-geospatial-raster-v0800', SC_LAB_URL . 'assets/css/sc-lab-spatial-geospatial-raster-v0800.css', array('sc-lab-linked-views-v0790'), $this->asset_version('assets/css/sc-lab-spatial-geospatial-raster-v0800.css'));
-        wp_enqueue_style('sc-lab-scientific-markup-v0810', SC_LAB_URL . 'assets/css/sc-lab-scientific-markup-v0810.css', array('sc-lab-spatial-geospatial-raster-v0800'), $this->asset_version('assets/css/sc-lab-scientific-markup-v0810.css'));
-        wp_enqueue_style('sc-lab-uncertainty-v0820', SC_LAB_URL . 'assets/css/sc-lab-uncertainty-v0820.css', array('sc-lab-scientific-markup-v0810'), $this->asset_version('assets/css/sc-lab-uncertainty-v0820.css'));
-        wp_enqueue_style('sc-lab-provenance-v0830', SC_LAB_URL . 'assets/css/sc-lab-provenance-v0830.css', array('sc-lab-uncertainty-v0820'), $this->asset_version('assets/css/sc-lab-provenance-v0830.css'));
-        wp_enqueue_style('sc-lab-gpu-v0840', SC_LAB_URL . 'assets/css/sc-lab-gpu-v0840.css', array('sc-lab-provenance-v0830'), $this->asset_version('assets/css/sc-lab-gpu-v0840.css'));
-        wp_enqueue_style('sc-lab-webgl2-v0850', SC_LAB_URL . 'assets/css/sc-lab-webgl2-v0850.css', array('sc-lab-gpu-v0840'), $this->asset_version('assets/css/sc-lab-webgl2-v0850.css'));
-        wp_enqueue_style('sc-lab-system-dynamics-v0860', SC_LAB_URL . 'assets/css/sc-lab-system-dynamics-v0860.css', array('sc-lab-webgl2-v0850'), $this->asset_version('assets/css/sc-lab-system-dynamics-v0860.css'));
-        wp_enqueue_style('sc-lab-webgpu-v0870', SC_LAB_URL . 'assets/css/sc-lab-webgpu-v0870.css', array('sc-lab-system-dynamics-v0860'), $this->asset_version('assets/css/sc-lab-webgpu-v0870.css'));
-        wp_enqueue_style('sc-lab-advanced-3d-v0880', SC_LAB_URL . 'assets/css/sc-lab-advanced-3d-v0880.css', array('sc-lab-webgpu-v0870'), $this->asset_version('assets/css/sc-lab-advanced-3d-v0880.css'));
-        wp_enqueue_style('sc-lab-model-studio-v0460', SC_LAB_URL . 'assets/css/sc-lab-model-studio-v0460.css', array('sc-lab-scientific-visualization-engine-v0440'), $this->asset_version('assets/css/sc-lab-model-studio-v0460.css'));
-        wp_enqueue_style('sc-lab-graph-studio-v0470', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-v0470.css', array('sc-lab-gpu-v0840'), $this->asset_version('assets/css/sc-lab-graph-studio-v0470.css'));
-        wp_enqueue_style('sc-lab-scientific-visualization-experience-v01351', SC_LAB_URL . 'assets/css/sc-lab-scientific-visualization-experience-v01351.css', array('sc-lab-graph-studio-v0470'), $this->asset_version('assets/css/sc-lab-scientific-visualization-experience-v01351.css'));
-        wp_enqueue_style('sc-lab-model-architecture-provenance-graphs-v01352', SC_LAB_URL . 'assets/css/sc-lab-model-architecture-provenance-graphs-v01352.css', array('sc-lab-scientific-visualization-experience-v01351'), $this->asset_version('assets/css/sc-lab-model-architecture-provenance-graphs-v01352.css'));
-        wp_enqueue_style('sc-lab-multi-view-scientific-analysis-canvas-v01353', SC_LAB_URL . 'assets/css/sc-lab-multi-view-scientific-analysis-canvas-v01353.css', array('sc-lab-model-architecture-provenance-graphs-v01352'), $this->asset_version('assets/css/sc-lab-multi-view-scientific-analysis-canvas-v01353.css'));
-        wp_enqueue_style('sc-lab-interactive-scientific-scene-drilldown-v01354', SC_LAB_URL . 'assets/css/sc-lab-interactive-scientific-scene-drilldown-v01354.css', array('sc-lab-multi-view-scientific-analysis-canvas-v01353'), $this->asset_version('assets/css/sc-lab-interactive-scientific-scene-drilldown-v01354.css'));
-        wp_enqueue_style('sc-lab-scientific-scene-linking-comparative-context-v01355', SC_LAB_URL . 'assets/css/sc-lab-scientific-scene-linking-comparative-context-v01355.css', array('sc-lab-interactive-scientific-scene-drilldown-v01354'), $this->asset_version('assets/css/sc-lab-scientific-scene-linking-comparative-context-v01355.css'));
-        wp_enqueue_style('sc-lab-reproducible-visual-analysis-sessions-v01356', SC_LAB_URL . 'assets/css/sc-lab-reproducible-visual-analysis-sessions-v01356.css', array('sc-lab-scientific-scene-linking-comparative-context-v01355'), $this->asset_version('assets/css/sc-lab-reproducible-visual-analysis-sessions-v01356.css'));
-        wp_enqueue_style('sc-lab-visual-research-narrative-findings-v01357', SC_LAB_URL . 'assets/css/sc-lab-visual-research-narrative-findings-v01357.css', array('sc-lab-reproducible-visual-analysis-sessions-v01356'), $this->asset_version('assets/css/sc-lab-visual-research-narrative-findings-v01357.css'));
-        wp_enqueue_style('sc-lab-research-review-critique-revision-v01358', SC_LAB_URL . 'assets/css/sc-lab-research-review-critique-revision-v01358.css', array('sc-lab-visual-research-narrative-findings-v01357'), $this->asset_version('assets/css/sc-lab-research-review-critique-revision-v01358.css'));
-        wp_enqueue_style('sc-lab-graph-studio-canonical-runtime-v013581', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-canonical-runtime-v013581.css', array('sc-lab-research-review-critique-revision-v01358'), $this->asset_version('assets/css/sc-lab-graph-studio-canonical-runtime-v013581.css'));
-        wp_enqueue_style('sc-lab-graph-studio-renderer-replacement-v013582', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-renderer-replacement-v013582.css', array('sc-lab-research-review-critique-revision-v01358'), $this->asset_version('assets/css/sc-lab-graph-studio-renderer-replacement-v013582.css'));
-        wp_enqueue_style('sc-lab-graph-studio-recovery-v013583', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-recovery-v013583.css', array('sc-lab-graph-studio-renderer-replacement-v013582'), $this->asset_version('assets/css/sc-lab-graph-studio-recovery-v013583.css'));
-        wp_enqueue_style('sc-lab-graph-studio-bootstrap-finalization-v0135831', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-bootstrap-finalization-v0135831.css', array('sc-lab-graph-studio-recovery-v013583'), $this->asset_version('assets/css/sc-lab-graph-studio-bootstrap-finalization-v0135831.css'));
-        wp_enqueue_style('sc-lab-graph-studio-live-binding-v013584', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-live-binding-v013584.css', array('sc-lab-graph-studio-bootstrap-finalization-v0135831'), $this->asset_version('assets/css/sc-lab-graph-studio-live-binding-v013584.css'));
-        // v0.135.8.5.1: legacy v0.135.8.4.1 provenance interaction CSS is not part of the canonical runtime.
-        wp_enqueue_style('sc-lab-graph-studio-native-provenance-v013585', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-native-provenance-v013585.css', array('sc-lab-graph-studio-live-binding-v013584'), $this->asset_version('assets/css/sc-lab-graph-studio-native-provenance-v013585.css'));
-        wp_enqueue_style('sc-lab-graph-studio-context-relationships-v0135853', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-context-relationships-v0135853.css', array('sc-lab-graph-studio-native-provenance-v013585'), $this->asset_version('assets/css/sc-lab-graph-studio-context-relationships-v0135853.css'));
-        wp_enqueue_style('sc-lab-graph-studio-object-explorer-v013590', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-object-explorer-v013590.css', array('sc-lab-graph-studio-context-relationships-v0135853'), $this->asset_version('assets/css/sc-lab-graph-studio-object-explorer-v013590.css'));
-        wp_enqueue_style('sc-lab-graph-studio-path-analysis-v0135100', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-path-analysis-v0135100.css', array('sc-lab-graph-studio-object-explorer-v013590'), $this->asset_version('assets/css/sc-lab-graph-studio-path-analysis-v0135100.css'));
-        wp_enqueue_style('sc-lab-graph-studio-competing-paths-v0135110', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-competing-paths-v0135110.css', array('sc-lab-graph-studio-path-analysis-v0135100'), $this->asset_version('assets/css/sc-lab-graph-studio-competing-paths-v0135110.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-threads-v0135120', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-threads-v0135120.css', array('sc-lab-graph-studio-competing-paths-v0135110'), $this->asset_version('assets/css/sc-lab-graph-studio-review-threads-v0135120.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-resolution-v0135130', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-resolution-v0135130.css', array('sc-lab-graph-studio-review-threads-v0135120'), $this->asset_version('assets/css/sc-lab-graph-studio-review-resolution-v0135130.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-audit-v0135140', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-audit-v0135140.css', array('sc-lab-graph-studio-review-resolution-v0135130'), $this->asset_version('assets/css/sc-lab-graph-studio-review-audit-v0135140.css'));
-        wp_enqueue_style('sc-lab-graph-studio-verification-artifacts-v0135150', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-verification-artifacts-v0135150.css', array('sc-lab-graph-studio-review-audit-v0135140'), $this->asset_version('assets/css/sc-lab-graph-studio-verification-artifacts-v0135150.css'));
-        wp_enqueue_style('sc-lab-graph-studio-revision-impact-v0135160', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-revision-impact-v0135160.css', array('sc-lab-graph-studio-verification-artifacts-v0135150'), $this->asset_version('assets/css/sc-lab-graph-studio-revision-impact-v0135160.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-reproduction-v0135170', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-reproduction-v0135170.css', array('sc-lab-graph-studio-revision-impact-v0135160'), $this->asset_version('assets/css/sc-lab-graph-studio-review-reproduction-v0135170.css'));
-        wp_enqueue_style('sc-lab-graph-studio-multi-reviewer-panels-v0135180', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-multi-reviewer-panels-v0135180.css', array('sc-lab-graph-studio-review-reproduction-v0135170'), $this->asset_version('assets/css/sc-lab-graph-studio-multi-reviewer-panels-v0135180.css'));
-        wp_enqueue_style('sc-lab-graph-studio-cross-review-synthesis-v0135190', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-cross-review-synthesis-v0135190.css', array('sc-lab-graph-studio-multi-reviewer-panels-v0135180'), $this->asset_version('assets/css/sc-lab-graph-studio-cross-review-synthesis-v0135190.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-closure-v0135200', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-closure-v0135200.css', array('sc-lab-graph-studio-cross-review-synthesis-v0135190'), $this->asset_version('assets/css/sc-lab-graph-studio-review-closure-v0135200.css'));
-        wp_enqueue_style('sc-lab-graph-studio-review-workspace-consolidation-v0135210', SC_LAB_URL . 'assets/css/sc-lab-graph-studio-review-workspace-consolidation-v0135210.css', array('sc-lab-graph-studio-review-closure-v0135200'), $this->asset_version('assets/css/sc-lab-graph-studio-review-workspace-consolidation-v0135210.css'));
-        wp_enqueue_style('sc-lab-probabilistic-analysis-v0480', SC_LAB_URL . 'assets/css/sc-lab-probabilistic-analysis-v0480.css', array('sc-lab-scientific-visualization-engine-v0440'), $this->asset_version('assets/css/sc-lab-probabilistic-analysis-v0480.css'));
-        wp_enqueue_style('sc-lab-interface-v0470', SC_LAB_URL . 'assets/css/sc-lab-interface-v0470.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-interface-v0470.css'));
-        wp_enqueue_style('sc-lab-presentation-v0481', SC_LAB_URL . 'assets/css/sc-lab-presentation-v0481.css', array('sc-lab-interface-v0470','sc-lab-graph-studio-v0470'), $this->asset_version('assets/css/sc-lab-presentation-v0481.css'));
-        wp_enqueue_style('sc-lab-contextual-navigation-v0483', SC_LAB_URL . 'assets/css/sc-lab-contextual-navigation-v0483.css', array('sc-lab-presentation-v0481'), $this->asset_version('assets/css/sc-lab-contextual-navigation-v0483.css'));
-        wp_enqueue_style('sc-lab-shared-model-handoff-v0490', SC_LAB_URL . 'assets/css/sc-lab-shared-model-handoff-v0490.css', array('sc-lab-model-studio-v0460','sc-lab-contextual-navigation-v0483'), $this->asset_version('assets/css/sc-lab-shared-model-handoff-v0490.css'));
-        wp_enqueue_style('sc-lab-reproducible-model-package-v0500', SC_LAB_URL . 'assets/css/sc-lab-reproducible-model-package-v0500.css', array('sc-lab-model-studio-v0460','sc-lab-shared-model-handoff-v0490'), $this->asset_version('assets/css/sc-lab-reproducible-model-package-v0500.css'));
-        wp_enqueue_style('sc-lab-advanced-statistical-modeling-v0510', SC_LAB_URL . 'assets/css/sc-lab-advanced-statistical-modeling-v0510.css', array('sc-lab-model-studio-v0460','sc-lab-reproducible-model-package-v0500'), $this->asset_version('assets/css/sc-lab-advanced-statistical-modeling-v0510.css'));
-        wp_enqueue_style('sc-lab-bayesian-inference-v0520', SC_LAB_URL . 'assets/css/sc-lab-bayesian-inference-v0520.css', array('sc-lab-advanced-statistical-modeling-v0510'), $this->asset_version('assets/css/sc-lab-bayesian-inference-v0520.css'));
-        wp_enqueue_style('sc-lab-correlated-uncertainty-v0530', SC_LAB_URL . 'assets/css/sc-lab-correlated-uncertainty-v0530.css', array('sc-lab-probabilistic-analysis-v0480'), $this->asset_version('assets/css/sc-lab-correlated-uncertainty-v0530.css'));
-        wp_enqueue_style('sc-lab-dynamic-systems-v0540', SC_LAB_URL . 'assets/css/sc-lab-dynamic-systems-v0540.css', array('sc-lab-model-studio-v0460'), $this->asset_version('assets/css/sc-lab-dynamic-systems-v0540.css'));
-        wp_enqueue_style('sc-lab-data-transformations-v0550', SC_LAB_URL . 'assets/css/sc-lab-data-transformations-v0550.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-data-transformations-v0550.css'));
-        wp_enqueue_style('sc-lab-advanced-experimental-design-v0560', SC_LAB_URL . 'assets/css/sc-lab-advanced-experimental-design-v0560.css', array('sc-lab-design-studies-v0301'), $this->asset_version('assets/css/sc-lab-advanced-experimental-design-v0560.css'));
-        wp_enqueue_style('sc-lab-scientific-workflow-composer-v0570', SC_LAB_URL . 'assets/css/sc-lab-scientific-workflow-composer-v0570.css', array('sc-lab-workflow-orchestration-v0321'), $this->asset_version('assets/css/sc-lab-scientific-workflow-composer-v0570.css'));
-        wp_enqueue_style('sc-lab-scientific-compute-hardening-v0580', SC_LAB_URL . 'assets/css/sc-lab-scientific-compute-hardening-v0580.css', array('sc-lab-scientific-workflow-composer-v0570'), $this->asset_version('assets/css/sc-lab-scientific-compute-hardening-v0580.css'));
-        wp_enqueue_style('sc-lab-scientific-audit-v0590', SC_LAB_URL . 'assets/css/sc-lab-scientific-audit-v0590.css', array('sc-lab-scientific-compute-hardening-v0580'), $this->asset_version('assets/css/sc-lab-scientific-audit-v0590.css'));
-        wp_enqueue_style('sc-lab-integrated-research-beta-v0600', SC_LAB_URL . 'assets/css/sc-lab-integrated-research-beta-v0600.css', array('sc-lab-scientific-audit-v0590'), $this->asset_version('assets/css/sc-lab-integrated-research-beta-v0600.css'));
-        wp_enqueue_style('sc-lab-beta-field-diagnostics-v0601', SC_LAB_URL . 'assets/css/sc-lab-beta-field-diagnostics-v0601.css', array('sc-lab-integrated-research-beta-v0600'), $this->asset_version('assets/css/sc-lab-beta-field-diagnostics-v0601.css'));
-        wp_enqueue_style('sc-lab-scientific-study-lifecycle-v0610', SC_LAB_URL . 'assets/css/sc-lab-scientific-study-lifecycle-v0610.css', array('sc-lab-beta-field-diagnostics-v0601'), $this->asset_version('assets/css/sc-lab-scientific-study-lifecycle-v0610.css'));
-        wp_enqueue_style('sc-lab-scientific-claims-v0620', SC_LAB_URL . 'assets/css/sc-lab-scientific-claims-v0620.css', array('sc-lab-scientific-study-lifecycle-v0610'), $this->asset_version('assets/css/sc-lab-scientific-claims-v0620.css'));
-        wp_enqueue_style('sc-lab-scientific-literature-v0630', SC_LAB_URL . 'assets/css/sc-lab-scientific-literature-v0630.css', array('sc-lab-scientific-claims-v0620'), $this->asset_version('assets/css/sc-lab-scientific-literature-v0630.css'));
-        wp_enqueue_style('sc-lab-evidence-synthesis-v0640', SC_LAB_URL . 'assets/css/sc-lab-evidence-synthesis-v0640.css', array('sc-lab-scientific-literature-v0630'), $this->asset_version('assets/css/sc-lab-evidence-synthesis-v0640.css'));
-        wp_enqueue_style('sc-lab-evidence-grading-v0650', SC_LAB_URL . 'assets/css/sc-lab-evidence-grading-v0650.css', array('sc-lab-evidence-synthesis-v0640'), $this->asset_version('assets/css/sc-lab-evidence-grading-v0650.css'));
-        wp_enqueue_style('sc-lab-scientific-argumentation-v0660', SC_LAB_URL . 'assets/css/sc-lab-scientific-argumentation-v0660.css', array('sc-lab-evidence-grading-v0650'), $this->asset_version('assets/css/sc-lab-scientific-argumentation-v0660.css'));
-        wp_enqueue_style('sc-lab-causal-inference-v0670', SC_LAB_URL . 'assets/css/sc-lab-causal-inference-v0670.css', array('sc-lab-scientific-argumentation-v0660'), $this->asset_version('assets/css/sc-lab-causal-inference-v0670.css'));
-        wp_enqueue_style('sc-lab-hierarchical-modeling-v0680', SC_LAB_URL . 'assets/css/sc-lab-hierarchical-modeling-v0680.css', array('sc-lab-causal-inference-v0670'), $this->asset_version('assets/css/sc-lab-hierarchical-modeling-v0680.css'));
-        wp_enqueue_style('sc-lab-scientific-theory-v0690', SC_LAB_URL . 'assets/css/sc-lab-scientific-theory-v0690.css', array('sc-lab-hierarchical-modeling-v0680'), $this->asset_version('assets/css/sc-lab-scientific-theory-v0690.css'));
-        wp_enqueue_style('sc-lab-preregistration-v0700', SC_LAB_URL . 'assets/css/sc-lab-preregistration-v0700.css', array('sc-lab-scientific-theory-v0690'), $this->asset_version('assets/css/sc-lab-preregistration-v0700.css'));
-        wp_enqueue_style('sc-lab-advanced-visualization-front-door-v0710', SC_LAB_URL . 'assets/css/sc-lab-advanced-visualization-front-door-v0710.css', array('sc-lab-preregistration-v0700','sc-lab-presentation-v0481'), $this->asset_version('assets/css/sc-lab-advanced-visualization-front-door-v0710.css'));
-        wp_enqueue_style('sc-lab-distributed-dispatcher-v0310', SC_LAB_URL . 'assets/css/sc-lab-distributed-dispatcher-v0310.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-distributed-dispatcher-v0310.css'));
-        wp_enqueue_style('sc-lab-persistent-queue-v0311', SC_LAB_URL . 'assets/css/sc-lab-persistent-queue-v0311.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-persistent-queue-v0311.css'));
-        wp_enqueue_style('sc-lab-worker-agent-v0312', SC_LAB_URL . 'assets/css/sc-lab-worker-agent-v0312.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-worker-agent-v0312.css'));
-        wp_enqueue_style('sc-lab-artifact-transport-v0313', SC_LAB_URL . 'assets/css/sc-lab-artifact-transport-v0313.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-artifact-transport-v0313.css'));
-        wp_enqueue_style('sc-lab-dispatcher-operations-v0314', SC_LAB_URL . 'assets/css/sc-lab-dispatcher-operations-v0314.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-dispatcher-operations-v0314.css'));
-        wp_enqueue_style('sc-lab-workflow-orchestration-v0321', SC_LAB_URL . 'assets/css/sc-lab-workflow-orchestration-v0321.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-workflow-orchestration-v0321.css'));
-        wp_enqueue_style('sc-lab-workflow-automation-v0322', SC_LAB_URL . 'assets/css/sc-lab-workflow-automation-v0322.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-workflow-automation-v0322.css'));
-        wp_enqueue_style('sc-lab-experiment-campaigns-v0331', SC_LAB_URL . 'assets/css/sc-lab-experiment-campaigns-v0331.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-experiment-campaigns-v0331.css'));
-        wp_enqueue_style('sc-lab-closed-loop-campaigns-v0332', SC_LAB_URL . 'assets/css/sc-lab-closed-loop-campaigns-v0332.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-closed-loop-campaigns-v0332.css'));
-        wp_enqueue_style('sc-lab-model-registry-v0340', SC_LAB_URL . 'assets/css/sc-lab-model-registry-v0340.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-model-registry-v0340.css'));
-        wp_enqueue_style('sc-lab-ensemble-uncertainty-v0341', SC_LAB_URL . 'assets/css/sc-lab-ensemble-uncertainty-v0341.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-ensemble-uncertainty-v0341.css'));
-        wp_enqueue_style('sc-lab-surrogate-reduced-order-v0342', SC_LAB_URL . 'assets/css/sc-lab-surrogate-reduced-order-v0342.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-surrogate-reduced-order-v0342.css'));
-        wp_enqueue_style('sc-lab-team-workspaces-v0350', SC_LAB_URL . 'assets/css/sc-lab-team-workspaces-v0350.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-team-workspaces-v0350.css'));
-        wp_enqueue_style('sc-lab-workspace-review-v0351', SC_LAB_URL . 'assets/css/sc-lab-workspace-review-v0351.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-workspace-review-v0351.css'));
-        wp_enqueue_style('sc-lab-workspace-versioning-v0352', SC_LAB_URL . 'assets/css/sc-lab-workspace-versioning-v0352.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-workspace-versioning-v0352.css'));
-        wp_enqueue_style('sc-lab-artifact-repository-v0360', SC_LAB_URL . 'assets/css/sc-lab-artifact-repository-v0360.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-artifact-repository-v0360.css'));
-        wp_enqueue_style('sc-lab-institutional-node-federation-v0361', SC_LAB_URL . 'assets/css/sc-lab-institutional-node-federation-v0361.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-institutional-node-federation-v0361.css'));
-        wp_enqueue_style('sc-lab-offline-edge-sync-v0362', SC_LAB_URL . 'assets/css/sc-lab-offline-edge-sync-v0362.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-offline-edge-sync-v0362.css'));
-        wp_enqueue_style('sc-lab-publication-studio-v0370', SC_LAB_URL . 'assets/css/sc-lab-publication-studio-v0370.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-publication-studio-v0370.css'));
-        wp_enqueue_style('sc-lab-manuscript-assembly-v0371', SC_LAB_URL . 'assets/css/sc-lab-manuscript-assembly-v0371.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-manuscript-assembly-v0371.css'));
-        wp_enqueue_style('sc-lab-public-reproduction-v0372', SC_LAB_URL . 'assets/css/sc-lab-public-reproduction-v0372.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-public-reproduction-v0372.css'));
-        wp_enqueue_style('sc-lab-research-interoperability-v0380', SC_LAB_URL . 'assets/css/sc-lab-research-interoperability-v0380.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-interoperability-v0380.css'));
-        wp_enqueue_style('sc-lab-typed-cross-product-handoffs-v0381', SC_LAB_URL . 'assets/css/sc-lab-typed-cross-product-handoffs-v0381.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-typed-cross-product-handoffs-v0381.css'));
-        wp_enqueue_style('sc-lab-public-research-integrations-v0382', SC_LAB_URL . 'assets/css/sc-lab-public-research-integrations-v0382.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-public-research-integrations-v0382.css'));
-        wp_enqueue_style('sc-lab-institutional-governance-v0390', SC_LAB_URL . 'assets/css/sc-lab-institutional-governance-v0390.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-institutional-governance-v0390.css'));
-        wp_enqueue_style('sc-lab-security-privacy-v0391', SC_LAB_URL . 'assets/css/sc-lab-security-privacy-v0391.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-security-privacy-v0391.css'));
-        wp_enqueue_style('sc-lab-multi-instance-operations-v0392', SC_LAB_URL . 'assets/css/sc-lab-multi-instance-operations-v0392.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-multi-instance-operations-v0392.css'));
-        wp_enqueue_style('sc-lab-performance-chaos-v0393', SC_LAB_URL . 'assets/css/sc-lab-performance-chaos-v0393.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-performance-chaos-v0393.css'));
-        wp_enqueue_style('sc-lab-connected-platform-beta-v0400', SC_LAB_URL . 'assets/css/sc-lab-connected-platform-beta-v0400.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-connected-platform-beta-v0400.css'));
-        wp_enqueue_style('sc-lab-interface-finalization-v0401', SC_LAB_URL . 'assets/css/sc-lab-interface-finalization-v0401.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-interface-finalization-v0401.css'));
-        wp_enqueue_style('sc-lab-public-release-hardening-v0402', SC_LAB_URL . 'assets/css/sc-lab-public-release-hardening-v0402.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-public-release-hardening-v0402.css'));
-        wp_enqueue_style('sc-lab-connected-platform-v1000', SC_LAB_URL . 'assets/css/sc-lab-connected-platform-v1000.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-connected-platform-v1000.css'));
-        wp_enqueue_style('sc-lab-reproducible-runs-v0282', SC_LAB_URL . 'assets/css/sc-lab-reproducible-runs-v0282.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-reproducible-runs-v0282.css'));
-        wp_enqueue_style('sc-lab-soil-organic-carbon-v0890', SC_LAB_URL . 'assets/css/sc-lab-soil-organic-carbon-v0890.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-soil-organic-carbon-v0890.css'));
-        wp_enqueue_style('sc-lab-soil-carbon-sampling-v0900', SC_LAB_URL . 'assets/css/sc-lab-soil-carbon-sampling-v0900.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-soil-carbon-sampling-v0900.css'));
-        wp_enqueue_style('sc-lab-soil-carbon-change-v0910', SC_LAB_URL . 'assets/css/sc-lab-soil-carbon-change-v0910.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-soil-carbon-change-v0910.css'));
-        wp_enqueue_style('sc-lab-soil-carbon-uncertainty-v0920', SC_LAB_URL . 'assets/css/sc-lab-soil-carbon-uncertainty-v0920.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-soil-carbon-uncertainty-v0920.css'));
-        wp_enqueue_style('sc-lab-soil-carbon-scenarios-v0930', SC_LAB_URL . 'assets/css/sc-lab-soil-carbon-scenarios-v0930.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-soil-carbon-scenarios-v0930.css'));
-        wp_enqueue_style('sc-lab-whole-farm-ghg-v0940', SC_LAB_URL . 'assets/css/sc-lab-whole-farm-ghg-v0940.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-whole-farm-ghg-v0940.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-registry-v0950', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-registry-v0950.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-registry-v0950.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-protocol-v0960', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-protocol-v0960.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-protocol-v0960.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-monitoring-v0970', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-monitoring-v0970.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-monitoring-v0970.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-uncertainty-v0980', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-uncertainty-v0980.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-uncertainty-v0980.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-verification-ledger-v0990', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-verification-ledger-v0990.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-verification-ledger-v0990.css'));
-        wp_enqueue_style('sc-lab-carbon-mrv-reporting-v01000', SC_LAB_URL . 'assets/css/sc-lab-carbon-mrv-reporting-v01000.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-carbon-mrv-reporting-v01000.css'));
-        wp_enqueue_style('sc-lab-research-program-intelligence-v01380', SC_LAB_URL . 'assets/css/sc-lab-research-program-intelligence-v01380.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-research-program-intelligence-v01380.css'));
-        wp_enqueue_style('sc-lab-scholarly-study-original-research-package-v01390', SC_LAB_URL . 'assets/css/sc-lab-scholarly-study-original-research-package-v01390.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-scholarly-study-original-research-package-v01390.css'));
-        wp_enqueue_style('sc-lab-scientific-research-operating-system-v01400', SC_LAB_URL . 'assets/css/sc-lab-scientific-research-operating-system-v01400.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-scientific-research-operating-system-v01400.css'));
-        wp_enqueue_style('sc-lab-machine-learning-experiment-workspace-v01410', SC_LAB_URL . 'assets/css/sc-lab-machine-learning-experiment-workspace-v01410.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-machine-learning-experiment-workspace-v01410.css'));
-        wp_enqueue_style('sc-lab-neural-architecture-training-configuration-v01411', SC_LAB_URL . 'assets/css/sc-lab-neural-architecture-training-configuration-v01411.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-neural-architecture-training-configuration-v01411.css'));
-        wp_enqueue_style('sc-lab-training-curves-metrics-checkpoint-visualization-v01412', SC_LAB_URL . 'assets/css/sc-lab-training-curves-metrics-checkpoint-visualization-v01412.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-training-curves-metrics-checkpoint-visualization-v01412.css'));
-        wp_enqueue_style('sc-lab-model-comparison-experiment-matrix-v01413', SC_LAB_URL . 'assets/css/sc-lab-model-comparison-experiment-matrix-v01413.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-model-comparison-experiment-matrix-v01413.css'));
-        wp_enqueue_style('sc-lab-hyperparameter-study-search-results-v01414', SC_LAB_URL . 'assets/css/sc-lab-hyperparameter-study-search-results-v01414.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-hyperparameter-study-search-results-v01414.css'));
-        wp_enqueue_style('sc-lab-ablation-study-framework-v01415', SC_LAB_URL . 'assets/css/sc-lab-ablation-study-framework-v01415.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-ablation-study-framework-v01415.css'));
-        wp_enqueue_style('sc-lab-neural-explainability-workspace-v01416', SC_LAB_URL . 'assets/css/sc-lab-neural-explainability-workspace-v01416.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-neural-explainability-workspace-v01416.css'));
-        wp_enqueue_style('sc-lab-embedding-explorer-v01417', SC_LAB_URL . 'assets/css/sc-lab-embedding-explorer-v01417.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-embedding-explorer-v01417.css'));
-        wp_enqueue_style('sc-lab-reproducible-neural-research-package-v01418', SC_LAB_URL . 'assets/css/sc-lab-reproducible-neural-research-package-v01418.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-reproducible-neural-research-package-v01418.css'));
-        wp_enqueue_style('sc-lab-integrated-neural-research-workspace-v01420', SC_LAB_URL . 'assets/css/sc-lab-integrated-neural-research-workspace-v01420.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-integrated-neural-research-workspace-v01420.css'));
-        wp_enqueue_style('sc-lab-computational-linguistics-research-workspace-v01430', SC_LAB_URL . 'assets/css/sc-lab-computational-linguistics-research-workspace-v01430.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-computational-linguistics-research-workspace-v01430.css'));
-        wp_enqueue_style('sc-lab-statistical-econometric-research-workspace-v01440', SC_LAB_URL . 'assets/css/sc-lab-statistical-econometric-research-workspace-v01440.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-statistical-econometric-research-workspace-v01440.css'));
-        wp_enqueue_style('sc-lab-simulation-computational-experiment-workspace-v01450', SC_LAB_URL . 'assets/css/sc-lab-simulation-computational-experiment-workspace-v01450.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-simulation-computational-experiment-workspace-v01450.css'));
-        wp_enqueue_style('sc-lab-graph-network-science-research-workspace-v01460', SC_LAB_URL . 'assets/css/sc-lab-graph-network-science-research-workspace-v01460.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-graph-network-science-research-workspace-v01460.css'));
-        wp_enqueue_style('sc-lab-graph-machine-learning-experiment-workspace-v01470', SC_LAB_URL . 'assets/css/sc-lab-graph-machine-learning-experiment-workspace-v01470.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-graph-machine-learning-experiment-workspace-v01470.css'));
-        wp_enqueue_style('sc-lab-multimodal-scientific-experiment-workspace-v01480', SC_LAB_URL . 'assets/css/sc-lab-multimodal-scientific-experiment-workspace-v01480.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-multimodal-scientific-experiment-workspace-v01480.css'));
-        wp_enqueue_style('sc-lab-scientific-model-validation-benchmark-laboratory-v01490', SC_LAB_URL . 'assets/css/sc-lab-scientific-model-validation-benchmark-laboratory-v01490.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-scientific-model-validation-benchmark-laboratory-v01490.css'));
-        wp_enqueue_style('sc-lab-integrated-computational-research-laboratory-v01500', SC_LAB_URL . 'assets/css/sc-lab-integrated-computational-research-laboratory-v01500.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-integrated-computational-research-laboratory-v01500.css'));
-        wp_enqueue_style('sc-lab-scientific-workflow-experiment-orchestration-v01510', SC_LAB_URL . 'assets/css/sc-lab-scientific-workflow-experiment-orchestration-v01510.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-scientific-workflow-experiment-orchestration-v01510.css'));
-        wp_enqueue_style('sc-lab-cross-workspace-research-dependency-graph-v01520', SC_LAB_URL . 'assets/css/sc-lab-cross-workspace-research-dependency-graph-v01520.css', array('sc-lab-app'), $this->asset_version('assets/css/sc-lab-cross-workspace-research-dependency-graph-v01520.css'));
+        // v0.152.0.4: consolidate the 183-style front door into one immutable bundle.
+        // Legacy handles remain registered as zero-request aliases so historical dependencies resolve.
+        wp_enqueue_style('sc-lab-app', SC_LAB_URL . 'assets/css/sc-lab-ui-bundle-v015204.css', array(), $this->asset_version('assets/css/sc-lab-ui-bundle-v015204.css'));
+        wp_register_style('sc-lab-release-console-v0821', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-v0100', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-v0110', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-v0120', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-v095', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-numerical-methods-v0270', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-numerical-validation-v0271', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-long-jobs-v0272', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-numerical-governance-v0273', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-numerical-visualization-v0274', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-project-workspace-v0280', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-dataset-registry-v0281', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-provenance-v0290', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-quality-v0291', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-external-discovery-v0292', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-experiment-framework-v0300', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-design-studies-v0301', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-model-calibration-v0302', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-visualization-engine-v0440', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-visualization-engine-v0730', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-visualization-engine-v0740', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-visualization-design-system-v01140', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-statistical-uncertainty-graphics-v01150', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-interactive-scientific-dashboards-v01160', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-3d-4d-scientific-visualization-v01170', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-visual-research-narrative-figure-composer-v01180', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-figure-intelligence-automatic-layout-v01190', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-exploratory-data-analysis-studio-v01200', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-statistical-modeling-diagnostics-studio-v01210', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-bayesian-analysis-workbench-v01220', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-simulation-monte-carlo-research-studio-v01230', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-sensitivity-global-uncertainty-analysis-studio-v01240', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-causal-research-studio-v01250', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-spatial-spatiotemporal-research-studio-v01260', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-time-series-laboratory-v01270', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-experimental-design-power-analysis-v01280', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-reproduction-replication-studio-v01290', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-research-project-studio-v01300', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-question-hypothesis-workspace-v01310', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-method-selection-intelligence-v01320', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-statistical-assumption-diagnostic-intelligence-v01330', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-evidence-synthesis-intelligence-ii-v01340', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-competing-model-hypothesis-analysis-v01350', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-data-binding-v0750', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-large-data-visualization-v0760', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-scene-v0770', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-time-parameter-space-v0780', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-linked-views-v0790', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-spatial-geospatial-raster-v0800', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-markup-v0810', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-uncertainty-v0820', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-provenance-v0830', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-gpu-v0840', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-webgl2-v0850', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-system-dynamics-v0860', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-webgpu-v0870', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-3d-v0880', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-model-studio-v0460', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-v0470', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-visualization-experience-v01351', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-model-architecture-provenance-graphs-v01352', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-multi-view-scientific-analysis-canvas-v01353', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-interactive-scientific-scene-drilldown-v01354', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-scene-linking-comparative-context-v01355', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-reproducible-visual-analysis-sessions-v01356', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-visual-research-narrative-findings-v01357', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-review-critique-revision-v01358', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-canonical-runtime-v013581', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-renderer-replacement-v013582', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-recovery-v013583', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-bootstrap-finalization-v0135831', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-live-binding-v013584', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-native-provenance-v013585', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-context-relationships-v0135853', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-object-explorer-v013590', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-path-analysis-v0135100', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-competing-paths-v0135110', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-threads-v0135120', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-resolution-v0135130', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-audit-v0135140', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-verification-artifacts-v0135150', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-revision-impact-v0135160', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-reproduction-v0135170', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-multi-reviewer-panels-v0135180', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-cross-review-synthesis-v0135190', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-closure-v0135200', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-studio-review-workspace-consolidation-v0135210', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-probabilistic-analysis-v0480', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-interface-v0470', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-presentation-v0481', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-contextual-navigation-v0483', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-shared-model-handoff-v0490', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-reproducible-model-package-v0500', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-statistical-modeling-v0510', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-bayesian-inference-v0520', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-correlated-uncertainty-v0530', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-dynamic-systems-v0540', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-data-transformations-v0550', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-experimental-design-v0560', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-workflow-composer-v0570', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-compute-hardening-v0580', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-audit-v0590', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-integrated-research-beta-v0600', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-beta-field-diagnostics-v0601', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-study-lifecycle-v0610', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-claims-v0620', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-literature-v0630', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-evidence-synthesis-v0640', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-evidence-grading-v0650', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-argumentation-v0660', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-causal-inference-v0670', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-hierarchical-modeling-v0680', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-theory-v0690', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-preregistration-v0700', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-advanced-visualization-front-door-v0710', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-distributed-dispatcher-v0310', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-persistent-queue-v0311', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-worker-agent-v0312', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-artifact-transport-v0313', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-dispatcher-operations-v0314', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-workflow-orchestration-v0321', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-workflow-automation-v0322', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-experiment-campaigns-v0331', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-closed-loop-campaigns-v0332', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-model-registry-v0340', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-ensemble-uncertainty-v0341', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-surrogate-reduced-order-v0342', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-team-workspaces-v0350', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-workspace-review-v0351', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-workspace-versioning-v0352', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-artifact-repository-v0360', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-institutional-node-federation-v0361', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-offline-edge-sync-v0362', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-publication-studio-v0370', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-manuscript-assembly-v0371', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-public-reproduction-v0372', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-interoperability-v0380', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-typed-cross-product-handoffs-v0381', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-public-research-integrations-v0382', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-institutional-governance-v0390', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-security-privacy-v0391', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-multi-instance-operations-v0392', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-performance-chaos-v0393', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-connected-platform-beta-v0400', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-interface-finalization-v0401', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-public-release-hardening-v0402', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-connected-platform-v1000', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-reproducible-runs-v0282', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-soil-organic-carbon-v0890', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-soil-carbon-sampling-v0900', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-soil-carbon-change-v0910', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-soil-carbon-uncertainty-v0920', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-soil-carbon-scenarios-v0930', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-whole-farm-ghg-v0940', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-registry-v0950', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-protocol-v0960', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-monitoring-v0970', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-uncertainty-v0980', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-verification-ledger-v0990', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-carbon-mrv-reporting-v01000', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-research-program-intelligence-v01380', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scholarly-study-original-research-package-v01390', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-research-operating-system-v01400', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-machine-learning-experiment-workspace-v01410', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-neural-architecture-training-configuration-v01411', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-training-curves-metrics-checkpoint-visualization-v01412', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-model-comparison-experiment-matrix-v01413', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-hyperparameter-study-search-results-v01414', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-ablation-study-framework-v01415', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-neural-explainability-workspace-v01416', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-embedding-explorer-v01417', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-reproducible-neural-research-package-v01418', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-integrated-neural-research-workspace-v01420', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-computational-linguistics-research-workspace-v01430', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-statistical-econometric-research-workspace-v01440', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-simulation-computational-experiment-workspace-v01450', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-network-science-research-workspace-v01460', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-graph-machine-learning-experiment-workspace-v01470', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-multimodal-scientific-experiment-workspace-v01480', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-model-validation-benchmark-laboratory-v01490', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-integrated-computational-research-laboratory-v01500', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-scientific-workflow-experiment-orchestration-v01510', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
+        wp_register_style('sc-lab-cross-workspace-research-dependency-graph-v01520', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
         if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
-        // v0.135.8.3.1: Graph Studio v0.47 bootstrap must execute before Renderer 3.1 recovery.
+        // v0.152.0.4: front-end request consolidation.
+        // The critical application runtime is one bundle; the historical module fleet is one
+        // isolated optional bundle. This replaces hundreds of blocking HTTP requests without
+        // removing any module source from the repository.
         $modules = array('core','projects','project-workspace-v0280','feeds','climate-map','periodic-table','stoichiometry','chemistry-lab','spectrometry','calculators','datasets','data-transformations-v0550','dataset-registry-v0281','reproducible-runs-v0282','research-provenance-v0290','research-quality-v0291','external-discovery-v0292','experiment-framework-v0300','design-studies-v0301','advanced-experimental-design-v0560','model-calibration-v0302','scientific-visualization-engine-v0440','scientific-visualization-engine-v0730','scientific-visualization-engine-v0740','scientific-visualization-design-system-v01140','advanced-statistical-uncertainty-graphics-v01150','interactive-scientific-dashboards-v01160','advanced-3d-4d-scientific-visualization-v01170','visual-research-narrative-figure-composer-v01180','scientific-figure-intelligence-automatic-layout-v01190','exploratory-data-analysis-studio-v01200','statistical-modeling-diagnostics-studio-v01210','bayesian-analysis-workbench-v01220','simulation-monte-carlo-research-studio-v01230','sensitivity-global-uncertainty-analysis-studio-v01240','causal-research-studio-v01250','spatial-spatiotemporal-research-studio-v01260','scientific-time-series-laboratory-v01270','experimental-design-power-analysis-v01280','research-reproduction-replication-studio-v01290','scientific-research-project-studio-v01300','research-question-hypothesis-workspace-v01310','method-selection-intelligence-v01320','statistical-assumption-diagnostic-intelligence-v01330','evidence-synthesis-intelligence-ii-v01340','competing-model-hypothesis-analysis-v01350','scientific-data-binding-v0750','large-data-visualization-v0760','scientific-scene-engine-v0770','time-parameter-space-v0780','linked-views-v0790','spatial-geospatial-raster-v0800','scientific-markup-v0810','uncertainty-ensemble-distribution-v0820','provenance-aware-figures-v0830','gpu-renderer-architecture-v0840','webgl2-scientific-renderer-v0850','webgpu-scientific-renderer-v0870','advanced-scientific-scene-v0880','soil-organic-carbon-v0890','soil-carbon-sampling-v0900','soil-carbon-change-v0910','soil-carbon-uncertainty-v0920','soil-carbon-scenarios-v0930','whole-farm-ghg-v0940','carbon-mrv-registry-v0950','carbon-mrv-protocol-v0960','carbon-mrv-monitoring-v0970','carbon-mrv-uncertainty-v0980','carbon-mrv-verification-ledger-v0990','carbon-mrv-reporting-v01000','model-studio-v0460','graph-studio-v0470','dynamic-systems-v0540','system-dynamics-v0860','shared-model-handoff-v0490','reproducible-model-package-v0500','advanced-statistical-modeling-v0510','bayesian-inference-v0520','graph-studio-v0790','graph-studio-v0800','graph-studio-v0810','graph-studio-v0820','graph-studio-v0830','graph-studio-v0840','graph-studio-v0850','graph-studio-v0870','graph-studio-v0880','scientific-visualization-experience-v01351','model-architecture-provenance-graphs-v01352','multi-view-scientific-analysis-canvas-v01353','interactive-scientific-scene-drilldown-v01354','scientific-scene-linking-comparative-context-v01355','reproducible-visual-analysis-sessions-v01356','visual-research-narrative-findings-v01357','research-review-critique-revision-v01358','graph-studio-canonical-runtime-v013581','graph-studio-renderer-replacement-v013582','graph-studio-recovery-v013583','graph-studio-bootstrap-finalization-v0135831','graph-studio-provenance-authority-v0135851','graph-studio-live-binding-v013584','graph-studio-provenance-interaction-recovery-v0135841','graph-studio-native-provenance-v013585','graph-studio-object-explorer-v013590','graph-studio-path-analysis-v0135100','graph-studio-competing-paths-v0135110','graph-studio-review-threads-v0135120','graph-studio-review-resolution-v0135130','graph-studio-review-audit-v0135140','graph-studio-verification-artifacts-v0135150','graph-studio-revision-impact-v0135160','graph-studio-review-reproduction-v0135170','graph-studio-multi-reviewer-panels-v0135180','graph-studio-cross-review-synthesis-v0135190','graph-studio-review-closure-v0135200','graph-studio-review-workspace-consolidation-v0135210','research-change-impact-living-analysis-v01370','project-workspace-living-analysis-v01370','research-program-intelligence-v01380','project-workspace-research-program-v01380','scholarly-study-original-research-package-v01390','project-workspace-original-research-v01390','scientific-research-operating-system-v01400','project-workspace-research-os-v01400','machine-learning-experiment-workspace-v01410','neural-architecture-training-configuration-v01411','training-curves-metrics-checkpoint-visualization-v01412','model-comparison-experiment-matrix-v01413','hyperparameter-study-search-results-v01414','ablation-study-framework-v01415','neural-explainability-workspace-v01416','embedding-explorer-v01417','reproducible-neural-research-package-v01418','integrated-neural-research-workspace-v01420','project-workspace-integrated-neural-v01420','computational-linguistics-research-workspace-v01430','project-workspace-computational-linguistics-v01430','statistical-econometric-research-workspace-v01440','project-workspace-statistical-econometric-v01440','simulation-computational-experiment-workspace-v01450','project-workspace-simulation-v01450','graph-network-science-research-workspace-v01460','project-workspace-graph-network-v01460','graph-machine-learning-experiment-workspace-v01470','project-workspace-graph-ml-v01470','multimodal-scientific-experiment-workspace-v01480','project-workspace-multimodal-v01480','scientific-model-validation-benchmark-laboratory-v01490','project-workspace-model-validation-v01490','integrated-computational-research-laboratory-v01500','project-workspace-integrated-computational-v01500','scientific-workflow-experiment-orchestration-v01510','project-workspace-scientific-workflow-v01510','cross-workspace-research-dependency-graph-v01520','project-workspace-research-dependency-v01520','project-workspace-machine-learning-v01410','project-workspace-provenance-focus-v013590','project-workspace-research-context-v0135100','project-workspace-path-comparison-v0135110','project-workspace-review-thread-v0135120','project-workspace-review-resolution-v0135130','project-workspace-review-audit-v0135140','project-workspace-verification-artifacts-v0135150','project-workspace-revision-impact-v0135160','project-workspace-review-reproduction-v0135170','project-workspace-multi-reviewer-panels-v0135180','project-workspace-cross-review-synthesis-v0135190','project-workspace-review-closure-v0135200','project-workspace-review-workspace-v0135210','probabilistic-analysis-v0480','interface-reorganization-v0470','presentation-runtime-v0482','contextual-navigation-v0483','workflow-orchestration-v0321','scientific-workflow-composer-v0570','scientific-compute-hardening-v0580','scientific-audit-v0590','integrated-research-beta-v0600','beta-field-diagnostics-v0601','scientific-study-lifecycle-v0610','scientific-claims-v0620','scientific-literature-v0630','evidence-synthesis-v0640','evidence-grading-v0650','scientific-argumentation-v0660','causal-inference-v0670','hierarchical-modeling-v0680','scientific-theory-v0690','preregistration-v0700','advanced-visualization-front-door-v0710','workflow-automation-v0322','experiment-campaigns-v0331','closed-loop-campaigns-v0332','model-registry-v0340','ensemble-uncertainty-v0341','surrogate-reduced-order-v0342','team-workspaces-v0350','workspace-review-v0351','workspace-versioning-v0352','artifact-repository-v0360','institutional-node-federation-v0361','offline-edge-sync-v0362','publication-studio-v0370','manuscript-assembly-v0371','public-reproduction-v0372','research-interoperability-v0380','typed-cross-product-handoffs-v0381','public-research-integrations','institutional-governance-v0390','security-privacy-v0391','multi-instance-operations-v0392','performance-chaos-v0393','connected-platform-beta-v0400','interface-finalization-v0401','public-release-hardening-v0402','connected-platform-v1000','distributed-dispatcher-v0310','persistent-queue-v0311','dispatcher-operations-v0314','worker-agent-v0312','artifact-transport-v0313','observations','physics-lab','physics-validation','biology-lab','astronomy-lab','materials-lab','earth-lab','energy-lab','electrical-embedded-lab','mechanical-thermal-lab','civil-infrastructure-lab','method-contracts','compute-client','numerical-methods-studio','numerical-validation-studio','numerical-governance-studio','numerical-visualization-studio','long-running-jobs-studio','code-switcher','visualization','reporting','dimensional-visualization','data-management','workspace','release-v095');
-        // v0.152.0.3: load every synchronous bootstrap dependency before sc-lab-app.
-        // Overview immediately consumes Lab.Workspace and can start feed loading; keeping
-        // those APIs optional caused bootstrap failure and left the UI stuck in Loading.
-        // This prevents a late optional request/429/404 from starving the main Lab navigation script.
         $critical_modules = array('core','projects','workspace','feeds','project-workspace-v0280');
-        $critical_handles = array();
-        foreach ($critical_modules as $critical_module) {
-            $critical_handle = 'sc-lab-' . $critical_module;
-            wp_enqueue_script($critical_handle, SC_LAB_URL . 'assets/js/modules/' . $critical_module . '.js', $deps, $this->asset_version('assets/js/modules/' . $critical_module . '.js'), true);
-            $critical_handles[] = $critical_handle;
-        }
-        $app_deps = array_values(array_unique(array_merge($deps, $critical_handles)));
+        $bundled_skip_modules = array('civil-infrastructure-lab','graph-studio-provenance-interaction-recovery-v0135841','graph-studio-v0790','graph-studio-v0800','graph-studio-v0810','graph-studio-v0820','graph-studio-v0830','graph-studio-v0840','graph-studio-v0850','graph-studio-v0870','graph-studio-v0880');
+        $app_deps = $deps;
         if (wp_script_is('sc-lab-runtime-v02631', 'registered') || wp_script_is('sc-lab-runtime-v02631', 'enqueued')) { $app_deps[] = 'sc-lab-runtime-v02631'; }
         if (wp_script_is('sc-lab-observe-domain-v02633', 'registered') || wp_script_is('sc-lab-observe-domain-v02633', 'enqueued')) { $app_deps[] = 'sc-lab-observe-domain-v02633'; }
-        wp_enqueue_script('sc-lab-navigation-recovery-v015201', SC_LAB_URL . 'assets/js/sc-lab-navigation-recovery-v015201.js', $app_deps, $this->asset_version('assets/js/sc-lab-navigation-recovery-v015201.js'), true);
-        $app_deps[] = 'sc-lab-navigation-recovery-v015201';
-        wp_enqueue_script('sc-lab-app', SC_LAB_URL . 'assets/js/sc-lab-app.js', array_values(array_unique($app_deps)), $this->asset_version('assets/js/sc-lab-app.js'), true);
+        // v0.152.0.5: the front door is safe-booted by SC_Lab_Production_Safe_Boot_V015205.
+        // Preserve the historical sc-lab-app handle as a zero-request compatibility alias;
+        // do not eagerly execute the v0.152.0.4 critical or optional bundles.
+        wp_register_script('sc-lab-app', false, array(), SC_LAB_RELEASE_VERSION, true);
+        wp_enqueue_script('sc-lab-app');
+        wp_register_script('sc-lab-optional-bundle-v015204', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION, true);
 
+        // Replace historical per-module handles with zero-request compatibility aliases.
+        // Any downstream script that depends on a historical handle waits for the optional bundle.
         foreach ($modules as $module) {
-            if (in_array($module, $critical_modules, true)) { continue; }
-            // SC_LAB_CIVIL_RUNTIME_SKIP_LEGACY:
-            // Preserve the legacy key for compatibility tests,
-            // but load Civil only through the authoritative runtime.
-            if ($module === 'civil-infrastructure-lab') {
-                continue;
-            }
-
-            // SC_LAB_CIVIL_DIRECT_LOADER_SKIP:
-            // Keep the legacy module key for release-test compatibility,
-            // but do not enqueue its v0.12.0 implementation. The repaired
-            // v0.15.0 Civil interface is loaded by the direct loader.
-            if ($module === 'civil-infrastructure-lab') {
-                continue;
-            }
-
-            // v0.135.8.2: historical Graph Studio generations stay in the repository for
-            // compatibility/import support but cannot execute on the canonical Graph Studio route.
-            if (in_array($module, array('graph-studio-v0790','graph-studio-v0800','graph-studio-v0810','graph-studio-v0820','graph-studio-v0830','graph-studio-v0840','graph-studio-v0850','graph-studio-v0870','graph-studio-v0880'), true)) {
-                continue;
-            }
-
-            // v0.135.8.5.1: v0.135.8.5 is the sole provenance interaction owner.
-            // Keep the historical v0.135.8.4.1 module in source for compatibility/forensics,
-            // but never execute it on the canonical Graph Studio route.
-            if ($module === 'graph-studio-provenance-interaction-recovery-v0135841') {
-                continue;
-            }
-
             $handle = 'sc-lab-' . $module;
-            // v0.152.0.1: optional Lab modules must not form a 247-script cumulative dependency chain.
-            // Each module depends only on the production bootstrap. A failed optional module must not block sc-lab-app.
-            wp_enqueue_script($handle, SC_LAB_URL . 'assets/js/modules/' . $module . '.js', $deps, $this->asset_version('assets/js/modules/' . $module . '.js'), true);
+            wp_dequeue_script($handle);
+            wp_deregister_script($handle);
+            $alias_dep = in_array($module, $critical_modules, true) ? 'sc-lab-app' : 'sc-lab-optional-bundle-v015204';
+            wp_register_script($handle, false, array($alias_dep), SC_LAB_RELEASE_VERSION, true);
         }
+        wp_dequeue_script('sc-lab-navigation-recovery-v015201');
+        wp_deregister_script('sc-lab-navigation-recovery-v015201');
+        wp_register_script('sc-lab-navigation-recovery-v015201', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION, true);
         $settings = wp_parse_args((array) get_option('sc_lab_settings', array()), SC_Lab_Admin::defaults());
         wp_localize_script('sc-lab-app', 'SCLabConfig', array(
             'version' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : null,

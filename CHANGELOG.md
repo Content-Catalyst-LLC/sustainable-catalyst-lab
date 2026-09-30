@@ -1,3 +1,17 @@
+# v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
+
+- Replaces the Lab front-door JavaScript startup with a bounded, MutationObserver-free safe bootstrap.
+- Prevents eager execution of historical individual Lab module scripts and the v0.152.0.4 optional mega-bundle on the Lab front door.
+- Retains the v0.152.0.2 full-panel DOM/navigation contract so primary workspaces can be opened without reloading the page.
+- Adds a late WordPress asset gate that allows only the consolidated Lab CSS and v0.152.0.5 safe bootstrap on the canonical Lab page.
+- Corrects integrity semantics so patch release 0.152.0.5 is compatible with canonical feature line 0.152.0 while still requiring plugin header, manifest, console release, platform compatibility, route integrity, and file hashes to agree.
+- Backend behavior and v0.152.0 cross-workspace dependency graph contracts are unchanged.
+
+## 0.152.0.4 — Front-End Asset Consolidation & Runtime Load Recovery
+- Consolidated Lab front-end CSS and module delivery to remove the production request storm.
+- Added early WordPress enqueue, critical bootstrap bundling, optional-module isolation, and compatibility aliases.
+- Backend behavior unchanged.
+
 # Lab v0.151.0 — Scientific Workflow & Experiment Orchestration
 
 - Added governed scientific workflow, stage, dependency, gate, run, transition, approval, event, checkpoint, and retry-policy objects.
