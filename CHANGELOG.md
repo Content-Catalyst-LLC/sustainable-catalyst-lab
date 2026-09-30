@@ -1,3 +1,7 @@
+## 0.149.0 — Scientific Model Validation & Benchmark Laboratory
+- Adds governed model validation, benchmarking, reference-standard, failure-analysis, external-validation, and reproducibility contracts.
+- Separates benchmark performance and external validation from scientific validity and deployment readiness.
+
 ## 0.148.0 — Multimodal Scientific Experiment Workspace
 - Adds governed multimodal experiment, alignment, fusion, evaluation, visualization, and reproducibility contracts.
 - Preserves original modality sources and separates similarity/alignment/prediction from evidence.

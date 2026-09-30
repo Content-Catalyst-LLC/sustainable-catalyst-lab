@@ -1,0 +1,16 @@
+{
+  "schema": "sc-lab-scientific-model-validation-benchmark-laboratory-policy/0.149.0",
+  "version": "0.149.0",
+  "workspaceExecutionAuthority": true,
+  "workbenchPrototypeExecutionAuthority": true,
+  "platformCoreCanonicalAuthority": true,
+  "labExecutesBenchmarkCompute": false,
+  "benchmarkPerformanceIsScientificValidity": false,
+  "externalValidationIsUniversalValidity": false,
+  "referenceStandardIsInfallible": false,
+  "automaticLeaderboardRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticDeploymentReadiness": false,
+  "automaticScientificValidity": false,
+  "humanScientificReviewRequired": true
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scientific-model-validation-benchmark-laboratory/0.149.0",
+  "title": "Scientific Model Validation & Benchmark Laboratory",
+  "type": "object",
+  "required": [
+    "benchmarkId",
+    "taskType"
+  ],
+  "properties": {
+    "benchmarkId": {
+      "type": "string"
+    },
+    "taskType": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array"
+    },
+    "referenceStandards": {
+      "type": "array"
+    },
+    "metrics": {
+      "type": "array"
+    },
+    "baselines": {
+      "type": "array"
+    },
+    "protocol": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array"
+    }
+  }
+}

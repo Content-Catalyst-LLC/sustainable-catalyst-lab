@@ -1147,3 +1147,7 @@ Adds governed graph-ML study design and analysis on top of the v0.146.0 graph/ne
 
 ## v0.148.0
 Multimodal Scientific Experiment Workspace with modality-preserving provenance, alignment/fusion audits, multimodal evaluation, and reproducibility.
+
+
+## v0.149.0
+Scientific Model Validation & Benchmark Laboratory with governed benchmarks, reference standards, validation dimensions, failure analysis, external validation, and reproducibility.

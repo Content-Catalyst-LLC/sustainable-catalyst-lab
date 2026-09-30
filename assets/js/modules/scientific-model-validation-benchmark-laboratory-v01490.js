@@ -1,0 +1,8 @@
+(function(w){'use strict';
+const VERSION='0.149.0';
+function arr(v){return Array.isArray(v)?v.slice():[];} function obj(v){return v&&typeof v==='object'&&!Array.isArray(v)?Object.assign({},v):{};}
+function reference(x){x=obj(x);return Object.assign({},x,{version:VERSION,infallibleGroundTruth:false});}
+function validation(x){x=obj(x);return Object.assign({},x,{version:VERSION,scientificValidityCertified:false,universalValidityCertified:false,deploymentReadinessCertified:false});}
+function normalizeWorkspace(x){x=obj(x);return Object.assign({},x,{version:VERSION,benchmark:obj(x.benchmark),submissions:arr(x.submissions),evaluationRuns:arr(x.evaluationRuns),validationRecords:arr(x.validationRecords).map(validation),failures:arr(x.failures),workspaceExecutionAuthority:true,labExecutesBenchmarkCompute:false,benchmarkPerformanceIsScientificValidity:false,externalValidationIsUniversalValidity:false,referenceStandardIsInfallible:false,automaticLeaderboardRanking:false,automaticWinnerSelection:false,automaticDeploymentReadiness:false,automaticScientificValidity:false});}
+w.SCLabScientificModelValidationBenchmarkLaboratoryV01490={version:VERSION,workspaceExecutionAuthority:true,workbenchPrototypeExecutionAuthority:true,platformCoreCanonicalAuthority:true,labExecutesBenchmarkCompute:false,benchmarkPerformanceIsScientificValidity:false,externalValidationIsUniversalValidity:false,referenceStandardIsInfallible:false,automaticLeaderboardRanking:false,automaticWinnerSelection:false,automaticDeploymentReadiness:false,automaticScientificValidity:false,reference:reference,validation:validation,normalizeWorkspace:normalizeWorkspace};
+})(window);

@@ -1,0 +1,6 @@
+<?php
+$root=dirname(__DIR__);$manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if(!$manifest){fwrite(STDERR,"manifest invalid\n");exit(1);}
+$must=['releaseVersion'=>'0.149.0','featureVersion'=>'0.149.0','releaseName'=>'Scientific Model Validation & Benchmark Laboratory','scientificModelValidationBenchmarkLaboratoryVersion'=>'0.149.0'];foreach($must as $k=>$v){if(($manifest[$k]??null)!==$v){fwrite(STDERR,"manifest mismatch $k\n");exit(1);}}
+if(($manifest['v01490RequiredRouteCount']??0)!==78||($manifest['v01490LabExecutesBenchmarkCompute']??true)!==false||($manifest['v01490BenchmarkPerformanceIsScientificValidity']??true)!==false||($manifest['v01490ExternalValidationIsUniversalValidity']??true)!==false||($manifest['v01490ReferenceStandardIsInfallible']??true)!==false||($manifest['v01490AutomaticDeploymentReadiness']??true)!==false){fwrite(STDERR,"v01490 policy mismatch\n");exit(1);}
+require_once $root.'/includes/class-sc-lab-scientific-model-validation-benchmark-laboratory-v01490.php';
+if(SC_Lab_Scientific_Model_Validation_Benchmark_Laboratory_V01490::VERSION!=='0.149.0'){fwrite(STDERR,"class version mismatch\n");exit(1);} echo "PASS v0.149.0 release integrity\n";
