@@ -183,9 +183,14 @@ final class SC_Lab_Runtime_Repair_V02631 {
         uasort($panels, function($a, $b) { return $a['start'] <=> $b['start']; });
         $cursor = 0;
         $body = '';
+        // v0.152.0.2: retain every Lab panel in the DOM. Earlier recovery code
+        // emitted only the initially selected panel, forcing navigation through a
+        // full-page fallback. Preserve all panels and govern visibility only.
         foreach ($panels as $slug => $panel) {
             $body .= substr($html, $cursor, $panel['start'] - $cursor);
-            if ($slug === $selected) { $body .= self::activate($panel['html'], $selected); }
+            $body .= ($slug === $selected)
+                ? self::activate($panel['html'], $selected)
+                : self::deactivate($panel['html']);
             $cursor = $panel['end'];
         }
         $body .= substr($html, $cursor);
@@ -234,6 +239,15 @@ final class SC_Lab_Runtime_Repair_V02631 {
         $html = preg_replace('/\\s+aria-hidden=("|\')true\\1/i', '', $html, 1);
         if (strpos($html, 'data-module-panel=') === false) {
             $html = preg_replace('/^<([a-z][a-z0-9:-]*)(\\s|>)/i', '<$1 data-module-panel="' . esc_attr($module) . '"$2', $html, 1);
+        }
+        return $html;
+    }
+
+    private static function deactivate($html) {
+        // Keep inactive panels mounted for client-side navigation while ensuring
+        // exactly one panel is visible at initial render.
+        if (!preg_match('/^<[^>]+\shidden(?:\s|=|>)/i', $html)) {
+            $html = preg_replace('/^<([a-z][a-z0-9:-]*)(\s|>)/i', '<$1 hidden$2', $html, 1);
         }
         return $html;
     }

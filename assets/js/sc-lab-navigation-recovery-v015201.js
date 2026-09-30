@@ -1,5 +1,5 @@
 (function(w,d){'use strict';
-  const VERSION='0.152.0.1';
+  const VERSION='0.152.0.2';
   function roots(){return Array.from(d.querySelectorAll('.sc-lab-app'));}
   function canonical(id){return w.SCLabRuntimeV02631?.resolveModule?.(id)||String(id||'overview');}
   function open(root,id){
@@ -28,6 +28,7 @@
       if(id){e.preventDefault();open(root,id);}
     },true);
     root.dataset.scLabNavigationRecoveryVersion=VERSION;
+    root.dataset.scLabPanelRetentionRecovery='1';
   }
   function boot(){roots().forEach(bind);}
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
