@@ -18,6 +18,18 @@
   function qs(root, selector) { return root?.querySelector?.(selector) || missingElement; }
   function qsa(root, selector) { return root?.querySelectorAll ? [...root.querySelectorAll(selector)] : []; }
   function canonicalModule(id) { return w.SCLabRuntimeV02631?.resolveModule?.(id) || String(id || 'overview'); }
+  function workspaceApi() {
+    if (Lab.Workspace) return Lab.Workspace;
+    return {
+      traceCounts() { return []; },
+      projectTotal(project) {
+        if (!project || typeof project !== 'object') return 0;
+        return Object.values(project).reduce((total, value) => total + (Array.isArray(value) ? value.length : 0), 0);
+      },
+      search() { return []; },
+      quickTools: []
+    };
+  }
   function empty(text) { return `<div class="sc-lab-data-note">${U.esc(text)}</div>`; }
   function reportRuntimeError(scope, error, metadata = {}) {
     if (w.SCLabRuntimeV02631?.recordError) return w.SCLabRuntimeV02631.recordError(scope, error, metadata);
@@ -54,6 +66,7 @@
     const projects = new Lab.Projects();
     root._scLabProjects = projects;
     root.dataset.scLabRuntimeState = root.dataset.scLabRuntimeState || 'initializing';
+    root.dataset.scLabBootstrapVersion = '0.152.0.3';
     const config = w.SCLabConfig || {};
     const initial = root.dataset.initialModule || 'overview';
     const observeOwned = !!w.SCLabObserveDomainV02633?.owns?.(initial);
@@ -117,7 +130,7 @@
     }
 
     function openTool(id) {
-      const item = Lab.Workspace?.quickTools?.find?.(tool => tool.id === id)
+      const item = workspaceApi().quickTools?.find?.(tool => tool.id === id)
         || { kind: 'calculator', module: 'science-engineering', calculatorId: id };
       openModule(item.module);
       if (item.kind === 'chem-tab') setTab('[data-chem-tab]', 'chemTab', '[data-chem-pane]', 'chemPane', item.tab);
@@ -143,7 +156,7 @@
     }
 
     function renderCommandResults(query) {
-      const matches = Lab.Workspace?.search ? Lab.Workspace.search(query, Lab.Calculators?.definitions || []) : [];
+      const matches = workspaceApi().search ? workspaceApi().search(query, Lab.Calculators?.definitions || []) : [];
       if (!query.trim() || !matches.length) {
         commandResults.hidden = true;
         commandResults.innerHTML = '';
@@ -216,7 +229,7 @@
 
     function renderTrace() {
       const target = qs(root, '[data-traceability]');
-      target.innerHTML = Lab.Workspace.traceCounts(projects.get()).map((stage, index, rows) => `
+      target.innerHTML = workspaceApi().traceCounts(projects.get()).map((stage, index, rows) => `
         <button type="button" class="sc-lab-trace-stage" data-open-module="${U.esc(stage.module)}" data-trace-key="${U.esc(stage.key)}">
           <strong>${stage.value}</strong><span>${U.esc(stage.label)}</span>
         </button>${index < rows.length - 1 ? '<span class="sc-lab-trace-arrow" aria-hidden="true">→</span>' : ''}`
@@ -301,13 +314,17 @@
       qs(root, '[data-recent-activity]').innerHTML = project.activity.slice(0, 8).map(item => listHTML(item.text, '', item.at)).join('') || empty('No project activity yet.');
       renderProjectWork();
       renderTrace();
-      qs(root, '[data-overview-empty]').hidden = Lab.Workspace.projectTotal(project) > 0;
+      qs(root, '[data-overview-empty]').hidden = workspaceApi().projectTotal(project) > 0;
       if (!overviewLoaded && config.features?.feeds !== false) loadOverviewSignals();
     }
 
     async function loadOverviewSignals() {
       const target = qs(root, '[data-overview-signals]');
       overviewLoaded = true;
+      if (!Lab.Feeds || typeof Lab.Feeds.load !== 'function') {
+        target.innerHTML = empty('Scientific signals are still loading. Core Lab navigation is ready.');
+        return;
+      }
       target.innerHTML = '<div class="sc-lab-data-note">Retrieving concise scientific signals…</div>';
       const requests = [
         ['usgs-earthquakes', '', 2],

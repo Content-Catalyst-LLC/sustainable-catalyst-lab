@@ -1,5 +1,5 @@
 (function(w,d){'use strict';
-  const VERSION='0.152.0.2';
+  const VERSION='0.152.0.3';
   function roots(){return Array.from(d.querySelectorAll('.sc-lab-app'));}
   function canonical(id){return w.SCLabRuntimeV02631?.resolveModule?.(id)||String(id||'overview');}
   function open(root,id){
