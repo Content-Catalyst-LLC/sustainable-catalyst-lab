@@ -230,7 +230,7 @@
                   <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
                 </div>
                 <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
-                <span class="sc-lab-v015207-runtime-chip">v0.152.0.7 bounded 4D runtime</span>
+                <span class="sc-lab-v015207-runtime-chip">v0.152.0.9 response-surface runtime</span>
               </div>
 
               <div class="sc-lab-v0710-body">
@@ -248,28 +248,63 @@
                 <aside class="sc-lab-v0710-controls" aria-label="Higher-dimensional visualization controls">
                   <h5>Dimensional context</h5>
                   <p>The fourth dimension is represented by hyperslicing and 4D-to-3D projection, not as a literal fourth spatial axis.</p>
-                  <label class="sc-lab-v0710-control"><span>W hyperslice <output>−1 ↔ +1</output></span><input data-v0710-w type="range" min="-1" max="1" step="0.01" value="0.37"></label>
+                  <label class="sc-lab-v0710-control"><span>W hyperslice <output data-v015209-w-value>−1 ↔ +1</output></span><input data-v0710-w type="range" min="-1" max="1" step="0.01" value="0.37"></label>
                   <label class="sc-lab-v0710-control"><span>XW rotation <output>4D plane</output></span><input data-v0710-xw type="range" min="-1.4" max="1.4" step="0.01" value="0.34"></label>
                   <label class="sc-lab-v0710-control"><span>YW rotation <output>4D plane</output></span><input data-v0710-yw type="range" min="-1.4" max="1.4" step="0.01" value="-0.22"></label>
                   <button type="button" class="sc-lab-v0710-animate" data-v0710-animate aria-pressed="false">Animate 4D sweep</button>
                   <div class="sc-lab-v015207-demo-bar">
-                    <label><span>Scientific demonstration</span><select data-v015207-demo>
+                    <label><span>Scientific demonstration</span><select data-v015207-demo data-v015209-demo>
                       <option value="response">Nonlinear response surface</option>
                       <option value="dynamic">Dynamic system landscape</option>
                       <option value="uncertainty">Uncertainty landscape</option>
                       <option value="sensitivity">Sensitivity surface</option>
                       <option value="ensemble">Ensemble response field</option>
                       <option value="spatiotemporal">Spatiotemporal field</option>
-                      <option value="compute">Python compute parameter sweep</option>
+                      <option value="compute-grid">Compute-backed response surface</option>
                     </select></label>
                     <div class="sc-lab-v015207-actions">
-                      <button type="button" data-v015207-run-compute>Run compute sweep</button>
-                      <button type="button" data-v015207-refresh-compute>Refresh compute</button>
-                      <button type="button" data-v015207-export="png">PNG</button>
-                      <button type="button" data-v015207-export="json">JSON</button>
+                      <button type="button" data-v015209-refresh-compute>Refresh compute</button>
+                      <button type="button" data-v015207-export="png" data-v015209-export="png">PNG</button>
+                      <button type="button" data-v015207-export="json" data-v015209-export="json">JSON</button>
+                      <button type="button" data-v015209-export="csv">CSV</button>
                     </div>
                   </div>
-                  <div class="sc-lab-v015207-compute-details" data-v015207-compute-details>Compute connection not checked yet.</div>
+                  <div class="sc-lab-v015207-compute-details" data-v015209-compute-details>Compute connection not checked yet.</div>
+
+                  <section class="sc-lab-v015209-explorer" data-v015209-explorer aria-label="Interactive response surface and parameter explorer">
+                    <div class="sc-lab-v015209-explorer-head">
+                      <div><span class="sc-lab-section-code">COMPUTE / PARAMETER EXPLORER</span><h5>Response surface configuration</h5></div>
+                      <span class="sc-lab-v015209-budget" data-v015209-budget>315 evaluations · 15 bounded requests</span>
+                    </div>
+                    <div class="sc-lab-v015209-grid">
+                      <label><span>Model family</span><select data-v015209-model></select></label>
+                      <label><span>X parameter</span><select data-v015209-axis="x"></select></label>
+                      <label><span>Y parameter</span><select data-v015209-axis="y"></select></label>
+                      <label><span>W parameter</span><select data-v015209-axis="w"></select></label>
+                      <label><span>Z mapping</span><select data-v015209-z-mode><option value="output">Model output</option><option value="normalized">Normalized output</option><option value="delta">Difference from baseline</option></select></label>
+                    </div>
+                    <div class="sc-lab-v015209-ranges">
+                      <fieldset><legend>X range</legend><label>Min<input type="number" step="any" data-v015209-range="x-min"></label><label>Max<input type="number" step="any" data-v015209-range="x-max"></label><label>Samples<select data-v015209-resolution="x"><option>11</option><option selected>21</option><option>31</option><option>41</option></select></label></fieldset>
+                      <fieldset><legend>Y range</legend><label>Min<input type="number" step="any" data-v015209-range="y-min"></label><label>Max<input type="number" step="any" data-v015209-range="y-max"></label><label>Levels<select data-v015209-resolution="y"><option>3</option><option selected>5</option><option>7</option></select></label></fieldset>
+                      <fieldset><legend>W range</legend><label>Min<input type="number" step="any" data-v015209-range="w-min"></label><label>Max<input type="number" step="any" data-v015209-range="w-max"></label><label>Slices<select data-v015209-resolution="w"><option selected>3</option><option>5</option></select></label></fieldset>
+                    </div>
+                    <div class="sc-lab-v015209-fixed"><strong>Fixed model parameters</strong><div data-v015209-fixed-controls></div></div>
+                    <div class="sc-lab-v015209-actions">
+                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015207-run-compute data-v015209-run-surface>Run response surface</button>
+                      <button type="button" class="sc-lab-button" data-v015209-set-baseline>Set baseline</button>
+                      <button type="button" class="sc-lab-button" data-v015209-compare>Compare with baseline</button>
+                      <button type="button" class="sc-lab-button" data-v015209-reset>Reset</button>
+                    </div>
+                    <div class="sc-lab-v015209-saved">
+                      <input type="text" data-v015209-config-name maxlength="80" placeholder="Configuration name">
+                      <button type="button" data-v015209-save-config>Save configuration</button>
+                      <select data-v015209-saved-configs aria-label="Saved parameter configurations"><option value="">Saved configurations</option></select>
+                      <button type="button" data-v015209-load-config>Load</button>
+                      <button type="button" data-v015209-delete-config>Delete</button>
+                    </div>
+                    <div class="sc-lab-v015209-run-meta" data-v015209-run-meta>No compute-backed surface has been run yet.</div>
+                    <div class="sc-lab-v015209-progress" data-v015209-progress hidden><span data-v015209-progress-bar></span></div>
+                  </section>
                 </aside>
               </div>
 
@@ -280,7 +315,7 @@
                 <div class="sc-lab-v0710-metric"><small>Layers</small><strong>5</strong><em>surface · vector · uncertainty · contour · polytope</em></div>
               </div>
             </div>
-            <p class="sc-lab-v0710-note">The front door supports bounded browser-rendered demonstrations plus an explicit Python Compute Core parameter sweep. <span data-v015207-boundary>Illustrative browser-rendered response field.</span> Saved project figures and governed research outputs remain distinct from this landing visualization.</p>
+            <p class="sc-lab-v0710-note">The front door supports bounded browser-rendered demonstrations plus explicit Python Compute Core response-surface runs across user-selected X, Y and W parameters. <span data-v015209-boundary>Illustrative browser-rendered response field.</span> Saved project figures and governed research outputs remain distinct from this landing visualization.</p>
           </div>
 
           <aside class="sc-lab-overview-launcher-v0481" aria-label="Primary research workspaces">
