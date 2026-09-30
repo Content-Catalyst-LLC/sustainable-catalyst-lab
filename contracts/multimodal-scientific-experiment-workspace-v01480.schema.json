@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-multimodal-scientific-experiment-workspace/0.148.0",
+  "title": "Multimodal Scientific Experiment Workspace",
+  "type": "object",
+  "required": [
+    "studyId",
+    "taskType",
+    "samples",
+    "model"
+  ],
+  "properties": {
+    "studyId": {
+      "type": "string"
+    },
+    "taskType": {
+      "type": "string"
+    },
+    "samples": {
+      "type": "array"
+    },
+    "alignments": {
+      "type": "array"
+    },
+    "model": {
+      "type": "object"
+    },
+    "runs": {
+      "type": "array"
+    },
+    "outputs": {
+      "type": "array"
+    },
+    "review": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array"
+    }
+  }
+}

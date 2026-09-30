@@ -1143,3 +1143,7 @@ The neural research line now packages experiment context, data/code/model/config
 
 ### v0.147.0 Graph Machine Learning Experiment Workspace
 Adds governed graph-ML study design and analysis on top of the v0.146.0 graph/network-science foundation.
+
+
+## v0.148.0
+Multimodal Scientific Experiment Workspace with modality-preserving provenance, alignment/fusion audits, multimodal evaluation, and reproducibility.

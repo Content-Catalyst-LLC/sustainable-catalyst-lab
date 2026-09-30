@@ -1,3 +1,7 @@
+## 0.148.0 — Multimodal Scientific Experiment Workspace
+- Adds governed multimodal experiment, alignment, fusion, evaluation, visualization, and reproducibility contracts.
+- Preserves original modality sources and separates similarity/alignment/prediction from evidence.
+
 # Changelog
 
 ## 0.146.0 — Graph & Network Science Research Workspace

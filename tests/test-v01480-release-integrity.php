@@ -1,0 +1,5 @@
+<?php
+$root=dirname(__DIR__);$manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);if(!$manifest){fwrite(STDERR,"manifest invalid\n");exit(1);}
+$must=['releaseVersion'=>'0.148.0','featureVersion'=>'0.148.0','releaseName'=>'Multimodal Scientific Experiment Workspace','multimodalScientificExperimentWorkspaceVersion'=>'0.148.0'];foreach($must as $k=>$v){if(($manifest[$k]??null)!==$v){fwrite(STDERR,"manifest mismatch $k\n");exit(1);}}
+if(($manifest['v01480RequiredRouteCount']??0)!==73||($manifest['v01480OriginalSourcesPreserved']??false)!==true||($manifest['v01480LabExecutesMultimodalTraining']??true)!==false||($manifest['v01480PredictionIsEvidence']??true)!==false||($manifest['v01480CrossModalSimilarityIsEvidence']??true)!==false){fwrite(STDERR,"v01480 policy mismatch\n");exit(1);}
+$boot=file_get_contents($root.'/sustainable-catalyst-lab.php');if(strpos($boot,'Version: 0.148.0')===false||strpos($boot,'class-sc-lab-multimodal-scientific-experiment-workspace-v01480.php')===false){fwrite(STDERR,"bootstrap mismatch\n");exit(1);} echo "PASS: Lab v0.148.0 release integrity\n";

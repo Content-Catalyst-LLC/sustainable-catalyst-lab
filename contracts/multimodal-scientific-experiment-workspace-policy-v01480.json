@@ -1,0 +1,17 @@
+{
+  "schema": "sc-lab-multimodal-scientific-experiment-workspace-policy/0.148.0",
+  "version": "0.148.0",
+  "workspaceExecutionAuthority": true,
+  "workbenchPrototypeExecutionAuthority": true,
+  "platformCoreCanonicalAuthority": true,
+  "labExecutesMultimodalTraining": false,
+  "labExecutesMultimodalInference": false,
+  "originalSourcesPreserved": true,
+  "derivedRepresentationsRemainDerived": true,
+  "automaticSemanticEquivalence": false,
+  "automaticModelRanking": false,
+  "automaticWinnerSelection": false,
+  "automaticScientificValidity": false,
+  "predictionIsEvidence": false,
+  "crossModalSimilarityIsEvidence": false
+}
