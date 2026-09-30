@@ -1,3 +1,12 @@
+# Lab v0.151.0 — Scientific Workflow & Experiment Orchestration
+
+- Added governed scientific workflow, stage, dependency, gate, run, transition, approval, event, checkpoint, and retry-policy objects.
+- Added deterministic DAG/cycle analysis and topological planning without automatic scientific workflow advancement.
+- Added explicit human approval, validation, reproducibility, review, and publication gates.
+- Added failure, retry, recovery, resume, pause, cancellation, checkpoint, provenance, runtime, environment, and change-impact analyses.
+- Added cross-workspace orchestration and authority-preserving handoffs to Workspace, Workbench, Platform Core, Knowledge Library, Research OS, and v0.150 Integrated Computational Research Laboratory.
+- Preserved the rule that execution success, workflow order, dependency edges, retries, gate passage, and reproducibility do not independently establish scientific validity.
+
 # Lab v0.150.0 — Integrated Computational Research Laboratory
 
 - Consolidates the v0.142.0–v0.149.0 computational research workspaces under one governed laboratory session.
