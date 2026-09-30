@@ -6,8 +6,8 @@ $safe=file_get_contents($root.'/includes/class-sc-lab-production-safe-boot-v0152
 $integrity=file_get_contents($root.'/includes/class-sc-lab-integrity-v02632.php');
 $manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);
 $checks=array(
-    'plugin header'=>strpos($main,'Version: 0.152.0.5')!==false,
-    'manifest release'=>($manifest['releaseVersion']??null)==='0.152.0.5',
+    'plugin header'=>preg_match('/Version: 0\.152\.0\.(?:5|6|7|8|9|[1-9][0-9]+)/',$main)===1,
+    'manifest release'=>preg_match('/^0\.152\.0\.(?:5|6|7|8|9|[1-9][0-9]+)$/',(string)($manifest['releaseVersion']??''))===1,
     'feature line retained'=>($manifest['featureVersion']??null)==='0.152.0',
     'safe boot flag'=>!empty($manifest['v015205ProductionSafeBoot']),
     'legacy eager disabled'=>!empty($manifest['v015205LegacyModuleEagerExecutionDisabled']),

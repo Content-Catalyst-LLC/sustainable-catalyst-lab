@@ -267,7 +267,7 @@ final class SC_Lab_Plugin {
         wp_register_style('sc-lab-integrated-computational-research-laboratory-v01500', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
         wp_register_style('sc-lab-scientific-workflow-experiment-orchestration-v01510', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
         wp_register_style('sc-lab-cross-workspace-research-dependency-graph-v01520', false, array('sc-lab-app'), SC_LAB_RELEASE_VERSION);
-        if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
+        if (class_exists('SC_Lab_Production_Stability_V0266') && !(defined('SC_LAB_RELEASE_VERSION') && version_compare(SC_LAB_RELEASE_VERSION, '0.152.0.6', '>='))) { SC_Lab_Production_Stability_V0266::enqueue_bootstrap(); }
         $deps = wp_script_is('sc-lab-production-bootstrap-v0266', 'enqueued') ? array('sc-lab-production-bootstrap-v0266') : array();
         // v0.152.0.4: front-end request consolidation.
         // The critical application runtime is one bundle; the historical module fleet is one
@@ -896,7 +896,7 @@ final class SC_Lab_Plugin {
             'platformCompatibilityVersion' => defined('SC_LAB_PLATFORM_COMPAT_VERSION') ? SC_LAB_PLATFORM_COMPAT_VERSION : null,
             'restBase' => esc_url_raw(rest_url('sc-lab/v1/')),
         ));
-        if (class_exists('SC_Lab_Production_Stability_V0266')) { SC_Lab_Production_Stability_V0266::enqueue_front(); }
+        if (class_exists('SC_Lab_Production_Stability_V0266') && !(defined('SC_LAB_RELEASE_VERSION') && version_compare(SC_LAB_RELEASE_VERSION, '0.152.0.6', '>='))) { SC_Lab_Production_Stability_V0266::enqueue_front(); }
     }
 
     public function shortcode_app($atts = array()) {

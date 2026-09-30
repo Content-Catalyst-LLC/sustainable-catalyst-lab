@@ -1,5 +1,14 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.152.0.6 — Safe-Boot Stabilization & Canonical Release Presentation
+
+- Added a late footer-time Lab JavaScript gate to stop render-time legacy module leaks.
+- Disabled the legacy v0.26.6 production-budget monitor on the canonical safe front door.
+- Isolated v0.48 presentation runtime behavior and made the current release badge authoritative.
+- Replaced the legacy integrity admin-notice callback with a health-backed v0.152.0.6 notice authority.
+- Preserved v0.152.0 dependency-graph backend behavior and full-panel navigation.
+
+
 - Replaces the Lab front-door JavaScript startup with a bounded, MutationObserver-free safe bootstrap.
 - Prevents eager execution of historical individual Lab module scripts and the v0.152.0.4 optional mega-bundle on the Lab front door.
 - Retains the v0.152.0.2 full-panel DOM/navigation contract so primary workspaces can be opened without reloading the page.
