@@ -1,0 +1,1 @@
+(function(w){'use strict';w.SCLabProjectWorkspaceResearchDependencyV01520={VERSION:'0.152.0',panels:['Dependency Graph','Lineage','Impact','Staleness','Validation','Review','Publication','Reproducibility'],automaticScientificDecision:false};})(window);
