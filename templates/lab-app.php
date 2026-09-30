@@ -333,6 +333,43 @@
                     <canvas class="sc-lab-v015210-analysis-canvas" data-v015210-analysis-canvas aria-label="Computed uncertainty, sensitivity, or ensemble diagnostic plot"></canvas>
                     <p class="sc-lab-v015210-boundary">Monte Carlo intervals, local finite-difference sensitivities, and seed-replication ensembles are modeled diagnostics. They do not establish causality, statistical significance, observed evidence, calibrated forecast skill, or scientific validity. Formal Sobol/Morris analysis remains available in the specialist Sensitivity &amp; Global Uncertainty Analysis Studio.</p>
                   </section>
+
+                  <section class="sc-lab-v015211-linked" data-v015211-linked aria-label="Linked scientific views and cross-view selection">
+                    <div class="sc-lab-v015211-head">
+                      <div><span class="sc-lab-section-code">VIEWS / LINKED SELECTION</span><h5>Linked Scientific Views &amp; Cross-View Selection</h5></div>
+                      <span class="sc-lab-v015211-status" data-v015211-status>Linked · select a point or diagnostic element</span>
+                    </div>
+                    <div class="sc-lab-v015211-actions">
+                      <button type="button" class="sc-lab-button" data-v015211-toggle aria-pressed="true">Linked selection on</button>
+                      <button type="button" class="sc-lab-button" data-v015211-pin disabled>Pin selection</button>
+                      <button type="button" class="sc-lab-button" data-v015211-clear disabled>Clear selection</button>
+                      <button type="button" class="sc-lab-button" data-v015211-export disabled>Export selection JSON</button>
+                      <button type="button" class="sc-lab-button sc-lab-button-primary" data-v015211-graph disabled>Open selection in Graph Studio</button>
+                    </div>
+                    <div class="sc-lab-v015211-grid">
+                      <article class="sc-lab-v015211-view" data-v015211-view="selection">
+                        <h6>Selection inspector</h6>
+                        <dl class="sc-lab-v015211-kv">
+                          <dt>Source view</dt><dd data-v015211-field="source" class="sc-lab-v015211-empty">No selection</dd>
+                          <dt>Model / mode</dt><dd data-v015211-field="model">—</dd>
+                          <dt>X</dt><dd data-v015211-field="x">—</dd>
+                          <dt>Y</dt><dd data-v015211-field="y">—</dd>
+                          <dt>W</dt><dd data-v015211-field="w">—</dd>
+                          <dt>Z / value</dt><dd data-v015211-field="z">—</dd>
+                        </dl>
+                      </article>
+                      <article class="sc-lab-v015211-view" data-v015211-view="parameters">
+                        <h6>Parameter snapshot</h6>
+                        <div class="sc-lab-v015211-table-wrap"><table class="sc-lab-v015211-table"><thead><tr><th>Parameter</th><th>Value</th><th>Role</th></tr></thead><tbody data-v015211-table><tr><td colspan="3" class="sc-lab-v015211-empty">Select a compute-backed surface point to inspect parameters.</td></tr></tbody></table></div>
+                      </article>
+                      <article class="sc-lab-v015211-view" data-v015211-view="history">
+                        <h6>Selection history</h6>
+                        <ol class="sc-lab-v015211-history" data-v015211-history><li class="sc-lab-v015211-empty">No selections yet.</li></ol>
+                        <div class="sc-lab-v015211-pins" data-v015211-pins>0 pinned selections</div>
+                      </article>
+                    </div>
+                    <p class="sc-lab-v015211-boundary">Linked selection synchronizes inspection state across the 4D response surface, parameter snapshot, and computed diagnostic views. Diagnostic selections are preserved with their own model identity and are not automatically mapped onto a different response-surface model. Graph Studio handoff transfers the selected state and provenance; it does not assert equivalence, causality, evidence, significance, calibration, or scientific validity.</p>
+                  </section>
                 </aside>
               </div>
 
