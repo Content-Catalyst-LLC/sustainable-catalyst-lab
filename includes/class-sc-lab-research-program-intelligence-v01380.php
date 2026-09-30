@@ -1,4 +1,3 @@
-
 <?php
 if (!defined('ABSPATH')) { exit; }
 final class SC_Lab_Research_Program_Intelligence_V01380 {
