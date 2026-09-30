@@ -5,8 +5,8 @@ $plugin=file_get_contents($root.'/includes/class-sc-lab-plugin.php');
 $safe=file_get_contents($root.'/includes/class-sc-lab-production-safe-boot-v015206.php');
 $manifest=json_decode(file_get_contents($root.'/build/sc-lab-release-manifest.json'),true);
 $checks=array(
-    'plugin header'=>strpos($main,'Version: 0.152.0.6')!==false,
-    'manifest release'=>($manifest['releaseVersion']??null)==='0.152.0.6',
+    'plugin header'=>preg_match('/Version:\s+([0-9.]+)/',$main,$hm) && version_compare($hm[1],'0.152.0.6','>='),
+    'manifest release'=>version_compare((string)($manifest['releaseVersion']??'0.0.0'),'0.152.0.6','>='),
     'feature line retained'=>($manifest['featureVersion']??null)==='0.152.0',
     'new class loaded'=>strpos($main,'class-sc-lab-production-safe-boot-v015206.php')!==false,
     'late footer gate flag'=>!empty($manifest['v015206LateFooterAssetGate']),

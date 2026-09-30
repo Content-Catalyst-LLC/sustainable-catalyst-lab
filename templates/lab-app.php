@@ -230,6 +230,7 @@
                   <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
                 </div>
                 <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
+                <span class="sc-lab-v015207-runtime-chip">v0.152.0.7 bounded 4D runtime</span>
               </div>
 
               <div class="sc-lab-v0710-body">
@@ -237,8 +238,8 @@
                   <canvas class="sc-lab-v0710-canvas" data-v0710-canvas aria-label="Interactive illustrative four-dimensional scientific response field projected into three dimensions"></canvas>
                   <div class="sc-lab-v0710-overlay" aria-hidden="true">
                     <span class="sc-lab-v0710-chip"><strong>4D</strong> x · y · z · w</span>
-                    <span class="sc-lab-v0710-chip">Browser rendered</span>
-                    <span class="sc-lab-v0710-chip">No compute required</span>
+                    <span class="sc-lab-v0710-chip">Browser + Python compute</span>
+                    <span class="sc-lab-v0710-chip">Bounded runtime</span>
                   </div>
                   <div class="sc-lab-v0710-readout" data-v0710-readout>Projected 4D response field</div>
                   <div class="sc-lab-v0710-pointer" data-v0710-pointer>Move over the field to inspect coordinates</div>
@@ -251,6 +252,24 @@
                   <label class="sc-lab-v0710-control"><span>XW rotation <output>4D plane</output></span><input data-v0710-xw type="range" min="-1.4" max="1.4" step="0.01" value="0.34"></label>
                   <label class="sc-lab-v0710-control"><span>YW rotation <output>4D plane</output></span><input data-v0710-yw type="range" min="-1.4" max="1.4" step="0.01" value="-0.22"></label>
                   <button type="button" class="sc-lab-v0710-animate" data-v0710-animate aria-pressed="false">Animate 4D sweep</button>
+                  <div class="sc-lab-v015207-demo-bar">
+                    <label><span>Scientific demonstration</span><select data-v015207-demo>
+                      <option value="response">Nonlinear response surface</option>
+                      <option value="dynamic">Dynamic system landscape</option>
+                      <option value="uncertainty">Uncertainty landscape</option>
+                      <option value="sensitivity">Sensitivity surface</option>
+                      <option value="ensemble">Ensemble response field</option>
+                      <option value="spatiotemporal">Spatiotemporal field</option>
+                      <option value="compute">Python compute parameter sweep</option>
+                    </select></label>
+                    <div class="sc-lab-v015207-actions">
+                      <button type="button" data-v015207-run-compute>Run compute sweep</button>
+                      <button type="button" data-v015207-refresh-compute>Refresh compute</button>
+                      <button type="button" data-v015207-export="png">PNG</button>
+                      <button type="button" data-v015207-export="json">JSON</button>
+                    </div>
+                  </div>
+                  <div class="sc-lab-v015207-compute-details" data-v015207-compute-details>Compute connection not checked yet.</div>
                 </aside>
               </div>
 
@@ -261,7 +280,7 @@
                 <div class="sc-lab-v0710-metric"><small>Layers</small><strong>5</strong><em>surface · vector · uncertainty · contour · polytope</em></div>
               </div>
             </div>
-            <p class="sc-lab-v0710-note">This front-door visualization is an illustrative scientific interface demonstration. Saved project figures and computed results remain explicitly identified and are opened in Graph Studio.</p>
+            <p class="sc-lab-v0710-note">The front door supports bounded browser-rendered demonstrations plus an explicit Python Compute Core parameter sweep. <span data-v015207-boundary>Illustrative browser-rendered response field.</span> Saved project figures and governed research outputs remain distinct from this landing visualization.</p>
           </div>
 
           <aside class="sc-lab-overview-launcher-v0481" aria-label="Primary research workspaces">
