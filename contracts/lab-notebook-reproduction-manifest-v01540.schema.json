@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-notebook-reproduction-manifest/0.154.0",
+  "title": "Sustainable Catalyst Lab Notebook Reproduction Manifest",
+  "type": "object",
+  "required": ["schema", "version", "projectId", "notebook", "workspaceRefs", "computeRefs", "manifestDigest"],
+  "properties": {
+    "schema": {"const": "sc-lab-notebook-reproduction-manifest/0.154.0"},
+    "version": {"const": "0.154.0"},
+    "projectId": {"type": "string"},
+    "notebook": {"type": "object"},
+    "protocol": {"type": ["object", "null"]},
+    "workspaceRefs": {"type": "array"},
+    "computeRefs": {"type": "array"},
+    "computeCellMethods": {"type": "array", "items": {"type": "string"}},
+    "arbitraryCodeExecution": {"const": false},
+    "automaticCompute": {"const": false},
+    "manifestDigest": {"type": "string"}
+  },
+  "additionalProperties": true
+}

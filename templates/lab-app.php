@@ -435,6 +435,75 @@
                   </div>
                   <p class="sc-lab-v01530-boundary">Project workspace assets preserve scenes, compute-result references, immutable revisions, fork lineage, and descriptive comparisons. Loading an asset does not rerun computation. Comparisons do not establish evidence, causality, statistical significance, calibration, forecast skill, or scientific validity.</p>
                 </section>
+
+                <section class="sc-lab-v01540-workspace" data-v01540-workspace aria-label="Reproducible protocol and computational notebook workspace">
+                  <div class="sc-lab-v01540-head">
+                    <div><span class="sc-lab-section-code">PROJECT / PROTOCOL + NOTEBOOK</span><h5>Reproducible Protocol &amp; Computational Notebook Workspace</h5></div>
+                    <div class="sc-lab-v01540-badge"><strong>v0.154.0</strong><span data-v01540-counts>protocol + notebook persistence</span></div>
+                    <span class="sc-lab-v01540-status" data-v01540-status>Workspace initializing…</span>
+                  </div>
+                  <div class="sc-lab-v01540-toolbar">
+                    <label><span>Project ID</span><input type="text" data-v01540-project placeholder="project:…"></label>
+                    <button type="button" class="sc-lab-button" data-v01540-refresh>Refresh protocols &amp; notebooks</button>
+                    <span>Storage: <strong data-v01540-storage>checking</strong></span>
+                  </div>
+                  <div class="sc-lab-v01540-grid">
+                    <article class="sc-lab-v01540-panel">
+                      <h6>Reproducible protocol</h6>
+                      <div class="sc-lab-v01540-fields">
+                        <label><span>Protocol</span><select data-v01540-protocols><option value="">Protocols</option></select></label>
+                        <label><span>Protocol title</span><input type="text" maxlength="200" data-v01540-protocol-title placeholder="Response-surface protocol"></label>
+                        <label><span>Purpose</span><textarea rows="3" data-v01540-purpose placeholder="What this protocol is intended to reproduce or test"></textarea></label>
+                        <label><span>Ordered steps · one per line</span><textarea rows="6" data-v01540-steps placeholder="Load registered model&#10;Apply declared parameters&#10;Run registered compute method&#10;Review outputs"></textarea></label>
+                        <label><span>Registered method references · comma separated</span><input type="text" data-v01540-methods placeholder="simulation.parameter_sweep"></label>
+                        <label><span>Acceptance criteria · one per line</span><textarea rows="4" data-v01540-acceptance placeholder="All requested samples return finite values"></textarea></label>
+                      </div>
+                      <div class="sc-lab-v01540-actions">
+                        <button type="button" class="sc-lab-button sc-lab-button-primary" data-v01540-protocol-create>Create protocol</button>
+                        <button type="button" class="sc-lab-button" data-v01540-protocol-revise disabled>Save protocol revision</button>
+                        <button type="button" class="sc-lab-button" data-v01540-protocol-archive disabled>Archive protocol</button>
+                      </div>
+                      <div class="sc-lab-v01540-meta" data-v01540-protocol-meta>No protocol selected.</div>
+                    </article>
+
+                    <article class="sc-lab-v01540-panel">
+                      <h6>Computational notebook</h6>
+                      <div class="sc-lab-v01540-fields">
+                        <label><span>Notebook</span><select data-v01540-notebooks><option value="">Notebooks</option></select></label>
+                        <label><span>Notebook title</span><input type="text" maxlength="200" data-v01540-notebook-title placeholder="Response-surface notebook"></label>
+                        <label><span>Linked protocol</span><select data-v01540-notebook-protocol><option value="">No linked protocol</option></select></label>
+                      </div>
+                      <div class="sc-lab-v01540-cell-composer">
+                        <select data-v01540-cell-type aria-label="Notebook cell type"><option value="markdown">Markdown / note</option><option value="parameter">Parameter JSON</option><option value="compute-call">Registered compute-call JSON</option><option value="result-ref">Result reference</option><option value="figure-ref">Figure reference</option><option value="workspace-ref">Workspace reference</option></select>
+                        <textarea rows="4" data-v01540-cell-content placeholder='For compute-call: {"method":"simulation.parameter_sweep","inputs":{...},"requested_outputs":["summary"]}'></textarea>
+                        <button type="button" class="sc-lab-button" data-v01540-add-cell>Add cell</button>
+                      </div>
+                      <div class="sc-lab-v01540-actions">
+                        <button type="button" class="sc-lab-button" data-v01540-bind-workspace>Bind current 4D asset</button>
+                        <button type="button" class="sc-lab-button" data-v01540-run-cell>Run latest compute cell</button>
+                      </div>
+                      <div class="sc-lab-v01540-meta"><span data-v01540-cell-count>0</span> cells · <span data-v01540-workspace-count>0</span> workspace refs · <span data-v01540-compute-count>0</span> compute refs</div>
+                      <div class="sc-lab-v01540-cells" data-v01540-cells><p>No draft cells yet.</p></div>
+                      <div class="sc-lab-v01540-actions">
+                        <button type="button" class="sc-lab-button sc-lab-button-primary" data-v01540-notebook-create>Create notebook</button>
+                        <button type="button" class="sc-lab-button" data-v01540-notebook-revise disabled>Save notebook revision</button>
+                        <button type="button" class="sc-lab-button" data-v01540-notebook-archive disabled>Archive notebook</button>
+                      </div>
+                      <div class="sc-lab-v01540-meta" data-v01540-notebook-meta>No notebook selected.</div>
+                    </article>
+
+                    <article class="sc-lab-v01540-panel sc-lab-v01540-manifest">
+                      <h6>Reproduction manifest</h6>
+                      <div class="sc-lab-v01540-actions">
+                        <button type="button" class="sc-lab-button sc-lab-button-primary" data-v01540-manifest disabled>Build + verify manifest</button>
+                        <button type="button" class="sc-lab-button" data-v01540-export-manifest disabled>Export manifest JSON</button>
+                        <span data-v01540-manifest-state>No manifest generated.</span>
+                      </div>
+                      <pre data-v01540-manifest-output>{}</pre>
+                    </article>
+                  </div>
+                  <p class="sc-lab-v01540-boundary">Notebook compute cells are registered-method specifications executed only on explicit action through the governed Python Compute Core. Arbitrary code execution is not enabled. Protocols, notebook revisions, result references, and reproduction manifests preserve declared computational state; they do not establish evidence, causality, statistical significance, calibration, forecast skill, or scientific validity.</p>
+                </section>
               </div>
 
               <div class="sc-lab-v0710-metrics" aria-label="Illustrative visualization diagnostics">

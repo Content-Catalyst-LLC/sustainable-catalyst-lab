@@ -83,6 +83,7 @@ from .ensemble_uncertainty import EnsembleError, EnsembleStudyManager, policies 
 from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderManager, policies as surrogate_rom_policies
 from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
 from .computational_research_workspace_v01530 import ComputationalResearchWorkspaceError, ComputationalResearchWorkspaceManager
+from .reproducible_protocol_notebook_v01540 import ProtocolNotebookError, ProtocolNotebookWorkspaceManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -230,6 +231,7 @@ ensemble_studies = EnsembleStudyManager(settings.ensemble_study_db_path, model_r
 surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, model_registry, settings.surrogate_rom_max_studies, settings.surrogate_rom_max_training_rows, settings.surrogate_rom_max_snapshot_dimensions, settings.surrogate_rom_history_limit)
 team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
 computational_research_workspace = ComputationalResearchWorkspaceManager(settings.computational_research_workspace_db_path, settings.computational_research_workspace_persistent_disk_mounted, settings.computational_research_workspace_max_assets, settings.computational_research_workspace_history_limit)
+protocol_notebook_workspace = ProtocolNotebookWorkspaceManager(settings.protocol_notebook_db_path, settings.protocol_notebook_persistent_disk_mounted, settings.protocol_notebook_max_protocols, settings.protocol_notebook_max_notebooks, settings.protocol_notebook_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -448,6 +450,7 @@ def health():
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "formats": ["svg", "png", "csv", "json"]},
         "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
         "fourDComputationalResearchWorkspace": {"version":"0.153.0","serverBackedProjectAssets":True,"immutableRevisions":True,"forkLineage":True,"descriptiveComparison":True,"automaticCompute":False,"automaticScientificValidity":False},
+        "reproducibleProtocolNotebookWorkspace": {"version":"0.154.0","serverBackedProtocols":True,"serverBackedNotebooks":True,"immutableRevisions":True,"registeredComputeCells":True,"reproductionManifests":True,"arbitraryCodeExecution":False,"automaticCompute":False},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -553,6 +556,7 @@ def capabilities():
         "scientificVisualization": {"version": "0.27.4", "profiles": len(visualization_catalog()["profiles"]), "serverNormalizedSpecs": True, "accessibleDescriptions": True, "tabularFallback": True},
         "projectWorkspace": {"version": "0.28.0", "projectContextAccepted": True, "serverBackedStorage": False},
         "fourDComputationalResearchWorkspace": {"version":"0.153.0","projectLinkedAssets":True,"immutableRevisions":True,"forkLineage":True,"descriptiveComparison":True,"sceneProvenancePersistence":True,"computeReferenceBinding":True,"automaticCompute":False,"automaticCoreSubmission":False},
+        "reproducibleProtocolNotebookWorkspace": {"version":"0.154.0","projectLinkedProtocols":True,"projectLinkedNotebooks":True,"immutableProtocolRevisions":True,"immutableNotebookRevisions":True,"registeredComputeCellSpecifications":True,"reproductionManifestDigest":True,"arbitraryCodeExecution":False,"automaticExecution":False,"automaticCoreSubmission":False},
         "datasetRegistry": {"version": "0.28.1", "profileEndpoint": True, "dataDictionary": True, "unitMetadata": True, "lineage": True, "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "frozenManifests": True, "environmentFingerprint": True, "verification": True, "comparison": True, "portableBundles": True, "serverBackedRegistry": False},
         "researchQuality": {"version":"0.29.1","reviewNormalization":True,"policyEvaluation":True,"hashVerification":True,"revisionComparison":True,"serverBackedRegistry":False},
@@ -4128,6 +4132,92 @@ def crw_v01530_archive(asset_id: str, auth: dict[str, str] = Depends(require_com
     actor, _ = _team_workspace_actor(auth)
     try: return computational_research_workspace.archive(asset_id, actor)
     except ComputationalResearchWorkspaceError as exc: raise _crw_v01530_http_error(exc) from exc
+
+# v0.154.0 Reproducible Protocol & Computational Notebook Workspace
+def _rpn_v01540_http_error(exc: ProtocolNotebookError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/health")
+def rpn_v01540_health(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = protocol_notebook_workspace.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/policies")
+def rpn_v01540_policies(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return protocol_notebook_workspace.policies()
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/projects/{project_id}/protocols")
+def rpn_v01540_protocols_list(project_id: str, limit: int = Query(100, ge=1, le=500), includeArchived: bool = Query(False), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.list_protocols(project_id, limit, includeArchived)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/projects/{project_id}/protocols")
+def rpn_v01540_protocols_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.create_protocol(project_id, payload, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/protocols/{protocol_id}")
+def rpn_v01540_protocol_get(protocol_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.get_protocol(protocol_id)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/protocols/{protocol_id}/revisions")
+def rpn_v01540_protocol_revision(protocol_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.revise_protocol(protocol_id, payload, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/protocols/{protocol_id}/archive")
+def rpn_v01540_protocol_archive(protocol_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.archive_protocol(protocol_id, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/projects/{project_id}/notebooks")
+def rpn_v01540_notebooks_list(project_id: str, limit: int = Query(100, ge=1, le=500), includeArchived: bool = Query(False), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.list_notebooks(project_id, limit, includeArchived)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/projects/{project_id}/notebooks")
+def rpn_v01540_notebooks_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.create_notebook(project_id, payload, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/notebooks/{notebook_id}")
+def rpn_v01540_notebook_get(notebook_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.get_notebook(notebook_id)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/notebooks/{notebook_id}/revisions")
+def rpn_v01540_notebook_revision(notebook_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.revise_notebook(notebook_id, payload, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/notebooks/{notebook_id}/archive")
+def rpn_v01540_notebook_archive(notebook_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return protocol_notebook_workspace.archive_notebook(notebook_id, actor)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.get("/v1/reproducible-protocol-notebook-workspace/v01540/notebooks/{notebook_id}/reproduction-manifest")
+def rpn_v01540_reproduction_manifest(notebook_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.reproduction_manifest(notebook_id)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
+
+@app.post("/v1/reproducible-protocol-notebook-workspace/v01540/manifests/verify")
+def rpn_v01540_verify_manifest(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return protocol_notebook_workspace.verify_manifest(payload)
+    except ProtocolNotebookError as exc: raise _rpn_v01540_http_error(exc) from exc
 
 # v0.35.2 Version History, Branching, Merge, and Conflict Resolution
 def _workspace_version_http_error(exc: WorkspaceVersionError) -> HTTPException:

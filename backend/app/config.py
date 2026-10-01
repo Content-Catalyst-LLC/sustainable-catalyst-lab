@@ -116,6 +116,11 @@ class Settings:
     computational_research_workspace_max_assets: int = _int("SC_LAB_4D_WORKSPACE_MAX_ASSETS", 500, 1, 10000)
     computational_research_workspace_history_limit: int = _int("SC_LAB_4D_WORKSPACE_HISTORY_LIMIT", 100000, 100, 5000000)
     computational_research_workspace_persistent_disk_mounted: bool = os.getenv("SC_LAB_4D_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    protocol_notebook_db_path: str = os.getenv("SC_LAB_PROTOCOL_NOTEBOOK_DB_PATH", "./data/sc-lab-protocol-notebook-v01540.sqlite3").strip()
+    protocol_notebook_max_protocols: int = _int("SC_LAB_PROTOCOL_NOTEBOOK_MAX_PROTOCOLS", 500, 1, 10000)
+    protocol_notebook_max_notebooks: int = _int("SC_LAB_PROTOCOL_NOTEBOOK_MAX_NOTEBOOKS", 500, 1, 10000)
+    protocol_notebook_history_limit: int = _int("SC_LAB_PROTOCOL_NOTEBOOK_HISTORY_LIMIT", 100000, 100, 5000000)
+    protocol_notebook_persistent_disk_mounted: bool = os.getenv("SC_LAB_PROTOCOL_NOTEBOOK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_4D_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")))).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)

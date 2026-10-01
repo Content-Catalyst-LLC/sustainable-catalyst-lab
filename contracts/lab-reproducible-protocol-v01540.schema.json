@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-reproducible-protocol/0.154.0",
+  "title": "Sustainable Catalyst Lab Reproducible Protocol",
+  "type": "object",
+  "required": ["schema", "id", "projectId", "title", "status", "latestRevisionId"],
+  "properties": {
+    "schema": {"const": "sc-lab-reproducible-protocol/0.154.0"},
+    "id": {"type": "string"},
+    "projectId": {"type": "string"},
+    "title": {"type": "string"},
+    "status": {"enum": ["active", "archived"]},
+    "latestRevisionId": {"type": "string"},
+    "createdAt": {"type": "string"},
+    "updatedAt": {"type": "string"},
+    "protocolHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}

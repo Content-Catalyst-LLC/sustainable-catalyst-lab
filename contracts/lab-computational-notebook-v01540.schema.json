@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-computational-notebook/0.154.0",
+  "title": "Sustainable Catalyst Lab Computational Notebook",
+  "type": "object",
+  "required": ["schema", "id", "projectId", "title", "status", "latestRevisionId"],
+  "properties": {
+    "schema": {"const": "sc-lab-computational-notebook/0.154.0"},
+    "id": {"type": "string"},
+    "projectId": {"type": "string"},
+    "title": {"type": "string"},
+    "status": {"enum": ["active", "archived"]},
+    "protocolId": {"type": ["string", "null"]},
+    "latestRevisionId": {"type": "string"},
+    "createdAt": {"type": "string"},
+    "updatedAt": {"type": "string"},
+    "notebookHash": {"type": "string"}
+  },
+  "additionalProperties": true
+}
