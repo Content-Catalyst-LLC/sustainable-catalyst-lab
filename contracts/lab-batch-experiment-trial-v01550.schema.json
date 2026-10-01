@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-batch-experiment-trial-v01550.schema.json",
+  "title": "Sustainable Catalyst Lab Batch Experiment Trial v0.155.0",
+  "type": "object",
+  "required": ["schema", "ordinal", "seed", "method", "specHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-batch-experiment-trial/0.155.0"},
+    "ordinal": {"type": "integer", "minimum": 1},
+    "seed": {"type": "integer", "minimum": 0},
+    "method": {"type": "string", "minLength": 1},
+    "specHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "parameterValues": {"type": "object"}
+  },
+  "additionalProperties": true
+}

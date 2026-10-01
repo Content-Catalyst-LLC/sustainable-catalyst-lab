@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-batch-experiment-manifest-v01550.schema.json",
+  "title": "Sustainable Catalyst Lab Batch Experiment Manifest v0.155.0",
+  "type": "object",
+  "required": ["schema", "version", "campaignId", "projectId", "definitionHash", "trials", "manifestDigest"],
+  "properties": {
+    "schema": {"const": "sc-lab-batch-experiment-manifest/0.155.0"},
+    "version": {"const": "0.155.0"},
+    "campaignId": {"type": "string"},
+    "projectId": {"type": "string"},
+    "definitionHash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "trials": {"type": "array"},
+    "manifestDigest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "automaticDispatch": {"const": false},
+    "arbitraryCodeExecution": {"const": false},
+    "humanScientificReviewRequired": {"const": true}
+  },
+  "additionalProperties": true
+}

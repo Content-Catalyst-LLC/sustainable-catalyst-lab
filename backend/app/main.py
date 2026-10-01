@@ -84,6 +84,7 @@ from .surrogate_reduced_order import SurrogateROMError, SurrogateReducedOrderMan
 from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies as team_workspace_policies
 from .computational_research_workspace_v01530 import ComputationalResearchWorkspaceError, ComputationalResearchWorkspaceManager
 from .reproducible_protocol_notebook_v01540 import ProtocolNotebookError, ProtocolNotebookWorkspaceManager
+from .batch_experiment_sweep_ensemble_v01550 import BatchCampaignError, BatchExperimentCampaignManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -232,6 +233,7 @@ surrogate_rom = SurrogateReducedOrderManager(settings.surrogate_rom_db_path, mod
 team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings.team_workspace_max_workspaces, settings.team_workspace_max_members, settings.team_workspace_history_limit)
 computational_research_workspace = ComputationalResearchWorkspaceManager(settings.computational_research_workspace_db_path, settings.computational_research_workspace_persistent_disk_mounted, settings.computational_research_workspace_max_assets, settings.computational_research_workspace_history_limit)
 protocol_notebook_workspace = ProtocolNotebookWorkspaceManager(settings.protocol_notebook_db_path, settings.protocol_notebook_persistent_disk_mounted, settings.protocol_notebook_max_protocols, settings.protocol_notebook_max_notebooks, settings.protocol_notebook_history_limit)
+batch_experiment_campaigns_v01550 = BatchExperimentCampaignManager(settings.batch_experiment_campaign_db_path, settings.batch_experiment_campaign_persistent_disk_mounted, settings.batch_experiment_campaign_max_campaigns, settings.batch_experiment_campaign_max_trials, settings.batch_experiment_campaign_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -451,6 +453,7 @@ def health():
         "projectWorkspace": {"version": "0.28.0", "contextEnvelope": True, "serverBackedStorage": False},
         "fourDComputationalResearchWorkspace": {"version":"0.153.0","serverBackedProjectAssets":True,"immutableRevisions":True,"forkLineage":True,"descriptiveComparison":True,"automaticCompute":False,"automaticScientificValidity":False},
         "reproducibleProtocolNotebookWorkspace": {"version":"0.154.0","serverBackedProtocols":True,"serverBackedNotebooks":True,"immutableRevisions":True,"registeredComputeCells":True,"reproductionManifests":True,"arbitraryCodeExecution":False,"automaticCompute":False},
+        "batchExperimentSweepEnsemble": {"version":"0.155.0","campaignModes":["parameter-sweep","hyperparameter-search","monte-carlo","factorial","repeated-trials","ensemble"],"deterministicTrials":True,"explicitWorkspaceHandoffs":True,"partialFailureRecovery":True,"aggregation":True,"automaticDispatch":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13056,3 +13059,84 @@ def rdg_v01520_explain_dependency(payload: dict): return rdg1520.explain_depende
 def rdg_v01520_scientific_boundary_audit(payload: dict): return rdg1520.scientific_boundary_audit(payload)
 @app.post("/v1/cross-workspace-research-dependency-graph/v01520/release-readiness")
 def rdg_v01520_release_readiness(payload: dict): return rdg1520.release_readiness(payload)
+
+
+# v0.155.0 Batch Experiment, Sweep & Ensemble Orchestration
+def _bec_v01550_http_error(exc: BatchCampaignError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/health")
+def bec_v01550_health(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = batch_experiment_campaigns_v01550.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/policies")
+def bec_v01550_policies(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return batch_experiment_campaigns_v01550.policies()
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns")
+def bec_v01550_list(project_id: str = Query(...), limit: int = Query(100, ge=1, le=500), include_archived: bool = Query(False), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.list(project_id, limit, include_archived)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.post("/v1/batch-experiment-sweep-ensemble/v01550/projects/{project_id}/campaigns")
+def bec_v01550_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return batch_experiment_campaigns_v01550.create(project_id, payload, actor)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}")
+def bec_v01550_get(campaign_id: str, include_trials: bool = Query(False), trial_limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.get(campaign_id, include_trials, trial_limit)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/execution-batch")
+def bec_v01550_execution_batch(campaign_id: str, limit: int = Query(100, ge=1, le=1000), status: str = Query("planned"), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.execution_batch(campaign_id, limit, status)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.post("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/trials/{trial_id}/state")
+def bec_v01550_trial_state(campaign_id: str, trial_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return batch_experiment_campaigns_v01550.record_trial_state(campaign_id, trial_id, payload, actor)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.post("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/retry-failed")
+def bec_v01550_retry_failed(campaign_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return batch_experiment_campaigns_v01550.retry_failed(campaign_id, actor, int(payload.get("limit") or 100))
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/aggregate")
+def bec_v01550_aggregate(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.aggregate(campaign_id)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/manifest")
+def bec_v01550_manifest(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.manifest(campaign_id)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.post("/v1/batch-experiment-sweep-ensemble/v01550/manifests/verify")
+def bec_v01550_verify_manifest(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.verify_manifest(payload)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.get("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/timeline")
+def bec_v01550_timeline(campaign_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return batch_experiment_campaigns_v01550.timeline(campaign_id, limit)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+@app.post("/v1/batch-experiment-sweep-ensemble/v01550/campaigns/{campaign_id}/archive")
+def bec_v01550_archive(campaign_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return batch_experiment_campaigns_v01550.archive(campaign_id, actor)
+    except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc

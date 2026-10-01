@@ -121,6 +121,11 @@ class Settings:
     protocol_notebook_max_notebooks: int = _int("SC_LAB_PROTOCOL_NOTEBOOK_MAX_NOTEBOOKS", 500, 1, 10000)
     protocol_notebook_history_limit: int = _int("SC_LAB_PROTOCOL_NOTEBOOK_HISTORY_LIMIT", 100000, 100, 5000000)
     protocol_notebook_persistent_disk_mounted: bool = os.getenv("SC_LAB_PROTOCOL_NOTEBOOK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_4D_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_TEAM_WORKSPACE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0")))).lower() in {"1", "true", "yes"}
+    batch_experiment_campaign_db_path: str = os.getenv("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_DB_PATH", "./data/sc-lab-batch-experiment-campaign-v01550.sqlite3").strip()
+    batch_experiment_campaign_max_campaigns: int = _int("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_MAX_CAMPAIGNS", 1000, 1, 100000)
+    batch_experiment_campaign_max_trials: int = _int("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_MAX_TRIALS", 10000, 1, 1000000)
+    batch_experiment_campaign_history_limit: int = _int("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_HISTORY_LIMIT", 100000, 100, 5000000)
+    batch_experiment_campaign_persistent_disk_mounted: bool = os.getenv("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PROTOCOL_NOTEBOOK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)

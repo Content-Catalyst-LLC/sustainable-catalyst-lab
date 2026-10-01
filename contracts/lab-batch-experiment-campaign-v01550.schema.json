@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-batch-experiment-campaign-v01550.schema.json",
+  "title": "Sustainable Catalyst Lab Batch Experiment Campaign v0.155.0",
+  "type": "object",
+  "required": ["schema", "version", "title", "mode", "method", "automaticExecution", "humanReviewRequired"],
+  "properties": {
+    "schema": {"const": "sc-lab-batch-experiment-campaign/0.155.0"},
+    "version": {"const": "0.155.0"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 500},
+    "mode": {"enum": ["parameter-sweep", "hyperparameter-search", "monte-carlo", "factorial", "repeated-trials", "ensemble"]},
+    "method": {"type": "string", "minLength": 1, "maxLength": 300},
+    "parameters": {"type": "array", "maxItems": 20},
+    "members": {"type": "array", "maxItems": 200},
+    "baseSeed": {"type": "integer", "minimum": 0},
+    "automaticExecution": {"const": false},
+    "arbitraryCodeExecution": {"const": false},
+    "humanReviewRequired": {"const": true}
+  },
+  "additionalProperties": true
+}
