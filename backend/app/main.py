@@ -86,6 +86,7 @@ from .computational_research_workspace_v01530 import ComputationalResearchWorksp
 from .reproducible_protocol_notebook_v01540 import ProtocolNotebookError, ProtocolNotebookWorkspaceManager
 from .batch_experiment_sweep_ensemble_v01550 import BatchCampaignError, BatchExperimentCampaignManager
 from .distributed_hpc_accelerated_coordination_v01560 import DistributedCoordinationError, DistributedHPCCoordinationManager
+from .cross_study_replication_meta_experiment_v01570 import CrossStudyReplicationError, CrossStudyReplicationMetaExperimentManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -236,6 +237,7 @@ computational_research_workspace = ComputationalResearchWorkspaceManager(setting
 protocol_notebook_workspace = ProtocolNotebookWorkspaceManager(settings.protocol_notebook_db_path, settings.protocol_notebook_persistent_disk_mounted, settings.protocol_notebook_max_protocols, settings.protocol_notebook_max_notebooks, settings.protocol_notebook_history_limit)
 batch_experiment_campaigns_v01550 = BatchExperimentCampaignManager(settings.batch_experiment_campaign_db_path, settings.batch_experiment_campaign_persistent_disk_mounted, settings.batch_experiment_campaign_max_campaigns, settings.batch_experiment_campaign_max_trials, settings.batch_experiment_campaign_history_limit)
 distributed_coordination_v01560 = DistributedHPCCoordinationManager(settings.distributed_coordination_db_path, batch_experiment_campaigns_v01550, settings.distributed_coordination_persistent_disk_mounted, settings.distributed_coordination_max_targets, settings.distributed_coordination_max_plans, settings.distributed_coordination_max_tasks_per_plan, settings.distributed_coordination_history_limit)
+cross_study_replication_v01570 = CrossStudyReplicationMetaExperimentManager(settings.cross_study_replication_db_path, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.cross_study_replication_persistent_disk_mounted, settings.cross_study_replication_max_studies, settings.cross_study_replication_max_workspaces, settings.cross_study_replication_max_effects, settings.cross_study_replication_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -457,6 +459,7 @@ def health():
         "reproducibleProtocolNotebookWorkspace": {"version":"0.154.0","serverBackedProtocols":True,"serverBackedNotebooks":True,"immutableRevisions":True,"registeredComputeCells":True,"reproductionManifests":True,"arbitraryCodeExecution":False,"automaticCompute":False},
         "batchExperimentSweepEnsemble": {"version":"0.155.0","campaignModes":["parameter-sweep","hyperparameter-search","monte-carlo","factorial","repeated-trials","ensemble"],"deterministicTrials":True,"explicitWorkspaceHandoffs":True,"partialFailureRecovery":True,"aggregation":True,"automaticDispatch":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "distributedHpcAcceleratedCoordination": {"version":"0.156.0","computeTargetRegistry":True,"resourceIntent":True,"acceleratorAwarePlacement":True,"hpcJobArrayPlanning":True,"executionWavePlanning":True,"supportedSchedulers":["workspace","slurm","pbs","lsf","kubernetes","manual"],"automaticDispatch":False,"automaticFailover":False,"credentialsStored":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
+        "crossStudyReplicationMetaExperiment": {"version":"0.157.0","immutableStudyRevisions":True,"immutableEffectRecords":True,"workspaceFreeze":True,"fixedEffectSynthesis":True,"randomEffectsSynthesis":True,"heterogeneityDiagnostics":["Q","I2","tau2"],"leaveOneOutSensitivity":True,"explicitReplicationCampaignHandoffs":True,"automaticReplicationJudgment":False,"automaticCausalInference":False,"publicationBiasInference":False,"studyIndependenceInferred":False,"automaticScientificValidity":False,"humanScientificReviewRequired":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13254,3 +13257,126 @@ def dhc_v01560_verify_manifest(payload: dict[str, Any], auth: dict[str, str] = D
     del auth
     try: return distributed_coordination_v01560.verify_manifest(payload)
     except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+
+# v0.157.0 Cross-Study Replication & Meta-Experiment Workspace
+def _csr_v01570_http_error(exc: CrossStudyReplicationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/health")
+def csr_v01570_health(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body=cross_study_replication_v01570.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/policies")
+def csr_v01570_policies(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return cross_study_replication_v01570.policies()
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/studies")
+def csr_v01570_studies(project_id: str = Query(...), include_archived: bool = Query(False), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.list_studies(project_id, include_archived, limit)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/projects/{project_id}/studies")
+def csr_v01570_study_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.create_study(project_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/studies/{study_id}")
+def csr_v01570_study_get(study_id: str, revision: int | None = Query(None, ge=1), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.get_study(study_id, revision)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/studies/{study_id}/revisions")
+def csr_v01570_study_revise(study_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.revise_study(study_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/studies/{study_id}/effects")
+def csr_v01570_effect_add(study_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.add_effect(study_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces")
+def csr_v01570_workspaces(project_id: str = Query(...), include_archived: bool = Query(False), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.list_workspaces(project_id, include_archived, limit)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/projects/{project_id}/workspaces")
+def csr_v01570_workspace_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.create_workspace(project_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}")
+def csr_v01570_workspace_get(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.get_workspace(workspace_id)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/studies")
+def csr_v01570_workspace_study_add(workspace_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.add_study_to_workspace(workspace_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/freeze")
+def csr_v01570_freeze(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.freeze_workspace(workspace_id, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/studies/{study_id}/assessment")
+def csr_v01570_assessment(workspace_id: str, study_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.record_assessment(workspace_id, study_id, payload, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/synthesis")
+def csr_v01570_synthesis(workspace_id: str, metric_key: str | None = Query(None), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.synthesis(workspace_id, metric_key)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/matrix")
+def csr_v01570_matrix(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.replication_matrix(workspace_id)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/studies/{study_id}/replication-handoff")
+def csr_v01570_handoff(workspace_id: str, study_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.replication_campaign_handoff(workspace_id, study_id)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/manifest")
+def csr_v01570_manifest(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.manifest(workspace_id)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/manifests/verify")
+def csr_v01570_verify(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.verify_manifest(payload)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.get("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/timeline")
+def csr_v01570_timeline(workspace_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return cross_study_replication_v01570.timeline(workspace_id, limit)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+@app.post("/v1/cross-study-replication-meta-experiment/v01570/workspaces/{workspace_id}/archive")
+def csr_v01570_archive(workspace_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return cross_study_replication_v01570.archive_workspace(workspace_id, actor)
+    except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
