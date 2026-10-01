@@ -230,7 +230,7 @@
                   <button type="button" data-v0710-layer="contours" aria-pressed="true">Contours</button>
                 </div>
                 <span class="sc-lab-v0710-compute" data-v0710-compute-state data-state="unknown">Checking compute</span>
-                <span class="sc-lab-v015207-runtime-chip">v0.152.0.13 4D layout + render recovery runtime</span>
+                <span class="sc-lab-v015207-runtime-chip">v0.153.0 4D computational research workspace runtime</span>
               </div>
 
               <div class="sc-lab-v0710-body">
@@ -390,7 +390,7 @@
                   </div>
                   <div class="sc-lab-v015212-grid">
                     <article class="sc-lab-v015212-card"><h6>Scene record</h6><dl class="sc-lab-v015212-kv"><dt>Scene ID</dt><dd data-v015212-field="sceneId">—</dd><dt>Name</dt><dd data-v015212-field="sceneName">—</dd><dt>Created</dt><dd data-v015212-field="createdAt">—</dd><dt>Updated</dt><dd data-v015212-field="updatedAt">—</dd><dt>Saved scenes</dt><dd data-v015212-field="sceneCount">0 / 12</dd></dl></article>
-                    <article class="sc-lab-v015212-card"><h6>Provenance</h6><dl class="sc-lab-v015212-kv"><dt>Model / demo</dt><dd data-v015212-field="model">—</dd><dt>State digest</dt><dd data-v015212-field="digest">—</dd><dt>Selections</dt><dd data-v015212-field="selectionCount">—</dd><dt>Release</dt><dd>v0.152.0.13</dd><dt>Object mapping</dt><dd>workspace-snapshot · reference-first</dd></dl></article>
+                    <article class="sc-lab-v015212-card"><h6>Provenance</h6><dl class="sc-lab-v015212-kv"><dt>Model / demo</dt><dd data-v015212-field="model">—</dd><dt>State digest</dt><dd data-v015212-field="digest">—</dd><dt>Selections</dt><dd data-v015212-field="selectionCount">—</dd><dt>Release</dt><dd>v0.153.0</dd><dt>Object mapping</dt><dd>workspace-snapshot · reference-first</dd></dl></article>
                     <article class="sc-lab-v015212-card"><h6>Research-object handoff</h6><dl class="sc-lab-v015212-kv"><dt>Object ID</dt><dd data-v015212-field="handoffId">—</dd><dt>Type</dt><dd data-v015212-field="handoffType">—</dd><dt>Prepared</dt><dd data-v015212-field="handoffCreated">—</dd></dl><div class="sc-lab-v015212-handoff-status">Prepare a canonical workspace-snapshot object, then explicitly hand it to a downstream Lab workspace.</div></article>
                   </div>
                   <div class="sc-lab-v015212-actions">
@@ -401,6 +401,39 @@
                     <button type="button" class="sc-lab-button" data-v015212-handoff="experiments" disabled>Open in Experiments</button>
                   </div>
                   <p class="sc-lab-v015212-boundary">Saved scenes preserve the bounded 4D scene state, computed response surfaces and diagnostics already present in the browser, linked selections, and descriptive provenance. Loading a saved scene does not rerun computation. Research-object handoff is explicit and reference-first; it does not automatically submit to Platform Core or establish evidence, causality, significance, calibration, or scientific validity.</p>
+                </section>
+
+                <section class="sc-lab-v01530-workspace" data-v01530-workspace aria-label="4D computational research workspace">
+                  <div class="sc-lab-v01530-head">
+                    <div><span class="sc-lab-section-code">PROJECT / 4D WORKSPACE</span><h5>4D Computational Research Workspace</h5></div>
+                    <div class="sc-lab-v01530-badge"><strong>v0.153.0</strong><span>server-backed project assets</span></div>
+                    <span class="sc-lab-v01530-status" data-v01530-status>Workspace initializing…</span>
+                  </div>
+                  <div class="sc-lab-v01530-toolbar">
+                    <label><span>Project ID</span><input type="text" data-v01530-project placeholder="project:…"></label>
+                    <label><span>Project 4D asset</span><select data-v01530-assets><option value="">Project 4D assets</option></select></label>
+                    <label><span>Compare against</span><select data-v01530-compare-assets><option value="">Compare against…</option></select></label>
+                    <button type="button" class="sc-lab-button" data-v01530-refresh>Refresh project</button>
+                  </div>
+                  <div class="sc-lab-v01530-title-row">
+                    <label><span>Asset title</span><input type="text" maxlength="160" data-v01530-title placeholder="4D computational scene"></label>
+                    <button type="button" class="sc-lab-button sc-lab-button-primary" data-v01530-promote>Promote selected scene</button>
+                    <button type="button" class="sc-lab-button" data-v01530-revision disabled>Save new revision</button>
+                  </div>
+                  <div class="sc-lab-v01530-actions">
+                    <button type="button" class="sc-lab-button" data-v01530-load disabled>Load workspace asset</button>
+                    <button type="button" class="sc-lab-button" data-v01530-fork disabled>Fork asset</button>
+                    <button type="button" class="sc-lab-button" data-v01530-compare>Compare latest revisions</button>
+                    <button type="button" class="sc-lab-button" data-v01530-lineage disabled>Show lineage</button>
+                    <button type="button" class="sc-lab-button" data-v01530-archive disabled>Archive asset</button>
+                  </div>
+                  <div class="sc-lab-v01530-grid">
+                    <article class="sc-lab-v01530-card"><h6>Workspace asset</h6><dl class="sc-lab-v01530-kv"><dt>Asset ID</dt><dd data-v01530-field="assetId">—</dd><dt>Title</dt><dd data-v01530-field="title">—</dd><dt>Status</dt><dd data-v01530-field="status">—</dd><dt>Revision</dt><dd data-v01530-field="revision">—</dd><dt>Parent</dt><dd data-v01530-field="parent">—</dd><dt>Updated</dt><dd data-v01530-field="updatedAt">—</dd></dl></article>
+                    <article class="sc-lab-v01530-card"><h6>Computational binding</h6><dl class="sc-lab-v01530-kv"><dt>Scene digest</dt><dd data-v01530-field="digest">—</dd><dt>Compute refs</dt><dd data-v01530-field="computeRefs">0</dd><dt>Project assets</dt><dd data-v01530-field="assetCount">0</dd><dt>Storage</dt><dd data-v01530-field="storage">checking</dd><dt>Server assets</dt><dd data-v01530-field="serverAssets">checking</dd></dl></article>
+                    <article class="sc-lab-v01530-card"><h6>Lineage</h6><div class="sc-lab-v01530-output" data-v01530-lineage-output><p>No lineage loaded.</p></div></article>
+                    <article class="sc-lab-v01530-card" style="grid-column:1/-1"><h6>Descriptive comparison</h6><div class="sc-lab-v01530-output" data-v01530-compare-output><p>Choose two assets to compare their latest saved scene state.</p></div></article>
+                  </div>
+                  <p class="sc-lab-v01530-boundary">Project workspace assets preserve scenes, compute-result references, immutable revisions, fork lineage, and descriptive comparisons. Loading an asset does not rerun computation. Comparisons do not establish evidence, causality, statistical significance, calibration, forecast skill, or scientific validity.</p>
                 </section>
               </div>
 

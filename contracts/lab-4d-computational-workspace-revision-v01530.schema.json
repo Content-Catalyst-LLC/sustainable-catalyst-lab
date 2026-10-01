@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-4d-computational-workspace-revision/0.153.0",
+  "title": "Sustainable Catalyst Lab 4D Computational Workspace Revision",
+  "type": "object",
+  "required": ["schema", "id", "assetId", "revision", "sceneDigest", "scene", "provenance", "revisionHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-4d-computational-workspace-revision/0.153.0"},
+    "id": {"type": "string"},
+    "assetId": {"type": "string"},
+    "revision": {"type": "integer", "minimum": 1},
+    "sceneDigest": {"type": "string"},
+    "scene": {"type": "object"},
+    "provenance": {"type": "object"},
+    "computeRefs": {"type": "array", "maxItems": 200},
+    "researchObject": {"type": "object"},
+    "createdAt": {"type": "string"},
+    "actor": {"type": "string"},
+    "revisionHash": {"type": "string", "minLength": 64, "maxLength": 64}
+  },
+  "additionalProperties": true
+}

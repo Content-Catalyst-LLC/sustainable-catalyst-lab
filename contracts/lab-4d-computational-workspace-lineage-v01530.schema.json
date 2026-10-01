@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-4d-computational-workspace-lineage/0.153.0",
+  "title": "Sustainable Catalyst Lab 4D Computational Workspace Lineage",
+  "type": "object",
+  "required": ["schema", "assetId", "ancestorChain", "revisions"],
+  "properties": {
+    "schema": {"const": "sc-lab-4d-computational-workspace-lineage/0.153.0"},
+    "assetId": {"type": "string"},
+    "ancestorChain": {"type": "array"},
+    "revisions": {"type": "array"}
+  },
+  "additionalProperties": true
+}
