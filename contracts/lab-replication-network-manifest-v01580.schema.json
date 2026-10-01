@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "coverage": {
+      "type": "object"
+    },
+    "network": {
+      "type": "object"
+    },
+    "nodes": {
+      "type": "array"
+    },
+    "schema": {
+      "const": "sc-lab-replication-network-manifest/0.158.0"
+    },
+    "version": {
+      "const": "0.158.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "network",
+    "nodes",
+    "coverage"
+  ],
+  "title": "Replication Network Manifest",
+  "type": "object"
+}

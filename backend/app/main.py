@@ -87,6 +87,7 @@ from .reproducible_protocol_notebook_v01540 import ProtocolNotebookError, Protoc
 from .batch_experiment_sweep_ensemble_v01550 import BatchCampaignError, BatchExperimentCampaignManager
 from .distributed_hpc_accelerated_coordination_v01560 import DistributedCoordinationError, DistributedHPCCoordinationManager
 from .cross_study_replication_meta_experiment_v01570 import CrossStudyReplicationError, CrossStudyReplicationMetaExperimentManager
+from .scientific_reproduction_independent_replication_network_v01580 import ReplicationNetworkError, ScientificReproductionIndependentReplicationNetworkManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -238,6 +239,7 @@ protocol_notebook_workspace = ProtocolNotebookWorkspaceManager(settings.protocol
 batch_experiment_campaigns_v01550 = BatchExperimentCampaignManager(settings.batch_experiment_campaign_db_path, settings.batch_experiment_campaign_persistent_disk_mounted, settings.batch_experiment_campaign_max_campaigns, settings.batch_experiment_campaign_max_trials, settings.batch_experiment_campaign_history_limit)
 distributed_coordination_v01560 = DistributedHPCCoordinationManager(settings.distributed_coordination_db_path, batch_experiment_campaigns_v01550, settings.distributed_coordination_persistent_disk_mounted, settings.distributed_coordination_max_targets, settings.distributed_coordination_max_plans, settings.distributed_coordination_max_tasks_per_plan, settings.distributed_coordination_history_limit)
 cross_study_replication_v01570 = CrossStudyReplicationMetaExperimentManager(settings.cross_study_replication_db_path, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.cross_study_replication_persistent_disk_mounted, settings.cross_study_replication_max_studies, settings.cross_study_replication_max_workspaces, settings.cross_study_replication_max_effects, settings.cross_study_replication_history_limit)
+replication_network_v01580 = ScientificReproductionIndependentReplicationNetworkManager(settings.replication_network_db_path, cross_study_replication_v01570, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.replication_network_persistent_disk_mounted, settings.replication_network_max_nodes, settings.replication_network_max_networks, settings.replication_network_max_plans, settings.replication_network_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -460,6 +462,7 @@ def health():
         "batchExperimentSweepEnsemble": {"version":"0.155.0","campaignModes":["parameter-sweep","hyperparameter-search","monte-carlo","factorial","repeated-trials","ensemble"],"deterministicTrials":True,"explicitWorkspaceHandoffs":True,"partialFailureRecovery":True,"aggregation":True,"automaticDispatch":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "distributedHpcAcceleratedCoordination": {"version":"0.156.0","computeTargetRegistry":True,"resourceIntent":True,"acceleratorAwarePlacement":True,"hpcJobArrayPlanning":True,"executionWavePlanning":True,"supportedSchedulers":["workspace","slurm","pbs","lsf","kubernetes","manual"],"automaticDispatch":False,"automaticFailover":False,"credentialsStored":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "crossStudyReplicationMetaExperiment": {"version":"0.157.0","immutableStudyRevisions":True,"immutableEffectRecords":True,"workspaceFreeze":True,"fixedEffectSynthesis":True,"randomEffectsSynthesis":True,"heterogeneityDiagnostics":["Q","I2","tau2"],"leaveOneOutSensitivity":True,"explicitReplicationCampaignHandoffs":True,"automaticReplicationJudgment":False,"automaticCausalInference":False,"publicationBiasInference":False,"studyIndependenceInferred":False,"automaticScientificValidity":False,"humanScientificReviewRequired":True},
+        "scientificReproductionIndependentReplicationNetwork": {"version":"0.158.0","replicationNodeRegistry":True,"declaredIndependence":True,"independenceInferred":False,"immutableReplicationPlans":True,"preregistrationReferences":True,"protocolLineage":True,"explicitWorkspaceHandoffs":True,"resultReceipts":True,"humanReviewRecords":True,"networkCoverageViews":True,"automaticExecution":False,"automaticReplicationJudgment":False,"automaticScientificValidity":False,"credentialsStored":False,"humanScientificReviewRequired":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13380,3 +13383,105 @@ def csr_v01570_archive(workspace_id: str, auth: dict[str, str] = Depends(require
     actor, _ = _team_workspace_actor(auth)
     try: return cross_study_replication_v01570.archive_workspace(workspace_id, actor)
     except CrossStudyReplicationError as exc: raise _csr_v01570_http_error(exc) from exc
+
+
+# v0.158.0 Scientific Reproduction & Independent Replication Network
+def _rn_v01580_http_error(exc: ReplicationNetworkError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/health")
+def rn_v01580_health(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=replication_network_v01580.health(); body["serviceVersion"]=settings.version; return body
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/policies")
+def rn_v01580_policies(auth: dict[str,str]=Depends(require_compute_auth)): del auth; return replication_network_v01580.policies()
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/nodes")
+def rn_v01580_nodes(project_id:str=Query(...),include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.list_nodes(project_id,include_archived,limit)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/projects/{project_id}/nodes")
+def rn_v01580_node_create(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.create_node(project_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/nodes/{node_id}/archive")
+def rn_v01580_node_archive(node_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.archive_node(node_id,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks")
+def rn_v01580_networks(project_id:str=Query(...),include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.list_networks(project_id,include_archived,limit)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/projects/{project_id}/networks")
+def rn_v01580_network_create(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.create_network(project_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}")
+def rn_v01580_network_get(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"network":replication_network_v01580.get_network(network_id)}
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/nodes")
+def rn_v01580_network_node(network_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.add_node(network_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/freeze")
+def rn_v01580_freeze(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.freeze_network(network_id,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/plans")
+def rn_v01580_plan_create(network_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.create_plan(network_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/plans/{plan_id}/handoff")
+def rn_v01580_handoff(plan_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.execution_handoff(plan_id)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/plans/{plan_id}/results")
+def rn_v01580_result(plan_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.record_result(plan_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/reviews")
+def rn_v01580_review(network_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.record_review(network_id,payload,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/view")
+def rn_v01580_view(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.network_view(network_id)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/coverage")
+def rn_v01580_coverage(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.coverage(network_id)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/manifest")
+def rn_v01580_manifest(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.manifest(network_id)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/manifests/verify")
+def rn_v01580_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.verify_manifest(payload)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.get("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/timeline")
+def rn_v01580_timeline(network_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return replication_network_v01580.timeline(network_id,limit)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+@app.post("/v1/scientific-reproduction-independent-replication-network/v01580/networks/{network_id}/archive")
+def rn_v01580_archive(network_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    actor,_=_team_workspace_actor(auth)
+    try:return replication_network_v01580.archive_network(network_id,actor)
+    except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+

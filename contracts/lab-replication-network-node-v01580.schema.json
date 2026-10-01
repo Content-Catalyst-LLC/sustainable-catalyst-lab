@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "independenceDeclared": {
+      "type": "boolean"
+    },
+    "independenceEvidence": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nodeType": {
+      "enum": [
+        "computational-site",
+        "consortium-node",
+        "field-site",
+        "independent-researcher",
+        "institution",
+        "laboratory"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "nodeType",
+    "independenceDeclared"
+  ],
+  "title": "Replication Network Node",
+  "type": "object"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "nodeId": {
+      "type": "string"
+    },
+    "plannedMetrics": {
+      "type": "array"
+    },
+    "preregistrationRef": {
+      "type": "string"
+    },
+    "protocolRef": {
+      "type": "string"
+    },
+    "sourceStudyId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "sourceStudyId",
+    "nodeId",
+    "protocolRef",
+    "preregistrationRef"
+  ],
+  "title": "Replication Plan",
+  "type": "object"
+}

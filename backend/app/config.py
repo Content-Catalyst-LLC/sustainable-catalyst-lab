@@ -138,6 +138,12 @@ class Settings:
     cross_study_replication_max_effects: int = _int("SC_LAB_CROSS_STUDY_REPLICATION_MAX_EFFECTS", 100000, 1, 5000000)
     cross_study_replication_history_limit: int = _int("SC_LAB_CROSS_STUDY_REPLICATION_HISTORY_LIMIT", 200000, 100, 5000000)
     cross_study_replication_persistent_disk_mounted: bool = os.getenv("SC_LAB_CROSS_STUDY_REPLICATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISTRIBUTED_COORDINATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    replication_network_db_path: str = os.getenv("SC_LAB_REPLICATION_NETWORK_DB_PATH", "./data/sc-lab-replication-network-v01580.sqlite3").strip()
+    replication_network_max_nodes: int = _int("SC_LAB_REPLICATION_NETWORK_MAX_NODES", 5000, 1, 500000)
+    replication_network_max_networks: int = _int("SC_LAB_REPLICATION_NETWORK_MAX_NETWORKS", 5000, 1, 500000)
+    replication_network_max_plans: int = _int("SC_LAB_REPLICATION_NETWORK_MAX_PLANS", 50000, 1, 5000000)
+    replication_network_history_limit: int = _int("SC_LAB_REPLICATION_NETWORK_HISTORY_LIMIT", 300000, 100, 5000000)
+    replication_network_persistent_disk_mounted: bool = os.getenv("SC_LAB_REPLICATION_NETWORK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_CROSS_STUDY_REPLICATION_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)
