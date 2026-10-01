@@ -1,0 +1,4 @@
+.sc-lab-auth-required-v015701{position:relative}
+.sc-lab-auth-required-v015701 [data-state="auth-required"]{border-left:3px solid currentColor;padding-left:.65rem}
+.sc-lab-auth-required-v015701 button:disabled{cursor:not-allowed;opacity:.55}
+.sc-lab-v015701-login{display:inline-flex;margin:.55rem 0 .15rem;text-decoration:underline;font-weight:700}

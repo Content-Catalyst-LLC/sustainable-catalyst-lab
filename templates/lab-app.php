@@ -1,5 +1,5 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
-<div class="sc-lab-app" data-initial-module="<?php echo esc_attr($sc_lab_initial_module); ?>" data-initial-project="<?php echo esc_attr($sc_lab_initial_project); ?>">
+<div class="sc-lab-app" data-canonical-release="<?php echo esc_attr(defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : SC_LAB_VERSION); ?>" data-feature-version="<?php echo esc_attr(defined('SC_LAB_FEATURE_VERSION') ? SC_LAB_FEATURE_VERSION : SC_LAB_VERSION); ?>" data-initial-module="<?php echo esc_attr($sc_lab_initial_module); ?>" data-initial-project="<?php echo esc_attr($sc_lab_initial_project); ?>">
   <header class="sc-lab-topbar">
     <div class="sc-lab-topbar-primary">
       <button type="button" class="sc-lab-nav-toggle" data-lab-nav-toggle aria-expanded="false" aria-controls="sc-lab-module-nav">
