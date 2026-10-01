@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "evidenceRefs": {
+      "type": "array"
+    },
+    "key": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "pending",
+        "satisfied",
+        "not-applicable",
+        "needs-revision",
+        "blocked"
+      ]
+    }
+  },
+  "required": [
+    "key",
+    "state"
+  ],
+  "title": "Review Validation Check",
+  "type": "object"
+}

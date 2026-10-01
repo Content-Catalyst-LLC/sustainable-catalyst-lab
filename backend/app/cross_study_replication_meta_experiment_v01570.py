@@ -227,7 +227,13 @@ class CrossStudyReplicationMetaExperimentManager:
         self._init_db()
 
     def _connect(self) -> sqlite3.Connection:
-        db = sqlite3.connect(self.db_path, timeout=30, check_same_thread=False)
+        class _ClosingConnection(sqlite3.Connection):
+            def __exit__(self, exc_type, exc, tb):
+                try:
+                    return super().__exit__(exc_type, exc, tb)
+                finally:
+                    self.close()
+        db = sqlite3.connect(self.db_path, timeout=30, check_same_thread=False, factory=_ClosingConnection)
         db.row_factory = sqlite3.Row
         db.execute("PRAGMA journal_mode=WAL")
         db.execute("PRAGMA foreign_keys=ON")

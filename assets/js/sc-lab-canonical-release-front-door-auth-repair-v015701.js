@@ -10,7 +10,8 @@ const protectedPrefixes=[
  '/wp-json/sc-lab/v1/workspace/batch-campaigns/v01550/',
  '/wp-json/sc-lab/v1/workspace/distributed/v01560/',
  '/wp-json/sc-lab/v1/workspace/cross-study/v01570/',
- '/wp-json/sc-lab/v1/workspace/replication-network/v01580/'
+ '/wp-json/sc-lab/v1/workspace/replication-network/v01580/',
+ '/wp-json/sc-lab/v1/workspace/review-gate/v01590/'
 ];
 function norm(v){return String(v||'').replace(/\s+/g,' ').trim()}
 function isHealth(path){return /\/health\/?$/.test(path)}
@@ -78,7 +79,8 @@ const locked=[
  ['[data-v01550-workspace]','[data-v01550-status]'],
  ['[data-v01560-workspace]','[data-v01560-status]'],
  ['[data-v01570-workspace]','[data-v01570-status]'],
- ['[data-v01580-workspace]','[data-v01580-status]']
+ ['[data-v01580-workspace]','[data-v01580-status]'],
+ ['[data-v01590-workspace]','[data-v01590-status]']
 ];
 function applyAuthorizationPresentation(){
  if(authenticated)return;
@@ -87,7 +89,7 @@ function applyAuthorizationPresentation(){
   root.classList.add('sc-lab-auth-required-v015701');root.dataset.authState='login-required';
   const status=root.querySelector(pair[1]);if(status){status.textContent=authMessage;status.dataset.state='auth-required'}
   root.querySelectorAll('button').forEach(btn=>{btn.disabled=true;btn.setAttribute('aria-disabled','true')});
-  const project=root.querySelector('input[data-v01530-project],input[data-v01540-project],input[data-v01550-project],input[data-v01560-project],input[data-v01570-project],input[data-v01580-project]');
+  const project=root.querySelector('input[data-v01530-project],input[data-v01540-project],input[data-v01550-project],input[data-v01560-project],input[data-v01570-project],input[data-v01580-project],input[data-v01590-project]');
   if(project){project.value='';project.placeholder='Sign in to use project storage';project.disabled=true;project.setAttribute('aria-disabled','true')}
   if(!root.querySelector('[data-v015701-login]')&&C.loginUrl){
    const a=d.createElement('a');a.href=C.loginUrl;a.dataset.v015701Login='1';a.className='sc-lab-v015701-login';a.textContent='Sign in to use project storage';

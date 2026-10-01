@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "crossStudyWorkspaceId": {
+      "type": "string"
+    },
+    "publicationTarget": {
+      "type": "string"
+    },
+    "replicationNetworkId": {
+      "type": "string"
+    },
+    "researchObjectRef": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "title": "Integrated Scientific Review Dossier",
+  "type": "object"
+}

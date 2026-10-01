@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "dossier": {
+      "type": "object"
+    },
+    "gate": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-review-publication-manifest/0.159.0"
+    },
+    "version": {
+      "const": "0.159.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "dossier",
+    "gate"
+  ],
+  "title": "Review Publication Manifest",
+  "type": "object"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "decision": {
+      "enum": [
+        "approve",
+        "revisions-required",
+        "dissent",
+        "abstain"
+      ]
+    },
+    "dissent": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "reviewerRef": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "reviewerRef",
+    "role",
+    "decision",
+    "rationale"
+  ],
+  "title": "Scientific Review Signoff",
+  "type": "object"
+}

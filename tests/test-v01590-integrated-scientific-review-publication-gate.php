@@ -1,0 +1,4 @@
+<?php
+$root=dirname(__DIR__);$plugin=file_get_contents($root.'/sustainable-catalyst-lab.php');$php=file_get_contents($root.'/includes/class-sc-lab-integrated-scientific-review-validation-publication-gate-v01590.php');$repair=file_get_contents($root.'/assets/js/sc-lab-canonical-release-front-door-auth-repair-v015701.js');
+$checks=array('plugin version'=>strpos($plugin,'Version: 0.159.0')!==false,'class init'=>strpos($plugin,'SC_Lab_Integrated_Scientific_Review_Validation_Publication_Gate_V01590::init();')!==false,'logged in permission'=>strpos($php,'return is_user_logged_in();')!==false,'signed proxy'=>strpos($php,'signed_headers')!==false,'human auth UI'=>strpos($php,'review-gate/v01590')!==false,'repair covers 159'=>strpos($repair,'review-gate/v01590')!==false&&strpos($repair,'data-v01590-workspace')!==false);
+foreach($checks as $name=>$ok){if(!$ok){fwrite(STDERR,"FAIL - $name\n");exit(1);}}echo "PASS - v0.159.0 PHP/authorization contract\n";

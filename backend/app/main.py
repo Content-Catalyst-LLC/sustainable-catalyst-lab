@@ -88,6 +88,7 @@ from .batch_experiment_sweep_ensemble_v01550 import BatchCampaignError, BatchExp
 from .distributed_hpc_accelerated_coordination_v01560 import DistributedCoordinationError, DistributedHPCCoordinationManager
 from .cross_study_replication_meta_experiment_v01570 import CrossStudyReplicationError, CrossStudyReplicationMetaExperimentManager
 from .scientific_reproduction_independent_replication_network_v01580 import ReplicationNetworkError, ScientificReproductionIndependentReplicationNetworkManager
+from .integrated_scientific_review_validation_publication_gate_v01590 import ScientificReviewGateError, IntegratedScientificReviewValidationPublicationGateManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -240,6 +241,7 @@ batch_experiment_campaigns_v01550 = BatchExperimentCampaignManager(settings.batc
 distributed_coordination_v01560 = DistributedHPCCoordinationManager(settings.distributed_coordination_db_path, batch_experiment_campaigns_v01550, settings.distributed_coordination_persistent_disk_mounted, settings.distributed_coordination_max_targets, settings.distributed_coordination_max_plans, settings.distributed_coordination_max_tasks_per_plan, settings.distributed_coordination_history_limit)
 cross_study_replication_v01570 = CrossStudyReplicationMetaExperimentManager(settings.cross_study_replication_db_path, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.cross_study_replication_persistent_disk_mounted, settings.cross_study_replication_max_studies, settings.cross_study_replication_max_workspaces, settings.cross_study_replication_max_effects, settings.cross_study_replication_history_limit)
 replication_network_v01580 = ScientificReproductionIndependentReplicationNetworkManager(settings.replication_network_db_path, cross_study_replication_v01570, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.replication_network_persistent_disk_mounted, settings.replication_network_max_nodes, settings.replication_network_max_networks, settings.replication_network_max_plans, settings.replication_network_history_limit)
+review_gate_v01590 = IntegratedScientificReviewValidationPublicationGateManager(settings.review_gate_db_path, cross_study_replication_v01570, replication_network_v01580, settings.review_gate_persistent_disk_mounted, settings.review_gate_max_dossiers, settings.review_gate_max_findings, settings.review_gate_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -463,6 +465,7 @@ def health():
         "distributedHpcAcceleratedCoordination": {"version":"0.156.0","computeTargetRegistry":True,"resourceIntent":True,"acceleratorAwarePlacement":True,"hpcJobArrayPlanning":True,"executionWavePlanning":True,"supportedSchedulers":["workspace","slurm","pbs","lsf","kubernetes","manual"],"automaticDispatch":False,"automaticFailover":False,"credentialsStored":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "crossStudyReplicationMetaExperiment": {"version":"0.157.0","immutableStudyRevisions":True,"immutableEffectRecords":True,"workspaceFreeze":True,"fixedEffectSynthesis":True,"randomEffectsSynthesis":True,"heterogeneityDiagnostics":["Q","I2","tau2"],"leaveOneOutSensitivity":True,"explicitReplicationCampaignHandoffs":True,"automaticReplicationJudgment":False,"automaticCausalInference":False,"publicationBiasInference":False,"studyIndependenceInferred":False,"automaticScientificValidity":False,"humanScientificReviewRequired":True},
         "scientificReproductionIndependentReplicationNetwork": {"version":"0.158.0","replicationNodeRegistry":True,"declaredIndependence":True,"independenceInferred":False,"immutableReplicationPlans":True,"preregistrationReferences":True,"protocolLineage":True,"explicitWorkspaceHandoffs":True,"resultReceipts":True,"humanReviewRecords":True,"networkCoverageViews":True,"automaticExecution":False,"automaticReplicationJudgment":False,"automaticScientificValidity":False,"credentialsStored":False,"humanScientificReviewRequired":True},
+        "integratedScientificReviewValidationPublicationGate": {"version":"0.159.0","reviewDossiers":True,"validationChecklists":True,"findingsAndRevisionActions":True,"reviewerSignoffAndDissent":True,"crossStudyEvidenceSnapshots":True,"replicationNetworkEvidenceSnapshots":True,"proceduralReadinessEvaluation":True,"publicationPackets":True,"automaticScientificValidity":False,"automaticPublication":False,"automaticReplicationJudgment":False,"humanPublicationAuthorizationRequired":True,"humanScientificReviewRequired":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13484,4 +13487,100 @@ def rn_v01580_archive(network_id:str,auth:dict[str,str]=Depends(require_compute_
     actor,_=_team_workspace_actor(auth)
     try:return replication_network_v01580.archive_network(network_id,actor)
     except ReplicationNetworkError as exc: raise _rn_v01580_http_error(exc) from exc
+
+
+
+# v0.159.0 Integrated Scientific Review, Validation & Publication Gate
+def _rvg_v01590_http_error(exc: ScientificReviewGateError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/health")
+def rvg_v01590_health(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=review_gate_v01590.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/policies")
+def rvg_v01590_policies(auth: dict[str,str]=Depends(require_compute_auth)): del auth; return review_gate_v01590.policies()
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers")
+def rvg_v01590_dossiers(project_id:str=Query(...),include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.list_dossiers(project_id,include_archived,limit)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/projects/{project_id}/dossiers")
+def rvg_v01590_create(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    actor=auth.get("key_id","human")
+    try:return review_gate_v01590.create_dossier(project_id,payload,actor)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}")
+def rvg_v01590_get(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"dossier":review_gate_v01590.get_dossier(dossier_id)}
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/evidence-snapshot")
+def rvg_v01590_snapshot(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.evidence_snapshot(dossier_id,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/checks")
+def rvg_v01590_check(dossier_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.set_check(dossier_id,payload,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/findings")
+def rvg_v01590_finding(dossier_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.add_finding(dossier_id,payload,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/findings/{finding_id}/resolve")
+def rvg_v01590_resolve(dossier_id:str,finding_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.resolve_finding(dossier_id,finding_id,payload,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/reviews")
+def rvg_v01590_review(dossier_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.record_review(dossier_id,payload,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/gate")
+def rvg_v01590_gate(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.evaluate_gate(dossier_id)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/transition")
+def rvg_v01590_transition(dossier_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.transition(dossier_id,payload,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/publication-packet")
+def rvg_v01590_packet(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.publication_packet(dossier_id)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/manifest")
+def rvg_v01590_manifest(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.manifest(dossier_id)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/manifests/verify")
+def rvg_v01590_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.verify_manifest(payload)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.get("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/timeline")
+def rvg_v01590_timeline(dossier_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return review_gate_v01590.timeline(dossier_id,limit)
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
+
+@app.post("/v1/integrated-scientific-review-validation-publication-gate/v01590/dossiers/{dossier_id}/archive")
+def rvg_v01590_archive(dossier_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return review_gate_v01590.archive(dossier_id,auth.get("key_id","human"))
+    except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
 

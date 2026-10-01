@@ -91,7 +91,11 @@ class ScientificReproductionIndependentReplicationNetworkManager:
         self.persistent_disk_mounted=bool(persistent_disk_mounted); self.max_nodes=max(1,int(max_nodes)); self.max_networks=max(1,int(max_networks)); self.max_plans=max(1,int(max_plans)); self.history_limit=max(100,int(history_limit)); self._lock=threading.RLock()
         Path(self.db_path).parent.mkdir(parents=True,exist_ok=True); self._init_db()
     def _connect(self):
-        db=sqlite3.connect(self.db_path,timeout=30,check_same_thread=False); db.row_factory=sqlite3.Row; db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA foreign_keys=ON"); return db
+        class _ClosingConnection(sqlite3.Connection):
+            def __exit__(self, exc_type, exc, tb):
+                try: return super().__exit__(exc_type, exc, tb)
+                finally: self.close()
+        db=sqlite3.connect(self.db_path,timeout=30,check_same_thread=False,factory=_ClosingConnection); db.row_factory=sqlite3.Row; db.execute("PRAGMA journal_mode=WAL"); db.execute("PRAGMA foreign_keys=ON"); return db
     def _init_db(self):
         with self._connect() as db:
             db.executescript("""

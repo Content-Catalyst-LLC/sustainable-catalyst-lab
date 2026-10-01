@@ -144,6 +144,11 @@ class Settings:
     replication_network_max_plans: int = _int("SC_LAB_REPLICATION_NETWORK_MAX_PLANS", 50000, 1, 5000000)
     replication_network_history_limit: int = _int("SC_LAB_REPLICATION_NETWORK_HISTORY_LIMIT", 300000, 100, 5000000)
     replication_network_persistent_disk_mounted: bool = os.getenv("SC_LAB_REPLICATION_NETWORK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_CROSS_STUDY_REPLICATION_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    review_gate_db_path: str = os.getenv("SC_LAB_REVIEW_GATE_DB_PATH", "./data/sc-lab-review-gate-v01590.sqlite3").strip()
+    review_gate_max_dossiers: int = _int("SC_LAB_REVIEW_GATE_MAX_DOSSIERS", 10000, 1, 500000)
+    review_gate_max_findings: int = _int("SC_LAB_REVIEW_GATE_MAX_FINDINGS", 100000, 1, 5000000)
+    review_gate_history_limit: int = _int("SC_LAB_REVIEW_GATE_HISTORY_LIMIT", 300000, 100, 5000000)
+    review_gate_persistent_disk_mounted: bool = os.getenv("SC_LAB_REVIEW_GATE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_REPLICATION_NETWORK_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)
