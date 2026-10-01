@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cross-Project Resource Plan Manifest v0.162.0",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "program",
+    "dependencies",
+    "resources",
+    "requirements",
+    "plans",
+    "analysis"
+  ],
+  "properties": {
+    "version": {
+      "const": "0.162.0"
+    },
+    "program": {
+      "type": "object"
+    },
+    "dependencies": {
+      "type": "array"
+    },
+    "resources": {
+      "type": "array"
+    },
+    "requirements": {
+      "type": "array"
+    },
+    "plans": {
+      "type": "array"
+    },
+    "analysis": {
+      "type": "object"
+    }
+  }
+}

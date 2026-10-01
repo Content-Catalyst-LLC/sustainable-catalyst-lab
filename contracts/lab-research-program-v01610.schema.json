@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-research-program-v01610.schema.json",
+  "title": "Sustainable Catalyst Lab Research Program v0.161.0",
+  "type": "object",
+  "required": ["schema", "version", "id", "title", "purpose", "state", "projects", "objectives", "milestones"],
+  "properties": {
+    "schema": {"const": "sc-lab-research-program/0.161.0"},
+    "version": {"const": "0.161.0"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 180},
+    "title": {"type": "string"},
+    "purpose": {"type": "string"},
+    "state": {"enum": ["draft", "active", "review", "completed", "archived"]},
+    "projects": {"type": "array"},
+    "objectives": {"type": "array"},
+    "milestones": {"type": "array"}
+  },
+  "additionalProperties": true
+}

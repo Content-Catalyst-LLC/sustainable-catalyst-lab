@@ -12,7 +12,10 @@ const protectedPrefixes=[
  '/wp-json/sc-lab/v1/workspace/cross-study/v01570/',
  '/wp-json/sc-lab/v1/workspace/replication-network/v01580/',
  '/wp-json/sc-lab/v1/workspace/review-gate/v01590/',
- '/wp-json/sc-lab/v1/workspace/research-os/v01600/'
+ '/wp-json/sc-lab/v1/workspace/research-os/v01600/',
+ '/wp-json/sc-lab/v1/workspace/program-portfolio/v01610/',
+ '/wp-json/sc-lab/v1/workspace/cross-project-resource-planning/v01620/',
+ '/wp-json/sc-lab/v1/workspace/institutional-governance/v01630/'
 ];
 function norm(v){return String(v||'').replace(/\s+/g,' ').trim()}
 function isHealth(path){return /\/health\/?$/.test(path)}
@@ -82,7 +85,10 @@ const locked=[
  ['[data-v01570-workspace]','[data-v01570-status]'],
  ['[data-v01580-workspace]','[data-v01580-status]'],
  ['[data-v01590-workspace]','[data-v01590-status]'],
- ['[data-v01600-workspace]','[data-v01600-status]']
+ ['[data-v01600-workspace]','[data-v01600-status]'],
+ ['[data-v01610-workspace]','[data-v01610-status]'],
+ ['[data-v01620-workspace]','[data-v01620-status]'],
+ ['[data-v01630-workspace]','[data-v01630-status]']
 ];
 function applyAuthorizationPresentation(){
  if(authenticated)return;
@@ -91,7 +97,7 @@ function applyAuthorizationPresentation(){
   root.classList.add('sc-lab-auth-required-v015701');root.dataset.authState='login-required';
   const status=root.querySelector(pair[1]);if(status){status.textContent=authMessage;status.dataset.state='auth-required'}
   root.querySelectorAll('button').forEach(btn=>{btn.disabled=true;btn.setAttribute('aria-disabled','true')});
-  const project=root.querySelector('input[data-v01530-project],input[data-v01540-project],input[data-v01550-project],input[data-v01560-project],input[data-v01570-project],input[data-v01580-project],input[data-v01590-project],input[data-v01600-project]');
+  const project=root.querySelector('input[data-v01530-project],input[data-v01540-project],input[data-v01550-project],input[data-v01560-project],input[data-v01570-project],input[data-v01580-project],input[data-v01590-project],input[data-v01600-project],input[data-v01610-program],input[data-v01610-portfolio],input[data-v01620-program],input[data-v01630-institution]');
   if(project){project.value='';project.placeholder='Sign in to use project storage';project.disabled=true;project.setAttribute('aria-disabled','true')}
   if(!root.querySelector('[data-v015701-login]')&&C.loginUrl){
    const a=d.createElement('a');a.href=C.loginUrl;a.dataset.v015701Login='1';a.className='sc-lab-v015701-login';a.textContent='Sign in to use project storage';

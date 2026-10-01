@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "active",
+        "limited",
+        "inactive",
+        "retired"
+      ]
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "jurisdiction",
+    "state"
+  ],
+  "title": "Institutional Research Node v0.163.0",
+  "type": "object"
+}

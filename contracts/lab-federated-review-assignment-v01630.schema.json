@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "required": [
+    "id",
+    "caseId",
+    "reviewerId",
+    "role",
+    "independenceDeclaration"
+  ],
+  "title": "Federated Review Assignment v0.163.0",
+  "type": "object"
+}

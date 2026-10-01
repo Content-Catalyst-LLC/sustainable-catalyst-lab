@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-research-program-portfolio-manifest-v01610.schema.json",
+  "title": "Research Program Portfolio Manifest v0.161.0",
+  "type": "object",
+  "required": ["schema", "version", "entityType", "entity", "commandCenter", "transitions", "descriptiveAggregationOnly"],
+  "properties": {
+    "schema": {"const": "sc-lab-research-program-portfolio-manifest/0.161.0"},
+    "version": {"const": "0.161.0"},
+    "entityType": {"enum": ["program", "portfolio"]},
+    "descriptiveAggregationOnly": {"const": true},
+    "automaticScientificValidity": {"const": false},
+    "automaticPrioritization": {"const": false}
+  },
+  "additionalProperties": true
+}

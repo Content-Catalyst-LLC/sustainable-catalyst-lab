@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-research-portfolio-v01610.schema.json",
+  "title": "Sustainable Catalyst Lab Research Portfolio v0.161.0",
+  "type": "object",
+  "required": ["schema", "version", "id", "title", "purpose", "state", "programs"],
+  "properties": {
+    "schema": {"const": "sc-lab-research-portfolio/0.161.0"},
+    "version": {"const": "0.161.0"},
+    "id": {"type": "string", "minLength": 1, "maxLength": 180},
+    "title": {"type": "string"},
+    "purpose": {"type": "string"},
+    "state": {"enum": ["draft", "active", "review", "completed", "archived"]},
+    "programs": {"type": "array"}
+  },
+  "additionalProperties": true
+}

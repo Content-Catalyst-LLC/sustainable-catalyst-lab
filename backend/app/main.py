@@ -90,6 +90,9 @@ from .cross_study_replication_meta_experiment_v01570 import CrossStudyReplicatio
 from .scientific_reproduction_independent_replication_network_v01580 import ReplicationNetworkError, ScientificReproductionIndependentReplicationNetworkManager
 from .integrated_scientific_review_validation_publication_gate_v01590 import ScientificReviewGateError, IntegratedScientificReviewValidationPublicationGateManager
 from .computational_research_operating_system_ii_v01600 import ResearchOSError, ComputationalResearchOperatingSystemIIManager
+from .research_program_portfolio_orchestration_v01610 import ResearchProgramPortfolioError, ResearchProgramPortfolioOrchestrationManager
+from .cross_project_dependency_research_resource_planning_v01620 import CrossProjectResourcePlanningError, CrossProjectDependencyResearchResourcePlanningManager
+from .institutional_research_governance_review_federation_v01630 import InstitutionalGovernanceError, InstitutionalResearchGovernanceReviewFederationManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -244,6 +247,9 @@ cross_study_replication_v01570 = CrossStudyReplicationMetaExperimentManager(sett
 replication_network_v01580 = ScientificReproductionIndependentReplicationNetworkManager(settings.replication_network_db_path, cross_study_replication_v01570, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.replication_network_persistent_disk_mounted, settings.replication_network_max_nodes, settings.replication_network_max_networks, settings.replication_network_max_plans, settings.replication_network_history_limit)
 review_gate_v01590 = IntegratedScientificReviewValidationPublicationGateManager(settings.review_gate_db_path, cross_study_replication_v01570, replication_network_v01580, settings.review_gate_persistent_disk_mounted, settings.review_gate_max_dossiers, settings.review_gate_max_findings, settings.review_gate_history_limit)
 research_os_v01600 = ComputationalResearchOperatingSystemIIManager(settings.research_os_db_path, batch_experiment_campaigns_v01550, cross_study_replication_v01570, replication_network_v01580, review_gate_v01590, settings.research_os_persistent_disk_mounted, settings.research_os_max_projects, settings.research_os_max_object_links, settings.research_os_max_packages, settings.research_os_history_limit)
+research_program_portfolio_v01610 = ResearchProgramPortfolioOrchestrationManager(settings.program_portfolio_db_path, research_os_v01600, settings.program_portfolio_persistent_disk_mounted, settings.program_portfolio_max_programs, settings.program_portfolio_max_portfolios, settings.program_portfolio_max_memberships, settings.program_portfolio_max_objectives, settings.program_portfolio_max_milestones, settings.program_portfolio_max_snapshots, settings.program_portfolio_history_limit)
+cross_project_resource_planning_v01620 = CrossProjectDependencyResearchResourcePlanningManager(settings.cross_project_resource_db_path, research_program_portfolio_v01610, settings.cross_project_resource_persistent_disk_mounted, settings.cross_project_resource_max_dependencies, settings.cross_project_resource_max_resources, settings.cross_project_resource_max_requirements, settings.cross_project_resource_max_plans, settings.cross_project_resource_max_snapshots, settings.cross_project_resource_history_limit)
+institutional_governance_v01630 = InstitutionalResearchGovernanceReviewFederationManager(settings.institutional_governance_db_path, research_program_portfolio_v01610, cross_project_resource_planning_v01620, settings.institutional_governance_persistent_disk_mounted, settings.institutional_governance_max_institutions, settings.institutional_governance_max_bodies, settings.institutional_governance_max_links, settings.institutional_governance_max_cases, settings.institutional_governance_max_assignments, settings.institutional_governance_max_decisions, settings.institutional_governance_max_attestations, settings.institutional_governance_max_snapshots, settings.institutional_governance_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -469,6 +475,9 @@ def health():
         "scientificReproductionIndependentReplicationNetwork": {"version":"0.158.0","replicationNodeRegistry":True,"declaredIndependence":True,"independenceInferred":False,"immutableReplicationPlans":True,"preregistrationReferences":True,"protocolLineage":True,"explicitWorkspaceHandoffs":True,"resultReceipts":True,"humanReviewRecords":True,"networkCoverageViews":True,"automaticExecution":False,"automaticReplicationJudgment":False,"automaticScientificValidity":False,"credentialsStored":False,"humanScientificReviewRequired":True},
         "integratedScientificReviewValidationPublicationGate": {"version":"0.159.0","reviewDossiers":True,"validationChecklists":True,"findingsAndRevisionActions":True,"reviewerSignoffAndDissent":True,"crossStudyEvidenceSnapshots":True,"replicationNetworkEvidenceSnapshots":True,"proceduralReadinessEvaluation":True,"publicationPackets":True,"automaticScientificValidity":False,"automaticPublication":False,"automaticReplicationJudgment":False,"humanPublicationAuthorizationRequired":True,"humanScientificReviewRequired":True},
         "computationalResearchOperatingSystemII": {"version":"0.160.0","unifiedResearchProjectGraph":True,"lifecycleStateMachine":True,"researchCommandCenter":True,"crossModuleObjectResolution":True,"researchPackageComposer":True,"dependencyIntegrityValidation":True,"humanAuthorizationLayer":True,"operatingSystemHealthContract":True,"referenceFirst":True,"automaticStageAdvancement":False,"automaticExecution":False,"automaticScientificValidity":False,"automaticPublication":False,"workspaceExecutionAuthority":True,"platformCoreCanonicalAuthority":True},
+        "researchProgramPortfolioOrchestration": {"version":"0.161.0","programRegistry":True,"portfolioRegistry":True,"researchOSProjectMembership":True,"programObjectives":True,"programMilestones":True,"objectiveProjectAllocation":True,"humanControlledProgramLifecycle":True,"humanControlledPortfolioLifecycle":True,"programCommandCenter":True,"portfolioCommandCenter":True,"immutableSnapshots":True,"manifestDigestVerification":True,"descriptiveAggregationOnly":True,"automaticProjectRanking":False,"automaticFundingAllocation":False,"automaticResourceAllocation":False,"automaticScientificValidity":False,"automaticPublication":False,"researchOSProjectLifecycleAuthority":True,"workspaceExecutionAuthority":True,"platformCoreCanonicalAuthority":True},
+        "crossProjectDependencyResearchResourcePlanning": {"version":"0.162.0","explicitDependencyGraph":True,"sharedResourceRegistry":True,"projectResourceRequirements":True,"descriptiveCapacityConflictDetection":True,"dependencyBlockerAnalysis":True,"humanApprovedPlanningScenarios":True,"programPlanningCommandCenter":True,"immutableSnapshots":True,"manifestDigestVerification":True,"automaticDependencyInference":False,"automaticScheduling":False,"automaticResourceAllocation":False,"automaticFundingAllocation":False,"automaticProjectRanking":False,"automaticScientificValidity":False,"automaticExecution":False,"automaticPublication":False,"programPortfolioAuthority":True,"researchOSProjectLifecycleAuthority":True,"workspaceExecutionAuthority":True,"platformCoreCanonicalAuthority":True},
+        "institutionalResearchGovernanceReviewFederation": {"version":"0.163.0","institutionRegistry":True,"governanceBodyRegistry":True,"federatedReviewRelationships":True,"externalReviewerAssignments":True,"explicitIndependenceDeclarations":True,"humanRecordedDecisions":True,"dissentPreservation":True,"institutionalSignoffBoundaries":True,"policyAttestations":True,"federatedGovernanceCommandCenter":True,"immutableSnapshots":True,"manifestDigestVerification":True,"automaticReviewerSelection":False,"automaticIndependenceInference":False,"automaticEthicsApproval":False,"automaticCaseApproval":False,"automaticDissentResolution":False,"automaticScientificValidity":False,"automaticResourceAllocation":False,"automaticFundingAllocation":False,"automaticExecution":False,"automaticPublication":False,"crossInstitutionCredentialSharing":False,"directRemoteCallbacks":False,"resourcePlanningAuthority":True,"programPortfolioAuthority":True,"researchOSProjectLifecycleAuthority":True,"workspaceExecutionAuthority":True,"platformCoreCanonicalAuthority":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13681,3 +13690,423 @@ def ros_v01600_timeline(project_id:str,limit:int=Query(500,ge=1,le=5000),auth:di
 def ros_v01600_archive(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
     try:return research_os_v01600.archive(project_id,auth.get("key_id","human"),str(payload.get("reason") or "Archived by human operator."))
     except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+
+# v0.161.0 Research Program & Portfolio Orchestration
+def _rppo_v01610_http_error(exc: ResearchProgramPortfolioError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/health")
+def rppo_v01610_health(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=research_program_portfolio_v01610.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/policies")
+def rppo_v01610_policies(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return research_program_portfolio_v01610.policies()
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs")
+def rppo_v01610_programs(include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return research_program_portfolio_v01610.list_programs(include_archived,limit)
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs")
+def rppo_v01610_program_create(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.create_program(payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}")
+def rppo_v01610_program_get(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"program":research_program_portfolio_v01610.get_program(program_id)}
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/projects")
+def rppo_v01610_project_add(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.add_project(program_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/memberships/{membership_id}/status")
+def rppo_v01610_membership_status(program_id:str,membership_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.set_project_membership_status(program_id,membership_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/objectives")
+def rppo_v01610_objective_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.create_objective(program_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/objectives/{objective_id}/projects")
+def rppo_v01610_objective_project(program_id:str,objective_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.allocate_objective_project(program_id,objective_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/objectives/{objective_id}/status")
+def rppo_v01610_objective_status(program_id:str,objective_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.set_objective_status(program_id,objective_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/milestones")
+def rppo_v01610_milestone_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.create_milestone(program_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/milestones/{milestone_id}/status")
+def rppo_v01610_milestone_status(program_id:str,milestone_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.set_milestone_status(program_id,milestone_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/evaluate")
+def rppo_v01610_program_evaluate(program_id:str,target_state:str|None=Query(None),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.evaluate_program(program_id,target_state)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/transition")
+def rppo_v01610_program_transition(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.transition_program(program_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/command-center")
+def rppo_v01610_program_command(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.program_command_center(program_id)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/manifest")
+def rppo_v01610_program_manifest(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.manifest("program",program_id)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/snapshot")
+def rppo_v01610_program_snapshot(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.snapshot("program",program_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/programs/{program_id}/timeline")
+def rppo_v01610_program_timeline(program_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.timeline("program",program_id,limit)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios")
+def rppo_v01610_portfolios(include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return research_program_portfolio_v01610.list_portfolios(include_archived,limit)
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/portfolios")
+def rppo_v01610_portfolio_create(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.create_portfolio(payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}")
+def rppo_v01610_portfolio_get(portfolio_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"portfolio":research_program_portfolio_v01610.get_portfolio(portfolio_id)}
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/programs")
+def rppo_v01610_portfolio_program(portfolio_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.add_program_to_portfolio(portfolio_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/evaluate")
+def rppo_v01610_portfolio_evaluate(portfolio_id:str,target_state:str|None=Query(None),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.evaluate_portfolio(portfolio_id,target_state)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/transition")
+def rppo_v01610_portfolio_transition(portfolio_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.transition_portfolio(portfolio_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/command-center")
+def rppo_v01610_portfolio_command(portfolio_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.portfolio_command_center(portfolio_id)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/manifest")
+def rppo_v01610_portfolio_manifest(portfolio_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.manifest("portfolio",portfolio_id)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/snapshot")
+def rppo_v01610_portfolio_snapshot(portfolio_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_program_portfolio_v01610.snapshot("portfolio",portfolio_id,payload,auth.get("key_id","human"))
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/portfolios/{portfolio_id}/timeline")
+def rppo_v01610_portfolio_timeline(portfolio_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.timeline("portfolio",portfolio_id,limit)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.get("/v1/research-program-portfolio-orchestration/v01610/snapshots/{snapshot_id}")
+def rppo_v01610_snapshot_get(snapshot_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.get_snapshot(snapshot_id)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+@app.post("/v1/research-program-portfolio-orchestration/v01610/manifests/verify")
+def rppo_v01610_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_program_portfolio_v01610.verify_manifest(payload)
+    except ResearchProgramPortfolioError as exc: raise _rppo_v01610_http_error(exc) from exc
+
+
+# v0.162.0 Cross-Project Dependency & Research Resource Planning
+def _cprp_v01620_http_error(exc: CrossProjectResourcePlanningError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/health")
+def cprp_v01620_health(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=cross_project_resource_planning_v01620.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/policies")
+def cprp_v01620_policies(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return cross_project_resource_planning_v01620.policies()
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/dependencies")
+def cprp_v01620_dependencies(program_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.list_dependencies(program_id,limit)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/dependencies")
+def cprp_v01620_dependency_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.create_dependency(program_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/dependencies/{dependency_id}/status")
+def cprp_v01620_dependency_status(program_id:str,dependency_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.set_dependency_status(program_id,dependency_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/resources")
+def cprp_v01620_resources(program_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.list_resources(program_id,limit)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/resources")
+def cprp_v01620_resource_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.create_resource(program_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/resources/{resource_id}/state")
+def cprp_v01620_resource_state(program_id:str,resource_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.set_resource_state(program_id,resource_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/requirements")
+def cprp_v01620_requirements(program_id:str,limit:int=Query(5000,ge=1,le=10000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.list_requirements(program_id,limit)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/requirements")
+def cprp_v01620_requirement_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.create_requirement(program_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/requirements/{requirement_id}/status")
+def cprp_v01620_requirement_status(program_id:str,requirement_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.set_requirement_status(program_id,requirement_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/analysis")
+def cprp_v01620_analysis(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.analyze_program(program_id)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/plans")
+def cprp_v01620_plans(program_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.list_plans(program_id,limit)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/plans")
+def cprp_v01620_plan_create(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.create_plan(program_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/plans/{plan_id}")
+def cprp_v01620_plan_get(plan_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"plan":cross_project_resource_planning_v01620.get_plan(plan_id)}
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/plans/{plan_id}/evaluate")
+def cprp_v01620_plan_evaluate(plan_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.evaluate_plan(plan_id)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/plans/{plan_id}/transition")
+def cprp_v01620_plan_transition(plan_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.transition_plan(plan_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/command-center")
+def cprp_v01620_command(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.command_center(program_id)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/manifest")
+def cprp_v01620_manifest(program_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.manifest(program_id)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/snapshot")
+def cprp_v01620_snapshot(program_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return cross_project_resource_planning_v01620.snapshot(program_id,payload,auth.get("key_id","human"))
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/programs/{program_id}/timeline")
+def cprp_v01620_timeline(program_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.timeline(program_id,limit)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.get("/v1/cross-project-dependency-resource-planning/v01620/snapshots/{snapshot_id}")
+def cprp_v01620_snapshot_get(snapshot_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.get_snapshot(snapshot_id)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+@app.post("/v1/cross-project-dependency-resource-planning/v01620/manifests/verify")
+def cprp_v01620_manifest_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return cross_project_resource_planning_v01620.verify_manifest(payload)
+    except CrossProjectResourcePlanningError as exc: raise _cprp_v01620_http_error(exc) from exc
+
+
+# v0.163.0 Institutional Research Governance & Review Federation
+
+def _irgf_v01630_http_error(exc: InstitutionalGovernanceError) -> HTTPException:
+    return HTTPException(status_code=getattr(exc,"status_code",400),detail=getattr(exc,"detail",str(exc)))
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/health")
+def irgf_v01630_health(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=institutional_governance_v01630.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/policies")
+def irgf_v01630_policies(auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return institutional_governance_v01630.policies()
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions")
+def irgf_v01630_institutions(limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return institutional_governance_v01630.list_institutions(limit)
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/institutions")
+def irgf_v01630_institution_create(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.create_institution(payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/state")
+def irgf_v01630_institution_state(institution_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.set_institution_state(institution_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/bodies")
+def irgf_v01630_bodies(institution_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.list_bodies(institution_id,limit)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/bodies")
+def irgf_v01630_body_create(institution_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.create_body(institution_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/federation-links")
+def irgf_v01630_link_create(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.create_federation_link(payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/federation-links")
+def irgf_v01630_links(institution_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.list_federation_links(institution_id,limit)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/cases")
+def irgf_v01630_cases(institution_id:str,limit:int=Query(1000,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.list_cases(institution_id,limit)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/cases")
+def irgf_v01630_case_create(institution_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.create_case(institution_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/cases/{case_id}")
+def irgf_v01630_case_get(case_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"case":institutional_governance_v01630.get_case(case_id)}
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/cases/{case_id}/assignments")
+def irgf_v01630_assignment(case_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.assign_reviewer(case_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/assignments/{assignment_id}/state")
+def irgf_v01630_assignment_state(assignment_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.set_assignment_state(assignment_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/cases/{case_id}/decisions")
+def irgf_v01630_decision(case_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.record_decision(case_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/cases/{case_id}/attestations")
+def irgf_v01630_attestation(case_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.add_attestation(case_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/cases/{case_id}/transition")
+def irgf_v01630_case_transition(case_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.transition_case(case_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/command-center")
+def irgf_v01630_command(institution_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.command_center(institution_id)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/manifest")
+def irgf_v01630_manifest(institution_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.manifest(institution_id)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/snapshot")
+def irgf_v01630_snapshot(institution_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return institutional_governance_v01630.snapshot(institution_id,payload,auth.get("key_id","human"))
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/institutions/{institution_id}/timeline")
+def irgf_v01630_timeline(institution_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.timeline(institution_id,limit)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.get("/v1/institutional-research-governance-review-federation/v01630/snapshots/{snapshot_id}")
+def irgf_v01630_snapshot_get(snapshot_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.get_snapshot(snapshot_id)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc
+
+@app.post("/v1/institutional-research-governance-review-federation/v01630/manifests/verify")
+def irgf_v01630_manifest_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return institutional_governance_v01630.verify_manifest(payload)
+    except InstitutionalGovernanceError as exc: raise _irgf_v01630_http_error(exc) from exc

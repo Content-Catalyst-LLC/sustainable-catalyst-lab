@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Resource v0.162.0",
+  "type": "object",
+  "required": [
+    "resourceId",
+    "resourceType",
+    "title",
+    "capacity"
+  ],
+  "properties": {
+    "resourceId": {
+      "type": "string"
+    },
+    "resourceType": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "type": "string"
+    },
+    "canonicalRef": {
+      "type": "string"
+    }
+  }
+}

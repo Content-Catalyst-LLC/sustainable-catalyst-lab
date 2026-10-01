@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cross-Project Dependency v0.162.0",
+  "type": "object",
+  "required": [
+    "fromProjectId",
+    "toProjectId",
+    "dependencyType",
+    "description"
+  ],
+  "properties": {
+    "fromProjectId": {
+      "type": "string"
+    },
+    "toProjectId": {
+      "type": "string"
+    },
+    "dependencyType": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "requiredState": {
+      "type": "string"
+    },
+    "evidenceRef": {
+      "type": "string"
+    }
+  }
+}

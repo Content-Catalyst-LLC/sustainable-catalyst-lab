@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/contracts/lab-research-program-project-membership-v01610.schema.json",
+  "title": "Research Program Project Membership v0.161.0",
+  "type": "object",
+  "required": ["schema", "version", "id", "programId", "projectId", "role", "workstream", "status"],
+  "properties": {
+    "schema": {"const": "sc-lab-research-program-project-membership/0.161.0"},
+    "version": {"const": "0.161.0"},
+    "programId": {"type": "string"},
+    "projectId": {"type": "string"},
+    "role": {"enum": ["primary", "supporting", "replication", "validation", "publication", "infrastructure"]},
+    "status": {"enum": ["active", "withdrawn"]}
+  },
+  "additionalProperties": true
+}

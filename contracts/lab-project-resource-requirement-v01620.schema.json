@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Resource Requirement v0.162.0",
+  "type": "object",
+  "required": [
+    "projectId",
+    "resourceId",
+    "quantity",
+    "purpose"
+  ],
+  "properties": {
+    "projectId": {
+      "type": "string"
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number",
+      "minimum": 0
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "windowStart": {
+      "type": "string"
+    },
+    "windowEnd": {
+      "type": "string"
+    }
+  }
+}
