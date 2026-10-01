@@ -126,6 +126,12 @@ class Settings:
     batch_experiment_campaign_max_trials: int = _int("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_MAX_TRIALS", 10000, 1, 1000000)
     batch_experiment_campaign_history_limit: int = _int("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_HISTORY_LIMIT", 100000, 100, 5000000)
     batch_experiment_campaign_persistent_disk_mounted: bool = os.getenv("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PROTOCOL_NOTEBOOK_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
+    distributed_coordination_db_path: str = os.getenv("SC_LAB_DISTRIBUTED_COORDINATION_DB_PATH", "./data/sc-lab-distributed-coordination-v01560.sqlite3").strip()
+    distributed_coordination_max_targets: int = _int("SC_LAB_DISTRIBUTED_COORDINATION_MAX_TARGETS", 500, 1, 100000)
+    distributed_coordination_max_plans: int = _int("SC_LAB_DISTRIBUTED_COORDINATION_MAX_PLANS", 5000, 1, 500000)
+    distributed_coordination_max_tasks_per_plan: int = _int("SC_LAB_DISTRIBUTED_COORDINATION_MAX_TASKS_PER_PLAN", 100000, 1, 1000000)
+    distributed_coordination_history_limit: int = _int("SC_LAB_DISTRIBUTED_COORDINATION_HISTORY_LIMIT", 100000, 100, 5000000)
+    distributed_coordination_persistent_disk_mounted: bool = os.getenv("SC_LAB_DISTRIBUTED_COORDINATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_BATCH_EXPERIMENT_CAMPAIGN_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_DISPATCHER_PERSISTENT_DISK_MOUNTED", "0"))).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)

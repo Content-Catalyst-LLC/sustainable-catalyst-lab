@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-compute-target/0.156.0",
+  "title": "Sustainable Catalyst Lab Compute Target",
+  "type": "object",
+  "required": ["schema", "version", "name", "scheduler", "capabilities", "storesCredentials", "targetHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-compute-target/0.156.0"},
+    "version": {"const": "0.156.0"},
+    "name": {"type": "string"},
+    "scheduler": {"enum": ["workspace", "slurm", "pbs", "lsf", "kubernetes", "manual"]},
+    "capabilities": {"type": "object"},
+    "storesCredentials": {"const": false},
+    "targetHash": {"type": "string", "minLength": 64, "maxLength": 64}
+  }
+}

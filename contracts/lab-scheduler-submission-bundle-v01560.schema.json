@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-scheduler-submission-bundle/0.156.0",
+  "title": "Sustainable Catalyst Lab Scheduler Submission Bundle",
+  "type": "object",
+  "required": ["schema", "scheduler", "targetId", "taskCount", "resources", "submissionRequested", "directives", "contractHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-scheduler-submission-bundle/0.156.0"},
+    "scheduler": {"enum": ["workspace", "slurm", "pbs", "lsf", "kubernetes", "manual"]},
+    "submissionRequested": {"const": false},
+    "contractHash": {"type": "string", "minLength": 64, "maxLength": 64}
+  }
+}

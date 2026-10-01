@@ -85,6 +85,7 @@ from .team_workspaces import TeamWorkspaceError, TeamWorkspaceManager, policies 
 from .computational_research_workspace_v01530 import ComputationalResearchWorkspaceError, ComputationalResearchWorkspaceManager
 from .reproducible_protocol_notebook_v01540 import ProtocolNotebookError, ProtocolNotebookWorkspaceManager
 from .batch_experiment_sweep_ensemble_v01550 import BatchCampaignError, BatchExperimentCampaignManager
+from .distributed_hpc_accelerated_coordination_v01560 import DistributedCoordinationError, DistributedHPCCoordinationManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -234,6 +235,7 @@ team_workspaces = TeamWorkspaceManager(settings.team_workspace_db_path, settings
 computational_research_workspace = ComputationalResearchWorkspaceManager(settings.computational_research_workspace_db_path, settings.computational_research_workspace_persistent_disk_mounted, settings.computational_research_workspace_max_assets, settings.computational_research_workspace_history_limit)
 protocol_notebook_workspace = ProtocolNotebookWorkspaceManager(settings.protocol_notebook_db_path, settings.protocol_notebook_persistent_disk_mounted, settings.protocol_notebook_max_protocols, settings.protocol_notebook_max_notebooks, settings.protocol_notebook_history_limit)
 batch_experiment_campaigns_v01550 = BatchExperimentCampaignManager(settings.batch_experiment_campaign_db_path, settings.batch_experiment_campaign_persistent_disk_mounted, settings.batch_experiment_campaign_max_campaigns, settings.batch_experiment_campaign_max_trials, settings.batch_experiment_campaign_history_limit)
+distributed_coordination_v01560 = DistributedHPCCoordinationManager(settings.distributed_coordination_db_path, batch_experiment_campaigns_v01550, settings.distributed_coordination_persistent_disk_mounted, settings.distributed_coordination_max_targets, settings.distributed_coordination_max_plans, settings.distributed_coordination_max_tasks_per_plan, settings.distributed_coordination_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -454,6 +456,7 @@ def health():
         "fourDComputationalResearchWorkspace": {"version":"0.153.0","serverBackedProjectAssets":True,"immutableRevisions":True,"forkLineage":True,"descriptiveComparison":True,"automaticCompute":False,"automaticScientificValidity":False},
         "reproducibleProtocolNotebookWorkspace": {"version":"0.154.0","serverBackedProtocols":True,"serverBackedNotebooks":True,"immutableRevisions":True,"registeredComputeCells":True,"reproductionManifests":True,"arbitraryCodeExecution":False,"automaticCompute":False},
         "batchExperimentSweepEnsemble": {"version":"0.155.0","campaignModes":["parameter-sweep","hyperparameter-search","monte-carlo","factorial","repeated-trials","ensemble"],"deterministicTrials":True,"explicitWorkspaceHandoffs":True,"partialFailureRecovery":True,"aggregation":True,"automaticDispatch":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
+        "distributedHpcAcceleratedCoordination": {"version":"0.156.0","computeTargetRegistry":True,"resourceIntent":True,"acceleratorAwarePlacement":True,"hpcJobArrayPlanning":True,"executionWavePlanning":True,"supportedSchedulers":["workspace","slurm","pbs","lsf","kubernetes","manual"],"automaticDispatch":False,"automaticFailover":False,"credentialsStored":False,"arbitraryCodeExecution":False,"humanScientificReviewRequired":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13140,3 +13143,114 @@ def bec_v01550_archive(campaign_id: str, auth: dict[str, str] = Depends(require_
     actor, _ = _team_workspace_actor(auth)
     try: return batch_experiment_campaigns_v01550.archive(campaign_id, actor)
     except BatchCampaignError as exc: raise _bec_v01550_http_error(exc) from exc
+
+
+# v0.156.0 Distributed, HPC & Accelerated Research Coordination
+def _dhc_v01560_http_error(exc: DistributedCoordinationError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/health")
+def dhc_v01560_health(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    body = distributed_coordination_v01560.health(); body["serviceVersion"] = settings.version; return body
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/policies")
+def dhc_v01560_policies(auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    return distributed_coordination_v01560.policies()
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/targets")
+def dhc_v01560_targets(project_id: str = Query(...), include_archived: bool = Query(False), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.list_targets(project_id, include_archived, limit)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/projects/{project_id}/targets")
+def dhc_v01560_target_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return distributed_coordination_v01560.create_target(project_id, payload, actor)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/targets/{target_id}")
+def dhc_v01560_target_get(target_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return {"ok": True, "target": distributed_coordination_v01560.get_target(target_id)}
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/targets/{target_id}/archive")
+def dhc_v01560_target_archive(target_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return distributed_coordination_v01560.archive_target(target_id, actor)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans")
+def dhc_v01560_plans(project_id: str = Query(...), include_archived: bool = Query(False), limit: int = Query(100, ge=1, le=1000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.list_plans(project_id, include_archived, limit)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/projects/{project_id}/plans")
+def dhc_v01560_plan_create(project_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return distributed_coordination_v01560.create_plan(project_id, payload, actor)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}")
+def dhc_v01560_plan_get(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.get_plan(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/waves")
+def dhc_v01560_waves(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.waves(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/scheduler-bundle")
+def dhc_v01560_scheduler_bundle(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.scheduler_bundle(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/receipts")
+def dhc_v01560_receipt(plan_id: str, payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return distributed_coordination_v01560.record_receipt(plan_id, payload, actor)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/reconcile")
+def dhc_v01560_reconcile(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.reconcile(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/replan-failed")
+def dhc_v01560_replan_failed(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.replan_failed(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/manifest")
+def dhc_v01560_manifest(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.manifest(plan_id)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.get("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/timeline")
+def dhc_v01560_timeline(plan_id: str, limit: int = Query(500, ge=1, le=5000), auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.timeline(plan_id, limit)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/plans/{plan_id}/archive")
+def dhc_v01560_plan_archive(plan_id: str, auth: dict[str, str] = Depends(require_compute_auth)):
+    actor, _ = _team_workspace_actor(auth)
+    try: return distributed_coordination_v01560.archive_plan(plan_id, actor)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc
+
+@app.post("/v1/distributed-hpc-accelerated-coordination/v01560/manifests/verify")
+def dhc_v01560_verify_manifest(payload: dict[str, Any], auth: dict[str, str] = Depends(require_compute_auth)):
+    del auth
+    try: return distributed_coordination_v01560.verify_manifest(payload)
+    except DistributedCoordinationError as exc: raise _dhc_v01560_http_error(exc) from exc

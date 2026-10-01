@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sc-lab-distributed-execution-plan/0.156.0",
+  "title": "Sustainable Catalyst Lab Distributed Execution Plan",
+  "type": "object",
+  "required": ["schema", "version", "targetId", "resources", "tasks", "waves", "automaticDispatch", "automaticFailover", "planHash"],
+  "properties": {
+    "schema": {"const": "sc-lab-distributed-execution-plan/0.156.0"},
+    "version": {"const": "0.156.0"},
+    "targetId": {"type": "string"},
+    "resources": {"type": "object"},
+    "tasks": {"type": "array"},
+    "waves": {"type": "array"},
+    "automaticDispatch": {"const": false},
+    "automaticFailover": {"const": false},
+    "planHash": {"type": "string", "minLength": 64, "maxLength": 64}
+  }
+}
