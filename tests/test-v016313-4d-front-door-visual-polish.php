@@ -1,0 +1,22 @@
+<?php
+$root = dirname(__DIR__);
+$plugin = file_get_contents($root . '/sustainable-catalyst-lab.php');
+$class = file_get_contents($root . '/includes/class-sc-lab-4d-front-door-visual-polish-v016313.php');
+$js = file_get_contents($root . '/assets/js/sc-lab-4d-front-door-visual-polish-v016313.js');
+$css = file_get_contents($root . '/assets/css/sc-lab-4d-front-door-visual-polish-v016313.css');
+$manifest = json_decode(file_get_contents($root . '/build/sc-lab-release-manifest.json'), true);
+$assert = function ($cond, $msg) { if (!$cond) { fwrite(STDERR, "FAIL - $msg\n"); exit(1); } };
+$assert(strpos($plugin, 'Version: 0.163.1.3') !== false, 'plugin version');
+$assert(strpos($plugin, 'SC_Lab_4D_Front_Door_Visual_Polish_V016313::init();') !== false, 'polish initialized');
+$assert(strpos($class, "const VERSION = '0.163.1.3'") !== false, 'class version');
+$assert(strpos($class, "'advancedPanelsProgressive' => true") !== false, 'progressive controls config');
+$assert(strpos($class, "'preserveScientificSignals' => true") !== false, 'signals preservation config');
+$assert(strpos($js, '.sc-lab-v015209-explorer') !== false, 'response surface remains primary');
+$assert(strpos($js, '.sc-lab-v015210-analysis') !== false, 'uncertainty panel');
+$assert(strpos($js, '.sc-lab-v015211-linked') !== false, 'linked views panel');
+$assert(strpos($js, '.sc-lab-v015212-persistence') !== false, 'scene panel');
+$assert(strpos($js, '.sc-lab-v01530-workspace') !== false, 'project workspace panel');
+$assert(strpos($css, '[data-overview-signals]') !== false, 'signals retained in CSS');
+$assert(($manifest['releaseVersion'] ?? '') === '0.163.1.3', 'manifest release version');
+$assert(($manifest['featureVersion'] ?? '') === '0.163.1', 'manifest feature version');
+echo "PASS - v0.163.1.3 WordPress 4D front-door visual polish contract\n";

@@ -1,0 +1,24 @@
+<?php
+$root = dirname(__DIR__);
+$plugin = file_get_contents($root . '/sustainable-catalyst-lab.php');
+$class = file_get_contents($root . '/includes/class-sc-lab-unified-workspace-shell-v016311.php');
+$js = file_get_contents($root . '/assets/js/sc-lab-unified-workspace-shell-v016311.js');
+$css = file_get_contents($root . '/assets/css/sc-lab-unified-workspace-shell-v016311.css');
+$manifest = json_decode(file_get_contents($root . '/build/sc-lab-release-manifest.json'), true);
+$assert = function ($cond, $msg) { if (!$cond) { fwrite(STDERR, "FAIL - $msg\n"); exit(1); } };
+$assert(strpos($plugin, 'Version: 0.163.1.1') !== false || strpos($plugin, 'Version: 0.163.1.2') !== false, 'plugin version');
+$assert(strpos($plugin, 'SC_Lab_Unified_Workspace_Shell_V016311::init();') !== false, 'repair shell initialized');
+$assert(strpos($class, "const VERSION = '0.163.1.1'") !== false, 'repair class version');
+$assert(strpos($class, "add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_after_legacy_gate'), PHP_INT_MAX)") !== false, 'late enqueue after legacy gate');
+$assert(strpos($class, "wp_dequeue_script('sc-lab-unified-workspace-shell-v01631')") !== false, 'old shell script removed');
+$assert(strpos($class, "add_filter('the_content', array(__CLASS__, 'inject_server_shell'), PHP_INT_MAX)") !== false, 'server-rendered shell content injection');
+$assert(strpos($class, 'data-sc-lab-unified-shell-v016311') !== false, 'server shell marker');
+$assert(strpos($js, "'[data-v0710-visualizer]'") !== false, 'actual 4D live DOM selector');
+$assert(strpos($js, 'resolveModule') !== false, 'live DOM resolver');
+$assert(strpos($css, 'body.sc-lab-v016311-progressive [data-v01540-workspace]') !== false, 'CSS fail-safe notebook collapse');
+$assert(strpos($css, 'body.sc-lab-v016311-progressive [data-v01630-workspace]') !== false, 'CSS fail-safe governance collapse');
+$assert(strpos($css, '[data-sc-lab-shell-module].is-active') !== false, 'active module fail-safe override');
+$assert(in_array(($manifest['releaseVersion'] ?? ''), array('0.163.1.1','0.163.1.2','0.163.1.3'), true), 'manifest release version');
+$assert(($manifest['featureVersion'] ?? '') === '0.163.1', 'manifest feature version retained');
+$assert(!empty($manifest['v016311LiveDomBindingRepair']), 'manifest live DOM repair flag');
+echo "PASS - v0.163.1.1 WordPress live-DOM/page-length repair contract\n";

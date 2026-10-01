@@ -19,6 +19,6 @@ $assert(strpos($js, 'sessionStorage') !== false, 'session workspace preservation
 $assert(strpos($js, 'Methods &amp; governance') !== false, 'governance drawer');
 $assert(strpos($css, 'grid-template-columns:250px minmax(0,1fr)') !== false, 'desktop app-shell layout');
 $assert(strpos($css, '.sc-lab-v01631-managed[hidden]') !== false, 'inactive workspace hidden');
-$assert(($manifest['releaseVersion'] ?? '') === '0.163.1', 'manifest release version');
+$assert(in_array(($manifest['releaseVersion'] ?? ''), array('0.163.1','0.163.1.1','0.163.1.2','0.163.1.3'), true), 'manifest release version');
 $assert(!empty($manifest['v01631UnifiedWorkspaceShell']), 'manifest shell flag');
 echo "PASS - v0.163.1 WordPress unified workspace shell contract\n";

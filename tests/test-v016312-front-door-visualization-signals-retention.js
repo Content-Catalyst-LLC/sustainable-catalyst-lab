@@ -1,0 +1,20 @@
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const js = fs.readFileSync(path.join(root, 'assets/js/sc-lab-unified-workspace-shell-v016312.js'), 'utf8');
+const css = fs.readFileSync(path.join(root, 'assets/css/sc-lab-unified-workspace-shell-v016312.css'), 'utf8');
+function ok(v, m) { if (!v) { console.error('FAIL - ' + m); process.exit(1); } }
+const modules = js.slice(js.indexOf('const MODULES = ['), js.indexOf('];', js.indexOf('const MODULES = [')));
+ok(!modules.includes('[data-v0710-visualizer]'), '4D front door must not be a specialist module');
+ok(js.includes('restoreFrontDoorVisualization'), '4D retention runtime missing');
+ok(js.includes('ensureScientificSignalsVisible'), 'Scientific signals retention runtime missing');
+ok(js.includes("d.querySelector('[data-overview-signals]')"), 'Scientific signals target missing');
+ok(js.includes("d.querySelector('[data-overview-refresh]')"), 'Scientific signals refresh control missing');
+ok(js.includes('refresh.click()'), 'Scientific signals automatic refresh missing');
+ok(css.includes('sc-lab-v016312-frontdoor [data-v0710-visualizer]'), '4D visible CSS contract missing');
+ok(css.includes('sc-lab-v016312-frontdoor [data-overview-signals]'), 'Scientific signals visible CSS contract missing');
+const specialist = css.slice(css.indexOf('Only specialist workspaces'), css.indexOf('[data-sc-lab-unified-shell-v016312] [data-sc-lab-shell-module].is-active'));
+ok(!specialist.includes('[data-v0710-visualizer]'), '4D must not be hidden by specialist fail-safe');
+ok(specialist.includes('[data-v01540-workspace]') && specialist.includes('[data-v01630-workspace]'), 'specialist fail-safe range incomplete');
+console.log('PASS - v0.163.1.2 front-door visualization/signals JavaScript/CSS contract');

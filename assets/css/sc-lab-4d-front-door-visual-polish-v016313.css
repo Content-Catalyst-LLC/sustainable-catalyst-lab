@@ -1,0 +1,164 @@
+/* Lab v0.163.1.3 — 4D Front-Door Visual Polish & Compact Control Layout. */
+body.sc-lab-v016313-polish [data-v0710-visualizer].sc-lab-v016313-frontdoor{
+  --v016313-line:rgba(148,163,184,.20);
+  --v016313-line-soft:rgba(148,163,184,.12);
+  --v016313-panel:#090d11;
+  --v016313-panel-2:#0c1116;
+  --v016313-muted:#98a5b0;
+  --v016313-red:#d40000;
+}
+
+/* Preserve the v0.163.1.2 hierarchy while shortening the first screen. */
+body.sc-lab-v016313-polish .sc-lab-v0710-body{
+  gap:14px!important;
+  grid-template-columns:minmax(0,1fr) minmax(228px,258px)!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v0710-canvas-wrap,
+body.sc-lab-v016313-polish .sc-lab-v016313-canvas-wrap{
+  height:clamp(360px,30vw,440px)!important;
+  min-height:360px!important;
+  max-height:440px!important;
+  border:1px solid var(--v016313-line)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.16)!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v0710-controls{
+  max-height:440px!important;
+  border-color:var(--v016313-line)!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v015207-demo-bar{margin-top:.6rem!important;gap:.45rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015207-demo-bar label{min-width:190px!important;gap:.22rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015207-demo-bar select,
+body.sc-lab-v016313-polish .sc-lab-v015207-actions button{min-height:34px!important}
+
+/* Primary response-surface controls remain immediately available. */
+body.sc-lab-v016313-polish .sc-lab-v015209-explorer.sc-lab-v016313-primary-panel{
+  margin-top:.7rem!important;
+  padding:.78rem!important;
+  border-color:var(--v016313-line)!important;
+  border-radius:6px!important;
+  background:linear-gradient(180deg,rgba(13,18,23,.96),rgba(8,12,16,.96))!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v015209-explorer-head{margin-bottom:.55rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-grid{gap:.45rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-ranges{gap:.45rem!important;margin-top:.5rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-ranges fieldset{gap:.35rem!important;padding:.5rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-fixed{margin-top:.5rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-fixed>div{gap:.4rem!important;margin-top:.3rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-actions,
+body.sc-lab-v016313-polish .sc-lab-v015209-saved{gap:.35rem!important;margin-top:.5rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-grid select,
+body.sc-lab-v016313-polish .sc-lab-v015209-ranges select,
+body.sc-lab-v016313-polish .sc-lab-v015209-ranges input,
+body.sc-lab-v016313-polish .sc-lab-v015209-fixed input,
+body.sc-lab-v016313-polish .sc-lab-v015209-saved input,
+body.sc-lab-v016313-polish .sc-lab-v015209-saved select{min-height:32px!important;padding:.32rem .44rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015209-run-meta{margin-top:.5rem!important}
+
+/* Secondary 4D capabilities become progressive without being removed. */
+body.sc-lab-v016313-polish .sc-lab-v015213-workspaces{gap:.55rem!important;margin-top:.7rem!important}
+body.sc-lab-v016313-polish .sc-lab-v016313-advanced-panel{
+  margin-top:0!important;
+  padding:.68rem!important;
+  border:1px solid var(--v016313-line)!important;
+  border-radius:6px!important;
+  background:var(--v016313-panel)!important;
+  box-shadow:none!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-head{
+  min-height:34px;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:.65rem!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-head h5,
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-head h6{margin:.1rem 0!important}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-tools{margin-left:auto;display:flex;align-items:center}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-toggle{
+  display:inline-flex;align-items:center;gap:.45rem;
+  min-height:30px;padding:.28rem .55rem;
+  border:1px solid var(--v016313-line)!important;
+  background:#0d1217!important;color:#d8e0e6!important;
+  font:700 10px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace!important;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-toggle:hover,
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-toggle:focus-visible{border-color:rgba(212,0,0,.65)!important;color:#fff!important}
+body.sc-lab-v016313-polish .sc-lab-v016313-panel-toggle [data-v016313-toggle-icon]{font-size:14px;line-height:1;color:#ff4747}
+body.sc-lab-v016313-polish .sc-lab-v016313-advanced-panel.is-v016313-collapsed{padding:.58rem .68rem!important}
+body.sc-lab-v016313-polish .sc-lab-v016313-advanced-panel.is-v016313-collapsed > :not([data-v016313-panel-head]){display:none!important}
+
+/* Tighter secondary content when expanded. */
+body.sc-lab-v016313-polish .sc-lab-v015210-controls,
+body.sc-lab-v016313-polish .sc-lab-v015210-variables,
+body.sc-lab-v016313-polish .sc-lab-v015210-metrics,
+body.sc-lab-v016313-polish .sc-lab-v015211-grid,
+body.sc-lab-v016313-polish .sc-lab-v015212-grid,
+body.sc-lab-v016313-polish .sc-lab-v01530-grid{gap:.42rem!important;margin-top:.55rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015210-controls input,
+body.sc-lab-v016313-polish .sc-lab-v015210-controls select,
+body.sc-lab-v016313-polish .sc-lab-v015210-variable input,
+body.sc-lab-v016313-polish .sc-lab-v015212-savebar input,
+body.sc-lab-v016313-polish .sc-lab-v015212-savebar select{min-height:32px!important;padding:.32rem .44rem!important}
+body.sc-lab-v016313-polish .sc-lab-v015210-variable,
+body.sc-lab-v016313-polish .sc-lab-v015211-view,
+body.sc-lab-v016313-polish .sc-lab-v015212-card,
+body.sc-lab-v016313-polish .sc-lab-v01530-card{padding:.55rem!important;border-color:var(--v016313-line-soft)!important}
+body.sc-lab-v016313-polish .sc-lab-v015210-actions,
+body.sc-lab-v016313-polish .sc-lab-v015211-actions,
+body.sc-lab-v016313-polish .sc-lab-v015212-savebar,
+body.sc-lab-v016313-polish .sc-lab-v015212-actions{margin-top:.5rem!important;gap:.35rem!important}
+body.sc-lab-v016313-polish .sc-lab-v01530-toolbar,
+body.sc-lab-v016313-polish .sc-lab-v01530-title-row{gap:7px!important;margin-bottom:9px!important}
+body.sc-lab-v016313-polish .sc-lab-v01530-actions{gap:6px!important;margin-bottom:9px!important}
+
+/* Make the four headline metrics read as one compact instrument strip. */
+body.sc-lab-v016313-polish .sc-lab-v016313-metrics-strip{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:1px!important;
+  border:1px solid var(--v016313-line)!important;
+  background:var(--v016313-line)!important;
+  margin:.55rem 0!important;
+}
+body.sc-lab-v016313-polish .sc-lab-v016313-metrics-strip > *{
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  padding:.5rem .6rem!important;
+  background:var(--v016313-panel-2)!important;
+  min-width:0;
+}
+
+/* Keep explanatory copy present but visually subordinate. */
+body.sc-lab-v016313-polish .sc-lab-v016313-method-note{
+  margin:.45rem 0 0!important;
+  max-width:1100px;
+  font-size:.69rem!important;
+  line-height:1.42!important;
+  opacity:.64!important;
+}
+
+/* The retention repair remains authoritative. */
+body.sc-lab-v016313-polish [data-overview-signals]{display:block!important}
+body.sc-lab-v016313-polish [data-sc-lab-unified-shell-v016312]{margin-top:18px!important}
+
+@media(min-width:1380px){
+  body.sc-lab-v016313-polish .sc-lab-v015213-workspaces{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.sc-lab-v016313-polish .sc-lab-v015213-workspaces>.sc-lab-v015209-explorer{grid-column:1/-1}
+}
+@media(max-width:1080px){
+  body.sc-lab-v016313-polish .sc-lab-v0710-body{grid-template-columns:1fr!important}
+  body.sc-lab-v016313-polish .sc-lab-v0710-canvas-wrap,
+  body.sc-lab-v016313-polish .sc-lab-v016313-canvas-wrap{height:370px!important;min-height:370px!important;max-height:370px!important}
+  body.sc-lab-v016313-polish .sc-lab-v0710-controls{max-height:none!important}
+}
+@media(max-width:720px){
+  body.sc-lab-v016313-polish .sc-lab-v0710-canvas-wrap,
+  body.sc-lab-v016313-polish .sc-lab-v016313-canvas-wrap{height:315px!important;min-height:315px!important;max-height:315px!important}
+  body.sc-lab-v016313-polish .sc-lab-v016313-metrics-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.sc-lab-v016313-polish .sc-lab-v016313-panel-head{align-items:flex-start!important}
+}
