@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "packages": {
+      "type": "array"
+    },
+    "project": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "sc-lab-computational-research-os-manifest/0.160.0"
+    },
+    "transitions": {
+      "type": "array"
+    },
+    "validation": {
+      "type": "object"
+    },
+    "version": {
+      "const": "0.160.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "project",
+    "validation",
+    "transitions",
+    "packages"
+  ],
+  "title": "Computational Research OS II Manifest",
+  "type": "object"
+}

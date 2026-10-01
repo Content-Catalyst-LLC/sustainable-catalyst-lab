@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "expectedDigest": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "objectRef": {
+      "type": "string"
+    },
+    "objectType": {
+      "type": "string"
+    },
+    "observedDigest": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-research-lifecycle-object-link/0.160.0"
+    },
+    "sourceLayer": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "stale",
+        "superseded",
+        "withdrawn"
+      ]
+    },
+    "version": {
+      "const": "0.160.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "projectId",
+    "objectType",
+    "objectRef",
+    "sourceLayer",
+    "status"
+  ],
+  "title": "Research Lifecycle Object Link",
+  "type": "object"
+}

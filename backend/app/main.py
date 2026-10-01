@@ -89,6 +89,7 @@ from .distributed_hpc_accelerated_coordination_v01560 import DistributedCoordina
 from .cross_study_replication_meta_experiment_v01570 import CrossStudyReplicationError, CrossStudyReplicationMetaExperimentManager
 from .scientific_reproduction_independent_replication_network_v01580 import ReplicationNetworkError, ScientificReproductionIndependentReplicationNetworkManager
 from .integrated_scientific_review_validation_publication_gate_v01590 import ScientificReviewGateError, IntegratedScientificReviewValidationPublicationGateManager
+from .computational_research_operating_system_ii_v01600 import ResearchOSError, ComputationalResearchOperatingSystemIIManager
 from .workspace_reviews import WorkspaceReviewError, WorkspaceReviewManager, policies as workspace_review_policies
 from .workspace_versioning import WorkspaceVersionError, WorkspaceVersionManager, policies as workspace_version_policies
 from .artifact_repository import ArtifactRepositoryError, ScientificArtifactRepository, policies as artifact_repository_policies
@@ -242,6 +243,7 @@ distributed_coordination_v01560 = DistributedHPCCoordinationManager(settings.dis
 cross_study_replication_v01570 = CrossStudyReplicationMetaExperimentManager(settings.cross_study_replication_db_path, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.cross_study_replication_persistent_disk_mounted, settings.cross_study_replication_max_studies, settings.cross_study_replication_max_workspaces, settings.cross_study_replication_max_effects, settings.cross_study_replication_history_limit)
 replication_network_v01580 = ScientificReproductionIndependentReplicationNetworkManager(settings.replication_network_db_path, cross_study_replication_v01570, batch_experiment_campaigns_v01550, distributed_coordination_v01560, settings.replication_network_persistent_disk_mounted, settings.replication_network_max_nodes, settings.replication_network_max_networks, settings.replication_network_max_plans, settings.replication_network_history_limit)
 review_gate_v01590 = IntegratedScientificReviewValidationPublicationGateManager(settings.review_gate_db_path, cross_study_replication_v01570, replication_network_v01580, settings.review_gate_persistent_disk_mounted, settings.review_gate_max_dossiers, settings.review_gate_max_findings, settings.review_gate_history_limit)
+research_os_v01600 = ComputationalResearchOperatingSystemIIManager(settings.research_os_db_path, batch_experiment_campaigns_v01550, cross_study_replication_v01570, replication_network_v01580, review_gate_v01590, settings.research_os_persistent_disk_mounted, settings.research_os_max_projects, settings.research_os_max_object_links, settings.research_os_max_packages, settings.research_os_history_limit)
 workspace_reviews = WorkspaceReviewManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 workspace_versions = WorkspaceVersionManager(settings.team_workspace_db_path, settings.team_workspace_history_limit)
 artifact_repository = ScientificArtifactRepository(settings.artifact_repository_db_path, team_workspaces, artifacts.get, settings.artifact_repository_max_collections, settings.artifact_repository_max_records, settings.artifact_repository_max_manifest_records, settings.artifact_repository_history_limit)
@@ -466,6 +468,7 @@ def health():
         "crossStudyReplicationMetaExperiment": {"version":"0.157.0","immutableStudyRevisions":True,"immutableEffectRecords":True,"workspaceFreeze":True,"fixedEffectSynthesis":True,"randomEffectsSynthesis":True,"heterogeneityDiagnostics":["Q","I2","tau2"],"leaveOneOutSensitivity":True,"explicitReplicationCampaignHandoffs":True,"automaticReplicationJudgment":False,"automaticCausalInference":False,"publicationBiasInference":False,"studyIndependenceInferred":False,"automaticScientificValidity":False,"humanScientificReviewRequired":True},
         "scientificReproductionIndependentReplicationNetwork": {"version":"0.158.0","replicationNodeRegistry":True,"declaredIndependence":True,"independenceInferred":False,"immutableReplicationPlans":True,"preregistrationReferences":True,"protocolLineage":True,"explicitWorkspaceHandoffs":True,"resultReceipts":True,"humanReviewRecords":True,"networkCoverageViews":True,"automaticExecution":False,"automaticReplicationJudgment":False,"automaticScientificValidity":False,"credentialsStored":False,"humanScientificReviewRequired":True},
         "integratedScientificReviewValidationPublicationGate": {"version":"0.159.0","reviewDossiers":True,"validationChecklists":True,"findingsAndRevisionActions":True,"reviewerSignoffAndDissent":True,"crossStudyEvidenceSnapshots":True,"replicationNetworkEvidenceSnapshots":True,"proceduralReadinessEvaluation":True,"publicationPackets":True,"automaticScientificValidity":False,"automaticPublication":False,"automaticReplicationJudgment":False,"humanPublicationAuthorizationRequired":True,"humanScientificReviewRequired":True},
+        "computationalResearchOperatingSystemII": {"version":"0.160.0","unifiedResearchProjectGraph":True,"lifecycleStateMachine":True,"researchCommandCenter":True,"crossModuleObjectResolution":True,"researchPackageComposer":True,"dependencyIntegrityValidation":True,"humanAuthorizationLayer":True,"operatingSystemHealthContract":True,"referenceFirst":True,"automaticStageAdvancement":False,"automaticExecution":False,"automaticScientificValidity":False,"automaticPublication":False,"workspaceExecutionAuthority":True,"platformCoreCanonicalAuthority":True},
         "datasetRegistry": {"version": "0.28.1", "profiling": True, "formats": ["csv", "json", "geojson", "netcdf", "tabular"], "serverBackedRegistry": False},
         "reproducibility": {"version": "0.28.2", "manifests": True, "verification": True, "comparison": True, "serverBackedRegistry": False},
         "researchProvenance": {"version":"0.29.0","sources":True,"evidence":True,"citations":True,"assumptions":True,"limitations":True},
@@ -13584,3 +13587,97 @@ def rvg_v01590_archive(dossier_id:str,auth:dict[str,str]=Depends(require_compute
     try:return review_gate_v01590.archive(dossier_id,auth.get("key_id","human"))
     except ScientificReviewGateError as exc: raise _rvg_v01590_http_error(exc) from exc
 
+
+
+# v0.160.0 Computational Research Operating System II
+def _ros_v01600_http_error(exc: ResearchOSError) -> HTTPException:
+    return HTTPException(status_code=exc.status_code, detail=exc.detail)
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/health")
+def ros_v01600_health(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; body=research_os_v01600.health(); body["serviceVersion"]=settings.version; return body
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/policies")
+def ros_v01600_policies(auth: dict[str,str]=Depends(require_compute_auth)):
+    del auth; return research_os_v01600.policies()
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects")
+def ros_v01600_projects(include_archived:bool=Query(False),limit:int=Query(100,ge=1,le=1000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth; return research_os_v01600.list_projects(include_archived,limit)
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects")
+def ros_v01600_create(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.create_project(payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}")
+def ros_v01600_get(project_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return {"ok":True,"project":research_os_v01600.get_project(project_id)}
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/objects")
+def ros_v01600_link(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.link_object(project_id,payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/objects/{object_id}/observe")
+def ros_v01600_observe(project_id:str,object_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.observe_object(project_id,object_id,payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/validate")
+def ros_v01600_validate(project_id:str,target_stage:str|None=Query(None),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.validate_project(project_id,target_stage)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/transition")
+def ros_v01600_transition(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.transition(project_id,payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/command-center")
+def ros_v01600_command_center(project_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.command_center(project_id)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/packages")
+def ros_v01600_package(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.compose_package(project_id,payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/packages/{package_id}")
+def ros_v01600_package_get(package_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.get_package(package_id)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/packages/{package_id}/handoff")
+def ros_v01600_handoff(package_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.prepare_handoff(package_id,payload,auth.get("key_id","human"))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/manifest")
+def ros_v01600_manifest(project_id:str,auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.manifest(project_id)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/manifests/verify")
+def ros_v01600_verify(payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.verify_manifest(payload)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.get("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/timeline")
+def ros_v01600_timeline(project_id:str,limit:int=Query(500,ge=1,le=5000),auth:dict[str,str]=Depends(require_compute_auth)):
+    del auth
+    try:return research_os_v01600.timeline(project_id,limit)
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc
+
+@app.post("/v1/computational-research-operating-system-ii/v01600/projects/{project_id}/archive")
+def ros_v01600_archive(project_id:str,payload:dict[str,Any],auth:dict[str,str]=Depends(require_compute_auth)):
+    try:return research_os_v01600.archive(project_id,auth.get("key_id","human"),str(payload.get("reason") or "Archived by human operator."))
+    except ResearchOSError as exc: raise _ros_v01600_http_error(exc) from exc

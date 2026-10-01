@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "question": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "sc-lab-computational-research-os-project/0.160.0"
+    },
+    "stage": {
+      "enum": [
+        "question",
+        "protocol",
+        "notebook",
+        "workflow",
+        "campaign",
+        "compute",
+        "results",
+        "synthesis",
+        "replication",
+        "review",
+        "publication-package",
+        "archived"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "const": "0.160.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "title",
+    "question",
+    "stage"
+  ],
+  "title": "Computational Research OS II Project",
+  "type": "object"
+}

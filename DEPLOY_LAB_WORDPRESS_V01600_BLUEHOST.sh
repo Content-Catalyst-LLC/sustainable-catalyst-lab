@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ZIP="${1:-$HOME/Downloads/sc-lab-v0.160.0-artifacts/sustainable-catalyst-lab-v0.160.0-wordpress.zip}"
+WP_ROOT="${2:-$HOME/public_html}"
+[ -f "$ZIP" ]||{ echo "ERROR: missing $ZIP" >&2;exit 1;}
+[ -d "$WP_ROOT/wp-content/plugins" ]||{ echo "ERROR: WordPress plugins directory not found: $WP_ROOT" >&2;exit 1;}
+TMP="$(mktemp -d)";trap 'rm -rf "$TMP"' EXIT
+unzip -q "$ZIP" -d "$TMP"
+SRC="$TMP/sustainable-catalyst-lab";[ -d "$SRC" ]||{ echo 'ERROR: plugin payload not found' >&2;exit 1;}
+TARGET="$WP_ROOT/wp-content/plugins/sustainable-catalyst-lab"
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)";BACKUP_ROOT="$HOME/sc-lab-plugin-backups";mkdir -p "$BACKUP_ROOT"
+[ ! -d "$TARGET" ]||cp -a "$TARGET" "$BACKUP_ROOT/sustainable-catalyst-lab-before-v0.160.0-$STAMP"
+rsync -a --delete "$SRC/" "$TARGET/"
+find "$WP_ROOT/wp-content/plugins" -maxdepth 1 -mindepth 1 -type d -name 'sustainable-catalyst-lab*' ! -name 'sustainable-catalyst-lab' -print | while read -r d;do mv "$d" "$BACKUP_ROOT/$(basename "$d")-$STAMP";done
+cd "$WP_ROOT"
+wp plugin activate sustainable-catalyst-lab >/dev/null
+wp cache flush >/dev/null 2>&1||true
+VERSION="$(wp plugin get sustainable-catalyst-lab --field=version 2>/dev/null||true)"
+[ "$VERSION" = '0.160.0' ]||{ echo "ERROR: WordPress reports Lab version '$VERSION', expected 0.160.0" >&2;exit 1;}
+echo 'PASS - WordPress Lab v0.160.0 installed and activated; duplicate Lab folders moved outside wp-content/plugins.'
