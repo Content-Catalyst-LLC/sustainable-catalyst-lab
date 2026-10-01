@@ -172,6 +172,19 @@ class Settings:
     cross_project_resource_max_snapshots: int = _int("SC_LAB_CROSS_PROJECT_RESOURCE_MAX_SNAPSHOTS", 100000, 1, 1000000)
     cross_project_resource_history_limit: int = _int("SC_LAB_CROSS_PROJECT_RESOURCE_HISTORY_LIMIT", 750000, 100, 5000000)
     cross_project_resource_persistent_disk_mounted: bool = os.getenv("SC_LAB_CROSS_PROJECT_RESOURCE_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_PROGRAM_PORTFOLIO_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
+    # v0.163.0.1 — dedicated namespace for the v0.163.0 institutional review federation.
+    # This intentionally does not reuse SC_LAB_INSTITUTIONAL_GOVERNANCE_* because that namespace belongs to the pre-existing institutional-governance subsystem.
+    institutional_review_federation_db_path: str = os.getenv("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_DB_PATH", "./data/sc-lab-institutional-review-federation-v01630.sqlite3").strip()
+    institutional_review_federation_max_institutions: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_INSTITUTIONS", 100000, 1, 1000000)
+    institutional_review_federation_max_bodies: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_BODIES", 250000, 1, 2500000)
+    institutional_review_federation_max_links: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_LINKS", 250000, 1, 2500000)
+    institutional_review_federation_max_cases: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_CASES", 500000, 1, 5000000)
+    institutional_review_federation_max_assignments: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_ASSIGNMENTS", 1500000, 1, 10000000)
+    institutional_review_federation_max_decisions: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_DECISIONS", 2000000, 1, 15000000)
+    institutional_review_federation_max_attestations: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_ATTESTATIONS", 2000000, 1, 15000000)
+    institutional_review_federation_max_snapshots: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_MAX_SNAPSHOTS", 100000, 1, 1000000)
+    institutional_review_federation_history_limit: int = _int("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_HISTORY_LIMIT", 1000000, 100, 5000000)
+    institutional_review_federation_persistent_disk_mounted: bool = os.getenv("SC_LAB_INSTITUTIONAL_REVIEW_FEDERATION_PERSISTENT_DISK_MOUNTED", os.getenv("SC_LAB_CROSS_PROJECT_RESOURCE_PERSISTENT_DISK_MOUNTED", "0")).lower() in {"1", "true", "yes"}
     team_workspace_max_workspaces: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_WORKSPACES", 5000, 1, 100000)
     team_workspace_max_members: int = _int("SC_LAB_TEAM_WORKSPACE_MAX_MEMBERS", 100000, 10, 2000000)
     team_workspace_history_limit: int = _int("SC_LAB_TEAM_WORKSPACE_HISTORY_LIMIT", 100000, 100, 2000000)
