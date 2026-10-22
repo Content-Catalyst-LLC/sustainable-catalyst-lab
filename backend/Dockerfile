@@ -1,9 +1,10 @@
+# syntax=docker/dockerfile:1
 FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PORT=8000
 WORKDIR /app
 RUN useradd --create-home --uid 10001 appuser
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 COPY --chown=appuser:appuser app ./app
 COPY --chown=appuser:appuser worker_agent ./worker_agent
 COPY --chown=appuser:appuser scripts ./scripts
