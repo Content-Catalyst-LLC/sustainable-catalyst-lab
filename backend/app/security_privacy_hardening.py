@@ -158,6 +158,10 @@ def policies(persistent_disk_mounted: bool = False, vault_locked: bool = True) -
     }
 
 
+# Keep vault keys separate from persisted secret/credential records. The
+# active key and optional prior keys are supplied by protected configuration;
+# invalid previous-key mappings fail construction. An absent active key leaves
+# the vault locked, and instance-local disk is not a durable backup.
 class SecurityPrivacyManager:
     def __init__(
         self,
