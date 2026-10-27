@@ -1,0 +1,20 @@
+# Development override; requires Docker Compose supporting !override.
+services:
+  lab:
+    container_name: sc-lab-dev
+    env_file: !override [.env.dev]
+    ports: !override ['127.0.0.1:18092:8092']
+    mem_limit: 1024m
+    networks:
+      wordpress-dev:
+        aliases: [sc-dev-lab-api]
+      sc-internal:
+        aliases: [sc-lab]
+volumes:
+  lab_data:
+    name: sc-lab-dev-data
+
+networks:
+  wordpress-dev:
+    external: true
+    name: ${SC_DEV_WP_NETWORK:?Set the existing private WordPress development network}
