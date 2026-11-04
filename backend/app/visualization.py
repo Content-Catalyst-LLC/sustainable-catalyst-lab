@@ -132,6 +132,11 @@ def _heatmap_spec(outputs: dict[str,Any], options: dict[str,Any]) -> dict[str,An
 
 def build_spec(payload: dict[str,Any]) -> dict[str,Any]:
     if not isinstance(payload,dict): raise VisualizationInputError("Visualization request must be an object.")
+    if "publisherSource" in payload:
+        from .publisher_soil_carbon import ingest_request
+        if set(payload) != {"publisherSource"}:
+            raise VisualizationInputError("Publisher import cannot override source values or semantics.")
+        return ingest_request(payload["publisherSource"])
     method=str(payload.get("method") or payload.get("methodId") or "custom-grid")[:128]
     outputs=payload.get("outputs") or payload.get("result") or {}
     if isinstance(outputs,dict) and isinstance(outputs.get("outputs"),dict): outputs=outputs["outputs"]

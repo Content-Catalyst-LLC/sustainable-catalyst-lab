@@ -1,0 +1,32 @@
+name: SC RVF publisher soil carbon
+on:
+  pull_request:
+    paths:
+      - 'backend/app/visualization.py'
+      - 'backend/app/publisher_soil_carbon.py'
+      - 'backend/tests/test_publisher_soil_carbon.py'
+      - 'backend/app/publisher_sources/**'
+      - 'assets/js/modules/scientific-visualization-engine-v0440.js'
+      - '.github/workflows/sc-rvf-publisher.yml'
+      - 'tests/sc-rvf-native-heatmap.cjs'
+      - 'tests/renderer/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-spec:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+      - run: python -m pip install -r backend/requirements-dev.txt
+      - run: PYTHONPATH=backend python -m pytest -o addopts='' -q backend/tests/test_publisher_soil_carbon.py
+      - run: node --check assets/js/modules/scientific-visualization-engine-v0440.js
+
+      - run: npm ci --prefix tests/renderer --ignore-scripts
+      - run: node --test tests/sc-rvf-native-heatmap.cjs
