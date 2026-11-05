@@ -42,7 +42,10 @@ def registered_figure(body:RegisteredPublisher):
             raise HTTPException(409,'Registered publisher source hash mismatch.')
         raw=fetch(library+'/v1/admin/artifacts/'+quote(artifact,safe='')+'/content',{'Authorization':'Bearer '+lk},5_000_000)
         if hashlib.sha256(raw).hexdigest()!=PDF_SHA256:raise HTTPException(409,'Publisher bytes failed SHA256 verification.')
-        spec=ingest_pdf(raw)
+        group=content.get('landUseGroup','grassland-and-rough-grazing')
+        if group not in {'grassland','grassland-and-rough-grazing'}:
+            raise HTTPException(409,'Registered EPA land-use column is unsupported.')
+        spec=ingest_pdf(raw,land_use_group=group)
         spec['scientificContext']['source']['library_binding']={'publisherArtifactId':artifact}
         spec['scientificContext']['source']['core_binding']={'projectId':body.coreProjectId,'datasetVersionKey':body.datasetVersionKey,'componentId':component['id']}
         spec['source_verification'].update(library_registered=True,core_registered=True)

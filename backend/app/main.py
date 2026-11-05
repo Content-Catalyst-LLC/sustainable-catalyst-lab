@@ -14118,3 +14118,6 @@ def irgf_v01630_manifest_verify(payload:dict[str,Any],auth:dict[str,str]=Depends
 
 from app.registered_publisher_figure import router as registered_publisher_figure_router
 app.include_router(registered_publisher_figure_router)
+
+from app.scientific_research_figures import router as scientific_research_figures_router
+app.include_router(scientific_research_figures_router)

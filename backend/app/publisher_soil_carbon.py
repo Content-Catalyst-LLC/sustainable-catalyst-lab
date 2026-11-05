@@ -9,22 +9,27 @@ import hashlib
 PDF_SHA256 = '9cc7ef390d6b19bd4d1a89d3b1d9c9d8c1c81e1adf8e40b6c4267d4fb93ae27a'
 VALUES = [(52.2,.6,29.9,1.6), (127.1,1.7,81.3,4.5),
           (170.9,2.7,117.6,7.2), (213.8,4.5,167.5,12.2)]
+GRASSLAND_VALUES = [(50.9,.6,29.9,1.6),(121.5,1.7,81.3,4.5),
+                    (160.6,2.8,117.6,7.2),(194.9,4.7,167.5,12.2)]
 CITATION = ('Khalil, M.I. (2014) Development of Methodologies and Modelling for Accounting '
             'Greenhouse Gases and Organic Carbon Stocks in Agricultural Soils of Ireland. '
             'EPA Research Report 136. Environmental Protection Agency, Ireland, Table 2.4, p. 19. Catalog lists 2015.')
 
 
-def ingest_pdf(raw):
+def ingest_pdf(raw, land_use_group='grassland-and-rough-grazing'):
     from .visualization import build_spec, VisualizationInputError
     if not isinstance(raw, bytes) or len(raw) > 5_000_000 or hashlib.sha256(raw).hexdigest() != PDF_SHA256:
         raise VisualizationInputError('EPA Report 136 publisher PDF SHA256 mismatch; re-review source revisions before import.')
+    if land_use_group not in {'grassland','grassland-and-rough-grazing'}:
+        raise VisualizationInputError('Unknown EPA Table 2.4 land-use column.')
+    values = GRASSLAND_VALUES if land_use_group == 'grassland' else VALUES
     spec = build_spec({'method':'published-epa-136-table-2.4', 'outputs':{
-        'xValues':[0,1], 'yValues':[0,1,2,3], 'zMatrix':[[g,a] for g,_,a,_ in VALUES]},
+        'xValues':[0,1], 'yValues':[0,1,2,3], 'zMatrix':[[g,a] for g,_,a,_ in values]},
         'visualization':{'type':'heatmap','title':'National non-peat soil organic carbon',
             'description':'Published model-based stock estimates; not measured Wexford removal.',
             'xLabel':'Land use','yLabel':'Cumulative depth (cm)'}})
-    spec['axisLabels'] = {'x':['Grassland + rough grazing','Arable lands'], 'y':['0-10','0-30','0-50','0-100']}
-    for yi, (_,gs,_,ase) in enumerate(VALUES):
+    spec['axisLabels'] = {'x':['Grassland' if land_use_group == 'grassland' else 'Grassland + rough grazing','Arable lands'], 'y':['0-10','0-30','0-50','0-100']}
+    for yi, (_,gs,_,ase) in enumerate(values):
         spec['cells'][yi*2]['standardError'] = gs
         spec['cells'][yi*2+1]['standardError'] = ase
     spec['scientificContext'] = {'unit':'t C/ha','uncertainty_kind':'SE','depth_semantics':'cumulative',
@@ -48,6 +53,8 @@ def ingest_pdf(raw):
         'truncated':False,'rowCount':8}
     spec['source_verification'] = {'publisher_pdf_bytes_match':True,'human_extraction_review':False,
         'library_registered':False,'core_registered':False,'net_removal_status':'NOT_QUANTIFIED'}
+    if land_use_group == 'grassland':
+        spec['scientificContext']['source']['land_use_group'] = land_use_group
     return spec
 
 
