@@ -4,6 +4,8 @@ on:
     paths:
       - 'backend/app/visualization.py'
       - 'backend/app/scientific_research_figures.py'
+      - 'backend/app/scientific_experiment_plan.py'
+      - 'backend/tests/test_scientific_experiment_plan.py'
       - 'backend/app/registered_publisher_figure.py'
       - 'backend/tests/test_scientific_research_figures.py'
       - 'backend/tests/test_registered_publisher_figure.py'
@@ -29,7 +31,7 @@ jobs:
         with:
           node-version: '26'
       - run: python -m pip install -r backend/requirements-dev.txt
-      - run: PYTHONPATH=backend python -m pytest -o addopts='' -q backend/tests/test_publisher_soil_carbon.py backend/tests/test_registered_publisher_figure.py backend/tests/test_scientific_research_figures.py
+      - run: PYTHONPATH=backend python -m pytest -o addopts='' -q backend/tests/test_publisher_soil_carbon.py backend/tests/test_registered_publisher_figure.py backend/tests/test_scientific_research_figures.py backend/tests/test_scientific_experiment_plan.py
       - run: node --check assets/js/modules/scientific-visualization-engine-v0440.js
 
       - run: npm ci --prefix tests/renderer --ignore-scripts
