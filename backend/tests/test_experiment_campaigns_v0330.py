@@ -182,4 +182,4 @@ def test_fastapi_campaign_routes(monkeypatch, tmp_path: Path):
         assert client.get("/v1/experiment-campaigns", headers=headers).json()["count"] == 1
         health = client.get("/v1/experiment-campaigns/health", headers=headers).json()
         assert health["version"] == "0.33.1"
-        assert health["serviceVersion"] == "0.33.1"
+        assert health["serviceVersion"] == "1.0.0"
