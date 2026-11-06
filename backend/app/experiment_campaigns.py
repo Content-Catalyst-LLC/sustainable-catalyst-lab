@@ -10,6 +10,7 @@ import random
 import re
 import secrets
 import sqlite3
+from .sqlite_resources import ClosingConnection
 import threading
 from typing import Any
 
@@ -311,7 +312,7 @@ class ExperimentCampaignManager:
         self._init_db()
 
     def _connect(self) -> sqlite3.Connection:
-        con = sqlite3.connect(self.db_path, timeout=30)
+        con = sqlite3.connect(self.db_path, timeout=30, factory=ClosingConnection)
         con.row_factory = sqlite3.Row
         con.execute("PRAGMA journal_mode=WAL")
         con.execute("PRAGMA foreign_keys=ON")

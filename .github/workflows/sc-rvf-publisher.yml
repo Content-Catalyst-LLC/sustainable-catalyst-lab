@@ -1,0 +1,44 @@
+name: SC RVF publisher soil carbon
+on:
+  pull_request:
+    paths:
+      - 'backend/app/visualization.py'
+      - 'backend/app/scientific_research_figures.py'
+      - 'backend/app/scientific_experiment_plan.py'
+      - 'backend/app/sqlite_resources.py'
+      - 'backend/app/jobs.py'
+      - 'backend/app/workflow_scheduling.py'
+      - 'backend/app/workflow_orchestration.py'
+      - 'backend/app/experiment_campaigns.py'
+      - 'backend/tests/test_sqlite_resource_lifetime.py'
+      - 'backend/tests/test_scientific_experiment_plan.py'
+      - 'backend/app/registered_publisher_figure.py'
+      - 'backend/tests/test_scientific_research_figures.py'
+      - 'backend/tests/test_registered_publisher_figure.py'
+      - 'backend/app/publisher_soil_carbon.py'
+      - 'backend/tests/test_publisher_soil_carbon.py'
+      - 'backend/app/publisher_sources/**'
+      - 'assets/js/modules/scientific-visualization-engine-v0440.js'
+      - '.github/workflows/sc-rvf-publisher.yml'
+      - 'tests/sc-rvf-native-heatmap.cjs'
+      - 'tests/renderer/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-spec:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+      - run: python -m pip install -r backend/requirements-dev.txt
+      - run: PYTHONPATH=backend python -m pytest -o addopts='' -q backend/tests/test_publisher_soil_carbon.py backend/tests/test_registered_publisher_figure.py backend/tests/test_scientific_research_figures.py backend/tests/test_scientific_experiment_plan.py backend/tests/test_sqlite_resource_lifetime.py backend/tests/test_job_queue.py backend/tests/test_workflow_orchestration_v0320.py backend/tests/test_workflow_scheduling_v0322.py backend/tests/test_experiment_campaigns_v0330.py
+      - run: node --check assets/js/modules/scientific-visualization-engine-v0440.js
+
+      - run: npm ci --prefix tests/renderer --ignore-scripts
+      - run: node --test tests/sc-rvf-native-heatmap.cjs
