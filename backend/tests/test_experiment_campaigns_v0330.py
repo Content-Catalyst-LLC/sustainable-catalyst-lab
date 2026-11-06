@@ -75,7 +75,7 @@ def campaign_payload(**changes):
 
 def test_normalize_campaign_contract_and_rejections():
     record = normalize_campaign(campaign_payload())
-    assert record["schema"].endswith("0.33.0")
+    assert record["schema"].endswith("0.33.1")
     assert record["budget"]["maxConcurrentTrials"] == 1
     assert record["definitionHash"]
     with pytest.raises(ExperimentCampaignError):
@@ -181,5 +181,5 @@ def test_fastapi_campaign_routes(monkeypatch, tmp_path: Path):
         assert started.json()["launchedCount"] == 1
         assert client.get("/v1/experiment-campaigns", headers=headers).json()["count"] == 1
         health = client.get("/v1/experiment-campaigns/health", headers=headers).json()
-        assert health["version"] == "0.33.0"
-        assert health["serviceVersion"] == "0.33.0"
+        assert health["version"] == "0.33.1"
+        assert health["serviceVersion"] == "0.33.1"
