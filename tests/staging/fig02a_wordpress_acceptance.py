@@ -159,7 +159,9 @@ async def run(url, outdir, preview="on", expect_release=None, label="staging"):
             report["chrome"] = (await cdp.call("Browser.getVersion")).get("product")
             await cdp.call("Page.navigate", url=url)
             check("page.loaded", await cdp.wait_for("document.readyState === 'complete'", 90))
-            integrity = json.load(urllib.request.urlopen(origin + "/wp-json/sc-lab/v1/runtime/v02632/health", timeout=30))
+            # Fetched by the page itself (same origin, browser headers): host WAFs may reject script user agents.
+            integrity = json.loads(await cdp.js("fetch('/wp-json/sc-lab/v1/runtime/v02632/health', {credentials: 'omit'})"
+                                                ".then(r => r.text())") or "{}")
             report["integrity"] = {k: integrity.get(k) for k in ("ok", "state", "releaseVersion", "partialInstallRisk")}
             check("lab.integrityVerified", integrity.get("ok") is True and integrity.get("state") == "verified"
                   and (expect_release is None or integrity.get("releaseVersion") == expect_release), report["integrity"])
@@ -260,7 +262,8 @@ async def check_off(cdp, check, report, outdir, origin, label):
     await asyncio.sleep(3)
     report["graphStudio"] = await cdp.js(GRAPH_STUDIO_STATE)
     check("graphStudio.opened", opened == "button" and report["graphStudio"]["visible"], report["graphStudio"])
-    check("graphStudio.rendererPresent", report["graphStudio"]["rendererRoot"] and report["graphStudio"]["rendererChildren"] > 0, report["graphStudio"])
+    # Graph Studio draws its own SVG/canvas views inside the module (no fixed renderer-root id in every Lab build).
+    check("graphStudio.rendererPresent", report["graphStudio"]["drawn"] > 0, report["graphStudio"])
     check("off.noPreviewSection", await cdp.js("document.querySelectorAll('[data-fig02a-preview]').length === 0"))
     clip = await cdp.js("""(() => { const r = document.querySelector('[data-lab-module="graph-studio"]').getBoundingClientRect();
         return {x: r.left + scrollX, y: r.top + scrollY, width: Math.min(r.width, 1280), height: Math.min(r.height, 2400), scale: 1}; })()""")
