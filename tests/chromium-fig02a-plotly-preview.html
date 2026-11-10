@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FIG-02A Graph Studio Plotly preview — Chromium harness</title>
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-plotly-preview-fig02a.css">
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:16px;max-width:1100px}</style>
+</head>
+<body data-cert="running">
+<!-- Minimal stand-in for the live Graph Studio stage the module mounts on. -->
+<div data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage></div></div></div>
+<pre id="cert-log"></pre>
+<script>window.SCLabFig02aPlotlyPreviewConfig = { enabled: true };</script>
+<script src="../assets/lib/plotly-3.3.1/plotly.min.js"></script>
+<script src="../assets/js/modules/graph-studio-plotly-preview-fig02a.js"></script>
+<script>
+(async function () {
+  var log = [], failures = [];
+  function check(cond, msg) { log.push((cond ? 'ok   ' : 'FAIL ') + msg); if (!cond) { failures.push(msg); } }
+  try {
+    if (document.readyState === 'loading') { await new Promise(function (r) { document.addEventListener('DOMContentLoaded', r); }); }
+    var P = window.SCLabPlotlyPreviewFIG02A;
+    check(window.Plotly && window.Plotly.version === '3.3.1', 'vendored plotly.js 3.3.1 loaded (got ' + (window.Plotly && window.Plotly.version) + ')');
+    var section = document.querySelector('[data-gs13583-stage] [data-fig02a-preview]');
+    check(!!section, 'preview mounted on the Graph Studio stage');
+    var raw = await (await fetch('fixtures/fig02a-preview-synthetic.json')).text();
+    var fixture = JSON.parse(raw);
+    var out = section.querySelector('.sc-lab-fig02a-output');
+    // Re-serialize each response exactly as text slices so Python float lexemes survive.
+    function slice(key) {
+      var start = raw.indexOf('"' + key + '": {'), i = raw.indexOf('{', start), d = 0, j = i;
+      for (; j < raw.length; j++) {
+        if (raw[j] === '"') { j++; while (raw[j] !== '"') { j += raw[j] === '\\' ? 2 : 1; } continue; }
+        if (raw[j] === '{') { d++; }
+        if (raw[j] === '}' && --d === 0) { break; }
+      }
+      return raw.slice(i, j + 1);
+    }
+    // Tampered response first: must be refused with nothing drawn.
+    var tampered = slice('points').replace('5.0,', '5.1,');
+    var refusedResult = await P.render(out, tampered);
+    check(refusedResult === false && out.querySelector('[data-fig02a-state="refused"]') && !out.querySelector('.js-plotly-plot'), 'tampered response refused, nothing plotted');
+
+    var shots = document.createElement('div');
+    document.body.appendChild(shots);
+    for (var key of Object.keys(fixture.responses)) {
+      var expected = fixture.responses[key];
+      var host = shots.appendChild(document.createElement('div'));
+      host.setAttribute('data-case', key);
+      var rendered = await P.render(host, slice(key));
+      var card = host.querySelector('[data-fig02a-state="rendered"]');
+      check(rendered === true && !!card, key + ': rendered');
+      check(card && card.getAttribute('data-spec-sha256') === expected.plotly.specSha256, key + ': spec hash verified in browser');
+      var plot = host.querySelector('.js-plotly-plot');
+      check(plot && plot.querySelector('svg.main-svg'), key + ': plotly SVG drawn');
+      check(plot && plot.data.length === expected.plotly.figure.data.length, key + ': trace count ' + (plot && plot.data.length));
+      var subtitle = host.querySelector('.gtitle');
+      check(subtitle && /Evidence:/.test(subtitle.textContent), key + ': evidence label drawn inside the figure');
+      check(host.querySelector('.sc-lab-fig02a-evidence').textContent.indexOf('Literature-derived') === 0, key + ': evidence class shown outside the figure');
+      var rows = 0; expected.accessibleAlternative.panels.forEach(function (p) { rows += p.rows.length; });
+      check(host.querySelectorAll('.sc-lab-fig02a-tables tbody tr').length === rows, key + ': accessible table rows = ' + rows);
+      var nulls = 0; expected.accessibleAlternative.panels.forEach(function (p) { p.rows.forEach(function (r) { Object.keys(r).forEach(function (k) { if (r[k] === null) { nulls++; } }); }); });
+      var shown = Array.prototype.filter.call(host.querySelectorAll('.sc-lab-fig02a-tables td, .sc-lab-fig02a-tables tbody th'), function (c) { return c.textContent === 'not reported'; }).length;
+      check(shown === nulls, key + ': ' + nulls + ' missing values stay "not reported" (shown ' + shown + ')');
+      check(plot && plot.getAttribute('role') === 'img' && plot.getAttribute('aria-label').length > 20, key + ': plot has text alternative');
+      check(!host.querySelector('a[href], img, iframe, script'), key + ': no links, images or scripts in output');
+    }
+    var remote = performance.getEntriesByType('resource').filter(function (e) { return !/^file:/.test(e.name); });
+    check(remote.length === 0, 'no network requests (' + remote.map(function (e) { return e.name; }).join(', ') + ')');
+  } catch (e) {
+    failures.push(String(e && e.stack || e)); log.push('FAIL ' + String(e && e.stack || e));
+  }
+  document.getElementById('cert-log').textContent = log.join('\n');
+  document.body.dataset.cert = failures.length ? 'fail' : 'pass';
+}());
+</script>
+</body>
+</html>

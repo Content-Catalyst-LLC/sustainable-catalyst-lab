@@ -600,5 +600,9 @@ SC_Lab_Unified_Workspace_Shell_V016312::init();
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-4d-front-door-visual-polish-v016313.php';
 SC_Lab_4D_Front_Door_Visual_Polish_V016313::init();
 
+// SC-FIG-01 / FIG-02A — Graph Studio Plotly preview (vendored plotly.js 3.3.1); default off.
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-graph-studio-plotly-preview-fig02a.php';
+SC_Lab_Graph_Studio_Plotly_Preview_FIG02A::init();
+
 register_activation_hook(__FILE__, array('SC_Lab_Plugin', 'activate'));
 add_action('plugins_loaded', array('SC_Lab_Plugin', 'instance'));
