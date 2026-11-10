@@ -68,6 +68,22 @@ function expectRefused(text, needle, label, plotlyVersion) {
   await expectRefused(pts.replace('"ok": true', '"ok": false'), 'not a successful', 'failed compile result');
   await expectRefused(pts.replace('"evidenceClass": "literature-derived"', '"evidenceClass": "measured"'), 'evidenceClass', 'unknown evidence class');
   await expectRefused(pts.replace('"evidenceClass": "literature-derived"', '"evidenceClass": "observed"'), 'resultHash mismatch', 'evidence class promoted after compile');
+  // Cross-system: exact HTTP bodies from the amd64 Workbench staging image (compact FastAPI JSON).
+  const stagingDir = path.join(__dirname, 'fixtures/fig02a-staging-amd64');
+  const staging = JSON.parse(fs.readFileSync(path.join(stagingDir, 'SOURCE.json'), 'utf8'));
+  for (const [file, meta] of Object.entries(staging.files)) {
+    const body = fs.readFileSync(path.join(stagingDir, file));
+    ok(crypto.createHash('sha256').update(body).digest('hex') === meta.sha256, 'staging ' + file + ' bytes match SOURCE.json');
+    const res = await preview.verify(body.toString('utf8'), '3.3.1');
+    ok(res.response.figureBundle.evidenceClass === meta.evidenceClass, 'staging ' + file + ' evidence class ' + meta.evidenceClass);
+    ok(res.specSha256 === res.response.plotly.specSha256 && res.resultHash === res.response.resultHash, 'staging ' + file + ' hashes recompute');
+  }
+  const stagingPoints = fs.readFileSync(path.join(stagingDir, 'points.json'), 'utf8');
+  ok(JSON.parse(stagingPoints).plotly.specSha256 === fixture.responses.points.plotly.specSha256, 'amd64 staging spec hash equals macOS-generated spec hash');
+  await expectRefused(stagingPoints.replace('"y":[5.0,', '"y":[5.1,'), 'mismatch', 'tampered staging value');
+  const modelled = fs.readFileSync(path.join(stagingDir, 'modelled-line.json'), 'utf8');
+  await expectRefused(modelled.replace('"evidenceClass":"modelled"', '"evidenceClass":"observed"'), 'mismatch', 'modelled result relabelled observed');
+
   await expectRefused('{"ok": true, NaN}', 'invalid JSON', 'malformed JSON');
   await expectRefused('x'.repeat(8 * 1024 * 1024 + 1), '8 MiB', 'oversized response');
   console.log('PASS - FIG-02A Graph Studio Plotly preview hashing and content-policy contract');

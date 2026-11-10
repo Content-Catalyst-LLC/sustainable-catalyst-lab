@@ -43,11 +43,18 @@
 
     var shots = document.createElement('div');
     document.body.appendChild(shots);
-    for (var key of Object.keys(fixture.responses)) {
-      var expected = fixture.responses[key];
+    // Python-generated synthetic responses plus exact HTTP bodies from the amd64 staging image.
+    var cases = Object.keys(fixture.responses).map(function (k) { return { key: k, text: slice(k), expected: fixture.responses[k] }; });
+    var stagingSource = await (await fetch('fixtures/fig02a-staging-amd64/SOURCE.json')).json();
+    for (var file of Object.keys(stagingSource.files)) {
+      var body = await (await fetch('fixtures/fig02a-staging-amd64/' + file)).text();
+      cases.push({ key: 'staging-amd64/' + file, text: body, expected: JSON.parse(body) });
+    }
+    for (var cs of cases) {
+      var key = cs.key, expected = cs.expected;
       var host = shots.appendChild(document.createElement('div'));
       host.setAttribute('data-case', key);
-      var rendered = await P.render(host, slice(key));
+      var rendered = await P.render(host, cs.text);
       var card = host.querySelector('[data-fig02a-state="rendered"]');
       check(rendered === true && !!card, key + ': rendered');
       check(card && card.getAttribute('data-spec-sha256') === expected.plotly.specSha256, key + ': spec hash verified in browser');
@@ -56,7 +63,8 @@
       check(plot && plot.data.length === expected.plotly.figure.data.length, key + ': trace count ' + (plot && plot.data.length));
       var subtitle = host.querySelector('.gtitle');
       check(subtitle && /Evidence:/.test(subtitle.textContent), key + ': evidence label drawn inside the figure');
-      check(host.querySelector('.sc-lab-fig02a-evidence').textContent.indexOf('Literature-derived') === 0, key + ': evidence class shown outside the figure');
+      var ev = host.querySelector('.sc-lab-fig02a-evidence');
+      check(ev && ev.getAttribute('data-evidence-class') === expected.figureBundle.evidenceClass && ev.textContent.length > 10, key + ': evidence class ' + expected.figureBundle.evidenceClass + ' shown outside the figure');
       var rows = 0; expected.accessibleAlternative.panels.forEach(function (p) { rows += p.rows.length; });
       check(host.querySelectorAll('.sc-lab-fig02a-tables tbody tr').length === rows, key + ': accessible table rows = ' + rows);
       var nulls = 0; expected.accessibleAlternative.panels.forEach(function (p) { p.rows.forEach(function (r) { Object.keys(r).forEach(function (k) { if (r[k] === null) { nulls++; } }); }); });

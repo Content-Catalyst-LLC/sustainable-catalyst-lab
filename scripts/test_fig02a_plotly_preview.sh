@@ -30,5 +30,6 @@ dom="$("$chrome" --headless=new --disable-gpu --no-first-run --user-data-dir="$t
   --allow-file-access-from-files --virtual-time-budget=20000 \
   --dump-dom "file://$PWD/tests/chromium-fig02a-plotly-preview.html" 2>/dev/null)"
 printf '%s' "$dom" | python3 -c 'import html,re,sys; s=sys.stdin.read(); m=re.search(r"<pre id=\"cert-log\">(.*?)</pre>", s, re.S); print(html.unescape(m.group(1)) if m else "no harness log")'
-printf '%s' "$dom" | grep -q 'data-cert="pass"' || { echo "FAIL - Chromium harness"; exit 1; }
+# Here-string, not a pipe: grep -q exits early and SIGPIPE would fail the pipeline under pipefail.
+grep -q 'data-cert="pass"' <<<"$dom" || { echo "FAIL - Chromium harness"; exit 1; }
 echo "PASS - FIG-02A Graph Studio Plotly preview Chromium harness"
