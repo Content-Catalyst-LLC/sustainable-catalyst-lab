@@ -67,13 +67,14 @@ final class SC_Lab_Graph_Studio_Plotly_Preview_FIG02A {
         }
         if (!wp_script_is('sc-lab-graph-studio-plotly-preview-fig02a', 'enqueued')) {
             wp_enqueue_script('sc-lab-graph-studio-plotly-preview-fig02a', SC_LAB_URL . self::JS, array('sc-lab-plotly-js-331'), self::asset_token(self::JS), true);
-            wp_localize_script('sc-lab-graph-studio-plotly-preview-fig02a', 'SCLabFig02aPlotlyPreviewConfig', array(
+            // wp_localize_script() would stringify booleans ("1"); emit typed JSON instead.
+            wp_add_inline_script('sc-lab-graph-studio-plotly-preview-fig02a', 'window.SCLabFig02aPlotlyPreviewConfig = ' . wp_json_encode(array(
                 'enabled' => true,
                 'version' => self::VERSION,
                 'feature' => self::FEATURE,
                 'plotlyJsVersion' => self::PLOTLY_JS_VERSION,
                 'previewOnly' => true,
-            ));
+            )) . ';', 'before');
         }
     }
 

@@ -22,7 +22,9 @@ function wp_script_is($h) { return isset($GLOBALS['enqueued'][$h]); }
 function wp_style_is($h) { return isset($GLOBALS['enqueued']['style:' . $h]); }
 function wp_enqueue_script($h, $src, $deps = array(), $ver = false) { $GLOBALS['enqueued'][$h] = array($src, $deps, $ver); }
 function wp_enqueue_style($h, $src, $deps = array(), $ver = false) { $GLOBALS['enqueued']['style:' . $h] = array($src, $deps, $ver); }
-function wp_localize_script($h, $name, $data) { $GLOBALS['localized'][$name] = $data; }
+function wp_localize_script($h, $name, $data) { $GLOBALS['localized'][$name] = 'localized'; }
+function wp_add_inline_script($h, $js, $pos = 'after') { $GLOBALS['inline'][$h][$pos][] = $js; }
+function wp_json_encode($v) { return json_encode($v); }
 function register_rest_route($ns, $route, $args) { $GLOBALS['routes'][$ns . $route] = $args; }
 function rest_ensure_response($v) { return $v; }
 $GLOBALS['post'] = new WP_Post();
@@ -37,7 +39,7 @@ define('SC_LAB_DIR', $tampered ? rtrim($tampered, '/') . '/' : $root . '/');
 require $root . '/includes/class-sc-lab-graph-studio-plotly-preview-fig02a.php';
 $C = 'SC_Lab_Graph_Studio_Plotly_Preview_FIG02A';
 $reset = function () use ($C) {
-    $GLOBALS['enqueued'] = array(); $GLOBALS['localized'] = array();
+    $GLOBALS['enqueued'] = array(); $GLOBALS['localized'] = array(); $GLOBALS['inline'] = array();
     $p = new ReflectionProperty($C, 'vendor_verified'); $p->setAccessible(true); $p->setValue(null, null);
 };
 
@@ -66,7 +68,11 @@ $assert($plotly && $plotly[0] === SC_LAB_URL . 'assets/lib/plotly-3.3.1/plotly.m
 $module = $GLOBALS['enqueued']['sc-lab-graph-studio-plotly-preview-fig02a'] ?? null;
 $assert($module && $module[1] === array('sc-lab-plotly-js-331'), 'module depends on vendored plotly.js');
 $assert(isset($GLOBALS['enqueued']['style:sc-lab-graph-studio-plotly-preview-fig02a']), 'module stylesheet enqueued');
-$assert(($GLOBALS['localized']['SCLabFig02aPlotlyPreviewConfig']['enabled'] ?? null) === true, 'module config enabled');
+$inline = $GLOBALS['inline']['sc-lab-graph-studio-plotly-preview-fig02a']['before'][0] ?? '';
+$assert(preg_match('/^window\.SCLabFig02aPlotlyPreviewConfig = (\{.*\});$/', $inline, $m) === 1, 'typed config emitted before module');
+$cfg = json_decode($m[1], true);
+$assert(($cfg['enabled'] ?? null) === true && ($cfg['previewOnly'] ?? null) === true, 'config booleans stay booleans');
+$assert(!isset($GLOBALS['localized']['SCLabFig02aPlotlyPreviewConfig']), 'no wp_localize_script (it stringifies booleans)');
 foreach ($GLOBALS['enqueued'] as $h => $e) { $assert(strpos($e[0], SC_LAB_URL) === 0, "$h served from the plugin, not a CDN"); }
 
 // 3. Non-Lab page: nothing even when enabled.
