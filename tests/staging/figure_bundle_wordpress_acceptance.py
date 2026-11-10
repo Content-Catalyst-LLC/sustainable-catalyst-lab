@@ -6,7 +6,11 @@ synthetic generic packages (tests/fixtures/figure-bundle-generic) through the mo
 and every network request the page makes.
 
     python tests/staging/figure_bundle_wordpress_acceptance.py http://127.0.0.1:18190/lab/ <out dir>
-        [--expect-release 0.163.1.5] [--label staging|production]
+        [--expect-release 0.163.1.5] [--label staging|production] [--package DIR]
+
+--package renders an externally produced package (e.g. a Workspace notebook run's figure bundle)
+as an extra case; DIR holds the files plus EXPECTED.json {"bundle", "bundleSha256"} naming the
+registered bundle hash the renderer must verify.
 
 Nothing is posted to the site.
 """
@@ -81,7 +85,14 @@ async def render(cdp, package, expected=None):
     return await cdp.js(STATE)
 
 
-async def run(url, outdir, expect_release=None, label="staging"):
+def external_package(directory):
+    expected = json.loads((directory / "EXPECTED.json").read_text())
+    package = [{"name": f.name, "b64": base64.b64encode(f.read_bytes()).decode()}
+               for f in sorted(directory.iterdir()) if f.is_file() and f.name != "EXPECTED.json"]
+    return package, expected["bundleSha256"]
+
+
+async def run(url, outdir, expect_release=None, label="staging", package_dir=None):
     outdir.mkdir(parents=True, exist_ok=True)
     origin = "{0.scheme}://{0.netloc}".format(urlparse(url))
     port = 9334
@@ -146,10 +157,16 @@ async def run(url, outdir, expect_release=None, label="staging"):
                 "promoted-to-observed": (files("points.bundle.json", "points.plotly.json", mutate={
                     "points.bundle.json": lambda b: b.replace(b'"evidenceClass": "literature-derived"', b'"evidenceClass": "observed"', 1)}), None),
             }
+            if package_dir:
+                cases["external-package"] = external_package(package_dir)
             for name, (package, expected) in cases.items():
                 state = await render(cdp, package, expected)
                 report["cases"][name] = state
-                if name == "points-pinned":
+                if name == "external-package":
+                    ok = (state["state"] == "rendered" and state["views"] == ["rendered-plotly"] and state["svgDrawn"]
+                          and state["bundleSha256"] == expected and state["plotRole"] == "img"
+                          and "not publication-approved" in state["reviewText"] and state["linksOrFrames"] == 0)
+                elif name == "points-pinned":
                     ok = (state["state"] == "rendered" and state["views"] == ["rendered-plotly"] and state["svgDrawn"]
                           and state["bundleSha256"] == expected and state["evidenceClass"] == "literature-derived"
                           and "not publication-approved" in state["reviewText"] and state["plotRole"] == "img"
@@ -163,7 +180,7 @@ async def run(url, outdir, expect_release=None, label="staging"):
                 else:
                     ok = state["state"] == "refused"
                 check(f"case.{name}", ok, state)
-                if name in ("points-pinned", "mixed-views"):
+                if name in ("points-pinned", "mixed-views", "external-package"):
                     clip = await cdp.js("""(() => { const r = document.querySelector('[data-figure-bundle-renderer]').getBoundingClientRect();
                         return {x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: Math.min(r.height, 3000), scale: 1}; })()""")
                     shot = await cdp.call("Page.captureScreenshot", format="png", clip=clip, captureBeyondViewport=True)
@@ -186,5 +203,6 @@ if __name__ == "__main__":
     ap.add_argument("outdir", type=Path)
     ap.add_argument("--expect-release")
     ap.add_argument("--label", default="staging")
+    ap.add_argument("--package", type=Path)
     a = ap.parse_args()
-    sys.exit(asyncio.run(run(a.url, a.outdir, a.expect_release, a.label)))
+    sys.exit(asyncio.run(run(a.url, a.outdir, a.expect_release, a.label, a.package)))
