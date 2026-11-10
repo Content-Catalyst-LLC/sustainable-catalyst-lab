@@ -11,6 +11,7 @@
 #   deploy <zip> <sha256> <backup>    install the exact accepted zip; verifies tree and live health
 #   rollback <backup>                 restore the plugin tree (and preview option) from a backup
 #   preview <on|off>                  switch the FIG-02A preview option
+#   restore-test <backup> <cnf> [--reset]  restore the DB dump into a scratch DB and compare
 #   verify                            live HTTP checks only
 #
 # Optional: SC_BH_SSH_OPTS (extra ssh options), SC_BH_WP=none (file-only sandbox, no wp-cli),
@@ -55,6 +56,9 @@ verify_http() {
     health="$(curl -s --max-time 30 "$SITE/wp-json/sc-lab/v1/graph-studio-plotly-preview/fig02a/health")"
     python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert d["ok"] and d["plotlyJsSha256Verified"] and not d["cdnUsed"] and not d["publicationPerformed"], d; print("health=ok enabled=%s" % d["enabled"])' "$health" \
         || die "FIG-02A health route failed"
+    integrity="$(curl -s --max-time 30 "$SITE/wp-json/sc-lab/v1/runtime/v02632/health")"
+    python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert d["ok"] and d["state"]=="verified", (d.get("state"), d.get("releaseVersion")); print("lab_integrity=verified release=%s" % d["releaseVersion"])' "$integrity" \
+        || die "Lab release integrity is not verified"
     echo "lab_page=200"
 }
 
@@ -73,6 +77,7 @@ case "$cmd" in
         verify_http ;;
     rollback) push_script; remote rollback "${1:?backup dir}"; verify_http ;;
     preview) push_script; remote preview "${1:?on|off}"; verify_http ;;
+    restore-test) push_script; remote restore-test "$@" ;;
     verify) verify_http ;;
-    *) sed -n '2,21p' "$0"; exit 2 ;;
+    *) sed -n '2,22p' "$0"; exit 2 ;;
 esac

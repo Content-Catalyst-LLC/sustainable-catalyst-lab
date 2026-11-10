@@ -1,5 +1,19 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.4 — Graph Studio Plotly Preview (FIG-02A), default off
+
+- Adds an optional Graph Studio panel that previews Workbench FIG-02A compile responses with a
+  vendored plotly.js 3.3.1 (byte-identical to the Workbench export worker; no CDN). It is off unless
+  the WordPress option `sc_lab_fig02a_plotly_preview_enabled` is `1`.
+- The browser recomputes the response's spec and result hashes before drawing and refuses any
+  mismatch, links, images, templates or a different plotly.js. Evidence class, pending review and
+  "Not publication-approved" are always shown. Responses come from a local file only: nothing is
+  uploaded, stored or sent to Workbench.
+- Health route `sc-lab/v1/graph-studio-plotly-preview/fig02a/health`.
+- Release manifest refreshed with `scripts/update_release_manifest.py` so release integrity stays
+  `verified`; `scripts/build_wordpress_release_zip.sh` refuses a package whose manifest disagrees.
+- Feature line 0.163.1 and backend behavior are unchanged.
+
 ## 0.152.0.6 — Safe-Boot Stabilization & Canonical Release Presentation
 
 - Added a late footer-time Lab JavaScript gate to stop render-time legacy module leaks.

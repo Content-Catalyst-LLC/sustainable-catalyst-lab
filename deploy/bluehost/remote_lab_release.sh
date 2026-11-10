@@ -9,6 +9,7 @@
 #   remote_lab_release.sh verify-deployed <zip>
 #   remote_lab_release.sh rollback <backup-dir>
 #   remote_lab_release.sh preview <on|off>
+#   remote_lab_release.sh restore-test <backup-dir> <scratch-defaults-file> [--reset]
 #
 # Environment: SC_WP_ROOT (WordPress root), SC_WP ("wp" or "none" for a file-only sandbox),
 # SC_RELEASE_HOME (default ~/sc-releases). Backups go to $SC_RELEASE_HOME/backups, mode 700.
@@ -57,8 +58,9 @@ cmd_backup() {
     tree_manifest "$PLUGIN_DIR" > "$dir/plugin.manifest"
     if [[ "$with_db" == "--with-db" ]]; then
         [[ "$WP_MODE" == "wp" ]] || die "--with-db needs wp-cli"
-        # Consistent InnoDB snapshot without locking the live site.
-        wpc db export - --single-transaction --quick | gzip -6 > "$dir/db.sql.gz"
+        # Consistent InnoDB snapshot without locking the live site. utf8mb4 explicitly: wp-cli
+        # otherwise uses DB_CHARSET, and 'utf8' (utf8mb3) turns 4-byte characters into '?'.
+        wpc db export - --single-transaction --quick --default-character-set=utf8mb4 | gzip -6 > "$dir/db.sql.gz"
         # One table per line; `db export` dumps every table in the database, not only the WP prefix.
         wpc db tables --all-tables | LC_ALL=C sort > "$dir/db.tables"
     fi
@@ -90,6 +92,7 @@ cmd_verify_backup() {
         got="$(zcat "$dir/db.sql.gz" | grep -c '^CREATE TABLE ')"
         [[ "$want" == "$got" ]] || die "database dump has $got tables, expected $want"
         zcat "$dir/db.sql.gz" | tail -1 | grep -q '^-- Dump completed' || die "database dump incomplete"
+        { zcat "$dir/db.sql.gz" || true; } | head -40 | grep -q 'SET NAMES utf8mb4' || die "database dump is not utf8mb4 (4-byte characters would be lost)"
         say "db_dump_check=pass tables=$got bytes=$(stat -c %s "$dir/db.sql.gz")"
     fi
 }
@@ -146,6 +149,43 @@ cmd_preview() {
     say "preview_option=$(wpc option get "$OPTION")"
 }
 
+# Restores a backup's dump into a scratch database (credentials in a 600 defaults file whose user
+# has privileges on that database only) and compares it table by table with the live database.
+cmd_restore_test() {
+    local backup="${1:?backup dir}" cnf="${2:?scratch defaults file}" reset="${3:-}"
+    [[ "$WP_MODE" == "wp" ]] || die "restore-test needs wp-cli"
+    [[ "$(stat -c %a "$cnf")" == 600 ]] || die "defaults file must be mode 600"
+    cmd_verify_backup "$backup" >/dev/null
+    local prod scr; prod="$(wpc config get DB_NAME)"
+    smy() { mysql --defaults-file="$cnf" -N -B "$@"; }
+    scr="$(smy -e 'SELECT DATABASE()')"
+    [[ -n "$scr" && "$scr" != "NULL" && "$scr" != "$prod" ]] || die "scratch database must be set and differ from production"
+    # Confinement: the scratch user must not be able to reach production at all.
+    if smy -e "SELECT 1 FROM \`$prod\`.\`$(wpc db prefix)options\` LIMIT 1" >/dev/null 2>&1; then die "scratch user can read production"; fi
+    # The dump must not switch databases or carry definers/routines/grants.
+    local bad; bad="$(zcat "$backup/db.sql.gz" | grep -v '^INSERT INTO' | grep -cE '^(CREATE DATABASE|USE |DROP DATABASE)|DEFINER|TRIGGER|PROCEDURE|FUNCTION|GRANT |SET GLOBAL|LOAD DATA|OUTFILE' || true)"
+    [[ "$bad" == 0 ]] || die "dump contains $bad redirecting or privileged statements"
+    local n; n="$(smy -e 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()')"
+    if [[ "$n" != 0 ]]; then
+        [[ "$reset" == "--reset" ]] || die "scratch database has $n tables (use --reset to drop them)"
+        smy -e "SELECT CONCAT('DROP TABLE \`', table_name, '\`;') FROM information_schema.tables WHERE table_schema=DATABASE()" \
+            | { echo 'SET FOREIGN_KEY_CHECKS=0;'; cat; } | smy
+    fi
+    local t0=$SECONDS
+    zcat "$backup/db.sql.gz" | smy
+    say "restore=ok seconds=$((SECONDS - t0))"
+    scratch; local w="$TMP_DIR"
+    smy -e 'SELECT table_name FROM information_schema.tables WHERE table_schema=DATABASE() ORDER BY 1' | LC_ALL=C sort > "$w/t.s"
+    diff -q "$w/t.s" "$backup/db.tables" >/dev/null || die "restored table list differs from backup"
+    local q; q="$(awk 'NR>1{printf " UNION ALL "} {printf "SELECT '\''%s'\'', COUNT(*) FROM `%s`", $1, $1}' "$w/t.s")"
+    smy -e "$q" | LC_ALL=C sort > "$w/c.s"; wpc db query "$q" --skip-column-names --batch | LC_ALL=C sort > "$w/c.p"
+    local tl; tl="$(paste -sd, "$w/t.s" | sed 's/,/`,`/g')"
+    smy -e "CHECKSUM TABLE \`${tl}\`" | sed 's/^[^.]*\.//' | LC_ALL=C sort > "$w/k.s"
+    wpc db query "CHECKSUM TABLE \`${tl}\`" --skip-column-names --batch | sed 's/^[^.]*\.//' | LC_ALL=C sort > "$w/k.p"
+    join -t $'\t' "$w/c.s" "$w/c.p" | join -t $'\t' - <(join -t $'\t' "$w/k.s" "$w/k.p") \
+        | awk -F'\t' '{r+=$2; same=($2==$3 && $4==$5); if(same) m++; else printf "differs_since_backup %s rows %s->%s\n", $1, $2, $3} END{printf "tables=%d identical=%d rows_restored=%d\n", NR, m, r}'
+}
+
 sub="${1:-}"; shift || true
 case "$sub" in
     preflight) cmd_preflight ;;
@@ -155,5 +195,6 @@ case "$sub" in
     verify-deployed) cmd_verify_deployed "$@" ;;
     rollback) cmd_rollback "$@" ;;
     preview) cmd_preview "$@" ;;
+    restore-test) cmd_restore_test "$@" ;;
     *) die "unknown command '$sub'" ;;
 esac

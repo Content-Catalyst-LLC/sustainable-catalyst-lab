@@ -1,6 +1,6 @@
 # SC-FIG-01 / FIG-02A — Graph Studio Plotly preview
 
-**State:** release candidate, default off. Accepted on isolated WordPress staging (2026-11-10).
+**State:** release candidate 0.163.1.4, default off. Accepted on isolated WordPress staging (2026-11-10).
 Not deployed to the public site. Preview only.
 
 Renders a Workbench FIG-02A compile response (`sc-workbench-plotly-figure-adapter/1.0`, Workbench PR #40)
@@ -100,5 +100,5 @@ deployed file with the zip, then checks the Lab page and the FIG-02A health rout
   Workbench route has none.
 - Saving previews to Lab projects or Workspace (UP-01/UP-03), and review or publication actions
   (UP-04).
-- Release-version bump. The candidate keeps 0.163.1.3 so it differs from the live plugin only by the
-  FIG-02A files.
+- Released as 0.163.1.4 (patch on feature line 0.163.1); the manifest is refreshed with
+  `scripts/update_release_manifest.py`.
