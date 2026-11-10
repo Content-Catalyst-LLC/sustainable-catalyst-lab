@@ -15,7 +15,7 @@
 #   verify                            live HTTP checks only
 #
 # Optional: SC_BH_SSH_OPTS (extra ssh options), SC_BH_WP=none (file-only sandbox, no wp-cli),
-# SC_BH_LAB_PATH (default /lab/).
+# SC_BH_LAB_PATH (default /lab/), SC_BH_EXPECT_PREVIEW=on|off (check the served Lab HTML).
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -59,6 +59,13 @@ verify_http() {
     integrity="$(curl -s --max-time 30 "$SITE/wp-json/sc-lab/v1/runtime/v02632/health")"
     python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert d["ok"] and d["state"]=="verified", (d.get("state"), d.get("releaseVersion")); print("lab_integrity=verified release=%s" % d["releaseVersion"])' "$integrity" \
         || die "Lab release integrity is not verified"
+    # The served HTML must reflect the option (a stale page cache would not).
+    if [[ -n "${SC_BH_EXPECT_PREVIEW:-}" ]]; then
+        local html has; html="$(curl -s --max-time 30 -A 'Mozilla/5.0 (sc-release-verify)' "$SITE$LAB_PATH")"  # what visitors get, cache included
+        has=off; [[ "$html" == *graph-studio-plotly-preview-fig02a.js* ]] && has=on
+        [[ "$has" == "$SC_BH_EXPECT_PREVIEW" ]] || die "Lab HTML has preview=$has, expected $SC_BH_EXPECT_PREVIEW"
+        echo "lab_html_preview=$has"
+    fi
     echo "lab_page=200"
 }
 

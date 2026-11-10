@@ -31,6 +31,11 @@ scratch() { TMP_DIR="$(mktemp -d)"; SCRATCH+=("$TMP_DIR"); }
 say() { printf '%s\n' "$*"; }
 die() { printf 'FAIL - %s\n' "$*" >&2; exit 1; }
 wpc() { [[ "$WP_MODE" == "wp" ]] || return 0; wp --path="$WP_ROOT" --skip-plugins --skip-themes "$@"; }
+# Full-page caches (e.g. the host's Endurance/nginx cache) would keep serving the old Lab HTML.
+purge_page_cache() {
+    [[ "$WP_MODE" == "wp" ]] || return 0
+    wpc eval 'if (has_action("epc_purge")) { do_action("epc_purge"); echo "page_cache=purged\n"; } else { echo "page_cache=none\n"; }'
+}
 # Sorted "sha256  ./relative/path" manifest of a directory tree.
 tree_manifest() { (cd "$1" && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum); }
 
@@ -110,6 +115,7 @@ cmd_deploy() {
     chmod -R u=rwX,go=rX "$tmp/$SLUG"
     rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     wpc cache flush >/dev/null 2>&1 || true
+    purge_page_cache
     cmd_verify_deployed "$zip"
 }
 
@@ -136,6 +142,7 @@ cmd_rollback() {
         if [[ "$opt" == "unset" ]]; then wpc option delete "$OPTION" >/dev/null 2>&1 || true; else wpc option update "$OPTION" "$opt" >/dev/null; fi
     fi
     wpc cache flush >/dev/null 2>&1 || true
+    purge_page_cache
     say "rollback=pass files=$(wc -l < "$backup/plugin.manifest")"
 }
 
@@ -146,6 +153,7 @@ cmd_preview() {
         *) die "preview takes on|off" ;;
     esac
     wpc cache flush >/dev/null 2>&1 || true
+    purge_page_cache
     say "preview_option=$(wpc option get "$OPTION")"
 }
 
