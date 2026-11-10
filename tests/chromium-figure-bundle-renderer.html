@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SC-FIG-01 figure bundle renderer — Chromium harness</title>
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-plotly-preview-fig02a.css">
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-figure-bundle-renderer.css">
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:16px;max-width:1100px}</style>
+</head>
+<body data-cert="running">
+<div data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage></div></div></div>
+<pre id="cert-log"></pre>
+<script>window.SCLabFigureBundleRendererConfig = { enabled: true };</script>
+<script src="../assets/lib/plotly-3.3.1/plotly.min.js"></script>
+<script src="../assets/js/modules/graph-studio-plotly-preview-fig02a.js"></script>
+<script src="../assets/js/modules/graph-studio-figure-bundle-renderer.js"></script>
+<script>
+(async function () {
+  var log = [], failures = [];
+  function check(cond, msg) { log.push((cond ? 'ok   ' : 'FAIL ') + msg); if (!cond) { failures.push(msg); } }
+  async function file(name) { return { name: name, bytes: new Uint8Array(await (await fetch('fixtures/figure-bundle-generic/' + name)).arrayBuffer()) }; }
+  try {
+    if (document.readyState === 'loading') { await new Promise(function (r) { document.addEventListener('DOMContentLoaded', r); }); }
+    var R = window.SCLabFigureBundleRenderer;
+    check(window.Plotly && window.Plotly.version === '3.3.1', 'vendored plotly.js 3.3.1 loaded');
+    var section = document.querySelector('[data-gs13583-stage] [data-figure-bundle-renderer]');
+    check(!!section, 'viewer mounted on the Graph Studio stage');
+    check(!document.querySelector('[data-fig02a-preview]'), 'FIG-02A panel not mounted (its switch is off)');
+    var source = await (await fetch('fixtures/figure-bundle-generic/SOURCE.json')).json();
+    var out = section.querySelector('.sc-lab-fig02a-output');
+
+    // Tampered spec: refused, nothing drawn.
+    var spec = await file('points.plotly.json');
+    var bad = { name: spec.name, bytes: new TextEncoder().encode(new TextDecoder().decode(spec.bytes).replace('5.0,', '5.1,')) };
+    var refused = await R.render(out, [await file('points.bundle.json'), bad]);
+    check(refused.state === 'refused' && out.querySelector('[data-figure-bundle-state="refused"]') && !out.querySelector('.js-plotly-plot'), 'tampered spec refused, nothing plotted');
+
+    // Wrong registered bundle hash: refused.
+    var pinned = await R.render(out, [await file('points.bundle.json'), await file('points.plotly.json')], '0'.repeat(64));
+    check(pinned.state === 'refused', 'bundle not matching the registered hash refused');
+
+    // Points package through the DOM event, pinned to its registered hash.
+    var done = new Promise(function (r) { var o = new MutationObserver(function () { if (out.querySelector('.js-plotly-plot svg.main-svg')) { o.disconnect(); r(); } }); o.observe(out, { childList: true, subtree: true }); setTimeout(r, 15000); });
+    document.dispatchEvent(new CustomEvent('sc-lab:figure-bundle:render', { detail: { files: [await file('points.bundle.json'), await file('points.plotly.json')], expectedBundleSha256: source.files['points.bundle.json'] } }));
+    await done;
+    var card = out.querySelector('[data-figure-bundle-state="rendered"]');
+    check(!!card && card.getAttribute('data-bundle-sha256') === source.files['points.bundle.json'], 'event render: verified card with bundle hash');
+    check(!!out.querySelector('.js-plotly-plot svg.main-svg'), 'event render: plotly SVG drawn');
+    var ev = out.querySelector('.sc-lab-fig02a-evidence');
+    check(ev && ev.getAttribute('data-evidence-class') === 'literature-derived', 'evidence class shown');
+    check(out.querySelectorAll('.sc-lab-fig02a-tables tbody tr').length > 0, 'accessible table derived from traces');
+    var notReported = Array.prototype.some.call(out.querySelectorAll('.sc-lab-fig02a-tables td'), function (c) { return c.textContent === 'not reported'; });
+    check(notReported, 'missing values shown as "not reported"');
+    check(out.querySelectorAll('.sc-lab-figure-bundle-limitations li').length > 0, 'limitations listed');
+
+    // Mixed package: plotly + static PNG + unsupported Vega-Lite + missing SVG.
+    var host = document.body.appendChild(document.createElement('div'));
+    var mixed = await R.render(host, [await file('mixed.bundle.json'), await file('points.plotly.json'), await file('static.png'), await file('view.vega-lite.json')]);
+    check(mixed.state === 'rendered', 'mixed package rendered');
+    var states = Array.prototype.map.call(host.querySelectorAll('[data-view-state]'), function (n) { return n.getAttribute('data-view-state'); });
+    check(JSON.stringify(states) === JSON.stringify(['rendered-plotly', 'static-png', 'unsupported', 'missing']), 'view states ' + JSON.stringify(states));
+    var img = host.querySelector('img.sc-lab-figure-bundle-static');
+    if (img && !img.complete) { await new Promise(function (r) { img.onload = img.onerror = r; }); }
+    check(img && /^blob:/.test(img.src) && img.naturalWidth === 4 && img.alt.length > 15, 'PNG drawn from verified bytes via a local blob URL with alt text');
+    check(host.querySelectorAll('.sc-lab-figure-bundle-unavailable').length === 2, 'unsupported and missing views explained, not drawn');
+    check(!host.querySelector('a[href], iframe, script, object, embed'), 'no links, frames or scripts in output');
+
+    // Bundle alone: metadata only.
+    var meta = document.body.appendChild(document.createElement('div'));
+    var m = await R.render(meta, [await file('points.bundle.json')]);
+    check(m.state === 'metadata-only' && !meta.querySelector('.js-plotly-plot'), 'bundle without its views is metadata-only');
+
+    var remote = performance.getEntriesByType('resource').filter(function (e) { return !/^(file|blob):/.test(e.name); });
+    check(remote.length === 0, 'no network requests (' + remote.map(function (e) { return e.name; }).join(', ') + ')');
+  } catch (e) {
+    failures.push(String(e && e.stack || e)); log.push('FAIL ' + String(e && e.stack || e));
+  }
+  document.getElementById('cert-log').textContent = log.join('\n');
+  document.body.dataset.cert = failures.length ? 'fail' : 'pass';
+}());
+</script>
+</body>
+</html>

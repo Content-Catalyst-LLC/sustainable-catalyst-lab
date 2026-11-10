@@ -1,0 +1,12 @@
+{
+ "description": "Synthetic generic figure packages derived from fig02a-staging-amd64/points.json; no scientific meaning.",
+ "derivedFrom": "fig02a-staging-amd64/points.json",
+ "specSha256": "20ef2d06471287b975cc16ac36cdbb54521dcb20af4ad0011405c97f3ce2285b",
+ "files": {
+  "mixed.bundle.json": "5c6d560cce110e785bdda7887c24086c4a3db3d8b7f51cac1dc641c376329618",
+  "points.bundle.json": "79a8e19c90db3860a9d7cf6226d17d0f87e0549e8182273bf30aaf5aa684b007",
+  "points.plotly.json": "90d78ee4efaef6819dd64336c255650f5c005c114ece6ef134d41882af91a051",
+  "static.png": "43dd63e54e0cb5bb10a74d892d7a0781395b4086e1d4d27464e1fc25bc1d8fd2",
+  "view.vega-lite.json": "f508addd4f3aa728bb014930bc3ca5aeb545ecd816ae4e55b3ed66c985c13d2d"
+ }
+}

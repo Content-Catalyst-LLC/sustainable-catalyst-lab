@@ -132,6 +132,19 @@
     }
   }
 
+  // Figure-level policy shared with the generic sc.figure-bundle.v1 renderer.
+  function figurePolicyErrors(fig, config, extra) {
+    var errors = [];
+    if (!fig || !Array.isArray(fig.data) || !fig.layout || typeof fig.layout !== 'object') { errors.push('figure has no data/layout'); return errors; }
+    if (fig.frames) { errors.push('figure frames are not allowed'); }
+    ['images', 'template', 'updatemenus', 'sliders'].forEach(function (k) { if (k in fig.layout) { errors.push('layout.' + k + ' is not allowed'); } });
+    fig.data.forEach(function (t, k) { if (!ALLOWED_TRACES[t && t.type]) { errors.push('trace ' + k + ' type ' + String(t && t.type) + ' is not allowed'); } });
+    walkStrings({ figure: fig, config: config, table: extra }, function (s, path) {
+      if (FORBIDDEN_TEXT.test(s)) { errors.push('forbidden markup or link in ' + path); }
+    }, '');
+    return errors;
+  }
+
   function policyErrors(resp, plotlyVersion) {
     var errors = [];
     if (!resp || resp.ok !== true) { errors.push('response is not a successful compile result'); return errors; }
@@ -140,13 +153,8 @@
     var fig = p.figure || {};
     if (p.plotlyJsVersion !== EXPECTED_PLOTLY_JS) { errors.push('figure compiled for plotly.js ' + String(p.plotlyJsVersion) + ', Lab pins ' + EXPECTED_PLOTLY_JS); }
     if (plotlyVersion !== undefined && plotlyVersion !== EXPECTED_PLOTLY_JS) { errors.push('loaded plotly.js is ' + String(plotlyVersion) + ', expected ' + EXPECTED_PLOTLY_JS); }
-    if (!Array.isArray(fig.data) || !fig.layout || typeof fig.layout !== 'object') { errors.push('figure has no data/layout'); return errors; }
-    if (fig.frames) { errors.push('figure frames are not allowed'); }
-    ['images', 'template', 'updatemenus', 'sliders'].forEach(function (k) { if (k in fig.layout) { errors.push('layout.' + k + ' is not allowed'); } });
-    fig.data.forEach(function (t, k) { if (!ALLOWED_TRACES[t && t.type]) { errors.push('trace ' + k + ' type ' + String(t && t.type) + ' is not allowed'); } });
-    walkStrings({ figure: fig, config: p.config, table: resp.accessibleAlternative }, function (s, path) {
-      if (FORBIDDEN_TEXT.test(s)) { errors.push('forbidden markup or link in ' + path); }
-    }, '');
+    errors = errors.concat(figurePolicyErrors(fig, p.config, resp.accessibleAlternative));
+    if (!Array.isArray(fig.data) || !fig.layout || typeof fig.layout !== 'object') { return errors; }
     var b = resp.figureBundle || {};
     if (!EVIDENCE_TEXT[b.evidenceClass]) { errors.push('figure bundle has no recognised evidenceClass'); }
     if (!resp.accessibleAlternative || !Array.isArray(resp.accessibleAlternative.panels)) { errors.push('accessible alternative is missing'); }
@@ -302,6 +310,7 @@
   return {
     version: VERSION, expectedPlotlyJs: EXPECTED_PLOTLY_JS, responseSchema: RESPONSE_SCHEMA,
     parseLexical: parseLexical, canonical: canonical, sha256Hex: sha256Hex,
-    policyErrors: policyErrors, verify: verify, render: render, mount: mount, boot: boot
+    policyErrors: policyErrors, figurePolicyErrors: figurePolicyErrors, evidenceText: EVIDENCE_TEXT,
+    walkStrings: walkStrings, forbiddenText: FORBIDDEN_TEXT, verify: verify, render: render, mount: mount, boot: boot
   };
 }));

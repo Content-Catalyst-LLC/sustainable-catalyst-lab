@@ -1,0 +1,8 @@
+/* SC-FIG-01 generic sc.figure-bundle.v1 renderer (default off); extends the FIG-02A panel styles. */
+.sc-lab-figure-bundle-title{margin:0 0 4px;font-weight:600}
+.sc-lab-figure-bundle-view{margin:8px 0}
+.sc-lab-figure-bundle-static{display:block;max-width:100%;height:auto;image-rendering:auto;border:1px solid #c9ced6}
+.sc-lab-figure-bundle-unavailable{margin:6px 0;padding:8px 10px;border:1px dashed #6b6b6b;border-radius:4px;font-size:.8125rem;color:#333}
+.sc-lab-figure-bundle-interpretation{margin:8px 0 4px;font-size:.875rem}
+.sc-lab-figure-bundle-limitations{margin:0 0 6px 18px;font-size:.8125rem}
+.sc-lab-figure-bundle-donotinfer{margin:0 0 6px;font-size:.8125rem;font-weight:600}

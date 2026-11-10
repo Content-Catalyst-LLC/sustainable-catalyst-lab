@@ -1,0 +1,25 @@
+name: SC-FIG-01 Graph Studio figures
+on:
+  pull_request:
+    paths: [assets/**, includes/**, tests/**, scripts/test_*.sh, sustainable-catalyst-lab.php, build/**, .github/workflows/sc-fig-01-graph-studio.yml]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  figures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+      - run: scripts/test_fig02a_plotly_preview.sh
+        env:
+          CHROME_BIN: google-chrome
+      - run: scripts/test_figure_bundle_renderer.sh
+        env:
+          CHROME_BIN: google-chrome
