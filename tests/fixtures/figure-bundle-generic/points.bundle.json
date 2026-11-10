@@ -1,0 +1,98 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-POINTS-plotly",
+ "version": 1,
+ "title": "Synthetic point comparison with uncertainty",
+ "project": {
+  "projectRef": "fig02a-synthetic-ci",
+  "ownerScope": "unbound-local",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "unbound"
+ },
+ "evidenceClass": "literature-derived",
+ "figureType": "evidence-chart",
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic-source-a",
+   "provider": "published-literature",
+   "identityStatus": "source-identified",
+   "qualityStatus": "pending",
+   "licenceStatus": "pending"
+  },
+  {
+   "sourceId": "synthetic-source-b",
+   "provider": "published-literature",
+   "identityStatus": "source-identified",
+   "qualityStatus": "pending",
+   "licenceStatus": "pending"
+  },
+  {
+   "sourceId": "synthetic-source-c",
+   "provider": "published-literature",
+   "identityStatus": "source-identified",
+   "qualityStatus": "pending",
+   "licenceStatus": "pending"
+  }
+ ],
+ "calculationRefs": [],
+ "scientificContext": {
+  "interpretation": "Synthetic endpoints with distinct durations, used only to exercise the adapter.",
+  "limitations": [
+   "Synthetic values with no scientific meaning"
+  ],
+  "measurementStatus": "published-literature",
+  "units": "t CO₂ ha⁻¹",
+  "claimIds": [],
+  "doNotInfer": [
+   "any scientific conclusion"
+  ],
+  "uncertaintyNotation": "range-min-max, reported-plus-minus"
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "plotly",
+  "rendererVersion": "plotly.py 6.5.2; plotly.js 3.3.1",
+  "caption": "Synthetic CI fixture exercising points, ranges and a missing result.",
+  "altText": "Point chart of three synthetic studies with their uncertainty ranges.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "20ef2d06471287b975cc16ac36cdbb54521dcb20af4ad0011405c97f3ce2285b"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://workbench/figure-adapters/plotly/20ef2d06471287b975cc16ac36cdbb54521dcb20af4ad0011405c97f3ce2285b.json",
+   "sha256": "20ef2d06471287b975cc16ac36cdbb54521dcb20af4ad0011405c97f3ce2285b",
+   "mediaType": "application/vnd.plotly.v1+json",
+   "width": 1000,
+   "height": 640,
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "workbench",
+  "sourceSnapshotIds": [
+   "dataset:synthetic-fig02a-points:3275fb9acf604dfdca3b880fc4891bfa10f1a439610f1ca2233f8c91fde2e570"
+  ],
+  "generationRunId": "workbench.plotly-figure-adapter:20ef2d06471287b975cc16ac",
+  "generatedAt": "2026-11-10T04:11:49Z",
+  "reproducibility": "not-tested",
+  "scriptSha256": "a5792acc433e9d7e60a8ce8b14d8a09ba066c3bc1b10200dfcaa3ae35c85e5c6",
+  "inputManifestSha256": "3275fb9acf604dfdca3b880fc4891bfa10f1a439610f1ca2233f8c91fde2e570",
+  "lineageRefs": [
+   "authorized-dataset:3275fb9acf604dfdca3b880fc4891bfa10f1a439610f1ca2233f8c91fde2e570"
+  ]
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ }
+}

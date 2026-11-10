@@ -1,5 +1,22 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.5 — Generic sc.figure-bundle.v1 renderer in Graph Studio (SC-FIG-01), default off
+
+- Adds a Graph Studio viewer for any governed `sc.figure-bundle.v1` (Workbench, Workspace, Research
+  or Lab producer) together with the view files it references. It is off unless the WordPress option
+  `sc_lab_figure_bundle_renderer_enabled` is `1`, independent of the FIG-02A switch.
+- Every supplied file must match an artifact hash in the bundle (canonical JSON or raw bytes); a file
+  the bundle does not reference refuses the package. A caller holding the registered bundle hash
+  (Workspace run output, Research object) can pin the bundle bytes too.
+- Bundles are checked against the Data schema minimum and refuse promotion to observed
+  (`evidenceClass` and `measurementStatus` must agree).
+- Plotly views use the FIG-02A content policy and vendored plotly.js 3.3.1; PNG views are a verified
+  static fallback; every other media type, and any referenced view not supplied, is shown as
+  unsupported or missing and is never drawn.
+- FIG-02A's figure policy is now a shared function (`figurePolicyErrors`); FIG-02A behaviour is unchanged.
+- Health route `sc-lab/v1/graph-studio/figure-bundle-renderer/health`. Nothing is uploaded, stored,
+  reviewed or published.
+
 ## 0.163.1.4 — Graph Studio Plotly Preview (FIG-02A), default off
 
 - Adds an optional Graph Studio panel that previews Workbench FIG-02A compile responses with a
