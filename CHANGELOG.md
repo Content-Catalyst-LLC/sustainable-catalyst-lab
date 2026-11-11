@@ -1,5 +1,33 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.6 — Vega-Lite views and verified SVG export in Graph Studio (SC-FIG-02B), default off
+
+- Extends the SC-FIG-01 renderer (no second Graph Studio, no figure store) with Vega-Lite views. A
+  second switch, WordPress option `sc_lab_fig02b_vega_lite_enabled`, is off by default and has no
+  effect unless the renderer itself is on.
+- Vendors Vega 6.4.0, Vega-Lite 6.5.0 and vega-interpreter 2.3.2 (BSD-3-Clause) from their npm
+  tarballs, checked against the registry integrity, with `scripts/package_vega_vendor.py`
+  (reproducible). They are served from the plugin only when every file matches its pinned SHA-256;
+  otherwise none is served and Vega-Lite views are reported unsupported. Plotly is unaffected.
+- Views render to SVG through the expression interpreter (no `eval` or `new Function`; the
+  Chromium harness runs under a CSP without `unsafe-eval`) with a loader that refuses every load.
+- A view must stay inside a restricted grammar (inline data only; allow-listed marks and
+  transforms; no expressions, parameters, selections, links or remote data) and carry the
+  `usermeta.sc` profile `sc-vega-lite-v1`. That profile requires the dataset hash, which must be one
+  of the bundle's sources or calculation outputs; every encoded field's label and unit, with titles
+  that keep the unit; the uncertainty definition, which must be drawn when declared; and a per-row
+  evidence class that never claims observed in a non-observed figure and is visually encoded when
+  classes are mixed.
+- Accessible data table for each view: units, "not reported" gaps, the uncertainty statement and
+  the dataset identity.
+- SVG export for Vega-Lite and Plotly views. The export is validated element by element, carries its
+  provenance (`sc.figure-svg-provenance.v1`) in `<metadata>`, is re-verified after serialisation,
+  and comes with an export receipt (`sc.figure-export-receipt.v1`) whose artifact entry can be added
+  to the next bundle revision. An exported SVG is then accepted as a verified static view. Downloads
+  are local; nothing is uploaded or published.
+- Health: `sc-lab/v1/graph-studio/figure-bundle-renderer/health` reports `fig02b` and the Vega
+  renderers.
+
 ## 0.163.1.5 — Generic sc.figure-bundle.v1 renderer in Graph Studio (SC-FIG-01), default off
 
 - Adds a Graph Studio viewer for any governed `sc.figure-bundle.v1` (Workbench, Workspace, Research

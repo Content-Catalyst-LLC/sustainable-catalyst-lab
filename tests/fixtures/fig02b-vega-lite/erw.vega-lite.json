@@ -1,0 +1,368 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "width": 640,
+ "height": 360,
+ "title": "SYNTHETIC — enhanced rock weathering uptake scenario (not Wexford data)",
+ "data": {
+  "values": [
+   {
+    "month": 0,
+    "cdr": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 0,
+    "cdr": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 6,
+    "cdr": 2.272,
+    "lo": 1.59,
+    "hi": 2.954,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 6,
+    "cdr": 1.348,
+    "lo": 0.944,
+    "hi": 1.752,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 12,
+    "cdr": 4.006,
+    "lo": 2.804,
+    "hi": 5.208,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 12,
+    "cdr": 2.346,
+    "lo": 1.642,
+    "hi": 3.05,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 18,
+    "cdr": 5.329,
+    "lo": 3.73,
+    "hi": 6.928,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 18,
+    "cdr": 3.086,
+    "lo": 2.16,
+    "hi": 4.012,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 24,
+    "cdr": 6.34,
+    "lo": 4.438,
+    "hi": 8.242,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 24,
+    "cdr": 3.634,
+    "lo": 2.544,
+    "hi": 4.724,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 30,
+    "cdr": 7.111,
+    "lo": 4.978,
+    "hi": 9.244,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 30,
+    "cdr": 4.04,
+    "lo": 2.828,
+    "hi": 5.252,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 36,
+    "cdr": 7.7,
+    "lo": 5.39,
+    "hi": 10.01,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 36,
+    "cdr": 4.34,
+    "lo": 3.038,
+    "hi": 5.642,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 42,
+    "cdr": 8.15,
+    "lo": 5.705,
+    "hi": 10.595,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 42,
+    "cdr": 4.563,
+    "lo": 3.194,
+    "hi": 5.932,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 48,
+    "cdr": 8.493,
+    "lo": 5.945,
+    "hi": 11.041,
+    "series": "basalt 40 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 48,
+    "cdr": 4.728,
+    "lo": 3.31,
+    "hi": 6.146,
+    "series": "basalt 20 t/ha (synthetic)",
+    "evidenceClass": "modelled"
+   },
+   {
+    "month": 12,
+    "cdr": 1.1,
+    "lo": 0.6,
+    "hi": 1.6,
+    "series": "literature comparison A (synthetic)",
+    "evidenceClass": "literature-derived"
+   },
+   {
+    "month": 36,
+    "cdr": 2.9,
+    "lo": 1.9,
+    "hi": 4.2,
+    "series": "literature comparison B (synthetic)",
+    "evidenceClass": "literature-derived"
+   }
+  ]
+ },
+ "layer": [
+  {
+   "transform": [
+    {
+     "filter": {
+      "field": "evidenceClass",
+      "equal": "modelled"
+     }
+    }
+   ],
+   "mark": {
+    "type": "errorband",
+    "opacity": 0.25
+   },
+   "encoding": {
+    "x": {
+     "field": "month",
+     "type": "quantitative"
+    },
+    "y": {
+     "field": "lo",
+     "type": "quantitative",
+     "title": "Cumulative CO2 uptake (t CO2 ha-1)"
+    },
+    "y2": {
+     "field": "hi"
+    },
+    "color": {
+     "field": "series",
+     "type": "nominal"
+    }
+   }
+  },
+  {
+   "transform": [
+    {
+     "filter": {
+      "field": "evidenceClass",
+      "equal": "modelled"
+     }
+    }
+   ],
+   "mark": {
+    "type": "line"
+   },
+   "encoding": {
+    "x": {
+     "field": "month",
+     "type": "quantitative"
+    },
+    "y": {
+     "field": "cdr",
+     "type": "quantitative"
+    },
+    "color": {
+     "field": "series",
+     "type": "nominal"
+    },
+    "strokeDash": {
+     "field": "evidenceClass",
+     "type": "nominal",
+     "scale": {
+      "domain": [
+       "modelled",
+       "literature-derived"
+      ],
+      "range": [
+       [
+        6,
+        3
+       ],
+       [
+        1,
+        0
+       ]
+      ]
+     },
+     "legend": {
+      "title": "Evidence class"
+     }
+    }
+   }
+  },
+  {
+   "transform": [
+    {
+     "filter": {
+      "field": "evidenceClass",
+      "equal": "literature-derived"
+     }
+    }
+   ],
+   "mark": {
+    "type": "errorbar",
+    "ticks": true
+   },
+   "encoding": {
+    "x": {
+     "field": "month",
+     "type": "quantitative"
+    },
+    "y": {
+     "field": "lo",
+     "type": "quantitative",
+     "title": "Cumulative CO2 uptake (t CO2 ha-1)"
+    },
+    "y2": {
+     "field": "hi"
+    }
+   }
+  },
+  {
+   "transform": [
+    {
+     "filter": {
+      "field": "evidenceClass",
+      "equal": "literature-derived"
+     }
+    }
+   ],
+   "mark": {
+    "type": "point",
+    "filled": true,
+    "size": 70
+   },
+   "encoding": {
+    "x": {
+     "field": "month",
+     "type": "quantitative"
+    },
+    "y": {
+     "field": "cdr",
+     "type": "quantitative"
+    },
+    "shape": {
+     "field": "evidenceClass",
+     "type": "nominal",
+     "scale": {
+      "domain": [
+       "modelled",
+       "literature-derived"
+      ],
+      "range": [
+       "circle",
+       "diamond"
+      ]
+     },
+     "legend": {
+      "title": "Evidence class"
+     }
+    },
+    "color": {
+     "field": "series",
+     "type": "nominal"
+    }
+   }
+  }
+ ],
+ "usermeta": {
+  "sc": {
+   "profile": "sc-vega-lite-v1",
+   "datasetId": "synthetic:erw-uptake-scenario-v1",
+   "datasetSha256": "ac984bc9cc9cb29331a10e22124b7d0bc70a44cd03986c548f235cbeb4bc6f90",
+   "evidenceField": "evidenceClass",
+   "fields": {
+    "month": {
+     "label": "Months since application",
+     "unit": "months"
+    },
+    "cdr": {
+     "label": "Cumulative CO2 uptake",
+     "unit": "t CO2 ha-1"
+    },
+    "lo": {
+     "label": "Lower bound",
+     "unit": "t CO2 ha-1"
+    },
+    "hi": {
+     "label": "Upper bound",
+     "unit": "t CO2 ha-1"
+    },
+    "series": {
+     "label": "Series",
+     "unit": "category"
+    },
+    "evidenceClass": {
+     "label": "Evidence class",
+     "unit": "category"
+    }
+   },
+   "uncertainty": {
+    "kind": "range",
+    "lowerField": "lo",
+    "upperField": "hi",
+    "statement": "Synthetic ±30% scenario band for modelled series; reported min–max for the literature comparisons."
+   }
+  }
+ }
+}
