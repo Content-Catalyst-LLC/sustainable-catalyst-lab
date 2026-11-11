@@ -1,5 +1,35 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.8 — Geospatial figures with MapLibre GL JS in Graph Studio (SC-FIG-04), default off
+
+- A third renderer switch, WordPress option `sc_lab_fig04_maplibre_enabled`, is off by default and has
+  no effect unless the figure-bundle renderer is on. With it, the renderer draws
+  `application/vnd.sc.maplibre-view.v1+json` views (state `rendered-maplibre`). Renderer module 0.3.0.
+- Vendors MapLibre GL JS 5.24.0 (BSD-3-Clause), the CSP build, its worker and stylesheet, unchanged from
+  the npm release (`scripts/package_maplibre_vendor.py` reproduces them and records the tarball
+  integrity). All three files must match their pinned SHA-256 or none is served. The worker is fetched
+  from this site only, checked against a SHA-384 and started from a `blob:` URL. Pages need
+  `worker-src blob:`; no `unsafe-eval`, no inline style from MapLibre.
+- Map view 1.1 (`sc-lab-maplibre-view/1.1`) keeps Site Intelligence evidence objects unchanged and adds,
+  all as validated constants compiled into MapLibre expressions by Lab:
+  - graduated classes on a declared numeric field, with a "not reported" colour;
+  - heat maps (kernel density of point weights; the legend says it is not an interpolated surface);
+  - time steps over SI's `observed_at` (exactly the distinct values, in order);
+  - declared uncertainty properties (standard error, standard deviation or 95% CI half-width);
+  - a side-by-side comparison of two time steps, with a change table and root-sum-square uncertainty;
+  - calculation results tied to the bundle's `calculationRefs` and their output hashes;
+  - an Earth-observation gate: Copernicus Sentinel-2, Sentinel-1 and CORINE are described as
+    candidates, none is approved, so any raster layer is refused and no imagery is fetched.
+- Every cited source must be `verified-for-use` for a 1.1 view to draw.
+- The renderer adds layer checkboxes, a scientific legend with units, a time slider with previous and
+  next buttons, the comparison toggle, calculation results, feature details on click, a sources line
+  (no basemap), and the full data table. Without WebGL or a verified worker the legend and tables remain.
+- Synthetic Wexford fixtures (`tests/fixtures/fig04-wexford/`): 56 SI-normalised objects sealed in an SI
+  reproducible spatial package, a derived Workspace dataset, the 1.1 view and its bundle. Invented values.
+- Tests: `tests/test-maplibre-fig04.js`, `tests/test-maplibre-fig04.php` (with a tampered-worker run) and
+  `tests/chromium-fig04-maplibre.html` under a strict CSP (`scripts/run_chromium_fig04.py`), all in
+  `scripts/test_fig04_maplibre.sh`.
+
 ## 0.163.1.7 — Release state comes from Research; Lab renders only (SC-FIG-03A), default off
 
 - The `sc.figure-bundle.v1` renderer no longer says "Preview only; not publication-approved here."

@@ -1,0 +1,227 @@
+{
+ "schema": "sc-fig04-si-derived-dataset/1",
+ "siPackage": {
+  "package_id": "spatial-package:5d8bde40366e0edee1f77633",
+  "package_digest": "sha256:5d8bde40366e0edee1f7763396f5f2852e5d01a5fd1a45e1b3e61d9ce61cad24",
+  "manifest_digest": "sha256:fce58681d67fcc0073503d5145bef202567d565124c72a8f8a7aa88c5f59c05e"
+ },
+ "derivation": "one row per agriculture-food-systems object: soc and soc_se copied from properties; t_years = quarter index x 0.25",
+ "rows": [
+  {
+   "object_id": "se-47b00095a40215bcca91602f",
+   "content_digest": "sha256:31462a2d18bf7ae2261ce2554e8e35f48edd5e0fc335ed34d67154b8718c08ac",
+   "field_id": "WX-F1",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 28.55,
+   "soc_se": 0.8
+  },
+  {
+   "object_id": "se-62d06831f162c666ef9794d1",
+   "content_digest": "sha256:019dd65c3fdeba2d7f1c6921e6342df4bdea3065ee260642f4681b279c52a03a",
+   "field_id": "WX-F2",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 31.1,
+   "soc_se": 0.9
+  },
+  {
+   "object_id": "se-53a0dabad8de874cb1191f3e",
+   "content_digest": "sha256:dc7c047039e2b2378816d696906094efb44b2041d1ea5b71864e70316738373c",
+   "field_id": "WX-F3",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 25.8,
+   "soc_se": 1.0
+  },
+  {
+   "object_id": "se-2457d25aa8bdbc3130fbd4b3",
+   "content_digest": "sha256:87178b4e9ece684b58c9b9ba0c1632975913c55eec1301e6ac6b83a0a668f499",
+   "field_id": "WX-F4",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 34.25,
+   "soc_se": 1.1
+  },
+  {
+   "object_id": "se-0724c153554b79e54eae1433",
+   "content_digest": "sha256:46d14969f4ab8b65ac383ec1b8fa3b243ee9dfe898b5987aafdf35008062a44f",
+   "field_id": "WX-F5",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 29.6,
+   "soc_se": 1.2
+  },
+  {
+   "object_id": "se-8144170e9690241d95ae5cd2",
+   "content_digest": "sha256:b631fe0fb2b8cadf82769c8464640b552be6261be118a170bfb044f2879f78a3",
+   "field_id": "WX-F6",
+   "observed_at": "2026-02-01T00:00:00+00:00",
+   "t_years": 0.0,
+   "soc": 27.2,
+   "soc_se": 0.8
+  },
+  {
+   "object_id": "se-1eb0bc0fb729013e2eefa94c",
+   "content_digest": "sha256:fe969e60cb3de2857e91933ea45b16f7636aa2cbc663066394964740d4f7425c",
+   "field_id": "WX-F1",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 28.6,
+   "soc_se": 1.0
+  },
+  {
+   "object_id": "se-f0f9a118c6704fba902eb994",
+   "content_digest": "sha256:013d5110aea575fd924be7197a3c3f64ebe873c0bb02a1e2507346f7d7216c6f",
+   "field_id": "WX-F2",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 31.0,
+   "soc_se": 1.1
+  },
+  {
+   "object_id": "se-2ca4c52b06b5cafc6f8d6aa8",
+   "content_digest": "sha256:ff6edf2f8678598cf61c217a6a8b5fea93d9e8e535d19baeee4fc0b24bae636a",
+   "field_id": "WX-F3",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 26.5,
+   "soc_se": 1.2
+  },
+  {
+   "object_id": "se-8b91c6f80ada02393ea89d9b",
+   "content_digest": "sha256:96fc33ec4fa85b154ee9e35550706bbeb958697f2291fce991f06a749b6402c1",
+   "field_id": "WX-F4",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 34.05,
+   "soc_se": 0.8
+  },
+  {
+   "object_id": "se-d66b066423285f6e7864f4ff",
+   "content_digest": "sha256:51e8ac3dc719e618511b4176daed43330e6614b8de12fc659621ee347a15d43c",
+   "field_id": "WX-F5",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 29.8,
+   "soc_se": 0.9
+  },
+  {
+   "object_id": "se-13a98dab2fa78084f8e40994",
+   "content_digest": "sha256:51e330a1386d3ebeddfde9ce6f1837680b1ab0443de487aee11f6c7bf986d670",
+   "field_id": "WX-F6",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "t_years": 0.25,
+   "soc": 27.8,
+   "soc_se": 1.0
+  },
+  {
+   "object_id": "se-e763a57ccd1e6e80f3db1f39",
+   "content_digest": "sha256:36176d7cc4285fb8cf728909255ca356db13b1ca5ed7fe3f33d703c8c94c1cbe",
+   "field_id": "WX-F1",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 28.9,
+   "soc_se": 1.2
+  },
+  {
+   "object_id": "se-ae1780f9916c8cc30c0c14df",
+   "content_digest": "sha256:9621e69a94fa83721e3005d3c223bb1cfd230b2c1ed0b0d783911da1763b8171",
+   "field_id": "WX-F2",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 31.15,
+   "soc_se": 0.8
+  },
+  {
+   "object_id": "se-49043dd29488cde9a783e1aa",
+   "content_digest": "sha256:a47b3f758613148c4c3001b504009023fafb6f2a548d1f772ab5df5072aa9a13",
+   "field_id": "WX-F3",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 26.7,
+   "soc_se": 0.9
+  },
+  {
+   "object_id": "se-249fa7f4e4fb8b62a1feb28e",
+   "content_digest": "sha256:7a43c902ec097befa5061c25bd3b327976d0dc031b1fd067cb8a5d9a57be6fc9",
+   "field_id": "WX-F4",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 34.1,
+   "soc_se": 1.0
+  },
+  {
+   "object_id": "se-1d8a9c0a8845db74db5b46cf",
+   "content_digest": "sha256:4bff0f7e30421695eb6d015c907aee3244ee81c95b0d7db8af8a2d5b228b6df9",
+   "field_id": "WX-F5",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 30.25,
+   "soc_se": 1.1
+  },
+  {
+   "object_id": "se-90525d0ce89a4174d187d371",
+   "content_digest": "sha256:1ac36c8c4105ba89328d2f48d40c5c59f3762625a99c7fc30a7fbdb703957e05",
+   "field_id": "WX-F6",
+   "observed_at": "2026-08-01T00:00:00+00:00",
+   "t_years": 0.5,
+   "soc": 27.9,
+   "soc_se": 1.2
+  },
+  {
+   "object_id": "se-9797ee25b7e1c6ce07e9d0ca",
+   "content_digest": "sha256:4002211de997ec98c2eca2504e5898d49c656d15c6718183f3d181d855a60e07",
+   "field_id": "WX-F1",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 29.45,
+   "soc_se": 0.9
+  },
+  {
+   "object_id": "se-901e922e1d0dd66c4444d78b",
+   "content_digest": "sha256:eebd967a11bb3472bde0cb521283e7d934d482437fdbccaacbe12d531634e9cf",
+   "field_id": "WX-F2",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 30.8,
+   "soc_se": 1.0
+  },
+  {
+   "object_id": "se-86c33584b5af3b776435ef56",
+   "content_digest": "sha256:d251c451c037d26255b2bfea8b41a49e5500751f89866959a35cba1b11efaa5e",
+   "field_id": "WX-F3",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 27.15,
+   "soc_se": 1.1
+  },
+  {
+   "object_id": "se-338caecb92b8a70d75e90c7f",
+   "content_digest": "sha256:e5b07dac7b061a9babd6f7c67f9df7a28e8ed4707b04f08e113cda2629bd962d",
+   "field_id": "WX-F4",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 34.4,
+   "soc_se": 1.2
+  },
+  {
+   "object_id": "se-d5acbdbf28f71d265db58a69",
+   "content_digest": "sha256:5a740147522ffc6ff935f30c92558fd1a86b0c67fbb1404513f641ccb722bbbc",
+   "field_id": "WX-F5",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 30.2,
+   "soc_se": 0.8
+  },
+  {
+   "object_id": "se-df82669a29ce88e812c93c81",
+   "content_digest": "sha256:8748d54460b5f93b09b42e2f8d437803a6c23c3bc70d3e663067d738dc02cddc",
+   "field_id": "WX-F6",
+   "observed_at": "2026-11-01T00:00:00+00:00",
+   "t_years": 0.75,
+   "soc": 28.25,
+   "soc_se": 0.9
+  }
+ ]
+}

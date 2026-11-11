@@ -1,0 +1,18 @@
+{
+ "generator": "tests/fixtures/fig04-wexford/build_fixtures.py",
+ "siteIntelligenceCommit": "e440db1812733eb007052c7e9d9de9f61a04d941",
+ "siNormaliser": "backend/app/spatial_evidence_registry_v4460.normalize_evidence_object",
+ "siPackage": "backend/app/reproducible_spatial_packages_v4540.compose_package",
+ "synthetic": true,
+ "objects": 56,
+ "socTrend": {
+  "slope": 0.8333,
+  "se": 1.8857
+ },
+ "files": {
+  "wexford.si-package.json": "f4d1b9592feadb098bdaf2d1f8a750e04e3ab6c7fc8ea28dd0c4a5f5cfb62e38",
+  "wexford.dataset.json": "06c83779f31778a288a4033df7f5ad3d93072066b5954e1ddbbcec5dc41bfa00",
+  "wexford.map-view.json": "016ba7157d66db3fb7bc18cddfdc698b659164f16bbaaa74b45b9d1d87df3013",
+  "wexford.bundle.json": "aa77ca09500d6d295973dd8677b5172663641838277d0f3d808136c26a2c292f"
+ }
+}

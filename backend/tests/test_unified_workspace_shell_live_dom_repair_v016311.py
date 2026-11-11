@@ -50,7 +50,7 @@ def test_css_fail_safe_collapses_specialist_stack_before_runtime_binding():
 
 def test_release_manifest_records_repair_without_advancing_feature_line():
     manifest = json.loads(MANIFEST.read_text())
-    assert manifest["releaseVersion"] in {"0.163.1.1", "0.163.1.2", "0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7"}
+    assert manifest["releaseVersion"] in {"0.163.1.1", "0.163.1.2", "0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7", "0.163.1.8"}
     assert manifest["featureVersion"] == "0.163.1"
     assert manifest["v016311LiveDomBindingRepair"] is True
     assert manifest["v016311LegacyAssetGateSurvival"] is True

@@ -1,7 +1,8 @@
 # SC-FIG-03A — MapLibre adapter preparation
 
-**State:** 0.163.1.7, preparation only. Not loaded by WordPress; MapLibre GL JS is not vendored and
-nothing is drawn.
+**State:** prepared in 0.163.1.7. Since 0.163.1.8 the contract is loaded and drawn by SC-FIG-04
+(behind its own switch, default off): see [SC-FIG-04 geospatial figures](SC-FIG-04_GEOSPATIAL_FIGURES.md).
+View 1.0 behaviour is unchanged.
 
 ## Contract
 

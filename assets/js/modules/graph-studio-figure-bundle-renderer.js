@@ -19,7 +19,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
 
-  var VERSION = '0.2.0';
+  var VERSION = '0.3.0';
   var BUNDLE_SCHEMA = 'sc.figure-bundle.v1';
   var PLOTLY_MEDIA = 'application/vnd.plotly.v1+json';
   var PNG_MEDIA = 'image/png';
@@ -50,6 +50,12 @@
   // switch); otherwise those media types stay 'unsupported', exactly as before.
   function fig02b() {
     return root.SCLabVegaLiteFIG02B || (typeof globalThis !== 'undefined' && globalThis.SCLabVegaLiteFIG02B) || null;
+  }
+
+  // FIG-04 (MapLibre geospatial views) likewise takes part only when its modules are loaded (its own switch).
+  function fig04() {
+    var m = root.SCLabMapLibreFIG04 || (typeof globalThis !== 'undefined' && globalThis.SCLabMapLibreFIG04) || null;
+    return m && (root.SCLabMapLibreFIG03A || (typeof globalThis !== 'undefined' && globalThis.SCLabMapLibreFIG03A)) ? m : null;
   }
 
   function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
@@ -165,7 +171,7 @@
       if (errors.length) { throw errors; }
       var others = prints.filter(function (p) { return p !== bp; });
       var used = [];
-      var V = fig02b();
+      var V = fig02b(), G = fig04();
       var pending = b.artifacts.map(function (a) {
         var match = null, mode = null;
         others.forEach(function (p) {
@@ -194,6 +200,13 @@
           return V.viewErrors(match.text, match.json, b).then(function (errs) {
             if (errs.length) { throw errs.map(function (m) { return a.sha256.slice(0, 12) + ': ' + m; }); }
             return { artifact: a, state: 'rendered-vega-lite', hashMode: mode, spec: match.json };
+          });
+        }
+        if (G && a.mediaType === G.media) {
+          if (!match.json) { throw [a.sha256.slice(0, 12) + ': MapLibre view is not JSON']; }
+          return G.viewErrors(match.text, match.json, b).then(function (errs) {
+            if (errs.length) { throw errs.map(function (m) { return a.sha256.slice(0, 12) + ': ' + m; }); }
+            return { artifact: a, state: 'rendered-maplibre', hashMode: mode, spec: match.json };
           });
         }
         if (V && a.mediaType === V.media.svg) {
@@ -400,7 +413,7 @@
     var Plotly = root.Plotly;
     var loaded = Plotly && typeof Plotly.newPlot === 'function' ? Plotly.version : undefined;
     return verifyPackage(files, loaded, expectedBundleSha256).then(function (ok) {
-      var b = ok.bundle, draws = [], exports = [], V = fig02b();
+      var b = ok.bundle, draws = [], exports = [], V = fig02b(), G = fig04();
       out.textContent = '';
       var card = out.appendChild(el('figure', { 'class': 'sc-lab-fig02a-card sc-lab-figure-bundle-card', 'data-figure-bundle-state': 'verified',
         'data-figure-id': b.figureId, 'data-bundle-sha256': ok.bundleSha256 }));
@@ -432,6 +445,10 @@
             slot.setAttribute('data-view-state', 'refused');
             holder.appendChild(el('p', { 'class': 'sc-lab-fig02a-refusal', role: 'alert' }, 'Vega-Lite view not drawn: ' + (Array.isArray(reasons) ? reasons.join('; ') : String(reasons))));
           }));
+        } else if (v.state === 'rendered-maplibre') {
+          draws.push(G.createMap(slot, v.spec, b, options && options.maplibre).then(function (h) {
+            if (h && h.state !== 'ready') { slot.setAttribute('data-view-state', 'rendered-maplibre-static'); }
+          }));
         } else if (v.state === 'static-svg') {
           // Verified, policy-clean SVG bytes shown as an image (no script context); nothing is fetched.
           var surl = URL.createObjectURL(new Blob([v.bytes], { type: 'image/svg+xml' }));
@@ -450,7 +467,7 @@
       });
       card.appendChild(el('figcaption', null, b.rendering.caption));
       context(card, b, ok.bundleSha256, ok.views);
-      var drawn = ok.views.filter(function (v) { return ['rendered-plotly', 'static-png', 'rendered-vega-lite', 'static-svg'].indexOf(v.state) >= 0; }).length;
+      var drawn = ok.views.filter(function (v) { return ['rendered-plotly', 'static-png', 'rendered-vega-lite', 'static-svg', 'rendered-maplibre'].indexOf(v.state) >= 0; }).length;
       card.setAttribute('data-figure-bundle-state', drawn ? 'rendered' : 'metadata-only');
       return Promise.all(draws).then(function () {
         return { state: card.getAttribute('data-figure-bundle-state'), views: ok.views, bundleSha256: ok.bundleSha256, exports: exports };
@@ -481,7 +498,7 @@
     var section = el('section', { 'class': 'sc-lab-fig02a-preview', 'data-figure-bundle-renderer': VERSION, 'aria-label': 'Figure bundle viewer (sc.figure-bundle.v1)' });
     section.appendChild(el('h3', null, 'Figure bundle viewer'));
     section.appendChild(el('p', { 'class': 'sc-lab-fig02a-help' },
-      'Select one sc.figure-bundle.v1 file and the view files it references (Plotly or Vega-Lite JSON, SVG, PNG). Files are verified and read in this browser only; nothing is uploaded or saved.'));
+      'Select one sc.figure-bundle.v1 file and the view files it references (Plotly, Vega-Lite or MapLibre map-view JSON, SVG, PNG). Files are verified and read in this browser only; nothing is uploaded or saved.'));
     var input = section.appendChild(el('input', { type: 'file', multiple: '', accept: 'application/json,.json,image/png,.png,image/svg+xml,.svg', 'aria-label': 'Figure bundle and referenced view files' }));
     var out = section.appendChild(el('div', { 'class': 'sc-lab-fig02a-output', 'aria-live': 'polite' }));
     input.addEventListener('change', function () {
