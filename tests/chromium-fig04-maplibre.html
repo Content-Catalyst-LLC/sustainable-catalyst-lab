@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Strict: no inline script or style (plotly.js, which injects style elements, is not needed for map views and is not loaded), no eval, no remote origin; the MapLibre worker only from a verified blob. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; worker-src blob:; child-src blob:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="data:,">
+<title>FIG-04 MapLibre geospatial views — Chromium harness</title>
+<link rel="stylesheet" href="../assets/lib/maplibre-gl-5.24.0/maplibre-gl.css">
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-plotly-preview-fig02a.css">
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-figure-bundle-renderer.css">
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-maplibre-fig04.css">
+</head>
+<body data-cert="running">
+<div data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage></div></div></div>
+<div id="main-out"></div>
+<pre id="cert-log"></pre>
+<script src="../assets/lib/maplibre-gl-5.24.0/maplibre-gl-csp.js"></script>
+<script src="../assets/js/modules/graph-studio-plotly-preview-fig02a.js"></script>
+<script src="../assets/js/modules/graph-studio-maplibre-fig03a.js"></script>
+<script src="../assets/js/modules/graph-studio-maplibre-renderer-fig04.js"></script>
+<script src="../assets/js/modules/graph-studio-figure-bundle-renderer.js"></script>
+<script src="chromium-fig04-maplibre.js"></script>
+</body>
+</html>
