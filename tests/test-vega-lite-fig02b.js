@@ -65,6 +65,22 @@ async function refused(label, mutate, needle) {
   await refused('data edited after hashing', (v) => { v.data.values[0].cdr = 99; }, 'do not match usermeta.sc.datasetSha256');
   await refused('dataset unrelated to the bundle', (v, b) => { b.calculationRefs = []; b.sourceRefs.forEach((s) => { s.sha256 = 'a'.repeat(64); }); }, 'not one of the bundle sourceRefs');
 
+  // 3b. The renderer refuses a Vega-Lite figure without alt text (accessible description is mandatory).
+  globalThis.SCLabVegaLiteFIG02B = V;
+  const R = require(path.join(root, 'assets/js/modules/graph-studio-figure-bundle-renderer.js'));
+  const noAlt = json('erw.bundle.json');
+  noAlt.rendering.altText = '';
+  try {
+    await R.verifyPackage([{ name: 'b.json', bytes: new Uint8Array(Buffer.from(JSON.stringify(noAlt))) },
+      { name: 'v.json', bytes: new Uint8Array(fs.readFileSync(path.join(dir, 'erw.vega-lite.json'))) }], '3.3.1');
+    ok(false, 'figure without alt text should be refused');
+  } catch (reasons) {
+    ok(Array.isArray(reasons) && reasons.some((r) => r.includes('altText')), 'figure without alt text refused: ' + JSON.stringify(reasons));
+  }
+  const accepted = await R.verifyPackage([{ name: 'b.json', bytes: new Uint8Array(fs.readFileSync(path.join(dir, 'erw.bundle.json'))) },
+    { name: 'v.json', bytes: new Uint8Array(fs.readFileSync(path.join(dir, 'erw.vega-lite.json'))) }], '3.3.1', source.files['erw.bundle.json']);
+  ok(accepted.views.map((v) => v.state).join() === 'rendered-vega-lite', 'renderer verifies the pinned ERW package as a Vega-Lite view');
+
   // 4. Display spec adds unit-bearing titles and drops usermeta; the table model carries units, gaps and identity.
   const met = json('metrics.vega-lite.json'), metBundle = json('metrics.bundle.json');
   const shown = V.displaySpec(met, metBundle);
@@ -84,5 +100,5 @@ async function refused(label, mutate, needle) {
   ok(p.viewArtifactSha256 === erwBundle.artifacts[0].sha256 && Array.isArray(p.sourceRefs) && p.sourceRefs.length > 0, 'SVG provenance keeps the view hash and source citations');
   ok(!JSON.stringify(p).includes('measured'), 'synthetic modelled provenance never describes itself as measured');
 
-  console.log('PASS - SC-FIG-02B Vega-Lite contract (' + Object.keys(source.files).length + ' fixtures, 19 refusals)');
+  console.log('PASS - SC-FIG-02B Vega-Lite contract (' + Object.keys(source.files).length + ' fixtures, 20 refusals)');
 })().catch((e) => { console.error('FAIL - ' + (e && e.stack || JSON.stringify(e))); process.exit(1); });
