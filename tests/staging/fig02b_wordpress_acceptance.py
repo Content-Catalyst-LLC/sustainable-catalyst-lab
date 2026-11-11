@@ -7,7 +7,10 @@ and receipts here (Python), feeds the SVG back as a static view of a revised bun
 and records every network request.
 
     python tests/staging/fig02b_wordpress_acceptance.py http://127.0.0.1:18190/lab/ <out dir>
-        [--expect-release 0.163.1.6] [--label staging]
+        [--expect-release 0.163.1.6] [--label staging] [--package DIR]
+
+--package renders an externally produced Vega-Lite package (e.g. a Workspace notebook figure package);
+DIR holds the files plus EXPECTED.json {"bundle", "bundleSha256"} naming the registered bundle hash.
 
 Nothing is posted to the site; exports stay in the browser and in <out dir>.
 """
@@ -45,6 +48,7 @@ FIG02B_STATE = r"""
   const vl = Array.from(card.querySelectorAll('[data-view-state="rendered-vega-lite"]'));
   const text = vl.map(s => Array.from(s.querySelectorAll('.sc-lab-fig02b-plot svg text')).map(t => t.textContent).join(' | '));
   return {
+    evidenceLabel: (card.querySelector('.sc-lab-fig02a-evidence') || {}).textContent || '',
     vegaReady: vl.map(s => s.getAttribute('data-vega-view')),
     vegaPaths: vl.map(s => s.querySelectorAll('.sc-lab-fig02b-plot svg path').length),
     vegaText: text,
@@ -126,7 +130,13 @@ def verify_export(item, bundle_sha256):
     }
 
 
-async def run(url, outdir, expect_release=None, label="staging"):
+def external_package(directory):
+    expected = json.loads((directory / "EXPECTED.json").read_text())
+    package = [blob(f.name, f.read_bytes()) for f in sorted(directory.iterdir()) if f.is_file() and f.name != "EXPECTED.json"]
+    return package, expected["bundleSha256"]
+
+
+async def run(url, outdir, expect_release=None, label="staging", package_dir=None):
     outdir.mkdir(parents=True, exist_ok=True)
     origin = "{0.scheme}://{0.netloc}".format(urlparse(url))
     port = 9335
@@ -198,7 +208,8 @@ async def run(url, outdir, expect_release=None, label="staging"):
             check("case.erw", st["state"] == "rendered" and st["views"] == ["rendered-vega-lite"] and st["vegaReady"] == ["ready"]
                   and st["vegaPaths"][0] > 4 and st["bundleSha256"] == erw_bundle_sha and st["evidenceClass"] == "modelled"
                   and "Cumulative CO2 uptake (t CO2 ha-1)" in st["vegaText"][0] and "literature-derived" in st["vegaText"][0]
-                  and "modelled" in st["vegaText"][0] and "not publication-approved" in st["reviewText"], st)
+                  and "modelled" in st["vegaText"][0] and "not publication-approved" in st["reviewText"]
+                  and st["evidenceLabel"] == "Modelled — Lab computation, not a measurement", st)
             check("case.erw.accessibleTable", st["viewTables"][0]["caption"] and st["viewTables"][0]["rows"] == 20
                   and "Evidence class" in heads and any("(t CO2 ha-1)" in h for h in heads)
                   and st["uncertainty"] and st["uncertainty"][0].startswith("Uncertainty (range)") and st["linksOrFrames"] == 0, st["viewTables"])
@@ -243,6 +254,22 @@ async def run(url, outdir, expect_release=None, label="staging"):
                   report["exports"]["combined"])
             await shot("combined")
 
+            if package_dir:
+                package, expected = external_package(package_dir)
+                st = await render(cdp, package, expected)
+                report["cases"]["external-package"] = st
+                check("case.external-package", st["state"] == "rendered" and st["views"] == ["rendered-vega-lite"] and st["vegaReady"] == ["ready"]
+                      and st["bundleSha256"] == expected and "not publication-approved" in st["reviewText"] and st["linksOrFrames"] == 0
+                      and st["viewTables"][0]["caption"] and st["uncertainty"]
+                      and st["evidenceLabel"] in ("Modelled — Workspace computation, not a measurement", "Hypothetical — scenario values"), st)
+                await shot("external-package")
+                exports = json.loads(await cdp.js(EXPORT_ALL))
+                v = verify_export(exports[0], expected)
+                report["exports"]["external-package"] = {k: v[k] for k in v if k != "data"}
+                check("export.external-package", exports[0]["state"] == "verified" and v["receiptMatches"] and v["bundleBound"] and v["noActiveContent"],
+                      report["exports"]["external-package"])
+                (outdir / f"{label}-fig02b-external-package.svg").write_bytes(v["data"])
+
             # Refusals on the live page.
             erw_view = json.loads((FIXTURES / "erw.vega-lite.json").read_text())
             remote = dict(erw_view, data={"url": "https://example.org/x.csv"})
@@ -278,5 +305,6 @@ if __name__ == "__main__":
     ap.add_argument("outdir", type=Path)
     ap.add_argument("--expect-release")
     ap.add_argument("--label", default="staging")
+    ap.add_argument("--package", type=Path)
     a = ap.parse_args()
-    sys.exit(asyncio.run(run(a.url, a.outdir, a.expect_release, a.label)))
+    sys.exit(asyncio.run(run(a.url, a.outdir, a.expect_release, a.label, a.package)))

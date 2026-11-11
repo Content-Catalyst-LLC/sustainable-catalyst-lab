@@ -27,6 +27,9 @@
   are local; nothing is uploaded or published.
 - Health: `sc-lab/v1/graph-studio/figure-bundle-renderer/health` reports `fig02b` and the Vega
   renderers.
+- The renderer's evidence badge for a modelled figure names the bundle's own computing authority
+  (`provenance.authorityOwner`, e.g. Workspace or Lab) instead of always saying Workbench. The FIG-02A
+  panel, which shows only Workbench responses, is unchanged.
 
 ## 0.163.1.5 — Generic sc.figure-bundle.v1 renderer in Graph Studio (SC-FIG-01), default off
 

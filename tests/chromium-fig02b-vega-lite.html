@@ -81,7 +81,8 @@
     check(/Uncertainty \(range\)/.test(slot.textContent) && slot.textContent.indexOf(erwView.usermeta.sc.datasetSha256) >= 0, 'uncertainty definition and dataset hash shown');
     var prov = out.querySelector('.sc-lab-fig02a-provenance').textContent;
     check(prov.indexOf('synthetic-fixture-tested') >= 0 && prov.indexOf(erwBundle.artifacts[0].sha256) >= 0 && prov.indexOf('verified, canonical-json') >= 0, 'provenance lists reproducibility and the verified view hash');
-    check(out.querySelector('.sc-lab-fig02a-evidence').getAttribute('data-evidence-class') === 'modelled', 'figure evidence class shown as modelled');
+    var badge = out.querySelector('.sc-lab-fig02a-evidence');
+    check(badge.getAttribute('data-evidence-class') === 'modelled' && badge.textContent === 'Modelled — Lab computation, not a measurement', 'figure evidence class shown as modelled, naming its computing authority');
 
     // 2. Export: validated SVG with embedded provenance, re-verified, receipt; repeatable.
     var x1 = await erw.exports[0](), x2 = await erw.exports[0]();

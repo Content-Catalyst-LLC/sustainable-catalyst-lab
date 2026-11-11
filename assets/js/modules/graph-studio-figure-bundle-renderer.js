@@ -323,9 +323,18 @@
     reasons.forEach(function (r) { ul.appendChild(el('li', null, r)); });
   }
 
+  // Bundles come from several producers: a modelled figure names its own computing authority.
+  var AUTHORITY = { core: 'Platform Core', 'site-intelligence': 'Site Intelligence', workbench: 'Workbench', lab: 'Lab',
+    library: 'Library', workspace: 'Workspace', 'local-research-review': 'local research review' };
+
+  function evidenceLabel(b) {
+    var who = AUTHORITY[(b.provenance || {}).authorityOwner];
+    if (b.evidenceClass === 'modelled' && who) { return 'Modelled — ' + who + ' computation, not a measurement'; }
+    return lib().evidenceText[b.evidenceClass];
+  }
+
   function header(card, b) {
-    var ev = lib().evidenceText;
-    card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, ev[b.evidenceClass]));
+    card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, evidenceLabel(b)));
     card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-title' }, b.title));
     var rv = b.review || {};
     card.appendChild(el('p', { 'class': 'sc-lab-fig02a-review' },
