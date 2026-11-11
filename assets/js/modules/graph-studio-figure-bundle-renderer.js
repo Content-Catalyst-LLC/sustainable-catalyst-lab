@@ -43,6 +43,12 @@
     return f;
   }
 
+  // FIG-02B (Vega-Lite views, verified SVG) takes part only when its module is loaded on the page (its own
+  // switch); otherwise those media types stay 'unsupported', exactly as before.
+  function fig02b() {
+    return root.SCLabVegaLiteFIG02B || (typeof globalThis !== 'undefined' && globalThis.SCLabVegaLiteFIG02B) || null;
+  }
+
   function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
   function nonEmpty(v, min) { return typeof v === 'string' && v.length >= (min || 1); }
   function oneOf(v, key) { return ENUMS[key].indexOf(v) >= 0; }
@@ -156,7 +162,8 @@
       if (errors.length) { throw errors; }
       var others = prints.filter(function (p) { return p !== bp; });
       var used = [];
-      var views = b.artifacts.map(function (a) {
+      var V = fig02b();
+      var pending = b.artifacts.map(function (a) {
         var match = null, mode = null;
         others.forEach(function (p) {
           if (match) { return; }
@@ -179,9 +186,27 @@
           if (mode !== 'raw-bytes' || !isPng(match.bytes)) { throw [a.sha256.slice(0, 12) + ': declared image/png but the bytes are not a PNG']; }
           return { artifact: a, state: 'static-png', hashMode: mode, bytes: match.bytes };
         }
+        if (V && V.isVegaLiteMedia(a.mediaType)) {
+          if (!match.json || match.text === null) { throw [a.sha256.slice(0, 12) + ': declared Vega-Lite but the file is not JSON']; }
+          return V.viewErrors(match.text, match.json, b).then(function (errs) {
+            if (errs.length) { throw errs.map(function (m) { return a.sha256.slice(0, 12) + ': ' + m; }); }
+            return { artifact: a, state: 'rendered-vega-lite', hashMode: mode, spec: match.json };
+          });
+        }
+        if (V && a.mediaType === V.media.svg) {
+          if (mode !== 'raw-bytes') { throw [a.sha256.slice(0, 12) + ': an SVG view must match by raw bytes']; }
+          if (typeof DOMParser === 'undefined') {
+            return { artifact: a, state: 'unsupported', hashMode: mode, reason: 'SVG verification needs a browser; integrity verified, nothing drawn' };
+          }
+          return V.verifySvg(match.bytes, b).then(function (v) {
+            return { artifact: a, state: 'static-svg', hashMode: mode, bytes: match.bytes, svgProvenance: v.provenance };
+          }, function (errs) { throw errs.map(function (m) { return a.sha256.slice(0, 12) + ': ' + m; }); });
+        }
         return { artifact: a, state: 'unsupported', hashMode: mode,
           reason: 'media type ' + a.mediaType + ' has no Lab renderer; integrity verified, nothing drawn' };
       });
+      return Promise.all(pending).then(function (views) { return finish(views); });
+      function finish(views) {
       var stray = others.filter(function (p) { return used.indexOf(p) < 0; });
       if (stray.length) {
         throw stray.map(function (p) { return (p.name || 'file') + ' is not referenced by the figure bundle (hash ' + p.raw.slice(0, 12) + ')'; });
@@ -191,6 +216,7 @@
         throw ['rendering.visualizationSpecSha256 is not one of the bundle artifacts'];
       }
       return { bundle: b, bundleSha256: bp.raw, views: views };
+      }
     });
   }
 
@@ -236,6 +262,59 @@
     return wrap;
   }
 
+  // Accessible table from a FIG-02B table model (labels with units, uncertainty, dataset identity).
+  function modelTable(model) {
+    var wrap = el('div', { 'class': 'sc-lab-fig02a-tables' });
+    var table = wrap.appendChild(el('table', { 'data-view-table': 'vega-lite' }));
+    table.appendChild(el('caption', null, model.caption));
+    var head = table.appendChild(el('thead')).appendChild(el('tr'));
+    model.columns.forEach(function (h) { head.appendChild(el('th', { scope: 'col' }, h)); });
+    var body = table.appendChild(el('tbody'));
+    model.rows.forEach(function (r) {
+      var tr = body.appendChild(el('tr'));
+      r.forEach(function (v, k) { tr.appendChild(el(k === 0 ? 'th' : 'td', k === 0 ? { scope: 'row' } : null, v)); });
+    });
+    if (model.truncated) { wrap.appendChild(el('p', { 'class': 'sc-lab-fig02a-help' }, model.truncated + ' further rows are in the dataset and not listed here.')); }
+    wrap.appendChild(el('p', { 'class': 'sc-lab-fig02b-uncertainty' }, model.uncertainty));
+    wrap.appendChild(el('p', { 'class': 'sc-lab-fig02b-dataset' }, 'Dataset: ' + model.dataset));
+    return wrap;
+  }
+
+  function plotlySvgText(plot) {
+    return root.Plotly.toImage(plot, { format: 'svg' }).then(function (url) {
+      var comma = url.indexOf(',');
+      var head = url.slice(0, comma), body = url.slice(comma + 1);
+      return /;base64$/.test(head) ? new TextDecoder().decode(Uint8Array.from(atob(body), function (c) { return c.charCodeAt(0); })) : decodeURIComponent(body);
+    });
+  }
+
+  // Export control: validated, provenance-bearing SVG plus its receipt, both offered as local downloads.
+  function exportControl(slot, b, bundleSha256, artifact, spec, svgText) {
+    var V = fig02b();
+    var box = slot.appendChild(el('div', { 'class': 'sc-lab-fig02b-export' }));
+    var button = box.appendChild(el('button', { type: 'button', 'class': 'sc-lab-fig02b-export-button' }, 'Export verified SVG'));
+    var status = box.appendChild(el('p', { 'class': 'sc-lab-fig02a-help', 'aria-live': 'polite' }));
+    function run() {
+      status.textContent = 'Exporting…';
+      return svgText().then(function (text) { return V.exportSvg(text, b, bundleSha256, artifact, spec); }).then(function (x) {
+        slot.setAttribute('data-export-state', 'verified');
+        slot.setAttribute('data-export-sha256', x.receipt.sha256);
+        Array.prototype.slice.call(box.querySelectorAll('a')).forEach(function (a) { URL.revokeObjectURL(a.href); a.remove(); });
+        var stem = x.receipt.artifactEntry.artifactRef.replace(/\.svg$/, '');
+        box.appendChild(el('a', { href: URL.createObjectURL(new Blob([x.bytes], { type: 'image/svg+xml' })), download: stem + '.svg', 'class': 'sc-lab-fig02b-download' }, 'Download SVG'));
+        box.appendChild(el('a', { href: URL.createObjectURL(new Blob([JSON.stringify(x.receipt, null, 1)], { type: 'application/json' })), download: stem + '.receipt.json', 'class': 'sc-lab-fig02b-download' }, 'Download export receipt'));
+        status.textContent = 'Verified SVG ' + x.receipt.bytes + ' bytes, SHA-256 ' + x.receipt.sha256 + '. Provenance embedded; nothing uploaded or saved.';
+        return x;
+      }, function (reasons) {
+        slot.setAttribute('data-export-state', 'refused');
+        status.textContent = 'Export refused: ' + (Array.isArray(reasons) ? reasons.join('; ') : String(reasons));
+        return { refused: reasons };
+      });
+    }
+    button.addEventListener('click', run);
+    return run;
+  }
+
   function showRefusal(out, reasons) {
     out.textContent = '';
     var box = out.appendChild(el('div', { 'class': 'sc-lab-fig02a-refusal', role: 'alert', 'data-figure-bundle-state': 'refused' }));
@@ -244,9 +323,18 @@
     reasons.forEach(function (r) { ul.appendChild(el('li', null, r)); });
   }
 
+  // Bundles come from several producers: a modelled figure names its own computing authority.
+  var AUTHORITY = { core: 'Platform Core', 'site-intelligence': 'Site Intelligence', workbench: 'Workbench', lab: 'Lab',
+    library: 'Library', workspace: 'Workspace', 'local-research-review': 'local research review' };
+
+  function evidenceLabel(b) {
+    var who = AUTHORITY[(b.provenance || {}).authorityOwner];
+    if (b.evidenceClass === 'modelled' && who) { return 'Modelled — ' + who + ' computation, not a measurement'; }
+    return lib().evidenceText[b.evidenceClass];
+  }
+
   function header(card, b) {
-    var ev = lib().evidenceText;
-    card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, ev[b.evidenceClass]));
+    card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, evidenceLabel(b)));
     card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-title' }, b.title));
     var rv = b.review || {};
     card.appendChild(el('p', { 'class': 'sc-lab-fig02a-review' },
@@ -277,7 +365,7 @@
     var Plotly = root.Plotly;
     var loaded = Plotly && typeof Plotly.newPlot === 'function' ? Plotly.version : undefined;
     return verifyPackage(files, loaded, expectedBundleSha256).then(function (ok) {
-      var b = ok.bundle, draws = [];
+      var b = ok.bundle, draws = [], exports = [], V = fig02b();
       out.textContent = '';
       var card = out.appendChild(el('figure', { 'class': 'sc-lab-fig02a-card sc-lab-figure-bundle-card', 'data-figure-bundle-state': 'verified',
         'data-figure-id': b.figureId, 'data-bundle-sha256': ok.bundleSha256 }));
@@ -295,6 +383,25 @@
           config.displaylogo = false; config.showLink = false; config.showSendToCloud = false; config.showEditInChartStudio = false;
           fig.layout.width = undefined; fig.layout.autosize = true;
           draws.push(Plotly.newPlot(plot, fig.data, fig.layout, config));
+          if (V) { exports.push(exportControl(slot, b, ok.bundleSha256, v.artifact, null, function () { return plotlySvgText(plot); })); }
+        } else if (v.state === 'rendered-vega-lite') {
+          var holder = slot.appendChild(el('div', { 'class': 'sc-lab-fig02b-plot' }));
+          var vtable = slot.appendChild(el('details', { 'class': 'sc-lab-fig02a-data' }));
+          vtable.appendChild(el('summary', null, 'Data table (accessible alternative)'));
+          vtable.appendChild(modelTable(V.tableModel(v.spec, b.rendering.caption)));
+          draws.push(V.createView(holder, v.spec, b).then(function (view) {
+            slot.setAttribute('data-vega-view', 'ready');
+            exports.push(exportControl(slot, b, ok.bundleSha256, v.artifact, v.spec, function () { return view.toSVG(); }));
+          }, function (reasons) {
+            slot.setAttribute('data-view-state', 'refused');
+            holder.appendChild(el('p', { 'class': 'sc-lab-fig02a-refusal', role: 'alert' }, 'Vega-Lite view not drawn: ' + (Array.isArray(reasons) ? reasons.join('; ') : String(reasons))));
+          }));
+        } else if (v.state === 'static-svg') {
+          // Verified, policy-clean SVG bytes shown as an image (no script context); nothing is fetched.
+          var surl = URL.createObjectURL(new Blob([v.bytes], { type: 'image/svg+xml' }));
+          slot.appendChild(el('img', { src: surl, alt: b.rendering.altText, 'class': 'sc-lab-figure-bundle-static' }));
+          slot.appendChild(el('p', { 'class': 'sc-lab-fig02a-help' }, 'Static SVG view (verified bytes' +
+            (v.svgProvenance ? '; embedded provenance matches this figure, view ' + v.svgProvenance.viewArtifactSha256.slice(0, 12) : '; no embedded provenance') + ').'));
         } else if (v.state === 'static-png') {
           // Verified bytes only, shown through a local object URL; nothing is fetched.
           var url = URL.createObjectURL(new Blob([v.bytes], { type: PNG_MEDIA }));
@@ -307,9 +414,11 @@
       });
       card.appendChild(el('figcaption', null, b.rendering.caption));
       context(card, b, ok.bundleSha256, ok.views);
-      var drawn = ok.views.filter(function (v) { return v.state === 'rendered-plotly' || v.state === 'static-png'; }).length;
+      var drawn = ok.views.filter(function (v) { return ['rendered-plotly', 'static-png', 'rendered-vega-lite', 'static-svg'].indexOf(v.state) >= 0; }).length;
       card.setAttribute('data-figure-bundle-state', drawn ? 'rendered' : 'metadata-only');
-      return Promise.all(draws).then(function () { return { state: card.getAttribute('data-figure-bundle-state'), views: ok.views }; });
+      return Promise.all(draws).then(function () {
+        return { state: card.getAttribute('data-figure-bundle-state'), views: ok.views, bundleSha256: ok.bundleSha256, exports: exports };
+      });
     }, function (reasons) {
       showRefusal(out, Array.isArray(reasons) ? reasons : [String(reasons)]);
       return { state: 'refused', reasons: reasons };
@@ -336,8 +445,8 @@
     var section = el('section', { 'class': 'sc-lab-fig02a-preview', 'data-figure-bundle-renderer': VERSION, 'aria-label': 'Figure bundle viewer (sc.figure-bundle.v1)' });
     section.appendChild(el('h3', null, 'Figure bundle viewer'));
     section.appendChild(el('p', { 'class': 'sc-lab-fig02a-help' },
-      'Select one sc.figure-bundle.v1 file and the view files it references (Plotly JSON, PNG). Files are verified and read in this browser only; nothing is uploaded or saved.'));
-    var input = section.appendChild(el('input', { type: 'file', multiple: '', accept: 'application/json,.json,image/png,.png', 'aria-label': 'Figure bundle and referenced view files' }));
+      'Select one sc.figure-bundle.v1 file and the view files it references (Plotly or Vega-Lite JSON, SVG, PNG). Files are verified and read in this browser only; nothing is uploaded or saved.'));
+    var input = section.appendChild(el('input', { type: 'file', multiple: '', accept: 'application/json,.json,image/png,.png,image/svg+xml,.svg', 'aria-label': 'Figure bundle and referenced view files' }));
     var out = section.appendChild(el('div', { 'class': 'sc-lab-fig02a-output', 'aria-live': 'polite' }));
     input.addEventListener('change', function () {
       if (!input.files || !input.files.length) { return; }
