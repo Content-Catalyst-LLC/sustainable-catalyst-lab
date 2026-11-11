@@ -1,0 +1,310 @@
+{
+ "schema": "sc-lab-maplibre-view/1.0",
+ "title": "SYNTHETIC soil organic carbon zones and comparison sites (not Wexford data)",
+ "objects": [
+  {
+   "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+   "version": "4.56.1",
+   "object_id": "se-0f420cff4e61202cccea7537",
+   "layer_id": "soils-land-degradation",
+   "domain": "soils",
+   "capability_id": "earth-environment",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -7.2,
+       52.1
+      ],
+      [
+       -6.9,
+       52.1
+      ],
+      [
+       -6.9,
+       52.35
+      ],
+      [
+       -7.2,
+       52.35
+      ],
+      [
+       -7.2,
+       52.1
+      ]
+     ]
+    ]
+   },
+   "bbox": [
+    -7.2,
+    52.1,
+    -6.9,
+    52.35
+   ],
+   "crs": "EPSG:4326",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "valid_time": {
+    "start": null,
+    "end": null
+   },
+   "properties": {
+    "title": "Zone A (synthetic)",
+    "evidence_class": "modelled",
+    "soc": 31.5
+   },
+   "source": {
+    "source_id": "synthetic:fig03a-soil-network",
+    "authority": "sc-test-fixture",
+    "record_id": null,
+    "url": null,
+    "license": "CC0-1.0",
+    "retrieved_at": null
+   },
+   "provenance": {
+    "transformations": [
+     {
+      "step": "synthetic-zone-model",
+      "note": "fixture only"
+     }
+    ],
+    "source_crs": "EPSG:4326",
+    "normalization_contract": "1.0.0"
+   },
+   "quality": {},
+   "visibility": "public",
+   "content_digest": "sha256:6f4c1cb69a7b7959a18f0bb9b22f8661e98cfc27ea6221f6ea4bbdcf9e75b01a"
+  },
+  {
+   "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+   "version": "4.56.1",
+   "object_id": "se-1afc588dc54a63809fcbdd8a",
+   "layer_id": "soils-land-degradation",
+   "domain": "soils",
+   "capability_id": "earth-environment",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -6.9,
+       52.1
+      ],
+      [
+       -6.55,
+       52.1
+      ],
+      [
+       -6.55,
+       52.35
+      ],
+      [
+       -6.9,
+       52.35
+      ],
+      [
+       -6.9,
+       52.1
+      ]
+     ]
+    ]
+   },
+   "bbox": [
+    -6.9,
+    52.1,
+    -6.55,
+    52.35
+   ],
+   "crs": "EPSG:4326",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "valid_time": {
+    "start": null,
+    "end": null
+   },
+   "properties": {
+    "title": "Zone B (synthetic)",
+    "evidence_class": "modelled",
+    "soc": 27.25
+   },
+   "source": {
+    "source_id": "synthetic:fig03a-soil-network",
+    "authority": "sc-test-fixture",
+    "record_id": null,
+    "url": null,
+    "license": "CC0-1.0",
+    "retrieved_at": null
+   },
+   "provenance": {
+    "transformations": [
+     {
+      "step": "synthetic-zone-model",
+      "note": "fixture only"
+     }
+    ],
+    "source_crs": "EPSG:4326",
+    "normalization_contract": "1.0.0"
+   },
+   "quality": {},
+   "visibility": "public",
+   "content_digest": "sha256:1c13a53eee2162cda64bbc96d4dd28fa89b93b65cba5b2293a7d43486c9e8bcd"
+  },
+  {
+   "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+   "version": "4.56.1",
+   "object_id": "se-87d5582a6e7da30d264bb221",
+   "layer_id": "soils-land-degradation",
+   "domain": "soils",
+   "capability_id": "earth-environment",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -7.05,
+     52.22
+    ]
+   },
+   "bbox": [
+    -7.05,
+    52.22,
+    -7.05,
+    52.22
+   ],
+   "crs": "EPSG:4326",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "valid_time": {
+    "start": null,
+    "end": null
+   },
+   "properties": {
+    "title": "Comparison site 1 (synthetic)",
+    "evidence_class": "literature-derived",
+    "soc": 29.0
+   },
+   "source": {
+    "source_id": "synthetic:fig03a-soil-network",
+    "authority": "sc-test-fixture",
+    "record_id": null,
+    "url": null,
+    "license": "CC0-1.0",
+    "retrieved_at": null
+   },
+   "provenance": {
+    "transformations": [],
+    "source_crs": "EPSG:4326",
+    "normalization_contract": "1.0.0"
+   },
+   "quality": {},
+   "visibility": "public",
+   "content_digest": "sha256:5b7ff9c24ceaf293cf8c3ff3e66545b4e4707af32927e603c58fd867d9ece565"
+  },
+  {
+   "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+   "version": "4.56.1",
+   "object_id": "se-73522838d071f4be1c46f521",
+   "layer_id": "soils-land-degradation",
+   "domain": "soils",
+   "capability_id": "earth-environment",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -6.7,
+     52.27
+    ]
+   },
+   "bbox": [
+    -6.7,
+    52.27,
+    -6.7,
+    52.27
+   ],
+   "crs": "EPSG:4326",
+   "observed_at": "2026-05-01T00:00:00+00:00",
+   "valid_time": {
+    "start": null,
+    "end": null
+   },
+   "properties": {
+    "title": "Comparison site 2 (synthetic)",
+    "evidence_class": "literature-derived",
+    "soc": 25.5
+   },
+   "source": {
+    "source_id": "synthetic:fig03a-soil-network",
+    "authority": "sc-test-fixture",
+    "record_id": null,
+    "url": null,
+    "license": "CC0-1.0",
+    "retrieved_at": null
+   },
+   "provenance": {
+    "transformations": [],
+    "source_crs": "EPSG:4326",
+    "normalization_contract": "1.0.0"
+   },
+   "quality": {},
+   "visibility": "public",
+   "content_digest": "sha256:aa25efce1952f3d5f15724839ca9ce364e7a0742ee5bf8ac90d24c371b709567"
+  }
+ ],
+ "evidenceField": "evidence_class",
+ "fields": {
+  "title": {
+   "label": "Site",
+   "unit": "category"
+  },
+  "soc": {
+   "label": "Soil organic carbon",
+   "unit": "g kg-1"
+  }
+ },
+ "layers": [
+  {
+   "id": "modelled-zones",
+   "geometry": "polygon",
+   "where": {
+    "property": "evidence_class",
+    "equals": "modelled"
+   },
+   "style": {
+    "color": "#5e3c99",
+    "opacity": 0.25,
+    "outlineColor": "#5e3c99",
+    "outlineWidth": 1.5
+   }
+  },
+  {
+   "id": "literature-sites",
+   "geometry": "point",
+   "where": {
+    "property": "evidence_class",
+    "equals": "literature-derived"
+   },
+   "style": {
+    "color": "#e66101",
+    "radius": 6,
+    "opacity": 0.95,
+    "strokeColor": "#ffffff",
+    "strokeWidth": 1
+   }
+  }
+ ],
+ "legend": [
+  {
+   "layer": "modelled-zones",
+   "label": "Modelled zones (synthetic)"
+  },
+  {
+   "layer": "literature-sites",
+   "label": "Literature comparison sites (synthetic)"
+  }
+ ],
+ "basemap": null,
+ "camera": {
+  "bbox": [
+   -7.2,
+   52.1,
+   -6.55,
+   52.35
+  ],
+  "maxZoom": 11
+ }
+}
