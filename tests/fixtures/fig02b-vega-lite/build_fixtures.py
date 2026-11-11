@@ -32,14 +32,15 @@ def write(name, value):
     (HERE / name).write_text(json.dumps(value, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def bundle(figure_id, title, evidence, status, sources, calcs, interpretation, limitations, caption, alt, artifacts, reproducibility):
+def bundle(figure_id, title, evidence, status, sources, calcs, interpretation, limitations, caption, alt, artifacts, reproducibility,
+           do_not_infer=("any scientific conclusion", "measured or certified carbon removal")):
     return {
         "schema": "sc.figure-bundle.v1", "figureId": figure_id, "version": 1, "title": title,
         "project": {"projectRef": "fig02b-synthetic-ci", "ownerScope": "unbound-local", "environment": "local-review"},
         "publication": {"kind": "none", "target": "unassigned", "bindingStatus": "unbound"},
         "evidenceClass": evidence, "figureType": "evidence-chart", "sourceRefs": sources, "calculationRefs": calcs,
         "scientificContext": {"interpretation": interpretation, "limitations": limitations, "measurementStatus": status,
-                              "claimIds": [], "doNotInfer": ["any scientific conclusion", "measured or certified carbon removal"]},
+                              "claimIds": [], "doNotInfer": list(do_not_infer)},
         "rendering": {"profileId": "sc-institutional-research-v1", "renderer": "vega-lite", "rendererVersion": "vega-lite 6.5.0; vega 6.4.0",
                       "caption": caption, "altText": alt, "palette": "colorblind-safe", "accessibilityReview": "pending",
                       "visualizationSpecSha256": artifacts[0]["sha256"]},
@@ -160,7 +161,8 @@ def metrics():
                ["Synthetic values for placeholder countries", "Missing years are not interpolated", "No causal or ranking claim"],
                "SYNTHETIC: indicator values by year for three placeholder countries; gaps are missing observations.",
                "Line chart of a synthetic percentage indicator from 2015 to 2024 for three placeholder countries, with gaps for missing years.",
-               [art], "synthetic-fixture-tested")
+               [art], "synthetic-fixture-tested",
+               do_not_infer=("any scientific conclusion", "real country values or rankings", "values for missing years"))
     return b, view
 
 
