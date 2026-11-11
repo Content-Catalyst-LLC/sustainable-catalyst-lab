@@ -11,7 +11,7 @@ Wexford soil carbon, nitrate or pH value, and no claim about any real farm or wa
 
 Outputs (byte-identical on re-run):
 - wexford.si-package.json   sealed SI package (evidence_objects group)
-- wexford.dataset.json      Workspace dataset: flat rows derived from the objects, pinned to the package
+- wexford.dataset.json      Workspace dataset: the sealed SI package plus flat rows derived from its objects
 - wexford.map-view.json     Lab map view sc-lab-maplibre-view/1.1
 - wexford.bundle.json       sc.figure-bundle.v1 (spatial-map, EPSG:4326)
 """
@@ -114,9 +114,12 @@ def main():
                      "observed_at": o["observed_at"], "t_years": TIMES.index(o["observed_at"].replace("+00:00", "Z")) * 0.25,
                      "soc": p["soc"], "soc_se": p["soc_se"]})
     assert len(rows) == 24 and t0
+    pkg_ref = {"package_id": package["package_id"], "package_digest": package["package_digest"],
+               "manifest_digest": package["manifest"]["manifest_digest"]}
+    # The Workspace dataset seals the whole SI package with the rows derived from it, so one pinned hash
+    # covers both and Workbench can re-verify every object before drawing.
     dataset = {"schema": "sc-fig04-si-derived-dataset/1",
-               "siPackage": {"package_id": package["package_id"], "package_digest": package["package_digest"],
-                             "manifest_digest": package["manifest"]["manifest_digest"]},
+               "siPackage": package,
                "derivation": "one row per agriculture-food-systems object: soc and soc_se copied from properties; t_years = quarter index x 0.25",
                "rows": rows}
     slope, slope_se = ols([r["t_years"] for r in rows], [r["soc"] for r in rows])
@@ -174,7 +177,7 @@ def main():
         "calculationRefs": [{"system": "other", "runRef": "fixture:fig04-soc-trend", "method": "OLS slope of soc on t_years (fixture)",
                              "outputSha256": sha({"slope": round(slope, 4), "se": round(slope_se, 4), "dataset": dataset_sha}), "assumptionRefs": []}],
         "spatial": {"geometryStatus": "illustrative", "crs": "EPSG:4326", "extentStatus": "regional-rectangle", "bbox": BBOX,
-                    "siPackage": dataset["siPackage"]},
+                    "siPackage": pkg_ref},
         "rendering": {"profileId": "sc-institutional-research-v1", "renderer": "maplibre-gl", "rendererVersion": "5.24.0",
                       "caption": "SYNTHETIC: modelled field soil organic carbon (graduated), hypothetical nitrate-N density and sites, by quarter.",
                       "altText": "Six field parcels shaded by modelled soil organic carbon class, with eight hypothetical monitoring points and a nitrate density overlay.",

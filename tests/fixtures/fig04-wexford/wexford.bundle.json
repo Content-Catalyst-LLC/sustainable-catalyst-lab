@@ -55,7 +55,7 @@
    "system": "other",
    "runRef": "fixture:fig04-soc-trend",
    "method": "OLS slope of soc on t_years (fixture)",
-   "outputSha256": "16e02107770a5968b3f3e32a31999759f240186ea5a831454dcb6be2113db48e",
+   "outputSha256": "adbf23407248d7d9bd2618af8364369d3e3805efc8e9d792de81d85af34afc7b",
    "assumptionRefs": []
   }
  ],
@@ -106,7 +106,7 @@
   "reproducibility": "synthetic-fixture-tested",
   "lineageRefs": [
    "site-intelligence-package:sha256:5d8bde40366e0edee1f7763396f5f2852e5d01a5fd1a45e1b3e61d9ce61cad24",
-   "dataset:sha256:d2c62b44d77837850385b9f1a76fdeb7634e7e661324c8ed44b28240dde09341"
+   "dataset:sha256:e9c764f7d1482e60147b780a4138a6f1e43727389fc5ff99da96e0560ee9be7b"
   ]
  },
  "review": {
