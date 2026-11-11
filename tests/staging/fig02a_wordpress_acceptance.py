@@ -211,7 +211,7 @@ async def run(url, outdir, preview="on", expect_release=None, label="staging"):
                 nulls = sum(1 for p in resp["accessibleAlternative"]["panels"] for r in p["rows"] for v in r.values() if v is None)
                 ok = (state["rendered"] and state["specSha256"] == resp["plotly"]["specSha256"]
                       and state["evidenceClass"] == resp["figureBundle"]["evidenceClass"] and state["subtitleInFigure"]
-                      and "Not publication-approved" in state["reviewText"] and "pending" in state["reviewText"]
+                      and "Not released here" in state["reviewText"] and "pending" in state["reviewText"]
                       and state["svgDrawn"] and state["traces"] == len(resp["plotly"]["figure"]["data"])
                       and state["plotRole"] == "img" and state["plotLabelLength"] > 20
                       and state["tablesHaveCaption"] and state["headersScoped"] and state["rowHeadersScoped"]

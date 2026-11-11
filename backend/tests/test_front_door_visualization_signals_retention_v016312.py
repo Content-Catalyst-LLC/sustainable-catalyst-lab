@@ -57,7 +57,7 @@ def test_shell_is_appended_after_front_door_and_manages_ten_specialists():
 
 def test_release_manifest_records_front_door_retention_repair():
     manifest = json.loads(MANIFEST.read_text())
-    assert manifest["releaseVersion"] in {"0.163.1.2", "0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6"}
+    assert manifest["releaseVersion"] in {"0.163.1.2", "0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7"}
     assert manifest["featureVersion"] == "0.163.1"
     assert manifest["v016312PersistentFrontDoorFourD"] is True
     assert manifest["v016312ScientificSignalsVisibleOnOverview"] is True

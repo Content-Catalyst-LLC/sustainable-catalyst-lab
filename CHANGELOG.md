@@ -1,5 +1,21 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.7 — Release state comes from Research; Lab renders only (SC-FIG-03A), default off
+
+- The `sc.figure-bundle.v1` renderer no longer says "Preview only; not publication-approved here."
+  Each card now has a release line (`.sc-lab-figure-bundle-release`, `data-release-state`):
+  - Without a host release record: "Not released here. Lab renders figures only; publication is
+    approved in Workspace and release state is held by Sustainable Catalyst Research."
+  - With `render(out, files, sha, {releaseContext})` from Sustainable Catalyst Research: the
+    Research release label, article revision and release time. Lab shows it only when the record is
+    well formed, comes from `sc-research`, and names the exact bundle hash Lab just verified.
+    Otherwise it is ignored, and the card says why.
+- The bundle's own `review.*` fields are now labelled "Producer review notes (not release
+  authority)". They never imply approval or release.
+- The FIG-02A Workbench preview card uses the same wording.
+- Renderer module 0.2.0. No change to verification, content policies, vendored libraries or
+  options; both renderer switches stay off by default.
+
 ## 0.163.1.6 — Vega-Lite views and verified SVG export in Graph Studio (SC-FIG-02B), default off
 
 - Extends the SC-FIG-01 renderer (no second Graph Studio, no figure store) with Vega-Lite views. A

@@ -83,5 +83,22 @@ async function refused(files, needle, label, opts) {
   await refused([bundleWith('points.bundle.json', (b) => { b.rendering.visualizationSpecSha256 = 'f'.repeat(64); }), read('points.plotly.json')], 'visualizationSpecSha256', 'spec hash not among artifacts');
   await refused([bundleWith('points.bundle.json', (b) => { b.provenance.reproducibility = 'certified'; }), read('points.plotly.json')], 'provenance', 'unknown reproducibility');
   await refused([{ name: 'big.json', bytes: new Uint8Array(8 * 1024 * 1024 + 1) }], '8 MiB', 'oversized file');
+
+  // SC-FIG-03A: release state is the host's (Research), shown only for the exact verified bundle; never inferred.
+  const sha = source.files['points.bundle.json'];
+  const ctx = { authority: 'sc-research', state: 'released', label: 'Synthetic staging release. Not published research.',
+    bundleSha256: sha, articleRevision: 2, releasedAt: '2026-11-11T12:00:00+00:00' };
+  ok(R.releaseState(undefined, sha).state === 'none', 'no context: not released');
+  ok(R.releaseState(ctx, sha).state === 'released' && R.releaseState(ctx, sha).ctx === ctx, 'Research context for this bundle is shown');
+  ok(R.releaseState(ctx, '0'.repeat(64)).state === 'mismatch', 'context for another bundle is ignored');
+  for (const bad of [Object.assign({}, ctx, { authority: 'lab' }), Object.assign({}, ctx, { state: 'approved' }),
+    Object.assign({}, ctx, { approvedBy: 'x' }), Object.assign({}, ctx, { articleRevision: 0 }), Object.assign({}, ctx, { label: '' }),
+    Object.assign({}, ctx, { bundleSha256: 'x' }), [ctx], 'released']) {
+    ok(R.releaseState(bad, sha).state === 'invalid', 'invalid release context refused: ' + JSON.stringify(bad));
+  }
+  const approvedInside = JSON.parse(fs.readFileSync(path.join(dir, 'points.bundle.json'), 'utf8'));
+  approvedInside.review = { scientific: 'approved', rights: 'approved', publication: 'approved' };
+  ok(R.releaseState(undefined, sha).state === 'none' && !/release(d)? by the bundle/i.test(jsText), 'bundle review fields never imply release');
+  ok(!/not publication-approved here/.test(jsText), 'old "not publication-approved here" wording removed');
   console.log('PASS - SC-FIG-01 generic sc.figure-bundle.v1 renderer package contract');
 })().catch((e) => { console.error('FAIL - ' + (e && e.stack || e)); process.exit(1); });

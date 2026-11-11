@@ -6,7 +6,10 @@
  * reference refuses the whole package. Plotly views use the FIG-02A content policy and the vendored
  * plotly.js 3.3.1; PNG artifacts are shown as a verified static fallback. Any other media type, and
  * any referenced artifact that was not supplied, is reported as unsupported or missing — never drawn.
- * Preview only: nothing is uploaded, persisted, reviewed or published.
+ * Lab renders only: nothing is uploaded, persisted, reviewed or published here. A host that serves
+ * released figures (Sustainable Catalyst Research) may pass its release state as
+ * options.releaseContext; Lab shows it only when it names the exact verified bundle hash. Release
+ * state always comes from Research, never from fields inside the bundle.
  */
 (function (root, factory) {
   'use strict';
@@ -16,7 +19,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.2.0';
   var BUNDLE_SCHEMA = 'sc.figure-bundle.v1';
   var PLOTLY_MEDIA = 'application/vnd.plotly.v1+json';
   var PNG_MEDIA = 'image/png';
@@ -333,13 +336,44 @@
     return lib().evidenceText[b.evidenceClass];
   }
 
-  function header(card, b) {
+  // Release state supplied by the host. Only Sustainable Catalyst Research releases figures; Lab never
+  // infers release or approval from the bundle's own review fields.
+  var RELEASE_STATES = ['released'];
+  var RELEASE_KEYS = ['authority', 'state', 'label', 'bundleSha256', 'articleRevision', 'releasedAt'];
+
+  function releaseState(ctx, bundleSha256) {
+    if (ctx === undefined || ctx === null) { return { state: 'none' }; }
+    var shaped = isObj(ctx) && Object.keys(ctx).every(function (k) { return RELEASE_KEYS.indexOf(k) >= 0; }) &&
+      ctx.authority === 'sc-research' && RELEASE_STATES.indexOf(ctx.state) >= 0 && HASH.test(String(ctx.bundleSha256 || '')) &&
+      typeof ctx.label === 'string' && ctx.label.length > 0 && ctx.label.length <= 200 &&
+      (ctx.articleRevision === undefined || (typeof ctx.articleRevision === 'number' && Math.floor(ctx.articleRevision) === ctx.articleRevision && ctx.articleRevision > 0)) &&
+      (ctx.releasedAt === undefined || ctx.releasedAt === null || (typeof ctx.releasedAt === 'string' && ctx.releasedAt.length <= 40));
+    if (!shaped) { return { state: 'invalid' }; }
+    if (ctx.bundleSha256 !== bundleSha256) { return { state: 'mismatch' }; }
+    return { state: ctx.state, ctx: ctx };
+  }
+
+  function header(card, b, bundleSha256, releaseContext) {
     card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, evidenceLabel(b)));
     card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-title' }, b.title));
+    var rel = releaseState(releaseContext, bundleSha256);
+    var text;
+    if (rel.ctx) {
+      var c = rel.ctx;
+      text = c.label + ' Released by Sustainable Catalyst Research' +
+        (c.articleRevision ? ' with article revision ' + c.articleRevision : '') + (c.releasedAt ? ' on ' + c.releasedAt : '') +
+        ', after signed Workspace approval of this exact bundle. Lab only renders it.';
+    } else if (rel.state === 'none') {
+      text = 'Not released here. Lab renders figures only; publication is approved in Workspace and release state is held by Sustainable Catalyst Research.';
+    } else {
+      text = 'Release information was ignored because it ' + (rel.state === 'mismatch' ? 'names a different bundle' : 'is not a valid Research release record') +
+        '. Lab renders figures only; release state is held by Sustainable Catalyst Research.';
+    }
+    card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-release', 'data-release-state': rel.state }, text));
     var rv = b.review || {};
     card.appendChild(el('p', { 'class': 'sc-lab-fig02a-review' },
-      'Review: scientific ' + cellText(rv.scientific) + ', rights ' + cellText(rv.rights) + ', publication ' + cellText(rv.publication) +
-      '. Measurement status: ' + b.scientificContext.measurementStatus + '. Preview only; not publication-approved here.'));
+      'Producer review notes (not release authority): scientific ' + cellText(rv.scientific) + ', rights ' + cellText(rv.rights) +
+      ', publication ' + cellText(rv.publication) + '. Measurement status: ' + b.scientificContext.measurementStatus + '.'));
   }
 
   function context(card, b, bundleSha256, views) {
@@ -361,7 +395,8 @@
     })).forEach(function (kv) { prov.appendChild(el('dt', null, kv[0])); prov.appendChild(el('dd', null, kv[1])); });
   }
 
-  function render(out, files, expectedBundleSha256) {
+  function render(out, files, expectedBundleSha256, options) {
+    var releaseContext = isObj(options) ? options.releaseContext : undefined;
     var Plotly = root.Plotly;
     var loaded = Plotly && typeof Plotly.newPlot === 'function' ? Plotly.version : undefined;
     return verifyPackage(files, loaded, expectedBundleSha256).then(function (ok) {
@@ -369,7 +404,8 @@
       out.textContent = '';
       var card = out.appendChild(el('figure', { 'class': 'sc-lab-fig02a-card sc-lab-figure-bundle-card', 'data-figure-bundle-state': 'verified',
         'data-figure-id': b.figureId, 'data-bundle-sha256': ok.bundleSha256 }));
-      header(card, b);
+      header(card, b, ok.bundleSha256, releaseContext);
+      card.setAttribute('data-release-state', releaseState(releaseContext, ok.bundleSha256).state);
       ok.views.forEach(function (v) {
         var slot = card.appendChild(el('div', { 'class': 'sc-lab-figure-bundle-view', 'data-view-state': v.state, 'data-artifact-sha256': v.artifact.sha256 }));
         if (v.state === 'rendered-plotly') {
@@ -478,6 +514,6 @@
 
   return {
     version: VERSION, bundleSchema: BUNDLE_SCHEMA, plotlyMediaType: PLOTLY_MEDIA,
-    bundleErrors: bundleErrors, verifyPackage: verifyPackage, render: render, mount: mount, boot: boot
+    bundleErrors: bundleErrors, verifyPackage: verifyPackage, releaseState: releaseState, render: render, mount: mount, boot: boot
   };
 }));
