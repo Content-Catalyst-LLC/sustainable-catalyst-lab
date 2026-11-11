@@ -172,6 +172,9 @@ async def run(url, outdir, expect_release=None, label="staging", package_dir=Non
                           and "not publication-approved" in state["reviewText"] and state["plotRole"] == "img"
                           and state["tableRows"] > 0 and state["tablesHaveCaption"] and state["headersScoped"]
                           and state["limitations"] > 0 and state["linksOrFrames"] == 0)
+                elif name == "mixed-views" and (health.get("fig02b") or {}).get("served"):
+                    # With FIG-02B on, a Vega-Lite view must carry usermeta.sc; this generic one does not.
+                    ok = state["state"] == "refused"
                 elif name == "mixed-views":
                     ok = (state["state"] == "rendered" and state["views"] == ["rendered-plotly", "static-png", "unsupported", "missing"]
                           and state["svgDrawn"] and state["pngBlob"] and state["unavailable"] == 2 and state["linksOrFrames"] == 0)
