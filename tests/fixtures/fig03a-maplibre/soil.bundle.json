@@ -1,0 +1,104 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-FIG03A-soil-map",
+ "version": 1,
+ "title": "SYNTHETIC soil organic carbon zones with literature comparison sites",
+ "project": {
+  "projectRef": "fig03a-synthetic-ci",
+  "ownerScope": "unbound-local",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "unbound"
+ },
+ "figureType": "spatial-map",
+ "evidenceClass": "modelled",
+ "scientificContext": {
+  "interpretation": "Synthetic map used to prepare the FIG-03A MapLibre adapter.",
+  "limitations": [
+   "Synthetic geometry and values",
+   "No basemap; positions are illustrative of the contract only"
+  ],
+  "measurementStatus": "computed-from-specified-inputs",
+  "units": "g kg-1",
+  "doNotInfer": [
+   "any real soil carbon value",
+   "any Wexford site location"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic:fig03a-soil-network",
+   "provider": "Sustainable Catalyst test fixture via Site Intelligence normaliser",
+   "identityStatus": "source-identified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use",
+   "crs": "EPSG:4326",
+   "notes": "CC0-1.0 synthetic fixture"
+  }
+ ],
+ "calculationRefs": [
+  {
+   "system": "other",
+   "runRef": "fixture:fig03a-zones",
+   "method": "synthetic zone values (fixture)",
+   "outputSha256": "b758ef1064c15e2accc3f45bdeed5e91b9758e6641c50c9aface5762a5c87225",
+   "assumptionRefs": []
+  }
+ ],
+ "spatial": {
+  "geometryStatus": "illustrative",
+  "crs": "EPSG:4326",
+  "extentStatus": "regional-rectangle",
+  "bbox": [
+   -7.2,
+   52.1,
+   -6.55,
+   52.35
+  ]
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "maplibre-gl",
+  "rendererVersion": "not yet vendored (FIG-03A preparation)",
+  "caption": "SYNTHETIC: modelled zones (shaded) and literature comparison sites (points); no basemap.",
+  "altText": "Two adjacent shaded rectangles representing modelled zones, with two comparison points inside them.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "5be66e805001941357147a5708318f00c169056e6e82405e7f7b464a181b125a"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://lab/fig03a/SYN-FIG03A-soil-map/5be66e805001941357147a5708318f00c169056e6e82405e7f7b464a181b125a.json",
+   "sha256": "5be66e805001941357147a5708318f00c169056e6e82405e7f7b464a181b125a",
+   "mediaType": "application/vnd.sc.maplibre-view.v1+json",
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "lab",
+  "sourceSnapshotIds": [
+   "synthetic:fig03a-soil-network"
+  ],
+  "generationRunId": "lab.fig03a-fixture-builder:5be66e805001941357147a57",
+  "generatedAt": "2026-11-11T00:00:00Z",
+  "reproducibility": "synthetic-fixture-tested",
+  "lineageRefs": [
+   "site-intelligence:se-0f420cff4e61202cccea7537",
+   "site-intelligence:se-1afc588dc54a63809fcbdd8a",
+   "site-intelligence:se-87d5582a6e7da30d264bb221",
+   "site-intelligence:se-73522838d071f4be1c46f521"
+  ]
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ }
+}
