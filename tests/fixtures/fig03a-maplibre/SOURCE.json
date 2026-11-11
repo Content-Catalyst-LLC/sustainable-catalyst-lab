@@ -1,0 +1,10 @@
+{
+ "generator": "tests/fixtures/fig03a-maplibre/build_fixtures.py",
+ "siteIntelligenceCommit": "e440db1812733eb007052c7e9d9de9f61a04d941",
+ "siNormaliser": "backend/app/spatial_evidence_registry_v4460.normalize_evidence_object",
+ "synthetic": true,
+ "files": {
+  "soil.bundle.json": "90274d39d8f98eef8e1c16b6400310fc35a305b03c77ade4ba0ac5b9c75e86f0",
+  "soil.map-view.json": "f399010cff9782496bbd166f7540f7e2bbc5dceff5261562ca057836d147dc4d"
+ }
+}
