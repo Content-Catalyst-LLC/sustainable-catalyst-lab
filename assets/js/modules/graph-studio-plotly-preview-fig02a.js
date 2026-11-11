@@ -237,8 +237,9 @@
       var card = out.appendChild(el('figure', { 'class': 'sc-lab-fig02a-card', 'data-fig02a-state': 'rendered', 'data-spec-sha256': ok.specSha256 }));
       card.appendChild(el('p', { 'class': 'sc-lab-fig02a-evidence', 'data-evidence-class': b.evidenceClass }, EVIDENCE_TEXT[b.evidenceClass]));
       card.appendChild(el('p', { 'class': 'sc-lab-fig02a-review' },
-        'Review: scientific ' + b.review.scientific + ', rights ' + b.review.rights + ', publication ' + b.review.publication +
-        '. Not publication-approved. Preview only; Workbench is the numerical authority.'));
+        'Producer review notes (not release authority): scientific ' + b.review.scientific + ', rights ' + b.review.rights +
+        ', publication ' + b.review.publication + '. Not released here: Lab previews only; Workbench is the numerical authority, ' +
+        'publication is approved in Workspace and release state is held by Sustainable Catalyst Research.'));
       var plot = card.appendChild(el('div', { 'class': 'sc-lab-fig02a-plot', role: 'img', 'aria-label': summaryText(resp) }));
       var cap = card.appendChild(el('figcaption', null, resp.accessibleAlternative.caption));
       cap.id = 'sc-lab-fig02a-cap-' + ok.specSha256.slice(0, 12);

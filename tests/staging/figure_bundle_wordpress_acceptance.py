@@ -51,6 +51,8 @@ STATE = r"""
     views,
     evidenceClass: (card.querySelector('.sc-lab-fig02a-evidence') || {getAttribute: () => null}).getAttribute('data-evidence-class'),
     reviewText: (card.querySelector('.sc-lab-fig02a-review') || {}).textContent || '',
+    releaseText: (card.querySelector('.sc-lab-figure-bundle-release') || {}).textContent || '',
+    releaseState: card.getAttribute('data-release-state'),
     svgDrawn: !!(plot && plot.querySelector('svg.main-svg')),
     plotRole: plot && plot.getAttribute('role'),
     pngBlob: !!(img && /^blob:/.test(img.src) && img.complete && img.naturalWidth > 0 && img.alt.length > 15),
@@ -165,11 +167,13 @@ async def run(url, outdir, expect_release=None, label="staging", package_dir=Non
                 if name == "external-package":
                     ok = (state["state"] == "rendered" and state["views"] == ["rendered-plotly"] and state["svgDrawn"]
                           and state["bundleSha256"] == expected and state["plotRole"] == "img"
-                          and "not publication-approved" in state["reviewText"] and state["linksOrFrames"] == 0)
+                          and state["releaseState"] == "none" and "Not released here" in state["releaseText"]
+                          and "not release authority" in state["reviewText"] and state["linksOrFrames"] == 0)
                 elif name == "points-pinned":
                     ok = (state["state"] == "rendered" and state["views"] == ["rendered-plotly"] and state["svgDrawn"]
                           and state["bundleSha256"] == expected and state["evidenceClass"] == "literature-derived"
-                          and "not publication-approved" in state["reviewText"] and state["plotRole"] == "img"
+                          and state["releaseState"] == "none" and "not release authority" in state["reviewText"]
+                          and state["plotRole"] == "img"
                           and state["tableRows"] > 0 and state["tablesHaveCaption"] and state["headersScoped"]
                           and state["limitations"] > 0 and state["linksOrFrames"] == 0)
                 elif name == "mixed-views" and (health.get("fig02b") or {}).get("served"):

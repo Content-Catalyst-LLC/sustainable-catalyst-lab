@@ -52,6 +52,20 @@
     var notReported = Array.prototype.some.call(out.querySelectorAll('.sc-lab-fig02a-tables td'), function (c) { return c.textContent === 'not reported'; });
     check(notReported, 'missing values shown as "not reported"');
     check(out.querySelectorAll('.sc-lab-figure-bundle-limitations li').length > 0, 'limitations listed');
+    var rel0 = out.querySelector('.sc-lab-figure-bundle-release');
+    check(rel0 && rel0.getAttribute('data-release-state') === 'none' && /Not released here/.test(rel0.textContent), 'no release context: "Not released here", Lab renders only');
+
+    // SC-FIG-03A: a Research release context for this exact bundle is shown; one for another bundle is ignored.
+    var released = document.body.appendChild(document.createElement('div'));
+    var sha = source.files['points.bundle.json'];
+    var ctx = { authority: 'sc-research', state: 'released', label: 'Synthetic staging release. Not published research.', bundleSha256: sha, articleRevision: 1, releasedAt: '2026-11-11T12:00:00+00:00' };
+    await R.render(released, [await file('points.bundle.json'), await file('points.plotly.json')], sha, { releaseContext: ctx });
+    var rel1 = released.querySelector('.sc-lab-figure-bundle-release');
+    check(rel1 && rel1.getAttribute('data-release-state') === 'released' && /Released by Sustainable Catalyst Research with article revision 1/.test(rel1.textContent), 'Research release context shown');
+    var other = document.body.appendChild(document.createElement('div'));
+    await R.render(other, [await file('points.bundle.json'), await file('points.plotly.json')], sha, { releaseContext: Object.assign({}, ctx, { bundleSha256: '0'.repeat(64) }) });
+    var rel2 = other.querySelector('.sc-lab-figure-bundle-release');
+    check(rel2 && rel2.getAttribute('data-release-state') === 'mismatch' && !/Released by/.test(rel2.textContent), 'release context for another bundle ignored');
 
     // Mixed package: plotly + static PNG + unsupported Vega-Lite + missing SVG.
     var host = document.body.appendChild(document.createElement('div'));

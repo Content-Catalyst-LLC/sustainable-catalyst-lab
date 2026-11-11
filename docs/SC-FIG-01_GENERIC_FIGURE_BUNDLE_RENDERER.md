@@ -58,3 +58,21 @@ that file is modified, nothing is served. FIG-02A's own panel mounts only when i
 - Reading bundles directly from Workspace or Research over HTTP (needs SC-UP-01 owner sessions).
 - Vega-Lite, MapLibre, SVG or 3D renderers (reported as `unsupported` until each adapter is vendored and tested).
 - Saving, reviewing or publishing figures.
+
+## Release context (SC-FIG-03A, 0.163.1.7)
+
+Lab renders figures; it never approves or releases them. Publication approval happens in Workspace
+(four signed dimensions on the exact revision). Release state is held by Sustainable Catalyst
+Research. A host that serves released figures passes Research's record as
+`render(out, files, expectedBundleSha256, {releaseContext})`:
+
+```json
+{"authority": "sc-research", "state": "released", "label": "…", "bundleSha256": "<64 hex>",
+ "articleRevision": 1, "releasedAt": "2026-11-11T12:00:00+00:00"}
+```
+
+The card shows the record (`data-release-state="released"`) only when it names the exact bundle hash
+Lab just verified. A record for another bundle (`mismatch`), or a malformed one (`invalid`), is
+ignored, and the card says so. Without a record, the card reads "Not released here"
+(`data-release-state="none"`). The bundle's own `review.*` fields are shown as producer review notes
+and never count as approval.
