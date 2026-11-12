@@ -140,7 +140,10 @@ The FIG-04 controls had picked up three rules:
 
 The FIG-04 stylesheet now restores native checkboxes (1.125rem) and the native range control. Labels and
 buttons are 44px targets, and every control has a `:focus-visible` outline. Every selector starts with
-`.sc-lab-fig04-` (the Node test checks this).
+`.sc-lab-fig04-` (the Node test checks this). Host pages may also size bare inputs with an ID rule (the Research Hub page has
+`#sc-research-v2 input { width: 100%; min-height: 44px; ... }`), which no class selector outranks. The checkbox and
+range box properties are therefore `!important`, still under `.sc-lab-fig04-controls`. The Chromium harness inserts
+such a rule and checks that the checkboxes stay 18×18 and the slider stays narrow.
 
 ### Pairing with the Research bridge
 
