@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 echo "==> MapLibre view contract 1.0 and 1.1 (Node)"
 node tests/test-maplibre-fig03a.js
 node tests/test-maplibre-fig04.js
+node tests/test-maplibre-fig041.js
 
 echo "==> Vendored MapLibre is the pinned npm release, unchanged"
 python3 - <<'PY'
@@ -21,6 +22,8 @@ PY
 echo "==> MapLibre WordPress loader (PHP)"
 php -l includes/class-sc-lab-graph-studio-figure-bundle-renderer.php >/dev/null
 php tests/test-maplibre-fig04.php
+php -l includes/class-sc-lab-plugin-compatibility-fig041.php >/dev/null
+php tests/test-fig041-plugin-compatibility.php
 tampered="$(mktemp -d)"
 trap 'rm -rf "$tampered"' EXIT
 cp -R assets includes "$tampered/"

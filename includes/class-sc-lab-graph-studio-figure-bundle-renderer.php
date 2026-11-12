@@ -41,7 +41,7 @@ final class SC_Lab_Graph_Studio_Figure_Bundle_Renderer {
     const FIG04_CONTRACT_JS = 'assets/js/modules/graph-studio-maplibre-fig03a.js';
     const FIG04_JS = 'assets/js/modules/graph-studio-maplibre-renderer-fig04.js';
     const FIG04_CSS = 'assets/css/sc-lab-graph-studio-maplibre-fig04.css';
-    const FIG04_VERSION = '0.1.0';
+    const FIG04_VERSION = '0.2.0';
     const MAPLIBRE_VERSION = '5.24.0';
     /** role => array(path, pinned SHA-256). */
     const MAPLIBRE = array(
@@ -60,6 +60,8 @@ final class SC_Lab_Graph_Studio_Figure_Bundle_Renderer {
     }
 
     public static function is_enabled() {
+        // SC-FIG-04.1: fail closed beside a Research bridge paired with another Lab release.
+        if (class_exists('SC_Lab_Plugin_Compatibility_FIG041') && SC_Lab_Plugin_Compatibility_FIG041::incompatible_bridge() !== null) { return false; }
         $enabled = get_option(self::OPTION, '0') === '1';
         return apply_filters('sc_lab_figure_bundle_renderer_enabled', $enabled) === true;
     }

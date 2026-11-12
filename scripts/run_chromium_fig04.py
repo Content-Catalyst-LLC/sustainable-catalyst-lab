@@ -101,6 +101,13 @@ async def main(out):
                     break
                 await asyncio.sleep(0.1)
             state = await js("document.body.getAttribute('data-cert')")
+            for key, name in (("exportB64", "fig04-export.png"), ("compareB64", "fig04-export-compare.png")):
+                b64 = await js(f"window.__fig04 && window.__fig04.{key} || ''")
+                if b64:
+                    (out / name).write_bytes(base64.b64decode(b64))
+            receipt = await js("window.__fig04 && window.__fig04.exportReceipt ? JSON.stringify(window.__fig04.exportReceipt, null, 1) : ''")
+            if receipt:
+                (out / "fig04-export.receipt.json").write_text(receipt + "\n", encoding="utf-8")
             log = await js("document.getElementById('cert-log').textContent")
             await asyncio.sleep(1.0)
             shot = await call("Page.captureScreenshot", format="png", captureBeyondViewport=True)
