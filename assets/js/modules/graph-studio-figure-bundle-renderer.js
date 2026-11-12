@@ -139,8 +139,35 @@
     return (b.calculationRefs || []).reduce(function (m, r) {
       if (r && r.bandsSha256) { m.push(r.bandsSha256); }
       if (r && r.quantileBandsSha256) { m.push(r.quantileBandsSha256); }
+      if (r && r.uncertaintySha256) { m.push(r.uncertaintySha256); }
       return m;
     }, []);
+  }
+
+  // SC-FIG-05.3: a map uncertainty layer is drawn only when the runtime's own per-object record was released with
+  // the view and every value the view carries equals it exactly (same semantics; nothing imputed or left over).
+  function mapUncertaintyErrors(view, b, recs) {
+    var e = [], refs = b.calculationRefs || [], fields = isObj(view.fields) ? view.fields : {};
+    (Array.isArray(view.layers) ? view.layers : []).forEach(function (l) {
+      if (!isObj(l) || l.encode !== 'uncertainty') { return; }
+      var ref = refs[l.uncertaintyRef], at = 'layer ' + String(l.id);
+      var rec = ref && recs.filter(function (r) { return r.sha256 === ref.uncertaintySha256; })[0];
+      if (!rec) { e.push(at + ': the runtime uncertainty record was not supplied, so nothing is drawn'); return; }
+      var f = fields[(l.classify || {}).field] || {}, prop = f.uncertainty, vals = isObj(rec.value) ? rec.value.values : null;
+      if (!prop || !isObj(vals) || rec.value.semantics !== f.uncertaintyKind) {
+        e.push(at + ': the runtime record does not state ' + String(f.uncertaintyKind) + ' values for ' + String(prop)); return;
+      }
+      var seen = {};
+      (Array.isArray(view.objects) ? view.objects : []).forEach(function (o) {
+        var p = (o && o.properties) || {};
+        if (typeof p[prop] !== 'number') { return; }
+        var key = Object.keys(p).filter(function (k) { return typeof p[k] === 'string' && Object.prototype.hasOwnProperty.call(vals, p[k]) && vals[p[k]] === p[prop]; })[0];
+        if (key === undefined) { e.push(at + ': ' + String(p.title || 'an object') + ' carries ' + prop + ' that does not equal the runtime record'); return; }
+        seen[p[key]] = true;
+      });
+      Object.keys(vals).forEach(function (k) { if (!seen[k]) { e.push(at + ': the runtime record value for ' + k + ' is not drawn by any object'); } });
+    });
+    return e;
   }
 
   function isPng(bytes) {
@@ -178,7 +205,8 @@
       lib().walkStrings(b, function (s, path) { if (lib().forbiddenText.test(s)) { errors.push('forbidden markup or link in bundle' + path); } }, '');
       if (errors.length) { throw errors; }
       var others = prints.filter(function (p) { return p !== bp; });
-      var used = [];
+      // Runtime records the bundle binds by hash are referenced files even where no renderer draws them.
+      var used = others.filter(function (p) { return p.canonical && runtimeRecordHashes(b).indexOf(p.canonical) >= 0; });
       var V = fig02b(), G = fig04();
       var pending = b.artifacts.map(function (a) {
         var match = null, mode = null;
@@ -216,7 +244,11 @@
         }
         if (G && a.mediaType === G.media) {
           if (!match.json) { throw [a.sha256.slice(0, 12) + ': MapLibre view is not JSON']; }
+          var mrecs = others.filter(function (p) { return p.canonical && runtimeRecordHashes(b).indexOf(p.canonical) >= 0; });
+          mrecs.forEach(function (p) { if (used.indexOf(p) < 0) { used.push(p); } });
+          var merrs = mapUncertaintyErrors(match.json, b, mrecs.map(function (p) { return { sha256: p.canonical, value: p.json }; }));
           return G.viewErrors(match.text, match.json, b).then(function (errs) {
+            errs = errs.concat(merrs);
             if (errs.length) { throw errs.map(function (m) { return a.sha256.slice(0, 12) + ': ' + m; }); }
             return { artifact: a, state: 'rendered-maplibre', hashMode: mode, spec: match.json };
           });

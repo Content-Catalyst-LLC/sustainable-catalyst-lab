@@ -9,6 +9,8 @@
 - **Map uncertainty.** FIG-04 maps accept an `encode: "uncertainty"` layer: sequential viridis, cividis or magma;
   values must equal the record bound by `uncertaintySha256`. Unreported objects are labelled, never imputed.
   The legend names the kind, the unit and the unreported count; the PNG receipt records the binding.
+  Release candidate 2: the released per-object record itself is now required in the package and every drawn
+  value must equal it exactly (staging found that RC1 refused a released map package carrying the record).
 - **Accessibility.** One Okabe-Ito hue for areas, fans lighter outward, a dashed prediction outline, measured
   colour-vision checks, and accessible tables. Wide tables scroll inside their box at 390 px.
 - **Pairing.** The guard is table-driven: bridge 0.3.x pins Lab 0.163.1.7, 0.4.x pins 0.163.1.8 and 0.5.x pins

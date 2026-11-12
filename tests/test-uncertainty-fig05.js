@@ -122,6 +122,16 @@ function q7(sorted, p) { const i = (sorted.length - 1) * p, lo = Math.floor(i), 
   await mapRefused('no declared uncertainty', (v2) => { delete v2.fields.soc.uncertainty; delete v2.fields.soc.uncertaintyKind; }, 'declares no uncertainty');
   await mapRefused('unknown encoding', (v2) => { v2.layers[1].encode = 'value-and-uncertainty'; }, 'needs encode "uncertainty"');
   await mapRefused('negative uncertainty', (v2) => { v2.objects[0].properties.soc_sd = -1; }, 'non-negative');
+  // The released package: bundle, view and the runtime's own per-field record (uncertaintySha256).
+  globalThis.SCLabMapLibreFIG04 = require(path.join(root, 'assets/js/modules/graph-studio-maplibre-renderer-fig04.js'));
+  const recText = read('map.uncertainty.json');
+  const mpkg = [file('map.bundle.json', JSON.stringify(mb)), file('map.view.json', viewText), file('map.uncertainty.json', recText)];
+  ok((await B.verifyPackage(mpkg)).views[0].state === 'rendered-maplibre', 'map package with its runtime uncertainty record verifies');
+  errs = await rejects(B.verifyPackage(mpkg.slice(0, 2)));
+  ok(errs && errs.some((e) => e.includes('runtime uncertainty record was not supplied')), 'map without its uncertainty record: refused: ' + JSON.stringify(errs));
+  const rec2 = JSON.parse(recText); rec2.values['WX-F2'] += 0.01;
+  errs = await rejects(B.verifyPackage([mpkg[0], mpkg[1], file('u.json', JSON.stringify(rec2))]));
+  ok(errs && errs.some((e) => /not referenced by the figure bundle|was not supplied/.test(e)), 'edited uncertainty record: not the bound record, refused');
 
   // --- 4. Colour-vision safety (measured) ---------------------------------------------------------------------
   // Composite the nested areas over white as Plotly does (source-over), simulate protanopia, deuteranopia and

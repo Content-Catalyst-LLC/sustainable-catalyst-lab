@@ -233,8 +233,10 @@ write("chart-unavailable.compile.json", chart_na)
 write("map.view.json", mapped["maplibre"]["view"])
 write("map.bundle.json", mapped["figureBundle"])
 write("map.compile.json", mapped)
+write("map.uncertainty.json", map_export["uncertainty"])  # the record map.bundle.json binds (uncertaintySha256)
 names = ("chart.request.json", "chart.compile.json", "chart.bundle.json", "chart.figure.json", "chart.trend.bands.json",
-         "chart.ensemble.fan.json", "chart-unavailable.compile.json", "map.request.json", "map.view.json", "map.bundle.json", "map.compile.json")
+         "chart.ensemble.fan.json", "chart-unavailable.compile.json", "map.request.json", "map.view.json", "map.bundle.json", "map.compile.json",
+         "map.uncertainty.json")
 write("SOURCE.json", {
     "generator": "tests/fixtures/fig05-uncertainty/build_fixtures.py", "synthetic": True,
     "commits": {"workspace": commit(WS), "workbench": commit(WB), "siteIntelligence": commit(SI)},

@@ -17,10 +17,11 @@
   try {
     check(!!(api && G && window.maplibregl), 'modules and MapLibre loaded');
     var bundleText = await text(DIR + 'map.bundle.json'), viewText = await text(DIR + 'map.view.json');
+    var recText = await text(DIR + 'map.uncertainty.json');
     var bundle = JSON.parse(bundleText), view = JSON.parse(viewText);
     var out = document.getElementById('main-out').appendChild(document.createElement('div'));
     out.id = 'map';
-    var res = await api.render(out, [file('map.bundle.json', bundleText), file('map.view.json', viewText)], undefined,
+    var res = await api.render(out, [file('map.bundle.json', bundleText), file('map.view.json', viewText), file('map.uncertainty.json', recText)], undefined,
       { maplibre: { workerUrl: WORKER, workerIntegrity: integrity } });
     var slot = out.querySelector('[data-view-state]');
     check(res.state === 'rendered' && slot.getAttribute('data-view-state') === 'rendered-maplibre', 'bundle verified and view rendered-maplibre: ' + res.state + ' ' + (slot && slot.getAttribute('data-view-state')) + ' ' + (slot && slot.getAttribute('data-map-state')) + ' ' + (slot ? slot.textContent : out.textContent).slice(0, 400));
@@ -63,10 +64,15 @@
     var b2 = JSON.parse(bundleText); delete b2.calculationRefs[0].uncertaintySha256;
     var r2 = await api.render(tOut, [file('b.json', JSON.stringify(b2)), file('v.json', viewText)]);
     check(r2.state === 'refused' && /bound to a Workspace run/.test(tOut.textContent), 'unbound uncertainty layer refused');
+    var r2b = await api.render(tOut, [file('b.json', bundleText), file('v.json', viewText)]);
+    check(r2b.state === 'refused' && /runtime uncertainty record was not supplied/.test(tOut.textContent), 'uncertainty layer without its runtime record refused');
+    var eText = recText.replace(/("WX-F2": )([0-9.]+)/, function (m, k, v) { return k + String(Number(v) + 0.01); });
+    var r2c = await api.render(tOut, [file('b.json', bundleText), file('v.json', viewText), file('u.json', eText)]);
+    check(eText !== recText && r2c.state === 'refused' && /not referenced by the figure bundle|record was not supplied/.test(tOut.textContent), 'edited uncertainty record refused (hash no longer bound)');
     var F = window.SCLabPlotlyPreviewFIG02A;
     var dText = viewText.replace('"#00224e"', '"#d73027"');
     var b3 = JSON.parse(bundleText); b3.artifacts[0].sha256 = b3.rendering.visualizationSpecSha256 = await F.sha256Hex(F.canonical(F.parseLexical(dText)));
-    var r3 = await api.render(tOut, [file('b.json', JSON.stringify(b3)), file('v.json', dText)]);
+    var r3 = await api.render(tOut, [file('b.json', JSON.stringify(b3)), file('v.json', dText), file('u.json', recText)]);
     check(r3.state === 'refused' && /ordered run/.test(tOut.textContent), 'non-sequential (diverging) uncertainty colours refused');
     tOut.remove();
 
