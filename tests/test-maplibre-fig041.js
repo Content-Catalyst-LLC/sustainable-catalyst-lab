@@ -137,7 +137,7 @@ async function sha(bytes) { return Buffer.from(await crypto.subtle.digest('SHA-2
   css.replace(/([^{}@]+)\{[^{}]*\}/g, (m, sel) => { sel.split(',').forEach((x) => selectors.push(x.trim())); return m; });
   const loose = selectors.filter((x) => x && !x.startsWith('.sc-lab-fig04-'));
   ok(selectors.length > 20 && loose.length === 0, 'every FIG-04 selector is scoped: ' + JSON.stringify(loose)); checks++;
-  ok(/\.sc-lab-fig04-controls input\[type="checkbox"\][^{]*\{[^}]*width: 1\.125rem/.test(css) && /min-height: 2\.75rem/.test(css) && /:focus-visible/.test(css), 'checkbox size, 44px targets and focus-visible present'); checks++;
+  ok(/\.sc-lab-fig04-controls input\[type="checkbox"\][^{]*\{[^}]*width: 1\.125rem/.test(css) && /min-height: 44px/.test(css) && !/min-height: [0-9.]+rem/.test(css) && /:focus-visible/.test(css), 'checkbox size, 44px targets and focus-visible present'); checks++;
 
   console.log('PASS - SC-FIG-04.1 intervals, unavailable notice, PNG receipt and scoped CSS (' + checks + ' checks)');
 })().catch((e) => { console.error('FAIL - ' + (e && e.stack || e)); process.exit(1); });

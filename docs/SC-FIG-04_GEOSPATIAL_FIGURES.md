@@ -143,7 +143,8 @@ buttons are 44px targets, and every control has a `:focus-visible` outline. Ever
 `.sc-lab-fig04-` (the Node test checks this). Host pages may also size bare inputs with an ID rule (the Research Hub page has
 `#sc-research-v2 input { width: 100%; min-height: 44px; ... }`), which no class selector outranks. The checkbox and
 range box properties are therefore `!important`, still under `.sc-lab-fig04-controls`. The Chromium harness inserts
-such a rule and checks that the checkboxes stay 18×18 and the slider stays narrow.
+such a rule, with a 90% root font size (Astra shrinks it on phones), and checks that the checkboxes stay small,
+the slider stays narrow, and labels and buttons stay at least 44px. Target heights are in px, not rem, for that reason.
 
 ### Pairing with the Research bridge
 

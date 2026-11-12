@@ -96,15 +96,20 @@
     // SC-FIG-04.1 host-page styling: an ID rule sizing bare inputs (as the Research Hub page and themes do)
     // must not stretch the layer checkboxes or the time slider.
     var host = Array.prototype.filter.call(document.styleSheets, function (x) { return x.href && /maplibre-fig04\.css/.test(x.href); })[0];
+    // Themes also shrink the root font size on phones (Astra: 14.4px), so targets must not be rem-based.
     host.insertRule('#main-out input, #main-out select { width: 100%; min-height: 44px; padding: 10px 13px; border: 1px solid #bed0cb; margin: 4px; }', 0);
+    host.insertRule('html { font-size: 90% !important; }', 0);
     await wait(100);
     var cbs = Array.prototype.slice.call(slot.querySelectorAll('[data-layer-toggle]'));
     var sizes = cbs.map(function (b) { var r = b.getBoundingClientRect(); return Math.round(r.width) + 'x' + Math.round(r.height); });
     var rr = slot.querySelector('[data-time-range]').getBoundingClientRect();
     check(cbs.every(function (b) { var r = b.getBoundingClientRect(); return r.width <= 24 && r.height <= 24; }) && rr.width <= 260,
       'host ID rule on inputs does not stretch the checkboxes or slider: ' + sizes.join(' ') + ', slider ' + Math.round(rr.width));
-    check(cbs.every(function (b) { return b.closest('label').getBoundingClientRect().height >= 44; }), 'layer labels keep 44px targets');
-    host.deleteRule(0);
+    var btns = Array.prototype.slice.call(slot.querySelectorAll('.sc-lab-fig04-controls button, .sc-lab-fig04-export button'));
+    check(cbs.every(function (b) { return b.closest('label').getBoundingClientRect().height >= 44; })
+      && btns.length >= 4 && btns.every(function (b) { return b.getBoundingClientRect().height >= 44; }),
+      'layer labels and buttons keep 44px targets with a 90% root font: ' + btns.map(function (b) { return Math.round(b.getBoundingClientRect().height); }).join(' '));
+    host.deleteRule(0); host.deleteRule(0);
 
     // SC-FIG-04.1 static PNG export: with fetch and XHR disabled, at a chosen step with one layer hidden.
     var runExport = res.exports[res.exports.length - 1];

@@ -28,6 +28,8 @@
   - Labels give 44px targets, and `:focus-visible` outlines are shown.
   - Host pages that size bare inputs with an ID rule (such as the Research Hub page) no longer stretch
     the checkboxes or slider: their box properties are `!important`, still scoped.
+  - Button and label targets are 44px rather than 2.75rem: Astra shrinks the root font on phones,
+    which made them 40px.
 - **Plugin pairing guard.**
   - Lab refuses to activate beside a 0.3.x Research bridge, which pins Lab 0.163.1.7.
   - While Lab is active, activating a 0.3.x bridge is refused.
