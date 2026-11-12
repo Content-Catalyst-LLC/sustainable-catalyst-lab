@@ -73,3 +73,85 @@ Fixtures: `tests/fixtures/fig04-wexford/build_fixtures.py <site-intelligence che
 Wexford: six invented field parcels (modelled SOC with standard error, pH with one value missing) and
 eight hypothetical nitrate monitoring sites, each over four quarters. Nothing is a measured Wexford
 value.
+
+## SC-FIG-04.1 — Static export, calculation intervals, styling, pairing
+
+### Static PNG export
+
+The export captures the frame or frames on screen. They are read inside a MapLibre `render` event, so
+`preserveDrawingBuffer` is not needed. The frames are composed on a 2D canvas with:
+- the title;
+- the evidence class and measurement status;
+- the time step, or the comparison steps;
+- the visible layers;
+- a legend of the visible layers with units;
+- the calculation lines;
+- attribution;
+- provenance: figure and version, the view SHA-256, and the sources.
+
+The receipt (`sc-lab-static-map-export/1.0`, canonical JSON) records:
+- the bundle SHA-256 (bytes);
+- the view, source and calculation hashes;
+- the state;
+- the legend, units, calculation text and attribution;
+- the renderer;
+- the image size.
+
+The receipt is embedded as one `tEXt` chunk named `sc:static-map-receipt`. The JSON receipt adds the PNG's
+SHA-256 and length.
+
+`verifyExport(png, receiptFile, {spec, bundle, bundleSha256})` refuses:
+- malformed chunks or CRCs, and trailing bytes;
+- a missing or duplicate receipt;
+- a size mismatch;
+- a hash mismatch;
+- an embedded receipt that differs from the file;
+- another view, figure revision, bundle, sources or calculations;
+- unknown layers or time steps.
+
+The renderer runs it before offering the downloads.
+
+### Calculation intervals
+
+View 1.1 calculations may add these fields:
+
+```
+interval: {semantics: "confidence-interval", level, lower, upper, method, distribution,
+           degreesOfFreedom, computedBy: "runtime",
+           consistency: "estimate-plus-minus-t-standard-error" | "not-checked"}
+assumptions: {declaredBy: "model-revision", checked: false, statements: [..]}
+```
+
+- They come from the Workspace export through the Workbench adapter.
+- Lab requires:
+  - that the interval contains the value;
+  - that it is bound by `intervalsSha256`;
+  - that the assumptions are bound by `assumptionRefs`.
+- A "checked" consistency claim needs a reported standard error.
+- When a result has neither a standard error nor an interval, the display says **"Trend uncertainty
+  unavailable"**.
+
+### Styling under Astra
+
+The FIG-04 controls had picked up three rules:
+- the Lab UI bundle's `.sc-lab-app input { width: 100%; padding; border }`, plus a 44px minimum height;
+- Astra's checked-checkbox and button colours;
+- Astra's `input[type=range] { appearance: none }`.
+
+The FIG-04 stylesheet now restores native checkboxes (1.125rem) and the native range control. Labels and
+buttons are 44px targets, and every control has a `:focus-visible` outline. Every selector starts with
+`.sc-lab-fig04-` (the Node test checks this). Host pages may also size bare inputs with an ID rule (the Research Hub page has
+`#sc-research-v2 input { width: 100%; min-height: 44px; ... }`), which no class selector outranks. The checkbox and
+range box properties are therefore `!important`, still under `.sc-lab-fig04-controls`. The Chromium harness inserts
+such a rule, with a 90% root font size (Astra shrinks it on phones), and checks that the checkboxes stay small,
+the slider stays narrow, and labels and buttons stay at least 44px. Target heights are in px, not rem, for that reason.
+
+### Pairing with the Research bridge
+
+| Lab | Bridge | Result |
+|---|---|---|
+| 0.163.1.7 | 0.3.x | supported (SC-FIG-03B) |
+| 0.163.1.8 | 0.4.x | supported (SC-FIG-04) |
+| 0.163.1.8 | 0.3.x | Lab activation refused (409); bridge activation refused; renderer off if swapped in |
+| 0.163.1.7 | 0.4.x | refused by bridge 0.4.0 (Research) |
+| 0.163.1.8 | < 0.3 | not affected (those bridges pin no Lab release) |

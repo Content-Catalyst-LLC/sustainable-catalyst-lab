@@ -2,6 +2,42 @@
 
 ## 0.163.1.8 — Geospatial figures with MapLibre GL JS in Graph Studio (SC-FIG-04), default off
 
+### SC-FIG-04.1 additions (still 0.163.1.8, unreleased)
+
+- **Static map export.** "Export static map (PNG)" composes what is on screen: one map, or both
+  comparison maps labelled left and right. It also draws the title, evidence class, time or comparison
+  state, a legend of the visible layers with units, the calculation and its uncertainty text,
+  attribution and provenance.
+  - A receipt is embedded as a PNG `tEXt` chunk (`sc:static-map-receipt`, schema
+    `sc-lab-static-map-export/1.0`) and also offered as JSON. It binds the image to the bundle bytes, the
+    view hash, the source and calculation hashes, and the displayed state.
+  - The export is verified before it is offered. `SCLabMapLibreFIG04.verifyExport()` re-checks the PNG
+    chunk CRCs, the SHA-256, the receipt and the figure offline.
+  - Nothing is fetched.
+  - The data table remains the static alternative when WebGL is unavailable.
+- **Calculation uncertainty.**
+  - A calculation may carry the Workspace runtime's confidence `interval` (it must contain the value and
+    be bound by `calculationRefs[].intervalsSha256`).
+  - It may also carry the model revision's declared, unchecked `assumptions` (bound by `assumptionRefs`).
+  - Nothing is derived from point estimates. A result with neither a standard error nor an interval says
+    "Trend uncertainty unavailable".
+- **Astra / Lab UI styling.** The layer checkboxes, time slider and buttons keep native size and focus
+  rings. Previously, the Lab UI bundle's `.sc-lab-app input` rule (width 100%, 44px) and Astra's inline
+  colours and range rules applied to them.
+  - Every rule is scoped to `.sc-lab-fig04-*`, so WordPress and theme forms are unaffected.
+  - Labels give 44px targets, and `:focus-visible` outlines are shown.
+  - Host pages that size bare inputs with an ID rule (such as the Research Hub page) no longer stretch
+    the checkboxes or slider: their box properties are `!important`, still scoped.
+  - Button and label targets are 44px rather than 2.75rem: Astra shrinks the root font on phones,
+    which made them 40px.
+- **Plugin pairing guard.**
+  - Lab refuses to activate beside a 0.3.x Research bridge, which pins Lab 0.163.1.7.
+  - While Lab is active, activating a 0.3.x bridge is refused.
+  - A swapped-in mismatched bridge turns the figure-bundle renderer off and shows an admin notice.
+- Renderer module `SCLabMapLibreFIG04` 0.2.0. Tests: `tests/test-maplibre-fig041.js`,
+  `tests/test-fig041-plugin-compatibility.php`, and the Chromium harness (static export, offline,
+  tampered PNG and receipt).
+
 - A third renderer switch, WordPress option `sc_lab_fig04_maplibre_enabled`, is off by default and has
   no effect unless the figure-bundle renderer is on. With it, the renderer draws
   `application/vnd.sc.maplibre-view.v1+json` views (state `rendered-maplibre`). Renderer module 0.3.0.

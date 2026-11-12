@@ -446,8 +446,11 @@
             holder.appendChild(el('p', { 'class': 'sc-lab-fig02a-refusal', role: 'alert' }, 'Vega-Lite view not drawn: ' + (Array.isArray(reasons) ? reasons.join('; ') : String(reasons))));
           }));
         } else if (v.state === 'rendered-maplibre') {
-          draws.push(G.createMap(slot, v.spec, b, options && options.maplibre).then(function (h) {
-            if (h && h.state !== 'ready') { slot.setAttribute('data-view-state', 'rendered-maplibre-static'); }
+          var mopts = Object.assign({}, options && options.maplibre, { bundleSha256: ok.bundleSha256 });
+          draws.push(G.createMap(slot, v.spec, b, mopts).then(function (h) {
+            if (h && h.state !== 'ready') { slot.setAttribute('data-view-state', 'rendered-maplibre-static'); return; }
+            // SC-FIG-04.1: the static PNG export runs like the SVG export (resolves the export or {refused}).
+            if (h && h.runExport) { exports.push(h.runExport); }
           }));
         } else if (v.state === 'static-svg') {
           // Verified, policy-clean SVG bytes shown as an image (no script context); nothing is fetched.

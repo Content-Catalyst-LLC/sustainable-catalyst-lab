@@ -51,6 +51,9 @@
   var EVIDENCE = ['observed', 'literature-derived', 'modelled', 'hypothetical', 'conceptual', 'status-only'];
   var TOP_KEYS = ['schema', 'title', 'objects', 'evidenceField', 'fields', 'layers', 'legend', 'basemap', 'camera'];
   var TOP_KEYS_11 = TOP_KEYS.concat(['time', 'comparison', 'calculations', 'rasterLayers']);
+  var CALC_KEYS = ['label', 'value', 'unit', 'method', 'calculationRef', 'uncertainty', 'uncertaintyKind', 'interval', 'assumptions'];
+  var INTERVAL_KEYS = 'computedBy,consistency,degreesOfFreedom,distribution,level,lower,method,semantics,upper';
+  var INTERVAL_CONSISTENCY = ['estimate-plus-minus-t-standard-error', 'not-checked'];
   var STYLE_KEYS = { point: ['color', 'radius', 'opacity', 'strokeColor', 'strokeWidth'],
     line: ['color', 'width', 'opacity'], polygon: ['color', 'opacity', 'outlineColor', 'outlineWidth'],
     heatmap: ['radius', 'intensity', 'opacity'] };
@@ -285,6 +288,31 @@
           var at = 'calculations[' + i + ']';
           if (!isObj(c) || typeof c.label !== 'string' || !c.label || !num(c.value, -1e15, 1e15) || typeof c.unit !== 'string' || !c.unit || typeof c.method !== 'string' || !c.method) { e.push(at + ' needs label, numeric value, unit and method'); return; }
           if (c.uncertainty !== undefined && !(num(c.uncertainty, 0, 1e15) && has(UNCERTAINTY_KINDS, c.uncertaintyKind))) { e.push(at + ' uncertainty needs a non-negative value and a kind'); }
+          Object.keys(c).forEach(function (k) { if (!has(CALC_KEYS, k)) { e.push(at + '.' + k + ' is not allowed'); } });
+          // SC-FIG-04.1: an interval is the runtime's own record; it must contain the value and is never derived here.
+          if (c.interval !== undefined) {
+            var iv = c.interval;
+            if (!isObj(iv) || Object.keys(iv).sort().join() !== INTERVAL_KEYS || iv.semantics !== 'confidence-interval' || iv.computedBy !== 'runtime' ||
+                !num(iv.level, 0.5, 0.999999) || !num(iv.degreesOfFreedom, 1, 1e12) || !num(iv.lower, -1e15, 1e15) || !num(iv.upper, -1e15, 1e15) ||
+                !(iv.lower <= c.value && c.value <= iv.upper) || typeof iv.method !== 'string' || !iv.method || typeof iv.distribution !== 'string' ||
+                !has(INTERVAL_CONSISTENCY, iv.consistency)) {
+              e.push(at + ' interval must be the runtime confidence-interval record containing the value');
+            } else if (iv.consistency === 'estimate-plus-minus-t-standard-error' && c.uncertaintyKind !== 'standard-error') {
+              e.push(at + ' interval says it was checked against a standard error the calculation does not report');
+            } else if (!(refs[c.calculationRef] && /^[0-9a-f]{64}$/.test(String(refs[c.calculationRef].intervalsSha256)))) {
+              e.push(at + ' interval must be bound by the calculationRef (intervalsSha256)');
+            }
+          }
+          if (c.assumptions !== undefined) {
+            var as = c.assumptions;
+            if (!isObj(as) || Object.keys(as).sort().join() !== 'checked,declaredBy,statements' || as.declaredBy !== 'model-revision' || as.checked !== false ||
+                !Array.isArray(as.statements) || !as.statements.length || as.statements.length > 12 ||
+                !as.statements.every(function (x) { return typeof x === 'string' && x.length > 0 && x.length <= 240; })) {
+              e.push(at + ' assumptions must be the model revision\'s declared, unchecked statements');
+            } else if (!(refs[c.calculationRef] && Array.isArray(refs[c.calculationRef].assumptionRefs) && refs[c.calculationRef].assumptionRefs.length)) {
+              e.push(at + ' assumptions must be bound by the calculationRef (assumptionRefs)');
+            }
+          }
           if (!(Number.isInteger(c.calculationRef) && refs[c.calculationRef] && /^[0-9a-f]{64}$/.test(String(refs[c.calculationRef].outputSha256)))) { e.push(at + ' must point at a bundle calculationRef with an output hash'); }
         });
       }

@@ -609,5 +609,10 @@ SC_Lab_Graph_Studio_Plotly_Preview_FIG02A::init();
 require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-graph-studio-figure-bundle-renderer.php';
 SC_Lab_Graph_Studio_Figure_Bundle_Renderer::init();
 
+// SC-FIG-04.1 — refuse an incompatible Research bridge (0.3.x pins Lab 0.163.1.7). Registered before the
+// Lab activation hook so a refused activation changes nothing.
+require_once plugin_dir_path(__FILE__) . 'includes/class-sc-lab-plugin-compatibility-fig041.php';
+SC_Lab_Plugin_Compatibility_FIG041::init(__FILE__);
+
 register_activation_hook(__FILE__, array('SC_Lab_Plugin', 'activate'));
 add_action('plugins_loaded', array('SC_Lab_Plugin', 'instance'));

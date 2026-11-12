@@ -93,6 +93,73 @@
     check(slot.getAttribute('data-map-requests') === '0', 'MapLibre requested no resource (no tiles, glyphs, sprites)');
     check(/No basemap or imagery/.test(slot.querySelector('[data-map-attribution]').textContent), 'attribution names sources and no basemap');
 
+    // SC-FIG-04.1 host-page styling: an ID rule sizing bare inputs (as the Research Hub page and themes do)
+    // must not stretch the layer checkboxes or the time slider.
+    var host = Array.prototype.filter.call(document.styleSheets, function (x) { return x.href && /maplibre-fig04\.css/.test(x.href); })[0];
+    // Themes also shrink the root font size on phones (Astra: 14.4px), so targets must not be rem-based.
+    host.insertRule('#main-out input, #main-out select { width: 100%; min-height: 44px; padding: 10px 13px; border: 1px solid #bed0cb; margin: 4px; }', 0);
+    host.insertRule('html { font-size: 90% !important; }', 0);
+    await wait(100);
+    var cbs = Array.prototype.slice.call(slot.querySelectorAll('[data-layer-toggle]'));
+    var sizes = cbs.map(function (b) { var r = b.getBoundingClientRect(); return Math.round(r.width) + 'x' + Math.round(r.height); });
+    var rr = slot.querySelector('[data-time-range]').getBoundingClientRect();
+    check(cbs.every(function (b) { var r = b.getBoundingClientRect(); return r.width <= 24 && r.height <= 24; }) && rr.width <= 260,
+      'host ID rule on inputs does not stretch the checkboxes or slider: ' + sizes.join(' ') + ', slider ' + Math.round(rr.width));
+    var btns = Array.prototype.slice.call(slot.querySelectorAll('.sc-lab-fig04-controls button, .sc-lab-fig04-export button'));
+    check(cbs.every(function (b) { return b.closest('label').getBoundingClientRect().height >= 44; })
+      && btns.length >= 4 && btns.every(function (b) { return b.getBoundingClientRect().height >= 44; }),
+      'layer labels and buttons keep 44px targets with a 90% root font: ' + btns.map(function (b) { return Math.round(b.getBoundingClientRect().height); }).join(' '));
+    host.deleteRule(0); host.deleteRule(0);
+
+    // SC-FIG-04.1 static PNG export: with fetch and XHR disabled, at a chosen step with one layer hidden.
+    var runExport = res.exports[res.exports.length - 1];
+    check(typeof runExport === 'function' && slot.querySelector('[data-export-png]') && !slot.querySelector('[data-export-png]').disabled, 'PNG export control offered once the map is ready');
+    slot.querySelector('[data-time-next]').click(); await wait(300);
+    slot.querySelector('[data-layer-toggle="nitrate-heat"]').click(); await wait(300);
+    var resBefore = performance.getEntriesByType('resource').length;
+    var realFetch = window.fetch, realXhr = window.XMLHttpRequest;
+    window.fetch = function () { throw new Error('network used during export'); };
+    window.XMLHttpRequest = function () { throw new Error('network used during export'); };
+    var x;
+    try { x = await runExport(); } finally { window.fetch = realFetch; window.XMLHttpRequest = realXhr; }
+    check(x && x.png && !x.refused, 'export completed without network: ' + JSON.stringify(x && x.refused));
+    check(performance.getEntriesByType('resource').length === resBefore && slot.getAttribute('data-map-requests') === '0', 'export fetched nothing');
+    check(slot.getAttribute('data-export-state') === 'verified' && slot.getAttribute('data-export-sha256') === x.sha256, 'export verified against this figure');
+    check(slot.querySelectorAll('[data-export-download]').length === 2 && /SHA-256 [0-9a-f]{64}/.test(slot.querySelector('[data-export-status]').textContent), 'PNG and receipt offered as links with the hash announced');
+    var rc = x.receipt.receipt;
+    check(rc.state.timeStep === steps[1] && rc.state.comparison === null && rc.state.visibleLayers.join() === 'field-soc,nitrate-sites', 'receipt records step and visible layers: ' + JSON.stringify(rc.state));
+    check(rc.figure.bundleSha256 === res.bundleSha256 && rc.view.sha256 === bundle.artifacts[0].sha256 && rc.state.networkRequests === 0, 'receipt bound to bundle bytes and view');
+    check(rc.legend.map(function (g) { return g.layer; }).join() === 'field-soc,nitrate-sites' && /g kg-1/.test(JSON.stringify(rc.legend)), 'legend of visible layers with units in the receipt');
+    check(/g kg-1 yr-1 \(standard error\)/.test(rc.calculationText.join(' ')) && /No confidence interval was reported/.test(rc.calculationText.join(' ')), 'calculation text: standard error, no interval invented');
+    check(/No basemap or imagery/.test(rc.attribution) && rc.units, 'attribution and units in the receipt');
+    var v1 = await G.verifyExport(x.png, x.receipt, { spec: view, bundle: bundle, bundleSha256: res.bundleSha256 });
+    check(v1.ok && v1.sha256 === x.sha256, 'independent verifyExport passes: ' + v1.errors.join('; '));
+    var bmp = await createImageBitmap(new Blob([x.png], { type: 'image/png' }));
+    check(bmp.width === rc.image.width && bmp.height === rc.image.height && bmp.width === 1200, 'PNG decodes at the receipt size ' + bmp.width + 'x' + bmp.height);
+    var cv = document.createElement('canvas'); cv.width = bmp.width; cv.height = bmp.height;
+    var cx = cv.getContext('2d'); cx.drawImage(bmp, 0, 0);
+    var px = cx.getImageData(24, 90, 1152, 500).data, coloured = 0;
+    for (var i = 0; i < px.length; i += 4) { if (Math.abs(px[i] - px[i + 1]) > 30 || Math.abs(px[i + 1] - px[i + 2]) > 30) { coloured++; } }
+    check(coloured > 2000, 'map frame drawn into the PNG (' + coloured + ' coloured pixels)');
+    var flipped = x.png.slice(); flipped[Math.floor(flipped.length / 2)] ^= 1;
+    var v2 = await G.verifyExport(flipped, x.receipt, { spec: view, bundle: bundle, bundleSha256: res.bundleSha256 });
+    check(!v2.ok, 'tampered PNG refused: ' + v2.errors.join('; '));
+    var forged = JSON.parse(JSON.stringify(x.receipt)); forged.receipt.state.timeStep = steps[0];
+    var v3 = await G.verifyExport(x.png, forged, { spec: view, bundle: bundle, bundleSha256: res.bundleSha256 });
+    check(!v3.ok && v3.errors.indexOf('embedded receipt differs from the receipt file') >= 0, 'edited receipt file refused');
+    var v4 = await G.verifyExport(x.png, x.receipt, { spec: view, bundle: bundle, bundleSha256: 'f'.repeat(64) });
+    check(!v4.ok && v4.errors.indexOf('receipt names different bundle bytes') >= 0, 'export checked against other bundle bytes refused');
+    window.__fig04.exportB64 = btoa(Array.prototype.map.call(x.png, function (c) { return String.fromCharCode(c); }).join(''));
+    window.__fig04.exportReceipt = x.receipt;
+    slot.querySelector('[data-layer-toggle="nitrate-heat"]').click(); await wait(200);
+    // Comparison export: both maps, labelled left and right.
+    cmp.click();
+    await until(function () { return slot.getAttribute('data-compare-map') === 'ready'; }, 30000); await wait(800);
+    var xc = await runExport();
+    check(xc && xc.receipt && xc.receipt.receipt.state.comparison && xc.receipt.receipt.state.comparison.to === steps[3] && /^Comparison/.test(xc.receipt.receipt.state.description), 'comparison export records both steps');
+    window.__fig04.compareB64 = btoa(Array.prototype.map.call(xc.png, function (c) { return String.fromCharCode(c); }).join(''));
+    cmp.click(); await wait(300);
+
     // 3. Integrity: an edited object, re-hashed into the bundle, is refused by the SI digest.
     var tampered = JSON.parse(viewText); tampered.objects[2].properties.soc = 50;
     var tText = JSON.stringify(tampered), tb = JSON.parse(bundleText);
