@@ -5,6 +5,11 @@
  * Preview only: Workbench stays the numerical authority, nothing is uploaded, persisted, reviewed or
  * published here. A response is refused unless its specSha256 and resultHash recompute exactly and
  * its figure passes the content policy below.
+ *
+ * SC-FIG-05.3: a filled area (interval ribbon or ensemble fan) is drawn only when it is exactly a runtime
+ * record Lab was given: the record's canonical SHA-256 must equal the trace's recordSha256 and a bundle
+ * calculationRef's bandsSha256/quantileBandsSha256, and every polygon coordinate must equal the record's
+ * numbers. Lab never draws a band it was not given, and computes none.
  */
 (function (root, factory) {
   'use strict';
@@ -145,6 +150,60 @@
     return errors;
   }
 
+  // ------------------------------------------------------------------
+  // SC-FIG-05.3 uncertainty areas. records: [{sha256, value}] whose sha256 Lab computed itself.
+  // ------------------------------------------------------------------
+  function isObj(v) { return v !== null && typeof v === 'object' && !Array.isArray(v); }
+  function sameList(a, b) { return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every(function (v, k) { return v === b[k]; }); }
+  function expectedArea(record, m) {
+    if (m.role === 'band' && Array.isArray(record)) {
+      var b = record.filter(function (r) { return isObj(r) && r.semantics === m.semantics && r.level === m.level && r.computedBy === 'runtime'; })[0];
+      if (!b || !Array.isArray(b.points)) { return null; }
+      var xs = b.points.map(function (p) { return p[0]; });
+      return { x: xs.concat(xs.slice().reverse()), y: b.points.map(function (p) { return p[3]; }).concat(b.points.map(function (p) { return p[2]; }).reverse()) };
+    }
+    if (m.role === 'fan' && isObj(record) && record.computedBy === 'runtime' && Array.isArray(record.centralLevels) && Array.isArray(record.steps)) {
+      var k = record.centralLevels.indexOf(m.level);
+      if (k < 0) { return null; }
+      var sx = record.steps.map(function (st) { return st.x; });
+      return { x: sx.concat(sx.slice().reverse()),
+        y: record.steps.map(function (st) { return st.bands[k][1]; }).concat(record.steps.map(function (st) { return st.bands[k][0]; }).reverse()) };
+    }
+    return null;
+  }
+  function uncertaintyErrors(fig, bundle, records) {
+    var errors = [], refs = (bundle && bundle.calculationRefs) || [], filled = 0;
+    var bound = refs.reduce(function (m, r) { if (r && r.bandsSha256) { m[r.bandsSha256] = 'band'; } if (r && r.quantileBandsSha256) { m[r.quantileBandsSha256] = 'fan'; } return m; }, {});
+    var byHash = (records || []).reduce(function (m, r) { m[r.sha256] = r.value; return m; }, {});
+    (fig && Array.isArray(fig.data) ? fig.data : []).forEach(function (t, k) {
+      var hasFill = t && t.fill !== undefined && t.fill !== 'none';
+      if (!hasFill && !(t && t.fillcolor !== undefined)) { return; }
+      filled++;
+      var m = t.meta && t.meta.scUncertainty, at = 'trace ' + k + ' filled area';
+      if (!isObj(m) || (m.role !== 'band' && m.role !== 'fan') || t.type !== 'scatter' || t.fill !== 'toself') { errors.push(at + ' is not a runtime uncertainty record (no band is drawn that Lab was not given)'); return; }
+      if (bound[m.recordSha256] !== m.role) { errors.push(at + ' is not bound to a bundle calculationRef (' + (m.role === 'band' ? 'bandsSha256' : 'quantileBandsSha256') + ')'); return; }
+      if (!(m.recordSha256 in byHash)) { errors.push(at + ': the runtime record ' + String(m.recordSha256).slice(0, 12) + ' was not supplied, so nothing is drawn'); return; }
+      var want = expectedArea(byHash[m.recordSha256], m);
+      if (!want || !sameList(t.x, want.x) || !sameList(t.y, want.y)) { errors.push(at + ' does not equal the runtime record\'s numbers'); }
+    });
+    var ctx = (bundle && bundle.scientificContext) || {};
+    if (filled && ctx.uncertaintyStatus !== 'runtime-computed') { errors.push('figure draws uncertainty areas but the bundle says uncertainty is ' + String(ctx.uncertaintyStatus || 'not declared')); }
+    return errors;
+  }
+  // Records carried in a compile response (uncertainty[].record), hashed here from their own lexical text.
+  function responseRecords(tree, resp) {
+    var list = member(tree, 'uncertainty');
+    if (!list || list.t !== 'a') { return Promise.resolve([]); }
+    return Promise.all(list.v.map(function (node, i) {
+      var rec = member(node, 'record');
+      if (!rec) { return null; }
+      return sha256Hex(canonical(rec)).then(function (h) {
+        if (h !== resp.uncertainty[i].recordSha256) { throw ['uncertainty record ' + i + ' does not match its recordSha256']; }
+        return { sha256: h, value: resp.uncertainty[i].record };
+      });
+    })).then(function (r) { return r.filter(Boolean); });
+  }
+
   function policyErrors(resp, plotlyVersion) {
     var errors = [];
     if (!resp || resp.ok !== true) { errors.push('response is not a successful compile result'); return errors; }
@@ -177,7 +236,11 @@
         if (h[1] !== resp.resultHash) { bad.push('resultHash mismatch: response was altered after Workbench compiled it'); }
         if (resp.figureBundle.rendering && resp.figureBundle.rendering.visualizationSpecSha256 !== h[0]) { bad.push('figure bundle does not reference this figure spec'); }
         if (bad.length) { throw bad; }
-        return { response: resp, specSha256: h[0], resultHash: h[1] };
+        return responseRecords(tree, resp).then(function (records) {
+          var ue = uncertaintyErrors(resp.plotly.figure, resp.figureBundle, records);
+          if (ue.length) { throw ue; }
+          return { response: resp, specSha256: h[0], resultHash: h[1] };
+        });
       }, function (e) { throw [String(e.message || e)]; });
     });
   }
@@ -312,6 +375,7 @@
     version: VERSION, expectedPlotlyJs: EXPECTED_PLOTLY_JS, responseSchema: RESPONSE_SCHEMA,
     parseLexical: parseLexical, canonical: canonical, sha256Hex: sha256Hex,
     policyErrors: policyErrors, figurePolicyErrors: figurePolicyErrors, evidenceText: EVIDENCE_TEXT,
-    walkStrings: walkStrings, forbiddenText: FORBIDDEN_TEXT, verify: verify, render: render, mount: mount, boot: boot
+    walkStrings: walkStrings, forbiddenText: FORBIDDEN_TEXT, verify: verify, render: render, mount: mount, boot: boot,
+    uncertaintyErrors: uncertaintyErrors
   };
 }));

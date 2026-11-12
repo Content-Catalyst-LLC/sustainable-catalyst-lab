@@ -1,0 +1,1565 @@
+{
+ "ok": true,
+ "schema": "sc-workbench-plotly-figure-adapter/1.0",
+ "version": "14.0.0",
+ "buildId": "FIG-02A",
+ "plotly": {
+  "figure": {
+   "data": [
+    {
+     "xaxis": "x",
+     "yaxis": "y",
+     "mode": "lines",
+     "fill": "toself",
+     "fillcolor": "rgba(0,114,178,0.14)",
+     "x": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0,
+      11.0,
+      10.0,
+      9.0,
+      8.0,
+      7.0,
+      6.0,
+      5.0,
+      4.0,
+      3.0,
+      2.0,
+      1.0,
+      0.0
+     ],
+     "y": [
+      2.40437599950404,
+      2.88982648776795,
+      3.37691987808164,
+      3.86577489974872,
+      4.35649027670828,
+      4.84913704533348,
+      5.34375242994886,
+      5.84033643055444,
+      6.33885182282564,
+      6.83922757038933,
+      7.34136494930641,
+      7.84514523027327,
+      7.17562400049596,
+      6.69017351223205,
+      6.20308012191836,
+      5.71422510025128,
+      5.22350972329172,
+      4.73086295466652,
+      4.23624757005114,
+      3.73966356944556,
+      3.24114817717435,
+      2.74077242961067,
+      2.23863505069359,
+      1.73485476972673
+     ],
+     "line": {
+      "color": "rgba(0,114,178,0.64)",
+      "width": 1.2,
+      "dash": "dash"
+     },
+     "name": "90% prediction band (Student t, df 10; computed by the Workspace runtime)",
+     "hoverinfo": "skip",
+     "showlegend": true,
+     "meta": {
+      "scUncertainty": {
+       "panelId": "trend",
+       "role": "band",
+       "semantics": "prediction-band",
+       "level": 0.9,
+       "recordSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x",
+     "yaxis": "y",
+     "mode": "lines",
+     "fill": "toself",
+     "fillcolor": "rgba(0,114,178,0.34)",
+     "x": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0,
+      11.0,
+      10.0,
+      9.0,
+      8.0,
+      7.0,
+      6.0,
+      5.0,
+      4.0,
+      3.0,
+      2.0,
+      1.0,
+      0.0
+     ],
+     "y": [
+      2.22936417854797,
+      2.70375703848508,
+      3.17978374904019,
+      3.65831688415637,
+      4.14067176408022,
+      4.62850247672983,
+      5.12311786134522,
+      5.62451791792638,
+      6.13139380723329,
+      6.64209144134788,
+      7.15529550002354,
+      7.6701334093172,
+      7.35063582145203,
+      6.87624296151492,
+      6.40021625095981,
+      5.92168311584363,
+      5.43932823591978,
+      4.95149752327017,
+      4.45688213865478,
+      3.95548208207362,
+      3.44860619276671,
+      2.93790855865212,
+      2.42470449997646,
+      1.9098665906828
+     ],
+     "line": {
+      "color": "rgba(0,114,178,0.84)",
+      "width": 0.0,
+      "dash": "solid"
+     },
+     "name": "90% confidence band (Student t, df 10; computed by the Workspace runtime)",
+     "hoverinfo": "skip",
+     "showlegend": true,
+     "meta": {
+      "scUncertainty": {
+       "panelId": "trend",
+       "role": "band",
+       "semantics": "confidence-band",
+       "level": 0.9,
+       "recordSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x",
+     "yaxis": "y",
+     "mode": "lines",
+     "x": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0
+     ],
+     "y": [
+      2.06961538461538,
+      2.56423076923077,
+      3.05884615384615,
+      3.55346153846154,
+      4.04807692307692,
+      4.54269230769231,
+      5.03730769230769,
+      5.53192307692308,
+      6.02653846153846,
+      6.52115384615385,
+      7.01576923076923,
+      7.51038461538461
+     ],
+     "line": {
+      "color": "#000000",
+      "width": 2
+     },
+     "name": "Synthetic trend of y (runtime fit)",
+     "customdata": [
+      [
+       "1.73485 to 2.40438",
+       "1.90987 to 2.22936"
+      ],
+      [
+       "2.23864 to 2.88983",
+       "2.4247 to 2.70376"
+      ],
+      [
+       "2.74077 to 3.37692",
+       "2.93791 to 3.17978"
+      ],
+      [
+       "3.24115 to 3.86577",
+       "3.44861 to 3.65832"
+      ],
+      [
+       "3.73966 to 4.35649",
+       "3.95548 to 4.14067"
+      ],
+      [
+       "4.23625 to 4.84914",
+       "4.45688 to 4.6285"
+      ],
+      [
+       "4.73086 to 5.34375",
+       "4.9515 to 5.12312"
+      ],
+      [
+       "5.22351 to 5.84034",
+       "5.43933 to 5.62452"
+      ],
+      [
+       "5.71423 to 6.33885",
+       "5.92168 to 6.13139"
+      ],
+      [
+       "6.20308 to 6.83923",
+       "6.40022 to 6.64209"
+      ],
+      [
+       "6.69017 to 7.34136",
+       "6.87624 to 7.1553"
+      ],
+      [
+       "7.17562 to 7.84515",
+       "7.35064 to 7.67013"
+      ]
+     ],
+     "hovertemplate": "x: %{x}<br>Synthetic trend of y: %{y} mg L-1<br>90% prediction: %{customdata[0]}<br>90% confidence: %{customdata[1]}<extra></extra>",
+     "meta": {
+      "scUncertainty": {
+       "panelId": "trend",
+       "role": "fit"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x2",
+     "yaxis": "y2",
+     "mode": "lines",
+     "fill": "toself",
+     "fillcolor": "rgba(0,114,178,0.16)",
+     "x": [
+      2026.0,
+      2027.0,
+      2028.0,
+      2029.0,
+      2030.0,
+      2031.0,
+      2032.0,
+      2033.0,
+      2034.0,
+      2035.0,
+      2035.0,
+      2034.0,
+      2033.0,
+      2032.0,
+      2031.0,
+      2030.0,
+      2029.0,
+      2028.0,
+      2027.0,
+      2026.0
+     ],
+     "y": [
+      10.802459625,
+      11.595452,
+      12.02387225,
+      12.326423100000001,
+      12.99039305,
+      13.56807735,
+      14.208078124999998,
+      15.1468323,
+      15.230012599999998,
+      15.395458224999999,
+      11.570900349999999,
+      11.71661275,
+      11.3274196,
+      10.943001875,
+      10.314332475,
+      10.448776250000002,
+      10.171093675,
+      10.233148374999999,
+      9.700116375,
+      9.860675325
+     ],
+     "line": {
+      "width": 0
+     },
+     "name": "central 95% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+     "hoverinfo": "skip",
+     "meta": {
+      "scUncertainty": {
+       "panelId": "ensemble",
+       "role": "fan",
+       "level": 0.95,
+       "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x2",
+     "yaxis": "y2",
+     "mode": "lines",
+     "fill": "toself",
+     "fillcolor": "rgba(0,114,178,0.27)",
+     "x": [
+      2026.0,
+      2027.0,
+      2028.0,
+      2029.0,
+      2030.0,
+      2031.0,
+      2032.0,
+      2033.0,
+      2034.0,
+      2035.0,
+      2035.0,
+      2034.0,
+      2033.0,
+      2032.0,
+      2031.0,
+      2030.0,
+      2029.0,
+      2028.0,
+      2027.0,
+      2026.0
+     ],
+     "y": [
+      10.7708318,
+      11.4541622,
+      11.8580732,
+      12.2061972,
+      12.5018073,
+      12.9923038,
+      13.257987100000001,
+      13.7947338,
+      13.939734900000001,
+      14.517125,
+      12.0835421,
+      11.9438952,
+      11.663224699999999,
+      11.1865971,
+      10.921734999999998,
+      10.5715867,
+      10.364882199999998,
+      10.256905999999999,
+      10.1582226,
+      9.9076495
+     ],
+     "line": {
+      "width": 0
+     },
+     "name": "central 80% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+     "hoverinfo": "skip",
+     "meta": {
+      "scUncertainty": {
+       "panelId": "ensemble",
+       "role": "fan",
+       "level": 0.8,
+       "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x2",
+     "yaxis": "y2",
+     "mode": "lines",
+     "fill": "toself",
+     "fillcolor": "rgba(0,114,178,0.42)",
+     "x": [
+      2026.0,
+      2027.0,
+      2028.0,
+      2029.0,
+      2030.0,
+      2031.0,
+      2032.0,
+      2033.0,
+      2034.0,
+      2035.0,
+      2035.0,
+      2034.0,
+      2033.0,
+      2032.0,
+      2031.0,
+      2030.0,
+      2029.0,
+      2028.0,
+      2027.0,
+      2026.0
+     ],
+     "y": [
+      10.62331475,
+      11.051738,
+      11.37226325,
+      11.82693225,
+      12.098981,
+      12.46758275,
+      12.901792499999999,
+      13.048420749999998,
+      13.44044275,
+      13.83948,
+      12.570011749999999,
+      12.173755750000002,
+      11.92577225,
+      11.63741175,
+      11.42022,
+      11.211439500000001,
+      10.66736975,
+      10.38498625,
+      10.478028,
+      10.05233775
+     ],
+     "line": {
+      "width": 0
+     },
+     "name": "central 50% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+     "hoverinfo": "skip",
+     "meta": {
+      "scUncertainty": {
+       "panelId": "ensemble",
+       "role": "fan",
+       "level": 0.5,
+       "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+      }
+     },
+     "type": "scatter"
+    },
+    {
+     "xaxis": "x2",
+     "yaxis": "y2",
+     "mode": "lines+markers",
+     "x": [
+      2026.0,
+      2027.0,
+      2028.0,
+      2029.0,
+      2030.0,
+      2031.0,
+      2032.0,
+      2033.0,
+      2034.0,
+      2035.0
+     ],
+     "y": [
+      10.247693,
+      10.6871485,
+      10.906413,
+      11.037911999999999,
+      11.648691,
+      11.8110945,
+      12.228755,
+      12.4751865,
+      12.9109595,
+      13.3324565
+     ],
+     "line": {
+      "color": "#000000",
+      "width": 2
+     },
+     "marker": {
+      "color": "#000000",
+      "size": 5,
+      "symbol": "diamond"
+     },
+     "name": "Synthetic ensemble projection (ensemble median)",
+     "customdata": [
+      [
+       "10.0523 to 10.6233",
+       "9.90765 to 10.7708",
+       "9.86068 to 10.8025"
+      ],
+      [
+       "10.478 to 11.0517",
+       "10.1582 to 11.4542",
+       "9.70012 to 11.5955"
+      ],
+      [
+       "10.385 to 11.3723",
+       "10.2569 to 11.8581",
+       "10.2331 to 12.0239"
+      ],
+      [
+       "10.6674 to 11.8269",
+       "10.3649 to 12.2062",
+       "10.1711 to 12.3264"
+      ],
+      [
+       "11.2114 to 12.099",
+       "10.5716 to 12.5018",
+       "10.4488 to 12.9904"
+      ],
+      [
+       "11.4202 to 12.4676",
+       "10.9217 to 12.9923",
+       "10.3143 to 13.5681"
+      ],
+      [
+       "11.6374 to 12.9018",
+       "11.1866 to 13.258",
+       "10.943 to 14.2081"
+      ],
+      [
+       "11.9258 to 13.0484",
+       "11.6632 to 13.7947",
+       "11.3274 to 15.1468"
+      ],
+      [
+       "12.1738 to 13.4404",
+       "11.9439 to 13.9397",
+       "11.7166 to 15.23"
+      ],
+      [
+       "12.57 to 13.8395",
+       "12.0835 to 14.5171",
+       "11.5709 to 15.3955"
+      ]
+     ],
+     "hovertemplate": "step: %{x}<br>median: %{y} mg L-1<br>central 50%: %{customdata[0]}<br>central 80%: %{customdata[1]}<br>central 95%: %{customdata[2]}<extra></extra>",
+     "meta": {
+      "scUncertainty": {
+       "panelId": "ensemble",
+       "role": "median"
+      }
+     },
+     "type": "scatter"
+    }
+   ],
+   "layout": {
+    "title": {
+     "text": "SYNTHETIC runtime regression bands and ensemble quantile fan<br><sup>Evidence: modelled; computed from specified inputs, not measured</sup>",
+     "x": 0.0,
+     "xanchor": "left"
+    },
+    "width": 1000,
+    "height": 760,
+    "font": {
+     "family": "Arial, Helvetica, sans-serif",
+     "size": 13,
+     "color": "#1a1a1a"
+    },
+    "paper_bgcolor": "#ffffff",
+    "plot_bgcolor": "#ffffff",
+    "margin": {
+     "l": 80,
+     "r": 60,
+     "t": 100,
+     "b": 80
+    },
+    "showlegend": true,
+    "legend": {
+     "orientation": "h",
+     "y": -0.18
+    },
+    "annotations": [
+     {
+      "text": "<b>Synthetic trend of y</b>",
+      "showarrow": false,
+      "xref": "paper",
+      "yref": "paper",
+      "x": 0,
+      "y": 1.0,
+      "xanchor": "left",
+      "yanchor": "bottom",
+      "font": {
+       "size": 13
+      }
+     },
+     {
+      "text": "<b>Synthetic ensemble projection</b>",
+      "showarrow": false,
+      "xref": "paper",
+      "yref": "paper",
+      "x": 0,
+      "y": 0.42000000000000004,
+      "xanchor": "left",
+      "yanchor": "bottom",
+      "font": {
+       "size": 13
+      }
+     }
+    ],
+    "xaxis": {
+     "title": {
+      "text": ""
+     },
+     "anchor": "y",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "zeroline": false
+    },
+    "yaxis": {
+     "title": {
+      "text": "mg L-1"
+     },
+     "domain": [
+      0.5800000000000001,
+      1.0
+     ],
+     "anchor": "x",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "gridcolor": "#e5e5e5",
+     "zeroline": true,
+     "zerolinecolor": "#999999"
+    },
+    "xaxis2": {
+     "title": {
+      "text": "Year"
+     },
+     "anchor": "y2",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "zeroline": false
+    },
+    "yaxis2": {
+     "title": {
+      "text": "mg L-1"
+     },
+     "domain": [
+      5.551115123125783e-17,
+      0.42000000000000004
+     ],
+     "anchor": "x2",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "gridcolor": "#e5e5e5",
+     "zeroline": true,
+     "zerolinecolor": "#999999"
+    }
+   }
+  },
+  "config": {
+   "displaylogo": false,
+   "responsive": true,
+   "showLink": false,
+   "modeBarButtonsToRemove": [
+    "sendDataToCloud",
+    "lasso2d",
+    "select2d"
+   ],
+   "toImageButtonOptions": {
+    "format": "svg",
+    "filename": "SYN-FIG05-uncertainty-chart"
+   }
+  },
+  "specSha256": "3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9",
+  "plotlyJsVersion": "3.3.1"
+ },
+ "accessibleAlternative": {
+  "caption": "SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right).",
+  "panels": [
+   {
+    "panelId": "trend",
+    "title": "Synthetic trend of y",
+    "chart": "band",
+    "uncertaintyStatus": "runtime-computed",
+    "columns": [
+     {
+      "key": "x",
+      "label": "t (years from 2010)",
+      "unit": ""
+     },
+     {
+      "key": "fit",
+      "label": "Fitted mean (runtime)",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "confidence.lower",
+      "label": "90% confidence lower",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "confidence.upper",
+      "label": "90% confidence upper",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "prediction.lower",
+      "label": "90% prediction lower",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "prediction.upper",
+      "label": "90% prediction upper",
+      "unit": "mg L-1"
+     }
+    ],
+    "rows": [
+     {
+      "x": 0.0,
+      "fit": 2.06961538461538,
+      "confidence.lower": 1.9098665906828,
+      "confidence.upper": 2.22936417854797,
+      "prediction.lower": 1.73485476972673,
+      "prediction.upper": 2.40437599950404
+     },
+     {
+      "x": 1.0,
+      "fit": 2.56423076923077,
+      "confidence.lower": 2.42470449997646,
+      "confidence.upper": 2.70375703848508,
+      "prediction.lower": 2.23863505069359,
+      "prediction.upper": 2.88982648776795
+     },
+     {
+      "x": 2.0,
+      "fit": 3.05884615384615,
+      "confidence.lower": 2.93790855865212,
+      "confidence.upper": 3.17978374904019,
+      "prediction.lower": 2.74077242961067,
+      "prediction.upper": 3.37691987808164
+     },
+     {
+      "x": 3.0,
+      "fit": 3.55346153846154,
+      "confidence.lower": 3.44860619276671,
+      "confidence.upper": 3.65831688415637,
+      "prediction.lower": 3.24114817717435,
+      "prediction.upper": 3.86577489974872
+     },
+     {
+      "x": 4.0,
+      "fit": 4.04807692307692,
+      "confidence.lower": 3.95548208207362,
+      "confidence.upper": 4.14067176408022,
+      "prediction.lower": 3.73966356944556,
+      "prediction.upper": 4.35649027670828
+     },
+     {
+      "x": 5.0,
+      "fit": 4.54269230769231,
+      "confidence.lower": 4.45688213865478,
+      "confidence.upper": 4.62850247672983,
+      "prediction.lower": 4.23624757005114,
+      "prediction.upper": 4.84913704533348
+     },
+     {
+      "x": 6.0,
+      "fit": 5.03730769230769,
+      "confidence.lower": 4.95149752327017,
+      "confidence.upper": 5.12311786134522,
+      "prediction.lower": 4.73086295466652,
+      "prediction.upper": 5.34375242994886
+     },
+     {
+      "x": 7.0,
+      "fit": 5.53192307692308,
+      "confidence.lower": 5.43932823591978,
+      "confidence.upper": 5.62451791792638,
+      "prediction.lower": 5.22350972329172,
+      "prediction.upper": 5.84033643055444
+     },
+     {
+      "x": 8.0,
+      "fit": 6.02653846153846,
+      "confidence.lower": 5.92168311584363,
+      "confidence.upper": 6.13139380723329,
+      "prediction.lower": 5.71422510025128,
+      "prediction.upper": 6.33885182282564
+     },
+     {
+      "x": 9.0,
+      "fit": 6.52115384615385,
+      "confidence.lower": 6.40021625095981,
+      "confidence.upper": 6.64209144134788,
+      "prediction.lower": 6.20308012191836,
+      "prediction.upper": 6.83922757038933
+     },
+     {
+      "x": 10.0,
+      "fit": 7.01576923076923,
+      "confidence.lower": 6.87624296151492,
+      "confidence.upper": 7.15529550002354,
+      "prediction.lower": 6.69017351223205,
+      "prediction.upper": 7.34136494930641
+     },
+     {
+      "x": 11.0,
+      "fit": 7.51038461538461,
+      "confidence.lower": 7.35063582145203,
+      "confidence.upper": 7.6701334093172,
+      "prediction.lower": 7.17562400049596,
+      "prediction.upper": 7.84514523027327
+     }
+    ],
+    "descriptiveSummary": [
+     "90% confidence band (Student t, df 10; computed by the Workspace runtime): width 0.1716 to 0.3195 over 12 observed x values; method stats::predict.lm(interval = \"confidence\"): fit +/- qt((1 + level) / 2, df.residual) * se.fit",
+     "90% prediction band (Student t, df 10; computed by the Workspace runtime): width 0.6129 to 0.6695 over 12 observed x values; method stats::predict.lm(interval = \"prediction\"): fit +/- qt((1 + level) / 2, df.residual) * sqrt(se.fit^2 + sigma^2)"
+    ]
+   },
+   {
+    "panelId": "ensemble",
+    "title": "Synthetic ensemble projection",
+    "chart": "fan",
+    "uncertaintyStatus": "runtime-computed",
+    "columns": [
+     {
+      "key": "x",
+      "label": "Year",
+      "unit": ""
+     },
+     {
+      "key": "median",
+      "label": "Ensemble median",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.5.lower",
+      "label": "central 50% lower",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.5.upper",
+      "label": "central 50% upper",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.8.lower",
+      "label": "central 80% lower",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.8.upper",
+      "label": "central 80% upper",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.95.lower",
+      "label": "central 95% lower",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "q0.95.upper",
+      "label": "central 95% upper",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "min",
+      "label": "Member minimum",
+      "unit": "mg L-1"
+     },
+     {
+      "key": "max",
+      "label": "Member maximum",
+      "unit": "mg L-1"
+     }
+    ],
+    "rows": [
+     {
+      "x": 2026.0,
+      "median": 10.247693,
+      "q0.5.lower": 10.05233775,
+      "q0.5.upper": 10.62331475,
+      "q0.8.lower": 9.9076495,
+      "q0.8.upper": 10.7708318,
+      "q0.95.lower": 9.860675325,
+      "q0.95.upper": 10.802459625,
+      "min": 9.825939,
+      "max": 10.938867
+     },
+     {
+      "x": 2027.0,
+      "median": 10.6871485,
+      "q0.5.lower": 10.478028,
+      "q0.5.upper": 11.051738,
+      "q0.8.lower": 10.1582226,
+      "q0.8.upper": 11.4541622,
+      "q0.95.lower": 9.700116375,
+      "q0.95.upper": 11.595452,
+      "min": 9.643932,
+      "max": 11.707772
+     },
+     {
+      "x": 2028.0,
+      "median": 10.906413,
+      "q0.5.lower": 10.38498625,
+      "q0.5.upper": 11.37226325,
+      "q0.8.lower": 10.256905999999999,
+      "q0.8.upper": 11.8580732,
+      "q0.95.lower": 10.233148374999999,
+      "q0.95.upper": 12.02387225,
+      "min": 10.070182,
+      "max": 12.067172
+     },
+     {
+      "x": 2029.0,
+      "median": 11.037911999999999,
+      "q0.5.lower": 10.66736975,
+      "q0.5.upper": 11.82693225,
+      "q0.8.lower": 10.364882199999998,
+      "q0.8.upper": 12.2061972,
+      "q0.95.lower": 10.171093675,
+      "q0.95.upper": 12.326423100000001,
+      "min": 10.14811,
+      "max": 12.329586
+     },
+     {
+      "x": 2030.0,
+      "median": 11.648691,
+      "q0.5.lower": 11.211439500000001,
+      "q0.5.upper": 12.098981,
+      "q0.8.lower": 10.5715867,
+      "q0.8.upper": 12.5018073,
+      "q0.95.lower": 10.448776250000002,
+      "q0.95.upper": 12.99039305,
+      "min": 9.955202,
+      "max": 13.108253
+     },
+     {
+      "x": 2031.0,
+      "median": 11.8110945,
+      "q0.5.lower": 11.42022,
+      "q0.5.upper": 12.46758275,
+      "q0.8.lower": 10.921734999999998,
+      "q0.8.upper": 12.9923038,
+      "q0.95.lower": 10.314332475,
+      "q0.95.upper": 13.56807735,
+      "min": 10.179216,
+      "max": 13.950642
+     },
+     {
+      "x": 2032.0,
+      "median": 12.228755,
+      "q0.5.lower": 11.63741175,
+      "q0.5.upper": 12.901792499999999,
+      "q0.8.lower": 11.1865971,
+      "q0.8.upper": 13.257987100000001,
+      "q0.95.lower": 10.943001875,
+      "q0.95.upper": 14.208078124999998,
+      "min": 10.831886,
+      "max": 14.232731
+     },
+     {
+      "x": 2033.0,
+      "median": 12.4751865,
+      "q0.5.lower": 11.92577225,
+      "q0.5.upper": 13.048420749999998,
+      "q0.8.lower": 11.663224699999999,
+      "q0.8.upper": 13.7947338,
+      "q0.95.lower": 11.3274196,
+      "q0.95.upper": 15.1468323,
+      "min": 11.137474,
+      "max": 15.152187
+     },
+     {
+      "x": 2034.0,
+      "median": 12.9109595,
+      "q0.5.lower": 12.173755750000002,
+      "q0.5.upper": 13.44044275,
+      "q0.8.lower": 11.9438952,
+      "q0.8.upper": 13.939734900000001,
+      "q0.95.lower": 11.71661275,
+      "q0.95.upper": 15.230012599999998,
+      "min": 10.962967,
+      "max": 15.61637
+     },
+     {
+      "x": 2035.0,
+      "median": 13.3324565,
+      "q0.5.lower": 12.570011749999999,
+      "q0.5.upper": 13.83948,
+      "q0.8.lower": 12.0835421,
+      "q0.8.upper": 14.517125,
+      "q0.95.lower": 11.570900349999999,
+      "q0.95.upper": 15.395458224999999,
+      "min": 11.532226,
+      "max": 15.816784
+     }
+    ],
+    "descriptiveSummary": [
+     "central 50% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.571 to 1.269 over 10 steps",
+     "central 80% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.8632 to 2.434 over 10 steps",
+     "central 95% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.9418 to 3.825 over 10 steps",
+     "method empirical quantiles across members at each step, linear interpolation between order statistics (Hyndman-Fan type 7)"
+    ]
+   }
+  ],
+  "html": "<table data-panel-id=\"trend\"><caption>SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right). — Synthetic trend of y</caption><thead><tr><th scope=\"col\">t (years from 2010)</th><th scope=\"col\">Fitted mean (runtime) (mg L-1)</th><th scope=\"col\">90% confidence lower (mg L-1)</th><th scope=\"col\">90% confidence upper (mg L-1)</th><th scope=\"col\">90% prediction lower (mg L-1)</th><th scope=\"col\">90% prediction upper (mg L-1)</th></tr></thead><tbody><tr><th scope=\"row\">0</th><td>2.06962</td><td>1.90987</td><td>2.22936</td><td>1.73485</td><td>2.40438</td></tr><tr><th scope=\"row\">1</th><td>2.56423</td><td>2.4247</td><td>2.70376</td><td>2.23864</td><td>2.88983</td></tr><tr><th scope=\"row\">2</th><td>3.05885</td><td>2.93791</td><td>3.17978</td><td>2.74077</td><td>3.37692</td></tr><tr><th scope=\"row\">3</th><td>3.55346</td><td>3.44861</td><td>3.65832</td><td>3.24115</td><td>3.86577</td></tr><tr><th scope=\"row\">4</th><td>4.04808</td><td>3.95548</td><td>4.14067</td><td>3.73966</td><td>4.35649</td></tr><tr><th scope=\"row\">5</th><td>4.54269</td><td>4.45688</td><td>4.6285</td><td>4.23625</td><td>4.84914</td></tr><tr><th scope=\"row\">6</th><td>5.03731</td><td>4.9515</td><td>5.12312</td><td>4.73086</td><td>5.34375</td></tr><tr><th scope=\"row\">7</th><td>5.53192</td><td>5.43933</td><td>5.62452</td><td>5.22351</td><td>5.84034</td></tr><tr><th scope=\"row\">8</th><td>6.02654</td><td>5.92168</td><td>6.13139</td><td>5.71423</td><td>6.33885</td></tr><tr><th scope=\"row\">9</th><td>6.52115</td><td>6.40022</td><td>6.64209</td><td>6.20308</td><td>6.83923</td></tr><tr><th scope=\"row\">10</th><td>7.01577</td><td>6.87624</td><td>7.1553</td><td>6.69017</td><td>7.34136</td></tr><tr><th scope=\"row\">11</th><td>7.51038</td><td>7.35064</td><td>7.67013</td><td>7.17562</td><td>7.84515</td></tr></tbody></table><p>90% confidence band (Student t, df 10; computed by the Workspace runtime): width 0.1716 to 0.3195 over 12 observed x values; method stats::predict.lm(interval = &quot;confidence&quot;): fit +/- qt((1 + level) / 2, df.residual) * se.fit</p><p>90% prediction band (Student t, df 10; computed by the Workspace runtime): width 0.6129 to 0.6695 over 12 observed x values; method stats::predict.lm(interval = &quot;prediction&quot;): fit +/- qt((1 + level) / 2, df.residual) * sqrt(se.fit^2 + sigma^2)</p><table data-panel-id=\"ensemble\"><caption>SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right). — Synthetic ensemble projection</caption><thead><tr><th scope=\"col\">Year</th><th scope=\"col\">Ensemble median (mg L-1)</th><th scope=\"col\">central 50% lower (mg L-1)</th><th scope=\"col\">central 50% upper (mg L-1)</th><th scope=\"col\">central 80% lower (mg L-1)</th><th scope=\"col\">central 80% upper (mg L-1)</th><th scope=\"col\">central 95% lower (mg L-1)</th><th scope=\"col\">central 95% upper (mg L-1)</th><th scope=\"col\">Member minimum (mg L-1)</th><th scope=\"col\">Member maximum (mg L-1)</th></tr></thead><tbody><tr><th scope=\"row\">2026</th><td>10.2477</td><td>10.0523</td><td>10.6233</td><td>9.90765</td><td>10.7708</td><td>9.86068</td><td>10.8025</td><td>9.82594</td><td>10.9389</td></tr><tr><th scope=\"row\">2027</th><td>10.6871</td><td>10.478</td><td>11.0517</td><td>10.1582</td><td>11.4542</td><td>9.70012</td><td>11.5955</td><td>9.64393</td><td>11.7078</td></tr><tr><th scope=\"row\">2028</th><td>10.9064</td><td>10.385</td><td>11.3723</td><td>10.2569</td><td>11.8581</td><td>10.2331</td><td>12.0239</td><td>10.0702</td><td>12.0672</td></tr><tr><th scope=\"row\">2029</th><td>11.0379</td><td>10.6674</td><td>11.8269</td><td>10.3649</td><td>12.2062</td><td>10.1711</td><td>12.3264</td><td>10.1481</td><td>12.3296</td></tr><tr><th scope=\"row\">2030</th><td>11.6487</td><td>11.2114</td><td>12.099</td><td>10.5716</td><td>12.5018</td><td>10.4488</td><td>12.9904</td><td>9.9552</td><td>13.1083</td></tr><tr><th scope=\"row\">2031</th><td>11.8111</td><td>11.4202</td><td>12.4676</td><td>10.9217</td><td>12.9923</td><td>10.3143</td><td>13.5681</td><td>10.1792</td><td>13.9506</td></tr><tr><th scope=\"row\">2032</th><td>12.2288</td><td>11.6374</td><td>12.9018</td><td>11.1866</td><td>13.258</td><td>10.943</td><td>14.2081</td><td>10.8319</td><td>14.2327</td></tr><tr><th scope=\"row\">2033</th><td>12.4752</td><td>11.9258</td><td>13.0484</td><td>11.6632</td><td>13.7947</td><td>11.3274</td><td>15.1468</td><td>11.1375</td><td>15.1522</td></tr><tr><th scope=\"row\">2034</th><td>12.911</td><td>12.1738</td><td>13.4404</td><td>11.9439</td><td>13.9397</td><td>11.7166</td><td>15.23</td><td>10.963</td><td>15.6164</td></tr><tr><th scope=\"row\">2035</th><td>13.3325</td><td>12.57</td><td>13.8395</td><td>12.0835</td><td>14.5171</td><td>11.5709</td><td>15.3955</td><td>11.5322</td><td>15.8168</td></tr></tbody></table><p>central 50% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.571 to 1.269 over 10 steps</p><p>central 80% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.8632 to 2.434 over 10 steps</p><p>central 95% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime): width 0.9418 to 3.825 over 10 steps</p><p>method empirical quantiles across members at each step, linear interpolation between order statistics (Hyndman-Fan type 7)</p>"
+ },
+ "staticExport": {
+  "requested": [],
+  "performed": false
+ },
+ "figureBundle": {
+  "schema": "sc.figure-bundle.v1",
+  "figureId": "SYN-FIG05-uncertainty-chart",
+  "version": 1,
+  "title": "SYNTHETIC runtime regression bands and ensemble quantile fan",
+  "project": {
+   "projectRef": "fig05-synthetic",
+   "ownerScope": "isolated-synthetic",
+   "environment": "local-review"
+  },
+  "publication": {
+   "kind": "none",
+   "target": "unassigned",
+   "bindingStatus": "synthetic-test"
+  },
+  "evidenceClass": "modelled",
+  "figureType": "evidence-chart",
+  "sourceRefs": [
+   {
+    "sourceId": "synthetic-fig05",
+    "provider": "SC-FIG-05.3 synthetic fixture",
+    "identityStatus": "source-identified",
+    "qualityStatus": "not-applicable",
+    "licenceStatus": "verified-for-use"
+   }
+  ],
+  "calculationRefs": [
+   {
+    "system": "workspace",
+    "runRef": "sc://workspace/runs/synthetic-fig05-band",
+    "method": "R stats::lm; bands from stats::predict.lm",
+    "outputSha256": "fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+    "assumptionRefs": [
+     "sha256:9b0272f0e8b4d9d1fe8d8139cc2d35667892f7d601e258eba43db5398c4ca512"
+    ],
+    "bandsSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+   },
+   {
+    "system": "workspace",
+    "runRef": "sc://workspace/runs/synthetic-fig05-fan",
+    "method": "Uncertainty runtime ensemble-quantile-bands",
+    "outputSha256": "afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809",
+    "assumptionRefs": [
+     "sha256:5c1c6ee51c3019038fe04d5c0b371b2d185eeab63751ef2e936567c3d26bbd22"
+    ],
+    "quantileBandsSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+   }
+  ],
+  "scientificContext": {
+   "interpretation": "Synthetic model outputs used only to accept uncertainty-first encodings.",
+   "limitations": [
+    "Synthetic values with no scientific meaning",
+    "Bands evaluated only at observed predictor values"
+   ],
+   "measurementStatus": "computed-from-specified-inputs",
+   "units": "mg L-1",
+   "claimIds": [],
+   "doNotInfer": [
+    "any real trend or projection"
+   ],
+   "uncertaintyNotation": "confidence-band, ensemble-quantile-fan, prediction-band",
+   "uncertaintyStatus": "runtime-computed",
+   "uncertaintyEncodings": [
+    "ensemble-quantile-fan",
+    "interval-ribbon",
+    "prediction-ribbon",
+    "table-columns"
+   ]
+  },
+  "rendering": {
+   "profileId": "sc-institutional-research-v1",
+   "renderer": "plotly",
+   "rendererVersion": "plotly.py 6.5.2; plotly.js 3.3.1",
+   "caption": "SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right).",
+   "altText": "A fitted line with a darker 90% confidence band inside a lighter dashed 90% prediction band; a median line inside nested 50%, 80% and 95% ensemble bands that widen over ten years.",
+   "palette": "colorblind-safe",
+   "accessibilityReview": "pending",
+   "visualizationSpecSha256": "3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9"
+  },
+  "artifacts": [
+   {
+    "format": "json",
+    "artifactRef": "sc://workbench/figure-adapters/plotly/3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9.json",
+    "sha256": "3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9",
+    "mediaType": "application/vnd.plotly.v1+json",
+    "width": 1000,
+    "height": 760,
+    "status": "local-review",
+    "revision": 1
+   }
+  ],
+  "provenance": {
+   "authorityOwner": "workbench",
+   "sourceSnapshotIds": [
+    "workspace-run:sc://workspace/runs/synthetic-fig05-band:fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+    "workspace-run:sc://workspace/runs/synthetic-fig05-fan:afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809"
+   ],
+   "generationRunId": "workbench.plotly-figure-adapter:3247b9aca4bb6d374c3349c2",
+   "generatedAt": "2026-11-12T07:59:24Z",
+   "reproducibility": "synthetic-fixture-tested",
+   "scriptSha256": "8f37b9f887d52c0d3600fbdbdf94de7a3b9238bd73b290511585ed8953a4cbe2",
+   "inputManifestSha256": "9af4b56136b34a5c9a42ecacbd5a1305a2f37863a79a8d98d2e6973cba13485a",
+   "lineageRefs": [
+    "workspace-runtime-records:None"
+   ]
+  },
+  "review": {
+   "scientific": "pending",
+   "visual": "pending",
+   "rights": "pending",
+   "sourceIntegrity": "pending",
+   "publication": "pending"
+  },
+  "labels": [
+   "synthetic"
+  ]
+ },
+ "source": {
+  "kind": "workspace-runtime-records",
+  "snapshotIds": [
+   "workspace-run:sc://workspace/runs/synthetic-fig05-band:fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+   "workspace-run:sc://workspace/runs/synthetic-fig05-fan:afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809"
+  ],
+  "inputManifestSha256": "9af4b56136b34a5c9a42ecacbd5a1305a2f37863a79a8d98d2e6973cba13485a"
+ },
+ "boundaries": {
+  "sourceJobsMutated": false,
+  "missingValuesFilled": false,
+  "uncertaintySemanticsInferred": false,
+  "evidenceClassPromoted": false,
+  "reviewDecisionsSetByAdapter": false,
+  "remoteAssetsReferenced": false,
+  "automaticCoreDispatchPerformed": false,
+  "publicationPerformed": false,
+  "uncertaintyComputedByAdapter": false
+ },
+ "uncertainty": [
+  {
+   "panelId": "trend",
+   "chart": "band",
+   "calculation": 0,
+   "status": "runtime-computed",
+   "consistency": [
+    "symmetric-student-t",
+    "prediction-confidence-residual-variance-constant",
+    "fit-equals-exported-coefficients"
+   ],
+   "record": [
+    {
+     "semantics": "confidence-band",
+     "predictor": "t",
+     "level": 0.9,
+     "method": "stats::predict.lm(interval = \"confidence\"): fit +/- qt((1 + level) / 2, df.residual) * se.fit",
+     "distribution": "Student t",
+     "degreesOfFreedom": 10.0,
+     "evaluatedAt": "observed predictor values",
+     "computedBy": "runtime",
+     "points": [
+      [
+       0.0,
+       2.06961538461538,
+       1.9098665906828,
+       2.22936417854797
+      ],
+      [
+       1.0,
+       2.56423076923077,
+       2.42470449997646,
+       2.70375703848508
+      ],
+      [
+       2.0,
+       3.05884615384615,
+       2.93790855865212,
+       3.17978374904019
+      ],
+      [
+       3.0,
+       3.55346153846154,
+       3.44860619276671,
+       3.65831688415637
+      ],
+      [
+       4.0,
+       4.04807692307692,
+       3.95548208207362,
+       4.14067176408022
+      ],
+      [
+       5.0,
+       4.54269230769231,
+       4.45688213865478,
+       4.62850247672983
+      ],
+      [
+       6.0,
+       5.03730769230769,
+       4.95149752327017,
+       5.12311786134522
+      ],
+      [
+       7.0,
+       5.53192307692308,
+       5.43932823591978,
+       5.62451791792638
+      ],
+      [
+       8.0,
+       6.02653846153846,
+       5.92168311584363,
+       6.13139380723329
+      ],
+      [
+       9.0,
+       6.52115384615385,
+       6.40021625095981,
+       6.64209144134788
+      ],
+      [
+       10.0,
+       7.01576923076923,
+       6.87624296151492,
+       7.15529550002354
+      ],
+      [
+       11.0,
+       7.51038461538461,
+       7.35063582145203,
+       7.6701334093172
+      ]
+     ]
+    },
+    {
+     "semantics": "prediction-band",
+     "predictor": "t",
+     "level": 0.9,
+     "method": "stats::predict.lm(interval = \"prediction\"): fit +/- qt((1 + level) / 2, df.residual) * sqrt(se.fit^2 + sigma^2)",
+     "distribution": "Student t",
+     "degreesOfFreedom": 10.0,
+     "evaluatedAt": "observed predictor values",
+     "computedBy": "runtime",
+     "points": [
+      [
+       0.0,
+       2.06961538461538,
+       1.73485476972673,
+       2.40437599950404
+      ],
+      [
+       1.0,
+       2.56423076923077,
+       2.23863505069359,
+       2.88982648776795
+      ],
+      [
+       2.0,
+       3.05884615384615,
+       2.74077242961067,
+       3.37691987808164
+      ],
+      [
+       3.0,
+       3.55346153846154,
+       3.24114817717435,
+       3.86577489974872
+      ],
+      [
+       4.0,
+       4.04807692307692,
+       3.73966356944556,
+       4.35649027670828
+      ],
+      [
+       5.0,
+       4.54269230769231,
+       4.23624757005114,
+       4.84913704533348
+      ],
+      [
+       6.0,
+       5.03730769230769,
+       4.73086295466652,
+       5.34375242994886
+      ],
+      [
+       7.0,
+       5.53192307692308,
+       5.22350972329172,
+       5.84033643055444
+      ],
+      [
+       8.0,
+       6.02653846153846,
+       5.71422510025128,
+       6.33885182282564
+      ],
+      [
+       9.0,
+       6.52115384615385,
+       6.20308012191836,
+       6.83922757038933
+      ],
+      [
+       10.0,
+       7.01576923076923,
+       6.69017351223205,
+       7.34136494930641
+      ],
+      [
+       11.0,
+       7.51038461538461,
+       7.17562400049596,
+       7.84514523027327
+      ]
+     ]
+    }
+   ],
+   "recordSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+  },
+  {
+   "panelId": "ensemble",
+   "chart": "fan",
+   "calculation": 1,
+   "status": "runtime-computed",
+   "consistency": [
+    "nested-quantiles",
+    "within-member-range"
+   ],
+   "record": {
+    "semantics": "ensemble-quantile-fan",
+    "centralLevels": [
+     0.5,
+     0.8,
+     0.95
+    ],
+    "memberCount": 40,
+    "method": "empirical quantiles across members at each step, linear interpolation between order statistics (Hyndman-Fan type 7)",
+    "evaluatedAt": "declared steps only",
+    "computedBy": "runtime",
+    "steps": [
+     {
+      "x": 2026.0,
+      "median": 10.247693,
+      "min": 9.825939,
+      "max": 10.938867,
+      "bands": [
+       [
+        10.05233775,
+        10.62331475
+       ],
+       [
+        9.9076495,
+        10.7708318
+       ],
+       [
+        9.860675325,
+        10.802459625
+       ]
+      ]
+     },
+     {
+      "x": 2027.0,
+      "median": 10.6871485,
+      "min": 9.643932,
+      "max": 11.707772,
+      "bands": [
+       [
+        10.478028,
+        11.051738
+       ],
+       [
+        10.1582226,
+        11.4541622
+       ],
+       [
+        9.700116375,
+        11.595452
+       ]
+      ]
+     },
+     {
+      "x": 2028.0,
+      "median": 10.906413,
+      "min": 10.070182,
+      "max": 12.067172,
+      "bands": [
+       [
+        10.38498625,
+        11.37226325
+       ],
+       [
+        10.256905999999999,
+        11.8580732
+       ],
+       [
+        10.233148374999999,
+        12.02387225
+       ]
+      ]
+     },
+     {
+      "x": 2029.0,
+      "median": 11.037911999999999,
+      "min": 10.14811,
+      "max": 12.329586,
+      "bands": [
+       [
+        10.66736975,
+        11.82693225
+       ],
+       [
+        10.364882199999998,
+        12.2061972
+       ],
+       [
+        10.171093675,
+        12.326423100000001
+       ]
+      ]
+     },
+     {
+      "x": 2030.0,
+      "median": 11.648691,
+      "min": 9.955202,
+      "max": 13.108253,
+      "bands": [
+       [
+        11.211439500000001,
+        12.098981
+       ],
+       [
+        10.5715867,
+        12.5018073
+       ],
+       [
+        10.448776250000002,
+        12.99039305
+       ]
+      ]
+     },
+     {
+      "x": 2031.0,
+      "median": 11.8110945,
+      "min": 10.179216,
+      "max": 13.950642,
+      "bands": [
+       [
+        11.42022,
+        12.46758275
+       ],
+       [
+        10.921734999999998,
+        12.9923038
+       ],
+       [
+        10.314332475,
+        13.56807735
+       ]
+      ]
+     },
+     {
+      "x": 2032.0,
+      "median": 12.228755,
+      "min": 10.831886,
+      "max": 14.232731,
+      "bands": [
+       [
+        11.63741175,
+        12.901792499999999
+       ],
+       [
+        11.1865971,
+        13.257987100000001
+       ],
+       [
+        10.943001875,
+        14.208078124999998
+       ]
+      ]
+     },
+     {
+      "x": 2033.0,
+      "median": 12.4751865,
+      "min": 11.137474,
+      "max": 15.152187,
+      "bands": [
+       [
+        11.92577225,
+        13.048420749999998
+       ],
+       [
+        11.663224699999999,
+        13.7947338
+       ],
+       [
+        11.3274196,
+        15.1468323
+       ]
+      ]
+     },
+     {
+      "x": 2034.0,
+      "median": 12.9109595,
+      "min": 10.962967,
+      "max": 15.61637,
+      "bands": [
+       [
+        12.173755750000002,
+        13.44044275
+       ],
+       [
+        11.9438952,
+        13.939734900000001
+       ],
+       [
+        11.71661275,
+        15.230012599999998
+       ]
+      ]
+     },
+     {
+      "x": 2035.0,
+      "median": 13.3324565,
+      "min": 11.532226,
+      "max": 15.816784,
+      "bands": [
+       [
+        12.570011749999999,
+        13.83948
+       ],
+       [
+        12.0835421,
+        14.517125
+       ],
+       [
+        11.570900349999999,
+        15.395458224999999
+       ]
+      ]
+     }
+    ]
+   },
+   "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+  }
+ ],
+ "resultHash": "52bcd0e2bea8549e6ef445c8ad59409e794c53df175e2a772fc6f85df4349f63"
+}

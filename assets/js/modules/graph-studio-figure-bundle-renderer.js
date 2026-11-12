@@ -135,6 +135,14 @@
     });
   }
 
+  function runtimeRecordHashes(b) {
+    return (b.calculationRefs || []).reduce(function (m, r) {
+      if (r && r.bandsSha256) { m.push(r.bandsSha256); }
+      if (r && r.quantileBandsSha256) { m.push(r.quantileBandsSha256); }
+      return m;
+    }, []);
+  }
+
   function isPng(bytes) {
     if (!bytes || bytes.length < PNG_MAGIC.length) { return false; }
     for (var k = 0; k < PNG_MAGIC.length; k++) { if (bytes[k] !== PNG_MAGIC[k]) { return false; } }
@@ -185,6 +193,10 @@
           var spec = match.json;
           var fig = spec && spec.data ? spec : (spec && spec.figure) || null;
           var policy = lib().figurePolicyErrors(fig, spec && spec.config, null);
+          // SC-FIG-05.3: runtime band/fan records travel as package files bound by the bundle's calculationRefs.
+          var recs = others.filter(function (p) { return p.canonical && runtimeRecordHashes(b).indexOf(p.canonical) >= 0; });
+          recs.forEach(function (p) { if (used.indexOf(p) < 0) { used.push(p); } });
+          policy = policy.concat(lib().uncertaintyErrors(fig, b, recs.map(function (p) { return { sha256: p.canonical, value: p.json }; })));
           if (plotlyVersion !== undefined && plotlyVersion !== lib().expectedPlotlyJs) {
             policy.push('loaded plotly.js is ' + String(plotlyVersion) + ', expected ' + lib().expectedPlotlyJs);
           }
@@ -394,6 +406,13 @@
     card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-interpretation' }, sc.interpretation));
     var lim = card.appendChild(el('ul', { 'class': 'sc-lab-figure-bundle-limitations', 'aria-label': 'Limitations' }));
     sc.limitations.forEach(function (l) { lim.appendChild(el('li', null, l)); });
+    // SC-FIG-05.3: say plainly whether uncertainty is shown and who computed it.
+    var US = { 'runtime-computed': 'Uncertainty: computed by the Workspace runtime and shown as given (' + (sc.uncertaintyNotation || 'see legend') + ').',
+      'unavailable': 'Uncertainty unavailable: the run reported none, so none is drawn or derived.',
+      'as-published': 'Uncertainty: as published by the cited source.', 'not-applicable': 'Uncertainty: not applicable to this figure.' };
+    if (US[sc.uncertaintyStatus]) {
+      card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-uncertainty', 'data-uncertainty-status': sc.uncertaintyStatus }, US[sc.uncertaintyStatus]));
+    }
     if (Array.isArray(sc.doNotInfer) && sc.doNotInfer.length) {
       card.appendChild(el('p', { 'class': 'sc-lab-figure-bundle-donotinfer' }, 'Do not infer: ' + sc.doNotInfer.join('; ')));
     }
