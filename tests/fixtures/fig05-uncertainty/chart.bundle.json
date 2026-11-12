@@ -1,0 +1,117 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-FIG05-uncertainty-chart",
+ "version": 1,
+ "title": "SYNTHETIC runtime regression bands and ensemble quantile fan",
+ "project": {
+  "projectRef": "fig05-synthetic",
+  "ownerScope": "isolated-synthetic",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "synthetic-test"
+ },
+ "evidenceClass": "modelled",
+ "figureType": "evidence-chart",
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic-fig05",
+   "provider": "SC-FIG-05.3 synthetic fixture",
+   "identityStatus": "source-identified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use"
+  }
+ ],
+ "calculationRefs": [
+  {
+   "system": "workspace",
+   "runRef": "sc://workspace/runs/synthetic-fig05-band",
+   "method": "R stats::lm; bands from stats::predict.lm",
+   "outputSha256": "fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+   "assumptionRefs": [
+    "sha256:9b0272f0e8b4d9d1fe8d8139cc2d35667892f7d601e258eba43db5398c4ca512"
+   ],
+   "bandsSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+  },
+  {
+   "system": "workspace",
+   "runRef": "sc://workspace/runs/synthetic-fig05-fan",
+   "method": "Uncertainty runtime ensemble-quantile-bands",
+   "outputSha256": "afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809",
+   "assumptionRefs": [
+    "sha256:5c1c6ee51c3019038fe04d5c0b371b2d185eeab63751ef2e936567c3d26bbd22"
+   ],
+   "quantileBandsSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+  }
+ ],
+ "scientificContext": {
+  "interpretation": "Synthetic model outputs used only to accept uncertainty-first encodings.",
+  "limitations": [
+   "Synthetic values with no scientific meaning",
+   "Bands evaluated only at observed predictor values"
+  ],
+  "measurementStatus": "computed-from-specified-inputs",
+  "units": "mg L-1",
+  "claimIds": [],
+  "doNotInfer": [
+   "any real trend or projection"
+  ],
+  "uncertaintyNotation": "confidence-band, ensemble-quantile-fan, prediction-band",
+  "uncertaintyStatus": "runtime-computed",
+  "uncertaintyEncodings": [
+   "ensemble-quantile-fan",
+   "interval-ribbon",
+   "prediction-ribbon",
+   "table-columns"
+  ]
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "plotly",
+  "rendererVersion": "plotly.py 6.5.2; plotly.js 3.3.1",
+  "caption": "SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right).",
+  "altText": "A fitted line with a darker 90% confidence band inside a lighter dashed 90% prediction band; a median line inside nested 50%, 80% and 95% ensemble bands that widen over ten years.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://workbench/figure-adapters/plotly/3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9.json",
+   "sha256": "3247b9aca4bb6d374c3349c22b9f35e249e24983fadbbc597cd1face6b7cd6d9",
+   "mediaType": "application/vnd.plotly.v1+json",
+   "width": 1000,
+   "height": 760,
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "workbench",
+  "sourceSnapshotIds": [
+   "workspace-run:sc://workspace/runs/synthetic-fig05-band:fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+   "workspace-run:sc://workspace/runs/synthetic-fig05-fan:afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809"
+  ],
+  "generationRunId": "workbench.plotly-figure-adapter:3247b9aca4bb6d374c3349c2",
+  "generatedAt": "2026-11-12T07:59:24Z",
+  "reproducibility": "synthetic-fixture-tested",
+  "scriptSha256": "8f37b9f887d52c0d3600fbdbdf94de7a3b9238bd73b290511585ed8953a4cbe2",
+  "inputManifestSha256": "9af4b56136b34a5c9a42ecacbd5a1305a2f37863a79a8d98d2e6973cba13485a",
+  "lineageRefs": [
+   "workspace-runtime-records:None"
+  ]
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ },
+ "labels": [
+  "synthetic"
+ ]
+}

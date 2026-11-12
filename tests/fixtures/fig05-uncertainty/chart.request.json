@@ -1,0 +1,477 @@
+{
+ "panels": [
+  {
+   "panelId": "trend",
+   "chart": "band",
+   "calculation": 0
+  },
+  {
+   "panelId": "ensemble",
+   "chart": "fan",
+   "calculation": 1
+  }
+ ],
+ "calculations": [
+  {
+   "label": "Synthetic trend of y",
+   "unit": "mg L-1",
+   "xLabel": "t (years from 2010)",
+   "method": "R stats::lm; bands from stats::predict.lm",
+   "runRef": "sc://workspace/runs/synthetic-fig05-band",
+   "values": {
+    "intercept": 2.06961538461538,
+    "slope": 0.494615384615385
+   },
+   "bands": [
+    {
+     "semantics": "confidence-band",
+     "predictor": "t",
+     "level": 0.9,
+     "method": "stats::predict.lm(interval = \"confidence\"): fit +/- qt((1 + level) / 2, df.residual) * se.fit",
+     "distribution": "Student t",
+     "degreesOfFreedom": 10.0,
+     "evaluatedAt": "observed predictor values",
+     "computedBy": "runtime",
+     "points": [
+      [
+       0.0,
+       2.06961538461538,
+       1.9098665906828,
+       2.22936417854797
+      ],
+      [
+       1.0,
+       2.56423076923077,
+       2.42470449997646,
+       2.70375703848508
+      ],
+      [
+       2.0,
+       3.05884615384615,
+       2.93790855865212,
+       3.17978374904019
+      ],
+      [
+       3.0,
+       3.55346153846154,
+       3.44860619276671,
+       3.65831688415637
+      ],
+      [
+       4.0,
+       4.04807692307692,
+       3.95548208207362,
+       4.14067176408022
+      ],
+      [
+       5.0,
+       4.54269230769231,
+       4.45688213865478,
+       4.62850247672983
+      ],
+      [
+       6.0,
+       5.03730769230769,
+       4.95149752327017,
+       5.12311786134522
+      ],
+      [
+       7.0,
+       5.53192307692308,
+       5.43932823591978,
+       5.62451791792638
+      ],
+      [
+       8.0,
+       6.02653846153846,
+       5.92168311584363,
+       6.13139380723329
+      ],
+      [
+       9.0,
+       6.52115384615385,
+       6.40021625095981,
+       6.64209144134788
+      ],
+      [
+       10.0,
+       7.01576923076923,
+       6.87624296151492,
+       7.15529550002354
+      ],
+      [
+       11.0,
+       7.51038461538461,
+       7.35063582145203,
+       7.6701334093172
+      ]
+     ]
+    },
+    {
+     "semantics": "prediction-band",
+     "predictor": "t",
+     "level": 0.9,
+     "method": "stats::predict.lm(interval = \"prediction\"): fit +/- qt((1 + level) / 2, df.residual) * sqrt(se.fit^2 + sigma^2)",
+     "distribution": "Student t",
+     "degreesOfFreedom": 10.0,
+     "evaluatedAt": "observed predictor values",
+     "computedBy": "runtime",
+     "points": [
+      [
+       0.0,
+       2.06961538461538,
+       1.73485476972673,
+       2.40437599950404
+      ],
+      [
+       1.0,
+       2.56423076923077,
+       2.23863505069359,
+       2.88982648776795
+      ],
+      [
+       2.0,
+       3.05884615384615,
+       2.74077242961067,
+       3.37691987808164
+      ],
+      [
+       3.0,
+       3.55346153846154,
+       3.24114817717435,
+       3.86577489974872
+      ],
+      [
+       4.0,
+       4.04807692307692,
+       3.73966356944556,
+       4.35649027670828
+      ],
+      [
+       5.0,
+       4.54269230769231,
+       4.23624757005114,
+       4.84913704533348
+      ],
+      [
+       6.0,
+       5.03730769230769,
+       4.73086295466652,
+       5.34375242994886
+      ],
+      [
+       7.0,
+       5.53192307692308,
+       5.22350972329172,
+       5.84033643055444
+      ],
+      [
+       8.0,
+       6.02653846153846,
+       5.71422510025128,
+       6.33885182282564
+      ],
+      [
+       9.0,
+       6.52115384615385,
+       6.20308012191836,
+       6.83922757038933
+      ],
+      [
+       10.0,
+       7.01576923076923,
+       6.69017351223205,
+       7.34136494930641
+      ],
+      [
+       11.0,
+       7.51038461538461,
+       7.17562400049596,
+       7.84514523027327
+      ]
+     ]
+    }
+   ],
+   "linearFit": {
+    "interceptKey": "intercept",
+    "slopeKey": "slope"
+   },
+   "assumptions": {
+    "declaredBy": "model-revision",
+    "checked": false,
+    "statements": [
+     "Linear mean in t",
+     "Independent errors",
+     "Constant error variance",
+     "Normal errors"
+    ]
+   }
+  },
+  {
+   "label": "Synthetic ensemble projection",
+   "unit": "mg L-1",
+   "xLabel": "Year",
+   "method": "Uncertainty runtime ensemble-quantile-bands",
+   "runRef": "sc://workspace/runs/synthetic-fig05-fan",
+   "values": {
+    "memberCount": 40.0
+   },
+   "quantileBands": {
+    "semantics": "ensemble-quantile-fan",
+    "centralLevels": [
+     0.5,
+     0.8,
+     0.95
+    ],
+    "memberCount": 40,
+    "method": "empirical quantiles across members at each step, linear interpolation between order statistics (Hyndman-Fan type 7)",
+    "evaluatedAt": "declared steps only",
+    "computedBy": "runtime",
+    "steps": [
+     {
+      "x": 2026.0,
+      "median": 10.247693,
+      "min": 9.825939,
+      "max": 10.938867,
+      "bands": [
+       [
+        10.05233775,
+        10.62331475
+       ],
+       [
+        9.9076495,
+        10.7708318
+       ],
+       [
+        9.860675325,
+        10.802459625
+       ]
+      ]
+     },
+     {
+      "x": 2027.0,
+      "median": 10.6871485,
+      "min": 9.643932,
+      "max": 11.707772,
+      "bands": [
+       [
+        10.478028,
+        11.051738
+       ],
+       [
+        10.1582226,
+        11.4541622
+       ],
+       [
+        9.700116375,
+        11.595452
+       ]
+      ]
+     },
+     {
+      "x": 2028.0,
+      "median": 10.906413,
+      "min": 10.070182,
+      "max": 12.067172,
+      "bands": [
+       [
+        10.38498625,
+        11.37226325
+       ],
+       [
+        10.256905999999999,
+        11.8580732
+       ],
+       [
+        10.233148374999999,
+        12.02387225
+       ]
+      ]
+     },
+     {
+      "x": 2029.0,
+      "median": 11.037911999999999,
+      "min": 10.14811,
+      "max": 12.329586,
+      "bands": [
+       [
+        10.66736975,
+        11.82693225
+       ],
+       [
+        10.364882199999998,
+        12.2061972
+       ],
+       [
+        10.171093675,
+        12.326423100000001
+       ]
+      ]
+     },
+     {
+      "x": 2030.0,
+      "median": 11.648691,
+      "min": 9.955202,
+      "max": 13.108253,
+      "bands": [
+       [
+        11.211439500000001,
+        12.098981
+       ],
+       [
+        10.5715867,
+        12.5018073
+       ],
+       [
+        10.448776250000002,
+        12.99039305
+       ]
+      ]
+     },
+     {
+      "x": 2031.0,
+      "median": 11.8110945,
+      "min": 10.179216,
+      "max": 13.950642,
+      "bands": [
+       [
+        11.42022,
+        12.46758275
+       ],
+       [
+        10.921734999999998,
+        12.9923038
+       ],
+       [
+        10.314332475,
+        13.56807735
+       ]
+      ]
+     },
+     {
+      "x": 2032.0,
+      "median": 12.228755,
+      "min": 10.831886,
+      "max": 14.232731,
+      "bands": [
+       [
+        11.63741175,
+        12.901792499999999
+       ],
+       [
+        11.1865971,
+        13.257987100000001
+       ],
+       [
+        10.943001875,
+        14.208078124999998
+       ]
+      ]
+     },
+     {
+      "x": 2033.0,
+      "median": 12.4751865,
+      "min": 11.137474,
+      "max": 15.152187,
+      "bands": [
+       [
+        11.92577225,
+        13.048420749999998
+       ],
+       [
+        11.663224699999999,
+        13.7947338
+       ],
+       [
+        11.3274196,
+        15.1468323
+       ]
+      ]
+     },
+     {
+      "x": 2034.0,
+      "median": 12.9109595,
+      "min": 10.962967,
+      "max": 15.61637,
+      "bands": [
+       [
+        12.173755750000002,
+        13.44044275
+       ],
+       [
+        11.9438952,
+        13.939734900000001
+       ],
+       [
+        11.71661275,
+        15.230012599999998
+       ]
+      ]
+     },
+     {
+      "x": 2035.0,
+      "median": 13.3324565,
+      "min": 11.532226,
+      "max": 15.816784,
+      "bands": [
+       [
+        12.570011749999999,
+        13.83948
+       ],
+       [
+        12.0835421,
+        14.517125
+       ],
+       [
+        11.570900349999999,
+        15.395458224999999
+       ]
+      ]
+     }
+    ]
+   },
+   "assumptions": {
+    "declaredBy": "model-revision",
+    "checked": false,
+    "statements": [
+     "Members are exchangeable draws of one synthetic process",
+     "Quantiles only at the declared steps"
+    ]
+   }
+  }
+ ],
+ "bundle": {
+  "figureId": "SYN-FIG05-uncertainty-chart",
+  "title": "SYNTHETIC runtime regression bands and ensemble quantile fan",
+  "projectRef": "fig05-synthetic",
+  "ownerScope": "isolated-synthetic",
+  "environment": "local-review",
+  "evidenceClass": "modelled",
+  "figureType": "evidence-chart",
+  "interpretation": "Synthetic model outputs used only to accept uncertainty-first encodings.",
+  "limitations": [
+   "Synthetic values with no scientific meaning",
+   "Bands evaluated only at observed predictor values"
+  ],
+  "measurementStatus": "computed-from-specified-inputs",
+  "doNotInfer": [
+   "any real trend or projection"
+  ],
+  "caption": "SYNTHETIC: runtime confidence and prediction bands (left) and an ensemble quantile fan (right).",
+  "altText": "A fitted line with a darker 90% confidence band inside a lighter dashed 90% prediction band; a median line inside nested 50%, 80% and 95% ensemble bands that widen over ten years.",
+  "sourceRefs": [
+   {
+    "sourceId": "synthetic-fig05",
+    "provider": "SC-FIG-05.3 synthetic fixture",
+    "identityStatus": "source-identified",
+    "qualityStatus": "not-applicable",
+    "licenceStatus": "verified-for-use"
+   }
+  ],
+  "labels": [
+   "synthetic"
+  ]
+ },
+ "width": 1000,
+ "height": 760
+}

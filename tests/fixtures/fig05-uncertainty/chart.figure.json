@@ -1,0 +1,659 @@
+{
+ "data": [
+  {
+   "xaxis": "x",
+   "yaxis": "y",
+   "mode": "lines",
+   "fill": "toself",
+   "fillcolor": "rgba(0,114,178,0.14)",
+   "x": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    6.0,
+    7.0,
+    8.0,
+    9.0,
+    10.0,
+    11.0,
+    11.0,
+    10.0,
+    9.0,
+    8.0,
+    7.0,
+    6.0,
+    5.0,
+    4.0,
+    3.0,
+    2.0,
+    1.0,
+    0.0
+   ],
+   "y": [
+    2.40437599950404,
+    2.88982648776795,
+    3.37691987808164,
+    3.86577489974872,
+    4.35649027670828,
+    4.84913704533348,
+    5.34375242994886,
+    5.84033643055444,
+    6.33885182282564,
+    6.83922757038933,
+    7.34136494930641,
+    7.84514523027327,
+    7.17562400049596,
+    6.69017351223205,
+    6.20308012191836,
+    5.71422510025128,
+    5.22350972329172,
+    4.73086295466652,
+    4.23624757005114,
+    3.73966356944556,
+    3.24114817717435,
+    2.74077242961067,
+    2.23863505069359,
+    1.73485476972673
+   ],
+   "line": {
+    "color": "rgba(0,114,178,0.64)",
+    "width": 1.2,
+    "dash": "dash"
+   },
+   "name": "90% prediction band (Student t, df 10; computed by the Workspace runtime)",
+   "hoverinfo": "skip",
+   "showlegend": true,
+   "meta": {
+    "scUncertainty": {
+     "panelId": "trend",
+     "role": "band",
+     "semantics": "prediction-band",
+     "level": 0.9,
+     "recordSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x",
+   "yaxis": "y",
+   "mode": "lines",
+   "fill": "toself",
+   "fillcolor": "rgba(0,114,178,0.34)",
+   "x": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    6.0,
+    7.0,
+    8.0,
+    9.0,
+    10.0,
+    11.0,
+    11.0,
+    10.0,
+    9.0,
+    8.0,
+    7.0,
+    6.0,
+    5.0,
+    4.0,
+    3.0,
+    2.0,
+    1.0,
+    0.0
+   ],
+   "y": [
+    2.22936417854797,
+    2.70375703848508,
+    3.17978374904019,
+    3.65831688415637,
+    4.14067176408022,
+    4.62850247672983,
+    5.12311786134522,
+    5.62451791792638,
+    6.13139380723329,
+    6.64209144134788,
+    7.15529550002354,
+    7.6701334093172,
+    7.35063582145203,
+    6.87624296151492,
+    6.40021625095981,
+    5.92168311584363,
+    5.43932823591978,
+    4.95149752327017,
+    4.45688213865478,
+    3.95548208207362,
+    3.44860619276671,
+    2.93790855865212,
+    2.42470449997646,
+    1.9098665906828
+   ],
+   "line": {
+    "color": "rgba(0,114,178,0.84)",
+    "width": 0.0,
+    "dash": "solid"
+   },
+   "name": "90% confidence band (Student t, df 10; computed by the Workspace runtime)",
+   "hoverinfo": "skip",
+   "showlegend": true,
+   "meta": {
+    "scUncertainty": {
+     "panelId": "trend",
+     "role": "band",
+     "semantics": "confidence-band",
+     "level": 0.9,
+     "recordSha256": "693088332d1f3460bc9b3f4938c65913003dc5485916eaaca3b72d6fee70c280"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x",
+   "yaxis": "y",
+   "mode": "lines",
+   "x": [
+    0.0,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    6.0,
+    7.0,
+    8.0,
+    9.0,
+    10.0,
+    11.0
+   ],
+   "y": [
+    2.06961538461538,
+    2.56423076923077,
+    3.05884615384615,
+    3.55346153846154,
+    4.04807692307692,
+    4.54269230769231,
+    5.03730769230769,
+    5.53192307692308,
+    6.02653846153846,
+    6.52115384615385,
+    7.01576923076923,
+    7.51038461538461
+   ],
+   "line": {
+    "color": "#000000",
+    "width": 2
+   },
+   "name": "Synthetic trend of y (runtime fit)",
+   "customdata": [
+    [
+     "1.73485 to 2.40438",
+     "1.90987 to 2.22936"
+    ],
+    [
+     "2.23864 to 2.88983",
+     "2.4247 to 2.70376"
+    ],
+    [
+     "2.74077 to 3.37692",
+     "2.93791 to 3.17978"
+    ],
+    [
+     "3.24115 to 3.86577",
+     "3.44861 to 3.65832"
+    ],
+    [
+     "3.73966 to 4.35649",
+     "3.95548 to 4.14067"
+    ],
+    [
+     "4.23625 to 4.84914",
+     "4.45688 to 4.6285"
+    ],
+    [
+     "4.73086 to 5.34375",
+     "4.9515 to 5.12312"
+    ],
+    [
+     "5.22351 to 5.84034",
+     "5.43933 to 5.62452"
+    ],
+    [
+     "5.71423 to 6.33885",
+     "5.92168 to 6.13139"
+    ],
+    [
+     "6.20308 to 6.83923",
+     "6.40022 to 6.64209"
+    ],
+    [
+     "6.69017 to 7.34136",
+     "6.87624 to 7.1553"
+    ],
+    [
+     "7.17562 to 7.84515",
+     "7.35064 to 7.67013"
+    ]
+   ],
+   "hovertemplate": "x: %{x}<br>Synthetic trend of y: %{y} mg L-1<br>90% prediction: %{customdata[0]}<br>90% confidence: %{customdata[1]}<extra></extra>",
+   "meta": {
+    "scUncertainty": {
+     "panelId": "trend",
+     "role": "fit"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x2",
+   "yaxis": "y2",
+   "mode": "lines",
+   "fill": "toself",
+   "fillcolor": "rgba(0,114,178,0.16)",
+   "x": [
+    2026.0,
+    2027.0,
+    2028.0,
+    2029.0,
+    2030.0,
+    2031.0,
+    2032.0,
+    2033.0,
+    2034.0,
+    2035.0,
+    2035.0,
+    2034.0,
+    2033.0,
+    2032.0,
+    2031.0,
+    2030.0,
+    2029.0,
+    2028.0,
+    2027.0,
+    2026.0
+   ],
+   "y": [
+    10.802459625,
+    11.595452,
+    12.02387225,
+    12.326423100000001,
+    12.99039305,
+    13.56807735,
+    14.208078124999998,
+    15.1468323,
+    15.230012599999998,
+    15.395458224999999,
+    11.570900349999999,
+    11.71661275,
+    11.3274196,
+    10.943001875,
+    10.314332475,
+    10.448776250000002,
+    10.171093675,
+    10.233148374999999,
+    9.700116375,
+    9.860675325
+   ],
+   "line": {
+    "width": 0
+   },
+   "name": "central 95% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+   "hoverinfo": "skip",
+   "meta": {
+    "scUncertainty": {
+     "panelId": "ensemble",
+     "role": "fan",
+     "level": 0.95,
+     "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x2",
+   "yaxis": "y2",
+   "mode": "lines",
+   "fill": "toself",
+   "fillcolor": "rgba(0,114,178,0.27)",
+   "x": [
+    2026.0,
+    2027.0,
+    2028.0,
+    2029.0,
+    2030.0,
+    2031.0,
+    2032.0,
+    2033.0,
+    2034.0,
+    2035.0,
+    2035.0,
+    2034.0,
+    2033.0,
+    2032.0,
+    2031.0,
+    2030.0,
+    2029.0,
+    2028.0,
+    2027.0,
+    2026.0
+   ],
+   "y": [
+    10.7708318,
+    11.4541622,
+    11.8580732,
+    12.2061972,
+    12.5018073,
+    12.9923038,
+    13.257987100000001,
+    13.7947338,
+    13.939734900000001,
+    14.517125,
+    12.0835421,
+    11.9438952,
+    11.663224699999999,
+    11.1865971,
+    10.921734999999998,
+    10.5715867,
+    10.364882199999998,
+    10.256905999999999,
+    10.1582226,
+    9.9076495
+   ],
+   "line": {
+    "width": 0
+   },
+   "name": "central 80% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+   "hoverinfo": "skip",
+   "meta": {
+    "scUncertainty": {
+     "panelId": "ensemble",
+     "role": "fan",
+     "level": 0.8,
+     "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x2",
+   "yaxis": "y2",
+   "mode": "lines",
+   "fill": "toself",
+   "fillcolor": "rgba(0,114,178,0.42)",
+   "x": [
+    2026.0,
+    2027.0,
+    2028.0,
+    2029.0,
+    2030.0,
+    2031.0,
+    2032.0,
+    2033.0,
+    2034.0,
+    2035.0,
+    2035.0,
+    2034.0,
+    2033.0,
+    2032.0,
+    2031.0,
+    2030.0,
+    2029.0,
+    2028.0,
+    2027.0,
+    2026.0
+   ],
+   "y": [
+    10.62331475,
+    11.051738,
+    11.37226325,
+    11.82693225,
+    12.098981,
+    12.46758275,
+    12.901792499999999,
+    13.048420749999998,
+    13.44044275,
+    13.83948,
+    12.570011749999999,
+    12.173755750000002,
+    11.92577225,
+    11.63741175,
+    11.42022,
+    11.211439500000001,
+    10.66736975,
+    10.38498625,
+    10.478028,
+    10.05233775
+   ],
+   "line": {
+    "width": 0
+   },
+   "name": "central 50% of 40 ensemble members (empirical quantiles; computed by the Workspace runtime)",
+   "hoverinfo": "skip",
+   "meta": {
+    "scUncertainty": {
+     "panelId": "ensemble",
+     "role": "fan",
+     "level": 0.5,
+     "recordSha256": "bc43c50777d370045530df7375a599ee944833dfe3919ade813d74cdbef9a0e1"
+    }
+   },
+   "type": "scatter"
+  },
+  {
+   "xaxis": "x2",
+   "yaxis": "y2",
+   "mode": "lines+markers",
+   "x": [
+    2026.0,
+    2027.0,
+    2028.0,
+    2029.0,
+    2030.0,
+    2031.0,
+    2032.0,
+    2033.0,
+    2034.0,
+    2035.0
+   ],
+   "y": [
+    10.247693,
+    10.6871485,
+    10.906413,
+    11.037911999999999,
+    11.648691,
+    11.8110945,
+    12.228755,
+    12.4751865,
+    12.9109595,
+    13.3324565
+   ],
+   "line": {
+    "color": "#000000",
+    "width": 2
+   },
+   "marker": {
+    "color": "#000000",
+    "size": 5,
+    "symbol": "diamond"
+   },
+   "name": "Synthetic ensemble projection (ensemble median)",
+   "customdata": [
+    [
+     "10.0523 to 10.6233",
+     "9.90765 to 10.7708",
+     "9.86068 to 10.8025"
+    ],
+    [
+     "10.478 to 11.0517",
+     "10.1582 to 11.4542",
+     "9.70012 to 11.5955"
+    ],
+    [
+     "10.385 to 11.3723",
+     "10.2569 to 11.8581",
+     "10.2331 to 12.0239"
+    ],
+    [
+     "10.6674 to 11.8269",
+     "10.3649 to 12.2062",
+     "10.1711 to 12.3264"
+    ],
+    [
+     "11.2114 to 12.099",
+     "10.5716 to 12.5018",
+     "10.4488 to 12.9904"
+    ],
+    [
+     "11.4202 to 12.4676",
+     "10.9217 to 12.9923",
+     "10.3143 to 13.5681"
+    ],
+    [
+     "11.6374 to 12.9018",
+     "11.1866 to 13.258",
+     "10.943 to 14.2081"
+    ],
+    [
+     "11.9258 to 13.0484",
+     "11.6632 to 13.7947",
+     "11.3274 to 15.1468"
+    ],
+    [
+     "12.1738 to 13.4404",
+     "11.9439 to 13.9397",
+     "11.7166 to 15.23"
+    ],
+    [
+     "12.57 to 13.8395",
+     "12.0835 to 14.5171",
+     "11.5709 to 15.3955"
+    ]
+   ],
+   "hovertemplate": "step: %{x}<br>median: %{y} mg L-1<br>central 50%: %{customdata[0]}<br>central 80%: %{customdata[1]}<br>central 95%: %{customdata[2]}<extra></extra>",
+   "meta": {
+    "scUncertainty": {
+     "panelId": "ensemble",
+     "role": "median"
+    }
+   },
+   "type": "scatter"
+  }
+ ],
+ "layout": {
+  "title": {
+   "text": "SYNTHETIC runtime regression bands and ensemble quantile fan<br><sup>Evidence: modelled; computed from specified inputs, not measured</sup>",
+   "x": 0.0,
+   "xanchor": "left"
+  },
+  "width": 1000,
+  "height": 760,
+  "font": {
+   "family": "Arial, Helvetica, sans-serif",
+   "size": 13,
+   "color": "#1a1a1a"
+  },
+  "paper_bgcolor": "#ffffff",
+  "plot_bgcolor": "#ffffff",
+  "margin": {
+   "l": 80,
+   "r": 60,
+   "t": 100,
+   "b": 80
+  },
+  "showlegend": true,
+  "legend": {
+   "orientation": "h",
+   "y": -0.18
+  },
+  "annotations": [
+   {
+    "text": "<b>Synthetic trend of y</b>",
+    "showarrow": false,
+    "xref": "paper",
+    "yref": "paper",
+    "x": 0,
+    "y": 1.0,
+    "xanchor": "left",
+    "yanchor": "bottom",
+    "font": {
+     "size": 13
+    }
+   },
+   {
+    "text": "<b>Synthetic ensemble projection</b>",
+    "showarrow": false,
+    "xref": "paper",
+    "yref": "paper",
+    "x": 0,
+    "y": 0.42000000000000004,
+    "xanchor": "left",
+    "yanchor": "bottom",
+    "font": {
+     "size": 13
+    }
+   }
+  ],
+  "xaxis": {
+   "title": {
+    "text": ""
+   },
+   "anchor": "y",
+   "automargin": true,
+   "showline": true,
+   "linecolor": "#333333",
+   "ticks": "outside",
+   "zeroline": false
+  },
+  "yaxis": {
+   "title": {
+    "text": "mg L-1"
+   },
+   "domain": [
+    0.5800000000000001,
+    1.0
+   ],
+   "anchor": "x",
+   "automargin": true,
+   "showline": true,
+   "linecolor": "#333333",
+   "ticks": "outside",
+   "gridcolor": "#e5e5e5",
+   "zeroline": true,
+   "zerolinecolor": "#999999"
+  },
+  "xaxis2": {
+   "title": {
+    "text": "Year"
+   },
+   "anchor": "y2",
+   "automargin": true,
+   "showline": true,
+   "linecolor": "#333333",
+   "ticks": "outside",
+   "zeroline": false
+  },
+  "yaxis2": {
+   "title": {
+    "text": "mg L-1"
+   },
+   "domain": [
+    5.551115123125783e-17,
+    0.42000000000000004
+   ],
+   "anchor": "x2",
+   "automargin": true,
+   "showline": true,
+   "linecolor": "#333333",
+   "ticks": "outside",
+   "gridcolor": "#e5e5e5",
+   "zeroline": true,
+   "zerolinecolor": "#999999"
+  }
+ }
+}

@@ -1,0 +1,796 @@
+{
+ "ok": true,
+ "schema": "sc-workbench-maplibre-figure-adapter/1.0",
+ "version": "14.0.0",
+ "buildId": "FIG-04",
+ "maplibre": {
+  "view": {
+   "schema": "sc-lab-maplibre-view/1.1",
+   "title": "SYNTHETIC field soil organic carbon and its runtime-propagated uncertainty",
+   "objects": [
+    {
+     "bbox": [
+      -6.62,
+      52.3,
+      -6.548,
+      52.352
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:a99c6f9b7907d0ece90b4c1ffa1cf99f053d57fbd9868c039b7df29b10c2065c",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.62,
+         52.3
+        ],
+        [
+         -6.548,
+         52.3
+        ],
+        [
+         -6.548,
+         52.352
+        ],
+        [
+         -6.62,
+         52.352
+        ],
+        [
+         -6.62,
+         52.3
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-c851f45db4e168df59d61dec",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F1",
+      "soc": 26.41328247942338,
+      "soc_sd": 0.5961502247211333,
+      "title": "Field WX-F1 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    },
+    {
+     "bbox": [
+      -6.54,
+      52.3,
+      -6.468,
+      52.352
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:009ee99e5e713eab85a64e04f1e6354fb6f4070361fecedb72069ae9d37e507f",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.54,
+         52.3
+        ],
+        [
+         -6.468,
+         52.3
+        ],
+        [
+         -6.468,
+         52.352
+        ],
+        [
+         -6.54,
+         52.352
+        ],
+        [
+         -6.54,
+         52.3
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-3cca1f2244a8ca07fa44ba5b",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F2",
+      "soc": 28.90264987504437,
+      "soc_sd": 1.4056524574934983,
+      "title": "Field WX-F2 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    },
+    {
+     "bbox": [
+      -6.46,
+      52.3,
+      -6.388,
+      52.352
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:7f453abb56ecb126ae4f12f183ad9318a085ec09cd89e87af969b099123ed3b2",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.46,
+         52.3
+        ],
+        [
+         -6.388,
+         52.3
+        ],
+        [
+         -6.388,
+         52.352
+        ],
+        [
+         -6.46,
+         52.352
+        ],
+        [
+         -6.46,
+         52.3
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-c4f8417cc17a5ef8c88b1b6a",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F3",
+      "soc": 31.199844798699313,
+      "soc_sd": 0.8622351619830956,
+      "title": "Field WX-F3 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    },
+    {
+     "bbox": [
+      -6.62,
+      52.36,
+      -6.548,
+      52.412
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:d16880ab4d2aed05dd2329894e3d63f3a5cd4306e87e5834e93eb01ebe01803b",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.62,
+         52.36
+        ],
+        [
+         -6.548,
+         52.36
+        ],
+        [
+         -6.548,
+         52.412
+        ],
+        [
+         -6.62,
+         52.412
+        ],
+        [
+         -6.62,
+         52.36
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-c1b6e3e9a4f4c8c3a7b76d15",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F4",
+      "soc": 27.725374973975715,
+      "soc_sd": 2.1237906820884467,
+      "title": "Field WX-F4 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    },
+    {
+     "bbox": [
+      -6.54,
+      52.36,
+      -6.468,
+      52.412
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:d556f35616ef29dce9406a4d7c1845402f7f7e6766cdc19813c8439449feb10c",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.54,
+         52.36
+        ],
+        [
+         -6.468,
+         52.36
+        ],
+        [
+         -6.468,
+         52.412
+        ],
+        [
+         -6.54,
+         52.412
+        ],
+        [
+         -6.54,
+         52.36
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-ee1533c59211ce0e799ae59c",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F5",
+      "soc": 33.510665875220845,
+      "soc_sd": 1.087329707874694,
+      "title": "Field WX-F5 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    },
+    {
+     "bbox": [
+      -6.46,
+      52.36,
+      -6.388,
+      52.412
+     ],
+     "capability_id": "earth-environment",
+     "content_digest": "sha256:2cb8b014a8828fc758d3a9773614b53ac40ed528b38e95e1635b07656f82ffe2",
+     "crs": "EPSG:4326",
+     "domain": "agriculture",
+     "geometry": {
+      "coordinates": [
+       [
+        [
+         -6.46,
+         52.36
+        ],
+        [
+         -6.388,
+         52.36
+        ],
+        [
+         -6.388,
+         52.412
+        ],
+        [
+         -6.46,
+         52.412
+        ],
+        [
+         -6.46,
+         52.36
+        ]
+       ]
+      ],
+      "type": "Polygon"
+     },
+     "layer_id": "agriculture-food-systems",
+     "object_id": "se-9e4c3d05ae14fbc66f924019",
+     "observed_at": "2026-11-01T00:00:00+00:00",
+     "properties": {
+      "evidence_class": "modelled",
+      "field_id": "WX-F6",
+      "soc": 29.0,
+      "title": "Field WX-F6 (synthetic)"
+     },
+     "provenance": {
+      "normalization_contract": "1.0.0",
+      "source_crs": "EPSG:4326",
+      "transformations": [
+       {
+        "note": "fixture only; invented values",
+        "step": "synthetic-fig05-soc-model"
+       }
+      ]
+     },
+     "quality": {},
+     "schema": "sc-site-intelligence-spatial-evidence-object/2.0",
+     "source": {
+      "authority": "sc-test-fixture",
+      "license": "CC0-1.0",
+      "record_id": null,
+      "retrieved_at": null,
+      "source_id": "synthetic:fig05-soc-model",
+      "url": null
+     },
+     "valid_time": {
+      "end": null,
+      "start": null
+     },
+     "version": "4.56.1",
+     "visibility": "public"
+    }
+   ],
+   "evidenceField": "evidence_class",
+   "fields": {
+    "field_id": {
+     "label": "Field",
+     "unit": "category"
+    },
+    "soc": {
+     "label": "Soil organic carbon",
+     "unit": "g kg-1",
+     "uncertainty": "soc_sd",
+     "uncertaintyKind": "standard-deviation"
+    }
+   },
+   "layers": [
+    {
+     "id": "soc-value",
+     "geometry": "polygon",
+     "where": {
+      "property": "evidence_class",
+      "equals": "modelled"
+     },
+     "style": {
+      "opacity": 0.8,
+      "outlineColor": "#333333",
+      "outlineWidth": 1
+     },
+     "classify": {
+      "field": "soc",
+      "breaks": [
+       27.0,
+       29.0,
+       31.0
+      ],
+      "colors": [
+       "#440154",
+       "#3b528b",
+       "#21918c",
+       "#5ec962"
+      ]
+     }
+    },
+    {
+     "id": "soc-uncertainty",
+     "geometry": "polygon",
+     "where": {
+      "property": "evidence_class",
+      "equals": "modelled"
+     },
+     "style": {
+      "opacity": 0.85,
+      "outlineColor": "#333333",
+      "outlineWidth": 1
+     },
+     "classify": {
+      "field": "soc",
+      "breaks": [
+       0.8,
+       1.2,
+       1.8
+      ],
+      "colors": [
+       "#00224e",
+       "#414d6b",
+       "#7c7b78",
+       "#bcaf6f"
+      ]
+     },
+     "encode": "uncertainty",
+     "uncertaintyRef": 0
+    }
+   ],
+   "legend": [
+    {
+     "layer": "soc-value",
+     "label": "Modelled soil organic carbon (synthetic)"
+    },
+    {
+     "layer": "soc-uncertainty",
+     "label": "Uncertainty of modelled soil organic carbon (runtime Monte Carlo SD)"
+    }
+   ],
+   "basemap": null,
+   "camera": {
+    "bbox": [
+     -6.62,
+     52.3,
+     -6.388,
+     52.412
+    ],
+    "maxZoom": 12
+   }
+  },
+  "specSha256": "e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce",
+  "mediaType": "application/vnd.sc.maplibre-view.v1+json",
+  "maplibreVersion": "5.24.0"
+ },
+ "accessibleAlternative": {
+  "caption": "SYNTHETIC: modelled field SOC classes and, as a toggle, the runtime-propagated SOC standard deviation.",
+  "columns": [
+   "Object",
+   "Geometry",
+   "Evidence class",
+   "Field",
+   "Soil organic carbon (g kg-1)",
+   "Soil organic carbon standard-deviation (g kg-1)",
+   "Observed or valid time",
+   "Source",
+   "Licence (as recorded by SI)",
+   "SI digest"
+  ],
+  "rows": [
+   [
+    "se-c851f45db4e168df59d61dec",
+    "Polygon",
+    "modelled",
+    "WX-F1",
+    "26.41328247942338",
+    "0.5961502247211333",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:a99c6f9b7907d0ece90b4c1ffa1cf99f053d57fbd9868c039b7df29b10c2065c"
+   ],
+   [
+    "se-3cca1f2244a8ca07fa44ba5b",
+    "Polygon",
+    "modelled",
+    "WX-F2",
+    "28.90264987504437",
+    "1.4056524574934983",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:009ee99e5e713eab85a64e04f1e6354fb6f4070361fecedb72069ae9d37e507f"
+   ],
+   [
+    "se-c4f8417cc17a5ef8c88b1b6a",
+    "Polygon",
+    "modelled",
+    "WX-F3",
+    "31.199844798699313",
+    "0.8622351619830956",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:7f453abb56ecb126ae4f12f183ad9318a085ec09cd89e87af969b099123ed3b2"
+   ],
+   [
+    "se-c1b6e3e9a4f4c8c3a7b76d15",
+    "Polygon",
+    "modelled",
+    "WX-F4",
+    "27.725374973975715",
+    "2.1237906820884467",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:d16880ab4d2aed05dd2329894e3d63f3a5cd4306e87e5834e93eb01ebe01803b"
+   ],
+   [
+    "se-ee1533c59211ce0e799ae59c",
+    "Polygon",
+    "modelled",
+    "WX-F5",
+    "33.510665875220845",
+    "1.087329707874694",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:d556f35616ef29dce9406a4d7c1845402f7f7e6766cdc19813c8439449feb10c"
+   ],
+   [
+    "se-9e4c3d05ae14fbc66f924019",
+    "Polygon",
+    "modelled",
+    "WX-F6",
+    "29.0",
+    "not reported",
+    "2026-11-01T00:00:00+00:00",
+    "synthetic:fig05-soc-model",
+    "CC0-1.0",
+    "sha256:2cb8b014a8828fc758d3a9773614b53ac40ed528b38e95e1635b07656f82ffe2"
+   ]
+  ]
+ },
+ "figureBundle": {
+  "schema": "sc.figure-bundle.v1",
+  "figureId": "SYN-FIG05-uncertainty-map",
+  "version": 1,
+  "title": "SYNTHETIC soil organic carbon with runtime uncertainty layer",
+  "project": {
+   "projectRef": "fig05-synthetic",
+   "ownerScope": "isolated-synthetic",
+   "environment": "local-review"
+  },
+  "publication": {
+   "kind": "none",
+   "target": "unassigned",
+   "bindingStatus": "synthetic-test"
+  },
+  "evidenceClass": "modelled",
+  "figureType": "spatial-map",
+  "sourceRefs": [
+   {
+    "sourceId": "synthetic:fig05-soc-model",
+    "provider": "SC-FIG-05.3 synthetic fixture via Site Intelligence normaliser",
+    "identityStatus": "source-hash-verified",
+    "qualityStatus": "not-applicable",
+    "licenceStatus": "verified-for-use",
+    "notes": "CC0-1.0 synthetic fixture",
+    "sha256": "c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+    "crs": "EPSG:4326"
+   }
+  ],
+  "calculationRefs": [
+   {
+    "system": "workspace",
+    "runRef": "sc://workspace/runs/synthetic-fig05-map",
+    "method": "Uncertainty runtime correlated-normal, 4000 seeded draws",
+    "outputSha256": "13ee16cf0ebb214be8b729eab67f2e6f4bf95bd6519cb4ebad823044effe59b3",
+    "assumptionRefs": [
+     "sha256:bc05bbd764f90c4176c10e917fc6c6136a59453e2748e1fb0620feb28912b137"
+    ],
+    "uncertaintySha256": "6e3d96c4312735c06254df179d430086583e01f93d66043ecc18c94a78fb60de"
+   }
+  ],
+  "scientificContext": {
+   "interpretation": "Synthetic map used only to accept the per-field uncertainty layer.",
+   "limitations": [
+    "Invented parcels and values",
+    "One field has no runtime uncertainty and is shown as not reported"
+   ],
+   "measurementStatus": "computed-from-specified-inputs",
+   "units": "g kg-1",
+   "doNotInfer": [
+    "any real Wexford soil carbon value"
+   ],
+   "uncertaintyNotation": "standard-deviation",
+   "uncertaintyStatus": "runtime-computed",
+   "uncertaintyEncodings": [
+    "map-uncertainty-layer",
+    "table-columns"
+   ]
+  },
+  "spatial": {
+   "geometryStatus": "illustrative",
+   "crs": "EPSG:4326",
+   "extentStatus": "regional-rectangle",
+   "bbox": [
+    -6.62,
+    52.3,
+    -6.388,
+    52.412
+   ],
+   "siPackage": {
+    "package_id": "spatial-package:5cf1a78d83a1a2aaf9a9046d",
+    "package_digest": "sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8",
+    "manifest_digest": "sha256:0186d566743fea6476037efc2f2c162a5664e6731c35bbda120100ae8e3fe44d"
+   },
+   "objectCount": 6
+  },
+  "rendering": {
+   "profileId": "sc-institutional-research-v1",
+   "renderer": "maplibre-gl",
+   "rendererVersion": "maplibre-gl 5.24.0 (Lab Graph Studio, SC-FIG-04)",
+   "caption": "SYNTHETIC: modelled field SOC classes and, as a toggle, the runtime-propagated SOC standard deviation.",
+   "altText": "Six field parcels shaded by modelled SOC class; a second layer shades five by uncertainty, the sixth not reported.",
+   "palette": "colorblind-safe",
+   "accessibilityReview": "pending",
+   "visualizationSpecSha256": "e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce"
+  },
+  "artifacts": [
+   {
+    "format": "json",
+    "artifactRef": "sc://workbench/figure-adapters/maplibre/e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce.json",
+    "sha256": "e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce",
+    "mediaType": "application/vnd.sc.maplibre-view.v1+json",
+    "status": "local-review",
+    "revision": 1
+   }
+  ],
+  "provenance": {
+   "authorityOwner": "workbench",
+   "sourceSnapshotIds": [
+    "dataset:fig05-uncertainty-map:c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+    "site-intelligence-package:sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8"
+   ],
+   "generationRunId": "workbench.maplibre-figure-adapter:e174dae4bb8513c1b0cc7c68",
+   "generatedAt": "2026-11-12T07:59:24Z",
+   "reproducibility": "synthetic-fixture-tested",
+   "scriptSha256": "e11ea52c007b94aae3075a91287694c407af294bbf89099059b2b634605b3dcd",
+   "inputManifestSha256": "c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+   "lineageRefs": [
+    "authorized-dataset:c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+    "site-intelligence-package:sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8"
+   ]
+  },
+  "review": {
+   "scientific": "pending",
+   "visual": "pending",
+   "rights": "pending",
+   "sourceIntegrity": "pending",
+   "publication": "pending"
+  },
+  "labels": [
+   "synthetic"
+  ]
+ },
+ "verification": {
+  "datasetSha256": "c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+  "siPackage": {
+   "package_id": "spatial-package:5cf1a78d83a1a2aaf9a9046d",
+   "package_digest": "sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8",
+   "manifest_digest": "sha256:0186d566743fea6476037efc2f2c162a5664e6731c35bbda120100ae8e3fe44d"
+  },
+  "objects": 6,
+  "rowsVerified": 6,
+  "siDigestsRecomputed": true,
+  "manifestMatched": true,
+  "sources": {
+   "synthetic:fig05-soc-model": "verified-for-use"
+  }
+ },
+ "boundaries": {
+  "siObjectsModified": false,
+  "reprojected": false,
+  "evidenceClassPromoted": false,
+  "missingValuesFilled": false,
+  "basemapOrTilesReferenced": false,
+  "earthObservationLayers": false,
+  "publicationRightsInferred": false,
+  "reviewDecisionsSetByAdapter": false,
+  "publicationPerformed": false
+ },
+ "resultHash": "69af3c6b08e92bd237bcb43c4abce8e3a8990fa06e5f0a066e35a2eddc09ee6c"
+}

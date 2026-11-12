@@ -124,6 +124,10 @@
         item.appendChild(el('p', { 'class': 'sc-lab-fig04-legend-field' }, g.field));
         var ul = item.appendChild(el('ul'));
         g.classes.forEach(function (c) { var li = ul.appendChild(el('li')); li.appendChild(swatch(c.color)); li.appendChild(el('span', null, c.label)); });
+        if (g.encode === 'uncertainty') {
+          item.setAttribute('data-legend-encode', 'uncertainty');
+          item.appendChild(el('p', { 'class': 'sc-lab-fig02a-help' }, g.note));
+        }
       } else if (g.ramp) {
         item.appendChild(el('p', { 'class': 'sc-lab-fig04-legend-field' }, g.field));
         var ramp = item.appendChild(el('p', { 'class': 'sc-lab-fig04-ramp' }));
@@ -264,7 +268,11 @@
         measurementStatus: bundle.scientificContext && bundle.scientificContext.measurementStatus || null },
       view: { mediaType: MEDIA, sha256: bundle.artifacts[0].sha256, schema: spec.schema },
       sources: bundle.sourceRefs.map(function (s) { return { sourceId: s.sourceId, sha256: s.sha256 || null, licenceStatus: s.licenceStatus }; }),
-      calculations: (bundle.calculationRefs || []).map(function (c) { return { runRef: c.runRef, outputSha256: c.outputSha256, intervalsSha256: c.intervalsSha256 || null }; }),
+      calculations: (bundle.calculationRefs || []).map(function (c) {
+        var r = { runRef: c.runRef, outputSha256: c.outputSha256, intervalsSha256: c.intervalsSha256 || null };
+        if (c.uncertaintySha256) { r.uncertaintySha256 = c.uncertaintySha256; } // SC-FIG-05.3 uncertainty layer binding
+        return r;
+      }),
       state: state,
       legend: legend,
       units: (bundle.scientificContext && bundle.scientificContext.units) || '',
@@ -278,7 +286,11 @@
   function legendLines(spec) {
     return contract().legendModel(spec).map(function (g) {
       var head = g.label + (g.evidenceClass ? ' (' + g.evidenceClass + ')' : '');
-      if (g.classes) { return { layer: g.layer, title: head, field: g.field, items: g.classes.map(function (c) { return { color: c.color, label: c.label }; }) }; }
+      if (g.classes) {
+        var line = { layer: g.layer, title: head, field: g.field, items: g.classes.map(function (c) { return { color: c.color, label: c.label }; }) };
+        if (g.note) { line.note = g.note; } // only uncertainty layers carry one; the receipt never holds undefined
+        return line;
+      }
       if (g.ramp) { return { layer: g.layer, title: head, field: g.field, items: g.ramp.map(function (c, i) { return { color: c, label: i === 0 ? g.rampLabels[0] : (i === g.ramp.length - 1 ? g.rampLabels[1] : '') }; }), note: g.note }; }
       return { layer: g.layer, title: head, items: [{ color: g.color, label: g.geometry }] };
     });
@@ -447,11 +459,12 @@
     var exportOut = exportBox.appendChild(el('output', { 'aria-live': 'polite', 'data-export-status': '' }));
     var tables = wrap.appendChild(el('details', { 'class': 'sc-lab-fig02a-data' }));
     tables.appendChild(el('summary', null, 'Data table (accessible alternative)'));
-    tables.appendChild(table(C.tableModel(spec, bundle.rendering.caption)));
+    // Wide tables scroll inside their own box so narrow screens never scroll the page sideways.
+    tables.appendChild(el('div', { 'class': 'sc-lab-fig02a-tables' })).appendChild(table(C.tableModel(spec, bundle.rendering.caption)));
     if (v11 && spec.comparison) {
       var ct = wrap.appendChild(el('details', { 'class': 'sc-lab-fig02a-data', 'data-comparison-table': '' }));
       ct.appendChild(el('summary', null, 'Comparison table: ' + spec.comparison.label));
-      ct.appendChild(table(C.comparisonModel(spec)));
+      ct.appendChild(el('div', { 'class': 'sc-lab-fig02a-tables' })).appendChild(table(C.comparisonModel(spec)));
     }
 
     // Layer selection.

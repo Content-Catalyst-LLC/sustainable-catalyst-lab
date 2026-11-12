@@ -1,9 +1,10 @@
 <?php
 /**
- * SC-FIG-04.1 — Lab / Research bridge pairing guard.
+ * SC-FIG-04.1 / SC-FIG-05.3 — Lab / Research bridge pairing guard.
  *
- * Lab 0.163.1.8 renders the SC-FIG-04 views that sc-research-bridge 0.4.x releases. Bridge 0.3.x pins
- * Lab 0.163.1.7, so the two must not run together:
+ * Each Research bridge series from 0.3 on pins one Lab release: 0.3.x → 0.163.1.7, 0.4.x → 0.163.1.8
+ * (SC-FIG-04/04.1) and 0.5.x → 0.163.1.9 (SC-FIG-05.3 runtime uncertainty). A bridge that pins another Lab
+ * release, or a later series this Lab does not know, must not run beside it:
  *
  * - Lab refuses to activate while a 0.3.x bridge is active;
  * - while Lab is active, activating a 0.3.x bridge is refused;
@@ -17,7 +18,8 @@ if (!defined('ABSPATH')) { exit; }
 
 final class SC_Lab_Plugin_Compatibility_FIG041 {
     const BRIDGE_NAME = 'Sustainable Catalyst Research Bridge';
-    const INCOMPATIBLE_BRIDGE = '/^0\.3\./';
+    /** Bridge series → the Lab release it pins. A series of 0.3 or later that is not listed fails closed. */
+    const BRIDGE_LAB_PINS = array('0.3' => '0.163.1.7', '0.4' => '0.163.1.8', '0.5' => '0.163.1.9');
 
     private static $incompatible = false;
 
@@ -35,7 +37,12 @@ final class SC_Lab_Plugin_Compatibility_FIG041 {
     }
 
     private static function pins_another_lab($header) {
-        return is_array($header) && $header['Name'] === self::BRIDGE_NAME && preg_match(self::INCOMPATIBLE_BRIDGE, (string) $header['Version']) === 1;
+        if (!is_array($header) || $header['Name'] !== self::BRIDGE_NAME) { return false; }
+        if (preg_match('/^(\d+)\.(\d+)(\.|$)/', (string) $header['Version'], $m) !== 1) { return false; }
+        if ((int) $m[1] === 0 && (int) $m[2] < 3) { return false; }
+        $series = (int) $m[1] . '.' . (int) $m[2];
+        $pin = isset(self::BRIDGE_LAB_PINS[$series]) ? self::BRIDGE_LAB_PINS[$series] : null;
+        return $pin !== SC_LAB_RELEASE_VERSION;
     }
 
     /** Version of an active bridge that is paired with another Lab release, or null. */
@@ -54,7 +61,7 @@ final class SC_Lab_Plugin_Compatibility_FIG041 {
     }
 
     public static function message($bridge_version) {
-        return sprintf('Sustainable Catalyst Lab %s cannot run with Sustainable Catalyst Research Bridge %s. Bridge 0.3.x is paired with Lab 0.163.1.7 and bridge 0.4.x with Lab 0.163.1.8; install a matching pair.',
+        return sprintf('Sustainable Catalyst Lab %s cannot run with Sustainable Catalyst Research Bridge %s. Bridge 0.3.x is paired with Lab 0.163.1.7, 0.4.x with Lab 0.163.1.8 and 0.5.x with Lab 0.163.1.9; install a matching pair.',
             SC_LAB_RELEASE_VERSION, $bridge_version);
     }
 

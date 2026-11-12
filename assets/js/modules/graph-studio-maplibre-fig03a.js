@@ -19,6 +19,11 @@
  * SI's observed_at, declared uncertainty properties, a side-by-side comparison of two time steps with
  * propagated uncertainty, Workspace calculation results tied to the bundle's calculationRefs, and an
  * Earth-observation raster gate that refuses every provider until one is approved (none is).
+ *
+ * SC-FIG-05.3 adds uncertainty layers: a points/polygons layer with encode "uncertainty" classifies a field's
+ * declared uncertainty property instead of its value, on an ordered run of one colour-vision-safe sequential
+ * ramp, and must be bound to a Workspace run (uncertaintyRef -> a bundle calculationRef with uncertaintySha256).
+ * Objects without the property are drawn grey and listed as "uncertainty not reported"; nothing is imputed.
  */
 (function (root, factory) {
   'use strict';
@@ -218,7 +223,7 @@
       var at = 'layers[' + i + ']';
       var kinds = v11 ? ['point', 'line', 'polygon', 'heatmap'] : ['point', 'line', 'polygon'];
       if (!isObj(l) || !ID.test(String(l.id)) || !has(kinds, l.geometry)) { e.push(at + ' needs an id and geometry ' + kinds.join(', ')); return; }
-      var keys = ['id', 'geometry', 'where', 'style'].concat(v11 ? (l.geometry === 'heatmap' ? ['weight', 'ramp'] : ['classify']) : []);
+      var keys = ['id', 'geometry', 'where', 'style'].concat(v11 ? (l.geometry === 'heatmap' ? ['weight', 'ramp'] : ['classify', 'encode', 'uncertaintyRef']) : []);
       Object.keys(l).forEach(function (k) { if (!has(keys, k)) { e.push(at + '.' + k + ' is not allowed'); } });
       if (l.where !== undefined && !(isObj(l.where) && l.where.property === ef && has(EVIDENCE, l.where.equals) && Object.keys(l.where).length === 2)) {
         e.push(at + '.where may only select one evidence class');
@@ -239,6 +244,16 @@
           var b = c.breaks;
           if (!Array.isArray(b) || !b.length || b.length > 8 || b.some(function (x, k) { return !num(x, -1e12, 1e12) || (k && x <= b[k - 1]); })) { e.push(at + '.classify.breaks must be 1 to 8 ascending numbers'); }
           else if (!Array.isArray(c.colors) || c.colors.length !== b.length + 1 || c.colors.some(function (x) { return !COLOR.test(String(x)); })) { e.push(at + '.classify.colors must be ' + (b.length + 1) + ' #rrggbb constants'); }
+        }
+      }
+      if (l.encode !== undefined || l.uncertaintyRef !== undefined) {
+        var uc = isObj(l.classify) ? l.classify : {}, ud = fields[uc.field] || {};
+        var refs = (bundle && bundle.calculationRefs) || [];
+        if (l.encode !== 'uncertainty' || !isObj(l.classify)) { e.push(at + ' uncertainty layer needs encode "uncertainty" and classify'); }
+        else if (!ud.uncertainty) { e.push(at + ' field ' + uc.field + ' declares no uncertainty property to draw'); }
+        else if (!isRampRun(uc.colors)) { e.push(at + ' uncertainty classes must be an ordered run of the ' + Object.keys(RAMPS).join(', ') + ' ramp'); }
+        if (!(Number.isInteger(l.uncertaintyRef) && refs[l.uncertaintyRef] && /^[0-9a-f]{64}$/.test(String(refs[l.uncertaintyRef].uncertaintySha256)))) {
+          e.push(at + ' uncertainty layer must be bound to a Workspace run (calculationRef with uncertaintySha256)');
         }
       }
       if (l.geometry === 'heatmap') {
@@ -347,6 +362,16 @@
     return e;
   }
 
+  function isRampRun(colors) {
+    if (!Array.isArray(colors) || colors.length < 2) { return false; }
+    var c = colors.map(function (x) { return String(x).toLowerCase(); }).join();
+    return Object.keys(RAMPS).some(function (k) {
+      var r = RAMPS[k];
+      for (var i = 0; i + colors.length <= r.length; i++) { if (r.slice(i, i + colors.length).join() === c) { return true; } }
+      return false;
+    });
+  }
+
   function timeSteps(spec) {
     return isV11(spec) && isObj(spec.time) && Array.isArray(spec.time.steps) ? spec.time.steps.slice() : [];
   }
@@ -378,11 +403,14 @@
   // Heat maps sit on a light background, so density runs from the ramp's light end (low) to its dark end (high).
   function heatRamp(name) { return RAMPS[name].slice().reverse(); }
 
-  function classColor(c) {
-    var expr = ['step', ['to-number', ['get', c.field]], c.colors[0]];
+  // prop: the property classified (the field itself, or its declared uncertainty property for an uncertainty layer).
+  function classColor(c, prop) {
+    var p = prop || c.field;
+    var expr = ['step', ['to-number', ['get', p]], c.colors[0]];
     c.breaks.forEach(function (b, k) { expr.push(b, c.colors[k + 1]); });
-    return ['case', ['==', ['typeof', ['get', c.field]], 'number'], expr, NOT_REPORTED];
+    return ['case', ['==', ['typeof', ['get', p]], 'number'], expr, NOT_REPORTED];
   }
+  function classProp(spec, l) { return l.encode === 'uncertainty' ? spec.fields[l.classify.field].uncertainty : l.classify.field; }
 
   // Style layer ids per view layer (the renderer toggles and filters them together).
   function styleLayerIds(l) { return l.geometry === 'polygon' ? [l.id, l.id + '-outline'] : [l.id]; }
@@ -409,7 +437,7 @@
       var s = l.style || {}, filter = layerFilter(spec, l, at);
       if (l.geometry === 'polygon') {
         layers.push({ id: l.id, type: 'fill', source: 'sc-evidence', filter: filter,
-          paint: { 'fill-color': l.classify ? classColor(l.classify) : (s.color || '#4d4d4d'), 'fill-opacity': s.opacity === undefined ? 0.3 : s.opacity } });
+          paint: { 'fill-color': l.classify ? classColor(l.classify, classProp(spec, l)) : (s.color || '#4d4d4d'), 'fill-opacity': s.opacity === undefined ? 0.3 : s.opacity } });
         layers.push({ id: l.id + '-outline', type: 'line', source: 'sc-evidence', filter: filter,
           paint: { 'line-color': s.outlineColor || s.color || '#4d4d4d', 'line-width': s.outlineWidth === undefined ? 1 : s.outlineWidth } });
       } else if (l.geometry === 'line') {
@@ -424,7 +452,7 @@
             'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'], 0, 'rgba(0,0,0,0)', 0.2, ramp[0], 0.4, ramp[1], 0.6, ramp[2], 0.8, ramp[3], 1, ramp[4]] } });
       } else {
         layers.push({ id: l.id, type: 'circle', source: 'sc-evidence', filter: filter,
-          paint: { 'circle-color': l.classify ? classColor(l.classify) : (s.color || '#4d4d4d'), 'circle-radius': s.radius === undefined ? 5 : s.radius,
+          paint: { 'circle-color': l.classify ? classColor(l.classify, classProp(spec, l)) : (s.color || '#4d4d4d'), 'circle-radius': s.radius === undefined ? 5 : s.radius,
             'circle-opacity': s.opacity === undefined ? 1 : s.opacity, 'circle-stroke-color': s.strokeColor || '#ffffff',
             'circle-stroke-width': s.strokeWidth === undefined ? 1 : s.strokeWidth } });
       }
@@ -448,11 +476,20 @@
       var g = (spec.legend || []).filter(function (x) { return x.layer === l.id; })[0] || {};
       var s = l.style || {}, entry = { layer: l.id, label: g.label, geometry: l.geometry, evidenceClass: l.where ? l.where.equals : null };
       if (l.classify) {
-        var d = fields[l.classify.field], b = l.classify.breaks;
-        entry.field = unitLabel(d);
+        var d = fields[l.classify.field], b = l.classify.breaks, isU = l.encode === 'uncertainty';
+        entry.field = isU ? d.label + ' ' + KIND_LABEL[d.uncertaintyKind] + ' (' + d.unit + ')' : unitLabel(d);
         entry.classes = l.classify.colors.map(function (c, k) {
           return { color: c, label: (k === 0 ? '< ' + fmt(b[0]) : k === b.length ? '≥ ' + fmt(b[k - 1]) : fmt(b[k - 1]) + ' to < ' + fmt(b[k])) + ' ' + d.unit };
-        }).concat([{ color: NOT_REPORTED, label: 'not reported' }]);
+        }).concat([{ color: NOT_REPORTED, label: isU ? 'uncertainty not reported (none drawn or imputed)' : 'not reported' }]);
+        if (isU) {
+          var prop = d.uncertainty, missing = spec.objects.filter(function (o) {
+            var g = GEOMETRY[l.geometry] || [];
+            return has(g, o.geometry.type) && (!l.where || (o.properties || {})[spec.evidenceField] === l.where.equals) && typeof (o.properties || {})[prop] !== 'number';
+          }).length;
+          entry.encode = 'uncertainty';
+          entry.note = 'Uncertainty as computed by the bound Workspace run (' + d.uncertaintyKind + '); darker = smaller, lighter = larger.' +
+            (missing ? ' ' + missing + ' object(s) have no reported uncertainty.' : '');
+        }
       } else if (l.geometry === 'heatmap') {
         var w = fields[l.weight.field];
         entry.field = unitLabel(w);
@@ -522,6 +559,6 @@
     eoCandidates: function () { return JSON.parse(JSON.stringify(EO_CANDIDATES)); },
     siDigest: siDigest, objectErrors: objectErrors, specErrors: specErrors, viewErrors: viewErrors, eoLayerErrors: eoLayerErrors,
     compileStyle: compileStyle, layerFilter: layerFilter, styleLayerIds: styleLayerIds, timeSteps: timeSteps,
-    legendModel: legendModel, tableModel: tableModel, comparisonModel: comparisonModel
+    legendModel: legendModel, tableModel: tableModel, comparisonModel: comparisonModel, isRampRun: isRampRun
   };
 }));

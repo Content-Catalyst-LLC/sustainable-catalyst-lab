@@ -1,0 +1,2 @@
+/* SC-FIG-05.3 Chromium harness only: the certification log wraps so a narrow window never scrolls sideways. */
+#cert-log { white-space: pre-wrap; overflow-wrap: anywhere; }
