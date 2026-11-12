@@ -155,3 +155,7 @@ the slider stays narrow, and labels and buttons stay at least 44px. Target heigh
 | 0.163.1.8 | 0.3.x | Lab activation refused (409); bridge activation refused; renderer off if swapped in |
 | 0.163.1.7 | 0.4.x | refused by bridge 0.4.0 (Research) |
 | 0.163.1.8 | < 0.3 | not affected (those bridges pin no Lab release) |
+| 0.163.1.9 | 0.5.x | supported (SC-FIG-05.3 runtime uncertainty) |
+| 0.163.1.9 | 0.3.x, 0.4.x, or an unknown series ≥ 0.6 | Lab activation refused (409); bridge activation refused; renderer off if swapped in |
+| 0.163.1.8 | 0.5.x | refused by bridge 0.5.0 (Research) |
+| 0.163.1.9 | < 0.3 | not affected |

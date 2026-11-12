@@ -28,7 +28,7 @@ def test_release_is_presentation_only_and_preserves_scientific_semantics():
 
 def test_manifest_records_compact_layout_without_advancing_feature_line():
     manifest = json.loads(MANIFEST.read_text())
-    assert manifest["releaseVersion"] in {"0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7", "0.163.1.8"}
+    assert manifest["releaseVersion"] in {"0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7", "0.163.1.8", "0.163.1.9"}
     assert manifest["featureVersion"] == "0.163.1"
     assert manifest["v016313FourDHeroRetained"] is True
     assert manifest["v016313ResponseSurfacePrimary"] is True

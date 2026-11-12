@@ -1,7 +1,7 @@
 <?php
-// SC-FIG-04.1: Lab 0.163.1.8 refuses a Research bridge paired with another Lab release (stubbed WordPress).
+// SC-FIG-04.1 / 05.3: Lab 0.163.1.9 refuses a Research bridge paired with another Lab release (stubbed WordPress).
 define('ABSPATH', '/');
-define('SC_LAB_RELEASE_VERSION', '0.163.1.8');
+define('SC_LAB_RELEASE_VERSION', '0.163.1.9');
 $plugins = sys_get_temp_dir() . '/sc-fig041-plugins-' . getmypid();
 define('WP_PLUGIN_DIR', $plugins);
 $assert = function ($cond, $msg) { if (!$cond) { fwrite(STDERR, "FAIL - $msg\n"); exit(1); } };
@@ -37,8 +37,8 @@ $assert(count($GLOBALS['hooks']['activate:/plugins/sustainable-catalyst-lab/sust
 $dies = function ($fn) { try { $fn(); return null; } catch (WPDie $e) { return $e->getMessage(); } };
 $checks = 0;
 
-// 1. No bridge, bridge 0.4.0 or an older bridge 0.2.4: Lab activates; renderer not blocked.
-foreach (array(null, '0.4.0', '0.2.4') as $v) {
+// 1. No bridge, the paired bridge 0.5.0 or an older bridge 0.2.4: Lab activates; renderer not blocked.
+foreach (array(null, '0.5.0', '0.5.1', '0.2.4') as $v) {
     $GLOBALS['options']['active_plugins'] = array();
     if ($v) { plugin('sc-research-bridge/sc-research-bridge.php', 'Sustainable Catalyst Research Bridge', $v); $GLOBALS['options']['active_plugins'] = array('sc-research-bridge/sc-research-bridge.php'); }
     reset_cache();
@@ -50,16 +50,21 @@ plugin('research-bridge-copy/main.php', 'Sustainable Catalyst Research Bridge', 
 $GLOBALS['options']['active_plugins'] = array('akismet/akismet.php', 'research-bridge-copy/main.php');
 reset_cache();
 $msg = $dies(array($C, 'on_activate'));
-$assert($msg !== null && strpos($msg, 'Lab 0.163.1.8 cannot run with Sustainable Catalyst Research Bridge 0.3.0') !== false && strpos($msg, '[409]') !== false, 'Lab activation refused beside bridge 0.3.0: ' . $msg); $checks++;
+$assert($msg !== null && strpos($msg, 'Lab 0.163.1.9 cannot run with Sustainable Catalyst Research Bridge 0.3.0') !== false && strpos($msg, '[409]') !== false, 'Lab activation refused beside bridge 0.3.0: ' . $msg); $checks++;
 $assert($C::incompatible_bridge() === '0.3.0', 'renderer fail-closed signal set'); $checks++;
 
-// 3. Lab active: activating bridge 0.3.x is refused; 0.4.0 and unrelated plugins are not.
+// 3. Lab active: bridges pinning another Lab (0.3.x, 0.4.x) or an unknown later series (0.6) are refused;
+//    0.5.0 and unrelated plugins are not.
 $GLOBALS['options']['active_plugins'] = array();
 reset_cache();
 plugin('sc-research-bridge/sc-research-bridge.php', 'Sustainable Catalyst Research Bridge', '0.3.1');
 $assert(strpos((string) $dies(function () use ($C) { $C::on_plugin_activation('sc-research-bridge/sc-research-bridge.php'); }), 'Bridge 0.3.1') !== false, 'bridge 0.3.1 activation refused'); $checks++;
-plugin('sc-research-bridge/sc-research-bridge.php', 'Sustainable Catalyst Research Bridge', '0.4.0');
-$assert($dies(function () use ($C) { $C::on_plugin_activation('sc-research-bridge/sc-research-bridge.php'); }) === null, 'bridge 0.4.0 activation allowed'); $checks++;
+foreach (array('0.4.0', '0.6.0', '1.0.0') as $v) {
+    plugin('sc-research-bridge/sc-research-bridge.php', 'Sustainable Catalyst Research Bridge', $v);
+    $assert(strpos((string) $dies(function () use ($C) { $C::on_plugin_activation('sc-research-bridge/sc-research-bridge.php'); }), "Bridge $v") !== false, "bridge $v activation refused"); $checks++;
+}
+plugin('sc-research-bridge/sc-research-bridge.php', 'Sustainable Catalyst Research Bridge', '0.5.0');
+$assert($dies(function () use ($C) { $C::on_plugin_activation('sc-research-bridge/sc-research-bridge.php'); }) === null, 'bridge 0.5.0 activation allowed'); $checks++;
 plugin('other/other.php', 'Some Other Plugin', '0.3.0');
 $assert($dies(function () use ($C) { $C::on_plugin_activation('other/other.php'); }) === null, 'unrelated 0.3.0 plugin allowed'); $checks++;
 $assert($dies(function () use ($C) { $C::on_plugin_activation('missing/missing.php'); }) === null, 'missing plugin file ignored'); $checks++;
@@ -81,4 +86,4 @@ $assert(strpos($main, "SC_Lab_Plugin_Compatibility_FIG041::init(__FILE__);") < s
 array_map('unlink', array_merge(glob($plugins . '/*/*.php')));
 array_map('rmdir', glob($plugins . '/*'));
 rmdir($plugins);
-echo "PASS - SC-FIG-04.1 Lab/bridge pairing guard ($checks checks)\n";
+echo "PASS - SC-FIG-04.1/05.3 Lab/bridge pairing guard, Lab 0.163.1.9 ($checks checks)\n";

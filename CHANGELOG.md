@@ -1,5 +1,20 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.9 — Runtime uncertainty bands, quantile fans and map uncertainty (SC-FIG-05.3), release candidate
+
+- **Uncertainty from the runtime only.** The figure-bundle renderer draws a confidence or prediction band, or an
+  ensemble quantile fan, only when it is the Workspace runtime record bound by `bandsSha256` or
+  `quantileBandsSha256`, with exactly that record's coordinates. Any other filled area is refused. With no
+  record, the card says "Uncertainty unavailable" and nothing is drawn.
+- **Map uncertainty.** FIG-04 maps accept an `encode: "uncertainty"` layer: sequential viridis, cividis or magma;
+  values must equal the record bound by `uncertaintySha256`. Unreported objects are labelled, never imputed.
+  The legend names the kind, the unit and the unreported count; the PNG receipt records the binding.
+- **Accessibility.** One Okabe-Ito hue for areas, fans lighter outward, a dashed prediction outline, measured
+  colour-vision checks, and accessible tables. Wide tables scroll inside their box at 390 px.
+- **Pairing.** The guard is table-driven: bridge 0.3.x pins Lab 0.163.1.7, 0.4.x pins 0.163.1.8 and 0.5.x pins
+  0.163.1.9. Lab 0.163.1.9 refuses bridges 0.3.x, 0.4.x and any unknown later series (fail closed).
+- Release candidate for isolated staging only; not for production without separate authorization.
+
 ## 0.163.1.8 — Geospatial figures with MapLibre GL JS in Graph Studio (SC-FIG-04), default off
 
 ### SC-FIG-04.1 additions (still 0.163.1.8, unreleased)
