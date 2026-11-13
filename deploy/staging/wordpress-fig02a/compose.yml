@@ -1,0 +1,54 @@
+# Isolated Lab WordPress staging for FIG-02A acceptance. Not Bluehost; fresh database; loopback only.
+# Secrets come from .env (generated on the host by setup.sh, mode 600, never committed).
+name: lab-wp-fig02a-staging
+services:
+  db:
+    image: mysql:8.0.46@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b
+    restart: "no"
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: ${DB_PASSWORD:?}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?}
+    volumes: [db:/var/lib/mysql]
+    networks: [internal]
+    cpus: 1.0
+    mem_limit: 1g
+    security_opt: ["no-new-privileges:true"]
+  wordpress:
+    image: wordpress:7.1.4-php8.4-apache@sha256:543d2b75f287c76f387cd17dcf2ca5e69745a1c30b754e32414a5e1ef5b8da87
+    restart: "no"
+    depends_on: [db]
+    ports: ["127.0.0.1:${STAGING_PORT:-18190}:80"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', 'staging');
+        define('DISALLOW_FILE_EDIT', true);
+        define('AUTOMATIC_UPDATER_DISABLED', true);
+        define('WP_HTTP_BLOCK_EXTERNAL', true);
+        define('WP_ACCESSIBLE_HOSTS', 'api.wordpress.org,downloads.wordpress.org');
+    volumes: [wp:/var/www/html]
+    networks: [internal, egress]
+    cpus: 1.0
+    mem_limit: 1g
+    security_opt: ["no-new-privileges:true"]
+  cli:
+    image: wordpress:cli-php8.4@sha256:37b7e3ed9b537788756f9b5c6dd8ec7c3f3053ee707abc67c776e453ba8f9e55
+    profiles: [tools]
+    user: "33:33"
+    depends_on: [db]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?}
+    volumes: [wp:/var/www/html, ./artifacts:/artifacts:ro]
+    networks: [internal, egress]
+volumes: {db: {}, wp: {}}
+networks:
+  internal: {internal: true}
+  egress: {}

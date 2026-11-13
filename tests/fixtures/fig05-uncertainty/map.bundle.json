@@ -1,0 +1,123 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-FIG05-uncertainty-map",
+ "version": 1,
+ "title": "SYNTHETIC soil organic carbon with runtime uncertainty layer",
+ "project": {
+  "projectRef": "fig05-synthetic",
+  "ownerScope": "isolated-synthetic",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "synthetic-test"
+ },
+ "evidenceClass": "modelled",
+ "figureType": "spatial-map",
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic:fig05-soc-model",
+   "provider": "SC-FIG-05.3 synthetic fixture via Site Intelligence normaliser",
+   "identityStatus": "source-hash-verified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use",
+   "notes": "CC0-1.0 synthetic fixture",
+   "sha256": "c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+   "crs": "EPSG:4326"
+  }
+ ],
+ "calculationRefs": [
+  {
+   "system": "workspace",
+   "runRef": "sc://workspace/runs/synthetic-fig05-map",
+   "method": "Uncertainty runtime correlated-normal, 4000 seeded draws",
+   "outputSha256": "13ee16cf0ebb214be8b729eab67f2e6f4bf95bd6519cb4ebad823044effe59b3",
+   "assumptionRefs": [
+    "sha256:bc05bbd764f90c4176c10e917fc6c6136a59453e2748e1fb0620feb28912b137"
+   ],
+   "uncertaintySha256": "6e3d96c4312735c06254df179d430086583e01f93d66043ecc18c94a78fb60de"
+  }
+ ],
+ "scientificContext": {
+  "interpretation": "Synthetic map used only to accept the per-field uncertainty layer.",
+  "limitations": [
+   "Invented parcels and values",
+   "One field has no runtime uncertainty and is shown as not reported"
+  ],
+  "measurementStatus": "computed-from-specified-inputs",
+  "units": "g kg-1",
+  "doNotInfer": [
+   "any real Wexford soil carbon value"
+  ],
+  "uncertaintyNotation": "standard-deviation",
+  "uncertaintyStatus": "runtime-computed",
+  "uncertaintyEncodings": [
+   "map-uncertainty-layer",
+   "table-columns"
+  ]
+ },
+ "spatial": {
+  "geometryStatus": "illustrative",
+  "crs": "EPSG:4326",
+  "extentStatus": "regional-rectangle",
+  "bbox": [
+   -6.62,
+   52.3,
+   -6.388,
+   52.412
+  ],
+  "siPackage": {
+   "package_id": "spatial-package:5cf1a78d83a1a2aaf9a9046d",
+   "package_digest": "sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8",
+   "manifest_digest": "sha256:0186d566743fea6476037efc2f2c162a5664e6731c35bbda120100ae8e3fe44d"
+  },
+  "objectCount": 6
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "maplibre-gl",
+  "rendererVersion": "maplibre-gl 5.24.0 (Lab Graph Studio, SC-FIG-04)",
+  "caption": "SYNTHETIC: modelled field SOC classes and, as a toggle, the runtime-propagated SOC standard deviation.",
+  "altText": "Six field parcels shaded by modelled SOC class; a second layer shades five by uncertainty, the sixth not reported.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://workbench/figure-adapters/maplibre/e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce.json",
+   "sha256": "e174dae4bb8513c1b0cc7c6847ae601e7bec03805846a1f6be9a11302db865ce",
+   "mediaType": "application/vnd.sc.maplibre-view.v1+json",
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "workbench",
+  "sourceSnapshotIds": [
+   "dataset:fig05-uncertainty-map:c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+   "site-intelligence-package:sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8"
+  ],
+  "generationRunId": "workbench.maplibre-figure-adapter:e174dae4bb8513c1b0cc7c68",
+  "generatedAt": "2026-11-12T07:59:24Z",
+  "reproducibility": "synthetic-fixture-tested",
+  "scriptSha256": "e11ea52c007b94aae3075a91287694c407af294bbf89099059b2b634605b3dcd",
+  "inputManifestSha256": "c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+  "lineageRefs": [
+   "authorized-dataset:c3bfe1bec1068aec0f86a329ebfc631d053836059190e1a1d6bdb10502eb93c5",
+   "site-intelligence-package:sha256:5cf1a78d83a1a2aaf9a9046de7a7448a931a7f25a43d145ea790962f491deda8"
+  ]
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ },
+ "labels": [
+  "synthetic"
+ ]
+}

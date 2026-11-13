@@ -1,5 +1,182 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.9 — Runtime uncertainty bands, quantile fans and map uncertainty (SC-FIG-05.3), release candidate
+
+- **Uncertainty from the runtime only.** The figure-bundle renderer draws a confidence or prediction band, or an
+  ensemble quantile fan, only when it is the Workspace runtime record bound by `bandsSha256` or
+  `quantileBandsSha256`, with exactly that record's coordinates. Any other filled area is refused. With no
+  record, the card says "Uncertainty unavailable" and nothing is drawn.
+- **Map uncertainty.** FIG-04 maps accept an `encode: "uncertainty"` layer: sequential viridis, cividis or magma;
+  values must equal the record bound by `uncertaintySha256`. Unreported objects are labelled, never imputed.
+  The legend names the kind, the unit and the unreported count; the PNG receipt records the binding.
+  Release candidate 2: the released per-object record itself is now required in the package and every drawn
+  value must equal it exactly (staging found that RC1 refused a released map package carrying the record).
+- **Accessibility.** One Okabe-Ito hue for areas, fans lighter outward, a dashed prediction outline, measured
+  colour-vision checks, and accessible tables. Wide tables scroll inside their box at 390 px.
+- **Pairing.** The guard is table-driven: bridge 0.3.x pins Lab 0.163.1.7, 0.4.x pins 0.163.1.8 and 0.5.x pins
+  0.163.1.9. Lab 0.163.1.9 refuses bridges 0.3.x, 0.4.x and any unknown later series (fail closed).
+- Release candidate for isolated staging only; not for production without separate authorization.
+
+## 0.163.1.8 — Geospatial figures with MapLibre GL JS in Graph Studio (SC-FIG-04), default off
+
+### SC-FIG-04.1 additions (still 0.163.1.8, unreleased)
+
+- **Static map export.** "Export static map (PNG)" composes what is on screen: one map, or both
+  comparison maps labelled left and right. It also draws the title, evidence class, time or comparison
+  state, a legend of the visible layers with units, the calculation and its uncertainty text,
+  attribution and provenance.
+  - A receipt is embedded as a PNG `tEXt` chunk (`sc:static-map-receipt`, schema
+    `sc-lab-static-map-export/1.0`) and also offered as JSON. It binds the image to the bundle bytes, the
+    view hash, the source and calculation hashes, and the displayed state.
+  - The export is verified before it is offered. `SCLabMapLibreFIG04.verifyExport()` re-checks the PNG
+    chunk CRCs, the SHA-256, the receipt and the figure offline.
+  - Nothing is fetched.
+  - The data table remains the static alternative when WebGL is unavailable.
+- **Calculation uncertainty.**
+  - A calculation may carry the Workspace runtime's confidence `interval` (it must contain the value and
+    be bound by `calculationRefs[].intervalsSha256`).
+  - It may also carry the model revision's declared, unchecked `assumptions` (bound by `assumptionRefs`).
+  - Nothing is derived from point estimates. A result with neither a standard error nor an interval says
+    "Trend uncertainty unavailable".
+- **Astra / Lab UI styling.** The layer checkboxes, time slider and buttons keep native size and focus
+  rings. Previously, the Lab UI bundle's `.sc-lab-app input` rule (width 100%, 44px) and Astra's inline
+  colours and range rules applied to them.
+  - Every rule is scoped to `.sc-lab-fig04-*`, so WordPress and theme forms are unaffected.
+  - Labels give 44px targets, and `:focus-visible` outlines are shown.
+  - Host pages that size bare inputs with an ID rule (such as the Research Hub page) no longer stretch
+    the checkboxes or slider: their box properties are `!important`, still scoped.
+  - Button and label targets are 44px rather than 2.75rem: Astra shrinks the root font on phones,
+    which made them 40px.
+- **Plugin pairing guard.**
+  - Lab refuses to activate beside a 0.3.x Research bridge, which pins Lab 0.163.1.7.
+  - While Lab is active, activating a 0.3.x bridge is refused.
+  - A swapped-in mismatched bridge turns the figure-bundle renderer off and shows an admin notice.
+- Renderer module `SCLabMapLibreFIG04` 0.2.0. Tests: `tests/test-maplibre-fig041.js`,
+  `tests/test-fig041-plugin-compatibility.php`, and the Chromium harness (static export, offline,
+  tampered PNG and receipt).
+
+- A third renderer switch, WordPress option `sc_lab_fig04_maplibre_enabled`, is off by default and has
+  no effect unless the figure-bundle renderer is on. With it, the renderer draws
+  `application/vnd.sc.maplibre-view.v1+json` views (state `rendered-maplibre`). Renderer module 0.3.0.
+- Vendors MapLibre GL JS 5.24.0 (BSD-3-Clause), the CSP build, its worker and stylesheet, unchanged from
+  the npm release (`scripts/package_maplibre_vendor.py` reproduces them and records the tarball
+  integrity). All three files must match their pinned SHA-256 or none is served. The worker is fetched
+  from this site only, checked against a SHA-384 and started from a `blob:` URL. Pages need
+  `worker-src blob:`; no `unsafe-eval`, no inline style from MapLibre.
+- Map view 1.1 (`sc-lab-maplibre-view/1.1`) keeps Site Intelligence evidence objects unchanged and adds,
+  all as validated constants compiled into MapLibre expressions by Lab:
+  - graduated classes on a declared numeric field, with a "not reported" colour;
+  - heat maps (kernel density of point weights; the legend says it is not an interpolated surface);
+  - time steps over SI's `observed_at` (exactly the distinct values, in order);
+  - declared uncertainty properties (standard error, standard deviation or 95% CI half-width);
+  - a side-by-side comparison of two time steps, with a change table and root-sum-square uncertainty;
+  - calculation results tied to the bundle's `calculationRefs` and their output hashes;
+  - an Earth-observation gate: Copernicus Sentinel-2, Sentinel-1 and CORINE are described as
+    candidates, none is approved, so any raster layer is refused and no imagery is fetched.
+- Every cited source must be `verified-for-use` for a 1.1 view to draw.
+- The renderer adds layer checkboxes, a scientific legend with units, a time slider with previous and
+  next buttons, the comparison toggle, calculation results, feature details on click, a sources line
+  (no basemap), and the full data table. Without WebGL or a verified worker the legend and tables remain.
+- Synthetic Wexford fixtures (`tests/fixtures/fig04-wexford/`): 56 SI-normalised objects sealed in an SI
+  reproducible spatial package, a derived Workspace dataset, the 1.1 view and its bundle. Invented values.
+- Tests: `tests/test-maplibre-fig04.js`, `tests/test-maplibre-fig04.php` (with a tampered-worker run) and
+  `tests/chromium-fig04-maplibre.html` under a strict CSP (`scripts/run_chromium_fig04.py`), all in
+  `scripts/test_fig04_maplibre.sh`.
+
+## 0.163.1.7 — Release state comes from Research; Lab renders only (SC-FIG-03A), default off
+
+- The `sc.figure-bundle.v1` renderer no longer says "Preview only; not publication-approved here."
+  Each card now has a release line (`.sc-lab-figure-bundle-release`, `data-release-state`):
+  - Without a host release record: "Not released here. Lab renders figures only; publication is
+    approved in Workspace and release state is held by Sustainable Catalyst Research."
+  - With `render(out, files, sha, {releaseContext})` from Sustainable Catalyst Research: the
+    Research release label, article revision and release time. Lab shows it only when the record is
+    well formed, comes from `sc-research`, and names the exact bundle hash Lab just verified.
+    Otherwise it is ignored, and the card says why.
+- The bundle's own `review.*` fields are now labelled "Producer review notes (not release
+  authority)". They never imply approval or release.
+- The FIG-02A Workbench preview card uses the same wording.
+- Renderer module 0.2.0. No change to verification, content policies, vendored libraries or
+  options; both renderer switches stay off by default.
+
+## 0.163.1.7 (Lab #8) — MapLibre adapter preparation (SC-FIG-03A), not loaded
+
+- Adds `assets/js/modules/graph-studio-maplibre-fig03a.js`, the contract and style compiler for the
+  future MapLibre map view. WordPress does not load it, and MapLibre GL JS is not vendored, so
+  nothing is drawn yet.
+- A map view (`sc-lab-maplibre-view/1.0`) holds Site Intelligence spatial evidence objects
+  (`sc-site-intelligence-spatial-evidence-object/2.0`) unchanged:
+  - each object's SI content digest is recomputed in the browser and must match;
+  - geometry stays WGS84 as SI normalised it, and Lab never reprojects;
+  - rasters are refused, and so is any basemap, tile, glyph, sprite or URL (no provider is approved);
+  - styles are constants;
+  - every object carries an evidence class, and observed objects appear only in an observed figure.
+- The compiled MapLibre style has a single inline GeoJSON source. An accessible table lists every
+  object with its units, time, source, licence and SI digest.
+- Fixtures are synthetic and are generated by Site Intelligence's own normaliser.
+
+## 0.163.1.6 — Vega-Lite views and verified SVG export in Graph Studio (SC-FIG-02B), default off
+
+- Extends the SC-FIG-01 renderer (no second Graph Studio, no figure store) with Vega-Lite views. A
+  second switch, WordPress option `sc_lab_fig02b_vega_lite_enabled`, is off by default and has no
+  effect unless the renderer itself is on.
+- Vendors Vega 6.4.0, Vega-Lite 6.5.0 and vega-interpreter 2.3.2 (BSD-3-Clause) from their npm
+  tarballs, checked against the registry integrity, with `scripts/package_vega_vendor.py`
+  (reproducible). They are served from the plugin only when every file matches its pinned SHA-256;
+  otherwise none is served and Vega-Lite views are reported unsupported. Plotly is unaffected.
+- Views render to SVG through the expression interpreter (no `eval` or `new Function`; the
+  Chromium harness runs under a CSP without `unsafe-eval`) with a loader that refuses every load.
+- A view must stay inside a restricted grammar (inline data only; allow-listed marks and
+  transforms; no expressions, parameters, selections, links or remote data) and carry the
+  `usermeta.sc` profile `sc-vega-lite-v1`. That profile requires the dataset hash, which must be one
+  of the bundle's sources or calculation outputs; every encoded field's label and unit, with titles
+  that keep the unit; the uncertainty definition, which must be drawn when declared; and a per-row
+  evidence class that never claims observed in a non-observed figure and is visually encoded when
+  classes are mixed.
+- Accessible data table for each view: units, "not reported" gaps, the uncertainty statement and
+  the dataset identity.
+- SVG export for Vega-Lite and Plotly views. The export is validated element by element, carries its
+  provenance (`sc.figure-svg-provenance.v1`) in `<metadata>`, is re-verified after serialisation,
+  and comes with an export receipt (`sc.figure-export-receipt.v1`) whose artifact entry can be added
+  to the next bundle revision. An exported SVG is then accepted as a verified static view. Downloads
+  are local; nothing is uploaded or published.
+- Health: `sc-lab/v1/graph-studio/figure-bundle-renderer/health` reports `fig02b` and the Vega
+  renderers.
+- The renderer's evidence badge for a modelled figure names the bundle's own computing authority
+  (`provenance.authorityOwner`, e.g. Workspace or Lab) instead of always saying Workbench. The FIG-02A
+  panel, which shows only Workbench responses, is unchanged.
+
+## 0.163.1.5 — Generic sc.figure-bundle.v1 renderer in Graph Studio (SC-FIG-01), default off
+
+- Adds a Graph Studio viewer for any governed `sc.figure-bundle.v1` (Workbench, Workspace, Research
+  or Lab producer) together with the view files it references. It is off unless the WordPress option
+  `sc_lab_figure_bundle_renderer_enabled` is `1`, independent of the FIG-02A switch.
+- Every supplied file must match an artifact hash in the bundle (canonical JSON or raw bytes); a file
+  the bundle does not reference refuses the package. A caller holding the registered bundle hash
+  (Workspace run output, Research object) can pin the bundle bytes too.
+- Bundles are checked against the Data schema minimum and refuse promotion to observed
+  (`evidenceClass` and `measurementStatus` must agree).
+- Plotly views use the FIG-02A content policy and vendored plotly.js 3.3.1; PNG views are a verified
+  static fallback; every other media type, and any referenced view not supplied, is shown as
+  unsupported or missing and is never drawn.
+- FIG-02A's figure policy is now a shared function (`figurePolicyErrors`); FIG-02A behaviour is unchanged.
+- Health route `sc-lab/v1/graph-studio/figure-bundle-renderer/health`. Nothing is uploaded, stored,
+  reviewed or published.
+
+## 0.163.1.4 — Graph Studio Plotly Preview (FIG-02A), default off
+
+- Adds an optional Graph Studio panel that previews Workbench FIG-02A compile responses with a
+  vendored plotly.js 3.3.1 (byte-identical to the Workbench export worker; no CDN). It is off unless
+  the WordPress option `sc_lab_fig02a_plotly_preview_enabled` is `1`.
+- The browser recomputes the response's spec and result hashes before drawing and refuses any
+  mismatch, links, images, templates or a different plotly.js. Evidence class, pending review and
+  "Not publication-approved" are always shown. Responses come from a local file only: nothing is
+  uploaded, stored or sent to Workbench.
+- Health route `sc-lab/v1/graph-studio-plotly-preview/fig02a/health`.
+- Release manifest refreshed with `scripts/update_release_manifest.py` so release integrity stays
+  `verified`; `scripts/build_wordpress_release_zip.sh` refuses a package whose manifest disagrees.
+- Feature line 0.163.1 and backend behavior are unchanged.
+
 ## 0.152.0.6 — Safe-Boot Stabilization & Canonical Release Presentation
 
 - Added a late footer-time Lab JavaScript gate to stop render-time legacy module leaks.

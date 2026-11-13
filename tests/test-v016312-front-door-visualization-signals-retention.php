@@ -6,7 +6,7 @@ $js = file_get_contents($root . '/assets/js/sc-lab-unified-workspace-shell-v0163
 $css = file_get_contents($root . '/assets/css/sc-lab-unified-workspace-shell-v016312.css');
 $manifest = json_decode(file_get_contents($root . '/build/sc-lab-release-manifest.json'), true);
 $assert = function ($cond, $msg) { if (!$cond) { fwrite(STDERR, "FAIL - $msg\n"); exit(1); } };
-$assert(strpos($plugin, 'Version: 0.163.1.2') !== false || strpos($plugin, 'Version: 0.163.1.3') !== false, 'plugin version');
+$assert(strpos($plugin, 'Version: 0.163.1.2') !== false || strpos($plugin, 'Version: 0.163.1.3') !== false || strpos($plugin, 'Version: 0.163.1.4') !== false || strpos($plugin, 'Version: 0.163.1.5') !== false || strpos($plugin, 'Version: 0.163.1.6') !== false || strpos($plugin, 'Version: 0.163.1.7') !== false || strpos($plugin, 'Version: 0.163.1.8') !== false || strpos($plugin, 'Version: 0.163.1.9') !== false, 'plugin version');
 $assert(strpos($plugin, 'SC_Lab_Unified_Workspace_Shell_V016312::init();') !== false, 'v0.163.1.2 shell initialized');
 $assert(strpos($class, "const VERSION = '0.163.1.2'") !== false, 'repair class version');
 $assert(strpos($class, 'retire_v016311') !== false, 'v0.163.1.1 hooks retired');
@@ -17,7 +17,7 @@ $assert(strpos($js, 'restoreFrontDoorVisualization') !== false, '4D front door r
 $assert(strpos($js, 'ensureScientificSignalsVisible') !== false, 'scientific signals retention runtime');
 $assert(strpos($css, 'body.sc-lab-v016312-frontdoor [data-v0710-visualizer]') !== false, '4D persistent CSS');
 $assert(strpos($css, 'body.sc-lab-v016312-frontdoor [data-overview-signals]') !== false, 'signals persistent CSS');
-$assert(in_array(($manifest['releaseVersion'] ?? ''), array('0.163.1.2','0.163.1.3'), true), 'manifest release version');
+$assert(in_array(($manifest['releaseVersion'] ?? ''), array('0.163.1.2','0.163.1.3','0.163.1.4','0.163.1.5','0.163.1.6','0.163.1.7','0.163.1.8','0.163.1.9'), true), 'manifest release version');
 $assert(($manifest['featureVersion'] ?? '') === '0.163.1', 'manifest feature version retained');
 $assert(!empty($manifest['v016312PersistentFrontDoorFourD']), 'manifest 4D retention flag');
 $assert(!empty($manifest['v016312ScientificSignalsVisibleOnOverview']), 'manifest signals retention flag');

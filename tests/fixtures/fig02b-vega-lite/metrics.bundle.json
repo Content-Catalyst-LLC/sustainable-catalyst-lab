@@ -1,0 +1,83 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-METRICS-vega-lite",
+ "version": 1,
+ "title": "SYNTHETIC SDG-style indicator for three placeholder countries",
+ "project": {
+  "projectRef": "fig02b-synthetic-ci",
+  "ownerScope": "unbound-local",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "unbound"
+ },
+ "evidenceClass": "hypothetical",
+ "figureType": "evidence-chart",
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic:metrics-indicator-table-v1",
+   "provider": "Sustainable Catalyst test fixture standing in for the UN SDG database",
+   "citationId": "SYNTHETIC-SDG-TABLE",
+   "identityStatus": "source-hash-verified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use",
+   "sha256": "0af5dda1b8f91349b527d6857638a182f66c6a0049c1e17df903cb725170cbb7"
+  }
+ ],
+ "calculationRefs": [],
+ "scientificContext": {
+  "interpretation": "Synthetic indicator series with missing observations, used to exercise the Metrics acceptance path of FIG-02B.",
+  "limitations": [
+   "Synthetic values for placeholder countries",
+   "Missing years are not interpolated",
+   "No causal or ranking claim"
+  ],
+  "measurementStatus": "hypothetical-only",
+  "claimIds": [],
+  "doNotInfer": [
+   "any scientific conclusion",
+   "real country values or rankings",
+   "values for missing years"
+  ]
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "vega-lite",
+  "rendererVersion": "vega-lite 6.5.0; vega 6.4.0",
+  "caption": "SYNTHETIC: indicator values by year for three placeholder countries; gaps are missing observations.",
+  "altText": "Line chart of a synthetic percentage indicator from 2015 to 2024 for three placeholder countries, with gaps for missing years.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "cbd965d52b721882f788c964faffdec88265daa2d2d1b26992b659987ea3f8b5"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://lab/fig02b/SYN-METRICS-vega-lite/cbd965d52b721882f788c964faffdec88265daa2d2d1b26992b659987ea3f8b5.json",
+   "sha256": "cbd965d52b721882f788c964faffdec88265daa2d2d1b26992b659987ea3f8b5",
+   "mediaType": "application/vnd.vegalite.v5+json",
+   "width": 720,
+   "height": 420,
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "lab",
+  "sourceSnapshotIds": [
+   "synthetic:metrics-indicator-table-v1"
+  ],
+  "generationRunId": "lab.fig02b-fixture-builder:cbd965d52b721882f788c964",
+  "generatedAt": "2026-11-11T00:00:00Z",
+  "reproducibility": "synthetic-fixture-tested"
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ }
+}

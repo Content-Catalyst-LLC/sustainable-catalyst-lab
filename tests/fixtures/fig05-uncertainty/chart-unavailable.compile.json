@@ -1,0 +1,361 @@
+{
+ "ok": true,
+ "schema": "sc-workbench-plotly-figure-adapter/1.0",
+ "version": "14.0.0",
+ "buildId": "FIG-02A",
+ "plotly": {
+  "figure": {
+   "data": [],
+   "layout": {
+    "title": {
+     "text": "SYNTHETIC runtime regression bands and ensemble quantile fan<br><sup>Evidence: modelled; computed from specified inputs, not measured</sup>",
+     "x": 0.0,
+     "xanchor": "left"
+    },
+    "width": 1000,
+    "height": 760,
+    "font": {
+     "family": "Arial, Helvetica, sans-serif",
+     "size": 13,
+     "color": "#1a1a1a"
+    },
+    "paper_bgcolor": "#ffffff",
+    "plot_bgcolor": "#ffffff",
+    "margin": {
+     "l": 80,
+     "r": 60,
+     "t": 100,
+     "b": 80
+    },
+    "showlegend": true,
+    "legend": {
+     "orientation": "h",
+     "y": -0.18
+    },
+    "annotations": [
+     {
+      "text": "<b>Synthetic trend of y</b>",
+      "showarrow": false,
+      "xref": "paper",
+      "yref": "paper",
+      "x": 0,
+      "y": 1.0,
+      "xanchor": "left",
+      "yanchor": "bottom",
+      "font": {
+       "size": 13
+      }
+     },
+     {
+      "text": "Uncertainty unavailable: the Workspace run reported no confidence or prediction band for this value; none is drawn or derived",
+      "showarrow": false,
+      "xref": "x domain",
+      "yref": "y domain",
+      "x": 0.5,
+      "y": 0.5,
+      "font": {
+       "size": 12,
+       "color": "#1a1a1a"
+      },
+      "bgcolor": "#f2f2f2",
+      "bordercolor": "#555555",
+      "borderwidth": 1
+     },
+     {
+      "text": "<b>Synthetic ensemble projection</b>",
+      "showarrow": false,
+      "xref": "paper",
+      "yref": "paper",
+      "x": 0,
+      "y": 0.42000000000000004,
+      "xanchor": "left",
+      "yanchor": "bottom",
+      "font": {
+       "size": 13
+      }
+     },
+     {
+      "text": "Uncertainty unavailable: the Workspace run reported no ensemble quantile fan for this value; none is drawn or derived",
+      "showarrow": false,
+      "xref": "x2 domain",
+      "yref": "y2 domain",
+      "x": 0.5,
+      "y": 0.5,
+      "font": {
+       "size": 12,
+       "color": "#1a1a1a"
+      },
+      "bgcolor": "#f2f2f2",
+      "bordercolor": "#555555",
+      "borderwidth": 1
+     }
+    ],
+    "xaxis": {
+     "title": {
+      "text": ""
+     },
+     "anchor": "y",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "zeroline": false
+    },
+    "yaxis": {
+     "title": {
+      "text": "mg L-1"
+     },
+     "domain": [
+      0.5800000000000001,
+      1.0
+     ],
+     "anchor": "x",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "gridcolor": "#e5e5e5",
+     "zeroline": true,
+     "zerolinecolor": "#999999"
+    },
+    "xaxis2": {
+     "title": {
+      "text": "Year"
+     },
+     "anchor": "y2",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "zeroline": false
+    },
+    "yaxis2": {
+     "title": {
+      "text": "mg L-1"
+     },
+     "domain": [
+      5.551115123125783e-17,
+      0.42000000000000004
+     ],
+     "anchor": "x2",
+     "automargin": true,
+     "showline": true,
+     "linecolor": "#333333",
+     "ticks": "outside",
+     "gridcolor": "#e5e5e5",
+     "zeroline": true,
+     "zerolinecolor": "#999999"
+    }
+   }
+  },
+  "config": {
+   "displaylogo": false,
+   "responsive": true,
+   "showLink": false,
+   "modeBarButtonsToRemove": [
+    "sendDataToCloud",
+    "lasso2d",
+    "select2d"
+   ],
+   "toImageButtonOptions": {
+    "format": "svg",
+    "filename": "SYN-FIG05-uncertainty-unavailable"
+   }
+  },
+  "specSha256": "6a23c53dfa3196c8d7fdad964f7bf0330d81e159887e7e62bc504295db777289",
+  "plotlyJsVersion": "3.3.1"
+ },
+ "accessibleAlternative": {
+  "caption": "SYNTHETIC: the runtime reported no bands, so uncertainty is shown as unavailable.",
+  "panels": [
+   {
+    "panelId": "trend",
+    "title": "Synthetic trend of y",
+    "chart": "band",
+    "uncertaintyStatus": "unavailable",
+    "columns": [
+     {
+      "key": "x",
+      "label": "t (years from 2010)",
+      "unit": ""
+     }
+    ],
+    "rows": [],
+    "descriptiveSummary": [
+     "Uncertainty unavailable: the Workspace run reported no confidence or prediction band for this value; none is drawn or derived"
+    ]
+   },
+   {
+    "panelId": "ensemble",
+    "title": "Synthetic ensemble projection",
+    "chart": "fan",
+    "uncertaintyStatus": "unavailable",
+    "columns": [
+     {
+      "key": "x",
+      "label": "Year",
+      "unit": ""
+     }
+    ],
+    "rows": [],
+    "descriptiveSummary": [
+     "Uncertainty unavailable: the Workspace run reported no ensemble quantile fan for this value; none is drawn or derived"
+    ]
+   }
+  ],
+  "html": "<table data-panel-id=\"trend\"><caption>SYNTHETIC: the runtime reported no bands, so uncertainty is shown as unavailable. — Synthetic trend of y</caption><thead><tr><th scope=\"col\">t (years from 2010)</th></tr></thead><tbody></tbody></table><p>Uncertainty unavailable: the Workspace run reported no confidence or prediction band for this value; none is drawn or derived</p><table data-panel-id=\"ensemble\"><caption>SYNTHETIC: the runtime reported no bands, so uncertainty is shown as unavailable. — Synthetic ensemble projection</caption><thead><tr><th scope=\"col\">Year</th></tr></thead><tbody></tbody></table><p>Uncertainty unavailable: the Workspace run reported no ensemble quantile fan for this value; none is drawn or derived</p>"
+ },
+ "staticExport": {
+  "requested": [],
+  "performed": false
+ },
+ "figureBundle": {
+  "schema": "sc.figure-bundle.v1",
+  "figureId": "SYN-FIG05-uncertainty-unavailable",
+  "version": 1,
+  "title": "SYNTHETIC runtime regression bands and ensemble quantile fan",
+  "project": {
+   "projectRef": "fig05-synthetic",
+   "ownerScope": "isolated-synthetic",
+   "environment": "local-review"
+  },
+  "publication": {
+   "kind": "none",
+   "target": "unassigned",
+   "bindingStatus": "synthetic-test"
+  },
+  "evidenceClass": "modelled",
+  "figureType": "evidence-chart",
+  "sourceRefs": [
+   {
+    "sourceId": "synthetic-fig05",
+    "provider": "SC-FIG-05.3 synthetic fixture",
+    "identityStatus": "source-identified",
+    "qualityStatus": "not-applicable",
+    "licenceStatus": "verified-for-use"
+   }
+  ],
+  "calculationRefs": [
+   {
+    "system": "workspace",
+    "runRef": "sc://workspace/runs/synthetic-fig05-band",
+    "method": "R stats::lm; bands from stats::predict.lm",
+    "outputSha256": "fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+    "assumptionRefs": [
+     "sha256:9b0272f0e8b4d9d1fe8d8139cc2d35667892f7d601e258eba43db5398c4ca512"
+    ]
+   },
+   {
+    "system": "workspace",
+    "runRef": "sc://workspace/runs/synthetic-fig05-fan",
+    "method": "Uncertainty runtime ensemble-quantile-bands",
+    "outputSha256": "afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809",
+    "assumptionRefs": [
+     "sha256:5c1c6ee51c3019038fe04d5c0b371b2d185eeab63751ef2e936567c3d26bbd22"
+    ]
+   }
+  ],
+  "scientificContext": {
+   "interpretation": "Synthetic model outputs used only to accept uncertainty-first encodings.",
+   "limitations": [
+    "Synthetic values with no scientific meaning",
+    "Bands evaluated only at observed predictor values"
+   ],
+   "measurementStatus": "computed-from-specified-inputs",
+   "units": "mg L-1",
+   "claimIds": [],
+   "doNotInfer": [
+    "any real trend or projection"
+   ],
+   "uncertaintyNotation": "unavailable",
+   "uncertaintyStatus": "unavailable",
+   "uncertaintyEncodings": [
+    "table-columns",
+    "unavailable-notice"
+   ]
+  },
+  "rendering": {
+   "profileId": "sc-institutional-research-v1",
+   "renderer": "plotly",
+   "rendererVersion": "plotly.py 6.5.2; plotly.js 3.3.1",
+   "caption": "SYNTHETIC: the runtime reported no bands, so uncertainty is shown as unavailable.",
+   "altText": "Two empty panels each stating that uncertainty is unavailable because the run reported none.",
+   "palette": "colorblind-safe",
+   "accessibilityReview": "pending",
+   "visualizationSpecSha256": "6a23c53dfa3196c8d7fdad964f7bf0330d81e159887e7e62bc504295db777289"
+  },
+  "artifacts": [
+   {
+    "format": "json",
+    "artifactRef": "sc://workbench/figure-adapters/plotly/6a23c53dfa3196c8d7fdad964f7bf0330d81e159887e7e62bc504295db777289.json",
+    "sha256": "6a23c53dfa3196c8d7fdad964f7bf0330d81e159887e7e62bc504295db777289",
+    "mediaType": "application/vnd.plotly.v1+json",
+    "width": 1000,
+    "height": 760,
+    "status": "local-review",
+    "revision": 1
+   }
+  ],
+  "provenance": {
+   "authorityOwner": "workbench",
+   "sourceSnapshotIds": [
+    "workspace-run:sc://workspace/runs/synthetic-fig05-band:fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+    "workspace-run:sc://workspace/runs/synthetic-fig05-fan:afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809"
+   ],
+   "generationRunId": "workbench.plotly-figure-adapter:6a23c53dfa3196c8d7fdad96",
+   "generatedAt": "2026-11-12T07:59:24Z",
+   "reproducibility": "synthetic-fixture-tested",
+   "scriptSha256": "8f37b9f887d52c0d3600fbdbdf94de7a3b9238bd73b290511585ed8953a4cbe2",
+   "inputManifestSha256": "a9fcce6b805f9df2b12789ffa9bb8fa6db5c5a108ee90638fd5a6ac4dbb5ec8f",
+   "lineageRefs": [
+    "workspace-runtime-records:None"
+   ]
+  },
+  "review": {
+   "scientific": "pending",
+   "visual": "pending",
+   "rights": "pending",
+   "sourceIntegrity": "pending",
+   "publication": "pending"
+  },
+  "labels": [
+   "synthetic"
+  ]
+ },
+ "source": {
+  "kind": "workspace-runtime-records",
+  "snapshotIds": [
+   "workspace-run:sc://workspace/runs/synthetic-fig05-band:fceebd3f334c32e8c0348d1aa0d62e156a4336a215a021cf062646c47d31191d",
+   "workspace-run:sc://workspace/runs/synthetic-fig05-fan:afd4eed20d7569aff0ebbeaeab874ec8bbe5eeb40f1753ea9f50444953fb7809"
+  ],
+  "inputManifestSha256": "a9fcce6b805f9df2b12789ffa9bb8fa6db5c5a108ee90638fd5a6ac4dbb5ec8f"
+ },
+ "boundaries": {
+  "sourceJobsMutated": false,
+  "missingValuesFilled": false,
+  "uncertaintySemanticsInferred": false,
+  "evidenceClassPromoted": false,
+  "reviewDecisionsSetByAdapter": false,
+  "remoteAssetsReferenced": false,
+  "automaticCoreDispatchPerformed": false,
+  "publicationPerformed": false,
+  "uncertaintyComputedByAdapter": false
+ },
+ "uncertainty": [
+  {
+   "panelId": "trend",
+   "chart": "band",
+   "calculation": 0,
+   "status": "unavailable",
+   "reason": "the Workspace run reported no confidence or prediction band for this value; none is drawn or derived"
+  },
+  {
+   "panelId": "ensemble",
+   "chart": "fan",
+   "calculation": 1,
+   "status": "unavailable",
+   "reason": "the Workspace run reported no ensemble quantile fan for this value; none is drawn or derived"
+  }
+ ],
+ "resultHash": "86a697348e16a0400028eec1cf9ef7ed883f551a125d7b3c6a7b369aae7ad2ec"
+}
