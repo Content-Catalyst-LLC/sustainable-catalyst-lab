@@ -100,6 +100,21 @@
     check(x1.receipt.bundleSha256 === source.files['erw.bundle.json'] && x1.receipt.artifactEntry.sha256 === x1.receipt.sha256, 'receipt ties the export to the bundle and offers an artifact entry');
     check(slot.querySelectorAll('a.sc-lab-fig02b-download[download]').length === 2, 'SVG and receipt offered as local downloads');
 
+    // 2b. SC-SCI-02 PNG: drawn from the verified SVG, receipt embedded and checked, repeatable in size, tamper refused.
+    var p1 = await erw.exports[0].png();
+    check(p1 && p1.receipt && slot.getAttribute('data-png-export-state') === 'verified', 'ERW PNG export verified ' + (p1.refused ? JSON.stringify(p1.refused) : ''));
+    check(p1.receipt.schema === 'sc.figure-export-receipt.v1' && p1.receipt.format === 'png' && p1.receipt.sha256 === await sha(p1.bytes) && p1.receipt.bytes === p1.bytes.length, 'PNG receipt hash and size match the exported bytes');
+    check(p1.receipt.source.sha256 === x1.receipt.sha256 && p1.receipt.bundleSha256 === source.files['erw.bundle.json'] && p1.receipt.viewArtifactSha256 === erwBundle.artifacts[0].sha256, 'PNG receipt names the verified SVG, bundle and view it came from');
+    var pv = await V.verifyPng(p1.bytes, p1.receipt);
+    check(pv.ok && pv.receipt.figureId === erwBundle.figureId && pv.receipt.image.width === p1.receipt.image.width, 'embedded PNG receipt re-verified (' + pv.errors.join('; ') + ')');
+    var bad = p1.bytes.slice(); bad[bad.length - 20] ^= 1;
+    check(!(await V.verifyPng(bad, p1.receipt)).ok, 'altered PNG bytes refused');
+    var forged = JSON.parse(JSON.stringify(p1.receipt)); forged.evidenceClass = 'observed';
+    check(/differs from the receipt file/.test((await V.verifyPng(p1.bytes, forged)).errors.join(';')), 'receipt promoted to observed no longer matches the embedded receipt');
+    var img = await new Promise(function (ok) { var i = new Image(); i.onload = function () { ok(i); }; i.onerror = function () { ok(null); }; i.src = URL.createObjectURL(new Blob([p1.bytes], { type: 'image/png' })); });
+    check(img && img.naturalWidth === p1.receipt.image.width && img.naturalHeight === p1.receipt.image.height, 'PNG decodes at the recorded size (' + (img ? img.naturalWidth + 'x' + img.naturalHeight : 'no image') + ')');
+    check(slot.querySelectorAll('a.sc-lab-fig02b-download[download$=".png"]').length === 1 && slot.querySelectorAll('a.sc-lab-fig02b-download[download$=".png.receipt.json"]').length === 1, 'PNG and its receipt offered as local downloads');
+
     // 3. Round trip: the exported SVG as a verified static view of the next bundle revision.
     var rev = JSON.parse(JSON.stringify(erwBundle)); rev.artifacts.push(x1.receipt.artifactEntry);
     var rt = await R.render(host(), [textFile('erw.rev.bundle.json', JSON.stringify(rev)), await file(DIR + 'erw.vega-lite.json'), { name: 'erw.svg', bytes: x1.bytes }]);

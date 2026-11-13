@@ -9,6 +9,8 @@
  * Vega 6.4.0 / Vega-Lite 6.5.0 with the CSP-safe expression interpreter (no eval or new Function) and a
  * loader that refuses every load. SVG exports are validated element by element, carry their provenance
  * in <metadata>, are re-verified after serialisation and come with an export receipt.
+ * SC-SCI-02: a PNG export rasterises only that verified SVG and embeds the same receipt schema
+ * (format "png", bound to the source SVG's hash) as one tEXt chunk; it is re-parsed and checked before it is offered.
  */
 (function (root, factory) {
   'use strict';
@@ -18,7 +20,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.2.0';
   var PROFILE = 'sc-vega-lite-v1';
   var SVG_PROVENANCE = 'sc.figure-svg-provenance.v1';
   var RECEIPT = 'sc.figure-export-receipt.v1';
@@ -472,11 +474,149 @@
     });
   }
 
+  // --- SC-SCI-02 PNG export of a verified SVG export -----------------------------------------------------
+  var PNG_RECEIPT_KEYWORD = 'sc:figure-export-receipt';
+  var PNG_SIG = [137, 80, 78, 71, 13, 10, 26, 10];
+  var PNG_SCALE = 2;
+  var CRC_TABLE = null;
+
+  function crc32(bytes) {
+    if (!CRC_TABLE) {
+      CRC_TABLE = [];
+      for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) { c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; } CRC_TABLE[n] = c >>> 0; }
+    }
+    var r = 0xffffffff;
+    for (var i = 0; i < bytes.length; i++) { r = CRC_TABLE[(r ^ bytes[i]) & 0xff] ^ (r >>> 8); }
+    return (r ^ 0xffffffff) >>> 0;
+  }
+  function u32(a, i) { return ((a[i] << 24) | (a[i + 1] << 16) | (a[i + 2] << 8) | a[i + 3]) >>> 0; }
+  function be32(n) { return [n >>> 24 & 255, n >>> 16 & 255, n >>> 8 & 255, n & 255]; }
+
+  // Strict chunk walk (signature, lengths, CRCs, one final IEND); null for anything else.
+  function pngChunks(bytes) {
+    var a = new Uint8Array(bytes), out = [], i = 8;
+    for (var k = 0; k < 8; k++) { if (a[k] !== PNG_SIG[k]) { return null; } }
+    while (i + 12 <= a.length) {
+      var len = u32(a, i), type = String.fromCharCode(a[i + 4], a[i + 5], a[i + 6], a[i + 7]);
+      if (i + 12 + len > a.length || crc32(a.subarray(i + 4, i + 8 + len)) !== u32(a, i + 8 + len)) { return null; }
+      out.push({ type: type, data: a.subarray(i + 8, i + 8 + len), at: i });
+      i += 12 + len;
+      if (type === 'IEND') { return i === a.length ? out : null; }
+    }
+    return null;
+  }
+
+  function withReceiptChunk(bytes, text) {
+    var a = new Uint8Array(bytes), chunks = pngChunks(a);
+    if (!chunks || !/^[\x20-\x7e]+$/.test(text)) { throw ['png-encoding: cannot embed the export receipt']; }
+    var iend = chunks[chunks.length - 1].at, body = new TextEncoder().encode(PNG_RECEIPT_KEYWORD + '\u0000' + text);
+    var chunk = new Uint8Array(12 + body.length);
+    chunk.set(be32(body.length), 0); chunk.set(new TextEncoder().encode('tEXt'), 4); chunk.set(body, 8);
+    chunk.set(be32(crc32(chunk.subarray(4, 8 + body.length))), 8 + body.length);
+    var out = new Uint8Array(a.length + chunk.length);
+    out.set(a.subarray(0, iend), 0); out.set(chunk, iend); out.set(a.subarray(iend), iend + chunk.length);
+    return out;
+  }
+
+  function canonical(v) {
+    if (Array.isArray(v)) { return '[' + v.map(canonical).join(',') + ']'; }
+    if (v && typeof v === 'object') { return '{' + Object.keys(v).sort().map(function (k) { return JSON.stringify(k) + ':' + canonical(v[k]); }).join(',') + '}'; }
+    return JSON.stringify(v);
+  }
+
+  // The embedded receipt is everything that does not depend on the PNG's own bytes.
+  var PNG_FILE_ONLY = ['sha256', 'bytes', 'artifactEntry', 'note', 'verification'];
+  function embeddedPart(receipt) {
+    var e = {};
+    Object.keys(receipt).forEach(function (k) { if (PNG_FILE_ONLY.indexOf(k) < 0) { e[k] = receipt[k]; } });
+    return e;
+  }
+
+  // Checks PNG bytes against a receipt: well-formed, exactly one embedded receipt equal to the file's,
+  // pixel size as recorded, and SHA-256/length as recorded. Resolves to {ok, errors, sha256}. No network.
+  function verifyPng(pngBytes, receipt) {
+    var bytes = new Uint8Array(pngBytes), errors = [];
+    return sha256Bytes(bytes).then(function (digest) {
+      var chunks = pngChunks(bytes);
+      if (!chunks || chunks[0].type !== 'IHDR') { return { ok: false, errors: ['not a well-formed PNG (signature, chunk length or CRC)'], sha256: digest }; }
+      var texts = chunks.filter(function (c) { return c.type === 'tEXt'; }).map(function (c) {
+        var z = Array.prototype.indexOf.call(c.data, 0);
+        return { keyword: String.fromCharCode.apply(null, c.data.subarray(0, z)), text: String.fromCharCode.apply(null, c.data.subarray(z + 1)) };
+      }).filter(function (t) { return t.keyword === PNG_RECEIPT_KEYWORD; });
+      if (texts.length !== 1) { return { ok: false, errors: ['PNG must carry exactly one embedded receipt'], sha256: digest }; }
+      var embedded;
+      try { embedded = JSON.parse(texts[0].text); } catch (e) { return { ok: false, errors: ['embedded receipt is not JSON'], sha256: digest }; }
+      if (!embedded || embedded.schema !== RECEIPT || embedded.format !== 'png') { errors.push('embedded receipt is not a ' + RECEIPT + ' PNG receipt'); }
+      if (!embedded.image || u32(chunks[0].data, 0) !== embedded.image.width || u32(chunks[0].data, 4) !== embedded.image.height) { errors.push('image size differs from the receipt'); }
+      if (receipt) {
+        if (canonical(embeddedPart(receipt)) !== canonical(embedded)) { errors.push('embedded receipt differs from the receipt file'); }
+        if (receipt.sha256 !== digest) { errors.push('PNG SHA-256 differs from the receipt'); }
+        if (receipt.bytes !== bytes.length) { errors.push('PNG length differs from the receipt'); }
+      }
+      return { ok: errors.length === 0, errors: errors, sha256: digest, receipt: embedded };
+    });
+  }
+
+  function svgSize(svgText) {
+    var doc = new DOMParser().parseFromString(svgText, 'image/svg+xml'), svg = doc.documentElement;
+    var w = parseFloat(svg.getAttribute('width')), h = parseFloat(svg.getAttribute('height'));
+    if (!(w > 0 && h > 0 && w <= 8000 && h <= 8000)) { throw ['png-encoding: the verified SVG has no usable width and height']; }
+    return { width: w, height: h };
+  }
+
+  // svgExport is the resolved value of exportSvg (verified, provenance-bearing bytes plus their receipt).
+  // Only those bytes are drawn; the browser loads them as an image, so no script runs and nothing is fetched.
+  function exportPng(svgExport, now) {
+    if (typeof document === 'undefined' || typeof Image === 'undefined') { return Promise.reject(['png-encoding: needs a browser canvas']); }
+    var svgReceipt = svgExport.receipt, text = new TextDecoder().decode(svgExport.bytes), size;
+    try { size = svgSize(text); } catch (x) { return Promise.reject(Array.isArray(x) ? x : [String(x)]); }
+    var width = Math.round(size.width * PNG_SCALE), height = Math.round(size.height * PNG_SCALE);
+    var url = URL.createObjectURL(new Blob([svgExport.bytes], { type: MEDIA.svg }));
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { reject(['png-encoding: the verified SVG could not be drawn']); };
+      img.src = url;
+    }).then(function (img) {
+      var canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (b) { if (!b) { reject(['png-encoding: the browser did not encode a PNG']); return; } b.arrayBuffer().then(resolve, reject); }, 'image/png');
+      });
+    }).then(function (raw) {
+      var embedded = {
+        schema: RECEIPT, figureId: svgReceipt.figureId, figureVersion: svgReceipt.figureVersion, bundleSha256: svgReceipt.bundleSha256,
+        viewArtifactSha256: svgReceipt.viewArtifactSha256, viewMediaType: svgReceipt.viewMediaType, evidenceClass: svgReceipt.evidenceClass,
+        format: 'png', mediaType: 'image/png', provenanceEmbedded: true, renderer: svgReceipt.renderer,
+        source: { format: 'svg', sha256: svgReceipt.sha256, bytes: svgReceipt.bytes },
+        image: { width: width, height: height, scale: PNG_SCALE }, exportedAt: (now || new Date()).toISOString()
+      };
+      var bytes = withReceiptChunk(raw, canonical(embedded).replace(/[^\x20-\x7e]/g, function (ch) { return '\\u' + ('000' + ch.charCodeAt(0).toString(16)).slice(-4); }));
+      return sha256Bytes(bytes).then(function (digest) {
+        var receipt = Object.assign({}, embedded, {
+          sha256: digest, bytes: bytes.length,
+          verification: { reparsed: true, sourceSvgReceiptVerified: true, embeddedReceiptMatches: true },
+          artifactEntry: { format: 'png', artifactRef: svgReceipt.figureId + '.v' + svgReceipt.figureVersion + '.' + digest.slice(0, 12) + '.png',
+            sha256: digest, mediaType: 'image/png', status: 'local-review' },
+          note: 'Add artifactEntry to the next bundle revision through the owning producer; Lab does not store or publish exports.'
+        });
+        return verifyPng(bytes, receipt).then(function (v) {
+          if (!v.ok) { throw v.errors; }
+          return { bytes: bytes, receipt: receipt };
+        });
+      });
+    }).then(function (x) { URL.revokeObjectURL(url); return x; }, function (e) { URL.revokeObjectURL(url); throw Array.isArray(e) ? e : [String(e)]; });
+  }
+
   return {
     version: VERSION, profile: PROFILE, media: MEDIA, expected: EXPECTED, vendorSha256: VENDOR_SHA256,
     isVegaLiteMedia: function (t) { return t === MEDIA.vl5 || t === MEDIA.vl6; },
     specPolicyErrors: specPolicyErrors, scMetaErrors: scMetaErrors, viewErrors: viewErrors, datasetSha256FromText: datasetSha256FromText,
     encodedFields: encodedFields, displaySpec: displaySpec, tableModel: tableModel, runtimeErrors: runtimeErrors, createView: createView,
-    compiledErrors: compiledErrors, svgTreeErrors: svgTreeErrors, provenanceFor: provenanceFor, verifySvg: verifySvg, exportSvg: exportSvg
+    compiledErrors: compiledErrors, svgTreeErrors: svgTreeErrors, provenanceFor: provenanceFor, verifySvg: verifySvg, exportSvg: exportSvg,
+    exportPng: exportPng, verifyPng: verifyPng, pngReceiptKeyword: PNG_RECEIPT_KEYWORD
   };
 }));

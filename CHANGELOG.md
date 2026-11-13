@@ -1,5 +1,18 @@
 # v0.152.0.5 — Production Safe Boot, Legacy Runtime Isolation & Patch-Aware Integrity Repair
 
+## 0.163.1.10 — Graph Studio consolidation and verified PNG export (SC-SCI-02)
+
+- **One Graph Studio line.** Brings the FIG stack (#5–#7, #9–#12) onto main as one release: the generic
+  `sc.figure-bundle.v1` renderer, Plotly and Vega-Lite views, verified SVG export, release context from Research,
+  MapLibre geospatial views and runtime uncertainty. #8 (MapLibre preparation) was already carried, rebased, in FIG-04.
+- **Verified PNG export.** Each Plotly or Vega-Lite view now also exports a PNG drawn only from its verified,
+  provenance-bearing SVG. The PNG carries the same `sc.figure-export-receipt.v1` schema (format `png`, bound to the
+  source SVG hash, bundle, view and evidence class) as one `tEXt` chunk (`sc:figure-export-receipt`). Before the PNG is
+  offered, it is re-parsed and checked against the receipt file. Altered bytes, or a receipt edited after export,
+  are refused. Renderer 0.4.0, FIG-02B module 0.2.0.
+- **Research Bridge pairing.** Unchanged. Bridges below 0.3 are not affected; bridge 0.5.x pins 0.163.1.9's bytes,
+  so Lab 0.163.1.10 refuses it until the bridge's lock is re-synced.
+
 ## 0.163.1.9 — Runtime uncertainty bands, quantile fans and map uncertainty (SC-FIG-05.3), release candidate
 
 - **Uncertainty from the runtime only.** The figure-bundle renderer draws a confidence or prediction band, or an

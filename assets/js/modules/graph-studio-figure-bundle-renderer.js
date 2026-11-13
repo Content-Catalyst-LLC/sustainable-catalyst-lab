@@ -19,7 +19,7 @@
 }(typeof self !== 'undefined' ? self : this, function (root) {
   'use strict';
 
-  var VERSION = '0.3.0';
+  var VERSION = '0.4.0';
   var BUNDLE_SCHEMA = 'sc.figure-bundle.v1';
   var PLOTLY_MEDIA = 'application/vnd.plotly.v1+json';
   var PNG_MEDIA = 'image/png';
@@ -372,6 +372,30 @@
       });
     }
     button.addEventListener('click', run);
+    // SC-SCI-02: PNG of the verified SVG, with the same receipt schema embedded and offered beside it.
+    var pngButton = box.insertBefore(el('button', { type: 'button', 'class': 'sc-lab-fig02b-export-button', 'data-export-format': 'png' }, 'Export verified PNG'), status);
+    function runPng() {
+      return run().then(function (svg) {
+        if (svg.refused) { return svg; }
+        status.textContent = 'Exporting PNG…';
+        return V.exportPng(svg).then(function (x) {
+          slot.setAttribute('data-png-export-state', 'verified');
+          slot.setAttribute('data-png-export-sha256', x.receipt.sha256);
+          var stem = x.receipt.artifactEntry.artifactRef.replace(/\.png$/, '');
+          box.appendChild(el('a', { href: URL.createObjectURL(new Blob([x.bytes], { type: 'image/png' })), download: stem + '.png', 'class': 'sc-lab-fig02b-download' }, 'Download PNG'));
+          box.appendChild(el('a', { href: URL.createObjectURL(new Blob([JSON.stringify(x.receipt, null, 1)], { type: 'application/json' })), download: stem + '.png.receipt.json', 'class': 'sc-lab-fig02b-download' }, 'Download PNG export receipt'));
+          status.textContent = 'Verified PNG ' + x.receipt.image.width + '×' + x.receipt.image.height + ', ' + x.receipt.bytes + ' bytes, SHA-256 ' + x.receipt.sha256 +
+            '. Drawn from SVG ' + x.receipt.source.sha256.slice(0, 12) + '…; receipt embedded; nothing uploaded or saved.';
+          return x;
+        }, function (reasons) {
+          slot.setAttribute('data-png-export-state', 'refused');
+          status.textContent = 'PNG export refused: ' + (Array.isArray(reasons) ? reasons.join('; ') : String(reasons));
+          return { refused: reasons };
+        });
+      });
+    }
+    pngButton.addEventListener('click', runPng);
+    run.png = runPng;
     return run;
   }
 
