@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- No 'unsafe-eval': Vega must render through the expression interpreter. No remote origins at all. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: 'unsafe-inline'; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: blob: data:; connect-src 'self' file:; object-src 'none'; base-uri 'none'">
+<title>FIG-02B Vega-Lite and verified SVG — Chromium harness</title>
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-plotly-preview-fig02a.css">
+<link rel="stylesheet" href="../assets/css/sc-lab-graph-studio-figure-bundle-renderer.css">
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:16px;max-width:1100px}</style>
+</head>
+<body data-cert="running">
+<div data-lab-module="graph-studio"><div id="sc-lab-graph-studio-renderer-root"><div data-gs13583-stage></div></div></div>
+<pre id="cert-log"></pre>
+<script>window.SCLabFigureBundleRendererConfig = { enabled: true };</script>
+<script src="../assets/lib/plotly-3.3.1/plotly.min.js"></script>
+<script src="../assets/lib/vega-6.4.0/vega.min.js"></script>
+<script src="../assets/lib/vega-lite-6.5.0/vega-lite.min.js"></script>
+<script src="../assets/lib/vega-interpreter-2.3.2/vega-interpreter.classic.js"></script>
+<script src="../assets/js/modules/graph-studio-plotly-preview-fig02a.js"></script>
+<script src="../assets/js/modules/graph-studio-vega-lite-fig02b.js"></script>
+<script src="../assets/js/modules/graph-studio-figure-bundle-renderer.js"></script>
+<script>
+(async function () {
+  var log = [], failures = [], DIR = 'fixtures/fig02b-vega-lite/', GEN = 'fixtures/figure-bundle-generic/';
+  function check(cond, msg) { log.push((cond ? 'ok   ' : 'FAIL ') + msg); if (!cond) { failures.push(msg); } document.getElementById('cert-log').textContent = log.join('\n'); }
+  async function bytesOf(path) { return new Uint8Array(await (await fetch(path)).arrayBuffer()); }
+  async function file(path) { return { name: path.split('/').pop(), bytes: await bytesOf(path) }; }
+  function textFile(name, text) { return { name: name, bytes: new TextEncoder().encode(text) }; }
+  async function sha(bytes) { return Array.prototype.map.call(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); }
+  var F = window.SCLabPlotlyPreviewFIG02A;
+  async function canonicalSha(text) { return F.sha256Hex(F.canonical(F.parseLexical(text))); }
+  function host() { return document.body.appendChild(document.createElement('div')); }
+  function reasonsOf(r) { return Array.isArray(r.reasons) ? r.reasons.join(' | ') : String(r.reasons); }
+
+  // Re-pack a mutated view into its bundle (artifact hash, spec hash and, unless keepDataset, dataset hash).
+  async function repack(bundle, view, keepDataset) {
+    var b = JSON.parse(JSON.stringify(bundle)), text = JSON.stringify(view);
+    if (!keepDataset && view.usermeta && view.usermeta.sc) {
+      var old = view.usermeta.sc.datasetSha256, ds = await V.datasetSha256FromText(text);
+      view.usermeta.sc.datasetSha256 = ds;
+      (b.calculationRefs || []).forEach(function (c) { if (c.outputSha256 === old) { c.outputSha256 = ds; } });
+      (b.sourceRefs || []).forEach(function (s) { if (s.sha256 === old) { s.sha256 = ds; } });
+      text = JSON.stringify(view);
+    }
+    var h = await canonicalSha(text);
+    b.artifacts[0].sha256 = h; b.rendering.visualizationSpecSha256 = h;
+    return [textFile('bundle.json', JSON.stringify(b)), textFile('view.json', text)];
+  }
+
+  try {
+    if (document.readyState === 'loading') { await new Promise(function (r) { document.addEventListener('DOMContentLoaded', r); }); }
+    var R = window.SCLabFigureBundleRenderer, V = window.SCLabVegaLiteFIG02B;
+    var evalBlocked = false; try { (0, Function)('return 1')(); } catch (e) { evalBlocked = true; }
+    check(evalBlocked, 'page CSP blocks eval/new Function (no unsafe-eval)');
+    check(vega.version === '6.4.0' && vegaLite.version === '6.5.0' && vegaInterpreter.version === '2.3.2' && Plotly.version === '3.3.1',
+      'vendored vega 6.4.0, vega-lite 6.5.0, vega-interpreter 2.3.2 and plotly.js 3.3.1 loaded');
+    for (var vf in V.vendorSha256) {
+      check((await sha(await bytesOf('../assets/lib/' + vf))) === V.vendorSha256[vf], 'vendor file ' + vf + ' matches its pinned SHA-256');
+    }
+    check(V.runtimeErrors().length === 0, 'FIG-02B runtime check passes ' + JSON.stringify(V.runtimeErrors()));
+    var source = await (await fetch(DIR + 'SOURCE.json')).json();
+    var erwBundle = await (await fetch(DIR + 'erw.bundle.json')).json(), erwView = await (await fetch(DIR + 'erw.vega-lite.json')).json();
+    var metBundle = await (await fetch(DIR + 'metrics.bundle.json')).json(), metView = await (await fetch(DIR + 'metrics.vega-lite.json')).json();
+
+    // 1. ERW: modelled band + line, literature points with ranges. Pinned to the registered bundle hash.
+    var out = host();
+    var erw = await R.render(out, [await file(DIR + 'erw.bundle.json'), await file(DIR + 'erw.vega-lite.json')], source.files['erw.bundle.json']);
+    var slot = out.querySelector('[data-view-state="rendered-vega-lite"]');
+    check(erw.state === 'rendered' && !!slot && slot.getAttribute('data-vega-view') === 'ready', 'ERW figure verified and drawn with Vega-Lite');
+    var svg = slot && slot.querySelector('.sc-lab-fig02b-plot svg');
+    check(!!svg && svg.querySelectorAll('path').length > 4, 'ERW Vega SVG has drawn marks (' + (svg ? svg.querySelectorAll('path').length : 0) + ' paths)');
+    var axisText = svg ? Array.prototype.map.call(svg.querySelectorAll('text'), function (t) { return t.textContent; }).join(' | ') : '';
+    check(axisText.indexOf('Lower bound') < 0 && axisText.indexOf('Cumulative CO2 uptake (t CO2 ha-1)') >= 0 && axisText.indexOf('Months since application (months)') >= 0, 'axis titles carry units from usermeta.sc');
+    check(axisText.indexOf('literature-derived') >= 0 && axisText.indexOf('modelled') >= 0, 'legend distinguishes modelled and literature-derived evidence' + (axisText.indexOf('literature-derived') >= 0 && axisText.indexOf('modelled') >= 0 ? '' : ' [' + axisText + ']'));
+    check(!svg.querySelector('script, foreignObject, image, a'), 'drawn SVG has no script, foreignObject, image or link');
+    var rows = slot.querySelectorAll('table[data-view-table] tbody tr').length;
+    check(rows === erwView.data.values.length, 'accessible table lists every data row (' + rows + ')');
+    var heads = Array.prototype.map.call(slot.querySelectorAll('table[data-view-table] th[scope="col"]'), function (h) { return h.textContent; });
+    check(heads.indexOf('Cumulative CO2 uptake (t CO2 ha-1)') >= 0 && heads.indexOf('Evidence class') >= 0, 'table headers carry units and evidence class');
+    check(/Uncertainty \(range\)/.test(slot.textContent) && slot.textContent.indexOf(erwView.usermeta.sc.datasetSha256) >= 0, 'uncertainty definition and dataset hash shown');
+    var prov = out.querySelector('.sc-lab-fig02a-provenance').textContent;
+    check(prov.indexOf('synthetic-fixture-tested') >= 0 && prov.indexOf(erwBundle.artifacts[0].sha256) >= 0 && prov.indexOf('verified, canonical-json') >= 0, 'provenance lists reproducibility and the verified view hash');
+    var badge = out.querySelector('.sc-lab-fig02a-evidence');
+    check(badge.getAttribute('data-evidence-class') === 'modelled' && badge.textContent === 'Modelled — Lab computation, not a measurement', 'figure evidence class shown as modelled, naming its computing authority');
+
+    // 2. Export: validated SVG with embedded provenance, re-verified, receipt; repeatable.
+    var x1 = await erw.exports[0](), x2 = await erw.exports[0]();
+    check(x1 && x1.receipt && slot.getAttribute('data-export-state') === 'verified', 'ERW SVG export verified');
+    check(x1.receipt.sha256 === await sha(x1.bytes) && x1.receipt.bytes === x1.bytes.length, 'receipt hash and size match the exported bytes');
+    check(x2.receipt.sha256 === x1.receipt.sha256, 'export is repeatable (same SHA-256 twice)');
+    var exported = new TextDecoder().decode(x1.bytes);
+    var doc = new DOMParser().parseFromString(exported, 'image/svg+xml');
+    var meta = JSON.parse(doc.getElementById('sc-figure-provenance').textContent);
+    check(meta.schema === 'sc.figure-svg-provenance.v1' && meta.dataset.sha256 === erwView.usermeta.sc.datasetSha256 && meta.evidenceClass === 'modelled' &&
+      meta.fields.cdr.unit === 't CO2 ha-1' && meta.uncertainty.kind === 'range' && meta.calculationRefs.length === 1 && meta.reproducibility === 'synthetic-fixture-tested',
+      'exported SVG embeds dataset hash, units, uncertainty, evidence, calculation and reproducibility');
+    check(doc.querySelector('title').textContent === erwBundle.title && doc.querySelector('desc').textContent === erwBundle.rendering.altText, 'exported SVG has title and description');
+    check(V.svgTreeErrors(doc).length === 0 && !/<script|onload=|javascript:/i.test(exported), 'exported SVG passes the strict element policy');
+    check(x1.receipt.bundleSha256 === source.files['erw.bundle.json'] && x1.receipt.artifactEntry.sha256 === x1.receipt.sha256, 'receipt ties the export to the bundle and offers an artifact entry');
+    check(slot.querySelectorAll('a.sc-lab-fig02b-download[download]').length === 2, 'SVG and receipt offered as local downloads');
+
+    // 2b. SC-SCI-02 PNG: drawn from the verified SVG, receipt embedded and checked, repeatable in size, tamper refused.
+    var p1 = await erw.exports[0].png();
+    check(p1 && p1.receipt && slot.getAttribute('data-png-export-state') === 'verified', 'ERW PNG export verified ' + (p1.refused ? JSON.stringify(p1.refused) : ''));
+    check(p1.receipt.schema === 'sc.figure-export-receipt.v1' && p1.receipt.format === 'png' && p1.receipt.sha256 === await sha(p1.bytes) && p1.receipt.bytes === p1.bytes.length, 'PNG receipt hash and size match the exported bytes');
+    check(p1.receipt.source.sha256 === x1.receipt.sha256 && p1.receipt.bundleSha256 === source.files['erw.bundle.json'] && p1.receipt.viewArtifactSha256 === erwBundle.artifacts[0].sha256, 'PNG receipt names the verified SVG, bundle and view it came from');
+    var pv = await V.verifyPng(p1.bytes, p1.receipt);
+    check(pv.ok && pv.receipt.figureId === erwBundle.figureId && pv.receipt.image.width === p1.receipt.image.width, 'embedded PNG receipt re-verified (' + pv.errors.join('; ') + ')');
+    var bad = p1.bytes.slice(); bad[bad.length - 20] ^= 1;
+    check(!(await V.verifyPng(bad, p1.receipt)).ok, 'altered PNG bytes refused');
+    var forged = JSON.parse(JSON.stringify(p1.receipt)); forged.evidenceClass = 'observed';
+    check(/differs from the receipt file/.test((await V.verifyPng(p1.bytes, forged)).errors.join(';')), 'receipt promoted to observed no longer matches the embedded receipt');
+    var img = await new Promise(function (ok) { var i = new Image(); i.onload = function () { ok(i); }; i.onerror = function () { ok(null); }; i.src = URL.createObjectURL(new Blob([p1.bytes], { type: 'image/png' })); });
+    check(img && img.naturalWidth === p1.receipt.image.width && img.naturalHeight === p1.receipt.image.height, 'PNG decodes at the recorded size (' + (img ? img.naturalWidth + 'x' + img.naturalHeight : 'no image') + ')');
+    check(slot.querySelectorAll('a.sc-lab-fig02b-download[download$=".png"]').length === 1 && slot.querySelectorAll('a.sc-lab-fig02b-download[download$=".png.receipt.json"]').length === 1, 'PNG and its receipt offered as local downloads');
+
+    // 3. Round trip: the exported SVG as a verified static view of the next bundle revision.
+    var rev = JSON.parse(JSON.stringify(erwBundle)); rev.artifacts.push(x1.receipt.artifactEntry);
+    var rt = await R.render(host(), [textFile('erw.rev.bundle.json', JSON.stringify(rev)), await file(DIR + 'erw.vega-lite.json'), { name: 'erw.svg', bytes: x1.bytes }]);
+    var st = rt.views ? rt.views.map(function (v) { return v.state; }).join(',') : reasonsOf(rt);
+    check(rt.state === 'rendered' && st === 'rendered-vega-lite,static-svg', 'exported SVG re-verified as a static view next to the live view (' + st + ')');
+    var svgMeta = rt.views && rt.views[1].svgProvenance;
+    check(svgMeta && svgMeta.viewArtifactSha256 === erwBundle.artifacts[0].sha256, 'static SVG provenance names the Vega-Lite view it came from');
+    var wrongFig = JSON.parse(JSON.stringify(rev)); wrongFig.figureId = 'SYN-OTHER-figure';
+    var wf = await R.render(host(), [textFile('b.json', JSON.stringify(wrongFig)), await file(DIR + 'erw.vega-lite.json'), { name: 'erw.svg', bytes: x1.bytes }]);
+    check(wf.state === 'refused' && /not this figure/.test(reasonsOf(wf)), 'SVG whose provenance names another figure refused');
+
+    // 4. Metrics: missing observations, no uncertainty.
+    var mo = host();
+    var met = await R.render(mo, [await file(DIR + 'metrics.bundle.json'), await file(DIR + 'metrics.vega-lite.json')], source.files['metrics.bundle.json']);
+    check(met.state === 'rendered' && !!mo.querySelector('.sc-lab-fig02b-plot svg'), 'Metrics indicator figure drawn');
+    var nr = Array.prototype.filter.call(mo.querySelectorAll('table[data-view-table] td'), function (c) { return c.textContent === 'not reported'; }).length;
+    check(nr === 3, 'three missing observations listed as "not reported" (' + nr + ')');
+    check(/Uncertainty: none reported/.test(mo.textContent) && mo.querySelector('.sc-lab-fig02a-evidence').getAttribute('data-evidence-class') === 'hypothetical', 'no-uncertainty statement and hypothetical class shown');
+    var mx = await met.exports[0]();
+    check(mx.receipt && mx.receipt.evidenceClass === 'hypothetical', 'Metrics SVG export verified');
+
+    // 5. Combined: a Plotly view and a Vega-Lite view in one figure; both export verified SVG.
+    var co = host();
+    var comb = await R.render(co, [await file(DIR + 'combined.bundle.json'), await file(DIR + 'erw.vega-lite.json'), await file(GEN + 'points.plotly.json')]);
+    var cst = comb.views ? comb.views.map(function (v) { return v.state; }).join(',') : reasonsOf(comb);
+    check(comb.state === 'rendered' && cst === 'rendered-vega-lite,rendered-plotly' && !!co.querySelector('.js-plotly-plot svg.main-svg'), 'combined figure draws Vega-Lite and Plotly (' + cst + ')');
+    var px = await Promise.all(comb.exports.map(function (f) { return f(); }));
+    var kinds = px.map(function (x) { return x.receipt ? x.receipt.renderer.name : 'refused ' + JSON.stringify(x.refused); }).sort().join(',');
+    check(kinds === 'plotly.js,vega-lite', 'both views export verified SVG (' + kinds + ')');
+
+    // 6. Refusals: grammar, scientific contract, integrity, SVG policy.
+    async function refusedView(label, mutate, needle, keepDataset) {
+      var v = JSON.parse(JSON.stringify(erwView)), b = JSON.parse(JSON.stringify(erwBundle));
+      mutate(v, b);
+      var r = await R.render(host(), await repack(b, v, keepDataset));
+      check(r.state === 'refused' && reasonsOf(r).indexOf(needle) >= 0, label + ' refused (' + (r.state === 'refused' ? reasonsOf(r).slice(0, 110) : r.state) + ')');
+    }
+    await refusedView('remote data URL', function (v) { v.data = { url: 'https://example.org/x.csv' }; }, 'not allowed');
+    await refusedView('interactive params / selection', function (v) { v.params = [{ name: 'p', select: 'interval' }]; }, 'params is not allowed');
+    await refusedView('calculate transform', function (v) { v.transform = [{ calculate: 'datum.cdr*2', as: 'x2' }]; }, 'calculate is not allowed');
+    await refusedView('label expression', function (v) { v.layer[1].encoding.y.axis = { labelExpr: 'datum.label' }; }, 'is an expression');
+    await refusedView('image mark', function (v) { v.layer[3].mark = 'image'; }, 'not in the allowed set');
+    await refusedView('field without a unit', function (v) { delete v.usermeta.sc.fields.cdr; }, 'has no label and unit');
+    await refusedView('axis title hiding the unit', function (v) { v.layer[1].encoding.y.title = 'Uptake'; }, 'hides its unit');
+    await refusedView('uncertainty declared but not drawn', function (v) { v.layer.splice(0, 1); v.layer.splice(1, 1); }, 'not drawn');
+    await refusedView('modelled rows relabelled observed', function (v) { v.data.values.forEach(function (r) { if (r.evidenceClass === 'modelled') { r.evidenceClass = 'observed'; } }); }, 'no promotion to observed');
+    await refusedView('mixed evidence not encoded', function (v) { delete v.layer[1].encoding.strokeDash; delete v.layer[3].encoding.shape; }, 'is not encoded');
+    await refusedView('no per-row evidence field', function (v) { delete v.usermeta.sc.evidenceField; }, 'evidenceField');
+    await refusedView('data changed after hashing', function (v) { v.data.values[0].cdr = 99; }, 'do not match usermeta.sc.datasetSha256', true);
+    await refusedView('dataset not among sources or calculations', function (v, b) { b.calculationRefs = []; }, 'not one of the bundle sourceRefs');
+    var badSvgs = {
+      'script element': '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)<\/script></svg>',
+      'event handler': '<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"><rect width="1" height="1"/></svg>',
+      'external reference': '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect fill="url(https://example.org/p.svg#a)" width="1" height="1"/></svg>',
+      'foreignObject': '<svg xmlns="http://www.w3.org/2000/svg"><foreignObject><div xmlns="http://www.w3.org/1999/xhtml">x</div></foreignObject></svg>'
+    };
+    for (var k in badSvgs) {
+      var sb = new TextEncoder().encode(badSvgs[k]), b2 = JSON.parse(JSON.stringify(erwBundle));
+      b2.artifacts.push({ format: 'svg', artifactRef: 'x.svg', sha256: await sha(sb), mediaType: 'image/svg+xml', status: 'local-review' });
+      var rs = await R.render(host(), [textFile('b.json', JSON.stringify(b2)), await file(DIR + 'erw.vega-lite.json'), { name: 'x.svg', bytes: sb }]);
+      check(rs.state === 'refused', 'SVG with ' + k + ' refused (' + (rs.state === 'refused' ? reasonsOf(rs).slice(0, 80) : rs.state) + ')');
+    }
+
+    // 7. No network: every loaded resource is local (file:) or a local blob.
+    var remote = performance.getEntriesByType('resource').filter(function (e) { return !/^(file|blob|data):/.test(e.name); }).map(function (e) { return e.name; });
+    check(remote.length === 0, 'no remote requests (' + remote.length + ')');
+  } catch (e) {
+    failures.push('harness error: ' + (e && e.stack || e));
+    log.push('FAIL harness error: ' + (e && e.stack || JSON.stringify(e)));
+  }
+  log.push(failures.length ? failures.length + ' FAILED' : 'ALL PASS (' + log.length + ' checks)');
+  document.getElementById('cert-log').textContent = log.join('\n');
+  document.body.setAttribute('data-cert', failures.length ? 'fail' : 'pass');
+}());
+</script>
+</body>
+</html>

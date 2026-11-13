@@ -1,0 +1,248 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "width": 640,
+ "height": 360,
+ "title": "SYNTHETIC — SDG-style indicator: access to electricity (placeholder countries)",
+ "data": {
+  "values": [
+   {
+    "year": 2015,
+    "value": 62.0,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2016,
+    "value": 64.7,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2017,
+    "value": 67.4,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2018,
+    "value": null,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2019,
+    "value": null,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2020,
+    "value": 75.6,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2021,
+    "value": 78.3,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2022,
+    "value": 81.0,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2023,
+    "value": 83.7,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2024,
+    "value": 86.4,
+    "country": "Country A (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2015,
+    "value": 81.5,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2016,
+    "value": 82.8,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2017,
+    "value": 84.1,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2018,
+    "value": 85.5,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2019,
+    "value": 86.8,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2020,
+    "value": 88.1,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2021,
+    "value": 89.4,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2022,
+    "value": 90.8,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2023,
+    "value": 92.1,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2024,
+    "value": 93.4,
+    "country": "Country B (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2015,
+    "value": 94.0,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2016,
+    "value": 94.4,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2017,
+    "value": 94.9,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2018,
+    "value": 95.3,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2019,
+    "value": 95.7,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2020,
+    "value": 96.1,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2021,
+    "value": null,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2022,
+    "value": 97.0,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2023,
+    "value": 97.4,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   },
+   {
+    "year": 2024,
+    "value": 97.9,
+    "country": "Country C (synthetic)",
+    "evidenceClass": "hypothetical"
+   }
+  ]
+ },
+ "layer": [
+  {
+   "mark": {
+    "type": "line",
+    "point": true
+   },
+   "encoding": {
+    "x": {
+     "field": "year",
+     "type": "ordinal"
+    },
+    "y": {
+     "field": "value",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       0,
+       100
+      ]
+     }
+    },
+    "color": {
+     "field": "country",
+     "type": "nominal"
+    }
+   }
+  }
+ ],
+ "usermeta": {
+  "sc": {
+   "profile": "sc-vega-lite-v1",
+   "datasetId": "synthetic:metrics-sdg-7-1-1-style-v1",
+   "datasetSha256": "0af5dda1b8f91349b527d6857638a182f66c6a0049c1e17df903cb725170cbb7",
+   "evidenceField": "evidenceClass",
+   "fields": {
+    "year": {
+     "label": "Year",
+     "unit": "year"
+    },
+    "value": {
+     "label": "Population with access to electricity",
+     "unit": "%"
+    },
+    "country": {
+     "label": "Country",
+     "unit": "category"
+    },
+    "evidenceClass": {
+     "label": "Evidence class",
+     "unit": "category"
+    }
+   },
+   "uncertainty": {
+    "kind": "none",
+    "statement": "The synthetic source reports no uncertainty; missing years are shown as gaps, not interpolated."
+   }
+  }
+ }
+}

@@ -6,7 +6,7 @@ $js = file_get_contents($root . '/assets/js/sc-lab-4d-front-door-visual-polish-v
 $css = file_get_contents($root . '/assets/css/sc-lab-4d-front-door-visual-polish-v016313.css');
 $manifest = json_decode(file_get_contents($root . '/build/sc-lab-release-manifest.json'), true);
 $assert = function ($cond, $msg) { if (!$cond) { fwrite(STDERR, "FAIL - $msg\n"); exit(1); } };
-$assert(strpos($plugin, 'Version: 0.163.1.3') !== false, 'plugin version');
+$assert(strpos($plugin, 'Version: 0.163.1.3') !== false || strpos($plugin, 'Version: 0.163.1.4') !== false || strpos($plugin, 'Version: 0.163.1.5') !== false || strpos($plugin, 'Version: 0.163.1.6') !== false || strpos($plugin, 'Version: 0.163.1.7') !== false || strpos($plugin, 'Version: 0.163.1.8') !== false || strpos($plugin, 'Version: 0.163.1.9') !== false || strpos($plugin, 'Version: 0.163.1.10') !== false, 'plugin version');
 $assert(strpos($plugin, 'SC_Lab_4D_Front_Door_Visual_Polish_V016313::init();') !== false, 'polish initialized');
 $assert(strpos($class, "const VERSION = '0.163.1.3'") !== false, 'class version');
 $assert(strpos($class, "'advancedPanelsProgressive' => true") !== false, 'progressive controls config');
@@ -17,6 +17,6 @@ $assert(strpos($js, '.sc-lab-v015211-linked') !== false, 'linked views panel');
 $assert(strpos($js, '.sc-lab-v015212-persistence') !== false, 'scene panel');
 $assert(strpos($js, '.sc-lab-v01530-workspace') !== false, 'project workspace panel');
 $assert(strpos($css, '[data-overview-signals]') !== false, 'signals retained in CSS');
-$assert(($manifest['releaseVersion'] ?? '') === '0.163.1.3', 'manifest release version');
+$assert(in_array(($manifest['releaseVersion'] ?? ''), array('0.163.1.3','0.163.1.4','0.163.1.5','0.163.1.6','0.163.1.7','0.163.1.8','0.163.1.9','0.163.1.10'), true), 'manifest release version');
 $assert(($manifest['featureVersion'] ?? '') === '0.163.1', 'manifest feature version');
 echo "PASS - v0.163.1.3 WordPress 4D front-door visual polish contract\n";

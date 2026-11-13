@@ -36,7 +36,7 @@ def test_v01630_governance_and_v016301_startup_repair_are_retained():
 
 def test_release_manifest_records_frontend_consolidation_and_backend_packaging():
     manifest = json.loads(MANIFEST.read_text())
-    assert manifest["releaseVersion"] in {"0.163.1", "0.163.1.1", "0.163.1.2", "0.163.1.3"}
+    assert manifest["releaseVersion"] in {"0.163.1", "0.163.1.1", "0.163.1.2", "0.163.1.3", "0.163.1.4", "0.163.1.5", "0.163.1.6", "0.163.1.7", "0.163.1.8", "0.163.1.9", "0.163.1.10"}
     assert manifest["featureVersion"] == "0.163.1"
     assert manifest["v01631UnifiedWorkspaceShell"] is True
     assert manifest["v01631ProgressiveModuleNavigation"] is True

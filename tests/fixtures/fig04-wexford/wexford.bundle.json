@@ -1,0 +1,119 @@
+{
+ "schema": "sc.figure-bundle.v1",
+ "figureId": "SYN-FIG04-wexford-map",
+ "version": 1,
+ "title": "SYNTHETIC Wexford field soil organic carbon with hypothetical nitrate monitoring",
+ "project": {
+  "projectRef": "fig04-synthetic-ci",
+  "ownerScope": "unbound-local",
+  "environment": "local-review"
+ },
+ "publication": {
+  "kind": "none",
+  "target": "unassigned",
+  "bindingStatus": "unbound"
+ },
+ "figureType": "spatial-map",
+ "evidenceClass": "modelled",
+ "scientificContext": {
+  "interpretation": "Synthetic map used to accept the SC-FIG-04 geospatial workflow.",
+  "limitations": [
+   "Invented field shapes, sites and values",
+   "No basemap or imagery",
+   "Heat map is a kernel density of point weights, not an interpolated surface"
+  ],
+  "measurementStatus": "computed-from-specified-inputs",
+  "units": "g kg-1; mg L-1",
+  "doNotInfer": [
+   "any real Wexford soil carbon, nitrate or pH value",
+   "any farm or water-body location",
+   "measured carbon removal"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "sourceId": "synthetic:fig04-wexford-soil-model",
+   "provider": "Sustainable Catalyst test fixture via Site Intelligence normaliser",
+   "identityStatus": "source-identified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use",
+   "crs": "EPSG:4326",
+   "notes": "CC0-1.0 synthetic fixture"
+  },
+  {
+   "sourceId": "synthetic:fig04-wexford-nitrate-model",
+   "provider": "Sustainable Catalyst test fixture via Site Intelligence normaliser",
+   "identityStatus": "source-identified",
+   "qualityStatus": "not-applicable",
+   "licenceStatus": "verified-for-use",
+   "crs": "EPSG:4326",
+   "notes": "CC0-1.0 synthetic fixture"
+  }
+ ],
+ "calculationRefs": [
+  {
+   "system": "other",
+   "runRef": "fixture:fig04-soc-trend",
+   "method": "OLS slope of soc on t_years (fixture)",
+   "outputSha256": "adbf23407248d7d9bd2618af8364369d3e3805efc8e9d792de81d85af34afc7b",
+   "assumptionRefs": []
+  }
+ ],
+ "spatial": {
+  "geometryStatus": "illustrative",
+  "crs": "EPSG:4326",
+  "extentStatus": "regional-rectangle",
+  "bbox": [
+   -6.64,
+   52.28,
+   -6.36,
+   52.44
+  ],
+  "siPackage": {
+   "package_id": "spatial-package:5d8bde40366e0edee1f77633",
+   "package_digest": "sha256:5d8bde40366e0edee1f7763396f5f2852e5d01a5fd1a45e1b3e61d9ce61cad24",
+   "manifest_digest": "sha256:fce58681d67fcc0073503d5145bef202567d565124c72a8f8a7aa88c5f59c05e"
+  }
+ },
+ "rendering": {
+  "profileId": "sc-institutional-research-v1",
+  "renderer": "maplibre-gl",
+  "rendererVersion": "5.24.0",
+  "caption": "SYNTHETIC: modelled field soil organic carbon (graduated), hypothetical nitrate-N density and sites, by quarter.",
+  "altText": "Six field parcels shaded by modelled soil organic carbon class, with eight hypothetical monitoring points and a nitrate density overlay.",
+  "palette": "colorblind-safe",
+  "accessibilityReview": "pending",
+  "visualizationSpecSha256": "5d99ddf513e3770029c5b45af799825fdce402778b5ea64e81952a4538b05d58"
+ },
+ "artifacts": [
+  {
+   "format": "json",
+   "artifactRef": "sc://lab/fig04/SYN-FIG04-wexford-map/5d99ddf513e3770029c5b45af799825fdce402778b5ea64e81952a4538b05d58.json",
+   "sha256": "5d99ddf513e3770029c5b45af799825fdce402778b5ea64e81952a4538b05d58",
+   "mediaType": "application/vnd.sc.maplibre-view.v1+json",
+   "status": "local-review",
+   "revision": 1
+  }
+ ],
+ "provenance": {
+  "authorityOwner": "lab",
+  "sourceSnapshotIds": [
+   "synthetic:fig04-wexford-soil-model",
+   "synthetic:fig04-wexford-nitrate-model"
+  ],
+  "generationRunId": "lab.fig04-fixture-builder:5d99ddf513e3770029c5b45a",
+  "generatedAt": "2026-11-11T00:00:00Z",
+  "reproducibility": "synthetic-fixture-tested",
+  "lineageRefs": [
+   "site-intelligence-package:sha256:5d8bde40366e0edee1f7763396f5f2852e5d01a5fd1a45e1b3e61d9ce61cad24",
+   "dataset:sha256:e9c764f7d1482e60147b780a4138a6f1e43727389fc5ff99da96e0560ee9be7b"
+  ]
+ },
+ "review": {
+  "scientific": "pending",
+  "visual": "pending",
+  "rights": "pending",
+  "sourceIntegrity": "pending",
+  "publication": "pending"
+ }
+}

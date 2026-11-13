@@ -1,0 +1,16 @@
+{
+  "classification": "synthetic",
+  "description": "Raw HTTP response bodies (exact bytes) from POST /figure-adapters/plotly/compile on the isolated Workbench FIG-02A staging container. Synthetic inputs from the Workbench test fixtures; no scientific meaning.",
+  "service": "wb-fig02a-staging (Contabo, 127.0.0.1:18188)",
+  "image": "sc-workbench-staging:14.0.0-fig02a-rc1-7cfbdf0c6ad0",
+  "imageId": "sha256:ad6671df88bc14327cef8173550777e2a70d29c59d2c536cf68f75059c135c72",
+  "architecture": "amd64",
+  "workbenchRevision": "7cfbdf0c6ad047e33ef9046c4133a59aee3583f7",
+  "workbenchPr": "https://github.com/Content-Catalyst-LLC/sustainable-catalyst-workbench/pull/42",
+  "capturedAt": "2026-11-10",
+  "files": {
+    "points.json": {"sha256": "e664c8a38143519df6358ea77f9f5f8127da50240726eabdef6beb016f4f9d56", "evidenceClass": "literature-derived"},
+    "baselines.json": {"sha256": "71e797468a3db1a89949feff86be049b0b38a7850a315d4ce45effd2f9a7d1df", "evidenceClass": "literature-derived"},
+    "modelled-line.json": {"sha256": "807e49cbd07af56259f85068d3453941e562ae9d0f5dfae2a32435085ca337b1", "evidenceClass": "modelled"}
+  }
+}
