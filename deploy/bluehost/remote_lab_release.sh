@@ -116,7 +116,7 @@ cmd_deploy() {
     [[ -f "$tmp/$SLUG/$SLUG.php" ]] || die "zip does not contain $SLUG/$SLUG.php"
     [[ "$(find "$tmp" -mindepth 1 -maxdepth 1 | wc -l)" == 1 ]] || die "zip has entries outside $SLUG/"
     chmod -R u=rwX,go=rX "$tmp/$SLUG"
-    rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
+    rsync -a --checksum --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     wpc cache flush >/dev/null 2>&1 || true
     purge_page_cache
     cmd_verify_deployed "$zip"
@@ -138,7 +138,7 @@ cmd_rollback() {
     cmd_verify_backup "$backup" >/dev/null
     scratch; local tmp="$TMP_DIR"
     tar -C "$tmp" -xzf "$backup/plugin.tar.gz"
-    rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
+    rsync -a --checksum --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     diff -q <(tree_manifest "$PLUGIN_DIR") "$backup/plugin.manifest" >/dev/null || die "rollback tree differs from backup manifest"
     if [[ -n "$OPTION" && -f "$backup/state.txt" && "$WP_MODE" == "wp" ]]; then
         local opt; opt="$(sed -n 4p "$backup/state.txt")"
