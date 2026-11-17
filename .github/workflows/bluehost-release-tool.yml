@@ -1,0 +1,23 @@
+name: Bluehost release tool
+
+on:
+  pull_request:
+    paths: ['deploy/bluehost/**', '.github/workflows/bluehost-release-tool.yml']
+  push:
+    branches: [main]
+    paths: ['deploy/bluehost/**', '.github/workflows/bluehost-release-tool.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  sandbox:
+    name: Backup, deploy, tamper refusals and rollback in a throwaway WordPress tree
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: bash -n deploy/bluehost/release.sh && bash -n deploy/bluehost/remote_lab_release.sh
+      - run: bash deploy/bluehost/tests/test_remote_release.sh
