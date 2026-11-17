@@ -12,16 +12,19 @@
 #   remote_lab_release.sh restore-test <backup-dir> <scratch-defaults-file> [--reset]
 #
 # Environment: SC_WP_ROOT (WordPress root), SC_WP ("wp" or "none" for a file-only sandbox),
+# SC_PLUGIN_SLUG (default sustainable-catalyst-lab; another plugin has no Lab preview option),
 # SC_RELEASE_HOME (default ~/sc-releases). Backups go to $SC_RELEASE_HOME/backups, mode 700.
 set -euo pipefail
 umask 077
 
-SLUG="sustainable-catalyst-lab"
+SLUG="${SC_PLUGIN_SLUG:-sustainable-catalyst-lab}"
 WP_ROOT="${SC_WP_ROOT:?SC_WP_ROOT is required}"
 WP_MODE="${SC_WP:-wp}"
 REL_HOME="${SC_RELEASE_HOME:-$HOME/sc-releases}"
+[[ "$SLUG" =~ ^[a-z0-9][a-z0-9-]{0,63}$ ]] || { echo "FAIL - invalid SC_PLUGIN_SLUG" >&2; exit 1; }
 PLUGIN_DIR="$WP_ROOT/wp-content/plugins/$SLUG"
-OPTION="sc_lab_fig02a_plotly_preview_enabled"
+OPTION=""
+[[ "$SLUG" == sustainable-catalyst-lab ]] && OPTION="sc_lab_fig02a_plotly_preview_enabled"
 
 SCRATCH=()
 cleanup() { local d; for d in "${SCRATCH[@]+"${SCRATCH[@]}"}"; do rm -rf "$d"; done; }
@@ -47,7 +50,7 @@ cmd_preflight() {
     if [[ "$WP_MODE" == "wp" ]]; then
         say "wp_core=$(wpc core version)"
         say "plugin_active=$(wpc plugin is-active "$SLUG" && echo yes || echo no)"
-        say "preview_option=$(wpc option get "$OPTION" 2>/dev/null || echo unset)"
+        [[ -z "$OPTION" ]] || say "preview_option=$(wpc option get "$OPTION" 2>/dev/null || echo unset)"
     fi
     say "free_kb=$(df -Pk "$HOME" | awk 'NR==2{print $4}')"
 }
@@ -71,7 +74,7 @@ cmd_backup() {
     fi
     if [[ "$WP_MODE" == "wp" ]]; then
         { wpc core version; wpc plugin get "$SLUG" --field=version; wpc plugin is-active "$SLUG" && echo active || echo inactive
-          wpc option get "$OPTION" 2>/dev/null || echo unset; } > "$dir/state.txt"
+          if [[ -n "$OPTION" ]]; then wpc option get "$OPTION" 2>/dev/null || echo unset; else echo none; fi; } > "$dir/state.txt"
     fi
     (cd "$dir" && sha256sum -- * > SHA256SUMS)
     chmod 600 "$dir"/*
@@ -137,7 +140,7 @@ cmd_rollback() {
     tar -C "$tmp" -xzf "$backup/plugin.tar.gz"
     rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     diff -q <(tree_manifest "$PLUGIN_DIR") "$backup/plugin.manifest" >/dev/null || die "rollback tree differs from backup manifest"
-    if [[ -f "$backup/state.txt" && "$WP_MODE" == "wp" ]]; then
+    if [[ -n "$OPTION" && -f "$backup/state.txt" && "$WP_MODE" == "wp" ]]; then
         local opt; opt="$(sed -n 4p "$backup/state.txt")"
         if [[ "$opt" == "unset" ]]; then wpc option delete "$OPTION" >/dev/null 2>&1 || true; else wpc option update "$OPTION" "$opt" >/dev/null; fi
     fi
@@ -147,6 +150,7 @@ cmd_rollback() {
 }
 
 cmd_preview() {
+    [[ -n "$OPTION" ]] || die "preview applies to the Lab plugin only"
     case "${1:?on|off}" in
         on) wpc option update "$OPTION" 1 >/dev/null ;;
         off) wpc option update "$OPTION" 0 >/dev/null ;;

@@ -15,7 +15,8 @@
 #   verify                            live HTTP checks only
 #
 # Optional: SC_BH_SSH_OPTS (extra ssh options), SC_BH_WP=none (file-only sandbox, no wp-cli),
-# SC_BH_LAB_PATH (default /lab/), SC_BH_EXPECT_PREVIEW=on|off (check the served Lab HTML).
+# SC_BH_LAB_PATH (default /lab/), SC_BH_EXPECT_PREVIEW=on|off (check the served Lab HTML),
+# SC_BH_PLUGIN (default sustainable-catalyst-lab; sc-research-bridge gets the Research Hub checks instead).
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -24,6 +25,7 @@ WP_ROOT="${SC_BH_WP_ROOT:?SC_BH_WP_ROOT is required}"
 SITE="${SC_BH_SITE_URL:-}"
 WP_MODE="${SC_BH_WP:-wp}"
 LAB_PATH="${SC_BH_LAB_PATH:-/lab/}"
+PLUGIN="${SC_BH_PLUGIN:-sustainable-catalyst-lab}"
 read -r -a SSH_OPTS <<<"${SC_BH_SSH_OPTS:-}"
 REMOTE_BIN='sc-releases/bin'
 REMOTE_SCRIPT="$REMOTE_BIN/remote_lab_release.sh"
@@ -45,11 +47,32 @@ push_script() {
 remote() {
     local q=() a
     for a in "$@"; do q+=("$(printf '%q' "$a")"); done
-    rsh "SC_WP_ROOT=$(printf '%q' "$WP_ROOT") SC_WP=$(printf '%q' "$WP_MODE") ~/$REMOTE_SCRIPT ${q[*]}"
+    rsh "SC_WP_ROOT=$(printf '%q' "$WP_ROOT") SC_WP=$(printf '%q' "$WP_MODE") SC_PLUGIN_SLUG=$(printf '%q' "$PLUGIN") ~/$REMOTE_SCRIPT ${q[*]}"
+}
+
+# The public Research bridge: read-only routes, the Hub page, and the deployed version in the served HTML.
+verify_research_bridge() {
+    local ua='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
+    local api="$SITE/wp-json/sc-research/v1" body code want
+    want="$(sed -n "s/^const SC_RESEARCH_BRIDGE_VERSION = '\(.*\)';/\1/p" "${SC_BH_BRIDGE_PHP:?SC_BH_BRIDGE_PHP (the accepted sc-research-bridge.php)}")"
+    body="$(curl -s --max-time 30 -A "$ua" "$api/status")"
+    python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert d["schema"]=="sc-research-public-backend-status/1.0", d; print("bridge_status=ok articles=%s areas=%s" % (d.get("approved_articles"), d.get("approved_areas")))' "$body" \
+        || die "bridge status route failed"
+    for route in articles areas; do
+        code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -A "$ua" "$api/$route")"
+        echo "bridge_$route=$code"
+    done
+    code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -A "$ua" "$api/articles/sc-release-verify-no-such-article")"
+    [[ "$code" == 404 ]] || die "unknown article returned HTTP $code, expected 404"
+    echo "bridge_unknown_article=404"
+    body="$(curl -s --max-time 30 -A "$ua" "$SITE/research-hub/")"
+    [[ "$body" == *"research-workbench-bridge.js?ver=$want"* ]] || die "served Research Hub does not load bridge $want (page cache?)"
+    echo "research_hub=bridge $want"
 }
 
 verify_http() {
     [[ -n "$SITE" ]] || { echo "http_checks=skipped (no SC_BH_SITE_URL)"; return 0; }
+    if [[ "$PLUGIN" == sc-research-bridge ]]; then verify_research_bridge; return; fi
     local code health
     code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$SITE$LAB_PATH")"
     [[ "$code" == 200 ]] || die "$SITE$LAB_PATH returned HTTP $code"
