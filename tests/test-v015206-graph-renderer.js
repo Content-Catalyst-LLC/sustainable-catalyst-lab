@@ -25,7 +25,7 @@ assert.ok(!php.includes("wp_enqueue_script('sc-lab-app'"),'legacy megabundle mus
 for(const s of [js,engine,graph])new vm.Script(s);
 assert.ok(js.includes("item.style.setProperty('display', 'none', 'important')"),'panels must not stack');
 assert.ok(js.includes("item.style.removeProperty('display')"),'selected panel visible');
-assert.ok(js.includes("graph.status().mounted"),'Graph's real status must survive safe boot');
+assert.ok(js.includes("graph.status().mounted"),"Graph Studio real status must survive safe boot");
 assert.ok(js.includes("graph.mount()"),'selected Graph mounts on activation');
 assert.ok(engine.includes('Lab.ScientificVisualizationEngineV0440={'),'real SVG engine exported');
 assert.ok(graph.includes('Lab.GraphStudioV0470={'),'real Graph Studio controller exported');
