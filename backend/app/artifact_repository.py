@@ -126,6 +126,10 @@ def policies(max_collections: int = 5000, max_records: int = 250000, max_manifes
     }
 
 
+# Persist Lab collection/artifact references, hashes and history in SQLite.
+# The injected workspace/lookup dependencies establish the local context;
+# these records are not automatically Workspace project grants or a backup of
+# artifact bytes. Callers must preserve owner scope when exposing collections.
 class ScientificArtifactRepository:
     def __init__(
         self,
