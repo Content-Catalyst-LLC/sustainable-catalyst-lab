@@ -19,7 +19,8 @@ import sys
 import threading
 
 ROOT = Path(__file__).resolve().parents[1]
-HTML = "tests/chromium-lab-safe-controls.html"
+PAGES = (("safe-controls", "tests/chromium-lab-safe-controls.html", "__labSafeControlsCert"),
+         ("graph-renderer", "tests/chromium-lab-graph-renderer.html", "__labGraphCert"))
 
 
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -45,29 +46,31 @@ def main():
                 kwargs["executable_path"] = os.environ["CHROME_BIN"]
             browser = p.chromium.launch(**kwargs)
             try:
-                for width in (1280, 390):
-                    page = browser.new_page(viewport={"width": width, "height": 900})
-                    errors = []
-                    page.on("pageerror", lambda e: errors.append(str(e)))
-                    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-                    page.goto(f"http://127.0.0.1:{server.server_port}/{HTML}", wait_until="load")
-                    page.wait_for_function("document.body.dataset.cert !== 'running'", timeout=20000)
-                    result = page.evaluate("window.__labSafeControlsCert")
-                    result = result or {"passed": [], "errors": ["No browser acceptance receipt"]}
-                    result["viewport"] = width
-                    result["consoleErrors"] = errors
-                    result["state"] = "pass" if not (result["errors"] or errors) else "fail"
-                    results.append(result)
-                    page.screenshot(path=str(out / f"safe-controls-{width}.png"), full_page=True)
-                    print(f"{width}px: {result['state']} ({len(result['passed'])} passed, {len(result['errors'])} failed)")
-                    page.close()
+                for name, html, receipt_key in PAGES:
+                    for width in (1280, 390):
+                        page = browser.new_page(viewport={"width": width, "height": 900})
+                        errors = []
+                        page.on("pageerror", lambda e: errors.append(str(e)))
+                        page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+                        page.goto(f"http://127.0.0.1:{server.server_port}/{html}", wait_until="load")
+                        page.wait_for_function("document.body.dataset.cert !== 'running'", timeout=20000)
+                        result = page.evaluate(f"window.{receipt_key}")
+                        result = result or {"passed": [], "errors": ["No browser acceptance receipt"]}
+                        result["fixture"] = name
+                        result["viewport"] = width
+                        result["consoleErrors"] = errors
+                        result["state"] = "pass" if not (result["errors"] or errors) else "fail"
+                        results.append(result)
+                        page.screenshot(path=str(out / f"{name}-{width}.png"), full_page=True)
+                        print(f"{name} {width}px: {result['state']} ({len(result['passed'])} passed, {len(result['errors'])} failed)")
+                        page.close()
             finally:
                 browser.close()
     finally:
         server.shutdown()
     state = "pass" if all(row["state"] == "pass" for row in results) else "fail"
     receipt = {"schema": "sc-lab-ui-01-browser-acceptance/1.0", "state": state,
-               "fixture": HTML, "syntheticOnly": True, "results": results}
+               "fixtures": [p[1] for p in PAGES], "syntheticOnly": True, "results": results}
     (out / "acceptance.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print("Receipt:", out / "acceptance.json")
     return 0 if state == "pass" else 1
