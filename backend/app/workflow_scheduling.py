@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import secrets
 import sqlite3
+from .sqlite_resources import ClosingConnection
 from threading import Event, Thread
 from typing import Any
 
@@ -262,7 +263,7 @@ class WorkflowScheduler:
         self._migrate()
 
     def _connect(self) -> sqlite3.Connection:
-        con = sqlite3.connect(self.db_path, timeout=30, isolation_level=None)
+        con = sqlite3.connect(self.db_path, timeout=30, isolation_level=None, factory=ClosingConnection)
         con.row_factory = sqlite3.Row
         con.execute("PRAGMA journal_mode=WAL")
         con.execute("PRAGMA synchronous=NORMAL")

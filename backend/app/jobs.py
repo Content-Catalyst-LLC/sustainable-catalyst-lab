@@ -8,6 +8,7 @@ import multiprocessing as mp
 from pathlib import Path
 import queue
 import sqlite3
+from .sqlite_resources import ClosingConnection
 import threading
 import time
 import uuid
@@ -115,7 +116,7 @@ class PersistentJobQueue:
         self._recover_interrupted_jobs()
 
     def _connect(self) -> sqlite3.Connection:
-        connection = sqlite3.connect(str(self.db_path), timeout=10, isolation_level=None)
+        connection = sqlite3.connect(str(self.db_path), timeout=10, isolation_level=None, factory=ClosingConnection)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA journal_mode=WAL")
         connection.execute("PRAGMA synchronous=NORMAL")
