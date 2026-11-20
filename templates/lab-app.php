@@ -38,7 +38,7 @@
       <div class="sc-lab-command-search">
         <label class="screen-reader-text" for="sc-lab-command-input">Search Lab tools and modules</label>
         <input id="sc-lab-command-input" type="search" placeholder="Search tools, feeds, equations, or modules…" autocomplete="off" data-lab-command-input>
-        <kbd>⌘K</kbd>
+        <kbd role="button" tabindex="0" data-lab-command-open aria-label="Open Lab command search">⌘K</kbd>
         <div class="sc-lab-command-results" data-lab-command-results hidden></div>
       </div>
       <div class="sc-lab-command-actions" aria-label="Quick project actions">
