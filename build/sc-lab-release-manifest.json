@@ -1048,7 +1048,7 @@
   "platformCoreUnifiedRuntimeContract": "sc.research.unified-research-scientific-investigation-runtime.v1",
   "platformCoreVisualReasoningScientificSceneVersion": "0.109.0",
   "platformVersion": "1.0.0",
-  "releaseLine": "Cross-Workspace Research Dependency Graph \u00b7 Front-End Recovery",
+  "releaseLine": "Cross-Workspace Research Dependency Graph · Front-End Recovery",
   "releaseName": "Reproducible Protocol & Computational Notebook Workspace",
   "releaseVersion": "0.163.1.9",
   "repairLine": "0.139.0.1 manifest-scope repair retained",
@@ -3247,7 +3247,7 @@
     "assets/js/sc-lab-runtime-v0263.js": "d50fdd99862f91d505fd554b3b07454ff204e36e6e1edc51a2da7d6941570c73",
     "assets/js/sc-lab-runtime-v02631.js": "1b36a17edec0db11ccb1a78af18234db780c6f6a3b4c718ba19632c55b460cc7",
     "assets/js/sc-lab-safe-bootstrap-v015205.js": "30d698d7ebfa27085b4f6166757266650d992fd463160646921fb75ca336cf96",
-    "assets/js/sc-lab-safe-bootstrap-v015206.js": "a20212d5a947184f024795072d16d4337142339c8d95a5448c5d246fc3cf5b74",
+    "assets/js/sc-lab-safe-bootstrap-v015206.js": "740eabd2a9bb3559bc0c63d3c4f3bb373bff4617fd84e4d9d47377a2616741fa",
     "assets/js/sc-lab-safe-bootstrap-v015207.js": "929419849b9979261058bca73d4392ff9ab243361a0f54f132eed07ba1a6b0c9",
     "assets/js/sc-lab-safe-bootstrap-v015209.js": "3e1a5b8edfeca4c39f9d25cbbf6fdacc5bfd599fd85ca34fabc55c71c0f1b015",
     "assets/js/sc-lab-safe-bootstrap-v015210.js": "def99ecd84dab484ad7f81cff63f4bfdd4b5daf264fc1dacbc701848b28723d6",
@@ -4258,7 +4258,7 @@
     "includes/class-sc-lab-presentation-runtime-v0482.php": "6ad359888479d17f6e05547cfb7c66427ce8a3a7f35ec035ee0159a89917e8e9",
     "includes/class-sc-lab-probabilistic-analysis-v0480.php": "36d3bb6d7125be95dc5240dbf9245f4afeb876ec89cd14b7ea8c5040505182d3",
     "includes/class-sc-lab-production-safe-boot-v015205.php": "cdc84340fdc2d37b06371a02bd8e0da3371b0ff28754ec632bf2d333e79c3d6e",
-    "includes/class-sc-lab-production-safe-boot-v015206.php": "b55455b0ec653aacf05e0f01baef3544538bb7abcd5e31510d9c2258b39d2f77",
+    "includes/class-sc-lab-production-safe-boot-v015206.php": "31c9188ae9481f504278c0499b1695615cfb1f1e1c0cd19355c0a72ad8ac74f0",
     "includes/class-sc-lab-production-stability-v0266.php": "e05f927c160604584549e2922ce49b6714e253a0b00a30e599122d1e26d0af17",
     "includes/class-sc-lab-project-workspace-v0280.php": "37f67f417f0d7799b35fd1e609ead0f130d1c7e4ad2566713e5981b9913c670c",
     "includes/class-sc-lab-provenance-aware-figures-v0830.php": "aa47121306f367d8eb4d1d1d548932ea3ee4333da601cff7cd30766d79322d40",
@@ -4355,6 +4355,6 @@
     "includes/class-sc-lab-workspace-versioning-v0352.php": "6417a8fdd7dc5306fbd71eaa9c15286f62872ee6f87533a104d72e8fb419780e",
     "includes/sc-lab-release-bootstrap.php": "85a3816a89ed0f746079a5f801fc91120bc28cb43bbaea6d613d86486bf60420",
     "sustainable-catalyst-lab.php": "386b82fcd5b7a80617b452158824a9de02e1e49b68ea8e85587c7dfb32256a23",
-    "templates/lab-app.php": "445d47a4fef0cfbcb8c11e56ee6ff30d53b9fca4fbf33c59b760c8e51775bdd8"
+    "templates/lab-app.php": "4cd140ac17b5995431c61a0a4e004f2e97b12156e88c0143524df849e2265f43"
   }
 }
