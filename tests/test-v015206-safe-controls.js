@@ -43,6 +43,10 @@ assert.ok(project.includes("const KEY = 'scLabProjectsV010'"), 'canonical projec
 assert.ok(workspace.includes('Lab.Workspace='), 'canonical command index not pinned');
 assert.ok(template.includes('data-lab-command-open aria-label="Open Lab command search"'),
   'shortcut must be accessible to pointer and keyboard');
+assert.ok(js.includes("notify(root, 'Workspace unavailable in this Lab view: ' + id)"),
+  'missing explicit unavailable workspace state');
+assert.ok(js.includes("    }, true);\n\n    const search"),
+  'navigation must capture before descendant event handlers stop propagation');
 assert.ok(!js.includes('localStorage.setItem('), 'no new shadow project storage');
 assert.ok(!js.includes('fetch('), 'safe-boot record actions must not make server writes');
 assert.ok(read('tests/chromium-lab-safe-controls.html').includes('data-cert="running"'),
