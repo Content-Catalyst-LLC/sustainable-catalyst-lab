@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lab safe controls browser acceptance</title>
+<style>body{font:16px system-ui;margin:24px}button,input{margin:4px;padding:8px}.sc-lab-panel[hidden]{display:none}#log{white-space:pre-wrap}</style>
+<script>
+  // This fixture is isolated to a loopback server: no WordPress, authentication or server writes.
+  localStorage.removeItem('scLabProjectsV010');
+  localStorage.removeItem('scLabActiveProjectV010');
+  window.__requests = [];
+  const originalFetch = window.fetch;
+  window.fetch = function () {
+    window.__requests.push(Array.from(arguments));
+    return originalFetch.apply(this, arguments);
+  };
+</script></head><body data-cert="running">
+<h1>SC-LAB-UI-01 — Bounded safe-boot interaction acceptance</h1>
+<div class="sc-lab-app" data-initial-module="overview">
+  <div class="sc-lab-frame"><span class="sc-lab-frame__version"><strong></strong></span></div>
+  <span class="sc-lab-version"></span>
+  <div class="sc-lab-project-controls">
+    <select data-lab-project-select aria-label="Project"></select>
+    <button data-lab-action="new-project">New project</button>
+    <button data-lab-action="export-project">Export project</button>
+    <button data-lab-action="import-project">Import project</button>
+    <input type="file" data-lab-import-file>
+  </div>
+  <div class="sc-lab-commandbar">
+    <input type="search" data-lab-command-input aria-label="Command search">
+    <kbd role="button" tabindex="0" data-lab-command-open>⌘K</kbd>
+    <div data-lab-command-results hidden></div>
+    <button data-command-action="observation">Add observation</button>
+    <button data-command-action="experiment">New experiment</button>
+    <button data-command-action="note">Notebook entry</button>
+  </div>
+  <nav data-lab-nav>
+    <button data-open-module="overview">Overview</button>
+    <button data-open-module="model-studio">Model Studio</button>
+    <button data-open-module="graph-studio">Graph Studio</button>
+    <button data-open-module="experiments">Experiments</button>
+    <button data-open-module="scientific-feeds">Observations</button>
+    <button data-open-module="notebook">Notebook</button>
+    <button data-v0483-search>Find a tool</button>
+  </nav>
+  <main>
+    <section class="sc-lab-panel" data-lab-module="overview">Overview panel</section>
+    <section class="sc-lab-panel" data-lab-module="model-studio" hidden>Model Studio panel</section>
+    <section class="sc-lab-panel" data-lab-module="graph-studio" hidden>Graph Studio panel</section>
+    <section class="sc-lab-panel" data-lab-module="experiments" hidden>
+      <button data-new-experiment>New experiment in panel</button>
+      <div data-experiment-list></div>
+    </section>
+    <section class="sc-lab-panel" data-lab-module="scientific-feeds" hidden>Observations panel</section>
+    <section class="sc-lab-panel" data-lab-module="notebook" hidden>
+      <button data-new-note>New entry in panel</button>
+      <input data-note-filter type="search"><div data-note-list></div>
+    </section>
+  </main>
+  <div data-lab-toast hidden></div>
+</div>
+<pre id="log" aria-live="polite"></pre>
+<script src="../assets/js/modules/core.js"></script>
+<script src="../assets/js/modules/projects.js"></script>
+<script src="../assets/js/modules/workspace.js"></script>
+<script src="../assets/js/sc-lab-safe-bootstrap-v015206.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    const root = document.querySelector('.sc-lab-app');
+    const log = document.querySelector('#log');
+    const passed = [], errors = [];
+    function check(condition, label) {
+      (condition ? passed : errors).push(label);
+      log.textContent += (condition ? 'PASS ' : 'FAIL ') + label + '\n';
+    }
+    try {
+      check(root.dataset.scLabSafeBootWired === '0.152.0.6', 'safe bootstrap bound once');
+      check(root.querySelector('[data-lab-project-select]').options.length > 0, 'canonical project selector populated');
+      const nav = ['overview', 'model-studio', 'graph-studio', 'experiments', 'scientific-feeds', 'notebook'];
+      nav.forEach(function (id) {
+        root.querySelector('[data-open-module="' + id + '"]').click();
+        const panel = root.querySelector('[data-lab-module="' + id + '"]');
+        check(root.dataset.activeModule === id && panel.hidden === false, 'navigates to ' + id);
+        check([...root.querySelectorAll('[data-lab-module]')].filter(n => !n.hidden).length === 1,
+          'only one primary panel visible for ' + id);
+      });
+      const search = root.querySelector('[data-lab-command-input]');
+      root.querySelector('[data-lab-command-open]').click();
+      check(document.activeElement === search, 'clicking ⌘K shortcut focuses search');
+      search.blur();
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+      check(document.activeElement === search, 'Meta+K focuses search');
+      search.value = 'graph';
+      search.dispatchEvent(new Event('input', { bubbles: true }));
+      const graphChoice = root.querySelector('[data-lab-command-module="graph-studio"]');
+      check(!!graphChoice, 'command search lists Graph Studio from canonical workspace registry');
+      graphChoice?.click();
+      check(root.dataset.activeModule === 'graph-studio' && search.value === '', 'command result opens Graph Studio');
+      search.value = 'notebook';
+      search.dispatchEvent(new Event('input', { bubbles: true }));
+      search.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      check(root.dataset.activeModule === 'notebook', 'Enter selects first command result');
+      const prompts = [
+        'Soil observation', 'Soil sample description', 'Wexford grassland',
+        'ERW experiment', 'Does crushed basalt remove CO2?', 'Rate differs from baseline', 'Controlled comparison',
+        'Lab notebook', 'Synthetic method note', 'methods,synthetic'
+      ];
+      window.prompt = function () { return prompts.shift() ?? null; };
+      root.querySelector('[data-command-action="observation"]').click();
+      root.querySelector('[data-command-action="experiment"]').click();
+      root.querySelector('[data-command-action="note"]').click();
+      const project = root._scLabProjects.get();
+      check(project.notes.some(n => n.title === 'Soil observation' && n.type === 'observation'),
+        'observation added to canonical notes collection');
+      check(project.experiments.some(e => e.title === 'ERW experiment' && e.status === 'planned'),
+        'experiment added to canonical experiments collection');
+      check(project.notes.some(n => n.title === 'Lab notebook' && n.tags.includes('synthetic')),
+        'notebook entry added with tags');
+      check(root.querySelector('[data-note-list]').textContent.includes('Lab notebook'), 'notebook displays persisted record');
+      root.querySelector('[data-open-module="experiments"]').click();
+      check(root.querySelector('[data-experiment-list]').textContent.includes('ERW experiment'), 'experiments panel displays persisted record');
+      const fresh = new window.SCLab.Projects().get();
+      check(fresh.notes.some(n => n.title === 'Lab notebook') && fresh.experiments.some(e => e.title === 'ERW experiment'),
+        'separate store instance replays saved records');
+      const beforeCancel = project.notes.length;
+      window.prompt = function () { return null; };
+      root.querySelector('[data-command-action="note"]').click();
+      check(root._scLabProjects.get().notes.length === beforeCancel, 'canceled prompt makes no record');
+      check(window.__requests.length === 0, 'no application fetch writes in browser-local mode');
+      check(!document.querySelector('script[src*="sc-lab-bootstrap-v015204"]'), 'legacy megabundle not executed');
+    } catch (error) {
+      errors.push('harness exception: ' + (error.stack || error));
+      log.textContent += 'FAIL ' + (error.stack || error) + '\n';
+    }
+    document.body.dataset.cert = errors.length ? 'fail' : 'pass';
+    window.__labSafeControlsCert = { passed, errors };
+  }, { once: true });
+</script></body></html>
