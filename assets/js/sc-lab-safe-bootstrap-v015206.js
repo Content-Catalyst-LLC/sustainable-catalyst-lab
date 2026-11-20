@@ -231,10 +231,18 @@
     const selector = selectors[module];
     if (!selector) return;
     const status = panel.querySelector(selector);
-    if (status) {
-      status.textContent = 'Lab safe boot is stabilized. Navigation is available; advanced module execution remains deferred while panel-aware loading is introduced.';
+    if (!status) return;
+    // Graph Studio now has a bounded, native SVG renderer. Never overwrite its
+    // real mount/render status with the historic "advanced runtime deferred" notice.
+    if (module === 'graph-studio') {
+      const graph = w.SCLab && w.SCLab.GraphStudioV0470;
+      if (graph && typeof graph.status === 'function' && graph.status().mounted) return;
+      status.textContent = 'Opening scientific figure renderer…';
       status.dataset.tone = 'ready';
+      return;
     }
+    status.textContent = 'Lab safe boot is stabilized. Navigation is available; advanced module execution remains deferred while panel-aware loading is introduced.';
+    status.dataset.tone = 'ready';
   }
 
   function setActiveButtons(root, id) {
@@ -262,10 +270,15 @@
     }
     const selected = panel.dataset.labModule || 'overview';
 
+    // Own visibility at both DOM and computed-style layers. Page/theme CSS and
+    // progressive-module scripts must not leave Overview stacked above Graph Studio.
     all(root, '[data-lab-module]').forEach(function (item) {
       const active = item === panel;
       item.hidden = !active;
       item.setAttribute('aria-hidden', active ? 'false' : 'true');
+      if (!active) item.style.setProperty('display', 'none', 'important');
+      else item.style.removeProperty('display');
+      if ('inert' in item) item.inert = !active;
     });
 
     root.dataset.activeModule = selected;
@@ -277,12 +290,27 @@
     }
     markDeferred(panel);
     syncReleasePresentation(root);
+    if (selected === 'graph-studio') {
+      try {
+        const graph = w.SCLab && w.SCLab.GraphStudioV0470;
+        if (graph && typeof graph.mount === 'function') graph.mount();
+      } catch (error) {
+        notify(root, 'Graph Studio renderer failed to initialize: ' + String(error?.message || error));
+      }
+    }
     clearLegacyRecoveryArtifacts();
 
     const nav = root.querySelector('[data-lab-nav]');
     const navToggle = root.querySelector('[data-lab-nav-toggle]');
     if (nav) nav.classList.remove('is-open');
     if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+
+    if (updateUrl && selected !== 'overview') {
+      const main = root.querySelector('.sc-lab-main');
+      if (main && typeof main.scrollIntoView === 'function') {
+        try { main.scrollIntoView({ block: 'start', behavior: 'instant' }); } catch (_) {}
+      }
+    }
 
     if (updateUrl && w.history && w.history.replaceState) {
       try {
