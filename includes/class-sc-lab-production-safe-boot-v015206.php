@@ -86,7 +86,17 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
     }
 
     private static function allowed_script_src($src) {
-        return strpos((string) $src, self::safe_script_relative()) !== false;
+        // Bounded canonical project model and module index, not the legacy app megabundle.
+        // The late footer gate uses the same allowlist as the initial enqueue gate.
+        foreach (array(
+            self::safe_script_relative(),
+            'assets/js/modules/core.js',
+            'assets/js/modules/projects.js',
+            'assets/js/modules/workspace.js',
+        ) as $path) {
+            if (strpos((string) $src, $path) !== false) { return true; }
+        }
+        return false;
     }
 
     private static function prune_lab_scripts() {
@@ -120,8 +130,21 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
         if (!wp_style_is('sc-lab-safe-ui-v015206', 'enqueued')) {
             wp_enqueue_style('sc-lab-safe-ui-v015206', SC_LAB_URL . $css, array(), self::asset_token($css));
         }
+        // Only three audited canonical data/model files are loaded. Their dependency
+        // order is enforced; the historic critical/optional application bundles stay off.
+        $core = 'assets/js/modules/core.js';
+        $projects = 'assets/js/modules/projects.js';
+        $workspace = 'assets/js/modules/workspace.js';
+        wp_enqueue_script('sc-lab-safe-core-v015206', SC_LAB_URL . $core,
+            array(), self::asset_token($core), true);
+        wp_enqueue_script('sc-lab-safe-projects-v015206', SC_LAB_URL . $projects,
+            array('sc-lab-safe-core-v015206'), self::asset_token($projects), true);
+        wp_enqueue_script('sc-lab-safe-workspace-v015206', SC_LAB_URL . $workspace,
+            array('sc-lab-safe-core-v015206'), self::asset_token($workspace), true);
         if (!wp_script_is('sc-lab-safe-bootstrap-v015206', 'enqueued')) {
-            wp_enqueue_script('sc-lab-safe-bootstrap-v015206', SC_LAB_URL . $js, array(), self::asset_token($js), true);
+            wp_enqueue_script('sc-lab-safe-bootstrap-v015206', SC_LAB_URL . $js,
+                array('sc-lab-safe-projects-v015206', 'sc-lab-safe-workspace-v015206'),
+                self::asset_token($js), true);
             wp_localize_script('sc-lab-safe-bootstrap-v015206', 'SCLabSafeBootV015206', array(
                 'version' => self::VERSION,
                 'releaseVersion' => defined('SC_LAB_RELEASE_VERSION') ? SC_LAB_RELEASE_VERSION : self::VERSION,
