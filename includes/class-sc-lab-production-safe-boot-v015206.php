@@ -93,6 +93,8 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
             'assets/js/modules/core.js',
             'assets/js/modules/projects.js',
             'assets/js/modules/workspace.js',
+            'assets/js/modules/scientific-visualization-engine-v0440.js',
+            'assets/js/modules/graph-studio-v0470.js',
         ) as $path) {
             if (strpos((string) $src, $path) !== false) { return true; }
         }
@@ -141,9 +143,19 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
             array('sc-lab-safe-core-v015206'), self::asset_token($projects), true);
         wp_enqueue_script('sc-lab-safe-workspace-v015206', SC_LAB_URL . $workspace,
             array('sc-lab-safe-core-v015206'), self::asset_token($workspace), true);
+        // Restore only the bounded, established Graph Studio SVG figure renderer.
+        // Full historic critical/optional bundles remain disabled. The renderer does
+        // not publish figures; saving is explicit in the canonical project store.
+        $graph_engine = 'assets/js/modules/scientific-visualization-engine-v0440.js';
+        $graph_controller = 'assets/js/modules/graph-studio-v0470.js';
+        wp_enqueue_script('sc-lab-graph-engine-v0440', SC_LAB_URL . $graph_engine,
+            array('sc-lab-safe-projects-v015206'), self::asset_token($graph_engine), true);
+        wp_enqueue_script('sc-lab-graph-controller-v0470', SC_LAB_URL . $graph_controller,
+            array('sc-lab-graph-engine-v0440', 'sc-lab-safe-projects-v015206'),
+            self::asset_token($graph_controller), true);
         if (!wp_script_is('sc-lab-safe-bootstrap-v015206', 'enqueued')) {
             wp_enqueue_script('sc-lab-safe-bootstrap-v015206', SC_LAB_URL . $js,
-                array('sc-lab-safe-projects-v015206', 'sc-lab-safe-workspace-v015206'),
+                array('sc-lab-safe-projects-v015206', 'sc-lab-safe-workspace-v015206', 'sc-lab-graph-controller-v0470'),
                 self::asset_token($js), true);
             wp_localize_script('sc-lab-safe-bootstrap-v015206', 'SCLabSafeBootV015206', array(
                 'version' => self::VERSION,
