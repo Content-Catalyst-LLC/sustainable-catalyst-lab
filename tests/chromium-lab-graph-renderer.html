@@ -88,7 +88,7 @@ try {
   graphPanel.querySelector('[data-gs-v0470-render]').click();
   check(!!canvas.querySelector('svg[data-sve-version]'), 'Render figure draws an SVG from provided data');
   const spec=graphPanel.querySelector('[data-gs-v0470-spec]').textContent;
-  check(spec.includes('Scientific figure') && spec.includes('observed'), 'rendered graph has reproducible specification');
+  check(spec.includes('observed') && spec.includes('series'), 'rendered graph has reproducible specification');
   const before=root._scLabProjects.get().visualizations.length;
   graphPanel.querySelector('[data-gs-v0470-save]').click();
   check(root._scLabProjects.get().visualizations.length===before+1, 'Save stores a figure in canonical project');
