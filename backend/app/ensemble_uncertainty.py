@@ -442,6 +442,10 @@ def policies(max_studies: int = 2000, max_evaluations: int = 200000) -> dict[str
     }
 
 
+# Store bounded ensemble-study designs/evaluations with registered model
+# versions and dispatch through the supplied registry/dispatcher. Sampling
+# and sensitivity summaries depend on the study's distributions, weights and
+# seed; they do not by themselves validate observed science or calibration.
 class EnsembleStudyManager:
     def __init__(self, db_path: str, registry: Any, dispatcher: Any, max_studies: int = 2000, max_evaluations: int = 200000, history_limit: int = 50000):
         self.db_path = str(db_path)
