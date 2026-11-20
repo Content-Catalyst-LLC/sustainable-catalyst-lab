@@ -3,7 +3,7 @@
  * SC-FIG-04.1 / SC-FIG-05.3 — Lab / Research bridge pairing guard.
  *
  * Each Research bridge series from 0.3 on pins one Lab release: 0.3.x → 0.163.1.7, 0.4.x → 0.163.1.8
- * (SC-FIG-04/04.1) and 0.5.x → 0.163.1.9 (SC-FIG-05.3 runtime uncertainty). A bridge that pins another Lab
+ * (SC-FIG-04/04.1) and 0.5.x/0.6.x → 0.163.1.9 (SC-FIG-05.3 runtime uncertainty). A bridge that pins another Lab
  * release, or a later series this Lab does not know, must not run beside it:
  *
  * - Lab refuses to activate while a 0.3.x bridge is active;
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) { exit; }
 final class SC_Lab_Plugin_Compatibility_FIG041 {
     const BRIDGE_NAME = 'Sustainable Catalyst Research Bridge';
     /** Bridge series → the Lab release it pins. A series of 0.3 or later that is not listed fails closed. */
-    const BRIDGE_LAB_PINS = array('0.3' => '0.163.1.7', '0.4' => '0.163.1.8', '0.5' => '0.163.1.9');
+    const BRIDGE_LAB_PINS = array('0.3' => '0.163.1.7', '0.4' => '0.163.1.8', '0.5' => '0.163.1.9', '0.6' => '0.163.1.9');
 
     private static $incompatible = false;
 
@@ -61,7 +61,7 @@ final class SC_Lab_Plugin_Compatibility_FIG041 {
     }
 
     public static function message($bridge_version) {
-        return sprintf('Sustainable Catalyst Lab %s cannot run with Sustainable Catalyst Research Bridge %s. Bridge 0.3.x is paired with Lab 0.163.1.7, 0.4.x with Lab 0.163.1.8 and 0.5.x with Lab 0.163.1.9; install a matching pair.',
+        return sprintf('Sustainable Catalyst Lab %s cannot run with Sustainable Catalyst Research Bridge %s. Bridge 0.3.x is paired with Lab 0.163.1.7, 0.4.x with Lab 0.163.1.8 and 0.5.x/0.6.x with Lab 0.163.1.9; install a matching pair.',
             SC_LAB_RELEASE_VERSION, $bridge_version);
     }
 
