@@ -254,8 +254,12 @@
 
   function openModule(root, requested, updateUrl) {
     const id = canonical(requested);
-    const panel = findPanel(root, id) || findPanel(root, 'overview');
-    if (!panel) return false;
+    const panel = findPanel(root, id);
+    if (!panel) {
+      // Do not silently replace an unavailable requested workspace with Overview.
+      notify(root, 'Workspace unavailable in this Lab view: ' + id);
+      return false;
+    }
     const selected = panel.dataset.labModule || 'overview';
 
     all(root, '[data-lab-module]').forEach(function (item) {
@@ -393,7 +397,7 @@
         const tools = root.querySelector('[data-v0483-tools]');
         if (tools) tools.hidden = true;
       }
-    });
+    }, true);
 
     const search = root.querySelector('[data-v0483-tools-search]');
     if (search) {
