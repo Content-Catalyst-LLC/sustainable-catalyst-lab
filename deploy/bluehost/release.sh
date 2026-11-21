@@ -8,6 +8,7 @@
 # Commands:
 #   preflight                         read-only state of the live plugin
 #   backup <label> [--with-db]        plugin tree (+ database) backup with restore test
+#   transfer <zip> <sha256>          stage and verify ZIP; NO WordPress installation
 #   deploy <zip> <sha256> <backup>    install the exact accepted zip; verifies tree and live health
 #   rollback <backup>                 restore the plugin tree (and preview option) from a backup
 #   preview <on|off>                  switch the FIG-02A preview option
@@ -76,6 +77,14 @@ cmd="${1:-}"; shift || true
 case "$cmd" in
     preflight) push_script; remote preflight ;;
     backup) push_script; remote backup "$@" ;;
+    transfer)
+        zip="${1:?zip}"; want="${2:?sha256}"
+        [[ "$(sha "$zip")" == "$want" ]] || die "local zip sha256 does not match accepted artifact"
+        if sc_remote_zip_is_verified "$zip" "$want"; then
+            echo "remote_artifact=already_verified bytes=$(wc -c < "$zip" | tr -d '[:space:]') sha256=$want"
+        else
+            sc_transfer_zip_verified "$zip" "$want"
+        fi ;;
     deploy)
         zip="${1:?zip}"; want="${2:?sha256}"; backup="${3:?backup dir}"
         [[ "$(sha "$zip")" == "$want" ]] || die "local zip sha256 does not match the accepted artifact"
@@ -84,7 +93,11 @@ case "$cmd" in
         # Historical single-stream SSH transport silently truncated a 7 MB ZIP
         # to 1.7 MB. Do not call remote deploy until the complete byte count and
         # SHA-256 have been independently confirmed on the remote server.
-        sc_transfer_zip_verified "$zip" "$want"
+        if sc_remote_zip_is_verified "$zip" "$want"; then
+            echo "remote_artifact=already_verified bytes=$(wc -c < "$zip" | tr -d '[:space:]') sha256=$want"
+        else
+            sc_transfer_zip_verified "$zip" "$want"
+        fi
         # ssh starts in $HOME, so the relative artifact path resolves there.
         remote deploy "sc-releases/artifacts/$name" "$want" "$backup"
         verify_http ;;
