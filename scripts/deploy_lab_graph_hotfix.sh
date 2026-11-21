@@ -60,20 +60,48 @@ status=0
 deploy/bluehost/release.sh deploy "$ZIP" "$SHA256" "$BACKUP_DIR" || status=1
 if [[ "$status" == 0 ]]; then deploy/bluehost/release.sh verify || status=1; fi
 if [[ "$status" == 0 ]]; then
- curl -fsSL --max-time 40 "$SC_BH_SITE_URL/lab/?sc_lab_module=graph-studio" > "$OUT/served-lab.html" || status=1
- grep -q 'scientific-visualization-engine-v0440.js' "$OUT/served-lab.html" || status=1
- grep -q 'graph-studio-v0470.js' "$OUT/served-lab.html" || status=1
+  # A WordPress cache/CDN may rewrite script URLs; plain grep was a false-negative
+  # risk and previously skipped Chromium with no diagnostic output. Record the
+  # observed HTML but use the ACTUAL browser behavior as the acceptance gate.
+  if curl -fsSL --max-time 40 "$SC_BH_SITE_URL/lab/" > "$OUT/served-lab.html"; then
+    "$PY" - "$OUT/served-lab.html" <<'PY'
+import sys
+from pathlib import Path
+from html.parser import HTMLParser
+page=Path(sys.argv[1]).read_text(errors='replace')
+class Tags(HTMLParser):
+    def __init__(self): super().__init__(); self.scripts=[]
+    def handle_starttag(self,tag,attrs):
+        if tag=='script':
+            a=dict(attrs)
+            if a.get('src'): self.scripts.append(a['src'])
+p=Tags();p.feed(page)
+print("live_html_bytes",len(page),"script_tags",len(p.scripts))
+for name in ('sc-lab-safe-bootstrap-v015206.js',
+             'scientific-visualization-engine-v0440.js',
+             'graph-studio-v0470.js'):
+    matches=[x for x in p.scripts if name in x]
+    print("live_html_asset",name,"count",len(matches))
+    for url in matches[:2]:print(" live_src",url)
+PY
+  else
+    echo "WARN: curl HTML retrieval failed; browser acceptance will determine success." >&2
+  fi
 fi
 if [[ "$status" == 0 ]]; then
  "$PY" - "$SC_BH_SITE_URL" "$OUT" <<'PY' || status=1
 import json,sys
+from pathlib import Path
 from playwright.sync_api import sync_playwright
 site,out=sys.argv[1],sys.argv[2]
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     page=browser.new_page(viewport={"width":1280,"height":900})
     errors=[]
+    failed=[]
     page.on("pageerror",lambda e:errors.append(str(e)))
+    page.on("console",lambda m:errors.append(m.text) if m.type=="error" else None)
+    page.on("requestfailed",lambda req:failed.append(req.url))
     probe="""() => {
       const root=document.querySelector('.sc-lab-app');
       const overview=root?.querySelector('[data-lab-module="overview"]');
@@ -84,18 +112,56 @@ with sync_playwright() as p:
         getComputedStyle(graph).display!=='none' &&
         svg.querySelectorAll('path,polyline,circle,rect,line').length>4);
     }"""
+    error=None
     try:
-        page.goto(site+"/lab/?sc_lab_module=graph-studio",wait_until="domcontentloaded",timeout=45000)
-        page.wait_for_function(probe,timeout=25000)
+        # Enter by the real user path. Starting at a query-parameter deep-link
+        # gave no clue whether caching/URL rewriting was the culprit.
+        response=page.goto(site+"/lab/",wait_until="domcontentloaded",timeout=45000)
+        print("live_http",response.status if response else "none")
+        page.locator('.sc-lab-primary-rail-v0483 [data-open-module="graph-studio"]').click(timeout=12000)
+        page.wait_for_function(probe,timeout=20000)
         page.screenshot(path=out+"/live-graph-visible.png",full_page=True)
-        page.locator('.sc-lab-primary-rail-v0483 [data-open-module="overview"]').click(timeout=10000)
+        page.locator('.sc-lab-primary-rail-v0483 [data-open-module="overview"]').click(timeout=12000)
         assert page.evaluate("document.querySelector('.sc-lab-app').dataset.activeModule")=="overview"
-        page.locator('.sc-lab-primary-rail-v0483 [data-open-module="graph-studio"]').click(timeout=10000)
-        page.wait_for_function(probe,timeout=10000)
+        page.locator('.sc-lab-primary-rail-v0483 [data-open-module="graph-studio"]').click(timeout=12000)
+        page.wait_for_function(probe,timeout=12000)
         print("LIVE_GRAPH_STUDIO=PASS: real SVG; Overview hidden; navigation verified")
-        print("pageErrors",json.dumps(errors[:5]))
+    except Exception as exc:
+        error=str(exc)
+        print("LIVE_BROWSER_ASSERTION_FAILED",error[:1800],file=sys.stderr)
     finally:
+        # Always save reasons and an actual screenshot before rollback.
+        try: page.screenshot(path=out+"/live-graph-diagnostic.png",full_page=True,timeout=8000)
+        except Exception: pass
+        try:
+            state=page.evaluate("""() => {
+              const root=document.querySelector('.sc-lab-app');
+              const graph=root?.querySelector('[data-lab-module="graph-studio"]');
+              const overview=root?.querySelector('[data-lab-module="overview"]');
+              const svg=graph?.querySelector('svg[data-sve-version]');
+              const scripts=Array.from(document.scripts).map(x=>x.src).filter(Boolean);
+              return {
+                url:location.href,activeModule:root?.dataset.activeModule||null,
+                graphDisplay:graph?getComputedStyle(graph).display:null,
+                overviewDisplay:overview?getComputedStyle(overview).display:null,
+                graphStatus:graph?.querySelector('[data-gs-v0470-status]')?.textContent?.slice(0,300)||null,
+                svgCount:graph?.querySelectorAll('svg[data-sve-version]').length||0,
+                svgPrimitiveCount:svg?.querySelectorAll('path,polyline,circle,rect,line').length||0,
+                engineMounted:!!window.SCLab?.ScientificVisualizationEngineV0440,
+                graphMounted:window.SCLab?.GraphStudioV0470?.status?.().mounted||false,
+                scripts:scripts.filter(x=>/sc-lab|graph-studio|visualization-engine/.test(x)).slice(-25)
+              };
+            }""")
+        except Exception as exc: state={"probeError":str(exc)}
+        receipt={"ok":error is None,"error":error,"state":state,
+                 "consoleErrors":errors[:20],"failedRequests":failed[:20]}
+        Path(out,"live-graph-diagnostic.json").write_text(json.dumps(receipt,indent=2))
+        print("live_graph_state",json.dumps(state,indent=2)[:4000])
+        print("live_console_errors",json.dumps(errors[:8]))
+        print("live_failed_requests",json.dumps(failed[:8]))
+        print("diagnostic_receipt",out+"/live-graph-diagnostic.json")
         browser.close()
+    if error is not None: raise SystemExit(1)
 PY
 fi
 if [[ "$status" != 0 ]]; then
