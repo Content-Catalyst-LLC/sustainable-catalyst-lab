@@ -28,6 +28,9 @@ read -r -a SSH_OPTS <<<"${SC_BH_SSH_OPTS:-}"
 REMOTE_BIN='sc-releases/bin'
 REMOTE_SCRIPT="$REMOTE_BIN/remote_lab_release.sh"
 
+# Transport remains independent from WordPress mutations and requires byte-for-byte receipt.
+source "$HERE/verified_zip_transfer.sh"
+
 # One multiplexed connection per run: shared hosts rate-limit new SSH connections.
 CTL_DIR="$(mktemp -d)"
 trap 'ssh -o ControlPath="$CTL_DIR/c" -O exit "$SSH_TARGET" >/dev/null 2>&1 || true; rm -rf "$CTL_DIR"' EXIT
@@ -78,7 +81,10 @@ case "$cmd" in
         [[ "$(sha "$zip")" == "$want" ]] || die "local zip sha256 does not match the accepted artifact"
         push_script
         name="$(basename "$zip")"
-        rsh "mkdir -p ~/sc-releases/artifacts && cat > ~/sc-releases/artifacts/$(printf '%q' "$name")" < "$zip"
+        # Historical single-stream SSH transport silently truncated a 7 MB ZIP
+        # to 1.7 MB. Do not call remote deploy until the complete byte count and
+        # SHA-256 have been independently confirmed on the remote server.
+        sc_transfer_zip_verified "$zip" "$want"
         # ssh starts in $HOME, so the relative artifact path resolves there.
         remote deploy "sc-releases/artifacts/$name" "$want" "$backup"
         verify_http ;;
