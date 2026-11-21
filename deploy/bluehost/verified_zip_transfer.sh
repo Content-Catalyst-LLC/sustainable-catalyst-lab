@@ -53,3 +53,16 @@ sc_transfer_zip_verified() {
         die "final remote ZIP verification failed (no install)"
     echo "remote_artifact=verified bytes=$bytes blocks=$index sha256=$want"
 }
+
+# Recheck a previously staged artifact. Always compare BOTH byte length and
+# SHA-256 against the local accepted ZIP. Does not modify remote files.
+sc_remote_zip_is_verified() {
+    local zip="$1" want="$2" name bytes actual
+    name="$(basename "$zip")"
+    [[ "$name" =~ ^[A-Za-z0-9._-]+[.]zip$ ]] || return 1
+    bytes="$(wc -c < "$zip" | tr -d '[:space:]')"
+    [[ "$bytes" =~ ^[0-9]+$ && "$bytes" -gt 0 ]] || return 1
+    actual="$(rsh "test -f ~/sc-releases/artifacts/$name && stat -c %s ~/sc-releases/artifacts/$name && sha256sum ~/sc-releases/artifacts/$name | cut -d' ' -f1")" ||
+        return 1
+    [[ "$actual" == "$(printf '%s\n%s' "$bytes" "$want")" ]]
+}
