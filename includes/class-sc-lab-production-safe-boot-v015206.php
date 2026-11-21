@@ -29,9 +29,11 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
         // First sweep after ordinary enqueue callbacks.
         add_action('wp_enqueue_scripts', array(__CLASS__, 'gate_frontend_assets'), PHP_INT_MAX);
 
-        // Second sweep immediately before WordPress prints footer scripts. This
-        // catches historical modules enqueued by shortcode/render-time code.
-        add_action('wp_print_footer_scripts', array(__CLASS__, 'gate_footer_scripts'), 19);
+        // Second sweep BEFORE core's _wp_footer_scripts printer at priority 10.
+        // Priority 19 ran too late: freshly enqueued safe/bootstrap Graph scripts
+        // were not emitted in the served HTML even though files passed integrity.
+        // Also catches historical shortcode/render-time enqueues before printing.
+        add_action('wp_print_footer_scripts', array(__CLASS__, 'gate_footer_scripts'), 9);
 
         add_action('rest_api_init', array(__CLASS__, 'routes'));
     }
