@@ -16,6 +16,7 @@ node tests/test-v015206-graph-renderer.js
 bash tests/test-bluehost-rsync-content-identity.sh
 if command -v php >/dev/null 2>&1; then
  php tests/test-fig041-plugin-compatibility.php
+ php tests/test-lab-gate-authority.php
  php -l includes/class-sc-lab-production-safe-boot-v015206.php
 fi
 OUT="$HOME/sc-lab-graph-hotfix"
