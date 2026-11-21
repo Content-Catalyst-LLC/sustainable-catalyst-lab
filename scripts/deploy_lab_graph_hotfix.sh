@@ -13,6 +13,7 @@ echo "=== Unit tests and real Graph Studio browser fixtures ==="
 node tests/test-v015206-safe-controls.js
 node tests/test-v015206-safe-boot-stabilization.js
 node tests/test-v015206-graph-renderer.js
+bash tests/test-bluehost-rsync-content-identity.sh
 if command -v php >/dev/null 2>&1; then
  php tests/test-fig041-plugin-compatibility.php
  php -l includes/class-sc-lab-production-safe-boot-v015206.php
