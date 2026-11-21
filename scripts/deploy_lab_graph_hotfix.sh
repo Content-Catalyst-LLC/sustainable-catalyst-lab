@@ -14,6 +14,7 @@ node tests/test-v015206-safe-controls.js
 node tests/test-v015206-safe-boot-stabilization.js
 node tests/test-v015206-graph-renderer.js
 bash tests/test-bluehost-rsync-content-identity.sh
+bash tests/test-bluehost-verified-zip-transfer.sh
 if command -v php >/dev/null 2>&1; then
  php tests/test-fig041-plugin-compatibility.php
  php tests/test-lab-gate-authority.php
