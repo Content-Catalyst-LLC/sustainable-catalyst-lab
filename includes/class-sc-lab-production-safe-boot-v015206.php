@@ -68,10 +68,16 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
                     $owner = is_string($fn[0]) ? $fn[0] : (is_object($fn[0]) ? get_class($fn[0]) : '');
                     if (strpos($owner, 'SC_Lab_') !== 0 || $owner === __CLASS__) { continue; }
                     // Remove only older queue gates in wp_enqueue_scripts.
-                    // In wp_print_footer_scripts, suppress all legacy Lab late
-                    // callbacks, which otherwise rewrite the safe queue at MAX.
-                    if ($hook_name === 'wp_enqueue_scripts' && $fn[1] !== 'gate_frontend_assets') {
-                        continue;
+                    // In wp_print_footer_scripts, suppress only old Lab
+                    // script enqueue/gate callbacks, which rewrite the queue.
+                    if ($hook_name === 'wp_enqueue_scripts') {
+                        if ($fn[1] !== 'gate_frontend_assets') { continue; }
+                    } else {
+                        // Only remove legacy Lab asset queue mutators, never
+                        // arbitrary Lab auditing or notification hooks.
+                        if ($fn[1] !== 'gate_footer_scripts' && strpos($fn[1], 'enqueue_') !== 0) {
+                            continue;
+                        }
                     }
                     $remove[] = array($fn, $priority);
                 }
