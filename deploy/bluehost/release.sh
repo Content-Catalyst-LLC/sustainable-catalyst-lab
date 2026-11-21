@@ -8,6 +8,7 @@
 # Commands:
 #   preflight                         read-only state of the live plugin
 #   backup <label> [--with-db]        plugin tree (+ database) backup with restore test
+#   transfer <zip> <sha256>          stage and verify ZIP; NO WordPress installation
 #   deploy <zip> <sha256> <backup>    install the exact accepted zip; verifies tree and live health
 #   rollback <backup>                 restore the plugin tree (and preview option) from a backup
 #   preview <on|off>                  switch the FIG-02A preview option
@@ -27,6 +28,9 @@ LAB_PATH="${SC_BH_LAB_PATH:-/lab/}"
 read -r -a SSH_OPTS <<<"${SC_BH_SSH_OPTS:-}"
 REMOTE_BIN='sc-releases/bin'
 REMOTE_SCRIPT="$REMOTE_BIN/remote_lab_release.sh"
+
+# Transport remains independent from WordPress mutations and requires byte-for-byte receipt.
+source "$HERE/verified_zip_transfer.sh"
 
 # One multiplexed connection per run: shared hosts rate-limit new SSH connections.
 CTL_DIR="$(mktemp -d)"
@@ -73,12 +77,27 @@ cmd="${1:-}"; shift || true
 case "$cmd" in
     preflight) push_script; remote preflight ;;
     backup) push_script; remote backup "$@" ;;
+    transfer)
+        zip="${1:?zip}"; want="${2:?sha256}"
+        [[ "$(sha "$zip")" == "$want" ]] || die "local zip sha256 does not match accepted artifact"
+        if sc_remote_zip_is_verified "$zip" "$want"; then
+            echo "remote_artifact=already_verified bytes=$(wc -c < "$zip" | tr -d '[:space:]') sha256=$want"
+        else
+            sc_transfer_zip_verified "$zip" "$want"
+        fi ;;
     deploy)
         zip="${1:?zip}"; want="${2:?sha256}"; backup="${3:?backup dir}"
         [[ "$(sha "$zip")" == "$want" ]] || die "local zip sha256 does not match the accepted artifact"
         push_script
         name="$(basename "$zip")"
-        rsh "mkdir -p ~/sc-releases/artifacts && cat > ~/sc-releases/artifacts/$(printf '%q' "$name")" < "$zip"
+        # Historical single-stream SSH transport silently truncated a 7 MB ZIP
+        # to 1.7 MB. Do not call remote deploy until the complete byte count and
+        # SHA-256 have been independently confirmed on the remote server.
+        if sc_remote_zip_is_verified "$zip" "$want"; then
+            echo "remote_artifact=already_verified bytes=$(wc -c < "$zip" | tr -d '[:space:]') sha256=$want"
+        else
+            sc_transfer_zip_verified "$zip" "$want"
+        fi
         # ssh starts in $HOME, so the relative artifact path resolves there.
         remote deploy "sc-releases/artifacts/$name" "$want" "$backup"
         verify_http ;;

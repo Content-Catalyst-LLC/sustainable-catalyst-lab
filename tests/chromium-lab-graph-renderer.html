@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lab Graph Studio real renderer acceptance</title>
+<link rel="stylesheet" href="../assets/css/sc-lab-ui-bundle-v015204.css">
+<style>body{margin:0}.sc-lab-app{margin:16px}.sc-lab-main{min-height:500px}</style>
+<script>
+localStorage.removeItem('scLabProjectsV010');
+localStorage.removeItem('scLabActiveProjectV010');
+window.__graphNetworkWrites = [];
+const originalFetch = window.fetch;
+window.fetch = function () { window.__graphNetworkWrites.push(Array.from(arguments)); return originalFetch.apply(this, arguments); };
+</script>
+</head><body data-cert="running">
+<h1>SC-LAB-UI-02 — Graph Studio renderer acceptance</h1>
+<div class="sc-lab-app" data-initial-module="overview">
+<header class="sc-lab-topbar"><div class="sc-lab-project-controls"><select data-lab-project-select aria-label="Project"></select></div>
+<nav><button type="button" data-open-module="overview">Overview</button><button type="button" data-open-module="graph-studio">Graph Studio</button></nav>
+<div class="sc-lab-commandbar"><input data-lab-command-input type="search" aria-label="Command search"><div data-lab-command-results hidden></div></div>
+</header>
+<div class="sc-lab-layout"><main class="sc-lab-main">
+<section class="sc-lab-panel sc-lab-overview-v0481" data-lab-module="overview"><h2 id="overview-marker">Overview front door (must disappear in Graph Studio)</h2></section>
+<section class="sc-lab-panel sc-lab-module sc-gs0470" data-lab-module="graph-studio" data-module-panel="graph-studio" hidden>
+<h2>Scientific Visualization Workspace</h2>
+<div data-gs-v0470-status role="status"></div>
+<div class="sc-gs0470-workspace">
+<section class="sc-gs0470-controls">
+<select data-gs-v0470-kind><option value="line-scatter">Scatter + fitted line</option><option value="line">Line</option></select>
+<input data-gs-v0470-title value="Scientific figure">
+<input data-gs-v0470-subtitle value="">
+<input data-gs-v0470-x value="x"><input data-gs-v0470-y value="observed"><input data-gs-v0470-z value="z">
+<input data-gs-v0470-series value="observed:Observed:points,fit:Fitted model:line">
+<input data-gs-v0470-x-label value="Time"><input data-gs-v0470-y-label value="Response">
+<input data-gs-v0470-source value=""><input data-gs-v0470-method value="">
+<input data-gs-v0470-caption value=""><input data-gs-v0470-notes value="">
+<input data-gs-v0470-tags value=""><input data-gs-v0470-aspect value="16:9">
+<input type="checkbox" data-gs-v0470-grid checked><input type="checkbox" data-gs-v0470-legend checked>
+<input data-gs-v0470-bins type="number" value="12">
+<textarea data-gs-v0470-rows>[]</textarea>
+<button type="button" data-gs-v0470-render>Render figure</button>
+<button type="button" data-gs-v0470-example>Example</button>
+<button type="button" data-gs-v0470-save>Save figure</button>
+<button type="button" data-gs-v0470-duplicate>Duplicate</button>
+<button type="button" data-gs-v0470-latest>Latest</button>
+<button type="button" data-gs-v0470-notebook>Notebook</button>
+<button type="button" data-gs-v0470-report>Report</button>
+</section>
+<section class="sc-gs0470-canvas-card"><h3>Scientific canvas</h3><div data-gs-v0470-canvas></div></section>
+<pre data-gs-v0470-spec></pre>
+<div data-gs-v0470-library></div><span data-gs-v0470-figure-count>0</span>
+</div>
+</section>
+</main></div>
+<div data-lab-toast hidden role="status"></div>
+</div>
+<pre id="cert-log"></pre>
+<script src="../assets/js/modules/core.js"></script>
+<script src="../assets/js/modules/projects.js"></script>
+<script src="../assets/js/modules/workspace.js"></script>
+<script src="../assets/js/modules/scientific-visualization-engine-v0440.js"></script>
+<script src="../assets/js/modules/graph-studio-v0470.js"></script>
+<script src="../assets/js/sc-lab-safe-bootstrap-v015206.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const root=document.querySelector('.sc-lab-app'), log=document.getElementById('cert-log');
+const passed=[],errors=[];
+function check(ok,label){(ok?passed:errors).push(label);log.textContent+=(ok?'PASS ':'FAIL ')+label+'\n';}
+const vis=e=>getComputedStyle(e).display!=='none';
+try {
+  const graphPanel=root.querySelector('[data-lab-module="graph-studio"]');
+  const overview=root.querySelector('[data-lab-module="overview"]');
+  const canvas=graphPanel.querySelector('[data-gs-v0470-canvas]');
+  const engine=window.SCLab?.ScientificVisualizationEngineV0440;
+  const graph=window.SCLab?.GraphStudioV0470;
+  check(!!engine?.render && !!graph?.render, 'real scoped scientific engine and Graph Studio controller loaded');
+  check(graph?.status().mounted===true, 'Graph Studio controller mounted');
+  check(!!canvas.querySelector('svg[data-sve-version]'), 'scientific SVG figure actually rendered on initial mount');
+  check(!vis(graphPanel) && vis(overview), 'Overview is exclusive on initial load');
+  root.querySelector('[data-open-module="graph-studio"]').click();
+  check(root.dataset.activeModule==='graph-studio', 'Graph Studio selected');
+  check(vis(graphPanel) && !vis(overview), 'Graph Studio visible and Overview hidden in computed CSS');
+  check(graphPanel.getAttribute('aria-hidden')==='false' && overview.getAttribute('aria-hidden')==='true',
+    'correct accessible panel state');
+  check(!!canvas.querySelector('svg[data-sve-version]'), 'Graph Studio has a real visible scientific SVG canvas');
+  check(!/advanced module execution remains deferred/i.test(graphPanel.querySelector('[data-gs-v0470-status]').textContent),
+    'working renderer status not overwritten by deferred-runtime message');
+  graphPanel.querySelector('[data-gs-v0470-rows]').value=JSON.stringify([
+    {x:0,observed:10,fit:9.8},{x:1,observed:6,fit:6.1},{x:2,observed:3,fit:3.2}
+  ]);
+  graphPanel.querySelector('[data-gs-v0470-render]').click();
+  check(!!canvas.querySelector('svg[data-sve-version]'), 'Render figure draws an SVG from provided data');
+  const spec=graphPanel.querySelector('[data-gs-v0470-spec]').textContent;
+  check(spec.includes('observed') && spec.includes('series'), 'rendered graph has reproducible specification');
+  const before=root._scLabProjects.get().visualizations.length;
+  graphPanel.querySelector('[data-gs-v0470-save]').click();
+  check(root._scLabProjects.get().visualizations.length===before+1, 'Save stores a figure in canonical project');
+  root.querySelector('[data-open-module="overview"]').click();
+  check(vis(overview) && !vis(graphPanel), 'switching back restores Overview and hides Graph');
+  root.querySelector('[data-open-module="graph-studio"]').click();
+  check(!vis(overview) && vis(graphPanel), 'return to Graph Studio remains exclusive');
+  check(canvas.querySelectorAll('svg[data-sve-version]').length===1, 'exactly one primary SVG canvas');
+  check(window.__graphNetworkWrites.length===0, 'graph renderer performs no network writes');
+} catch(error) {errors.push('harness exception: '+String(error.stack||error));log.textContent+='FAIL '+String(error.stack||error)+'\n';}
+window.__labGraphCert={passed,errors};
+document.body.dataset.cert=errors.length?'fail':'pass';
+},{once:true});
+</script></body></html>

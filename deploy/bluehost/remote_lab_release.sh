@@ -113,7 +113,11 @@ cmd_deploy() {
     [[ -f "$tmp/$SLUG/$SLUG.php" ]] || die "zip does not contain $SLUG/$SLUG.php"
     [[ "$(find "$tmp" -mindepth 1 -maxdepth 1 | wc -l)" == 1 ]] || die "zip has entries outside $SLUG/"
     chmod -R u=rwX,go=rX "$tmp/$SLUG"
-    rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
+    # Every release-zip member has a deliberately fixed mtime for reproducibility.
+    # A changed SHA-256 manifest can have the SAME byte length and timestamp as
+    # the installed one, so rsync -a's quick-check would silently skip it.
+    # --checksum is required to restore exact bytes, including same-size edits.
+    rsync -ac --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     wpc cache flush >/dev/null 2>&1 || true
     purge_page_cache
     cmd_verify_deployed "$zip"
@@ -123,7 +127,18 @@ cmd_verify_deployed() {
     local zip="${1:?zip}"
     scratch; local tmp="$TMP_DIR"
     unzip -q "$zip" -d "$tmp"
-    diff -q <(tree_manifest "$tmp/$SLUG") <(tree_manifest "$PLUGIN_DIR") >/dev/null || die "deployed tree differs from the zip"
+    # Materialize the full manifests before comparing. diff -q directly against
+    # process substitutions closed the upstream hash pipelines on the first
+    # discrepancy, producing misleading "sha256sum terminated by signal 13".
+    local want_manifest="$tmp/zip.manifest" actual_manifest="$tmp/deployed.manifest"
+    tree_manifest "$tmp/$SLUG" > "$want_manifest"
+    tree_manifest "$PLUGIN_DIR" > "$actual_manifest"
+    if ! cmp -s "$want_manifest" "$actual_manifest"; then
+        diff -u "$want_manifest" "$actual_manifest" > "$tmp/mismatch.diff" || true
+        say "deployed_tree_mismatch=first_50_diff_lines" >&2
+        sed -n '1,50p' "$tmp/mismatch.diff" >&2
+        die "deployed tree differs from the zip"
+    fi
     if [[ "$WP_MODE" == "wp" ]]; then
         wpc plugin is-active "$SLUG" || die "plugin is not active"
     fi
@@ -135,7 +150,8 @@ cmd_rollback() {
     cmd_verify_backup "$backup" >/dev/null
     scratch; local tmp="$TMP_DIR"
     tar -C "$tmp" -xzf "$backup/plugin.tar.gz"
-    rsync -a --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
+    # Rollback must restore exact original bytes, not trust fixed mtime/size.
+    rsync -ac --delete "$tmp/$SLUG/" "$PLUGIN_DIR/"
     diff -q <(tree_manifest "$PLUGIN_DIR") "$backup/plugin.manifest" >/dev/null || die "rollback tree differs from backup manifest"
     if [[ -f "$backup/state.txt" && "$WP_MODE" == "wp" ]]; then
         local opt; opt="$(sed -n 4p "$backup/state.txt")"

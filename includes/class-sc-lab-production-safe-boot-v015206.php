@@ -26,14 +26,66 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
         add_action('plugins_loaded', array(__CLASS__, 'replace_legacy_integrity_notice'), PHP_INT_MAX);
         add_action('admin_init', array(__CLASS__, 'replace_legacy_integrity_notice'), 1);
 
+        // Authoritative runtime on /lab/: retire conflicting legacy asset gates
+        // after all Lab modules register their WordPress callbacks, but before
+        // wp_enqueue_scripts and footer scripts execute. Never affect other pages.
+        add_action('wp', array(__CLASS__, 'retire_legacy_asset_gates'), PHP_INT_MAX);
+
         // First sweep after ordinary enqueue callbacks.
         add_action('wp_enqueue_scripts', array(__CLASS__, 'gate_frontend_assets'), PHP_INT_MAX);
 
-        // Second sweep immediately before WordPress prints footer scripts. This
-        // catches historical modules enqueued by shortcode/render-time code.
-        add_action('wp_print_footer_scripts', array(__CLASS__, 'gate_footer_scripts'), 19);
+        // Second sweep BEFORE core's _wp_footer_scripts printer at priority 10.
+        // Priority 19 ran too late: freshly enqueued safe/bootstrap Graph scripts
+        // were not emitted in the served HTML even though files passed integrity.
+        // Also catches historical shortcode/render-time enqueues before printing.
+        add_action('wp_print_footer_scripts', array(__CLASS__, 'gate_footer_scripts'), 9);
 
         add_action('rest_api_init', array(__CLASS__, 'routes'));
+    }
+
+    /**
+     * Prior Lab generations each installed an independent "final" asset gate.
+     * Later generations run at PHP_INT_MAX and dequeue the canonical safe
+     * runtime, leaving only older v01540+ scripts in rendered HTML.
+     *
+     * On the canonical Lab request, retain exactly this class as gate authority.
+     * Remove only methods on classes owned by the SC_Lab_ namespace; never touch
+     * WordPress core, theme, other plugins, or non-Lab requests. Other ordinary
+     * module enqueuers may still enqueue, but our footer gate prunes them before
+     * WordPress prints scripts.
+     */
+    public static function retire_legacy_asset_gates() {
+        if (!self::is_lab_request()) { return; }
+        global $wp_filter;
+        foreach (array('wp_enqueue_scripts', 'wp_print_footer_scripts') as $hook_name) {
+            $hook = isset($wp_filter[$hook_name]) ? $wp_filter[$hook_name] : null;
+            if (!($hook instanceof WP_Hook)) { continue; }
+            $remove = array();
+            foreach ((array) $hook->callbacks as $priority => $callbacks) {
+                foreach ((array) $callbacks as $callback) {
+                    $fn = isset($callback['function']) ? $callback['function'] : null;
+                    if (!is_array($fn) || count($fn) !== 2 || !is_string($fn[1])) { continue; }
+                    $owner = is_string($fn[0]) ? $fn[0] : (is_object($fn[0]) ? get_class($fn[0]) : '');
+                    if (strpos($owner, 'SC_Lab_') !== 0 || $owner === __CLASS__) { continue; }
+                    // Remove only older queue gates in wp_enqueue_scripts.
+                    // In wp_print_footer_scripts, suppress only old Lab
+                    // script enqueue/gate callbacks, which rewrite the queue.
+                    if ($hook_name === 'wp_enqueue_scripts') {
+                        if ($fn[1] !== 'gate_frontend_assets') { continue; }
+                    } else {
+                        // Only remove legacy Lab asset queue mutators, never
+                        // arbitrary Lab auditing or notification hooks.
+                        if ($fn[1] !== 'gate_footer_scripts' && strpos($fn[1], 'enqueue_') !== 0) {
+                            continue;
+                        }
+                    }
+                    $remove[] = array($fn, $priority);
+                }
+            }
+            foreach ($remove as $entry) {
+                remove_action($hook_name, $entry[0], $entry[1]);
+            }
+        }
     }
 
     public static function replace_legacy_integrity_notice() {
@@ -93,6 +145,8 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
             'assets/js/modules/core.js',
             'assets/js/modules/projects.js',
             'assets/js/modules/workspace.js',
+            'assets/js/modules/scientific-visualization-engine-v0440.js',
+            'assets/js/modules/graph-studio-v0470.js',
         ) as $path) {
             if (strpos((string) $src, $path) !== false) { return true; }
         }
@@ -141,9 +195,19 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
             array('sc-lab-safe-core-v015206'), self::asset_token($projects), true);
         wp_enqueue_script('sc-lab-safe-workspace-v015206', SC_LAB_URL . $workspace,
             array('sc-lab-safe-core-v015206'), self::asset_token($workspace), true);
+        // Restore only the bounded, established Graph Studio SVG figure renderer.
+        // Full historic critical/optional bundles remain disabled. The renderer does
+        // not publish figures; saving is explicit in the canonical project store.
+        $graph_engine = 'assets/js/modules/scientific-visualization-engine-v0440.js';
+        $graph_controller = 'assets/js/modules/graph-studio-v0470.js';
+        wp_enqueue_script('sc-lab-graph-engine-v0440', SC_LAB_URL . $graph_engine,
+            array('sc-lab-safe-projects-v015206'), self::asset_token($graph_engine), true);
+        wp_enqueue_script('sc-lab-graph-controller-v0470', SC_LAB_URL . $graph_controller,
+            array('sc-lab-graph-engine-v0440', 'sc-lab-safe-projects-v015206'),
+            self::asset_token($graph_controller), true);
         if (!wp_script_is('sc-lab-safe-bootstrap-v015206', 'enqueued')) {
             wp_enqueue_script('sc-lab-safe-bootstrap-v015206', SC_LAB_URL . $js,
-                array('sc-lab-safe-projects-v015206', 'sc-lab-safe-workspace-v015206'),
+                array('sc-lab-safe-projects-v015206', 'sc-lab-safe-workspace-v015206', 'sc-lab-graph-controller-v0470'),
                 self::asset_token($js), true);
             wp_localize_script('sc-lab-safe-bootstrap-v015206', 'SCLabSafeBootV015206', array(
                 'version' => self::VERSION,
