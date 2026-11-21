@@ -41,6 +41,14 @@ remote_file="$MOCK_HOME/sc-releases/artifacts/$(basename "$ZIP")"
 cmp -s "$ZIP" "$remote_file" || die "synthetic upload was not byte-identical"
 [[ "$receipt" == *"remote_artifact=verified"* ]] || die "missing transport receipt"
 echo "PASS - SC-LAB-RELEASE-02 transfer of >2.8 MB archive, remote byte count and SHA-256"
+sc_remote_zip_is_verified "$ZIP" "$DIGEST" || die "verified staged archive was not reusable"
+printf 'X' >> "$remote_file"
+if sc_remote_zip_is_verified "$ZIP" "$DIGEST"; then
+    die "corrupted remote archive was incorrectly accepted"
+fi
+sc_transfer_zip_verified "$ZIP" "$DIGEST" >/dev/null
+sc_remote_zip_is_verified "$ZIP" "$DIGEST" || die "reuploaded archive failed staged validation"
+echo "PASS - SC-LAB-RELEASE-02 staged artifact reuse and corruption rejection"
 
 # An incorrect local digest must not create an installed artifact.
 BAD_ZIP="$TMP/synthetic-wrong-sha.zip"
