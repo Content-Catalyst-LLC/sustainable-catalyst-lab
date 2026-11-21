@@ -51,6 +51,12 @@ printf '%s\n' "$PREFLIGHT" | grep -q '^plugin_version=0.163.1.9$'
 printf '%s\n' "$PREFLIGHT" | grep -q '^plugin_active=yes$'
 BRIDGE="$(ssh -o BatchMode=yes "$SC_BH_SSH" "wp --path='$SC_BH_WP_ROOT' plugin get sc-research-bridge --field=version")"
 [[ "$BRIDGE" == "0.6.1" ]] || { echo "FAIL: unexpected Bridge $BRIDGE" >&2; exit 1; }
+
+# Prove the complete archive is on Bluehost BEFORE taking a fresh backup.
+# This transfer cannot modify any installed WordPress plugin files.
+echo "=== Remote ZIP transfer with byte-count and SHA-256 receipt (no install) ==="
+deploy/bluehost/release.sh transfer "$ZIP" "$SHA256"
+
 BACKUP_RESULT="$(deploy/bluehost/release.sh backup lab-graph-ui-02)"
 printf '%s\n' "$BACKUP_RESULT"
 BACKUP_DIR="$(printf '%s\n' "$BACKUP_RESULT" | sed -n 's/^backup_dir=//p' | tail -1)"
