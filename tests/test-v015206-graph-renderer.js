@@ -21,6 +21,8 @@ for(const p of ['sc-lab-safe-bootstrap-v015206.js','sc-lab-graph-engine-v0440','
  assert.ok(php.includes(p),'missing safe asset '+p);
 }
 assert.ok(php.includes("'sc-lab-graph-controller-v0470'),"),'Graph controller must precede safe boot');
+assert.match(php,/add_action\('wp_print_footer_scripts',\s*array\(__CLASS__,\s*'gate_footer_scripts'\),\s*9\);/,
+ 'Graph safe footer gate must run before WordPress default script printer at priority 10');
 assert.ok(!php.includes("wp_enqueue_script('sc-lab-app'"),'legacy megabundle must stay off');
 for(const s of [js,engine,graph])new vm.Script(s);
 assert.ok(js.includes("item.style.setProperty('display', 'none', 'important')"),'panels must not stack');
