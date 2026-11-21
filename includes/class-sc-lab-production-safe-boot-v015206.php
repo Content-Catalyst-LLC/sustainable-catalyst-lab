@@ -26,6 +26,11 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
         add_action('plugins_loaded', array(__CLASS__, 'replace_legacy_integrity_notice'), PHP_INT_MAX);
         add_action('admin_init', array(__CLASS__, 'replace_legacy_integrity_notice'), 1);
 
+        // Authoritative runtime on /lab/: retire conflicting legacy asset gates
+        // after all Lab modules register their WordPress callbacks, but before
+        // wp_enqueue_scripts and footer scripts execute. Never affect other pages.
+        add_action('wp', array(__CLASS__, 'retire_legacy_asset_gates'), PHP_INT_MAX);
+
         // First sweep after ordinary enqueue callbacks.
         add_action('wp_enqueue_scripts', array(__CLASS__, 'gate_frontend_assets'), PHP_INT_MAX);
 
@@ -36,6 +41,45 @@ final class SC_Lab_Production_Safe_Boot_V015206 {
         add_action('wp_print_footer_scripts', array(__CLASS__, 'gate_footer_scripts'), 9);
 
         add_action('rest_api_init', array(__CLASS__, 'routes'));
+    }
+
+    /**
+     * Prior Lab generations each installed an independent "final" asset gate.
+     * Later generations run at PHP_INT_MAX and dequeue the canonical safe
+     * runtime, leaving only older v01540+ scripts in rendered HTML.
+     *
+     * On the canonical Lab request, retain exactly this class as gate authority.
+     * Remove only methods on classes owned by the SC_Lab_ namespace; never touch
+     * WordPress core, theme, other plugins, or non-Lab requests. Other ordinary
+     * module enqueuers may still enqueue, but our footer gate prunes them before
+     * WordPress prints scripts.
+     */
+    public static function retire_legacy_asset_gates() {
+        if (!self::is_lab_request()) { return; }
+        global $wp_filter;
+        foreach (array('wp_enqueue_scripts', 'wp_print_footer_scripts') as $hook_name) {
+            $hook = isset($wp_filter[$hook_name]) ? $wp_filter[$hook_name] : null;
+            if (!($hook instanceof WP_Hook)) { continue; }
+            $remove = array();
+            foreach ((array) $hook->callbacks as $priority => $callbacks) {
+                foreach ((array) $callbacks as $callback) {
+                    $fn = isset($callback['function']) ? $callback['function'] : null;
+                    if (!is_array($fn) || count($fn) !== 2 || !is_string($fn[1])) { continue; }
+                    $owner = is_string($fn[0]) ? $fn[0] : (is_object($fn[0]) ? get_class($fn[0]) : '');
+                    if (strpos($owner, 'SC_Lab_') !== 0 || $owner === __CLASS__) { continue; }
+                    // Remove only older queue gates in wp_enqueue_scripts.
+                    // In wp_print_footer_scripts, suppress all legacy Lab late
+                    // callbacks, which otherwise rewrite the safe queue at MAX.
+                    if ($hook_name === 'wp_enqueue_scripts' && $fn[1] !== 'gate_frontend_assets') {
+                        continue;
+                    }
+                    $remove[] = array($fn, $priority);
+                }
+            }
+            foreach ($remove as $entry) {
+                remove_action($hook_name, $entry[0], $entry[1]);
+            }
+        }
     }
 
     public static function replace_legacy_integrity_notice() {
