@@ -54,6 +54,7 @@ $footer = array('SC_Lab_Reproducible_Protocol_Notebook_V01540', 'gate_footer_scr
 $footer_new = array('SC_Lab_4D_Front_Door_Visual_Polish_V016313', 'enqueue_after_front_door_repair');
 $ordinary = array('SC_Lab_Unified_Workspace_Shell_V016312', 'enqueue_after_legacy_gate');
 $other = array('Other_Plugin', 'gate_frontend_assets');
+$lab_audit = array('SC_Lab_Audit_Review', 'emit_audit_marker');
 $core = '_wp_footer_scripts';
 add_action('wp_enqueue_scripts', $early, PHP_INT_MAX);
 add_action('wp_enqueue_scripts', $late, PHP_INT_MAX);
@@ -62,6 +63,7 @@ add_action('wp_enqueue_scripts', $other, PHP_INT_MAX);
 add_action('wp_print_footer_scripts', $core, 10);
 add_action('wp_print_footer_scripts', $footer, PHP_INT_MAX);
 add_action('wp_print_footer_scripts', $footer_new, PHP_INT_MAX);
+add_action('wp_print_footer_scripts', $lab_audit, PHP_INT_MAX);
 
 function verify($condition, string $name) {
     if (!$condition) { fwrite(STDERR, "FAIL - $name\n"); exit(1); }
@@ -82,6 +84,9 @@ verify(has_action('wp_print_footer_scripts', $footer_new) === false, 'later foot
 verify(has_action('wp_enqueue_scripts', $ordinary) === PHP_INT_MAX, 'ordinary Lab enqueue preserved');
 verify(has_action('wp_enqueue_scripts', $other) === PHP_INT_MAX, 'other plugins preserved');
 verify(has_action('wp_print_footer_scripts', $core) === 10, 'WordPress core footer printer preserved');
+verify(has_action('wp_print_footer_scripts', $lab_audit) === PHP_INT_MAX, 'non-asset Lab auditing preserved');
+verify(has_action('wp', array($c, 'retire_legacy_asset_gates')) === PHP_INT_MAX,
+    'gate retirement registered after query resolution');
 verify(has_action('wp_enqueue_scripts', array($c, 'gate_frontend_assets')) === PHP_INT_MAX,
     'canonical Lab enqueue gate preserved');
 verify(has_action('wp_print_footer_scripts', array($c, 'gate_footer_scripts')) === 9,
